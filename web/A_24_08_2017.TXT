@@ -1,0 +1,1 @@
+find /srv/www/htdocs/qa_managementv2/web/buzones_qa/Buzones_24_08_2017 -iname *00EPB8K5A4CG34BIE8LH9B5AES04UA89*.wav

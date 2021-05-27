@@ -1,0 +1,132 @@
+#card_main{
+  min-height: 87vh;
+  border-radius: 8px;
+  background-color: #f7f8f8;
+}
+
+.tooltip{
+  font-size:14px;
+}
+
+/* ALL TABLE */
+.table th, .table td {
+  text-align: center;
+  vertical-align: middle !important;
+}
+
+
+/* CONTAINER TITLE WORKSPACES */
+#container_title_workspaces,#container_title_reportes{
+  min-height: 70vh;
+  max-height: 70vh;
+  overflow: auto;
+}
+#container_title_workspaces .btn-block,#container_title_reportes .btn-block{
+  color: #797373;
+  border-top: 1px solid #eaeaea !important;
+  padding: 11px 24px;
+  box-shadow: 0 3px 6px 1px rgba(153, 153, 153, -1.58), 0 1px 6px 0px rgba(0, 0, 0, 0.12), 0 9px 5px -6px rgba(153, 153, 153, 0.2) !important;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#container_title_workspaces .btn-block:hover, #container_title_reportes .btn-block:hover{
+  box-shadow: 0 3px 6px 3px rgba(153, 153, 153, -1.58), 0 5px 6px 0px rgba(0, 0, 0, 0.12), 0 9px 5px -6px rgba(153, 153, 153, 0.2) !important;
+  color: #627ebf;
+  border-right: 3px solid #619af3 !important;
+}
+.workspaces_selected{
+  color: #619af3 !important;
+  border-right: 3px solid #619af3 !important;
+}
+/* CONTAINER TITLE WORKSPACES END */
+
+
+/* TABLA DE REPORTES */
+#container_title_reportes .btn-block, #container_title_reportes .btn-block:hover{
+  cursor: default;
+}
+#img_chart{
+  height: 62px;
+  position: absolute;
+  text-align: center;
+  top: -63px;
+}
+#container_title_reportes .btn-block{
+  padding-left: 46px;
+}
+#container_title_reportes div.dropdown{
+  display: inline-block;
+  position: absolute;
+  left: 5px;
+  top: -3px;
+  box-shadow: none !important;
+}
+#container_title_reportes button.dropdown-toggle{
+  padding: 4px 6px;
+  box-shadow: none !important;
+}
+.container_individual_report{
+  position: relative;
+}
+/* TABLA DE REPORTES END */
+
+/* MODAL SHOW REPORT */
+#container_report{
+  min-height:90vh;
+}
+#container_report iframe{
+  min-height: 90vh;
+  border: none !important;
+}
+#modal_show_report .modal-dialog{
+  margin-top: 11px !important;
+  width: 98% !important;
+  margin-bottom: 0px;
+}
+#modal_show_report .modal-body{
+  padding: 0px !important;
+}
+#modal_show_report .modal-header{
+  padding-top: 4px !important;
+  padding-bottom: 9px !important;
+}
+#modal_show_report span.fa-close{
+  position: relative;
+  right: -13px;
+  font-size: 24px;
+}
+#btn_expand_show_report{
+  position: absolute;
+  left: 15px;
+  top: 6px;
+  font-size: 22px;
+  color: #666666;
+}
+#title_show_modal_report{
+  font-size: 18px;
+  border-radius: 0px;
+  padding: 4px 32px;
+  color: #f7f7f7;
+  border-bottom-left-radius: 43px;
+  border-bottom-right-radius: 43px;
+}
+/* MODAL SHOW REPORT END */
+
+/* MODAL TO ASSIGN PERMITS */
+#modal_assign_permits .modal-dialog{
+  margin-top: 17px;
+  width: 98% !important;
+}
+.card_body_permits{
+  min-height: 60vh;
+  max-height: 60vh;
+  overflow: auto;
+}
+.icon_send_permit:hover, .icon_send_permit:hover span{
+  color: #4996f9;
+  cursor: pointer;
+}
+/* MODAL TO ASSIGN PERMITS END */
