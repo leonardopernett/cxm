@@ -1,0 +1,16 @@
+web/buzones_qa/*
+web/alertas/*
+web/archivos/*
+web/
+web/files/*
+runtime/redbox/*
+runtime/logs/*
+runtime/basesatisfaccion/*
+runtime/debug/*
+runtime/debug/mail/*
+web/categorias/*
+web/A.TXT
+
+
+!.gitkeep
+!runtime/debug/mail
