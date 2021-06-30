@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $sesiones =Yii::$app->user->identity->id;  
     $varconteo = 0; 
     $varpcrc = $_GET["pcrc"];
+    $varidencuesta = $_GET["idencuesta"];
 
 ?>
 <style>
@@ -208,8 +209,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             $listData1 = ArrayHelper::map($varlistmotivos1, 'idbaselista', 'nombrelista');
                     ?>
                             <div class="col-md-4">
-                                <label id="<?php echo 'idOnevar'.$value['idlista']; ?>" style="font-size: 14px;"><?php echo $value['nombrecategoria'].'...'; ?></label>
-                                <?php  echo $form->field($model, 'idbaselista')->dropDownList($listData1, ['prompt' => 'Seleccionar Respuesta...', 'id'=>'Idrta'.$value['idlista']])?>  
+                                <label id="<?php echo 'idOnevar'.$varconteo; ?>" style="font-size: 14px;"><?php echo $value['nombrecategoria'].'...'; ?></label>
+                                <?php  echo $form->field($model, 'idbaselista')->dropDownList($listData1, ['prompt' => 'Seleccionar Respuesta...', 'id'=>'Idrta'.$varconteo])?>  
                             </div>
                         
                     <?php
@@ -291,6 +292,7 @@ $this->params['breadcrumbs'][] = $this->title;
     function generated(){
         var varvasrchatid = "<?php echo $varvasrchatid; ?>";
         var varvarconteo = "<?php echo $varconteo; ?>";
+        var varidencuesta = "<?php echo $varidencuesta; ?>";
         var vartxtticket = document.getElementById("txtticket").value;
         var varidtxtFechaHoraclasifi = document.getElementById("idtxtFechaHoraclasifi").value;
         var varidtxtFechaHorasendesk = document.getElementById("idtxtFechaHorasendesk").value;
@@ -310,7 +312,6 @@ $this->params['breadcrumbs'][] = $this->title;
             for (var i = 0; i < varvarconteo; i++) {
                 varbloque = i + 1;
                 var varidbloque = document.getElementById('Idrta'+varbloque).value;
-
                 var varidtext = document.getElementById('idOnevar'+varbloque).innerHTML;
 
                 if (varidbloque != "") {
@@ -353,6 +354,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     txtvaridfsolucion : varidfsolucion,
                     txtvaridfobservacion : varidfobservacion,
                     varidfprocedimiento : varidfprocedimiento,
+		    txtvaridencuesta : varidencuesta,
                 },
                 success : function(response){
                     numRta =   JSON.parse(response);

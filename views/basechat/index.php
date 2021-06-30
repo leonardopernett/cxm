@@ -371,7 +371,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     if($varpcrc == 2922) {
                                                         return Html::a('<span class="far fa-sticky-note" style="font-size: 20px; color: #5227d4;" ></span>'
                                                                         , Url::to(['showbasechatcol',
-                                                                            'basechatid' => $model->idbasechat_tigob, 'pcrc' => $model->pcrc]), ['title' => Yii::t('yii', 'Gestionar Base')]);
+                                                                            'basechatid' => $model->idbasechat_tigob, 'pcrc' => $model->pcrc, 'idencuesta' => $model->idencuesta]), ['title' => Yii::t('yii', 'Gestionar Base')]);
                                                     }
 
 

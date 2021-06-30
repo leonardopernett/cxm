@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('America/Bogota');
 $params = require(__DIR__ . '/params.php');
 
 $config = [

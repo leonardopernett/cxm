@@ -243,7 +243,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 <?php
-if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465"|| $sessiones == "6080"){ ?>
+if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465" || $sessiones == "6080" || $sessiones == "57"){ ?>
 <div class="CapaDos" style="display: inline;">
     <div class="row">
         <div class="col-md-12">
@@ -264,8 +264,8 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                 </div>
                 <div class="col-md-4" style="height: 150px;">
                     <div class="card4 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-cogs" style="font-size: 15px; color: #FFAE58;"></i> Acciones: </label>
-                        <i class="fas fa-download" style="font-size: 30px; color: #FFAE58; align-self: center;"></i>                        <br>
+                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFAE58;"></i> Descargas: </label>
+                        
                         <?= Html::button('Exportar', ['value' => url::to('exportarlist'), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
@@ -280,16 +280,30 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                                    Modal::end();
                                ?>
 				<br>
-                               <?= Html::button('Exportar feedback', ['value' => url::to('exportarresultfb'), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
+                               <?= Html::button('Reporte Seguimiento feedback', ['value' => url::to('exportarseguimientofb'), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
                                    Modal::begin([
                                        'header' => '<h4>Descargando listado</h4>',
-                                       'id' => 'modal2',
+                                       'id' => 'modal3',
                                        //'size' => 'modal-lg',
                                    ]);
 
-                                   echo "<div id='modalContent2'></div>";
+                                   echo "<div id='modalContent3'></div>";
+                                                                   
+                                   Modal::end();
+                               ?>
+				<br>
+                               <?= Html::button('Reporte feedback', ['value' => url::to('exportarresultfb'), 'class' => 'btn btn-success', 'id'=>'modalButton5', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
+                               ?>
+                               <?php
+                                   Modal::begin([
+                                       'header' => '<h4>Descargando listado</h4>',
+                                       'id' => 'modal5',
+                                       //'size' => 'modal-lg',
+                                   ]);
+
+                                   echo "<div id='modalContent5'></div>";
                                                                    
                                    Modal::end();
                                ?>

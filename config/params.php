@@ -31,7 +31,6 @@ return [
     /* ID DE USUARIOS QUE PUEDEN ELIMINAR VALORACIONES */
      'idUsersDelete' => [
         70, //Luisa.londono
-        7, //ruben.figueroa.o
         438, //claudia.correa
         991, //juan.cartagena
         69, //catalina.monsaleve

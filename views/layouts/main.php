@@ -49,7 +49,7 @@ AppAsset::register($this);
             .dropdown-menu {
                 font-family: "Nunito";
                 font-weight: normal;
-                font-size: 90%;
+                /* font-size: 90%; */
                 color: #777777;
                 /*background-color: #002855;*/
                 /*background-color: #c9cacc;*/
@@ -805,7 +805,7 @@ AppAsset::register($this);
                             <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank"><img src="<?= Url::to("@web/images/link80.png"); ?>" style="height: 106px; width: 215px;"></a>
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://amigo.allus.com.co/AmigoV1/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link3.png"); ?>"></a>
+                            <a class="direccionar" href="https://amigo.grupokonecta.local/AmigoV1/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link3.png"); ?>"></a>
                         </div>
                         <div class="col-md-2">                
                             <a class="direccionar" href="https://galeria.allus.com.co/galeriaexperiencias/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link2.png"); ?>" ></a>

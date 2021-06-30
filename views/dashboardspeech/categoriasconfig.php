@@ -289,6 +289,15 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                             ?>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="card1 mb">
+                            <?= Html::a('Clonar Extensiones',  ['clonarextension'], ['class' => 'btn btn-success',
+                                'style' => 'background-color: #337ab7',
+                                'data-toggle' => 'tooltip',
+                                'title' => 'Clonar extensiones']) 
+                            ?>
+                        </div>
+                    </div>
                 </div>
                 <?php
                     if ($sessiones == '0') {            

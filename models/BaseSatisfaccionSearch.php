@@ -609,8 +609,8 @@ WHERE pe.programa = " . $this->pcrc;
         $titulos[] = ['header' => 'Buzón', 'value' => '36'];
         $titulos[] = ['header' => 'Responsable Gestión', 'value' => '37'];
         $titulos[] = ['header' => 'Fecha Modificación', 'value' => '38'];
-        $titulos[67] = ['header' => 'Prueba Transcripcion', 'value' => '67'];
-        $titulos[68] = ['header' => 'Prueba Valencia', 'value' => '68'];
+        $titulos[67] = ['header' => 'Transcripcion', 'value' => '67'];
+        $titulos[68] = ['header' => 'Valencia', 'value' => '68'];
         
 
         $titulos[39] = ['header' => 'Tipo Inbox', 'value' => '39'];
@@ -842,14 +842,13 @@ WHERE pe.programa = " . $this->pcrc;
                         $dataProvider[$newRow][37] = $this->vData($data[$i]['responsable']);
                         $dataProvider[$newRow][38] = $this->vData($data[$i]['modified']); // se toma fecha de modificacion tbl_ejecucionformularios                      
                         
-                        $varbuzon = $this->vData($data[$i]['buzon']);
                         $varConnids = $this->vData($data[$i]['connid']);
-                        $vartexto = null;
-                        $varvalencia = null; 
+                        $txttrancsipcion = Yii::$app->db->createCommand("SELECT k.transcripcion FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();                        $vartexto = null;
+                        $varvalencia = Yii::$app->db->createCommand("SELECT k.valencia FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();   
                         $varvacio = " - ";   
                     
-                        $dataProvider[$newRow][67] = $varvacio;
-                        $dataProvider[$newRow][68] = $varvacio;                        
+                        $dataProvider[$newRow][67] = $txttrancsipcion;
+                        $dataProvider[$newRow][68] = $varvalencia;                        
 
 
                         if ($this->vData($data[$i]['tipo_inbox'])== "NORMAL"){ 
@@ -1114,15 +1113,13 @@ WHERE pe.programa = " . $this->pcrc;
                     $dataProvider[$newRow][38] = '-';
 
 
-                    $varbuzon = $this->vData($satu['buzon']);
-                    $varConnids = $this->vData($satu['connid']);
-                    $vartexto = null;
-                    $varvalencia = null;      
-                    $varvacia = " - ";                  
-                        
-                        $dataProvider[$newRow][67] = $varvacia;
-                        $dataProvider[$newRow][68] = $varvacia; 
+                    	$varConnids = $this->vData($satu['connid']);
+                        $txttrancsipcion = Yii::$app->db->createCommand("SELECT k.transcripcion FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();                        $vartexto = null;
+                        $varvalencia = Yii::$app->db->createCommand("SELECT k.valencia FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();   
+                        $varvacio = " - ";   
                     
+                        $dataProvider[$newRow][67] = $txttrancsipcion;
+                        $dataProvider[$newRow][68] = $varvalencia;                     
 
 
                     if ($satu['tipo_inbox'] == "NORMAL"){ 

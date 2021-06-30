@@ -561,15 +561,16 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         }else{
             if (varsesiones != '270') {
                 if (varsesiones != '277') {
-                   if (varlider == "") {
-                        event.preventDefault();
-                        swal.fire("¡¡¡ Advertencia !!!","Debes de seleccionar al lider para la busqueda.","warning");
-                        return; 
-                    } 
+                    if (varsesiones != '276') {
+                       if (varlider == "") {
+                            event.preventDefault();
+                            swal.fire("¡¡¡ Advertencia !!!","Debes de seleccionar al lider para la busqueda.","warning");
+                            return; 
+                        } 
+                    }                    
                 }                
             }
         }
-
         // if (vargrupos != "81") {
         //     if (vargrupos != "76") {
         //         if (vargrupos != "171") {

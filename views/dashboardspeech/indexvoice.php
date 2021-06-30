@@ -210,10 +210,12 @@ $this->title = 'Dashboard Voz del Cliente';
     $varListLogin5 =  array();
     $varListCantiVar5 =  array();
     $varListLogin0 =  array();
-    $varListCantiVar0 =  array();
+    $varListCantiVar0 =  array();    
+    $varListidcateAgente = array();
     $vartotallogin = 0;
     $canlogin = 0;
     $contador = 0;
+    $vartotalreg = 0;
     //var_dump($varNametop);
     if ($varNametop){
     $txtlistatopvar = Yii::$app->db->createCommand("select COUNT(*) AS cantidad, login_id FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN('$varProgramas') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND extension IN ('$txtParametros') AND idcategoria IN ($varNametop) GROUP BY login_id ORDER BY cantidad")->queryAll();
@@ -252,6 +254,15 @@ $this->title = 'Dashboard Voz del Cliente';
       
     }
    }
+    //para responsable Agente
+    $txtlistaidcatagente = Yii::$app->db->createCommand("select idcategoria FROM tbl_speech_categorias  where anulado = 0 and cod_pcrc in ('$txtCodPcrcok') AND 
+    nombre not IN( SELECT tipoindicador FROM tbl_speech_categorias  where anulado = 0 
+    and cod_pcrc in ('$txtCodPcrcok')) AND idcategorias IN(1,2) AND responsable = 1")->queryAll();
+    foreach ($txtlistaidcatagente as $key => $value) {
+    $varIdcat = $value['idcategoria'];                                
+    array_push($varListidcateAgente, $varIdcat); 
+    } 
+    $arrayVaridcatAgente = implode(", ", $varListidcateAgente);
 ?>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
@@ -456,10 +467,29 @@ $this->title = 'Dashboard Voz del Cliente';
                 </tr>
                 <tr>
                   <?php 
+            //inicio cálculo del IDA
                     $varNum  = 0;
                     $titulos = array();
                     $txtRtaProcentaje = 0;
                     $txtIndicadores = null;
+                    //Diego
+                    $txtRtaProcentaje1 = 0;
+                    $txtRtaProcentaje2 = 0;
+                    $txtRtaProcentaje3 = 0;
+                    $txtacumulapromedio1 = 0;
+                    $txtacumulapromedio2 = 0;
+                    $txtacumulapromedio3 = 0;
+                    $arraylistaagente = array();
+                    $arraylistacanal = array();
+                    $arraylistamarca = array();
+                    $arraylistanombre = array();
+                    $arraylistaresponsables = array();
+                    $arraylistaresponsable = array();
+ 		            $arraytotalagente = 0;
+                    $arraytotalcanal = 0;
+                    $arraytotalmarca = 0;
+                    $responsable = array("Total Agente","Total Canal","Total Marca");
+                    //f Diego
                     foreach ($varListIndicadores as $key => $value) {
                       // $varCodPcrc = $value['cod_pcrc'];
                       $txtIdIndicadores = $value['idcategoria'];
@@ -476,25 +506,64 @@ $this->title = 'Dashboard Voz del Cliente';
                       //   array_push($arrayvarCodPcrc, $value['cod_pcrc']);
                       // }
                       $varCodPcrc = $txtCodPcrcok;
-                        
+                      $varListadorespo = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$varCodPcrc') and responsable is not null group by idcategoria order by idcategorias asc")->queryAll();
                         if ($varCodigo == 1) {
                           // var_dump("RN");
                           $varTipoPAram = Yii::$app->db->createCommand("select distinct sc.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sp.rn in ('$txtParametros') and sc.programacategoria in ('$txtServicio') and sc.idcategoria = '$txtIdIndicadores' and sc.dashboard in (1,3)")->queryScalar();
 
-                          $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.rn in ('$txtParametros')    and sc.cod_pcrc in ('$varCodPcrc') and sc.dashboard in (1,3) group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
+                          //diego
+                          $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform, sc.responsable from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.rn in ('$txtParametros')    and sc.cod_pcrc in ('$varCodPcrc') and sc.dashboard in (1,3) group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
+                          //f
 
                           $arrayListOfVar = array();
                           $arraYListOfVarMas = array();
                           $arraYListOfVarMenos = array();
+
+                          //diego
+                          $arraYListresponagenteMas = array();
+                          $arraYListresponagenteMenos = array();
+                          $arraYListresponcanalMas = array();
+                          $arraYListresponcanalMenos = array();
+                          $arraYListresponmarcaMas = array();
+                          $arraYListresponmarcaMenos = array();
+                          //f
+
                           foreach ($varListVariables as $key => $value) {
                             $varOrienta = $value['orientacionsmart'];
+                            $varresponsable = $value['responsable'];
 
                             array_push($arrayListOfVar, $value['idcategoria']);
 
                             if ($varOrienta == 1) {
+                                //diego
+                              if($varListadorespo){
+                                if($varresponsable == 1){
+                                  array_push($arraYListresponagenteMenos, $value['idcategoria']);
+                                }else{
+                                  if($varresponsable == 2){
+                                    array_push($arraYListresponcanalMenos, $value['idcategoria']);
+                                  } else{
+                                      array_push($arraYListresponmarcaMenos, $value['idcategoria']);
+                                  }
+                                }
+                              }
+                              //f
                               array_push($arraYListOfVarMenos, $value['idcategoria']);
                             }else{
                               if ($varOrienta == 2) {
+                                  //diego
+                                if($varListadorespo){
+                                    if($varresponsable ==1){
+                                      array_push($arraYListresponagenteMas, $value['idcategoria']);
+                                    }else{
+                                      if($varresponsable ==2){
+                                        array_push($arraYListresponcanalMas, $value['idcategoria']);
+                                       } else{
+                                           array_push($arraYListresponmarcaMas, $value['idcategoria']);
+                                       }
+                                    }
+                                  }
+                                    //f
                                 array_push($arraYListOfVarMas, $value['idcategoria']);
                               }
                             }                      
@@ -502,6 +571,15 @@ $this->title = 'Dashboard Voz del Cliente';
                           $arrayVariable = implode(", ", $arrayListOfVar);
                           $arrayVariableMas = implode(", ", $arraYListOfVarMas);
                           $arrayVariableMenos = implode(", ", $arraYListOfVarMenos);
+                          //diego
+                          if($varListadorespo){
+                            $arrayVarresponagenteMas = implode(", ", $arraYListresponagenteMas);
+                            $arrayVarresponcanalMas = implode(", ", $arraYListresponcanalMas);
+                            $arrayVarresponmarcaMas = implode(", ", $arraYListresponmarcaMas);
+                            $arrayVarresponagenteMenos = implode(", ", $arraYListresponagenteMenos);
+                            $arrayVarresponcanalMenos = implode(", ", $arraYListresponcanalMenos);
+                            $arrayVarresponmarcaMenos = implode(", ", $arraYListresponmarcaMenos);
+                          }
                           //var_dump($arrayVariable);
                           //var_dump($arrayVariableMas);
                           //var_dump($arrayVariableMenos);
@@ -542,6 +620,7 @@ $this->title = 'Dashboard Voz del Cliente';
                             $arrayListOfVar = array();
                             $arraYListOfVarMas = array();
                             $arraYListOfVarMenos = array();
+
                             foreach ($varListVariables as $key => $value) {
                               $varOrienta = $value['orientacionsmart'];
 
@@ -562,8 +641,16 @@ $this->title = 'Dashboard Voz del Cliente';
                           }
                         }
 
+    //cuenta la cantidad de positivas y negativas
+
                         $varArrayInidicador = 0;
                         $varArrayPromedio = array();
+                        $varArrayInidicador1 = 0;
+                        $varArrayPromedio1 = array();
+                        $varArrayInidicador2 = 0;
+                        $varArrayPromedio2 = array();
+                        $varArrayInidicador3 = 0;
+                        $varArrayPromedio3 = array();
                         if (count($varListVariables) != 0) {
                           // Tipo indicador Normal
                           if ($varTipoPAram == 2) {                  
@@ -589,35 +676,133 @@ $this->title = 'Dashboard Voz del Cliente';
                               $varListCallid = Yii::$app->db->createCommand("select callid from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and  extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' group by callid")->queryAll();
 
                               $varconteo = 0;
+                              $varconteo1 = 0;
+                              $varconteo2 = 0;
+                              $varconteo3 = 0;
                               foreach ($varListCallid as $key => $value) {
                                 $txtCallid = $value['callid'];
 
-                if (count($arrayVariableMenos) != 0) {
-                                    $varconteo = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable) and idvariable in ($arrayVariable)")->queryScalar();
-                }else{
-                    $varconteo = 0;
-                }
+                                if (count($arrayVariableMenos) != 0) {
+                                                    $varconteo = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable) and idvariable in ($arrayVariable)")->queryScalar();
+                                }else{
+                                    $varconteo = 0;
+                                }
 
                                 if ($varconteo == 0 || $varconteo == null) {
                                   $txtRtaIndicador = 0;
                                 }else{
                                   $txtRtaIndicador = 1;
                                 }
-
+                                //para el calculo por responsabilidad
+                                //diego
+                                if($varListadorespo){
+                                    $txtRtaIndicador1 = null;
+                                    $txtRtaIndicador2 = null;
+                                    $txtRtaIndicador3 = null;
+                                    $varArrayVariable1 = array();
+                                    $varArrayVariable2 = array();
+                                    $varArrayVariable3 = array();
+                                    $varListVariables2 = Yii::$app->db->createCommand("SELECT idcategoria, responsable FROM tbl_speech_categorias WHERE idcategoria IN ($arrayVariable)")->queryAll();
+                                    //$varListVariables2 = Yii::$app->db->createCommand("SELECT idcategoria, responsable FROM tbl_speech_categorias WHERE idcategoria IN ($arrayVariable)")->queryScalar();
+                                    foreach ($varListVariables2 as $key => $value) {
+                                      $varidcategoria = $value['idcategoria'];
+                                      $varresponsable = $value['responsable'];
+                                      if ($varresponsable == 1){
+                                          array_push($varArrayVariable1, $varidcategoria);
+                                      }
+                                      else{
+                                        if ($varresponsable == 2){
+                                            array_push($varArrayVariable2, $varidcategoria);
+                                        }else{
+                                          if ($varresponsable == 3){
+                                              array_push($varArrayVariable3, $varidcategoria);
+                                          }
+                                        }
+                                      }
+                                    }
+                                    
+                                    if (count($varArrayVariable1) > 0){
+                                      $arrayVariable1 = implode(", ", $varArrayVariable1);
+                                      $varconteo1 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable1) and idvariable in ($arrayVariable1)")->queryScalar();
+                                      if ($varconteo1 == 0 || $varconteo1 == null) {
+                                        $txtRtaIndicador1 = 0;
+                                      }else{
+                                        $txtRtaIndicador1 = 1;
+                                    }
+                                    
+                                      array_push($varArrayPromedio1, $txtRtaIndicador1);
+                                    }
+                                    if (count($varArrayVariable2) > 0){
+                                        $arrayVariable2 = implode(", ", $varArrayVariable2); 
+                                        
+                                          $varconteo2 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable2) and idvariable in ($arrayVariable2)")->queryScalar();
+                                          if ($varconteo2 == 0 || $varconteo2 == null) {
+                                            $txtRtaIndicador2 = 0;
+                                          }else{
+                                            $txtRtaIndicador2 = 1;
+                                          }
+                                          array_push($varArrayPromedio2, $txtRtaIndicador2);
+                                    }                                    
+                                          if (count($varArrayVariable3) > 0){
+                                              $arrayVariable3 = implode(", ", $varArrayVariable3);
+                                              $varconteo3 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable3) and idvariable in ($arrayVariable3)")->queryScalar();
+                                              if ($varconteo3 == 0 || $varconteo3 == null) {
+                                                $txtRtaIndicador3 = 0;
+                                              }else{
+                                                $txtRtaIndicador3 = 1;
+                                              }
+                                              array_push($varArrayPromedio3, $txtRtaIndicador3);
+                                          }                    
+                                  
+                                  }
                                 array_push($varArrayPromedio, $txtRtaIndicador);                          
-                              }
+                              }                      
 
                               $varArrayInidicador = array_sum($varArrayPromedio);
+                              if($varListadorespo){
+                                $varArrayInidicador1 = array_sum($varArrayPromedio1);
+                                $varArrayInidicador2 = array_sum($varArrayPromedio2);
+                                $varArrayInidicador3 = array_sum($varArrayPromedio3);
+                              }
                             }else{
                            
                               $varListCallid = Yii::$app->db->createCommand("select callid from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and  extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' group by callid")->queryAll();
 
+                                //para el calculo por responsabilidad
+                                if($varListadorespo){
+                                    $txtRtaIndicador1 = null;
+                                    $txtRtaIndicador2 = null;
+                                    $txtRtaIndicador3 = null;
+                                    $varArrayVariable1 = array();
+                                    $varArrayVariable2 = array();
+                                    $varArrayVariable3 = array();
+                                    $varListVariables2 = Yii::$app->db->createCommand("SELECT idcategoria, responsable FROM tbl_speech_categorias WHERE idcategoria IN ($arrayVariableMenos) AND cod_pcrc in ('$varCodPcrc')")->queryAll();
+                                    //$varListVariables2 = Yii::$app->db->createCommand("SELECT idcategoria, responsable FROM tbl_speech_categorias WHERE idcategoria IN ($arrayVariable)")->queryScalar();
+                                    foreach ($varListVariables2 as $key => $value) {
+                                      $varidcategoria = $value['idcategoria'];
+                                      $varresponsable = $value['responsable'];
+                                      if ($varresponsable == 1){
+                                          array_push($varArrayVariable1, $varidcategoria);
+                                      }
+                                      else{
+                                        if ($varresponsable == 2){
+                                              array_push($varArrayVariable2, $varidcategoria);
+                                        }else{
+                                          if ($varresponsable == 3){
+                                                array_push($varArrayVariable3, $varidcategoria);
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+
                               foreach ($varListCallid as $key => $value) {
                                 $txtCallid = $value['callid'];
                                 
-                if (count($arrayVariableMenos) != 0) {
-                                    $varconteo = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariableMenos) and idvariable in ($arrayVariableMenos)")->queryScalar();
-                }else{
+                                if (count($arrayVariableMenos) != 0) {
+                                        $varconteo = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariableMenos) and idvariable in ($arrayVariableMenos)")->queryScalar();
+                                
+                                }else{
                                   $varconteo = 0;
                                 }
 
@@ -626,10 +811,51 @@ $this->title = 'Dashboard Voz del Cliente';
                                 }else{                            
                                   $txtRtaIndicador = 0;
                                 }
+                             // diego
+                                if($varListadorespo){  
+                                    if (count($varArrayVariable1) != 0){
+                                      $arrayVariable1 = implode(", ", $varArrayVariable1);
+                                      $varconteo1 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable1) and idvariable in ($arrayVariable1)")->queryScalar();
+                                      if ($varconteo1 == 0 || $varconteo1 == null) {
+                                        $txtRtaIndicador1 = 1;
+                                      }else{
+                                        $txtRtaIndicador1 = 0;
+                                      }
+                                      
+                                      array_push($varArrayPromedio1, $txtRtaIndicador1);
+                                    }
+                                    if (count($varArrayVariable2) != 0){
+                                        $arrayVariable2 = implode(", ", $varArrayVariable2); 
+                                                                            
+                                          $varconteo2 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable2) and idvariable in ($arrayVariable2)")->queryScalar();
+                                          if ($varconteo2 == 0 || $varconteo2 == null) {
+                                            $txtRtaIndicador2 = 1;
+                                          }else{
+                                            $txtRtaIndicador2 = 0;
+                                          }
+                                          array_push($varArrayPromedio2, $txtRtaIndicador2);
+                                    }                                    
+                                          if (count($varArrayVariable3) != 0){
+                                              $arrayVariable3 = implode(", ", $varArrayVariable3);
+                                              $varconteo3 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable3) and idvariable in ($arrayVariable3)")->queryScalar();
+                                              if ($varconteo3 == 0 || $varconteo3 == null) {
+                                                $txtRtaIndicador3 = 1;
+                                              }else{
+                                                $txtRtaIndicador3 = 0;
+                                              }
+                                              array_push($varArrayPromedio3, $txtRtaIndicador3);
+                                          } 
+                                  }
 
                                 array_push($varArrayPromedio, $txtRtaIndicador);                          
                               }
+
                               $varArrayInidicador = array_sum($varArrayPromedio);
+                              if($varListadorespo){
+                                $varArrayInidicador1 = array_sum($varArrayPromedio1);
+                                $varArrayInidicador2 = array_sum($varArrayPromedio2);
+                                $varArrayInidicador3 = array_sum($varArrayPromedio3);
+                              }
                             }                      
                           }else{
                             // Tipo indicador Auditoria
@@ -749,24 +975,86 @@ $this->title = 'Dashboard Voz del Cliente';
                             }
                           }
                         }
-
+            //  Calcula el promedio
                         if ($varArrayInidicador != 0) { 
                           if ($txtTipoFormIndicador == 0) {
                              //var_dump($varArrayInidicador);
                              //var_dump($txtTotalLlamadas);
                             $txtRtaProcentaje = (round(($varArrayInidicador / $txtTotalLlamadas) * 100, 1));
+                            if($varListadorespo){
+                                $txtRtaProcentaje1 = (round(($varArrayInidicador1 / $txtTotalLlamadas) * 100, 1));
+                                $txtRtaProcentaje2 = (round(($varArrayInidicador2 / $txtTotalLlamadas) * 100, 1));
+                                $txtRtaProcentaje3 = (round(($varArrayInidicador3 / $txtTotalLlamadas) * 100, 1));
+                                $txtacumulapromedio1 = $txtacumulapromedio1 + $txtRtaProcentaje1;
+                                $txtacumulapromedio2 = $txtacumulapromedio2 + $txtRtaProcentaje2;
+                                $txtacumulapromedio3 = $txtacumulapromedio3 + $txtRtaProcentaje3;
+                              }
                           }else{
                             if ($txtTipoFormIndicador == 1) {
                               // var_dump("Hola Uno");
                               $txtRtaProcentaje = (100 - (round(($varArrayInidicador / $txtTotalLlamadas) * 100, 1)));
+                              if($varListadorespo){
+                                $txtRtaProcentaje1 = (100 - (round(($varArrayInidicador1 / $txtTotalLlamadas) * 100, 1)));
+                                $txtRtaProcentaje2 = (100 - (round(($varArrayInidicador2 / $txtTotalLlamadas) * 100, 1)));
+                                $txtRtaProcentaje3 = (100 - (round(($varArrayInidicador3 / $txtTotalLlamadas) * 100, 1)));
+                                $txtacumulapromedio1 = $txtacumulapromedio1 + $txtRtaProcentaje1;
+                                $txtacumulapromedio2 = $txtacumulapromedio2 + $txtRtaProcentaje2;
+                                $txtacumulapromedio3 = $txtacumulapromedio3 + $txtRtaProcentaje3;
+                              
+                              
+                                if($varArrayInidicador1== 0){
+                                  $txtRtaProcentaje1 = 0;
+                                }
+                                if($varArrayInidicador2== 0){
+                                  $txtRtaProcentaje2 = 0;
+                                }
+                                if($varArrayInidicador3== 0){
+                                  $txtRtaProcentaje3 = 0;
+                                }
+                              }
                             }                      
                           }     
                         }else{
                           if ($txtTipoFormIndicador == 1) {
                             $txtRtaProcentaje = 100;
+                            if($varListadorespo){
+                                foreach ($varListVariables2 as $key => $value) {
+                                  $varresponsable = $value['responsable'];
+                                  if ($varresponsable == 1){
+                                    $txtRtaProcentaje1 = 100;
+                                  }
+                                  else{
+                                    if ($varresponsable == 2){
+                                      $txtRtaProcentaje2 = 100;
+                                    }else{
+                                      if ($varresponsable == 3){
+                                        $txtRtaProcentaje3 = 100;
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+
                           }else{
                             if ($txtTipoFormIndicador == 0) {
                               $txtRtaProcentaje = 0;
+                              if($varListadorespo){
+                                foreach ($varListVariables2 as $key => $value) {
+                                  $varresponsable = $value['responsable'];
+                                  if ($varresponsable == 1){
+                                    $txtRtaProcentaje1 = 0;
+                                  }
+                                  else{
+                                    if ($varresponsable == 2){
+                                      $txtRtaProcentaje2 = 0;
+                                    }else{
+                                      if ($varresponsable == 3){
+                                        $txtRtaProcentaje3 = 0;
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             }                            
                           }   
                         }
@@ -778,21 +1066,125 @@ $this->title = 'Dashboard Voz del Cliente';
                         $prueba = "doughnut-chart".$varNum;  
                         $prueba2 = "idchart_indi".$varNum; 
                         $prueba3 = "idchart_rta".$varNum;
+                        if($varListadorespo){
+                            array_push($arraylistaagente, $txtRtaProcentaje1);
+                            array_push($arraylistacanal, $txtRtaProcentaje2);
+                            array_push($arraylistamarca, $txtRtaProcentaje3);
+                            array_push($arraylistanombre, $txtNombreCategoria);
+                          }
+                          $arraylistaresponsables = array($txtNombreCategoria,$txtRtaProcentaje1,$txtRtaProcentaje2,$txtRtaProcentaje3);
                     ?>
                     <input type="text" id="<?php echo $prueba2; ?>" name="datetimes" readonly="readonly" value="<?php echo  $txtNombreCategoria; ?>" class="hidden">
                     <input type="text" id="<?php echo $prueba3; ?>" name="datetimes" readonly="readonly" value="<?php echo  round($txtRtaProcentaje,2); ?>" class="hidden">
                 <?php
 
-                        if (count($varListIndicadores) <= 8) {  
+                        if (count($varListIndicadores) <= 8) { 
+                            if($varListadorespo){ 
+                                $txtacumulapromedio1 = $txtacumulapromedio1 + $txtRtaProcentaje1;
+                                $txtacumulapromedio2 = $txtacumulapromedio2 + $txtRtaProcentaje2;
+                                $txtacumulapromedio3 = $txtacumulapromedio3 + $txtRtaProcentaje3;
+                            } 
                   ?>
                     <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><?php echo round($txtRtaProcentaje,2).' %'; ?></td>   
                   <?php
                       }else{
                   ?>    
                       <td class="text-center" width="100"><div style="width: 70px; height: 70px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><?php echo round($txtRtaProcentaje,2).' %'; ?></td>     
-                  <?php } } ?>
+                  <?php } } 
+                  if($varListadorespo){
+                    $txttotalpromedio1 = $txtacumulapromedio1 / count($varListIndicadores);
+                    $txttotalpromedio2 = $txtacumulapromedio2 / count($varListIndicadores);
+                    $txttotalpromedio3 = $txtacumulapromedio3 / count($varListIndicadores);
+                    //$arraylistaresponsable = array($txttotalpromedio1,$txttotalpromedio2,$txttotalpromedio3);
+                    $txtsinvalor = '--';  
+                  }
+                  ?>
                 </tr>
               </table>              
+            <br>
+            <?php if($varListadorespo){ 
+                  if($arrayVaridcatAgente != ""){ 
+             $varcolor2 = "color: #f5500f;";
+             ?>
+            
+            <div class="row">
+              <div class="col-md-6">              
+                <div class="card2 mb"> 
+                                                  
+                     <table id="myTable0"  class="table table-striped table-bordered detail-view formDinamico">
+                          <thead>
+                            <tr>
+                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(4, 'str')"><?= Yii::t('app', 'Indicadores ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(0, 'str')"><?= Yii::t('app', 'Agente ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>                  
+                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'Canal ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'Marca ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          
+                          <?php  
+			                  $sumaagente = 0; 
+                              $sumacanal = 0;
+                              $sumamarca = 0;                        
+                            for($i = 0; $i < count($arraylistaagente); $i++){
+                               if($arraylistaagente[$i]) {
+                                 $sumaagente = $sumaagente + 1;  
+                               }
+                               if($arraylistacanal[$i]) {
+                                 $sumacanal = $sumacanal + 1;  
+                               }
+                               if($arraylistamarca[$i]) {
+                                 $sumamarca = $sumamarca + 1; 
+                               }
+                                $arraytotalagente = $arraytotalagente + $arraylistaagente[$i];
+                                $arraytotalcanal = $arraytotalcanal + $arraylistacanal[$i];
+                                $arraytotalmarca = $arraytotalmarca + $arraylistamarca[$i];
+                              ?>
+                              <tr>
+                                <td class="text-left"><?php echo $arraylistanombre[$i]; ?></td>
+                                <td class="text-center" width="100" <?php  if(round($arraylistaagente[$i],2) >= 95) {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistaagente[$i],2) < 95 && round($arraylistaagente[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistaagente[$i],2) < 75 && round($arraylistaagente[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?> ><div ></div><?php if(round($arraylistaagente[$i],2) == 0){ } else{ echo round($arraylistaagente[$i],2).' % ';}?></td>
+                                <td class="text-center" width="100" <?php  if(round($arraylistacanal[$i],2) >= 95)  {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistacanal[$i],2) < 95 && round($arraylistacanal[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistacanal[$i],2) < 75 && round($arraylistacanal[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?> ><div ></div><?php if(round($arraylistacanal[$i],2) == 0){ } else{ echo round($arraylistacanal[$i],2).' % ';}?></td>
+                                <td class="text-center" width="100" <?php  if(round($arraylistamarca[$i],2) >= 95)  {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistamarca[$i],2) < 95 && round($arraylistamarca[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistamarca[$i],2) < 75 && round($arraylistamarca[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?>><div ></div><?php if(round($arraylistamarca[$i],2) == 0){ } else{ echo round($arraylistamarca[$i],2).' % ';}?></td>
+                              <?php } ?>  
+                              </tr>                              
+                          </tbody>
+                      </table>
+                </div>
+              </div> 
+              <div class="col-md-6">
+                <div class="card2 mb">
+		     <?php
+                  	$txttotalpromedio1 = $arraytotalagente / $sumaagente;
+                  	$txttotalpromedio2 = $arraytotalcanal / $sumacanal;
+                  	if ($arraytotalmarca != 0 && $sumamarca !=0){
+                  	$txttotalpromedio3 = $arraytotalmarca / $sumamarca;}
+                  	$arraylistaresponsable = array($txttotalpromedio1,$txttotalpromedio2,$txttotalpromedio3);
+                     ?>
+                    <div id="containerResponsable" class="highcharts-container" style="width: 600px; height: 180px;  display:block; margin:auto;"></div>
+                     <br>               
+                     <div class="row" align="center">
+            
+                      <?= Html::button('Total Agentes', ['value' => url::to(['totalizaragentes', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codparametrizar' => $txtCodParametrizar, 'codigoPCRC' => $txtCodPcrcok, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton3',
+                                'data-toggle' => 'tooltip',
+                                'onclick' => 'enviodatosr()', 
+                                'title' => 'Total Agentes', 'style' => 'background-color: #337ab7', 'style' => 'width:200px']) ?> 
+
+                  <?php
+                    Modal::begin([
+                      'header' => '<h4>Calcula total de agentes...</h4>',
+                      'id' => 'modal3',
+                      'size' => 'modal-lg',
+                    ]);
+
+                    echo "<div id='modalContent3'></div>";
+                                                  
+                    Modal::end(); 
+                  ?>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <?php } } ?> 
             <br>
             <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>  
               <?= $form->field($model, 'idcategoria')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'indicadorID'])->label('Indicadores...') ?>
@@ -1142,7 +1534,7 @@ $this->title = 'Dashboard Voz del Cliente';
             <?php ActiveForm::end(); ?> 
             <br>
             <?php
-              if ($vartotallogin != 0) {
+              if ($vartotalreg != 0) {
                 if($vartotalreg > 10){
             ?>
                 <div class="subcuartalinea">
@@ -1250,7 +1642,7 @@ $this->title = 'Dashboard Voz del Cliente';
       <?php } ?>
     </div>
 
-    <?php if ($sessiones == '2911' || $sessiones == '2953' || $sessiones == '3468' ) { ?>
+    <?php if ($sessiones == '2911' || $sessiones == '2953' || $sessiones == '3468' || $sessiones == '57' ) { ?>
     <br>
     <div class="row">
       <div class="col-md-3">
@@ -1621,6 +2013,9 @@ function sortTable(n,type) {
         var ListadoL0 = "<?php echo implode($varListLogin0,",");?>";
         ListadoL0 = ListadoL0.split(",");
 
+        var Listadorespon = "<?php echo implode($responsable,",");?>";
+        Listadorespon = Listadorespon.split(",");
+
         Highcharts.setOptions({
                 lang: {
                   numericSymbols: null,
@@ -1913,6 +2308,70 @@ function sortTable(n,type) {
 
           });
 
+          // para el IDA responsables
+
+          $('#containerResponsable').highcharts({
+            chart: {
+                borderColor: '#DAD9D9',
+                borderRadius: 7,
+                borderWidth: 1,
+                type: 'bar'
+            },
+
+            yAxis: {
+              title: {
+                text: ''
+              }
+            }, 
+
+            title: {
+              text: '',
+            style: {
+                    color: '#3C74AA'
+              }
+
+            },
+
+            xAxis: {
+                  categories: Listadorespon,
+                  title: {
+                      text: null
+                  }
+                },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} %</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+
+            series: [{
+              name: '% de responsable',
+              data: [<?= join($arraylistaresponsable, ',')?>],
+              color: '#627cf0'
+            }],
+
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+          });
+
         Highcharts.getOptions().exporting.buttons.contextButton.menuItems.push({
             text: 'Additional Button',
             onclick: function() {
@@ -1921,6 +2380,40 @@ function sortTable(n,type) {
             }
         });
     });
+
+    function enviodatosr(){
+      
+      var varArbol_idV = "<?php echo $txtServicio; ?>";
+      var varParametros_idV = "<?php echo $txtParametros; ?>";
+      var varCodparametrizar = "<?php echo $txtCodParametrizar; ?>";
+      var varindicador = "<?php echo $varindica; ?>";        
+      var varFechaIni = "<?php echo $txtFechaIni; ?>";
+      var varFechaFin = "<?php echo $txtFechaFin; ?>";
+      var varCodsPcrc = "<?php echo $txtCodPcrcok; ?>";
+
+
+          $.ajax({
+              method: "get",
+              url: "totalagente",
+              data : {
+                  varArbol_idV : varArbol_idV,
+                  varParametros_idV : varParametros_idV,
+                  varCodparametrizar : varCodparametrizar,
+                  var_FechaIni : varFechaIni,
+                  var_FechaFin : varFechaFin,
+                  var_CodsPcrc : varCodsPcrc,
+                  varIndicador : varindicador,
+              },
+              success : function(response){ 
+                  var numRta =  JSON.parse(response);                
+                  console.log(numRta);
+                  if (numRta != 0) {
+                      // $("#modal2").modal("hide");
+                   //   location.reload();
+                  }                    
+              }
+          });
+    }
 
     function saveindicadores(){
         var varvarServicio = "<?php echo $varServicio; ?>";

@@ -1030,7 +1030,8 @@ class FormulariosController extends Controller {
                 // $txtidejec_formu = intval($txtidejec_formu) + 1;
                 //insertar Cliente y centro de costo
                 //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
-	          $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios WHERE e.evaluado_id = $evaluado_id")->queryScalar();
+
+	          $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
                     Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
                         'ejec_form_id' => $txtidejec_formu,
                         'id_dp_clientes' => $varid_clientes,
@@ -1113,7 +1114,8 @@ class FormulariosController extends Controller {
                 //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
 		       // $txtidejec_formu = intval($txtidejec_formu) + 1;
                //insertar Cliente y centro de costo
-                  $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
+                  //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
+		    $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar(); 
                     Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
                         'ejec_form_id' => $txtidejec_formu,
                         'id_dp_clientes' => $varid_clientes,
@@ -2036,6 +2038,7 @@ class FormulariosController extends Controller {
                         $tmpeje->formulario_id = $formulario_id;
                         $tmpeje->created = $created;
                         $tmpeje->sneditable = $sneditable;
+                        $tmpeje->hora_inicial = $created;
                         $tmpeje->basesatisfaccion_id = $model_tmp_ejec->basesatisfaccion_id;
 
 

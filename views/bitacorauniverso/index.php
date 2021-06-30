@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 <?php
-if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2915" || $sessiones == "2953" || $sessiones == "7" || $sessiones == "4043" || $sessiones == "611" || $sessiones == "4040" || $sessiones == "4090" || $sessiones == "4045" || $sessiones == "4039" || $sessiones == "4041" || $sessiones == "4443" || $sessiones == "4458" || $sessiones == "6544"){ ?>
+if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2915" || $sessiones == "2953" || $sessiones == "57" || $sessiones == "4043" || $sessiones == "611" || $sessiones == "4040" || $sessiones == "4090" || $sessiones == "4045" || $sessiones == "4039" || $sessiones == "4041" || $sessiones == "4443" || $sessiones == "4458" || $sessiones == "6544"){ ?>
 <div class="capaCinco">
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <div class="row">
@@ -405,7 +405,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
 </div>
 <hr>
 
-<?php if($sessiones == "2953" || $sessiones == "2911" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "2915"){ ?>
+<?php if($sessiones == "2953" || $sessiones == "2911" || $sessiones == "57" || $sessiones == "3205" || $sessiones == "2915"){ ?>
   <div class="formularios-form">
     <div class="row">
       <div class="col-md-12">

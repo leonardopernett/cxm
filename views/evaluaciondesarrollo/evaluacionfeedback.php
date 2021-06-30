@@ -39,10 +39,10 @@ $titulos = array();
     $sessiones = Yii::$app->user->identity->id;
 
     $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-    $varnombre = Yii::$app->db->createCommand("select nombre_completo from  tbl_usuarios_evalua where documento in ('$vardocument')")->queryScalar();
-    $varcargo = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua where documento in ('$vardocument')")->queryScalar();
+    $varnombre = Yii::$app->db->createCommand("select nombre_completo from  tbl_usuarios_evalua_feedback where documento in ('$vardocument')")->queryScalar();
+    $varcargo = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocument')")->queryScalar();
     $vartipoeva = Yii::$app->db->createCommand("select tipoevaluacion from tbl_evaluacion_tipoeval where idevaluaciontipo = 1 and anulado = 0")->queryScalar();
-    $vardocumentosijefe = Yii::$app->db->createCommand("select ue.documento_jefe from tbl_usuarios_evalua ue where ue.documento_jefe = '$vardocument' group by ue.documento_jefe")->queryScalar();
+    $vardocumentosijefe = Yii::$app->db->createCommand("select ue.documento_jefe from tbl_usuarios_evalua_feedback ue where ue.documento_jefe = '$vardocument' group by ue.documento_jefe")->queryScalar();
 
     $last_word_start = strrpos($varnombre, ' ') + 1;
     $last_word = substr($varnombre, $last_word_start);
@@ -62,7 +62,7 @@ $titulos = array();
     $query2 = Yii::$app->db->createCommand("select * from tbl_evaluacion_respuestas2 where anulado = 0")->queryAll();
     $listData2 = ArrayHelper::map($query2, 'idevaluacionrespuesta', 'namerespuesta');
 
-    $query3 = Yii::$app->db->createCommand("select * from tbl_usuarios_evalua where anulado = 0 and documento_jefe = $vardocument" )->queryAll();
+    $query3 = Yii::$app->db->createCommand("select * from tbl_usuarios_evalua_feedback where anulado = 0 and documento_jefe = $vardocument" )->queryAll();
     $listData3 = ArrayHelper::map($query3, 'documento', 'nombre_completo');
 
     $varlistbloques = Yii::$app->db->createCommand("select * from tbl_evaluacion_bloques where anulado = 0")->queryAll();
@@ -71,6 +71,7 @@ $titulos = array();
     $varconteocompetencia = 0;
     $varconteopregunta = 0;
     $txtnotafinal = null;
+    $tipocoaching = '';
 
 ?>
 <style>
@@ -115,7 +116,7 @@ $titulos = array();
            text-align: left;    
    }
    .card3 {
-           height: 160px;
+           height: 210px;
            width: auto;
            margin-top: auto;
            margin-bottom: auto;
@@ -196,6 +197,8 @@ $titulos = array();
   </div>
 </header>
 <br><br>
+
+
 <div id="idCapa" style="display: none">
     <div class="row">
         <div class="col-md-12">
@@ -248,10 +251,24 @@ if($vardocumentosijefe){ ?>
                     <div class="card3 mb">
                         <label><i class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></i> Notificaciones:</label>
                             <div class="col-md-12">
+                               <?php 
+                                if ($documento != 0) {?>
+
                                 <div class="panel panel-default">
-                                    <div class="panel-body" style="background-color: #f0f8ff;">Hola <?php echo $last_word; ?>, Aquí encuentras el reporte de las personas a tu cargo, su calificación y el módulo para enviar la retroalimentación de ser necesario.
+                                    <div class="panel-body " style="background-color: #f0f8ff; text-align: center; font-size: 15px;">Para ti que eres Gente Ko <br>
+                                   Llegó el momento de conversar con feeling y generar un plan de desarrollo, enfocado a potenciar personal y profesionalmente a tu equipo. <br>
+                                   Adicionalmente, te entregamos algunas acciones sugeridas para construirlo <br>
+                                   En Konecta somos Gente Buena - Buena Gente 
                                     </div>
                                 </div>
+				<?php 
+                                } else {?>
+				<div class="panel panel-default">
+                                    <div class="panel-body " style="background-color: #f0f8ff;">El feedback debe ser documentado por el jefe actual de la persona
+                                    </div>
+                                </div>
+				<?php 
+                                }?>
                             </div>  
 
                     </div>
@@ -293,34 +310,41 @@ if($vardocumentosijefe){ ?>
         $evaluacompe4 = 0;
         $evaluaorgan4 = 0;
         $evaluadese4  = 0;
-	    $bloque1 =0;
+	$bloque1 =0;
         $bloque2 =0;
         $bloque3 =0;        
-         
-        $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua where documento = $documento")->queryScalar();
-        $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua where documento in ('$documento')")->queryScalar();
+        $varcomentarios2 = '';
+        $can = 0; 
+        $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $documento")->queryScalar();
+        $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$documento')")->queryScalar();
         $varnivel = Yii::$app->db->createCommand("select en.nivel FROM tbl_evaluacion_solucionado es inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia 
                                 INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel WHERE es.documentoevaluado = $documento GROUP BY es.idevaluacioncompetencia LIMIT 1")->queryScalar();
-        $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $documento GROUP BY es.idevaluacioncompetencia LIMIT 1")->queryScalar();
-       
+        //$varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $documento GROUP BY es.idevaluacioncompetencia LIMIT 1")->queryScalar();
+        $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $documento AND  es.comentarios != ''")->queryAll();
+        foreach ($varcomentarios as $key => $value) {
+            $can = $can + 1;
+            $varcomentarios2 = $varcomentarios2.' '.$can.'-. '.$value['comentarios'];
+            
+        }
 //para c�lculo de tipo de coaching
-      /*  $listacompetenciat2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+        $listacompetenciat2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
                                                     FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
-                                                    ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque
+                                                    ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque, ef.mensaje
                                                     FROM tbl_evaluacion_solucionado es
                                                     INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
-                                                    INNER JOIN tbl_usuarios_evalua ue ON es.documentoevaluado = ue.documento
+                                                    INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
                                                     inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
                                                     INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
-                                                    INNER JOIN tbl_evaluacion_bloques eb ON ec.idevaluacionbloques = eb.idevaluacionbloques
-                                                    WHERE es.documentoevaluado = $documento 
+                                                    INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                    LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                    WHERE es.documentoevaluado = $documento and ec.idevaluacionbloques = 1 
                                                     GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques")->queryAll();
 
         foreach ($listacompetenciat2 as $key => $value) {
             if($value['%Competencia'] < 85){
                 $varmenorcompetencia = 1;
             }
-        }*/
+        }
 
         for ($i = 1; $i <= 4; $i++) {
             
@@ -329,7 +353,7 @@ if($vardocumentosijefe){ ?>
                                                 ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque, ef.mensaje
                                                 FROM tbl_evaluacion_solucionado es
                                                 INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
-                                                INNER JOIN tbl_usuarios_evalua ue ON es.documentoevaluado = ue.documento
+                                                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
                                                 inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
                                                 INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
                                                 INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
@@ -340,9 +364,7 @@ if($vardocumentosijefe){ ?>
             foreach ($listacompetenciat as $key => $value) {
                 $varsumacompetencia = $varsumacompetencia + $value['%Competencia'];
                 
-                if($value['%Competencia'] < 85){
-                    $varmenorcompetencia = 1;
-                }
+                
                 if($i == 1){
                     $varconteocompetencia = $varconteocompetencia + 1;
                     
@@ -436,17 +458,17 @@ if($vardocumentosijefe){ ?>
             $txtnotafinal = (($txtevalua1 * 10)/100) + (($txtevalua2 * 60) /100) + (($txtevalua3 * 30) /100);            
         }
         if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 != 0 && $txtevalua4 != 0) {
-
+	   $txtnotafinal = (($txtevalua1 * 5)/100) + (($txtevalua2 * 60) /100) + (($txtevalua3 * 5) /100) + (($txtevalua4 * 30) /100);
 
         }
-
+        
         $txtProcentaje = $txtnotafinal;
         if($txtProcentaje >= 85 && $varmenorcompetencia == 0) {
             $tipocoaching = 'Opcional';
         } else if($txtProcentaje >= 85 && $varmenorcompetencia == 1){
-                $tipocoaching = 'Por Competencia';
+                $tipocoaching = 'Obligatorio';
             } else if($txtProcentaje <= 85 && $varmenorcompetencia == 1) {
-                $tipocoaching = 'General';
+                $tipocoaching = 'Obligatorio';
                 }
         
         array_push($titulos, $txtProcentaje);
@@ -475,8 +497,8 @@ if($vardocumentosijefe){ ?>
                             <div class="col-md-4">
                                 <div class="card2 mb">
                                     <label style="font-size: 17px;" ><i class="far fa-comment-alt" style="font-size: 18px; color: #C148D0;"></i> Observaciones </label>
-                                    <textarea type="text" class="form-control" readonly="readonly" id="txtobserva" value="<?php echo $varcomentarios; ?>" data-toggle="tooltip" title="Observaciones"><?php echo $varcomentarios; ?></textarea>
-                                    <br>                                                               
+                                    <textarea type="text" class="form-control" readonly="readonly" id="txtobserva" rows="3" value="<?php echo $varcomentarios2; ?>" data-toggle="tooltip" title="Observaciones"><?php echo $varcomentarios2; ?></textarea>
+                                                                                                   
                                     <label style="font-size: 17px;"><i class="fas fa-check" style="font-size: 18px; color: #C148D0;"></i> Tipo Coaching </label>                            
                                     <label style="font-size: 20px; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $tipocoaching; ?> </label>
                                 </div>                            
@@ -520,7 +542,7 @@ if($vardocumentosijefe){ ?>
                                                     ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque, ef.mensaje
                                                     FROM tbl_evaluacion_solucionado es
                                                     INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
-                                                    INNER JOIN tbl_usuarios_evalua ue ON es.documentoevaluado = ue.documento
+                                                    INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
                                                     inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
                                                     INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
                                                     INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
@@ -614,32 +636,19 @@ if($vardocumentosijefe){ ?>
                         <div class="col-md-12">
                             <label style="font-size: 17px;"><i class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></i> Descripción del feedback </label>
                             
-                            <div onclick="openobserva();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idmensaje1" >
-                                <span class="fas fa-info-circle" style="font-size: 20px; color: #f5900c;" ></span>
-                            </div>
-                            <div onclick="closeobserva();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idmensaje2" >
-                                <span class="fas fa-info-circle" style="font-size: 20px; color: #28c916;" ></span>
-                            </div>
+                            
                         </div>
                         <div class="col-md-12">
-                            <?= $form->field($model, 'comentarios')->textarea(['maxlength' => 500,  'id'=>'Idcomentarios']) ?>
+                            <?= $form->field($model, 'comentarios')->textarea(['maxlength' => 500, 'placeholder'=>'Escribe aquí las acciones sugeridas que ayudarán a la persona a fortalecer sus competencias', 'id'=>'Idcomentarios']) ?>
                         </div>
-                        <div class="col-md-12">
-                            <div id="idpanelobserva" style="display: inline">
-                                <div class="panel panel-default">
-                                    <div class="panel-body" style="background-color: #f0f8ff; font-size: 16px;"> Escribe aquí las acciones sugeridas que ayudarán a la persona a fortalecer sus competencias
-                                    </div>
-                                </div>
-                            </div>                
-                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     <hr>
-        
-    
-    <div id="capaSeis" style="display: inline"> 
+     
+    <div id="capaSiete" style="display: inline"> 
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
@@ -667,8 +676,25 @@ if($vardocumentosijefe){ ?>
         </div>
     </div>
     <hr>
+
+    
+
 </div>
 <?php } ?>
+
+    <div class="CapaSeis" style="display: inline;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    <label style="font-size: 15px;"><i class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></i> Información General</label>
+                    <br>
+                    <label style="font-size: 15px;">Si tienes alguna novedad o dificultad que requiera otro tipo de gestión, escribe tu caso al correo maria.vera@grupokonecta.com</label>                        
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <hr>
 <?php } else { ?>
   <div class="Seis">
     <div class="row">
@@ -846,6 +872,7 @@ var vardocumento = '<?php echo $documento; ?>';
 		var varNotafinal = '<?php echo $txtnotafinal; ?>';
         var vardocumento = '<?php echo $documento; ?>';		
 		var vardocumentojefe = '<?php echo $vardocument; ?>';
+	var vartipocoaching = '<?php echo $tipocoaching; ?>';
         var varmodelo = 0;
         var vardocumentoblanco = 0;
         if(!varobservafeedback){
@@ -862,7 +889,8 @@ var vardocumento = '<?php echo $documento; ?>';
                 	varobservafeedback : varobservafeedback,
                 	varNotafinal : varNotafinal,
                 	vardocumento : vardocumento,
-                    vardocumentojefe  : vardocumentojefe,
+                        vardocumentojefe  : vardocumentojefe,
+			vartipocoaching  : vartipocoaching,
                 },
                 success : function(response){ 
                     var numRta =   JSON.parse(response); 

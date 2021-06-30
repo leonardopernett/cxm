@@ -89,7 +89,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isReportes();
+                            return Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno();
                         },
                             ],
                             [

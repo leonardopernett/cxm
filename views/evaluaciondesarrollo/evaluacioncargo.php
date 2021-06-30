@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <br>
                 <div class="card1 mb">
                     <label style="font-size: 16px;"><i class="fas fa-exclamation-triangle" style="font-size: 20px; color: #FF6522;"></i> Alerta de eliminación </label>
-                    <label style="font-size: 14px;">Esta opcion solo aplica cuando la persona ya no se encuentra trabajando en Konecta. Si es otra novedad ingresala en la parte superior donde dice Notificacion </label>
+                    <label style="font-size: 14px;">Esta opción sólo aplica cuando la persona se ha RETIRADO de Konecta ó tiene alguna novedad que le impida realizar el proceso evaluativo (Licencia de maternidad, Incapacidad prolongada, tiempo en el rol, entre otras).</label>
                     <div class="row">
                         <div class="col-md-6">
                             <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 20px; color: #FF6522;"></i> Eliminar persona </label>
@@ -363,6 +363,9 @@ $this->params['breadcrumbs'][] = $this->title;
             }else{
                 if (varidmotivosD == "No debe realizar evaluacion") {
                     if (varidtxtcomentarios == "") {
+                        event.preventDefault();
+                        swal.fire("!!! Advertencia !!!","Debe de ingresar un motivo","warning");
+                        return; 
 
                     }else{
                         varmotivosretiros = varidmotivosD+': '+varidtxtcomentarios;

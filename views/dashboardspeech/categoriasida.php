@@ -15,7 +15,7 @@ use app\models\Dashboardcategorias;
 $this->title = 'Dashboard -- VOC --';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->title = 'Parametrizaci贸n de Categorias -- QA & Speech --';
+$this->title = 'Parametrizaci髇 de Categorias -- QA & Speech --';
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';
@@ -84,42 +84,41 @@ $this->title = 'Parametrizaci贸n de Categorias -- QA & Speech --';
             <th class="text-center"><?= Yii::t('app', 'Programa') ?></th>
             <th class="text-center"><?= Yii::t('app', 'Categoria Id') ?></th>
             <th class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Uso en Dashboard') ?></th>
-            <th class="text-center"><?= Yii::t('app', '') ?></th>
+            <th class="text-center"><?= Yii::t('app', 'Tipo Categoria') ?></th>
+            <th class="text-center"><?= Yii::t('app', 'Responsabilidad') ?></th>
+            <th class="text-center"><?= Yii::t('app', 'Seleccione') ?></th>
         </tr>
         <?php
-            $varListVar = Yii::$app->db->createCommand("select idspeechcategoria, cod_pcrc, programacategoria, idcategoria, nombre, dashboard from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtCodPcrc') and idcategorias= 2")->queryAll(); 
-
+            $varListVar = Yii::$app->db->createCommand("select idspeechcategoria, cod_pcrc, programacategoria, idcategoria, nombre, dashboard, tipocategoria, responsable FROM tbl_speech_categorias  where anulado = 0 and cod_pcrc in ('$txtCodPcrc') AND 
+                                                        nombre not IN( SELECT tipoindicador FROM tbl_speech_categorias  where anulado = 0 and cod_pcrc in ('$txtCodPcrc')) AND idcategorias IN(1,2)")->queryAll(); 
+		$txtConteo = 0;            
+		$varnomresp = '';
             foreach ($varListVar as $key => $value) {
                 $varDash = $value['dashboard'];
                 $varIdC = $value['idspeechcategoria'];
+                $varrespon = $value['responsable'];
                 $txtConteo = $txtConteo + 1;
+                if($varrespon == 1){
+                    $varnomresp = 'Agente';
+                }
+                if($varrespon == 2){
+                    $varnomresp = 'Canal';
+                }
+                if($varrespon == 3){
+                    $varnomresp = 'Marca';
+                }
         ?>
             <tr>
-                <td class="text-center"><?php echo $value['cod_pcrc']; ?></td>
+            <td class="text-center"><?php echo $value['cod_pcrc']; ?></td>
                 <td class="text-center"><?php echo $value['programacategoria']; ?></td>
                 <td class="text-center"><?php echo $value['idcategoria']; ?></td>
                 <td class="text-center"><?php echo $value['nombre']; ?></td>
-                <?php
-                    if ($varDash == 1) {
-                ?>
-                        <td class="text-center"><?= Yii::t('app', 'Dashboard Speech & Dashboard IDA') ?></td>
-                <?php
-                    }else{
-                        if ($varDash == 2) {
-                ?>
-                            <td class="text-center"><?= Yii::t('app', 'Dashboard IDA') ?></td>
-                <?php
-                        }else{
-                ?>
-                            <td class="text-center"><?= Yii::t('app', 'Dashboard Speech') ?></td>
-                <?php
-                        }
-                    }
-                ?>   
+		        <td class="text-center"><?php echo $value['tipocategoria']; ?></td>
+                <td class="text-center"><?php echo $varnomresp; ?></td>
+                  
                 <td class="text-center">
                     <div class="row">
-                    <?php $var3 = [$varIdC.'A' => 'Dashboard Speech & Dashboard IDA', $varIdC.'B' => 'Dashboard IDA', $varIdC.'C' => 'Dashboard Speech']; ?>
+                    <?php $var3 = [$varIdC.'A' => 'Agente ', $varIdC.'B' => 'Canal', $varIdC.'C' => 'Marca']; ?>
 
                     <?= $form->field($model, 'dashboard')->dropDownList($var3, ['prompt' => 'Seleccione...', 'id'=>"$txtConteo"])->label('') ?>
                     </div>
@@ -139,12 +138,12 @@ $this->title = 'Parametrizaci贸n de Categorias -- QA & Speech --';
         for (var i = 1; i <= varConteo; i++) {
             varc = i;
             var varlist = document.getElementById(varc).value;
-            
+	    //alert(varConteo);
+            //alert(varlist);
             if (varlist != "") {
                 $.ajax({                    
                     method: "get",
                     url: "ingresardashboard",
-                    // url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/ingresardashboard",
                     data : {
                         vardash: varlist,
                         varcont : varc,
@@ -156,14 +155,13 @@ $this->title = 'Parametrizaci贸n de Categorias -- QA & Speech --';
                 });
             }
         }
-        // window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente ,'_self');
-        window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente,'_self');
+        
+	//window.location.href='categoriasview?txtServicioCategorias='+idcliente;
     };
 
     function regresar(){
-        var idcliente = "<?php echo $txtidcliente; ?>";
+        var idcliente = "<?php echo $txtidcliente; ?>";        
         
-        // window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente ,'_self');
-        window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente,'_self');
+	window.location.href='categoriasview?txtServicioCategorias='+idcliente;
     };
 </script>

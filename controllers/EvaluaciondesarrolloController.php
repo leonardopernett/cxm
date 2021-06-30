@@ -1318,7 +1318,7 @@ use app\models\EvaluacionNovedadespares;
     
     $vardocumentojefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua WHERE documento = $txtvardocumento")->queryScalar();
     
-    $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documento = $txtvardocumento AND documentoevaluado = $vardocumentojefe and idevaluaciontipo = 2 group by documentoevaluado")->queryScalar();
+    $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documento = $txtvardocumento AND idevaluaciontipo = 2 group by documentoevaluado")->queryScalar();
 
     if($vardocumentojefe > 1){
       $varnopares = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_novedadesgeneral WHERE documento = $txtvardocumento AND aprobado = 1")->queryScalar();
@@ -1351,6 +1351,7 @@ use app\models\EvaluacionNovedadespares;
     $txtvarNotafinal = Yii::$app->request->get("varNotafinal");
     $txtvardocumento = Yii::$app->request->get("vardocumento");
     $txtvardocumentojefe = Yii::$app->request->get("vardocumentojefe");
+    $txtvartipocoaching = Yii::$app->request->get("vartipocoaching");
     $txtvalidadocumento = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_resulta_feedback WHERE documento = $txtvardocumento")->queryScalar();
     //$txtEmail = Yii::$app->db->createCommand("select email_corporativo from tbl_usuarios_evalua WHERE documento = $txtvardocumento")->queryScalar();
     $txtrta = 0;
@@ -1361,6 +1362,7 @@ use app\models\EvaluacionNovedadespares;
                                   'observacion_feedback' => $txtvarobservafeedback,
                                   'notafinal' => $txtvarNotafinal,
                                   'documento_jefe' => $txtvardocumentojefe,
+				  'tipo_feedback' => $txtvartipocoaching,
                                   'fechacreacion' => date("Y-m-d"),
                                   'anulado' => 0,                              
                                   'usua_id' => Yii::$app->user->identity->id,
@@ -1486,7 +1488,12 @@ use app\models\EvaluacionNovedadespares;
    }
 
    public function actionExportarresultfb(){
-   $varlistafeedback = Yii::$app->db->createCommand("select documento documento, observacion_feedback feedback, notafinal nota_final, documento_jefe documentojefe, fechacreacion fecha from tbl_evaluacion_resulta_feedback")->queryAll();
+   $varlistafeedback = Yii::$app->db->createCommand("SELECT e.documento documento, ue.nombre_completo nombreeva, e.observacion_feedback feedback, e.notafinal nota_final, e.documento_jefe documentojefe, ue2.nombre_completo nombrejefe, e.fechacreacion fecha 
+						from tbl_evaluacion_resulta_feedback e
+						INNER JOIN tbl_usuarios_evalua_feedback ue ON
+						ue.documento = e.documento
+						INNER JOIN tbl_usuarios_evalua_feedback ue2 ON
+						ue2.documento_jefe = e.documento_jefe group by documento ORDER BY documentojefe")->queryAll();
 
   return $this->renderAjax('exportarresultfb',[
     'varlistafeedback' => $varlistafeedback,
@@ -1961,6 +1968,18 @@ use app\models\EvaluacionNovedadespares;
 
       }
 
+      public function actionExportarseguimientofb(){
+        $varlistaseguimientofeedback = Yii::$app->db->createCommand("SELECT u.documento_jefe, u.nombre_jefe, u.documento, u.nombre_completo, er.notafinal, er.tipo_feedback,
+                                                      if(er.notafinal IS NULL, 'Sin Realizar', 'Realizado') AS 'Estado'
+                                                      FROM tbl_usuarios_evalua_feedback u 
+                                                      left JOIN tbl_evaluacion_resulta_feedback er ON
+                                                      u.documento = er.documento
+                                                      ORDER BY u.documento_jefe")->queryAll();
+
+       return $this->renderAjax('exportarseguimientofb',[
+       'varlistaseguimientofeedback' => $varlistaseguimientofeedback,
+      ]);
+  }
 
   }
 

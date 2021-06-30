@@ -27,30 +27,30 @@ use yii\bootstrap\Modal;
     		<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
     			<thead>
     				<tr>
-    					<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de evaluación de desarrollo') ?></label></th>
+    					<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de evaluación de desarrollo - Seguimiento Feedback') ?></label></th>
     				</tr>
     				<tr>
-    					<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cedula evaluado') ?></label></th>
-			<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre evaluado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedback') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota final %') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cedula evaluador') ?></label></th>
-			<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre evaluador') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'fecha') ?></label></th>   					
+    					<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Jefe') ?></label></th>
+                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Jefe') ?></label></th>
+                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Evaluado') ?></label></th>
+                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Evaluado') ?></label></th>
+                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota Final') ?></label></th>
+                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo de Feedback') ?></label></th>
+                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado') ?></label></th>
     				</tr>
     			</thead>
     			<tbody>
     				<?php 
-    					foreach ($varlistafeedback as $key => $value) {
+    					foreach ($varlistaseguimientofeedback as $key => $value) {
                     ?>
     					<tr>
-	      					<td><label style="font-size: 12px;"><?php echo  $value['documento']; ?></label></td>
-			    <td><label style="font-size: 12px;"><?php echo  $value['nombreeva']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['feedback']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['nota_final']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['documentojefe']; ?></label></td>
-			    <td><label style="font-size: 12px;"><?php echo  $value['nombrejefe']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['fecha']; ?></label></td>
+	      					<td><label style="font-size: 12px;"><?php echo  $value['documento_jefe']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['nombre_jefe']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['documento']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['nombre_completo']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['notafinal']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['tipo_feedback']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['Estado']; ?></label></td>
 	      				</tr>
     				<?php 
     					}
@@ -80,7 +80,7 @@ var tableToExcel = (function () {
             }
             console.log(uri + base64(format(template, ctx)));
             document.getElementById("dlink").href = uri + base64(format(template, ctx));
-            document.getElementById("dlink").download = "Resultado Feedback";
+            document.getElementById("dlink").download = "Resultado Seguimiento Feedback";
             document.getElementById("dlink").traget = "_blank";
             document.getElementById("dlink").click();
 
@@ -89,7 +89,7 @@ var tableToExcel = (function () {
     function download(){
         $(document).find('tfoot').remove();
         var name = document.getElementById("name");
-        tableToExcel('tblData', 'Lista resultados feedback', name+'.xls')
+        tableToExcel('tblData', 'Listado seguimiento feedback', name+'.xls')
         //setTimeout("window.location.reload()",0.0000001);
 
     }

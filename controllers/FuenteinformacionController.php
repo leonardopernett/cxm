@@ -72,7 +72,7 @@ class FuenteinformacionController extends Controller {
                                     IF(dp.cod_pcrc != 0, `cl1`.`id_dp_clientes`, IF(dp.id_dp_centros_costos != 0, `cl2`.`id_dp_clientes`, IF(dp.id_dp_centros_costos_adm != 0, `dp`.`id_dp_centros_costos_adm`, 'Sin información' COLLATE utf8_unicode_ci))) AS codClienteArea, 
                                     IF(dp.cod_pcrc != 0, `cl1`.`cliente`, IF(dp.id_dp_centros_costos != 0, `cl2`.`cliente`, IF(dp.id_dp_centros_costos_adm != 0, `ar`.`area_general`, 'Sin información' COLLATE utf8_unicode_ci))) AS clienteArea,				    
                                     IF(dp.cod_pcrc != 0, `pc`.`cod_pcrc`, IF(dp.id_dp_centros_costos_adm != 0, `ad`.`id_dp_centros_costos_adm`, 'Sin información')) AS codCecoPcrc, 
-                                    `pc`.`ciudad` AS `ciudadPcrc`, IFNULL(IF(dg.fecha_alta = '1900-01-01', 'Sin información', dg.fecha_alta), 'Sin información' COLLATE utf8_unicode_ci) AS fechaAlta, `es`.`tipo_estado` AS `estado`
+                                    `pc`.`ciudad` AS `ciudadPcrc`, IFNULL(IF(dg.fecha_alta = '1900-01-01', 'Sin información', dg.fecha_alta), 'Sin información' COLLATE utf8_unicode_ci) AS fechaAlta, `es`.`tipo_estado` AS `estado`, `ua1`.email_corporativo AS `correo_corp`
                                     FROM `dp_distribucion_personal` AS `dp`
                                     LEFT JOIN `dp_datos_generales` AS `dg` ON `dg`.`documento` = `dp`.`documento`
                                     LEFT JOIN `dp_solicitudes_administrativas` AS `da` ON `da`.`id_dp_solicitudes_administrativas` = `dg`.`id_dp_solicitudes` AND `dg`.`id_tipo_solicitud` = '1'
@@ -104,9 +104,11 @@ class FuenteinformacionController extends Controller {
                                     LEFT JOIN `dp_historial_cambios` AS `dh2` ON `dh2`.`documento` = `dg`.`documento` AND `dh2`.`id_dp_historial_tipo_cambios` = 48
                                     LEFT JOIN `dp_usuarios_red` AS `e`  ON `e`.`documento` = `dp`.`documento`
                                     LEFT JOIN `dp_usuarios_red` AS `e1`  ON `e1`.`documento` = `dg5`.`documento`
+				    LEFT JOIN `dp_actualizacion_datos` AS `ua1`  ON `ua1`.`documento` = `dp`.`documento`
                                     WHERE `dp`.`fecha_actual` = (SELECT config.valor FROM jarvis_configuracion_general as config WHERE config.nombre = 'mes_activo_dp' ) 
-                                    AND dp.id_dp_cargos IN (39322)
-                                    AND dp.id_dp_estados NOT IN (305,306,309,310,317,319,327)                
+                                    AND dp.id_dp_cargos IN (39322,18190,39909)
+                                    AND dp.id_dp_estados NOT IN (305,306,309,310,317,319,327)                                    
+			            AND e.fecha_creacion_usuario = ( SELECT MAX(aa.fecha_creacion_usuario) FROM dp_usuarios_red aa WHERE aa.documento = dp.documento )                
                                     GROUP BY `dp`.`documento` COLLATE 'utf8mb4_unicode_520_ci'")->queryAll();
      
                 foreach ($query as $key => $value) {
@@ -128,6 +130,7 @@ class FuenteinformacionController extends Controller {
                                                              'anulado' => $txtanulado,
                                                              'fechacreacion' => $txtfechacreacion,
                                                              'usua_id' => $sessiones,
+							     'correo' => $value['correo_corp'],
                                                          ])->execute();
      
                 }
@@ -193,6 +196,7 @@ class FuenteinformacionController extends Controller {
                 foreach ($varlistalidernuevo as $key => $value) {
                     //$vardocumentojefe = $value['documentojefe'];
                     $varbuscar = $value['nombrepcrc'];
+		    $vardocumento1 = $value['documentojefe'];
                     if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajería') {
                         
                         if ($varbuscar == 'Suramericana') {
@@ -216,10 +220,10 @@ class FuenteinformacionController extends Controller {
 
 
                         //$varbuscar = 'líder'.$value['documentojefe'];
-                        $vardocumento1 = $value['documentojefe'];
+                        //$vardocumento1 = $value['documentojefe'];
                         $vargrupo_id = Yii::$app->db->createCommand("SELECT grupos_id from tbl_grupos_usuarios g WHERE g.grupo_descripcion LIKE '%$varbuscar%'")->queryScalar();
 
-                        $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_identificacion = $vardocumento1")->queryScalar();
+                        $varidusua = Yii::$app->db->createCommand("select max(usua_id) from tbl_usuarios where usua_identificacion = $vardocumento1")->queryScalar();
             
                         Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
                                             'usuario_id' => intval($varidusua),
@@ -261,7 +265,7 @@ class FuenteinformacionController extends Controller {
                                                         FROM tbl_tmpvaloradosdistribucion t
                                                         WHERE t.cargo = 'Representante De Servicio' AND t.usuario_red IS NOT NULL AND 
                                                         t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajería')) lista
-                                                        WHERE lista.usuario_red NOT IN (SELECT e.dsusuario_red FROM tbl_evaluados e)")->queryAll();
+                                                        WHERE lista.documento NOT IN (SELECT e.identificacion FROM tbl_evaluados e)")->queryAll();
                 
                 foreach ($varlistaevaluadonuevo as $key => $value) {
                     //$vardocumentojefe = $value['documentojefe'];               
@@ -321,20 +325,21 @@ class FuenteinformacionController extends Controller {
                                                         from tbl_tmpvaloradosdistribucion v
                                                         WHERE v.cargo = 'Representante De Servicio' AND v.usuario_red IS NOT NULL AND 
                                                         v.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajería')
-                                                        GROUP BY v.documentojefe")->queryAll();
+                                                        GROUP BY v.documentojefe, v.nombrepcrc")->queryAll();
                 
                 foreach ($varlistaequipos as $key => $value) {
                     $vardocumentojefe = $value['documentojefe'];               
-                    $varidlider = Yii::$app->db->createCommand("SELECT usua_id FROM tbl_usuarios  WHERE usua_identificacion = $vardocumentojefe")->queryScalar();
+                    $varidlider = Yii::$app->db->createCommand("SELECT max(usua_id) FROM tbl_usuarios  WHERE usua_identificacion = $vardocumentojefe")->queryScalar();
                     if($varidlider) {
-                        $varidliderequipo = Yii::$app->db->createCommand("SELECT id FROM tbl_equipos  WHERE usua_id = $varidlider")->queryScalar();
+                        $varidliderequipo = Yii::$app->db->createCommand("SELECT max(id) FROM tbl_equipos  WHERE usua_id = $varidlider AND NAME not LIKE '%no usar%'")->queryScalar();
                         if($varidliderequipo) {
-                            $varlistaasesores = Yii::$app->db->createCommand("SELECT documento FROM tbl_tmpvaloradosdistribucion  WHERE documentojefe = $vardocumentojefe")->queryAll();   
+                            $varlistaasesores = Yii::$app->db->createCommand("SELECT documento, usuario_red FROM tbl_tmpvaloradosdistribucion  WHERE documentojefe = $vardocumentojefe")->queryAll();   
                             $variddeleteequipo = Yii::$app->db->createCommand("delete from tbl_equipos_evaluados where equipo_id = $varidliderequipo")->execute();
                             
                             foreach ($varlistaasesores as $key => $value) {
-                                $vardocumento = $value['documento'];               
-                                $varidasesor = Yii::$app->db->createCommand("SELECT id FROM tbl_evaluados WHERE identificacion= $vardocumento")->queryScalar();  
+                                $vardocumento = $value['documento'];
+				$varusuariored = $value['usuario_red'];               
+                                $varidasesor = Yii::$app->db->createCommand("SELECT id FROM tbl_evaluados   WHERE identificacion = $vardocumento AND dsusuario_red = '$varusuariored'")->queryScalar();  
                                 if ($varidasesor != 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
                                         'evaluado_id' => $varidasesor,

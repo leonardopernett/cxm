@@ -41,7 +41,7 @@ use app\models\BasechatMotivos;
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isHacerMonitoreo();
+                            return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno();
                         },
                             ],
                         ]
@@ -234,7 +234,24 @@ use app\models\BasechatMotivos;
                     $horarta = date("H", strtotime($varfecharta));
                     $minutosrta = date("i", strtotime($varfecharta));
                     $segundosrta = date("s", strtotime($varfecharta));
-                    $varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+
+                    /*if ($horarta >= 19) {
+                      //$diarta = $diarta + 1;
+
+                      $varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+                      //$varrtafecha = strtotime ( "1 days" , strtotime ( $varrtafecha ) ) ;
+                      $varrtafecha = strtotime('2 hours', strtotime($varrtafecha));
+                      $varrtafecha = date ( 'Y-m-d H:i:s' , $varrtafecha );
+                    }else{
+                      $varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+                    }*/
+
+		    $varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+                    
+                    $varrtafecha = strtotime('2 hours', strtotime($varrtafecha));
+                    $varrtafecha = date ( 'Y-m-d H:i:s' , $varrtafecha );
+
+                   // $varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
 
                     $vartipo = $sheet->getCell("IN".$row)->getValue();
                     if ($vartipo == "MensajerÃ­a :: WhatsApp") {                        
@@ -1470,11 +1487,13 @@ use app\models\BasechatMotivos;
             $txtvaridfsolucion = Yii::$app->request->get("txtvaridfsolucion");
             $txtvaridfobservacion = Yii::$app->request->get("txtvaridfobservacion");
             $varidfprocedimiento = Yii::$app->request->get("varidfprocedimiento");
+	    $txtvaridencuesta = Yii::$app->request->get("txtvaridencuesta");
 
             $varbasesatisfaccion_id = Yii::$app->db->createCommand("select basesatisfaccion_id from tbl_basechat_tigob where anulado = 0 and ticked_id = $txtvartxtticket")->queryScalar();
 
             $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = $txtvartxtticket and basesatisfaccion_id = $varbasesatisfaccion_id and fsolicitud = '$txtvaridfsolicitud' and fsolucion = '$txtvaridfsolucion' and fobservacion = '$txtvaridfobservacion' and fprocedimiento = '$varidfprocedimiento'")->queryScalar();
-
+	
+	    $varestado = 'Cerrado';
             if ($varcomprobacion == 0) {
                 Yii::$app->db->createCommand()->insert('tbl_basechat_formulario',[
                     'ticked_id' => $txtvartxtticket,
@@ -1490,7 +1509,11 @@ use app\models\BasechatMotivos;
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,
                     'fechacreacion' => date("Y-m-d"),
-                ])->execute(); 
+                ])->execute();
+
+	     Yii::$app->db->createCommand()->update('tbl_basechat_tigob',[                    
+                    'estado' => $varestado,
+                ],'idencuesta ='.$txtvaridencuesta.' and ticked_id ='.$txtvartxtticket.'')->execute(); 
             }            
 
             $txtrta = 1;
@@ -1750,7 +1773,24 @@ public function actionElegirimportar(){
                 $horarta = date("H", strtotime($varfecharta));
                 $minutosrta = date("i", strtotime($varfecharta));
                 $segundosrta = date("s", strtotime($varfecharta));
-                $varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+	
+		/*if ($horarta >= 19) {
+                    //$diarta = $diarta + 1;
+
+                    $varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+                    //$varrtafecha = strtotime ( "1 days" , strtotime ( $varrtafecha ) ) ;
+                    $varrtafecha = strtotime('2 hours', strtotime($varrtafecha));
+                    $varrtafecha = date ( 'Y-m-d H:i:s' , $varrtafecha );
+                }else{
+                    $varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+                }*/
+
+                //$varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+
+		$varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
+                    
+                $varrtafecha = strtotime('2 hours', strtotime($varrtafecha));
+                $varrtafecha = date ( 'Y-m-d H:i:s' , $varrtafecha );
 //
                 $vartipo = $sheet->getCell("IN".$row)->getValue();
                 if ($vartipo == "Mensajería :: WhatsApp") {                        

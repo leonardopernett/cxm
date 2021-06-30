@@ -135,8 +135,8 @@ class ControlProcesos extends \yii\db\ActiveRecord
 
     public function getRealizadas($opcion) {
         $variableid = $opcion;
-        //$fechainiC = date('2018-08-22');
-        //$fechafinC = date('2018-08-30');  
+        // $fechainiC = date('2018-08-22');
+        // $fechafinC = date('2018-08-30');  
 	$varCero = 0;
 
             $varMes = date("n");
@@ -182,7 +182,7 @@ class ControlProcesos extends \yii\db\ActiveRecord
                     # code...
                     break;
             }   
-
+	// $txtMes = 'Mayo';
         $txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$variableid.' and tipo_corte like "%'.$txtMes.'%" and anulado ='.$varCero.'')->queryScalar();
 	//var_dump($txtcorte);
         $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte' and anulado = 0")->queryScalar();
@@ -212,8 +212,8 @@ class ControlProcesos extends \yii\db\ActiveRecord
 	$varCero = 0;
 	$varsumagestion = 0;
         $variabletxt = 'Total Monitoreos';
-        //$fechainiC = date('2018-08-22');
-        //$fechafinC = date('2018-08-30'); 
+        // $fechainiC = date('2018-08-22');
+        // $fechafinC = date('2018-08-30'); 
             $varMes = date("n");
             $txtMes = null;
             switch ($varMes) {
@@ -258,6 +258,7 @@ class ControlProcesos extends \yii\db\ActiveRecord
                     break;
             }   
  
+        // $txtMes = "Mayo";
         $txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$variableid.' and tipo_corte like "%'.$txtMes.'%" and anulado ='.$varCero.'')->queryScalar();
         $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'  and anulado = 0")->queryScalar();
         $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'  and anulado = 0")->queryScalar();    
@@ -342,7 +343,9 @@ class ControlProcesos extends \yii\db\ActiveRecord
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
          
         $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+	// $varfechainicio = '2021-05-01';
         $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+	// $varfechafin = '2021-05-31';
 
         $data = Yii::$app->db->createCommand("select sum(cantidadjustificar) from tbl_plan_escalamientos where anulado = 0 and tecnicolider = $opcion and Estado = 1 and fechacreacion between '$varfechainicio' and '$varfechafin'")->queryScalar();
 

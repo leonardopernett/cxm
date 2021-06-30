@@ -105,12 +105,15 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </header>
 <br><br>
+<?php
+if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465"|| $sessiones == "6080"){ ?>
 <div class="CapaUno" style="display: inline;">
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
                 <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
                 <div class="row">
+		<?php if($sessiones == "3205" || $sessiones == "2911" || $sessiones == "2953" ){ ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Subir información: </label>
@@ -122,6 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
                              
                         </div>
                     </div>
+		<?php } ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></i> Parametrizar datos: </label>
@@ -158,6 +162,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php } ?>
 <hr>
 <?php if ($sessiones == 2953 || $sessiones == 2911 ||  $sessiones == 3205 || $sessiones == 3468) { ?>
 <div class="CapaDos" style="display: inline;">

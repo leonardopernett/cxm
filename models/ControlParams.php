@@ -172,8 +172,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
- 	//$fechainiC = date('2019-04-01');
-        //$fechafinC = date('2019-04-30');
+ 	// $fechainiC = date('2019-04-01');
+        // $fechafinC = date('2019-04-30');
         $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
         $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));  
   
@@ -670,8 +670,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
- 	//$fechainiC = date('2019-04-01');
-        //$fechafinC = date('2019-04-30');
+ 	// $fechainiC = date('2019-04-01');
+        // $fechafinC = date('2019-04-30');
         $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
         $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));  
 
@@ -692,8 +692,8 @@ class ControlParams extends \yii\db\ActiveRecord
 
     public function getRealizadascp($opcion) {
         $varRealizadas = $opcion;
- 	//$fechainiC = date('2019-04-01');
-        //$fechafinC = date('2019-04-30');    
+ 	// $fechainiC = date('2019-04-01');
+        // $fechafinC = date('2019-04-30');    
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
@@ -718,8 +718,8 @@ class ControlParams extends \yii\db\ActiveRecord
 
     public function getCumplimientocp($opcion){
         $varCumplimiento = $opcion;
- 	//$fechainiC = date('2019-04-01');
-        //$fechafinC = date('2019-04-30'); 
+ 	// $fechainiC = date('2019-04-01');
+        // $fechafinC = date('2019-04-30'); 
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
@@ -765,8 +765,8 @@ class ControlParams extends \yii\db\ActiveRecord
 
         $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
         $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); 
- 	//$fechainiC = date('2019-04-01');
-        //$fechafinC = date('2019-04-30');
+ 	// $fechainiC = date('2019-04-01');
+        // $fechafinC = date('2019-04-30');
 
         $query = ControlParams::find()
                     ->joinWith('arboles')
@@ -896,8 +896,8 @@ class ControlParams extends \yii\db\ActiveRecord
 
     public function getRealizadasd($opcion) {
         $varRealizadas = $opcion;
- 	//$fechainiC = date('2019-04-01');
-        //$fechafinC = date('2019-04-30'); 
+ 	// $fechainiC = date('2019-04-01');
+        // $fechafinC = date('2019-04-30'); 
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
@@ -922,8 +922,8 @@ class ControlParams extends \yii\db\ActiveRecord
 
     public function getCumplimientod($opcion){
         $varCumplimiento = $opcion;
- 	//$fechainiC = date('2019-04-01');
-        //$fechafinC = date('2019-04-30'); 
+ 	// $fechainiC = date('2019-04-01');
+        // $fechafinC = date('2019-04-30'); 
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));

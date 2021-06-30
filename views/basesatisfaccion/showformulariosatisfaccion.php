@@ -198,12 +198,12 @@ $banderaSaltoComentario = true;
                 </tr>
                 <tr>
                     <td>
-                        <b><?= Yii::t('app', 'Transcripción: ') ?></b> <?php echo $vartexto ?>
+                        <b><i class="fas fa-envelope" style="font-size: 25px; color: #002855;"></i> <?= Yii::t('app', 'Transcripción: ') ?></b> <?php echo $vartexto ?>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <b><?= Yii::t('app', 'Valencia emocional: ') ?></b> <?php echo $varvalencia ?>
+                        <b><i class="fas fa-smile" style="font-size: 25px; color: #002855;"></i> <?= Yii::t('app', 'Valencia emocional: ') ?></b> <?php echo $varvalencia ?>
                     </td>
                 </tr>
             </table>
