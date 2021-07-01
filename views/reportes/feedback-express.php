@@ -571,6 +571,8 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }                
             }
         }
+
+
         // if (vargrupos != "81") {
         //     if (vargrupos != "76") {
         //         if (vargrupos != "171") {
