@@ -1,1 +1,1 @@
-find /srv/www/htdocs/qa_managementv2/web/buzones_qa/Buzones_01_07_2021 -iname *01ISNM0PQG85976CF0LH9B5AES0M0U8A*.wav
+find /srv/www/htdocs/qa_managementv2/web/buzones_qa/Buzones_06_07_2021 -iname *0000031de2a72eea*.wav

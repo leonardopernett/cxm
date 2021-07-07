@@ -81,10 +81,10 @@ class ControlProcesosPlan extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
-        // $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        // $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-        $varfechainicio = '2021-06-01';
-        $varfechafin = '2021-07-31';
+        $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+        // $varfechainicio = '2021-06-01';
+        // $varfechafin = '2021-07-31';
 
         if ($roles == "270" || $sesiones == '1173' || $sesiones == '2887' || $sesiones == '3430' || $sesiones == '2652' || $sesiones == '189') {
             $query = ControlProcesos::find()->distinct()                   

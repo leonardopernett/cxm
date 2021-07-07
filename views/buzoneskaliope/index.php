@@ -14,14 +14,53 @@ use yii\helpers\ArrayHelper;
 $this->title = 'Buzones Kaliope';
 $this->params['breadcrumbs'][] = $this->title;
 
-
+    $varanno = date('Y');
+    $varmes = date('m');
+    $vardia = date('d') - 1;
 
     $sessiones = Yii::$app->user->identity->id;
+    $varfechainicial = $varanno.'-'.$varmes.'-'.$vardia;
+    $varDate = $varfechainicial;
+    $varCant = Yii::$app->db->createCommand("select count(k.idkaliopet) from tbl_kaliope_transcipcion k where k.fechagenerada between '$varfechainicial 00:00:00' and '$varfechainicial 23:59:59' and k.anulado = 0")->queryScalar();
 
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito');
-
+    .lds-ring {
+      display: inline-block;
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      margin: 10px;
+      border: 10px solid #3498db;
+      border-radius: 70%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: #3498db transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
     .card1 {
             height: auto;
             width: auto;
@@ -242,6 +281,66 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 <hr>
+<?php if ($sessiones == '2953' || $sessiones == '2911') { ?>
+<div class="capaCuatro" id="capaidcuatro" style="display: inline">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <label><i class="fas fa-bolt" style="font-size: 20px; color: #23e04c;"></i> Generar y guardar transcripciones</label>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card1 mb">
+                            <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 20px; color: #23e04c;"></i> Generar accion</label>
+                            <div onclick="savelogs();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="btnlogs" >
+                                Aceptar
+                            </div>
+                        </div>
+                    </div>
+                    <?php if ($sessiones == "0") { ?>
+                    <div class="col-md-3">
+                        <div class="card1 mb">
+                            <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 20px; color: #23e04c;"></i> Descargar Logs</label>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <div class="col-md-3">
+                        <div class="card1 mb">
+                            <label style="font-size: 15px;"><i class="fas fa-calendar" style="font-size: 20px; color: #23e04c;"></i> Ultima fecha Logs</label> 
+                            <label  style="font-size: 19px;"><?= Yii::t('app', $varDate) ?></label>                    
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card1 mb">
+                            <label style="font-size: 15px;"><i class="fas fa-hashtag" style="font-size: 20px; color: #23e04c;"></i> Cantidad registrada</label>
+                            <label style="font-size: 19px;"><?= Yii::t('app', $varCant) ?></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="capaLoader" id="idCapa" style="display: none;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card1 mb">
+        <table align="center">
+          <thead>
+            <tr>
+              <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+              <th><?= Yii::t('app', '') ?></th>
+              <th class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion...') ?></h4></th>
+            </tr>            
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>
+<hr>
+<?php } ?>
+
 
 <script type="text/javascript">
     function conexiones(){
@@ -291,5 +390,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             });
         }
+    };
+
+    function savelogs(){
+
+        var vartextto = 0;
+        var varcapaidcuatro = document.getElementById("capaidcuatro");
+        var varidCapa = document.getElementById("idCapa");
+
+        varcapaidcuatro.style.display = 'none';
+        varidCapa.style.display = 'inline';
+
+        $.ajax({
+            method: "get",
+            url: "generarlogs",
+            data: {
+                vartextto : vartextto,
+            },
+            success: function(response){
+                numRta =   JSON.parse(response);
+                console.log(numRta);
+                window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/buzoneskaliope/index','_self');
+                // window.open('http://127.0.0.1/qa_pruebas/web/index.php/buzoneskaliope/index','_self');
+            }
+        });
     };
 </script>

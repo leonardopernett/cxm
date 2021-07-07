@@ -225,7 +225,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 		
                     <?php if($txtConteo == "0") { ?>
-                    <?php  if($sessiones == 2953) { ?>
+                    <?php  // if($sessiones == 2953) { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"> clonar plan: </label>                            
@@ -234,7 +234,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>                            
                         </div>
                     </div>
-                    <?php  } ?>
+                    <?php  // } ?>
                     <?php } ?>
 		
                 </div>

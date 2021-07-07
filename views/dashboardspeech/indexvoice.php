@@ -1154,8 +1154,13 @@ $this->title = 'Dashboard Voz del Cliente';
               <div class="col-md-6">
                 <div class="card2 mb">
 		     <?php
-                  	$txttotalpromedio1 = $arraytotalagente / $sumaagente;
-                  	$txttotalpromedio2 = $arraytotalcanal / $sumacanal;
+
+                  	if ($arraytotalagente != 0 && $sumaagente !=0){
+                    	  $txttotalpromedio1 = $arraytotalagente / $sumaagente;
+                    	}
+                    	if ($arraytotalcanal != 0 && $sumacanal !=0){
+                  	  $txttotalpromedio2 = $arraytotalcanal / $sumacanal;
+                    	}
                   	if ($arraytotalmarca != 0 && $sumamarca !=0){
                   	$txttotalpromedio3 = $arraytotalmarca / $sumamarca;}
                   	$arraylistaresponsable = array($txttotalpromedio1,$txttotalpromedio2,$txttotalpromedio3);

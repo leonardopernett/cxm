@@ -131,6 +131,82 @@ use GuzzleHttp;
       die(json_encode($res));
     }
 
+    public function actionGenerarlogs(){
+      // $vartextto = Yii::$app->request->GET("vartextto");
+      ini_set("max_execution_time", "900");
+      ini_set("memory_limit", "1024M");
+      ini_set( 'post_max_size', '1024M' );
+
+      $varanno = date('Y');
+      $varmes = date('m');
+      $vardia = date('d') - 1;
+
+      $varfechainicial = $varanno.'-'.$varmes.'-'.$vardia;
+      // $varfechainicial = '2021-07-04';
+
+      $varlista = Yii::$app->db->createCommand("SELECT b.connid, b.created FROM tbl_base_satisfaccion b WHERE b.created BETWEEN '$varfechainicial 00:00:00' AND '$varfechainicial 23:59:59' AND b.connid != '' AND b.tipo_inbox IN ('ALEATORIO','NORMAL')AND b.buzon = ''")->queryAll();
+
+      foreach ($varlista as $key => $value) {
+        $txtvaridruta = $value['connid'];
+        $txtcreated = $value['created'];
+
+        ob_start();
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_SSL_VERIFYPEER=> false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS =>'{"connid": "'.$txtvaridruta.'"}',
+          CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+          ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        ob_clean();
+
+        if (!$response) {
+          // die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+          $vartexto = "Error al buscar transcipcion";
+          $varvalencia = "Error al buscar valencia emocioanl";
+        }
+
+        $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+        if (count($response) == 0) {
+          // die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+          $vartexto = "Transcripcion no encontrada";
+          $varvalencia = "Valencia emocional no encontrada";
+        }else{
+          $vartexto = $response[0]['transcription'];
+          $varvalencia = $response[0]['valencia'];
+
+          Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
+                                           'connid' => $txtvaridruta,
+                                           'transcripcion' => $vartexto,
+                                           'valencia' => $varvalencia,
+                                           'fechagenerada' => $txtcreated,
+                                           'fechacreacion' => date("Y-m-d"),
+                                           'anulado' => 0,
+                                           'usua_id' => Yii::$app->user->identity->id,
+                                       ])->execute();
+        }
+
+      }
+
+      die(json_encode(1));
+    }
+
 
   }
 
