@@ -264,7 +264,7 @@ $this->title = 'Dashboard Voz del Cliente';
     } 
     $arrayVaridcatAgente = implode(", ", $varListidcateAgente);
 ?>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/css.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 <style type="text/css">
     .card {
@@ -467,7 +467,7 @@ $this->title = 'Dashboard Voz del Cliente';
                 </tr>
                 <tr>
                   <?php 
-            //inicio cálculo del IDA
+            //inicio cï¿½lculo del IDA
                     $varNum  = 0;
                     $titulos = array();
                     $txtRtaProcentaje = 0;

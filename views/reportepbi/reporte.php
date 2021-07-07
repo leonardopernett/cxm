@@ -41,7 +41,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     }*/
   </style>
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/css.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 <style type="text/css">
     .card {
@@ -204,7 +204,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
 
                           <?php
                             Modal::begin([
-                                  'header' => '<h4>Creación de WorkSpace</h4>',
+                                  'header' => '<h4>Creaciï¿½n de WorkSpace</h4>',
                                   'id' => 'modal1',
                                   //'size' => 'modal-lg',
                                 ]);

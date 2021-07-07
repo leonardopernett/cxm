@@ -20,12 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
     $varfecha = Yii::$app->db->createCommand("SELECT distinct fechacreacion from tbl_tmpvaloradosdistribucion ")->queryScalar();
 
     $varcantidadasesorjarvis = Yii::$app->db->createCommand("SELECT count(t.documento) cantidad_jarvis FROM tbl_tmpvaloradosdistribucion t
-                                            WHERE t.cargo = 'Representante De Servicio' AND t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajería')")->queryScalar();
+                                            WHERE t.cargo = 'Representante De Servicio' AND t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajerï¿½a')")->queryScalar();
     $varcantidadasesornuevo = Yii::$app->db->createCommand("SELECT count(lista.documento) valorado_nuevo from
                                             (SELECT t.documento, t.nombreempleado, t.usuario_red, t.idpcrc, t.nombrepcrc
                                             FROM tbl_tmpvaloradosdistribucion t
                                             WHERE t.cargo = 'Representante De Servicio' AND t.usuario_red IS NOT NULL AND 
-                                            t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajería')) lista
+                                            t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajerï¿½a')) lista
                                             WHERE lista.usuario_red NOT IN (SELECT e.dsusuario_red FROM tbl_evaluados e)")->queryScalar();
 
     $varcantidadasesornuevo = Yii::$app->db->createCommand("SELECT COUNT(dsusuario_red) from  tbl_evaluados WHERE fechacreacion = (SELECT MAX(fechacreacion) FROM tbl_evaluados)")->queryScalar();
@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/css.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <!-- Full Page Image Header with Vertically Centered Content -->
 
 <header class="masthead">

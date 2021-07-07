@@ -17,7 +17,7 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <!--Fontawesome CDN-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/css.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -775,7 +775,7 @@ AppAsset::register($this);
             ?>
         </nav>
 
-            <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+            <script defer src="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/js.js"></script>
             
         <div class="wrap">
             <div class="container-fluid">		

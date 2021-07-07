@@ -184,7 +184,7 @@ $titulos = array();
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/css.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -208,7 +208,7 @@ $titulos = array();
                     <table>
                         <tr>
                             <td class="text-center"><div class="loader"> </div></td>
-                            <td class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluación realizada') ?></label></td>
+                            <td class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluaciï¿½n realizada') ?></label></td>
                         </tr>
                     </table>                                       
                 </div>
@@ -326,7 +326,7 @@ if($vardocumentosijefe){ ?>
             $varcomentarios2 = $varcomentarios2.' '.$can.'-. '.$value['comentarios'];
             
         }
-//para cálculo de tipo de coaching
+//para cï¿½lculo de tipo de coaching
         $listacompetenciat2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
                                                     FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
                                                     ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque, ef.mensaje

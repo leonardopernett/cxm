@@ -292,7 +292,7 @@ $this->params['breadcrumbs'][] = $this->title;
     .w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffffcc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}
 
 </style>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/css.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -410,7 +410,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-6">
                                     <div class="card1 mb">
                                         <?php if($sessiones == '2953' || $sessiones == '0' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229') { ?>
-                                            <label style="font-size: 15px;"> Ingresar Nombre Evaluación: </label>
+                                            <label style="font-size: 15px;"> Ingresar Nombre Evaluaciï¿½n: </label>
                                             <?= $form->field($model2, 'nombreeval')->textInput(['maxlength' => 250, 'id'=>'IdEvaluacion']) ?>
                                             <br>
                                             <div class="row">
@@ -427,7 +427,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
                                             <thead>             
                                                 <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Id"; ?></label></th>
-                                                <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Nombre Evaluación"; ?></label></th>     
+                                                <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Nombre Evaluaciï¿½n"; ?></label></th>     
                                             </thead>
                                             <tbody>
                                                 <?php
@@ -449,7 +449,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-6">
                                     <div class="card1 mb">
                                         <?php if($sessiones == '2953' || $sessiones == '0' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229') { ?>
-                                            <label style="font-size: 15px;"> Ingresar Tipo Evaluación: </label>
+                                            <label style="font-size: 15px;"> Ingresar Tipo Evaluaciï¿½n: </label>
                                             <?= $form->field($model3, 'tipoevaluacion')->textInput(['maxlength' => 250,  'id'=>'IdTipoEvaluacion']) ?>
                                             <br>
                                             <div class="row">
@@ -466,7 +466,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
                                             <thead>             
                                                 <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Id"; ?></label></th>
-                                                <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Evaluación"; ?></label></th>       
+                                                <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Evaluaciï¿½n"; ?></label></th>       
                                             </thead>
                                             <tbody>
                                                 <?php
@@ -966,7 +966,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         console.log(numRta2);
                         if (numRta2 > 0) {
                             event.preventDefault();
-                            swal.fire("!!! Advertencia !!!","Los datos ya estan en base de datos. Por favor ingrese nueva información","warning");
+                            swal.fire("!!! Advertencia !!!","Los datos ya estan en base de datos. Por favor ingrese nueva informaciï¿½n","warning");
                             return; 
                         }else{
                             location.reload();
@@ -982,7 +982,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         if (varIdEvaluacion == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","No ha ingresado el nombre de evaluación","warning");
+            swal.fire("!!! Advertencia !!!","No ha ingresado el nombre de evaluaciï¿½n","warning");
             return; 
         }else{
             $.ajax({
@@ -1005,7 +1005,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         if (varIdTipoEvaluacion == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","No ha ingresado el tipo de evaluación","warning");
+            swal.fire("!!! Advertencia !!!","No ha ingresado el tipo de evaluaciï¿½n","warning");
             return; 
         }else{
             $.ajax({
