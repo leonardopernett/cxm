@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=172.20.1.36;dbname=ci_monitoreov2',
+    'dsn' => 'mysql:host=172.20.100.50;dbname=ci_monitoreov2',
     //'dsn' => 'mysql:host=localhost;dbname=ci_monitoreov2',
     'username' => 'ci_monitoreo',
     'password' => 'monit000r300',
