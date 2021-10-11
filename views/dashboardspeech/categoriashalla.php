@@ -193,17 +193,17 @@ $this->title = 'Visualización de Categorias -- QA & Speech --';
                 });
             }
         }
-        // window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente ,'_self');
+
         window.location.href='categoriasview?txtServicioCategorias='+idcliente;
-        //window.open('https://172.20.100.50/qa/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente,'_self');        
+      
     };
 
     function regresar(){
         var idcliente = "<?php echo $txtidcliente; ?>";
         
-        // window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente ,'_self');
+
         window.location.href='categoriasview?txtServicioCategorias='+idcliente;
-        //window.open('https://172.20.100.50/qa/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente,'_self');
+
     };
     function cambiomes(){
         var idcliente = "<?php echo $txtidcliente; ?>";

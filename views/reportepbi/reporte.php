@@ -41,7 +41,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     }*/
   </style>
 
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 <style type="text/css">
     .card {
@@ -142,7 +142,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
         <div class="row">
           <div class="col-md-6">
               <div class="card mb">         
-                <label><i class="far fa-edit" style="font-size: 20px; color: #559FFF;"></i> Area de trabajo:</label>
+                <label><i class="far fa-edit" style="font-size: 20px; color: #559FFF;"></i> &Aacuterea de trabajo:</label>
                 <br>
                 <label>Seleccione Nombre:</label>
                 <select class ='form-control' id="txtAreatrabajo" data-toggle="tooltip" title="Area de trabajo" onchange="nombreareatrab();">
@@ -165,7 +165,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
           </div>
           <div class="col-md-6">
               <div class="card mb">
-                <label><i class="far fa-chart-bar" style="font-size: 20px; color: #ed346f;"></i> Area de reportes:</label>
+                <label><i class="far fa-chart-bar" style="font-size: 20px; color: #ed346f;"></i> &Aacuterea de reportes:</label>
                 <br>
                 <label>Seleccione reporte:</label>
                 <select class ='form-control' id="txtReportes" data-toggle="tooltip" title="Reportes" align="center" disabled>
@@ -174,7 +174,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
                 <br>    
                 <div class="row" style="text-align:center;">      
                   <div  class="btn btn-primary"  method='post' id="botones2" onclick="generarepor();">
-                         Generar Reporte PBI
+                         Generar Reporte
                   </div>    
                 </div>
               </div>
@@ -184,7 +184,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     </div>
   </div>
   <br>
-<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
   
   <br>
   <h3>&nbsp;</h3>
@@ -274,7 +274,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               </div>
           </div>
  <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57") {?>
+<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
 
           <div class="col-md-2">
               <div class="card mb">            
@@ -287,7 +287,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               </div>
           </div>
 <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
 
           <div class="col-md-2">
               <div class="card mb">           
@@ -340,7 +340,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               },
               success : function(response){ 
                           var Rta =   JSON.parse(response);    
-                          console.log(Rta);                          
+                          // console.log(Rta);                          
                           document.getElementById("txtReportes").innerHTML = "";
                          // <option value="" disabled selected>Seleccionar...</option>
                           var node = document.createElement("OPTION");
@@ -480,7 +480,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
                           var rta2 = 1    
                           console.log(Rta);
                          // alert(Rta);
-                         // window.location.href='permisocolaborador?dataper='+JSON.stringify(Rta)+'&workspace='+varareatrabajoid+'&nombrerepor='+varnombrerep;
+
                           window.location.href='permisocolabora?dataper='+JSON.stringify(Rta)+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep;
               }
         }); 

@@ -34,8 +34,9 @@ $year = date('Y');
 $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
 $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-// $varfechainicio = '2021-06-01';
+// $varfechainicio = '2021-09-01';
 $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+// $varfechafin = '2021-10-05';
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito');
@@ -76,7 +77,7 @@ $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">

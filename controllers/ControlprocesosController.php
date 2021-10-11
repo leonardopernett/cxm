@@ -38,7 +38,7 @@ class ControlprocesosController extends \yii\web\Controller {
 								'allow' => true,
 								'roles' => ['@'],
 								'matchCallback' => function() {
-                            return Yii::$app->user->identity->isControlProcesoCX();
+                            return Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                         },
 							],
 						]
@@ -1137,13 +1137,13 @@ class ControlprocesosController extends \yii\web\Controller {
                 $message .= "<h3>Existe nueva petición para desvincular el técnico de  equipo. Por favor verificar en QA, módulo -Peticiones Desvinculación Equipos-.</h3>";
                 $message .= "</body></html>";
 
-                Yii::$app->mailer->compose()
-                                ->setTo(["anmorenoa@grupokonecta.com","diego.montoya@grupokonecta.com","engie.guerrero@grupokonecta.com","geraldin.vargas.m@grupokonecta.com"])
-                                ->setFrom(Yii::$app->params['email_satu_from'])
-                                ->setSubject("Nueva Peticion -- Desvincular Tecnico Equipo")
+                // Yii::$app->mailer->compose()
+                                // ->setTo(["anmorenoa@grupokonecta.com","diego.montoya@grupokonecta.com","engie.guerrero@grupokonecta.com","geraldin.vargas.m@grupokonecta.com"])
+                                // ->setFrom(Yii::$app->params['email_satu_from'])
+                                // ->setSubject("Nueva Peticion -- Desvincular Tecnico Equipo")
                                 //->attach("")
-                                ->setHtmlBody($message)
-                                ->send(); 
+                                // ->setHtmlBody($message)
+                                // ->send(); 
 
                 return $this->redirect('index');
          	}

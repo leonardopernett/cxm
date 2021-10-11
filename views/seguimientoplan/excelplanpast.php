@@ -133,7 +133,16 @@ use yii\bootstrap\Modal;
 if ($novedad >= $varmeta) {
                                     $novedad = $varmeta - 1;
                                 }
-                                $varcumplimiento = round(($varRealizadas / ($varmeta - $varNovedades)) * 100,2);
+
+$varrtaresult = $varmeta - $varNovedades;
+
+if($varrtaresult != 0){
+	$varcumplimiento = round(($varRealizadas / ($varmeta - $varNovedades)) * 100,2);
+}else{
+$varcumplimiento = 0;
+}
+                                // $varcumplimiento = round(($varRealizadas / ($varmeta - $varNovedades)) * 100,2);
+
 
                                 
                                 $varcorts1 = round($varmeta / 4) - $varAprobadas_Corte1;

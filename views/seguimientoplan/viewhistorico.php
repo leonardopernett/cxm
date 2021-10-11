@@ -42,7 +42,7 @@ $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 $varmes = date('m') - 2;
 
 $varlistcortes = null;
-if ($roles == "270") {
+if ($roles == "270" || $roles == "309") {
 	$varlistcortes = Yii::$app->get('dbslave')->createCommand("select idtc, tipocortetc 'tipo' from tbl_tipocortes where mesyear between '$year-$varmes-01' and '$year-$month-01' group by tipocortetc order by idtc asc")->queryAll();	
 }else{
 	if ($roles == "274" || $roles == "276") {
@@ -59,7 +59,7 @@ if ($varidtc != null) {
 	$txtFechainicio = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = $varidtc")->queryScalar();
 	$txtFechafin = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = $varidtc")->queryScalar();
 
-	if ($roles == "270") {
+	if ($roles == "270" || $roles == "309") {
 		$varlistaplan = Yii::$app->get('dbslave')->createCommand("select * from tbl_control_procesos where idtc = $varidtc and anulado = 0")->queryAll();	
 	}else{
 		if ($roles == "274" || $roles == "276") {
@@ -109,7 +109,7 @@ if ($varidtc != null) {
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>

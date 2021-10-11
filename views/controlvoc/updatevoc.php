@@ -156,7 +156,7 @@ $this->title = 'Actualización del Listado Escucha Focalizada - VOC -';
 				var respuesta = JSON.parse(response);
 				console.log(respuesta);
 				if(respuesta == 1){
-					window.location.href = "http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/updatevoc?txtPcrc="+varPCRC;
+					window.location.href = "../controlvoc/updatevoc?txtPcrc="+varPCRC;
 				}else{
 					alert("Error al intentar eliminar la alerta");
 				}
@@ -167,6 +167,6 @@ $this->title = 'Actualización del Listado Escucha Focalizada - VOC -';
 
 	function menuPrincipal(){	
 		var varPCRC = "<?php echo $txtIdPcrc; ?>";	
-        	window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/indexvoc?arbol_idV='+varPCRC ,'_self');
+        	window.open('../controlvoc/indexvoc?arbol_idV='+varPCRC ,'_self');
     	};
 </script>

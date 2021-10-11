@@ -40,9 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <hr>
 <div class="CapaPP" id="tablebol" style="display: none"> 
     <div class="row">
-        <div class="col-md-6" >
+        <div class="col-md-12" >
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></i> Importar base pura: </label> 
+                <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></i> Importar base con imputabilidad: </label> 
                 <?= Html::a('Importar',  ['importarexcel'], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #337ab7',
                                                     'data-toggle' => 'tooltip',
@@ -50,6 +50,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
             </div>            
         </div>
+
+	<?php if($sesiones == '0') { ?>
         <div class="col-md-6">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></i> Importar base imputabilidad: </label> 
@@ -61,6 +63,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
              
         </div>
+	<?php } ?>
+
     </div>    
 </div>
 <div class="CapaP2" id="tablecol" style="display: none"> 

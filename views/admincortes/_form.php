@@ -72,7 +72,7 @@ $this->title = 'Agregar Corte General';
                 'id'=>'modalButton6']) 
     ?>
     &nbsp;&nbsp;
-	 <a class="btn btn-default soloCancelar" style="background-color:#707372" data-toggle="tooltip" title="Aceptar" href="https://qa.grupokonecta.local/qa_managementv2/web/index.php/admincortes/index"> Regresar </a>	
+	 <a class="btn btn-default soloCancelar" style="background-color:#707372" data-toggle="tooltip" title="Aceptar" href="../admincortes/index"> Regresar </a>	
 </div>
 
 <?php $form->end() ?> 

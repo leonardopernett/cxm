@@ -139,7 +139,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                     $.ajax({                    
                         method: "get",
                         url: "modificardashboard",
-                        // url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/modificardashboard",
+
                         data : {
                             vardash: vardash,
                             varcont : varText,
@@ -153,6 +153,6 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
             }
         }
 
-        window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/dashboardspeech/categoriasview?txtServicioCategorias='+idcliente,'_self');
+        window.open('../dashboardspeech/categoriasview?txtServicioCategorias='+idcliente,'_self');
     };
 </script>

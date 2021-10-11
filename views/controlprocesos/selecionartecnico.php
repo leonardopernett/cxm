@@ -102,8 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     		varcapatres.style.display = 'inline';
                     	}else{
                     		if (numRta == 0) {
-                    			 //window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/create?usua_id='+varid,'_self');
-                    			window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/create?usua_id='+varid,'_self');
+                    			window.open('../controlprocesos/create?usua_id='+varid,'_self');
                     		}
                     	}
                     }

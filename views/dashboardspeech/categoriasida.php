@@ -37,15 +37,36 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
     $MesAnterior = date("m") - 1;
 
     $txtConteo = 0;
-    // $txtidcliente = $txtidcliente;
-    // var_dump($txtidcliente);
+    $txtcartxtCodPcrc = $txtCodPcrc;
 
 ?>
-<!-- <style type="text/css">
+<style type="text/css">
+    @import url('https://fonts.googleapis.com/css?family=Nunito');
+
+    .card1 {
+            height: auto;
+            width: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: #FFFFFF;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;    
+            font-family: "Nunito";
+            font-size: 150%;    
+            text-align: left;    
+    }
+
     .masthead {
       height: 25vh;
       min-height: 100px;
-      background-image: url('../../images/dashboardVOC.jpg');
+      background-image: url('../../images/Parametrizador.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -53,93 +74,201 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
       border-radius: 5px;
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
-</style> -->
-<!-- <header class="masthead"> -->
-  <!-- <div class="container h-100"> -->
-    <!-- <div class="row h-100 align-items-center"> -->
-      <!-- <div class="col-12 text-center"> -->
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
-      <!-- </div> -->
-    <!-- </div> -->
-  <!-- </div> -->
-<!-- </header> -->
-<!-- <br> -->
+</style>
+<header class="masthead">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-12 text-center">
+      </div>
+    </div>
+  </div>
+</header>
 <br>
-<div class="form-group">
-    <div onclick="general();" class="btn btn-primary" style="display:inline;" method='post' id="botones1" >
-        Actualizar proceso
-    </div>   
-    &nbsp;&nbsp;
-    <div onclick="regresar();" class="btn btn-primary" style="display:inline; background-color: #7d7d7d;" method='post' id="botones2" >
-        Regresar
-    </div>  
-</div>
 <br>
-<div class="col-sm-12" id="idCapa0" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
-    <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
-        <tr>
-            <th class="text-center"><?= Yii::t('app', 'Codigo pcrc') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Programa') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Categoria Id') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Tipo Categoria') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Responsabilidad') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Seleccione') ?></th>
-        </tr>
-        <?php
-            $varListVar = Yii::$app->db->createCommand("select idspeechcategoria, cod_pcrc, programacategoria, idcategoria, nombre, dashboard, tipocategoria, responsable FROM tbl_speech_categorias  where anulado = 0 and cod_pcrc in ('$txtCodPcrc') AND 
-                                                        nombre not IN( SELECT tipoindicador FROM tbl_speech_categorias  where anulado = 0 and cod_pcrc in ('$txtCodPcrc')) AND idcategorias IN(1,2)")->queryAll(); 
-		$txtConteo = 0;            
-		$varnomresp = '';
-            foreach ($varListVar as $key => $value) {
-                $varDash = $value['dashboard'];
-                $varIdC = $value['idspeechcategoria'];
-                $varrespon = $value['responsable'];
-                $txtConteo = $txtConteo + 1;
-                if($varrespon == 1){
-                    $varnomresp = 'Agente';
-                }
-                if($varrespon == 2){
-                    $varnomresp = 'Canal';
-                }
-                if($varrespon == 3){
-                    $varnomresp = 'Marca';
-                }
-        ?>
-            <tr>
-            <td class="text-center"><?php echo $value['cod_pcrc']; ?></td>
-                <td class="text-center"><?php echo $value['programacategoria']; ?></td>
-                <td class="text-center"><?php echo $value['idcategoria']; ?></td>
-                <td class="text-center"><?php echo $value['nombre']; ?></td>
-		        <td class="text-center"><?php echo $value['tipocategoria']; ?></td>
-                <td class="text-center"><?php echo $varnomresp; ?></td>
-                  
-                <td class="text-center">
-                    <div class="row">
-                    <?php $var3 = [$varIdC.'A' => 'Agente ', $varIdC.'B' => 'Canal', $varIdC.'C' => 'Marca']; ?>
-
-                    <?= $form->field($model, 'dashboard')->dropDownList($var3, ['prompt' => 'Seleccione...', 'id'=>"$txtConteo"])->label('') ?>
+<div class="capaOne" style="display: inline;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+            <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card1 mb">
+                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                            <div onclick="regresar();" class="btn btn-primary" style="display:inline; background-color: #707372;" method='post' id="botones2" >
+                                Regresar
+                            </div> 
+                        </div>
                     </div>
-                </td>             
-            </tr>
-        <?php
-            }
-        ?>
-    </table>
-    <?php ActiveForm::end(); ?>
+                    <div class="col-md-6">
+                        <div class="card1 mb">
+                            <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Actualizar Proceso: </label> 
+                            <div onclick="general();" class="btn btn-primary" style="display:inline;" method='post' id="botones1" >
+                                Actualizar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<hr>
+<div class="capaDos" style="display: inline;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <div class="col-sm-12" id="idCapa0" style="display: inline">
+                    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                    <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                        <tr>
+                            <th scope="text-center"><?= Yii::t('app', 'Codigo pcrc') ?></th>
+                            <th scope="text-center"><?= Yii::t('app', 'Programa') ?></th>
+                            <th scope="text-center"><?= Yii::t('app', 'Categoria Id') ?></th>
+                            <th scope="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
+                            <th scope="text-center"><?= Yii::t('app', 'Tipo Categoria') ?></th>
+                            <th scope="text-center"><?= Yii::t('app', 'Responsabilidad') ?></th>
+                            <th scope="text-center"><?= Yii::t('app', 'Seleccione') ?></th>
+                            <th scope="text-center"><?= Yii::t('app', 'Vertical') ?></th>
+                        </tr>
+                        <?php
+                            
+                            $varListVar = Yii::$app->db->createCommand("select idspeechcategoria, cod_pcrc, programacategoria, idcategoria, nombre, dashboard, tipocategoria, responsable, idcategorias, responsable, componentes FROM tbl_speech_categorias  where anulado = 0 and cod_pcrc in ('$txtCodPcrc')  AND idcategorias IN (1,2)")->queryAll(); 
+
+                            $txtConteo = 0;            
+                            
+                            
+                            foreach ($varListVar as $key => $value) {
+                                $varDash = $value['dashboard'];
+                                $varIdC = $value['idspeechcategoria'];
+                                $varrespon = $value['responsable'];
+                                $txtConteo = $txtConteo + 1;
+                                $vartipo = $value['idcategorias'];
+                                $varvertical = $value['componentes'];
+                                $varnomresp = $value['responsable'];
+                                $varnombre = $value['nombre'];
+                                if($varrespon == 1){
+                                    $varnomresp = 'Agente';
+                                }
+                                if($varrespon == 2){
+                                    $varnomresp = 'Canal';
+                                }
+                                if($varrespon == 3){
+                                    $varnomresp = 'Marca';
+                                }
+                                if ($varrespon == "" && $vartipo == 1) {
+                                    
+                                    if ($varvertical != null) {
+                                        if ($varvertical == 1) {
+                                            $varnomresp = 'Insatisfacción Verbalizada';
+                                        }else{
+                                            if ($varvertical == 2) {
+                                                $varnomresp = 'Solución';
+                                            }else{
+                                                if ($varvertical == 3) {
+                                                    $varnomresp = 'Valores Corporativos';
+                                                }else{
+                                                    if ($varvertical == 4) {
+                                                        $varnomresp = 'Facilidad/Esfuerzo';
+                                                    }else{
+                                                        if ($varvertical == 5) {
+                                                            $varnomresp = 'Habilidad Comercial/Venta Responsable';
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }else{
+                                        $varnomresp = '--';
+                                    }
+                                    
+                                }
+
+                                
+                                
+                                $vatiene = Yii::$app->db->createCommand("SELECT COUNT(idcategoria) FROM tbl_speech_categorias  WHERE anulado = 0 AND cod_pcrc IN ('$txtCodPcrc') AND idcategorias IN(2) AND tipoindicador in ('$varnombre')")->queryScalar(); 
+                                
+                        ?>
+                            <tr>
+                            <td class="text-center"><?php echo $value['cod_pcrc']; ?></td>
+                                <td class="text-center"><?php echo $value['programacategoria']; ?></td>
+                                <td class="text-center"><?php echo $value['idcategoria']; ?></td>
+                                <td class="text-center"><?php echo $value['nombre']; ?></td>
+                                <td class="text-center"><?php echo $value['tipocategoria']; ?></td>
+                                <td class="text-center"><?php echo $varnomresp; ?></td>
+                                  
+                                <td class="text-center">
+                                    
+                                    <div class="row">
+
+                                    <?php if($vartipo == 2) { ?>
+                                        <?php $var3 = [$varIdC.'A' => 'Agente ', $varIdC.'B' => 'Canal', $varIdC.'C' => 'Marca']; ?>
+
+                                    <?php }else{ ?>
+                                        <?php $var3 = ['NA' => '']; ?>
+                                    <?php } ?>
+
+                                    
+                                    <?= $form->field($model, 'dashboard')->dropDownList($var3, ['prompt' => 'Seleccione...', 'id'=>"$txtConteo" ])->label('') ?>
+
+                                    </div>
+                                    
+                                </td>    
+
+                                <td class="text-center">
+                                    <div>
+                                    <?php if ($varvertical == null) { ?>
+                                        
+                                        <?php if ($vartipo == 1) { ?>
+
+                                            <?= 
+                                                Html::a(Yii::t('app', '<i id="idimage" class="fas fa-edit" style="font-size: 17px; color: #4c6ef5; display: inline;"></i>'),
+                                                                    'javascript:void(0)',
+                                                                    [
+                                                                        'title' => Yii::t('app', 'Escucha VOC'),
+                                                                        //'data-pjax' => '0',
+                                                                        'onclick' => "     
+                                                                            $.ajax({
+                                                                                type     :'get',
+                                                                                cache    : false,
+                                                                                url  : '" . Url::to(['editarcompetencia','varcodpcrc' => $value['cod_pcrc'], 'varidcategoria' => $varIdC, 'varnombre' => $value['nombre']]) . "',
+                                                                                success  : function(response) {
+                                                                                    $('#ajax_result').html(response);
+                                                                                }
+                                                                            });
+                                                                        return false;",
+                                                                    ]);                            
+                                            ?>
+
+                                        <?php } ?>
+
+                                    <?php } ?>
+                                    
+                                    </div>
+                                </td>         
+                            </tr>
+                        <?php
+                            }
+                        ?>
+                    </table>
+                    <?php ActiveForm::end(); ?>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<?php
+    echo Html::tag('div', '', ['id' => 'ajax_result']);
+?>
 <script type="text/javascript">
     function general(){
         var varConteo = "<?php echo $txtConteo; ?>";
         var idcliente = "<?php echo $txtidcliente; ?>";
+        var varcodpcrc = "<?php echo $txtcartxtCodPcrc; ?>";
 
         for (var i = 1; i <= varConteo; i++) {
             varc = i;
             var varlist = document.getElementById(varc).value;
-	    //alert(varConteo);
-            //alert(varlist);
             if (varlist != "") {
                 $.ajax({                    
                     method: "get",
@@ -156,12 +285,12 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
             }
         }
         
-	//window.location.href='categoriasview?txtServicioCategorias='+idcliente;
+        location.reload();
     };
 
     function regresar(){
         var idcliente = "<?php echo $txtidcliente; ?>";        
         
-	window.location.href='categoriasview?txtServicioCategorias='+idcliente;
+    window.location.href='categoriasview?txtServicioCategorias='+idcliente;
     };
 </script>

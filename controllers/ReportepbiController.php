@@ -30,7 +30,7 @@ use app\models\ControlProcesosEquipos;
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isReportes();
+                            return Yii::$app->user->identity->isReportes()  || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                         ]
@@ -267,6 +267,7 @@ use app\models\ControlProcesosEquipos;
    $reporte2 = $workspace_id . "rep2";
     
     $reports = [$reporte1, $reporte2];*/
+    
 
     die(json_encode( array("status"=>"1","data"=>$reports) ));
 

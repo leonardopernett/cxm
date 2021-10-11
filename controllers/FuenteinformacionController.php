@@ -258,6 +258,38 @@ class FuenteinformacionController extends Controller {
                     }
                 }
 
+		$varlistalidernuevo = Yii::$app->db->createCommand("SELECT v.documento, v.usua_red, u.usua_id usua_id, v.pcrc nombrepcrc, v.nombrejefe nombrejefe from (SELECT t.documentojefe documento, t.usuario_redjefe usua_red, t.nombrepcrc pcrc, t.nombrejefe nombrejefe FROM tbl_tmpvaloradosdistribucion t 
+                                                                    GROUP BY t.documentojefe) v
+                                                                    INNER JOIN tbl_usuarios u ON v.usua_red = u.usua_usuario
+                                                                    ORDER BY u.usua_id")->queryAll();
+
+
+		//crear equipos 2
+                $varverde = 1;
+                $varamarillo = 1;
+                foreach ($varlistalidernuevo as $key => $value) {
+                    //$vardocumentojefe = $value['documentojefe'];
+                    $varbuscar = $value['nombrepcrc'];
+                    $varnombre = $value['nombrejefe'];
+                    $varusua_id = $value['usua_id'];
+                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajería') {
+                        
+                        $varnombreequipo = $varnombre.'_'.$varbuscar;
+                        $varidusua = Yii::$app->db->createCommand("SELECT * FROM tbl_equipos e where e.usua_id =  $varusua_id")->queryScalar();
+                        if (!$varidusua) {
+                            Yii::$app->db->createCommand()->insert('tbl_equipos',[
+                                'name' => $varnombreequipo,
+                                'nmumbral_verde' => $varverde,
+                                'nmumbral_amarillo' => $varamarillo,
+                                'usua_id' => $varusua_id,
+                            ])->execute();
+
+                        }
+
+                    }
+                }
+
+
 		//crear evaluados
                 
                 $varlistaevaluadonuevo = Yii::$app->db->createCommand("SELECT lista.documento, lista.nombreempleado, lista.usuario_red, lista.idpcrc from

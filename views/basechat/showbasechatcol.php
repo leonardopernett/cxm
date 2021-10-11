@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -358,9 +358,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 success : function(response){
                     numRta =   JSON.parse(response);
-                    window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/basechat/index','_self');
-                    // window.open('http://127.0.0.1/qa_pruebas/web/index.php/basechat/index','_self');
-                }
+                    window.open('../basechat/index','_self');                }
             });
         }        
 

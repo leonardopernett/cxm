@@ -8253,3 +8253,2261 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1624571210.159
     'REQUEST_TIME' => 1624571210
 ]
+2021-07-15 13:33:50 [10.179.4.60][426][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221664
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-07-15 13:33:50 [10.179.4.60][426][-][info][application] $_GET = [
+    'bloque_id' => '52448'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221664'
+]
+
+$_COOKIE = [
+    '_csrf' => 'b035c515dd9fe408f620b84f8481c1776e779783c706367c5604c6b8d7acccf0s:32:\"j7sbuVMdkPI23GSe95kt-QbwN-ocqKuA\";'
+    '_identity' => 'b2dad769369973dfce3a5f39029a9681d96419f7ff9ea790b61740d0ce68cae4s:35:\"[\"426\",\"johana.sanchez.ar\",2592000]\";'
+    'PHPSESSID' => 'dn487s160qsbnj61q26eh0rbk38lat73omeg01t72s2kusqn9q50'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '426'
+        'username' => 'johana.sanchez.ar'
+        'authKey' => 'johana.sanchez.ar'
+        'accessToken' => 'johana.sanchez.ar'
+        'fullName' => 'SILVA SANCHEZ JOHANA ESTEFANIA'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '49'
+    ]
+    '__id' => '426'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'qa.allus.com.co'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_CSRF_TOKEN' => 'SUJBZENqaU8jdTIGNjwkKyISCFZwLToqcHcqEG47CzgHby4HMiEcDg=='
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_REFERER' => 'http://qa.allus.com.co/qa_managementv2/web/index.php/bloques/index?seccion_id=27019'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=b035c515dd9fe408f620b84f8481c1776e779783c706367c5604c6b8d7acccf0s%3A32%3A%22j7sbuVMdkPI23GSe95kt-QbwN-ocqKuA%22%3B; _identity=b2dad769369973dfce3a5f39029a9681d96419f7ff9ea790b61740d0ce68cae4s%3A35%3A%22%5B%22426%22%2C%22johana.sanchez.ar%22%2C2592000%5D%22%3B; PHPSESSID=dn487s160qsbnj61q26eh0rbk38lat73omeg01t72s2kusqn9q50'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.allus.com.co Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.allus.com.co'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.179.4.60'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => '[no address given]'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '62781'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52448&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221664?bloque_id=52448&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221664'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221664'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221664'
+    'REQUEST_TIME_FLOAT' => 1626374030.252
+    'REQUEST_TIME' => 1626374030
+]
+2021-07-15 13:34:18 [10.179.4.60][426][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221665
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-07-15 13:34:18 [10.179.4.60][426][-][info][application] $_GET = [
+    'bloque_id' => '52448'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221665'
+]
+
+$_COOKIE = [
+    '_csrf' => 'b035c515dd9fe408f620b84f8481c1776e779783c706367c5604c6b8d7acccf0s:32:\"j7sbuVMdkPI23GSe95kt-QbwN-ocqKuA\";'
+    '_identity' => 'b2dad769369973dfce3a5f39029a9681d96419f7ff9ea790b61740d0ce68cae4s:35:\"[\"426\",\"johana.sanchez.ar\",2592000]\";'
+    'PHPSESSID' => 'dn487s160qsbnj61q26eh0rbk38lat73omeg01t72s2kusqn9q50'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '426'
+        'username' => 'johana.sanchez.ar'
+        'authKey' => 'johana.sanchez.ar'
+        'accessToken' => 'johana.sanchez.ar'
+        'fullName' => 'SILVA SANCHEZ JOHANA ESTEFANIA'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '49'
+    ]
+    '__id' => '426'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'qa.allus.com.co'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_CSRF_TOKEN' => 'TDlKWnUwNS4mDjk4AGZ4SidpA2hGd2ZLdQwhLlhhV1kCFCU5BHtAbw=='
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_REFERER' => 'http://qa.allus.com.co/qa_managementv2/web/index.php/bloques/index?seccion_id=27019'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=b035c515dd9fe408f620b84f8481c1776e779783c706367c5604c6b8d7acccf0s%3A32%3A%22j7sbuVMdkPI23GSe95kt-QbwN-ocqKuA%22%3B; _identity=b2dad769369973dfce3a5f39029a9681d96419f7ff9ea790b61740d0ce68cae4s%3A35%3A%22%5B%22426%22%2C%22johana.sanchez.ar%22%2C2592000%5D%22%3B; PHPSESSID=dn487s160qsbnj61q26eh0rbk38lat73omeg01t72s2kusqn9q50'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.allus.com.co Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.allus.com.co'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '10.179.4.60'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => '[no address given]'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '62812'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52448&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221665?bloque_id=52448&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221665'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221665'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221665'
+    'REQUEST_TIME_FLOAT' => 1626374058.361
+    'REQUEST_TIME' => 1626374058
+]
+2021-07-21 13:18:46 [172.102.228.88][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_calificaciondetalles1` FOREIGN KEY (`calificaciondetalle_id`) REFERENCES `tbl_calificaciondetalles` (`id`)
+The SQL being executed was: DELETE FROM `tbl_calificaciondetalles` WHERE `id`=20571
+    in /srv/www/htdocs/qa_managementv2/controllers/CalificaciondetallesController.php:164
+2021-07-21 13:18:46 [172.102.228.88][3468][-][info][application] $_GET = [
+    'calificacion_id' => '1923'
+    '_pjax' => '#Calificaciondetalles-pj'
+    'id' => '20571'
+]
+
+$_COOKIE = [
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    'PHPSESSID' => 'ob8c2uge1j4h6l7n0k3ngpcr49pkjrakh8nqgs6udadqqioilvu1'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_CSRF_TOKEN' => 'YUo3ZmdINnBSE1YOU39HFipncCUeF1kAKi11S1IMZhkJKXQsIQ51XQ=='
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#Calificaciondetalles-pj'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_REFERER' => 'http://qa.grupokonecta.local/qa_managementv2/web/index.php/calificacions/index?CalificacionsSearch%5Bid%5D=&CalificacionsSearch%5Bname%5D=producto+banco+cbz'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; _csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; PHPSESSID=ob8c2uge1j4h6l7n0k3ngpcr49pkjrakh8nqgs6udadqqioilvu1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '172.102.228.88'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => '[no address given]'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '64824'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'calificacion_id=1923&_pjax=%23Calificaciondetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20571?calificacion_id=1923&_pjax=%23Calificaciondetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/calificaciondetalles/delete/20571'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/calificaciondetalles/delete/20571'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20571'
+    'REQUEST_TIME_FLOAT' => 1626891526.333
+    'REQUEST_TIME' => 1626891526
+]
+2021-07-22 12:51:57 [172.102.228.88][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_calificaciondetalles1` FOREIGN KEY (`calificaciondetalle_id`) REFERENCES `tbl_calificaciondetalles` (`id`)
+The SQL being executed was: DELETE FROM `tbl_calificaciondetalles` WHERE `id`=20584
+    in /srv/www/htdocs/qa_managementv2/controllers/CalificaciondetallesController.php:164
+2021-07-22 12:51:56 [172.102.228.88][3468][-][info][application] $_GET = [
+    'calificacion_id' => '1925'
+    '_pjax' => '#Calificaciondetalles-pj'
+    'id' => '20584'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'cafsn656r636npspbcr0l79iau0j5vl9849616i9b5irevbj0o10'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_CSRF_TOKEN' => 'T1N0SmItVWd8ChUiVhokAQR.MwkbcjoXBDQ2Z1dpBQ4nMDcAJGsWSg=='
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#Calificaciondetalles-pj'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_REFERER' => 'http://qa.grupokonecta.local/qa_managementv2/web/index.php/calificacions/index?CalificacionsSearch%5Bid%5D=&CalificacionsSearch%5Bname%5D=sufi'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=cafsn656r636npspbcr0l79iau0j5vl9849616i9b5irevbj0o10'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '172.102.228.88'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => '[no address given]'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '51052'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'calificacion_id=1925&_pjax=%23Calificaciondetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20584?calificacion_id=1925&_pjax=%23Calificaciondetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/calificaciondetalles/delete/20584'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/calificaciondetalles/delete/20584'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20584'
+    'REQUEST_TIME_FLOAT' => 1626976316.948
+    'REQUEST_TIME' => 1626976316
+]
+2021-07-22 12:54:52 [172.102.228.88][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_calificaciondetalles1` FOREIGN KEY (`calificaciondetalle_id`) REFERENCES `tbl_calificaciondetalles` (`id`)
+The SQL being executed was: DELETE FROM `tbl_calificaciondetalles` WHERE `id`=20584
+    in /srv/www/htdocs/qa_managementv2/controllers/CalificaciondetallesController.php:164
+2021-07-22 12:54:52 [172.102.228.88][3468][-][info][application] $_GET = [
+    'calificacion_id' => '1925'
+    '_pjax' => '#Calificaciondetalles-pj'
+    'id' => '20584'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'cafsn656r636npspbcr0l79iau0j5vl9849616i9b5irevbj0o10'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_CSRF_TOKEN' => 'YXVPTjJBWFlSLC4mBnYpPypYCA1LHjcpKhINYwcFCDAJFgwEdAcbdA=='
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#Calificaciondetalles-pj'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_REFERER' => 'http://qa.grupokonecta.local/qa_managementv2/web/index.php/calificacions/index?CalificacionsSearch%5Bid%5D=&CalificacionsSearch%5Bname%5D=sufi'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=cafsn656r636npspbcr0l79iau0j5vl9849616i9b5irevbj0o10'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '172.102.228.88'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => '[no address given]'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '65317'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'calificacion_id=1925&_pjax=%23Calificaciondetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20584?calificacion_id=1925&_pjax=%23Calificaciondetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/calificaciondetalles/delete/20584'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/calificaciondetalles/delete/20584'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20584'
+    'REQUEST_TIME_FLOAT' => 1626976492.152
+    'REQUEST_TIME' => 1626976492
+]
+2021-07-22 12:55:15 [172.102.228.88][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_calificaciondetalles1` FOREIGN KEY (`calificaciondetalle_id`) REFERENCES `tbl_calificaciondetalles` (`id`)
+The SQL being executed was: DELETE FROM `tbl_calificaciondetalles` WHERE `id`=20584
+    in /srv/www/htdocs/qa_managementv2/controllers/CalificaciondetallesController.php:164
+2021-07-22 12:55:15 [172.102.228.88][3468][-][info][application] $_GET = [
+    'calificacion_id' => '1925'
+    '_pjax' => '#Calificaciondetalles-pj'
+    'id' => '20584'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'cafsn656r636npspbcr0l79iau0j5vl9849616i9b5irevbj0o10'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_CSRF_TOKEN' => 'VjhTZEJGMGJlYTIMdnFBBB0VFCc7GV8SHV8RSXcCYAs.WxAuBABzTw=='
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#Calificaciondetalles-pj'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_REFERER' => 'http://qa.grupokonecta.local/qa_managementv2/web/index.php/calificacions/index?CalificacionsSearch%5Bid%5D=&CalificacionsSearch%5Bname%5D=sufi'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=cafsn656r636npspbcr0l79iau0j5vl9849616i9b5irevbj0o10'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '172.102.228.88'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => '[no address given]'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '65317'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'calificacion_id=1925&_pjax=%23Calificaciondetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20584?calificacion_id=1925&_pjax=%23Calificaciondetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/calificaciondetalles/delete/20584'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/calificaciondetalles/delete/20584'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20584'
+    'REQUEST_TIME_FLOAT' => 1626976515.357
+    'REQUEST_TIME' => 1626976515
+]
+2021-07-22 12:55:21 [172.102.228.88][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_calificaciondetalles1` FOREIGN KEY (`calificaciondetalle_id`) REFERENCES `tbl_calificaciondetalles` (`id`)
+The SQL being executed was: DELETE FROM `tbl_calificaciondetalles` WHERE `id`=20584
+    in /srv/www/htdocs/qa_managementv2/controllers/CalificaciondetallesController.php:164
+2021-07-22 12:55:21 [172.102.228.88][3468][-][info][application] $_GET = [
+    'calificacion_id' => '1925'
+    '_pjax' => '#Calificaciondetalles-pj'
+    'id' => '20584'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'cafsn656r636npspbcr0l79iau0j5vl9849616i9b5irevbj0o10'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_CSRF_TOKEN' => 'VjhTZEJGMGJlYTIMdnFBBB0VFCc7GV8SHV8RSXcCYAs.WxAuBABzTw=='
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#Calificaciondetalles-pj'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_REFERER' => 'http://qa.grupokonecta.local/qa_managementv2/web/index.php/calificacions/index?CalificacionsSearch%5Bid%5D=&CalificacionsSearch%5Bname%5D=sufi'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=cafsn656r636npspbcr0l79iau0j5vl9849616i9b5irevbj0o10'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '172.102.228.88'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => '[no address given]'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '65317'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'calificacion_id=1925&_pjax=%23Calificaciondetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20584?calificacion_id=1925&_pjax=%23Calificaciondetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/calificaciondetalles/delete/20584'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/calificaciondetalles/delete/20584'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20584'
+    'REQUEST_TIME_FLOAT' => 1626976521.148
+    'REQUEST_TIME' => 1626976521
+]
+2021-07-26 08:20:05 [172.102.228.126][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221507
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-07-26 08:20:05 [172.102.228.126][3468][-][info][application] $_GET = [
+    'bloque_id' => '52412'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221507'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_ID' => '8e4951e801004d6cf2878956758959d6ae63bc1d3e21b383b41e1b733eab87ba'
+    'SSL_SESSION_RESUMED' => 'Resumed'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\" Not;A Brand\";v=\"99\", \"Google Chrome\";v=\"91\", \"Chromium\";v=\"91\"'
+    'HTTP_X_CSRF_TOKEN' => 'cVNrQnRjUGZCCgoqQFQhADp.LAENPD8WOjQpb0EnAA8ZMCgIMiUTSw=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bloques/index?seccion_id=26996'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.102.228.126'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '54159'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507?bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221507'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221507'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507'
+    'REQUEST_TIME_FLOAT' => 1627305604.992
+    'REQUEST_TIME' => 1627305604
+]
+2021-07-26 08:25:57 [172.102.228.126][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221507
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-07-26 08:25:57 [172.102.228.126][3468][-][info][application] $_GET = [
+    'bloque_id' => '52412'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221507'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_RESUMED' => 'Initial'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\" Not;A Brand\";v=\"99\", \"Google Chrome\";v=\"91\", \"Chromium\";v=\"91\"'
+    'HTTP_X_CSRF_TOKEN' => 'Z3luSmMuNVJUIA8iVxlENCxUKQkacVoiLB4sZ1ZqZTsPGi0AJWh2fw=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bloques/index?seccion_id=26996'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.102.228.126'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '52043'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507?bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221507'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221507'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507'
+    'REQUEST_TIME_FLOAT' => 1627305957.511
+    'REQUEST_TIME' => 1627305957
+]
+2021-07-26 08:29:22 [172.102.228.126][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221507
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-07-26 08:29:22 [172.102.228.126][3468][-][info][application] $_GET = [
+    'bloque_id' => '52412'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221507'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_ID' => '4cb38cb412e47129b18da8c4e19283684e56a8285c3d51da144628095b9711f0'
+    'SSL_SESSION_RESUMED' => 'Resumed'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\" Not;A Brand\";v=\"99\", \"Google Chrome\";v=\"91\", \"Chromium\";v=\"91\"'
+    'HTTP_X_CSRF_TOKEN' => 'QzlQX2RYTWdwYDE3UG88AQgUFxwdByIXCF4SclEcHQ4rWhMVIh4OSg=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bloques/index?seccion_id=26996'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.102.228.126'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '49365'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507?bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221507'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221507'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507'
+    'REQUEST_TIME_FLOAT' => 1627306162.597
+    'REQUEST_TIME' => 1627306162
+]
+2021-07-26 08:30:08 [172.102.228.126][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221507
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-07-26 08:30:08 [172.102.228.126][3468][-][info][application] $_GET = [
+    'bloque_id' => '52412'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221507'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_ID' => '4cb38cb412e47129b18da8c4e19283684e56a8285c3d51da144628095b9711f0'
+    'SSL_SESSION_RESUMED' => 'Resumed'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\" Not;A Brand\";v=\"99\", \"Google Chrome\";v=\"91\", \"Chromium\";v=\"91\"'
+    'HTTP_X_CSRF_TOKEN' => 'SzI4aTgxOWZ4a1kBDAZIAAAffypBblYWAFV6RA11aQ8jUXsjfnd6Sw=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bloques/index?seccion_id=26996'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.102.228.126'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '62319'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507?bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221507'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221507'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507'
+    'REQUEST_TIME_FLOAT' => 1627306208.796
+    'REQUEST_TIME' => 1627306208
+]
+2021-07-26 08:30:56 [172.102.228.126][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221507
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-07-26 08:30:56 [172.102.228.126][3468][-][info][application] $_GET = [
+    'bloque_id' => '52412'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221507'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_ID' => '4cb38cb412e47129b18da8c4e19283684e56a8285c3d51da144628095b9711f0'
+    'SSL_SESSION_RESUMED' => 'Resumed'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\" Not;A Brand\";v=\"99\", \"Google Chrome\";v=\"91\", \"Chromium\";v=\"91\"'
+    'HTTP_X_CSRF_TOKEN' => 'b3RILlpwSHNcLSlGbkc5FSRZD20jLycDJBMKA280GBoHFwtkHDYLXg=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bloques/index?seccion_id=26996'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.102.228.126'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '59817'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507?bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221507'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221507'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507'
+    'REQUEST_TIME_FLOAT' => 1627306256.147
+    'REQUEST_TIME' => 1627306256
+]
+2021-07-26 08:31:27 [172.102.228.126][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221507
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-07-26 08:31:27 [172.102.228.126][3468][-][info][application] $_GET = [
+    'bloque_id' => '52412'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221507'
+]
+
+$_COOKIE = [
+    '_csrf' => '6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as:32:\"3Yah47qfK-GCy_opKgB-5DPihcCJFFC-\";'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+    'PHPSESSID' => 'ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '3468'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_RESUMED' => 'Initial'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\" Not;A Brand\";v=\"99\", \"Google Chrome\";v=\"91\", \"Chromium\";v=\"91\"'
+    'HTTP_X_CSRF_TOKEN' => 'b3RILlpwSHNcLSlGbkc5FSRZD20jLycDJBMKA280GBoHFwtkHDYLXg=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bloques/index?seccion_id=26996'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=6b29a0b2142e019edf1f8e8ae15d43a2cfd26624cf0044d9d4e9d66a507fa55as%3A32%3A%223Yah47qfK-GCy_opKgB-5DPihcCJFFC-%22%3B; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B; PHPSESSID=ifktqro7lmfrhksbtu38p756rvicupvpsbcrliohnek1llq3fko1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.102.228.126'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '49172'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507?bloque_id=52412&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221507'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221507'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221507'
+    'REQUEST_TIME_FLOAT' => 1627306287.526
+    'REQUEST_TIME' => 1627306287
+]
+2021-08-20 10:53:34 [172.102.228.248][3229][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=221345
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-08-20 10:53:34 [172.102.228.248][3229][-][info][application] $_GET = [
+    'bloque_id' => '52361'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '221345'
+]
+
+$_COOKIE = [
+    '_csrf' => '2ae041abdea7b4ca77cbff905b7de09caac5d1d4173c05128850bc03cd861fd3s:32:\"TwYhn44OoQMJWLqbsLA8tsMVjYaiMKv3\";'
+    'PHPSESSID' => 'g57ovjak8jgjseineevp1qffik896b14bnc1snbqijaeeoocgc80'
+    '_identity' => '116af7083feb7535a0dcf3a518821db81dea861f1c94ef3990e66d86c9307f80s:33:\"[\"3229\",\"engie.guerrero\",2592000]\";'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    '__id' => '3229'
+    'fnIdentity' => [
+        'id' => '3229'
+        'username' => 'engie.guerrero'
+        'authKey' => 'engie.guerrero'
+        'accessToken' => 'engie.guerrero'
+        'fullName' => 'GUERRERO SALINAS ENGIE LORENA'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'verDirectivo' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_ID' => '479f4d78bc99a6241d3a5a07842a95113eb132fae79cbf7e37e30ec4a0df6a32'
+    'SSL_SESSION_RESUMED' => 'Resumed'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Chromium\";v=\"92\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"92\"'
+    'HTTP_X_CSRF_TOKEN' => 'dHhYOE9IQ1ggDwFQIXx3FxspFXIYBDI6BzQZADs7Dg4eITlRAgM1aw=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bloques/index?seccion_id=26976'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=2ae041abdea7b4ca77cbff905b7de09caac5d1d4173c05128850bc03cd861fd3s%3A32%3A%22TwYhn44OoQMJWLqbsLA8tsMVjYaiMKv3%22%3B; PHPSESSID=g57ovjak8jgjseineevp1qffik896b14bnc1snbqijaeeoocgc80; _identity=116af7083feb7535a0dcf3a518821db81dea861f1c94ef3990e66d86c9307f80s%3A33%3A%22%5B%223229%22%2C%22engie.guerrero%22%2C2592000%5D%22%3B'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.102.228.248'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '65219'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=52361&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221345?bloque_id=52361&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/221345'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/221345'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/221345'
+    'REQUEST_TIME_FLOAT' => 1629474814.398
+    'REQUEST_TIME' => 1629474814
+]
+2021-09-01 18:20:14 [10.179.9.146][4028][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_calificaciondetalles1` FOREIGN KEY (`calificaciondetalle_id`) REFERENCES `tbl_calificaciondetalles` (`id`)
+The SQL being executed was: DELETE FROM `tbl_calificaciondetalles` WHERE `id`=20613
+    in /srv/www/htdocs/qa_managementv2/controllers/CalificaciondetallesController.php:164
+2021-09-01 18:20:14 [10.179.9.146][4028][-][info][application] $_GET = [
+    'calificacion_id' => '1936'
+    '_pjax' => '#Calificaciondetalles-pj'
+    'id' => '20613'
+]
+
+$_COOKIE = [
+    '_identity' => '6471ba8075631c6cc1eef108cc1832ab02707150fa5c05a68ba76d3698178d6es:37:\"[\"4028\",\"juan.cartagena.val\",2592000]\";'
+    'PHPSESSID' => 'enk006o5dfo75eo67lfu0664l5rv84nsp694m1ki3eds14eckv90'
+    '_csrf' => 'd428352d63c9414b8b67c9f3c531b6504f366dbb2fbd94de59728011a73b7d48s:32:\"U5vxC8OIVs2EwzmeVqcYw1gyzkeSdxVN\";'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    'fnIdentity' => [
+        'id' => '4028'
+        'username' => 'juan.cartagena.val'
+        'authKey' => 'juan.cartagena.val'
+        'accessToken' => 'juan.cartagena.val'
+        'fullName' => 'CARTAGENA VALLEJO JUAN MANUEL'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'verDirectivo' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '49'
+    ]
+    '__id' => '4028'
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_ID' => '57ff473ea0a04e31b8249dbe7967030ac0e1fd31a30ee86fee95772bf15b5b2e'
+    'SSL_SESSION_RESUMED' => 'Resumed'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Chromium\";v=\"92\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"92\"'
+    'HTTP_X_CSRF_TOKEN' => 'TUE4QzU5Rm4YdE47dgEJJxsyCgZCQysLGzBbGkIIIRc3Kl0QUUEQIA=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#Calificaciondetalles-pj'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/calificacions/index?CalificacionsSearch%5Bid%5D=&CalificacionsSearch%5Bname%5D=DTV+TIPO+CLIENTE+GO'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_identity=6471ba8075631c6cc1eef108cc1832ab02707150fa5c05a68ba76d3698178d6es%3A37%3A%22%5B%224028%22%2C%22juan.cartagena.val%22%2C2592000%5D%22%3B; PHPSESSID=enk006o5dfo75eo67lfu0664l5rv84nsp694m1ki3eds14eckv90; _csrf=d428352d63c9414b8b67c9f3c531b6504f366dbb2fbd94de59728011a73b7d48s%3A32%3A%22U5vxC8OIVs2EwzmeVqcYw1gyzkeSdxVN%22%3B'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '10.179.9.146'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '49172'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'calificacion_id=1936&_pjax=%23Calificaciondetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20613?calificacion_id=1936&_pjax=%23Calificaciondetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/calificaciondetalles/delete/20613'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/calificaciondetalles/delete/20613'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/calificaciondetalles/delete/20613'
+    'REQUEST_TIME_FLOAT' => 1630538414.738
+    'REQUEST_TIME' => 1630538414
+]
+2021-09-07 16:03:06 [172.102.228.8][3468][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_ejecucionbloquedetalles`, CONSTRAINT `fk_ejecucionbloquedetalles_bloquedetalles1` FOREIGN KEY (`bloquedetalle_id`) REFERENCES `tbl_bloquedetalles` (`id`) ON DELETE NO ACT)
+The SQL being executed was: DELETE FROM `tbl_bloquedetalles` WHERE `id`=195119
+    in /srv/www/htdocs/qa_managementv2/controllers/BloquedetallesController.php:265
+2021-09-07 16:03:06 [172.102.228.8][3468][-][info][application] $_GET = [
+    'bloque_id' => '46044'
+    '_pjax' => '#bloquesDetalles-pj'
+    'id' => '195119'
+]
+
+$_COOKIE = [
+    '_csrf' => '05516be997e395a641ce97ea47034a2ac4597987e16813cef4e517d1d3439583s:32:\"1LId9aTBuWWcQERA4lDDxYsEX8XSIY23\";'
+    'PHPSESSID' => '4f1tu6e43efb1b4pcp0kbbqo0hba33g9n9qq52t1ld3ikeslrkc1'
+    '_identity' => '4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas:36:\"[\"3468\",\"geraldin.vargas.m\",2592000]\";'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => 1
+    ]
+    '__id' => '3468'
+    'fnIdentity' => [
+        'id' => '3468'
+        'username' => 'geraldin.vargas.m'
+        'authKey' => 'geraldin.vargas.m'
+        'accessToken' => 'geraldin.vargas.m'
+        'fullName' => 'VARGAS MONTOYA GERALDIN'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'verDirectivo' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    'danger' => 'No puede eliminar la Sección porque corresponde al formulario de una o más personas evaluadas.'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_ID' => '6bbb0aae11bc46b7ef8b4a6728e26daef915890a3be1a9ba0d96622d89ecad29'
+    'SSL_SESSION_RESUMED' => 'Resumed'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Google Chrome\";v=\"93\", \" Not;A Brand\";v=\"99\", \"Chromium\";v=\"93\"'
+    'HTTP_X_CSRF_TOKEN' => 'dmd2SDNCZnJHKz8sCiMyMAMwIStiBzQzQgsyDEsbFTcuXy4behtUQQ=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#bloquesDetalles-pj'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bloques/index?seccion_id=23608'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-419,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=05516be997e395a641ce97ea47034a2ac4597987e16813cef4e517d1d3439583s%3A32%3A%221LId9aTBuWWcQERA4lDDxYsEX8XSIY23%22%3B; PHPSESSID=4f1tu6e43efb1b4pcp0kbbqo0hba33g9n9qq52t1ld3ikeslrkc1; _identity=4ba707429c93f313af63ec53fa6cee9b424590cffa8e4e3d1f15765587bdfcfas%3A36%3A%22%5B%223468%22%2C%22geraldin.vargas.m%22%2C2592000%5D%22%3B'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.102.228.8'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '59120'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'bloque_id=46044&_pjax=%23bloquesDetalles-pj'
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/bloquedetalles/delete/195119?bloque_id=46044&_pjax=%23bloquesDetalles-pj'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/bloquedetalles/delete/195119'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/bloquedetalles/delete/195119'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/bloquedetalles/delete/195119'
+    'REQUEST_TIME_FLOAT' => 1631048586.078
+    'REQUEST_TIME' => 1631048586
+]
+2021-10-05 16:31:28 [172.20.47.48][57][-][error][db] SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`ci_monitoreov2`.`tbl_tipificaciondetalles`, CONSTRAINT `fk_tipificaciones_d_tipificaciones_m1` FOREIGN KEY (`tipificacion_id`) REFERENCES `tbl_tipificacions` (`id`) ON DELETE NO ACTION ON UPD)
+The SQL being executed was: DELETE FROM `tbl_tipificacions` WHERE `id`=7603
+    in /srv/www/htdocs/qa_managementv2/controllers/TipificacionesController.php:124
+2021-10-05 16:31:28 [172.20.47.48][57][-][info][application] $_GET = [
+    'id' => '7603'
+]
+
+$_POST = [
+    '_csrf' => 'eUc1TkNDWnkAMH07IjYCHhcLB3okBGgBDQpdLA4wOUgmAGYvFSIFKw=='
+]
+
+$_COOKIE = [
+    '_identity' => 'dc71e3d821046f24b14308063d68625dab82f99a0a04f9c261de78d7f1b615e6s:27:\"[\"57\",\"yancy.ruiz\",2592000]\";'
+    '_csrf' => 'cdf4dc91ded3e6fc80f6f7d4e4f958c7f836da534e466dc3e8bc8a3e8ad7684as:32:\"ywHuauXgnL24gG2xtMhbMsc1_GSaVa_R\";'
+    'PHPSESSID' => '5al0b8jbsj05ivihkvan5f7qn6srnkuip3j2la7n6h83dd3j17v1'
+]
+
+$_SESSION = [
+    '__flash' => [
+        'danger' => -1
+    ]
+    'fnIdentity' => [
+        'id' => '57'
+        'username' => 'yancy.ruiz'
+        'authKey' => 'yancy.ruiz'
+        'accessToken' => 'yancy.ruiz'
+        'fullName' => 'RUIZ ALARCÓN YANCY LICETE '
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'verDirectivo' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+    '__id' => '57'
+    'rptFilterEvaluados' => [
+        '_csrf' => 'dWw5S1BnSS4MG3E.MRIRSRsgC383IHtWASFRKR0UKh8qK2oqBgYWfA=='
+        'EvaluadosSearch' => [
+            'id' => ''
+            'name' => 'urrea clavijo f'
+            'dsusuario_red' => ''
+            'identificacion' => ''
+            'email' => ''
+        ]
+    ]
+    'rptFilterFormularios' => [
+        '_csrf' => 'UXY2N0R4MEwoAX5CJQ1oKz86BAMjPwI0JTteVQkLU30OMWVWEhlvHg=='
+        'Ejecucionformularios' => [
+            'created' => '2021-10-01 - 2021-10-31'
+            'usua_id_lider' => ''
+            'usua_id' => ''
+            'evaluado_id' => ''
+            'dimension_id' => ''
+            'arbol_id' => '1585'
+            'equipo_id' => ''
+        ]
+    ]
+    'rptModelParametrizacion' => app\models\ParametrizacionEncuesta#1
+    (
+        [clienteName] => null
+        [pcrcName] => null
+        [datosPreguntas] => [
+            0 => app\models\Preguntas#2
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31090
+                    'pre_indicador' => 'pregunta1'
+                    'categoria' => 1
+                    'enunciado_pre' => '¿Cómo calificas el servicio que acabas de recibir?'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31090
+                    'pre_indicador' => 'pregunta1'
+                    'categoria' => 1
+                    'enunciado_pre' => '¿Cómo calificas el servicio que acabas de recibir?'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            1 => app\models\Preguntas#3
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31091
+                    'pre_indicador' => 'pregunta2'
+                    'categoria' => 5
+                    'enunciado_pre' => '¿Cómo calificas la atención del representante?'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31091
+                    'pre_indicador' => 'pregunta2'
+                    'categoria' => 5
+                    'enunciado_pre' => '¿Cómo calificas la atención del representante?'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            2 => app\models\Preguntas#4
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31092
+                    'pre_indicador' => 'pregunta3'
+                    'categoria' => 7
+                    'enunciado_pre' => ' ¿Qué tan satisfecho estás con la solución recibida?'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31092
+                    'pre_indicador' => 'pregunta3'
+                    'categoria' => 7
+                    'enunciado_pre' => ' ¿Qué tan satisfecho estás con la solución recibida?'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            3 => app\models\Preguntas#5
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31093
+                    'pre_indicador' => 'pregunta4'
+                    'categoria' => 6
+                    'enunciado_pre' => '¿Qué tanto Recomendarías a Seguros Sura?'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31093
+                    'pre_indicador' => 'pregunta4'
+                    'categoria' => 6
+                    'enunciado_pre' => '¿Qué tanto Recomendarías a Seguros Sura?'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            4 => app\models\Preguntas#6
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31094
+                    'pre_indicador' => 'pregunta5'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31094
+                    'pre_indicador' => 'pregunta5'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            5 => app\models\Preguntas#7
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31095
+                    'pre_indicador' => 'pregunta6'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31095
+                    'pre_indicador' => 'pregunta6'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            6 => app\models\Preguntas#8
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31096
+                    'pre_indicador' => 'pregunta7'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31096
+                    'pre_indicador' => 'pregunta7'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            7 => app\models\Preguntas#9
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31097
+                    'pre_indicador' => 'pregunta8'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31097
+                    'pre_indicador' => 'pregunta8'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            8 => app\models\Preguntas#10
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31098
+                    'pre_indicador' => 'pregunta9'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31098
+                    'pre_indicador' => 'pregunta9'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            9 => app\models\Preguntas#11
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 31099
+                    'pre_indicador' => 'pregunta10'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 31099
+                    'pre_indicador' => 'pregunta10'
+                    'categoria' => 8
+                    'enunciado_pre' => 'NA'
+                    'id_parametrizacion' => 107
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+        ]
+        [datosCategoriagestion] => [
+            0 => app\models\Categoriagestion#12
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 209
+                    'name' => 'FELICITACION'
+                    'id_parametrizacion' => 107
+                    'prioridad' => 1
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 209
+                    'name' => 'FELICITACION'
+                    'id_parametrizacion' => 107
+                    'prioridad' => 1
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+            1 => app\models\Categoriagestion#13
+            (
+                [yii\db\BaseActiveRecord:_attributes] => [
+                    'id' => 210
+                    'name' => 'CRITICA'
+                    'id_parametrizacion' => 107
+                    'prioridad' => 2
+                ]
+                [yii\db\BaseActiveRecord:_oldAttributes] => [
+                    'id' => 210
+                    'name' => 'CRITICA'
+                    'id_parametrizacion' => 107
+                    'prioridad' => 2
+                ]
+                [yii\db\BaseActiveRecord:_related] => []
+                [yii\base\Model:_errors] => null
+                [yii\base\Model:_validators] => null
+                [yii\base\Model:_scenario] => 'default'
+                [yii\base\Component:_events] => []
+                [yii\base\Component:_behaviors] => []
+            )
+        ]
+        [yii\db\BaseActiveRecord:_attributes] => [
+            'id' => 107
+            'cliente' => 204
+            'programa' => 1844
+        ]
+        [yii\db\BaseActiveRecord:_oldAttributes] => [
+            'id' => 107
+            'cliente' => 204
+            'programa' => 1844
+        ]
+        [yii\db\BaseActiveRecord:_related] => []
+        [yii\base\Model:_errors] => null
+        [yii\base\Model:_validators] => null
+        [yii\base\Model:_scenario] => 'default'
+        [yii\base\Component:_events] => []
+        [yii\base\Component:_behaviors] => []
+    )
+    'rptFilterFeedback' => [
+        '_csrf' => 'SzFRV1RnWE4yRhkiNRIAKSV9Y2MzIGo2P3w5NRkUO38UdgI2AgYHHA=='
+        'Ejecucionfeedbacks' => [
+            'created' => '2021-10-01 - 2021-10-31'
+            'arbol_id' => ''
+            'usua_id' => ''
+            'evaluado_id' => ''
+            'usua_id_lider' => '808'
+            'snaviso_revisado' => ''
+            'dimension_id' => ''
+        ]
+    ]
+    'iboxPage' => '/qa_managementv2/web/index.php/basesatisfaccion/inboxaleatorio'
+    'searchInbox' => [
+        '_csrf' => 'Y0IyZ256SEgaNXoSDw8QLw0OAFMJPXowFw9aBSMJK3k8BWEGOBsXGg=='
+        'BaseSatisfaccionSearch' => [
+            'pcrc' => '1844'
+            'fecha' => '2021-09-01 - 2021-09-30'
+            'responsable' => ''
+            'estado' => ''
+            'tipologia' => ''
+            'id_lider_equipo' => ''
+            'agente' => ''
+            'dimension' => ''
+        ]
+    ]
+    'searchInboxA' => [
+        '_csrf' => 'YmNtSU9RT3cbFCU8LiQXEAwvX30oFn0PFi4FKwIiLEY9JD4oGTAQJQ=='
+        'BaseSatisfaccionSearch' => [
+            'pcrc' => '1844'
+            'fecha' => '2021-09-01 - 2021-09-30'
+            'responsable' => ''
+            'estado' => ''
+            'tipologia' => ''
+            'id_lider_equipo' => ''
+            'agente' => ''
+            'dimension' => ''
+        ]
+    ]
+    'danger' => 'No se pudo eliminar la tipificación \"FNA RESPONSABILIDAD RESPETO LEGALIZADORES\" ya que se encuentra relacionada'
+]
+
+$_SERVER = [
+    'HTTPS' => 'on'
+    'SSL_TLS_SNI' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_C' => 'CO'
+    'SSL_SERVER_S_DN_ST' => 'Cundinamarca'
+    'SSL_SERVER_S_DN_L' => 'Bogota'
+    'SSL_SERVER_S_DN_O' => 'Konecta Colombia'
+    'SSL_SERVER_S_DN_OU' => 'Tecnologia'
+    'SSL_SERVER_S_DN_CN' => 'qa.grupokonecta.local'
+    'SSL_SERVER_S_DN_Email' => 'admin@allus.com.co'
+    'SSL_SERVER_I_DN_CN' => 'SB1RPD1W12S-CA'
+    'SSL_VERSION_INTERFACE' => 'mod_ssl/2.4.6'
+    'SSL_VERSION_LIBRARY' => 'OpenSSL/1.0.1k'
+    'SSL_PROTOCOL' => 'TLSv1.2'
+    'SSL_SECURE_RENEG' => 'true'
+    'SSL_COMPRESS_METHOD' => 'NULL'
+    'SSL_CIPHER' => 'ECDHE-RSA-AES128-GCM-SHA256'
+    'SSL_CIPHER_EXPORT' => 'false'
+    'SSL_CIPHER_USEKEYSIZE' => '128'
+    'SSL_CIPHER_ALGKEYSIZE' => '128'
+    'SSL_CLIENT_VERIFY' => 'NONE'
+    'SSL_SERVER_M_VERSION' => '3'
+    'SSL_SERVER_M_SERIAL' => '6900000BE709671770D7C945AE000000000BE7'
+    'SSL_SERVER_V_START' => 'Feb 27 22:19:55 2021 GMT'
+    'SSL_SERVER_V_END' => 'May 16 20:36:56 2022 GMT'
+    'SSL_SERVER_S_DN' => 'emailAddress=admin@allus.com.co,CN=qa.grupokonecta.local,OU=Tecnologia,O=Konecta Colombia,L=Bogota,ST=Cundinamarca,C=CO'
+    'SSL_SERVER_I_DN' => 'CN=SB1RPD1W12S-CA,DC=multienlace,DC=com,DC=co'
+    'SSL_SERVER_A_KEY' => 'rsaEncryption'
+    'SSL_SERVER_A_SIG' => 'sha256WithRSAEncryption'
+    'SSL_SESSION_ID' => '9772a7c7fc1ded5f6eb9cce13651bcfba69ab0b73364bb1486f34059e5708d6b'
+    'SSL_SESSION_RESUMED' => 'Resumed'
+    'HTTP_HOST' => 'qa.grupokonecta.local'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '66'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_ORIGIN' => 'https://qa.grupokonecta.local'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_REFERER' => 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/tipificaciones/index?TipificacionesSearch%5Bid%5D=&TipificacionesSearch%5Bname%5D=FNA+RESPONSABILIDAD+RESPETO+LEGALIZADORES'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-ES,es;q=0.9'
+    'HTTP_COOKIE' => '_identity=dc71e3d821046f24b14308063d68625dab82f99a0a04f9c261de78d7f1b615e6s%3A27%3A%22%5B%2257%22%2C%22yancy.ruiz%22%2C2592000%5D%22%3B; _csrf=cdf4dc91ded3e6fc80f6f7d4e4f958c7f836da534e466dc3e8bc8a3e8ad7684as%3A32%3A%22ywHuauXgnL24gG2xtMhbMsc1_GSaVa_R%22%3B; PHPSESSID=5al0b8jbsj05ivihkvan5f7qn6srnkuip3j2la7n6h83dd3j17v1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.6 (Linux/SUSE) Server at qa.grupokonecta.local Port 443</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.6 (Linux/SUSE)'
+    'SERVER_NAME' => 'qa.grupokonecta.local'
+    'SERVER_ADDR' => '172.20.73.184'
+    'SERVER_PORT' => '443'
+    'REMOTE_ADDR' => '172.20.47.48'
+    'DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'REQUEST_SCHEME' => 'https'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/srv/www/htdocs'
+    'SERVER_ADMIN' => 'ilunac@grupokonecta.com'
+    'SCRIPT_FILENAME' => '/srv/www/htdocs/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '50184'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/tipificaciones/delete/7603'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/tipificaciones/delete/7603'
+    'PATH_TRANSLATED' => '/srv/www/htdocs/tipificaciones/delete/7603'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/tipificaciones/delete/7603'
+    'REQUEST_TIME_FLOAT' => 1633469488.86
+    'REQUEST_TIME' => 1633469488
+]

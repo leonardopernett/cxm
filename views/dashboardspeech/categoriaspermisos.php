@@ -121,7 +121,7 @@ $this->title = 'Configuración de Categorias -- QA & Speech --';
         if (varIdPcrc != "") {
             $.ajax({
                 method: "post",
-                //url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/prueba3",
+
                 url: "prueba3",
                 data : {
                     arbol_id : varIdPcrc,

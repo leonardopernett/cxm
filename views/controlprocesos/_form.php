@@ -73,7 +73,7 @@ $this->title = 'Agregar Valorador';
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -274,8 +274,7 @@ $this->title = 'Agregar Valorador';
                             var numRta =   JSON.parse(response);    
                             console.log(numRta);
 
-                            // window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/index','_self');
-                            window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/index','_self');
+                            window.open('../controlprocesos/index','_self');
 
                     }});
                 }

@@ -191,8 +191,6 @@ if ($txtSesiones == 2) {
 						var respuesta = JSON.parse(response);
 						console.log(respuesta);
 						if(respuesta == 1){
-							//window.location.href = "http://qa.allus.com.co/qa_managementv2/web/index.php/controlalinearvoc/updatevoc?txtPcrc="+varPCRC;
-							//window.location.href='updatevocalinear?txtPcrc='+varPCRC'&varSession='+varSesiones;
 							window.location.href='updatevocalinear?txtPcrc='+varPCRC+'&varSession='+varSesiones;
 						}else{
 							alert("Error al intentar eliminar la alerta");
@@ -212,7 +210,6 @@ if ($txtSesiones == 2) {
 						var respuesta = JSON.parse(response);
 						console.log(respuesta);
 						if(respuesta == 1){
-							//window.location.href = "http://qa.allus.com.co/qa_managementv2/web/index.php/controlalinearvoc/updatevoc?txtPcrc="+varPCRC;
 							window.location.href='updatevocalinear?txtPcrc='+varPCRC+'&varSession='+varSesiones;
 						}else{
 							alert("Error al intentar eliminar la alerta");
@@ -226,6 +223,5 @@ if ($txtSesiones == 2) {
 	function menuPrincipal(){	
 		var varPCRC = "<?php echo $txtIdPcrc; ?>";
 		window.location.href='updatevoc?txtPcrc='+varPCRC;	
-        	//window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/controlalinearvoc/indexvoc?arbol_idV='+varPCRC ,'_self');
     	};
 </script>

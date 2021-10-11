@@ -81,7 +81,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isHacerMonitoreo();
+                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],						
 							[
@@ -89,7 +89,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno();
+                            return Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                             [
@@ -97,7 +97,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isVerInboxAleatorio();
+                            return Yii::$app->user->identity->isVerInboxAleatorio() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                             [
@@ -105,7 +105,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isVerDesempeno();
+                            return Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                             [
@@ -121,7 +121,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isverTecDesempeno();
+                            return Yii::$app->user->identity->isverTecDesempeno() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                             [
@@ -129,7 +129,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isverAlertas();
+                            return Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                             [
@@ -2174,6 +2174,13 @@ class BasesatisfaccionController extends Controller {
              */
             public function actionShowformulariogestion($basesatisfaccion_id, $preview, $aleatorio = null, $fill_values, $view = "index",$banderaescalado = false, $idtmp = null) {
 
+                $txtbasefuente = null;
+                if ($preview == 5) {
+                    $txtpreview = $basesatisfaccion_id;
+                    $txtidbase = Yii::$app->db->createCommand("SELECT b.connid FROM tbl_base_satisfaccion b WHERE b.id = $txtpreview")->queryScalar();
+                    $txtbasefuente = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,', ',d.fechareal) AS dsfuente FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.connid = '$txtidbase'")->queryScalar();                    
+                }
+
                 $modelBase = BaseSatisfaccion::findOne($basesatisfaccion_id);
                 //REDIRECT CORRECTO
                 $redct = ($modelBase->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
@@ -2293,6 +2300,7 @@ class BasesatisfaccionController extends Controller {
 						   $TmpForm->formulario_id = $modelReglaNegocio->id_formulario;
 						   $TmpForm->created = date("Y-m-d H:i:s");
 						   $TmpForm->basesatisfaccion_id = $modelBase->id;
+                           			   $TmpForm->dsfuente_encuesta = $txtbasefuente;
 						   if ((!is_null($equipoevaluado) || !empty($equipoevaluado) || $equipoevaluado != '') && (!is_null($evaluado) || !empty($evaluado) || $evaluado != '')) {
 							   $TmpForm->usua_id_lider = $equipo->usua_id;
 							   $TmpForm->evaluado_id = $evaluado->id;
@@ -2546,9 +2554,8 @@ class BasesatisfaccionController extends Controller {
                 $varConnids = $modelBase->connid;
                 $vartexto = null;
                 $varvalencia = null;
-                // var_dump($varbuzon);
-
-                if ($varbuzon != null) {
+                $varcontenido = null;
+                
                     ob_start();
                     $curl = curl_init();
 
@@ -2573,33 +2580,55 @@ class BasesatisfaccionController extends Controller {
 
                     curl_close($curl);
                     ob_clean();
-                    // var_dump($response);
 
                     if (!$response) {
-                        // die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
                         $vartexto = "Error al buscar transcipcion";
                         $varvalencia = "Error al buscar valencia emocioanl";
+                        $varcontenido = 0;
                     }
 
                     $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
 
                     if (count($response) == 0) {
-                        // die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
                         $vartexto = "Transcripcion no encontrada";
                         $varvalencia = "Valencia emocional no encontrada";
+                        $varcontenido = 0;
                     }else{
                         $vartexto = $response[0]['transcription'];
                         $varvalencia = $response[0]['valencia'];
-                    }
-                }
+
+                        if ($varvalencia == "NULL") {
+                            $varvalencia = "Buzón sin información";
+                        }
+
+                        $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN ('$varConnids')")->queryScalar();
+
+                        if ($varverificaconnid == 0) { 
+                            Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
+                                'connid' => $varConnids,
+                                'transcripcion' => $vartexto,
+                                'valencia' => $varvalencia,
+                                'fechagenerada' => $modelBase->fecha_satu,
+                                'fechacreacion' => date("Y-m-d"),
+                                'usua_id' => Yii::$app->user->identity->id,
+                                'anulado' => 0,
+                            ])->execute();
+                        }
+
+                        $varcontenido = 1;
+                    } 
+
 
                 return $this->render('showformulariosatisfaccion', [
                             'data' => $data,
-							'view' => $view,
+                            'view' => $view,
                             'formulario' => true,
                             'banderaescalado' => false,
                             'vartexto' => $vartexto,
                             'varvalencia' => $varvalencia,
+                            'preview' => $preview,
+                            'varConnids' => $varConnids,
+                            'varcontenido' => $varcontenido,
                 ]);
             }
 
@@ -2635,6 +2664,8 @@ class BasesatisfaccionController extends Controller {
                 $arrFormulario["transacion_id"] = $_POST['transacion_id'];
                 $arrFormulario["sn_mostrarcalculo"] = 1;
 		        $view = (isset($_POST['view']))?$_POST['view']:null;
+
+
                 $modelBase = BaseSatisfaccion::findOne($basesatisfaccion_id);
                 /* $modelBase->comentario = $arrFormulario["dscomentario"];
                   $modelBase->tipologia = $_POST['categoria'];
@@ -2866,6 +2897,8 @@ class BasesatisfaccionController extends Controller {
                     Yii::$app->session->setFlash('danger', Yii::t('app', 'error exception') . ": " . $exc->getMessage());
                 }
 
+                    
+
                 //REDIRECT CORRECTO
                 if ($view == "index") {
                     $redct = ($modelBase->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
@@ -2875,6 +2908,7 @@ class BasesatisfaccionController extends Controller {
                     $redct = $view;
                     return $this->redirect([$redct]);
                 }
+		
             }
 
             /**
@@ -3664,11 +3698,15 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 /* ES ASESOR DE AMIGO */
                 $data->esAsesor = true;
+                $vartexto = null;
+                $varvalencia = null;
                 return $this->render('showformulariosatisfaccion', [
                             'data' => $data,
                             'view' => $view,
                             'formulario' => true,
-                            'banderaescalado' => false
+                            'banderaescalado' => false,
+                            'vartexto' => $vartexto,
+                            'varvalencia' => $varvalencia,
                 ]);
             }
 
@@ -5596,6 +5634,43 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                  
 
                 die(json_encode($varResultados));
+            }
+
+
+            public function actionEnviarvalencias(){
+                $varvalencia = Yii::$app->request->post("txtvaridselectvalencias");
+                $varconnids = Yii::$app->request->post("txtvarconnid");
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/update/emotional-valence',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_SSL_VERIFYPEER=> false,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS =>'{"connid":"'.$varconnids.'", "valencia": "'.$varvalencia.'"}',
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                  ),
+                ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+
+                $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+                Yii::$app->db->createCommand()->update('tbl_kaliope_transcipcion',[
+                                          'valencia' => $varvalencia,
+                                      ],'connid = "'.$varconnids.'"')->execute(); 
+                
+                die(json_encode($response));
             }
 
 

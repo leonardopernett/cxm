@@ -164,8 +164,6 @@ use yii\bootstrap\Modal;
         else{
             $.ajax({
                 method: "post",
-                //url: "http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/prueba",
-                //url: "http://qa.allus.com.co/qa_managementv2/web/index.php/controlprocesos/prueba",
 		url: "prueba",
                 data : {
                     arbol_id : arbolTxt,

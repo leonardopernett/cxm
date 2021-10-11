@@ -19,13 +19,13 @@ use app\models\Controldimensionamiento;
 			return[
 				'access' => [
 						'class' => AccessControl::classname(),
-						'only' => ['createdimensionar','updatedimensionar'],
+						'only' => ['index','createdimensionar','updatedimensionar','enviararchivo'],
 						'rules' => [
 							[
 								'allow' => true,
 								'roles' => ['@'],
 								'matchCallback' => function() {
-                            return Yii::$app->user->identity->isControlProcesoCX();
+                            return Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                         },
 							],
 						]
@@ -40,34 +40,108 @@ use app\models\Controldimensionamiento;
 		}
 		
 		public function actionIndex(){
-			return $this->render('index');
+			$model = new Controldimensionamiento();
+			$varListresult = null;
+			$yearActual = date("Y");
+			$varListresult = null;
+			$varusuario = Yii::$app->user->identity->id;
+
+			$form = Yii::$app->request->post();
+			if($model->load($form)){
+				
+				$varmes = $model->month;
+
+				$rol =  new Query;
+			    $rol     ->select(['tbl_roles.role_id'])
+			                ->from('tbl_roles')
+			                ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+			                            'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+			                ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+			                            'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
+			                ->where('tbl_usuarios.usua_id = '.$varusuario.'');                    
+			    $command = $rol->createCommand();
+			    $roles = $command->queryScalar();
+
+			    if ($roles == '270' || $roles == '309') {
+			    	$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.year = '$yearActual' AND cd.month = '$varmes'")->queryAll();
+			    }else{
+			    	$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = '$varusuario' AND cd.year = '$yearActual' AND cd.month = '$varmes'")->queryAll();
+			    }
+				 
+			}else{				
+				$MesActual = date("Y-m-d");
+				$MesActual1 = date("Y-m-d",strtotime($MesActual."+ 1 month"));
+				$MesActual2 = date("m",strtotime($MesActual1));
+
+				$varmonth = null;
+			      if ($MesActual2 == '01') {
+			        $varmonth = "Enero";
+			      }
+			      if ($MesActual2 == '02') {
+			        $varmonth = "Febrero";
+			      }
+			      if ($MesActual2 == '03') {
+			        $varmonth = "Marzo";
+			      }
+			      if ($MesActual2 == '04') {
+			        $varmonth = "Abril";
+			      }
+			      if ($MesActual2 == '05') {
+			        $varmonth = "Mayo";
+			      }
+			      if ($MesActual2 == '06') {
+			        $varmonth = "Junio";
+			      }
+			      if ($MesActual2 == '07') {
+			        $varmonth = "Julio";
+			      }
+			      if ($MesActual2 == '08') {
+			        $varmonth = "Agosto";
+			      }
+			      if ($MesActual2 == '09') {
+			        $varmonth = "Septiembre";
+			      }
+			      if ($MesActual2 == '10') {
+			        $varmonth = "Octubre";
+			      }
+			      if ($MesActual2 == '11') {
+			        $varmonth = "Noviembre";
+			      }
+			      if ($MesActual2 == '12') {
+			        $varmonth = "Diciembre";
+			      }
+
+			      $varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = '$varusuario' AND cd.year = '$yearActual' AND cd.month = '$varmonth'")->queryAll();
+			}
+
+			return $this->render('index',[
+				'model' => $model,
+				'varListresult' => $varListresult,
+			]);
 		}
 
 
-		public function actionCreatedimensionar(){			
-			return $this->renderAjax('creardimensionamiento');
-		}
+		public function actionCreatedimensionar(){	
+			$model = new Controldimensionamiento();	
 
-		public function actionCrearpruebas(){
-			$txtusuaid = Yii::$app->request->post("txtusuaid");
-			$txtyear  = Yii::$app->request->post("txtyear");
-			$txtmonth  = Yii::$app->request->post("txtmonth");
-			$txtcantvalor  = Yii::$app->request->post("txtcantvalor");
-			$txttiempollamada  = Yii::$app->request->post("txttiempollamada");
-			$txttiempoadicional  = Yii::$app->request->post("txttiempoadicional");
-			$txtactuales  = Yii::$app->request->post("txtactuales");
-			$txtotrasactividad  = Yii::$app->request->post("txtotrasactividad");
-			$txtturnopromedio  = Yii::$app->request->post("txtturnopromedio");
-			$txtausentismo  = Yii::$app->request->post("txtausentismo");
-			$txtvacapermilicen  = Yii::$app->request->post("txtvacapermilicen");
-			$txtfechacreacion  = Yii::$app->request->post("txtfechacreacion");
-			$txtanulado  = Yii::$app->request->post("txtanulado");
+			$form = Yii::$app->request->post();
+			if($model->load($form)){
+				$txtusuaid = Yii::$app->user->identity->id;
+				$txtyear  = $model->year;
+				$txtmonth  = $model->month;
+				$txtcantvalor  = $model->cant_valor;
+				$txttiempollamada  = $model->tiempo_llamada;
+				$txttiempoadicional  = $model->tiempoadicional;
+				$txtactuales  = $model->actuales;
+				$txtotrasactividad  = $model->otras_actividad;
+				$txtturnopromedio  = $model->turno_promedio;
+				$txtausentismo  = $model->ausentismo;
+				$txtvacapermilicen  = $model->vaca_permi_licen;
 
-			$varResultados = null;
+				$varConteo = Yii::$app->db->createCommand("SELECT COUNT(cd.usua_id) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0  AND cd.usua_id = $txtusuaid AND cd.year = '$txtyear' AND cd.month = '$txtmonth'")->queryScalar(); 
 
-			if ($txtusuaid != null) {	
-
-	            Yii::$app->db->createCommand()->insert('tbl_control_dimensionamiento',[
+				if ($varConteo == 0) {
+					Yii::$app->db->createCommand()->insert('tbl_control_dimensionamiento',[
 	                                'usua_id' => $txtusuaid,
 	                                'year' => $txtyear,
 	                                'month' => $txtmonth,
@@ -79,28 +153,29 @@ use app\models\Controldimensionamiento;
 	                                'turno_promedio' => $txtturnopromedio,
 	                                'ausentismo' => $txtausentismo,
 	                                'vaca_permi_licen' => $txtvacapermilicen,
-	                                'fechacreacion' => $txtfechacreacion,
-	                                'anulado' => $txtanulado,
+	                                'fechacreacion' => date("Y-m-d"),
+	                                'anulado' => 0,
 	                            ])->execute(); 
 
-	            $txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = $txtusuaid and year like '$txtyear' and month like '$txtmonth' and anulado = 0")->queryScalar(); 
+					$txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = $txtusuaid and year = '$txtyear' and month = '$txtmonth' and anulado = 0")->queryScalar(); 
 
-	            $txtduracion_ponde = $txttiempollamada + $txttiempoadicional;
-	            $txtocupacion = 80 / 100;
-	            $txtcarga_trabajo = $txtcantvalor * $txtduracion_ponde  / 3600;
-	            $txthorasCNX = $txtcarga_trabajo / $txtocupacion;
-	            $txtuti_gentes = 92 / 100;
-	            $txthoras_nomina_monit = $txthorasCNX  / $txtuti_gentes;
-	            $txthoras_laboral_mes = 192;
-	            $txtFTE = $txthoras_nomina_monit / $txthoras_laboral_mes;
-	            $txtp_monit = ($txtFTE * 48 / $txtturnopromedio) * (1 + ($txtausentismo / 100));
-	            $txtp_otras_actividad = ($txthoras_nomina_monit *  ($txtotrasactividad / 100) / $txthoras_laboral_mes) * (48 / $txtturnopromedio);
-	            $txtpersonas = $txtp_monit + $txtp_otras_actividad;	            
-	            $txtpnas_vacaciones = $txtp_monit * ($txtvacapermilicen / 100);
-	            $txtpnas_ausentismo = ($txtausentismo / 100) * $txtp_monit;
-	            $txtexceso_deficit = $txtactuales - $txtpersonas;
+					$txtduracion_ponde = $txttiempollamada + $txttiempoadicional;
+		            $txtocupacion = 80 / 100;
+		            $txtcarga_trabajo = $txtcantvalor * $txtduracion_ponde  / 3600;
+		            $txthorasCNX = $txtcarga_trabajo / $txtocupacion;
+		            $txtuti_gentes = 92 / 100;
+		            $txthoras_nomina_monit = $txthorasCNX  / $txtuti_gentes;
+		            $txthoras_laboral_mes = 192;
+		            $txtFTE = $txthoras_nomina_monit / $txthoras_laboral_mes;
+		            $txtp_monit = ($txtFTE * 48 / $txtturnopromedio) * (1 + ($txtausentismo / 100));
+		            $txtp_otras_actividad = ($txthoras_nomina_monit *  ($txtotrasactividad / 100) / $txthoras_laboral_mes) * (48 / $txtturnopromedio);
+		            $txtpersonas = $txtp_monit + $txtp_otras_actividad;	            
+		            $txtpnas_vacaciones = $txtp_monit * ($txtvacapermilicen / 100);
+		            $txtpnas_ausentismo = ($txtausentismo / 100) * $txtp_monit;
+		            $txtexceso_deficit = $txtactuales - $txtpersonas;
 
-	            Yii::$app->db->createCommand()->insert('tbl_control_dimensionar',[
+
+		            Yii::$app->db->createCommand()->insert('tbl_control_dimensionar',[
 	                                'iddimensionamiento' => $txtdimensionId,
 	                                'duracion_ponde' => $txtduracion_ponde,
 	                                'ocupacion' => $txtocupacion,
@@ -116,142 +191,112 @@ use app\models\Controldimensionamiento;
 	                                'pnas_vacaciones' => $txtpnas_vacaciones,
 	                                'pnas_ausentismo' => $txtpnas_ausentismo,
 	                                'exceso_deficit' => $txtexceso_deficit,
-	                                'fechacreacion' => $txtfechacreacion,
-	                                'anulado' => $txtanulado,
+	                                'fechacreacion' => date("Y-m-d"),
+	                                'anulado' => 0,
 	                            ])->execute(); 
 
-	            $varResultados = 0;
+				}
 
-			}else{
-				$varResultados = 1;
+				return $this->redirect('index');
+			}	
+			
+			return $this->renderAjax('creardimensionamiento',[
+				'model' => $model,
+			]);
+		}
+
+		public function actionUpdatedimensionar(){	
+			$model = new Controldimensionamiento();
+
+			$form = Yii::$app->request->post();
+			if($model->load($form)){
+				$varsession = Yii::$app->user->identity->id;
+				$varyear = date("Y");
+				$varmonth = $model->month;
+
+				$varconteoresult = Yii::$app->db->createCommand("SELECT count(cd.iddimensionamiento) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = $varsession AND cd.year = '$varyear' AND cd.month = '$varmonth'")->queryScalar();
+
+				if ($varconteoresult != 0) {
+					return $this->redirect(array('actualizadimensiona','varmonth'=>$varmonth));
+				}else{
+					return $this->redirect('index');
+				}				
 			}
 
-			die(json_encode($varResultados));
-			
+			return $this->renderAjax('updatedimensionar',[
+				'model' => $model,
+			]);
 		}
 
+		public function actionActualizadimensiona($varmonth){
+			$varsession = Yii::$app->user->identity->id;
+			$varyear = date("Y");
+			$varmes = $varmonth;
+			$model = new Controldimensionamiento();
 
-		public function actionUpdatedimensionar(){			
-			return $this->renderAjax('actualizardimensionamiento');
-		}
+			$varlistaresult = Yii::$app->db->createCommand("SELECT * FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = $varsession AND cd.year = '$varyear' AND cd.month = '$varmes'")->queryAll();
 
-		public function actionCrearpruebas2(){			
-			$txtmeSes= Yii::$app->request->post("txtmeSes");
-			$txtusuaid = Yii::$app->user->identity->id;
-			$txtYear = date("Y");
+			$variddimensiona = Yii::$app->db->createCommand("SELECT DISTINCT cd.iddimensionamiento FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = $varsession AND cd.year = '$varyear' AND cd.month = '$varmes'")->queryScalar();
 
-			$txtMes = null;
-			switch ($txtmeSes) {
-				case '1':
-					$txtMes = "Enero";
-					break;
-				case '2':
-					$txtMes = "Febrero";
-					break;
-				case '3':
-					$txtMes = "Marzo";
-					break;
-				case '4':
-					$txtMes = "Abril";
-					break;
-				case '5':
-					$txtMes = "Mayo";
-					break;
-				case '6':
-					$txtMes = "Junio";
-					break;
-				case '7':
-					$txtMes = "Julio";
-					break;
-				case '8':
-					$txtMes = "Agosto";
-					break;
-				case '9':
-					$txtMes = "Septiembre";
-					break;
-				case '10':
-					$txtMes = "Octubre";
-					break;
-				case '11':
-					$txtMes = "Noviembre";
-					break;
-				case '12':
-					$txtMes = "Diciembre";
-					break;
-				default:
-					# code...
-					break;
-			}
+			$form = Yii::$app->request->post();
+			if($model->load($form)){
 
-			$data = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = $txtusuaid and anulado = 0 and year like '$txtYear' and month like '$txtMes'")->queryScalar();
-			
-			$varcantvalor = Yii::$app->db->createCommand("select cant_valor from tbl_control_dimensionamiento where iddimensionamiento = $data")->queryScalar();
-	        $vartimellama = Yii::$app->db->createCommand("select tiempo_llamada from tbl_control_dimensionamiento where iddimensionamiento = $data")->queryScalar();
-	        $vartimeadici = Yii::$app->db->createCommand("select tiempoadicional from tbl_control_dimensionamiento where iddimensionamiento = $data")->queryScalar();
-	        $varactualess = Yii::$app->db->createCommand("select actuales from tbl_control_dimensionamiento where iddimensionamiento = $data")->queryScalar();
-	        $varotractivi = Yii::$app->db->createCommand("select otras_actividad from tbl_control_dimensionamiento where iddimensionamiento = $data")->queryScalar();
-	        $varturnprome = Yii::$app->db->createCommand("select turno_promedio from tbl_control_dimensionamiento where iddimensionamiento = $data")->queryScalar();
-	        $varausentism = Yii::$app->db->createCommand("select ausentismo from tbl_control_dimensionamiento where iddimensionamiento = $data")->queryScalar();
-	        $varvacaperli = Yii::$app->db->createCommand("select vaca_permi_licen from tbl_control_dimensionamiento where iddimensionamiento = $data")->queryScalar();
+				Yii::$app->db->createCommand("DELETE FROM tbl_control_dimensionamiento WHERE anulado = 0 AND iddimensionamiento = '$variddimensiona'")->execute();
 
-			$arrayUsu = array("cant_valor"=>$varcantvalor,"tiempo_llamada"=>$vartimellama,"tiempoadicional"=>$vartimeadici,"actuales"=>$varactualess,"otras_actividad"=>$varotractivi,"turno_promedio"=>$varturnprome,"ausentismo"=>$varausentism,"vaca_permi_licen"=>$varvacaperli,"month"=>$txtMes,"iddimensionamiento"=>$data);
-			
-
-			die(json_encode($arrayUsu));
-
-		}
+				Yii::$app->db->createCommand("DELETE FROM tbl_control_dimensionar WHERE anulado = 0 AND iddimensionamiento = '$variddimensiona'")->execute();
 
 
-		public function actionCrearpruebas3(){		
-			$txtvarMeses = Yii::$app->request->post("txtvarMeses");
+				$txtusuaid = Yii::$app->user->identity->id;
+				$txtyear  = $model->year;
+				$txtmonth  = $model->month;
+				$txtcantvalor  = $model->cant_valor;
+				$txttiempollamada  = $model->tiempo_llamada;
+				$txttiempoadicional  = $model->tiempoadicional;
+				$txtactuales  = $model->actuales;
+				$txtotrasactividad  = $model->otras_actividad;
+				$txtturnopromedio  = $model->turno_promedio;
+				$txtausentismo  = $model->ausentismo;
+				$txtvacapermilicen  = $model->vaca_permi_licen;
 
-			$txtIdDimension  = Yii::$app->request->post("txtIdDimension");
-			$txtcantvalor  = Yii::$app->request->post("txtcantvalor");
-			$txttiempollamada  = Yii::$app->request->post("txttiempollamada");
-			$txttiempoadicional  = Yii::$app->request->post("txttiempoadicional");
-			$txtactuales  = Yii::$app->request->post("txtactuales");
-			$txtotrasactividad  = Yii::$app->request->post("txtotrasactividad");
-			$txtturnopromedio  = Yii::$app->request->post("txtturnopromedio");
-			$txtausentismo  = Yii::$app->request->post("txtausentismo");
-			$txtvacapermilicen  = Yii::$app->request->post("txtvacapermilicen");
+				$varConteo = Yii::$app->db->createCommand("SELECT COUNT(cd.usua_id) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0  AND cd.usua_id = $txtusuaid AND cd.year = '$txtyear' AND cd.month = '$txtmonth'")->queryScalar(); 
 
-			$txtYear = date("Y");
-			$txtusuaid = Yii::$app->user->identity->id;
-			$varResultados = null;
+				if ($varConteo == 0) {
+					Yii::$app->db->createCommand()->insert('tbl_control_dimensionamiento',[
+	                                'usua_id' => $txtusuaid,
+	                                'year' => $txtyear,
+	                                'month' => $txtmonth,
+	                                'cant_valor' => $txtcantvalor,
+	                                'tiempo_llamada' => $txttiempollamada,
+	                                'tiempoadicional' => $txttiempoadicional,
+	                                'actuales' => $txtactuales,
+	                                'otras_actividad' => $txtotrasactividad,
+	                                'turno_promedio' => $txtturnopromedio,
+	                                'ausentismo' => $txtausentismo,
+	                                'vaca_permi_licen' => $txtvacapermilicen,
+	                                'fechacreacion' => date("Y-m-d"),
+	                                'anulado' => 0,
+	                            ])->execute(); 
 
-			if ($txtusuaid != null) {
+					$txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = $txtusuaid and year = '$txtyear' and month = '$txtmonth' and anulado = 0")->queryScalar(); 
 
-				Yii::$app->db->createCommand()->update('tbl_control_dimensionamiento',[
-					                                'cant_valor' => $txtusuaid,
-					                                'cant_valor' => $txtcantvalor,
-					                                'tiempo_llamada' => $txttiempollamada,
-					                                'tiempoadicional' => $txttiempoadicional,
-					                                'actuales' => $txtactuales,
-					                                'otras_actividad' => $txtotrasactividad,
-					                                'turno_promedio' => $txtturnopromedio,
-					                                'ausentismo' => $txtausentismo,
-					                                'vaca_permi_licen' => $txtvacapermilicen,
-					                            ],'iddimensionamiento ='.$txtIdDimension.'')->execute(); 
+					$txtduracion_ponde = $txttiempollamada + $txttiempoadicional;
+		            $txtocupacion = 80 / 100;
+		            $txtcarga_trabajo = $txtcantvalor * $txtduracion_ponde  / 3600;
+		            $txthorasCNX = $txtcarga_trabajo / $txtocupacion;
+		            $txtuti_gentes = 92 / 100;
+		            $txthoras_nomina_monit = $txthorasCNX  / $txtuti_gentes;
+		            $txthoras_laboral_mes = 192;
+		            $txtFTE = $txthoras_nomina_monit / $txthoras_laboral_mes;
+		            $txtp_monit = ($txtFTE * 48 / $txtturnopromedio) * (1 + ($txtausentismo / 100));
+		            $txtp_otras_actividad = ($txthoras_nomina_monit *  ($txtotrasactividad / 100) / $txthoras_laboral_mes) * (48 / $txtturnopromedio);
+		            $txtpersonas = $txtp_monit + $txtp_otras_actividad;	            
+		            $txtpnas_vacaciones = $txtp_monit * ($txtvacapermilicen / 100);
+		            $txtpnas_ausentismo = ($txtausentismo / 100) * $txtp_monit;
+		            $txtexceso_deficit = $txtactuales - $txtpersonas;
 
 
-				$txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = $txtusuaid and year like '$txtYear' and month like '$txtvarMeses' and anulado = 0")->queryScalar(); 
-
-	            $txtduracion_ponde = $txttiempollamada + $txttiempoadicional;
-	            $txtocupacion = 80 / 100;
-	            $txtcarga_trabajo = $txtcantvalor * $txtduracion_ponde  / 3600;
-	            $txthorasCNX = $txtcarga_trabajo / $txtocupacion;
-	            $txtuti_gentes = 92 / 100;
-	            $txthoras_nomina_monit = $txthorasCNX  / $txtuti_gentes;
-	            $txthoras_laboral_mes = 192;
-	            $txtFTE = $txthoras_nomina_monit / $txthoras_laboral_mes;
-	            $txtp_monit = ($txtFTE * 48 / $txtturnopromedio) * (1 + ($txtausentismo / 100));
-	            $txtp_otras_actividad = ($txthoras_nomina_monit  * ($txtotrasactividad / 100) / $txthoras_laboral_mes) * (48 / $txtturnopromedio);
-	            $txtpersonas = $txtp_monit + $txtp_otras_actividad;	            
-	            $txtpnas_vacaciones = $txtp_monit * ($txtvacapermilicen / 100);
-	            $txtpnas_ausentismo = ($txtausentismo / 100) * $txtp_monit;
-	            $txtexceso_deficit = $txtactuales - $txtpersonas;
-
-	            Yii::$app->db->createCommand()->update('tbl_control_dimensionar',[
+		            Yii::$app->db->createCommand()->insert('tbl_control_dimensionar',[
+	                                'iddimensionamiento' => $txtdimensionId,
 	                                'duracion_ponde' => $txtduracion_ponde,
 	                                'ocupacion' => $txtocupacion,
 	                                'carga_trabajo' => $txtcarga_trabajo,
@@ -266,72 +311,348 @@ use app\models\Controldimensionamiento;
 	                                'pnas_vacaciones' => $txtpnas_vacaciones,
 	                                'pnas_ausentismo' => $txtpnas_ausentismo,
 	                                'exceso_deficit' => $txtexceso_deficit,
-	                            ],'iddimensionamiento ='.$txtdimensionId.'')->execute(); 
+	                                'fechacreacion' => date("Y-m-d"),
+	                                'anulado' => 0,
+	                            ])->execute(); 
 
-	            $varResultados = 0;
+				}
 
-			}else{
-				$varResultados = 1;
+				return $this->redirect('index');
+
 			}
 
-			die(json_encode($varResultados));
-	
+
+			return $this->render('actualizadimensiona',[
+				'model' => $model,
+				'varlistaresult' => $varlistaresult,
+			]);
 		}
 
-		public function actionCrearpruebas4(){
-			$txtmeSes= Yii::$app->request->post("txtmeSes");
-			
-			$txtusuaid = Yii::$app->user->identity->id;
-			$txtYear = date("Y");
+		public function actionEnviararchivo(){			
+			$model = new Controldimensionamiento();
+			$yearActual = date("Y");
+			$varusuario = Yii::$app->user->identity->id;
 
-			$txtMes = null;
-			switch ($txtmeSes) {
-				case '1':
-					$txtMes = "Enero";
-					break;
-				case '2':
-					$txtMes = "Febrero";
-					break;
-				case '3':
-					$txtMes = "Marzo";
-					break;
-				case '4':
-					$txtMes = "Abril";
-					break;
-				case '5':
-					$txtMes = "Mayo";
-					break;
-				case '6':
-					$txtMes = "Junio";
-					break;
-				case '7':
-					$txtMes = "Julio";
-					break;
-				case '8':
-					$txtMes = "Agosto";
-					break;
-				case '9':
-					$txtMes = "Septiembre";
-					break;
-				case '10':
-					$txtMes = "Octubre";
-					break;
-				case '11':
-					$txtMes = "Noviembre";
-					break;
-				case '12':
-					$txtMes = "Diciembre";
-					break;
-				default:
-					# code...
-					break;
+			$form = Yii::$app->request->post();
+			if($model->load($form)){
+				$varcorreo = $model->month;
+
+				$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = '$varusuario' AND cd.year = '$yearActual'")->queryAll();
+
+
+				$phpExc = new \PHPExcel();
+          		$phpExc->getProperties()
+                  ->setCreator("Konecta")
+                  ->setLastModifiedBy("Konecta")
+                  ->setTitle("Archivo Control de dimensionamiento")
+                  ->setSubject("Archivo Control de dimensionamiento")
+                  ->setDescription("Este archivo contiene el proceso del control de dimensionamiento")
+                  ->setKeywords("Archivo Control de dimensionamiento");
+          		$phpExc->setActiveSheetIndex(0);
+
+          		$phpExc->getActiveSheet()->setShowGridlines(False);
+
+          		$styleArray = array(
+                  'alignment' => array(
+                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ),
+              	);
+
+          		$styleArraySize = array(
+                  'font' => array(
+                          'bold' => true,
+                          'size'  => 15,
+                  ),
+                  'alignment' => array(
+                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ), 
+              	);
+
+          		$styleColor = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '28559B'),
+                  )
+              	);
+
+          		$styleArrayTitle = array(
+                  'font' => array(
+                    'bold' => false,
+                    'color' => array('rgb' => 'FFFFFF')
+                  )
+              	);
+
+          		$styleArraySubTitle = array(              
+                  'fill' => array( 
+                          'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                          'color' => array('rgb' => '4298B5'),
+                  )
+              	);
+
+          		$styleArraySubTitle2 = array(              
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'C6C6C6'),
+                  )
+              	);  
+
+          		// ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+          		$styleArrayBody = array(
+                  'font' => array(
+                      'bold' => false,
+                      'color' => array('rgb' => '2F4F4F')
+                  ),
+                  'borders' => array(
+                      'allborders' => array(
+                          'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                          'color' => array('rgb' => 'DDDDDD')
+                      )
+                  )
+              	);
+
+          		$styleColorLess = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '92DD5B'),
+                  )
+              	);
+
+          		$styleColorMiddle = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'CED9D5'),
+                  )
+              	);
+
+          		$styleColorhigh = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22CCC4'),
+                  )
+              	);
+
+		        $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+		        $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+		        $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+		        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+		        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+		        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+		        $phpExc->setActiveSheetIndex(0)->mergeCells('A1:D1');
+
+		        $numCell = 3;
+		        foreach ($varListresult as $key => $value) {
+
+		        	$phpExc->getActiveSheet()->SetCellValue('A2','Dimensionamiento creado por: '.$value['usua_nombre'].' - Fecha del Dimensionamiento: '.$value['Mes'].' - '.$value['Annio']);
+			        $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);
+			        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArrayTitle);
+			        $phpExc->setActiveSheetIndex(0)->mergeCells('A2:D2');
+
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Valoraciones al mes');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['CantValor']);
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Duracion llamadas muestreo (En segundos)');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $value['TiempoLlamada'].' (Segundos)');
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Tiempo adicional al muestreo (En segundos)');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['TiempoAdicional'].' (Segundos)');
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Tecnicos Cx actuales (incluye encargos y oficiales)');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $value['TecnicosActua']);
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'%  del tiempo de tecnico que invierte a en otras actividades');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['OtrasActivi'].'%');
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Turno Promedio en la semana del tecnico');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $value['TurnoPromedio']);
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'% Ausentismo');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['Ausentismos'].'%');
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'% Vacaciones, permisos y licencias');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $value['Vacaciones'].'%');
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Duracion ponderada de actividades (En Segundos)');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['duracion_ponde']);
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Ocupaciones');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, round($value['ocupacion']*100,2).'%');
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Carga de trabajo');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, round($value['carga_trabajo'],0));
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Horas de conexion');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, round($value['horasCNX'],0));
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Utilizacion de agentes');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, round($value['uti_gentes']*100,2).'%');
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Horas minimas de monitoreo');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, round($value['horas_nomina_monit'],0));
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Horas laborales del mes');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, round($value['horas_laboral_mes'],0));
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'FTE');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, round($value['FTE'],0));
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Tecnicos en monitoreo');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, round($value['p_monit'],0));
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Tecnicos en otras actividades');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, round($value['p_otras_actividad'],0));
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Tecnicos CX requeridos');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, round($value['personas'],0));
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Tecnicos CX para vacaciones');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, round($value['pnas_vacaciones'],0));
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Tecnicos CX en ausentismos');
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, round($value['pnas_ausentismo'],0));
+
+			        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'Tecnicos en exceso/deficit');
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+			        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+			        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, round($value['exceso_deficit'],0));
+
+
+			        $numCell = $numCell + 1;
+			        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'');
+			        $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':D'.$numCell);
+		        }
+
+
+
+				$hoy = getdate();
+	          	$hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_ArchivoControlDimensionamiento";
+	                
+	          	$objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+	                  
+	         	$tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+	          	$tmpFile.= ".xls";
+
+	          	$objWriter->save($tmpFile);
+
+	          	$message = "<html><body>";
+	          	$message .= "<h3>Se ha realizado el envio correcto del archivo del dimensionamiento</h3>";
+	          	$message .= "</body></html>";
+
+	          	Yii::$app->mailer->compose()
+	                          ->setTo($varcorreo)
+	                          ->setFrom(Yii::$app->params['email_satu_from'])
+	                          ->setSubject("Archivo control de dimensionamiento")
+	                          ->attach($tmpFile)
+	                          ->setHtmlBody($message)
+	                          ->send();
+
+	            return $this->redirect('index');
 			}
 
-			$data = Yii::$app->db->createCommand("select count(*) from tbl_control_dimensionamiento where usua_id = $txtusuaid and anulado = 0 and year like '$txtYear' and month like '$txtMes'")->queryScalar();
-
-
-			die(json_encode($data));
+			return $this->renderAjax('enviararchivo',[
+        		'model' => $model,
+      		]);
 		}
+
+		
 
 
 	}

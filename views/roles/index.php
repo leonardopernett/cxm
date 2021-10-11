@@ -113,6 +113,8 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta acción");
 
                 <?= $form->field($model, 'per_ba')->checkbox() ?>
 
+                <?= $form->field($model, 'per_directivo')->checkbox() ?>
+
             </div>
         </div>
         <div class="form-group">
@@ -219,6 +221,9 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta acción");
                 bandera++;
             }
             if (!($('#roles-per_ba').is(':checked'))) {
+                bandera++;
+            }
+            if (!($('#roles-per_directivo').is(':checked'))) {
                 bandera++;
             }
             if (bandera == 9) {

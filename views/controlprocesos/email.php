@@ -29,8 +29,6 @@ console.log(bicontrol);
 
             $.ajax({
                 method: "post",
-                //url: "https://172.20.100.50/qa/web/index.php/controlprocesos/enviocorreo",
-                //url: "http://qa.allus.com.co/qa_managementv2/web/index.php/controlprocesos/enviocorreo",
         url: "enviocorreo",
                 data : {
                     var_bdestino : bdestino,
@@ -45,8 +43,8 @@ console.log(bicontrol);
         alert("Problemas al realizar el envio de la valoracion");
         return;
     }else{
-        location.href ="https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/index";
-        //location.href = "https://172.20.100.50/qa/web/index.php/controlprocesos/index";
+        location.href ="../controlprocesos/index";
+
     }
                 }
             });    

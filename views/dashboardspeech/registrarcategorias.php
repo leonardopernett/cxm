@@ -253,7 +253,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
 
             $.ajax({
                 method: "post",
-                //url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/listaracciones",
+
                 url: "listaracciones",
                 data : {
                     txtCC : varCC,
@@ -314,7 +314,6 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                 varCapaUno5.style.display = 'inline';
                 $.ajax({
                     method: "post",
-                    url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/listaprograma",
                     url: "listaprograma",
                     data : {
                                 txtCC : varrequester,
@@ -335,7 +334,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                     varCapaUno5.style.display = 'inline';
                     $.ajax({
                         method: "post",
-                        //url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/listaprograma",
+
                         url: "listaprograma",
                         data : {
                                     txtCC : varrequester,
@@ -356,7 +355,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                         varCapaUno5.style.display = 'none';
                         $.ajax({
                             method: "post",
-                            //url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/listaprograma",
+
                             url: "listaprograma",
                             data : {
                                         txtCC : varrequester,
@@ -371,7 +370,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                         if (varid_categorias == '2') {
                             $.ajax({
                                 method: "post",
-                                //url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/listaprograma",
+
                                 url: "listaprograma",
                                 data : {
                                             txtCC : varrequester,
@@ -390,7 +389,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
 
                             $.ajax({
                                   method: "post",
-                                  //url: "http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/listacategorias",
+
                                   url: "listacategorias",
                                   data : {
                                     txtCategoria : varid_categorias,

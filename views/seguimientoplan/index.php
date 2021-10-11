@@ -37,8 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
     $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
     $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
-    // $varfechainicio = '2021-06-01';
-    // $varfechafin = '2021-06-30';
+    // $varfechainicio = '2021-09-01';
+    // $varfechafin = '2021-10-05';
 
     $sessiones = Yii::$app->user->identity->id;
     $sumatoria1 = null;
@@ -191,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -264,7 +264,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card1 mb">
                 <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
                 <div class="row">
-                <?php if($roles == "270" || $roles == "274" || $roles == "276") {?>
+                <?php if($roles == "270" || $roles == "309" || $roles == "274" || $roles == "276") {?>
                     <div class="col-md-4">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><i class="fas fa-chart-line" style="font-size: 15px; color: #FFC72C;"></i> Gráfica del equipo: </label>                    
@@ -295,7 +295,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ?> 
                         </div>
                     </div>
-                    <?php if ($roles == "270" || $roles == "274" || $roles == "276") { ?>
+                    <?php if ($roles == "270" || $roles == "309" || $roles == "274" || $roles == "276") { ?>
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #FFC72C;"></i> Escalamientos: </label>
@@ -429,27 +429,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         $varlistcortes = Yii::$app->db->createCommand("select cp.tipo_corte, tc.cortetcs, tc.fechainiciotcs, tc.fechafintcs from tbl_tipos_cortes tc  inner join tbl_control_procesos cp on tc.idtc = cp.idtc  where cp.anulado = 0 and cp.responsable = $sessiones and cp.fechacreacion between '$varfechainicio' and '$varfechafin' group by tc.cortetcs")->queryAll();
                         foreach ($varlistcortes as $key => $value) {
                             $varWeek = date("l", strtotime($value['fechafintcs']));
+                            $varcort = $value['cortetcs'];
                             
-                            if ($varWeek == "Friday") {
-                                $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 4 days"));
-                            }else{
-                                if ($varWeek == "Saturday") {
-                                    $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 3 days"));
-                                }else{
-                                    $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 2 days"));
-                                }
-                            }
-                                                        
-                ?>
-                        <label style="font-size: 14px;"><?php echo '* Aprobar escalamientos y/o novedades '.$value['cortetcs'].': </label><label style="font-size: 14px; color: #FE3F10;"> '.$txtfechas; ?></label> 
-                <?php
-                        }
-                    }else{
-                        if ($roles == "272" || $roles == "273") {
-                            $varlistcortes = Yii::$app->db->createCommand("select cp.tipo_corte, tc.cortetcs, tc.fechainiciotcs, tc.fechafintcs from tbl_tipos_cortes tc  inner join tbl_control_procesos cp on tc.idtc = cp.idtc  where cp.anulado = 0 and cp.evaluados_id = $sessiones and cp.fechacreacion between '$varfechainicio' and '$varfechafin' group by tc.cortetcs")->queryAll();
-                            foreach ($varlistcortes as $key => $value) {
-                                $varWeek = date("l", strtotime($value['fechafintcs']));
-                            
+                            if ($varcort != 'Corte 4') {
                                 if ($varWeek == "Friday") {
                                     $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 4 days"));
                                 }else{
@@ -459,7 +441,35 @@ $this->params['breadcrumbs'][] = $this->title;
                                         $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 2 days"));
                                     }
                                 }
-                                
+                            }else{
+                                 // $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 1 days"));
+                                $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']));
+                            }                                                        
+                ?>
+                        <label style="font-size: 14px;"><?php echo '* Aprobar escalamientos y/o novedades '.$value['cortetcs'].': </label><label style="font-size: 14px; color: #FE3F10;"> '.$txtfechas; ?></label> 
+                <?php
+                        }
+                    }else{
+                        if ($roles == "272" || $roles == "273") {
+                            $varlistcortes = Yii::$app->db->createCommand("select cp.tipo_corte, tc.cortetcs, tc.fechainiciotcs, tc.fechafintcs from tbl_tipos_cortes tc  inner join tbl_control_procesos cp on tc.idtc = cp.idtc  where cp.anulado = 0 and cp.evaluados_id = $sessiones and cp.fechacreacion between '$varfechainicio' and '$varfechafin' group by tc.cortetcs")->queryAll();
+                            foreach ($varlistcortes as $key => $value) {
+                                $varWeek = date("l", strtotime($value['fechafintcs']));
+                                $varcort = $value['cortetcs'];
+                            
+                                if ($varcort != 'Corte 4') {
+                                    if ($varWeek == "Friday") {
+                                        $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 4 days"));
+                                    }else{
+                                        if ($varWeek == "Saturday") {
+                                            $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 3 days"));
+                                        }else{
+                                            $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 2 days"));
+                                        }
+                                    }
+                                }else{
+                                     // $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 1 days"));
+                                    $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']));
+                                }                                
                 ?> 
                             <label style="font-size: 14px;"><?php echo '* Aprobar escalamientos y/o novedades '.$value['cortetcs'].': </label><label style="font-size: 14px; color: #FE3F10;"> '.$txtfechas; ?></label> 
                 <?php
@@ -568,15 +578,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     foreach ($varlistcortesAdmin as $key => $value) {
                                         $varWeek = date("l", strtotime($value['fechafintcs']));
-                                        
-                                        if ($varWeek == "Friday") {
-                                            $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 4 days"));
-                                        }else{
-                                            if ($varWeek == "Saturday") {
-                                                $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 3 days"));
+                                        $varcort = $value['cortetcs'];
+
+                                        if ($varcort != 'Corte 4') {
+                                            if ($varWeek == "Friday") {
+                                                $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 4 days"));
                                             }else{
-                                                $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 2 days"));
+                                                if ($varWeek == "Saturday") {
+                                                    $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 3 days"));
+                                                }else{
+                                                    $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 2 days"));
+                                                }
                                             }
+                                        }else{
+                                             $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']));
                                         }
                                 ?>
                                     <label style="font-size: 14px;"><?php echo '* Aprobar escalamientos y/o novedades '.$value['cortetcs'].': </label><label style="font-size: 14px; color: #FE3F10;"> '.$txtfechas; ?></label>

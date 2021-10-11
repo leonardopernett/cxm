@@ -18,7 +18,7 @@ $sesiones =Yii::$app->user->identity->id;
 if ($varidredbox != "" && $varidgrabadora != "") {
 ?>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-8">
 			<div class="card1 mb">
 				<label style="font-size: 18px;"><i class="fas fa-phone-square" style="font-size: 25px; color: #827DF9;"></i> Datos de la llamada</label>
 				<div class="row">
@@ -56,18 +56,22 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 				</div>
 			</div>
 		</div>
-	</div>
-	<br>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="card1 mb">
-				<label style="font-size: 18px;"><i class="fas fa-key" style="font-size: 25px; color: #827DF9;"></i> Instructivo de uso</label>
-				<div class="row">
-					<div class="col-md-12">
-						<label style="font-size: 15px;"><?php echo "Es importante indicar que antes de realizar cualquier acción, revisar el archivo del instructivo para que la llamada funcione en internet explorer."; ?></label>
+		<div class="col-md-4">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card1 mb">
+						<label style="font-size: 18px;"><i class="fas fa-key" style="font-size: 25px; color: #827DF9;"></i> Instructivo de uso</label>
+						<div class="row">
+							<div class="col-md-12" align="center">
+								<i class="fas fa-download" style="font-size: 60px; color: #ceabab; align-self: center;"></i>
+							
+								<a style="font-size: 13px;" rel="stylesheet" type="text/css" href="https://qa.grupokonecta.local/qa_managementv2/web/downloadfiles/Manual Configuraci�n Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-12">
-						<a style="font-size: 15px;" rel="stylesheet" type="text/css" href="https://qa.grupokonecta.local/qa_managementv2/web/downloadfiles/Manual Configuración Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
+					<br>
+					<div class="card1 mb">
+						<input type="text" class="js-copytextarea form-control" readonly="readonly" value="<?php echo $varResultado; ?>">
 					</div>
 				</div>
 			</div>
@@ -76,8 +80,19 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 	<br>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="card1 mb">
-				<input type="text" class="js-copytextarea form-control" readonly="readonly" value="<?php echo $varResultado; ?>">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card1 mb">
+						<label style="font-size: 18px;"><i class="fas fa-file-alt" style="font-size: 25px; color: #827DF9;"></i> Transcripci&oacute;n</label>
+						<label style="font-size: 15px;"><?php echo $vartexto; ?></label>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card1 mb">
+						<label style="font-size: 18px;"><i class="fas fa-smile" style="font-size: 25px; color: #827DF9;"></i> Valencia emocional</label>
+						<label style="font-size: 15px;"><?php echo $varvalencia; ?></label>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

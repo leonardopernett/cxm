@@ -160,6 +160,7 @@ class RolesController extends Controller {
                     $arrDetalleForm['per_evaluacion'] = $model->per_evaluacion;
                     $arrDetalleForm['per_externo'] = $model->per_externo;
                     $arrDetalleForm['per_ba'] = $model->per_ba;
+                    $arrDetalleForm['per_directivo'] = $model->per_directivo;
                     $roles = Yii::$app->request->post('selection');
                     for ($index = 0; $index < count($roles); $index++) {
                         Roles::updateAll($arrDetalleForm, ['role_id' => $roles[$index]]);

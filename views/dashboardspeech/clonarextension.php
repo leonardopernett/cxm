@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $FechaActual = date("Y-m-d");
     $MesAnterior = date("m") - 1;
 ?>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 <style type="text/css">
     .card1 {

@@ -276,7 +276,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     }
 
 ?>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <style type="text/css">
     @import url('https://fonts.googleapis.com/css?family=Nunito');
     .datakonecta {

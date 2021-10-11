@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">

@@ -14,8 +14,7 @@ use yii\bootstrap\Modal;
 $this->title = 'Control de Dimensionamiento';
 $this->params['breadcrumbs'][] = $this->title;
 
-    $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
-    . ' {input}{error}{hint}</div>';
+    
 
     $sessiones = Yii::$app->user->identity->id;
 
@@ -63,326 +62,312 @@ $this->params['breadcrumbs'][] = $this->title;
       $txtpnas_ausentismo = null;
       $txtexceso_deficit = null;
 
+      $varmeses = ['Enero' => 'Enero', 'Febrero' => 'Febrero', 'Marzo' => 'Marzo', 'Abril' => 'Abril', 'Mayo' => 'Mayo', 'Junio' => 'Junio', 'Julio' => 'Julio', 'Agosto' => 'Agosto', 'Septiembre' => 'Septiembre', 'Octubre' => 'Octubre', 'Noviembre' => 'Noviembre', 'Diciembre' => 'Diciembre'];
+
+$js = <<< 'SCRIPT'
+/* To initialize BS3 popovers set this below */
+$(function () { 
+    $("[data-toggle='popover']").popover(); 
+});
+SCRIPT;
+// Register tooltip/popover initialization javascript
+$this->registerJs($js);
+//echo Html::jsFile("js/qa.js") 
 ?>
-<br>
-<?php if($roles == "274" || $roles == "270" || $roles == "276" || $roles == "293") {?>
-<div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
-</div> 
-<br>
-<div class="control-procesos-index">
-  <div align="left">
-    
-      &nbsp;&nbsp;
-        <?= Html::button('Crear dimensionamiento', ['value' => url::to('createdimensionar'), 'class' => 'btn btn-success', 'id'=>'modalButton1',
-                          'data-toggle' => 'tooltip',
-                          'title' => 'Crear Dimensionamiento', 'style' => 'background-color: #4298b4']) 
-        ?> 
-
-        <?php
-	
-          Modal::begin([
-            'header' => '<h4>Crear Dimensionamiento</h4>',
-            'id' => 'modal1',
-            //'size' => 'modal-lg',
-          ]);
-
-          echo "<div id='modalContent1'></div>";
-                                
-          Modal::end(); 
-        ?> 
-    <?php if($txtCountId != 0) {?>
-      &nbsp;&nbsp;    
-        <?= Html::button('Actualizar dimensionamiento', ['value' => url::to('updatedimensionar'), 'class' => 'btn btn-success', 'id'=>'modalButton2',
-                          'data-toggle' => 'tooltip',
-                          'title' => 'Actualizar Dimensionamiento', 'style' => 'background-color: #337ab7']) 
-        ?> 
+<style>
+    .card1 {
+            height: auto;
+            width: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: #FFFFFF;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;    
+            font-family: "Nunito";
+            font-size: 150%;    
+            text-align: left;    
+    }
 
 
-        <?php
-          Modal::begin([
-            'header' => '<h4>Actualizar Dimensionamiento</h4>',
-            'id' => 'modal2',
-            //'size' => 'modal-lg',
-          ]);
+    .col-sm-6 {
+        width: 100%;
+    }
 
-          echo "<div id='modalContent2'></div>";
-                                
-          Modal::end(); 
-        ?> 
-    <?php } ?>
-    
+    th {
+        text-align: left;
+        font-size: smaller;
+    }
+
+    .masthead {
+        height: 25vh;
+        min-height: 100px;
+        background-image: url('../../images/ADMINISTRADOR-GENERAL.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        /*background: #fff;*/
+        border-radius: 5px;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+    }
+
+</style>
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<!-- Full Page Image Header with Vertically Centered Content -->
+<header class="masthead">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-12 text-center">
+        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
+        <p class="lead">A great starter layout for a landing page</p> -->
+      </div>
+    </div>
   </div>
-  <br>
+</header>
+<br><br>
+<div class="capaPP" style="display: inline;">
+  <div class="row">
+    <div class="col-md-3">
+            <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #C178G9;"></i> Buscar Dimensionamiento: </label>
+                        
+                        
+                            <?= $form->field($model, 'month')->dropDownList($varmeses, ['prompt' => 'Seleccione...', 'id'=>"txtmesesid" ])->label('') ?>
+                            <br>
+                            <?= Html::submitButton(Yii::t('app', 'Buscar'),
+                                ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                                    'data-toggle' => 'tooltip',
+                                    'title' => 'Buscar Dimensionamiento',
+                                    'onclick' => 'busca();']) 
+                            ?>
+                        
+                    </div>
+                </div>
+            </div>
+            <?php $form->end() ?> 
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #C148D0;"></i> Crear Dimensionamiento: </label>
+                        <?=  Html::a(Yii::t('app', 'Crear'),
+                                                'javascript:void(0)',
+                                                [
+                                                    'class' =>  'btn btn-primary',
+                                                    'title' => Yii::t('app', 'Crear Dimensionamiento'),
+                                                    //'data-pjax' => '0',
+                                                    'onclick' => "                                                                                
+                                                        $.ajax({
+                                                            type     :'get',
+                                                            cache    : false,
+                                                            url  : '" . Url::to(['createdimensionar']) . "',
+                                                            success  : function(response) {
+                                                                $('#ajax_result').html(response);
+                                                            }
+                                                        });
+                                                    return false;",
+                                                ]);
+                        ?>
+                    </div>
+                </div>
+            </div>  
+            <br>
+            <?php // if ($sessiones == '0') { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><i class="fas fa-edit" style="font-size: 15px; color: #559FFF;"></i> Actualizar Dimensionamiento: </label>
+                        <?=  Html::a(Yii::t('app', 'Actualizar'),
+                                                'javascript:void(0)',
+                                                [
+                                                    'class' =>  'btn btn-primary',
+                                                    'title' => Yii::t('app', 'Actualizar Dimensionamiento'),
+                                                    //'data-pjax' => '0',
+                                                    'onclick' => "                                                                                
+                                                        $.ajax({
+                                                            type     :'get',
+                                                            cache    : false,
+                                                            url  : '" . Url::to(['updatedimensionar']) . "',
+                                                            success  : function(response) {
+                                                                $('#ajax_result').html(response);
+                                                            }
+                                                        });
+                                                    return false;",
+                                                ]);
+                        ?>
+                    </div>
+                </div>   
+            </div>  
+            <br>
+            <?php // } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #559FFF;"></i> Descargar Informaci&oacute;n: </label>
+                        <?= Html::button('Descargar', ['value' => url::to('enviararchivo'), 'class' => 'btn btn-success', 'id'=>'modalButton6',
+                                'data-toggle' => 'tooltip',
+                                'title' => 'Desargar', 'style' => 'background-color: #337ab7']) 
+                            ?>  
+                            <?php
+                                Modal::begin([
+                                    'header' => '<h4></h4>',
+                                    'id' => 'modal6',
+                                       //'size' => 'modal-lg',
+                                    ]);
 
-  <div align="center" style="display: inline">
-    <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
-      <thead>
-        <tr>
-          <th scope="row"></th>
-          <?php 
-          foreach ($data as $key => $value) {
-            $txtMes = $value['month'];          
-          ?>
-          <th class="text-center"><?php echo $txtMes; ?></th>
-          <?php } ?>
-<!--           <th class="text-center">Febrero</th>
-          <th class="text-center">Marzo</th>
-          <th class="text-center">Abril</th>
-          <th class="text-center">Mayo</th>
-          <th class="text-center">Junio</th>
-          <th class="text-center">Julio</th>
-          <th class="text-center">Agosto</th>
-          <th class="text-center">Septiembre</th>
-          <th class="text-center">Octubre</th>
-          <th class="text-center">Noviembre</th>
-          <th class="text-center">Diciembre</th> -->
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>Valoraciones al mes</th> 
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtvalorMes = $value['cant_valor'];
-        ?>                   
-          <td class="text-center"><?php echo $txtvalorMes; ?></td>
-        <?php } ?>
-        </tr>
+                                    echo "<div id='modalContent6'></div>";
+                                                                                
+                                Modal::end(); 
+                            ?>
 
-        <tr>
-          <th>Duración llamadas Muestreo (segundos)</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtduralla = $value['tiempo_llamada'];
-        ?>  
-          <td class="text-center"><?php echo $txtduralla; ?></td>  
-        <?php } ?>
-        </tr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #fd7e14;"></i> Lista de Resultados: </label>
+                    <?php 
+                        if (count($varListresult) != 0) {
+                            foreach ($varListresult as $key => $value) {
+                                
+                                $varAnnio = $value['Annio'];
+                                $varMes = $value['Mes'];
 
-        <tr>
-          <th>Tiempo adicional al muestreo (seg)</th> 
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txttimeA = $value['tiempoadicional'];
-        ?>                  
-          <td class="text-center"><?php echo $txttimeA; ?></td> 
-        <?php } ?> 
-        </tr>
-        <tr>
-          <th>Tecnicos Cx Actuales (incluye encargos y Oficiales)</th> 
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtactuales = $value['actuales'];
-        ?>            
-          <td class="text-center"><?php echo $txtactuales; ?></td>  
-        <?php } ?>
-        </tr>
-        <tr>
-          <th>%  del tiempo de tecnico que invierte a en otras actividades</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtotras_actividad = $value['otras_actividad'];
-        ?>                    
-          <td class="text-center"><?php echo $txtotras_actividad; ?>%</td>
-        <?php } ?>
-        </tr>
-        <tr>
-          <th>Turno Promedio en la semana del tecnico </th>   
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtturno_promedio = $value['turno_promedio'];
-        ?>                    
-          <td class="text-center"><?php echo $txtturno_promedio; ?></td> 
-        <?php } ?> 
-        </tr>
-        <tr>
-          <th>Ausentismo</th>  
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtausentismo = $value['ausentismo'];
-        ?>                  
-          <td class="text-center"><?php echo $txtausentismo; ?>%</td> 
-        <?php } ?>
-        </tr>
-        <tr>
-          <th>Vacaciones Permisos y Licencias</th> 
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtvaca_permi_licen = $value['vaca_permi_licen'];
-        ?>                  
-          <td class="text-center"><?php echo $txtvaca_permi_licen; ?>%</td>
-        <?php } ?>
-        </tr>
-        <tr>
-          <td colspan="13" style="background-color: #ffffff"></td> 
-        </tr>
-        <tr>
-          <td colspan="13" style="background-color: #ffffff"></td> 
-        </tr>
-        <tr>
-          <th >Duración Ponderada Actividades (Segundos)</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                $txtFecha = $varMes.' - '.$varAnnio;
+                    ?>
+                    <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                        
+                        <thead>
+                            <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo 'Dimensionamiento creado por: '.$value['usua_nombre'].' - Fecha del Dimensionamiento: '.$txtFecha; ?></label></th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Valoraciones al mes"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['CantValor']; ?></label></td>
 
-                  $txtduracion_ponde = Yii::$app->db->createCommand("select duracion_ponde from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>            
-          <td class="text-center" ><?php echo $txtduracion_ponde; ?></td>
-        <?php } ?>          
-       
-        </tr>
-        <tr>
-          <th >Ocupación</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Duraci&oacute;n llamadas muestreo (En segundos)"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['TiempoLlamada'].' (Segundos)'; ?></label></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tiempo adicional al muestreo (En segundos)"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['TiempoAdicional'].' (Segundos)'; ?></label></td>
 
-                  $txtocupacion = Yii::$app->db->createCommand("select ocupacion * 100 from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?> 
-          <td class="text-center" ><?php echo $txtocupacion; ?>%</td> 
-        <?php } ?> 
-        </tr>
-        <tr>       
-          <th >Carga de Trabajo</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "T&eacute;cnicos Cx actuales (incluye encargos y oficiales)"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['TecnicosActua']; ?></label></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "%  del tiempo de t&eacute;cnico que invierte a en otras actividades"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['OtrasActivi'].'%'; ?></label></td>
+                            
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Turno Promedio en la semana del t&eacute;cnico"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['TurnoPromedio']; ?></label></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo " % Ausentismo"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['Ausentismos'].'%'; ?></label></td>
+                            
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "% Vacaciones, permisos y licencias"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['Vacaciones'].'%'; ?></label></td>
+                            </tr>                            
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Duraci&oacute;n ponderada de actividades (En Segundos)"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo $value['duracion_ponde']; ?></label></td>
 
-                  $txtcarga_trabajo = Yii::$app->db->createCommand("select round(carga_trabajo) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>            
-          <td class="text-center" ><?php echo $txtcarga_trabajo; ?></td> 
-        <?php } ?> 
-        </tr>
-        <tr>
-          <th >Horas Conexión</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Ocupaciones"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['ocupacion']*100,2).'%'; ?></label></td>
+                            </tr>                            
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Carga de trabajo"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['carga_trabajo'],0); ?></label></td>
 
-                  $txthorasCNX = Yii::$app->db->createCommand("select round(horasCNX) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>            
-          <td class="text-center" ><?php echo $txthorasCNX; ?></td>  
-        <?php } ?>
-        </tr>
-        <tr>
-          <th >Utilización de Agentes</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Horas de conexi&oacute;n"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['horasCNX'],0); ?></label></td>
+                            </tr>                            
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Utilizaci&oacute;n de agentes"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['uti_gentes']*100,2).'%'; ?></label></td>
 
-                  $txtuti_gentes = Yii::$app->db->createCommand("select uti_gentes * 100 from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>             
-          <td class="text-center" ><?php echo $txtuti_gentes; ?>%</td>
-        <?php } ?> 
-        </tr>
-        <tr>
-          <th >Horas Nómina Monitoreo</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Horas minimas de monitoreo"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['horas_nomina_monit'],0); ?></label></td>
+                            </tr>                            
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Horas laborales del mes"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['horas_laboral_mes'],0); ?></label></td>
 
-                  $txthoras_nomina_monit = Yii::$app->db->createCommand("select round(horas_nomina_monit) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>             
-          <td class="text-center" ><?php echo $txthoras_nomina_monit; ?></td> 
-        <?php } ?>
-        </tr>
-        <tr>
-          <th >Horas laborables mes</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "FTE"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['FTE'],0); ?></label></td>
+                            </tr>                            
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "T&eacute;cnicos en monitoreo"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['p_monit'],0); ?></label></td>
 
-                  $txthoras_laboral_mes = Yii::$app->db->createCommand("select horas_laboral_mes from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>           
-          <td class="text-center" ><?php echo $txthoras_laboral_mes; ?></td> 
-        <?php } ?>
-        </tr>
-        <tr>
-          <th >FTE</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "T&eacute;cnicos en otras actividades"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['p_otras_actividad'],0); ?></label></td>
+                            </tr>                            
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "T&eacute;cnicos CX requeridos"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['personas'],0); ?></label></td>
 
-                  $txtFTE = Yii::$app->db->createCommand("select round(FTE) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>           
-          <td class="text-center" ><?php echo $txtFTE; ?></td>  
-        <?php } ?>
-        </tr>
-        <tr>
-          <th >Técnicos en monitoreo</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "T&eacute;cnicos CX para vacaciones"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['pnas_vacaciones'],0); ?></label></td>
+                            </tr>                            
+                            <tr>
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "T&eacute;cnicos CX en ausentismos"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['pnas_ausentismo'],0); ?></label></td>
 
-                  $txtp_monit = Yii::$app->db->createCommand("select round(p_monit) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>           
-          <td class="text-center" ><?php echo $txtp_monit; ?></td> 
-        <?php } ?>
-        </tr>
-        <tr>
-          <th >Técnicos en otras actividades</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
+                                <td style="background-color: #C6C6C6;"><label style="font-size: 13px;">
+                                <?php
+                                    echo Html::tag('span', '<i class="fas fa-info-circle" style="font-size: 18px; color: #C178G9;"></i>', [
+                                                'data-title' => Yii::t("app", ""),
+                                                'data-content' => '
+                                                * Si este número es menor a cero significa que la operaci&oacute;n tiene un déficit.
+                                                * Si este número es mayor a 0 significa que hay un exceso de técnicos.
+                                                * Si este número es cero, significa que la capacidad de técnicos esta bien.
+                                                ',
+                                                'data-toggle' => 'popover',
+                                                'style' => 'cursor:pointer;'
+                                    ]);
+                                ?>
+                                <?php echo "T&eacute;cnicos en exceso/deficit"; ?></label></td>
+                                <td><label style="font-size: 13px;"><?php echo round($value['exceso_deficit'],0); ?></label></td>
+                            </tr>
+                        </tbody>
 
-                  $txtp_otras_actividad = Yii::$app->db->createCommand("select round(p_otras_actividad) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>            
-          <td class="text-center" ><?php echo $txtp_otras_actividad; ?></td>
-        <?php } ?> 
-        </tr>
-        <tr>
-          <th >Técnicos CX requeridos</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
-
-                  $txtpersonas = Yii::$app->db->createCommand("select round(personas) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>           
-          <td class="text-center" ><?php echo $txtpersonas; ?></td>  
-        <?php } ?>
-        </tr>
-        <tr>
-          <th >Técnicos CX para vacaciones</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
-
-                  $txtpnas_vacaciones = Yii::$app->db->createCommand("select round(pnas_vacaciones) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>           
-          <td class="text-center" ><?php echo $txtpnas_vacaciones; ?></td>   
-        <?php } ?>
-        </tr>
-        <tr>
-          <th >Técnicos CX ausentismo</th>
-        <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
-
-                  $txtpnas_ausentismo = Yii::$app->db->createCommand("select round(pnas_ausentismo) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>            
-          <td class="text-center" ><?php echo $txtpnas_ausentismo; ?></td>    
-        <?php } ?>
-        </tr>
-        <tr>
-          <th >Técnicos Exceso/Deficit</th>
-       <?php 
-          foreach ($data as $key => $value) {
-                  $txtIdDimensionar = $value['iddimensionamiento'];
-
-                  $txtexceso_deficit = Yii::$app->db->createCommand("select round(exceso_deficit) from tbl_control_dimensionar where anulado = 0 and iddimensionamiento = $txtIdDimensionar")->queryScalar();
-        ?>           
-          <td class="text-center" ><?php echo $txtexceso_deficit; ?></td>
-        <?php } ?>   
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <br>
+                    </table>
+                    <?php
+                            }
+                        }
+                    ?>
+                        
+            </div>
+        </div>
+  </div>  
 </div>
-<?php }else{ ?>
-<div class="panel panel-warning">
-  <div class="panel-heading">Importante</div>
-  <div class="panel-body">No es posible ver resultados ya que no tiene pemisos a utilizar este módulo.</div>
-</div> 
-<?php } ?>
+<hr>
+<?php
+    echo Html::tag('div', '', ['id' => 'ajax_result']);
+?>
+<script type="text/javascript">
+  function busca(){
+    var vartxtmesesid = document.getElementById("txtmesesid").value;
+
+    if (vartxtmesesid == "") {
+      event.preventDefault();
+      swal.fire("��� Advertencia !!!","Debe de seleccionar un mes para buscar","warning");
+      return;
+    }
+  };
+</script>

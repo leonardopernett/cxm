@@ -27,30 +27,241 @@ use yii\bootstrap\Modal;
     		<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
     			<thead>
     				<tr>
-    					<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de evaluación de desarrollo - Seguimiento Feedback') ?></label></th>
+    					<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de evaluación de desarrollo') ?></label></th>
     				</tr>
     				<tr>
     					<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Jefe') ?></label></th>
-                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Jefe') ?></label></th>
-                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Evaluado') ?></label></th>
-                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Evaluado') ?></label></th>
-                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota Final') ?></label></th>
-                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo de Feedback') ?></label></th>
-                        		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado') ?></label></th>
+                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Jefe') ?></label></th>
+                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Evaluado') ?></label></th>
+                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Evaluado') ?></label></th>
+                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota Final') ?></label></th>
+                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo de Feedback') ?></label></th>
+                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado') ?></label></th>
     				</tr>
     			</thead>
     			<tbody>
     				<?php 
-    					foreach ($varlistaseguimientofeedback as $key => $value) {
+                        
+                        $varconteobloque = 0;
+                        $varconteocompetencia = 0;
+                        $varconteopregunta = 0;
+                        $txtnotafinal = null;
+                        $tipocoaching = '';
+    					foreach ($varlistaseguimientofeedback as $key => $value2) {
+
+                        $varNum = 1;
+                        $varsumacompetencia = 0;
+                        $varmenorcompetencia = 0;
+                        $evaluacompe1 = 0;
+                        $evaluaorgan1 = 0;
+                        $evaluadese1 = 0;
+                        $evaluacompe2 = 0;
+                        $evaluaorgan2 = 0;
+                        $evaluadese2 = 0;
+                        $evaluacompe3 = 0;
+                        $evaluaorgan3 = 0;
+                        $evaluadese3 = 0;
+                        $evaluacompe4 = 0;
+                        $evaluaorgan4 = 0;
+                        $evaluadese4  = 0;
+                        $bloque1 = 0;
+                        $bloque2 = 0;
+                        $bloque3 = 0;        
+                        $varcomentarios2 = '';
+                        $can = 0;
+                         //para el c�lculo de nota y tipo feedback
+                         $documento = $value2['documento'];
+
+                         //Validar si se le puede hacer feedback
+                         $txtvardocumento = $documento;
+                         $vardocumento1 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 1 group by documentoevaluado")->queryScalar();
+                         $vardocumento2 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
+                         
+                         $vardocumentojefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua_feedback WHERE documento = $txtvardocumento")->queryScalar();
+                         
+                         $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documento = $txtvardocumento AND documentoevaluado = $vardocumentojefe and idevaluaciontipo = 2 group by documentoevaluado")->queryScalar();
+                     
+                         if($vardocumentojefe > 1){
+                           $varnopares = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_novedadesgeneral WHERE documento = $txtvardocumento AND aprobado = 1")->queryScalar();
+                           if($varnopares > 0){
+                             $vardocumento3 = 0;
+                           }else {
+                             $vardocumento3 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
+                           } 
+                         }
+                         $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua_feedback WHERE documento_jefe = $vardocumentojefe")->queryScalar();
+                        
+                         if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
+                           
+
+
+
+                            //para c�lculo de tipo de coaching
+                                    $listacompetenciat2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                    FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                    ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque, ef.mensaje
+                                    FROM tbl_evaluacion_solucionado es
+                                    INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                    INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                    inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                    INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                    INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                    LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                    WHERE es.documentoevaluado = $documento and ec.idevaluacionbloques = 1 
+                                    GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques")->queryAll();
+
+                            foreach ($listacompetenciat2 as $key => $value) {
+                            if($value['%Competencia'] < 85){
+                            $varmenorcompetencia = 1;
+                            }
+                            }
+
+                            for ($i = 1; $i <= 4; $i++) {
+
+                                $listacompetenciat = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                    FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                    ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque, ef.mensaje
+                                    FROM tbl_evaluacion_solucionado es
+                                    INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                    INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                    inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                    INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                    INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                    LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                    WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = $i 
+                                    GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques")->queryAll();
+
+                                foreach ($listacompetenciat as $key => $value) {
+                                    $varsumacompetencia = $varsumacompetencia + $value['%Competencia'];
+
+
+                                    if($i == 1){
+                                        $varconteocompetencia = $varconteocompetencia + 1;
+
+                                        if($value['idevaluacionbloques'] == 1){ 
+
+                                        $evaluacompe1 = $evaluacompe1 + ($value['%Competencia'] * 40) / 100;
+                                        $bloque1 = $bloque1 + 1;
+                                        }
+                                        if($value['idevaluacionbloques'] == 2){
+
+                                        $evaluaorgan1 = $evaluaorgan1 + ($value['%Competencia'] * 20) / 100;                        
+                                        $bloque2 = $bloque2 + 1;
+                                        }
+                                        if($value['idevaluacionbloques'] == 3){
+
+                                        $evaluadese1 = $evaluadese1 + ($value['%Competencia'] * 40) / 100;
+                                        $bloque3 = $bloque3 + 1;
+                                        }                 
+                                    }
+                                    if($i == 3){
+                                        if($value['idevaluacionbloques'] == 1){
+                                        $evaluacompe2 = $evaluacompe2 + ($value['%Competencia'] * 40) / 100;
+                                        }
+                                        if($value['idevaluacionbloques'] == 2){
+                                        $evaluaorgan2 = $evaluaorgan2 + ($value['%Competencia'] * 20) / 100;
+                                        }
+                                        if($value['idevaluacionbloques'] == 3){
+                                        $evaluadese2 = $evaluadese2 + ($value['%Competencia'] * 40) / 100;
+                                        }                 
+                                    }
+                                    if($i == 4){
+                                        if($value['idevaluacionbloques'] == 1){
+                                        $evaluacompe3 = $evaluacompe3 + ($value['%Competencia'] * 40) / 100;
+                                        }
+                                        if($value['idevaluacionbloques'] == 2){
+                                        $evaluaorgan3 = $evaluaorgan3 + ($value['%Competencia'] * 20) / 100;
+                                        }
+                                        if($value['idevaluacionbloques'] == 3){
+                                        $evaluadese3 = $evaluadese3 + ($value['%Competencia'] * 40) / 100;
+                                        }                 
+                                    }
+                                    if($i == 2){
+                                        if($value['idevaluacionbloques'] == 1){
+                                        $evaluacompe4 = $evaluacompe4 + ($value['%Competencia'] * 40) / 100;
+                                        }
+                                        if($value['idevaluacionbloques'] == 2){
+                                        $evaluaorgan4 = $evaluaorgan4 + ($value['%Competencia'] * 20) / 100;
+                                        }
+                                        if($value['idevaluacionbloques'] == 3){
+                                        $evaluadese4 = $evaluadese4 + ($value['%Competencia'] * 40) / 100;
+                                        }                 
+                                    }
+                                }            
+                            }
+                            if ($bloque1 > 0 && $bloque2 > 0 && $bloque3 > 0){
+                                if($evaluacompe1 > 0){
+
+                                $evaluacompe1 = $evaluacompe1 / $bloque1;
+                                $evaluaorgan1 = $evaluaorgan1 / $bloque2; 
+                                $evaluadese1 = $evaluadese1 / $bloque3;
+                                }
+                                if($evaluacompe2 > 0){
+                                $evaluacompe2 = $evaluacompe2 / $bloque1;
+                                $evaluaorgan2 = $evaluaorgan2 / $bloque2;
+                                $evaluadese2 = $evaluadese2 / $bloque3;
+                                }
+                                if($evaluacompe3 > 0){
+                                $evaluacompe3 = $evaluacompe3 / $bloque1;
+                                $evaluaorgan3 = $evaluaorgan3 / $bloque2;
+                                $evaluadese3 = $evaluadese3 / $bloque3;
+                                }
+                                if($evaluacompe4 > 0){
+                                $evaluacompe4 = $evaluacompe4 / $bloque1;
+                                $evaluaorgan4 = $evaluaorgan4 / $bloque2;
+                                $evaluadese4 = $evaluadese4 / $bloque3;
+                                }
+                            }
+
+                            $txtevalua1 = $evaluacompe1 + $evaluaorgan1 + $evaluadese1;
+                            $txtevalua2 = $evaluacompe2 + $evaluaorgan2 + $evaluadese2;
+                            $txtevalua3 = $evaluacompe3 + $evaluaorgan3 + $evaluadese3;
+                            $txtevalua4 = $evaluacompe4 + $evaluaorgan4 + $evaluadese4;
+                            //var_dump($txtevalua1 );
+                            //var_dump($txtevalua2);
+                            $txtnotafinal = null;
+                            if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 == 0 && $txtevalua4 == 0) {
+                            $txtnotafinal = (($txtevalua1 * 20)/100) + (($txtevalua2 * 80) /100);
+                            }
+                            if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 == 0 && $txtevalua4 != 0) {
+                            $txtnotafinal = (($txtevalua1 * 15)/100) + (($txtevalua2 * 70) /100) + (($txtevalua4 * 15) /100);             
+                            }
+                            if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 != 0 && $txtevalua4 == 0) {
+                            $txtnotafinal = (($txtevalua1 * 10)/100) + (($txtevalua2 * 60) /100) + (($txtevalua3 * 30) /100);            
+                            }
+                            if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 != 0 && $txtevalua4 != 0) {
+                            $txtnotafinal = (($txtevalua1 * 5)/100) + (($txtevalua2 * 60) /100) + (($txtevalua3 * 5) /100) + (($txtevalua4 * 30) /100);
+
+                            }
+
+                            $txtProcentaje = $txtnotafinal;
+                            if($txtProcentaje >= 85 && $varmenorcompetencia == 0) {
+                            $tipocoaching = 'Opcional';
+                            } else if($txtProcentaje >= 85 && $varmenorcompetencia == 1){
+                            $tipocoaching = 'Obligatorio';
+                            } else if($txtProcentaje <= 85 && $varmenorcompetencia == 1) {
+                            $tipocoaching = 'Obligatorio';
+                            }
+                            $txtnotafinal = number_format($txtnotafinal,2);
+                        } else {
+                            $txtnotafinal = 'NA';
+                            $tipocoaching = 'NA';
+                        }
+
+                         //fin calculo
+
                     ?>
+
+                            
+
     					<tr>
-	      					<td><label style="font-size: 12px;"><?php echo  $value['documento_jefe']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['nombre_jefe']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['documento']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['nombre_completo']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['notafinal']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['tipo_feedback']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['Estado']; ?></label></td>
+	      					<td><label style="font-size: 12px;"><?php echo  $value2['documento_jefe']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value2['nombre_jefe']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value2['documento']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value2['nombre_completo']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $txtnotafinal; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $tipocoaching; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value2['Estado']; ?></label></td>
 	      				</tr>
     				<?php 
     					}

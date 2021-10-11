@@ -297,8 +297,8 @@ if ($txtservicio != null) {
             success : function(response){
                 var numRta2 =   JSON.parse(response);    
                 console.log(numRta2);
-                window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/dashboardspeech/categoriasentto','_self');
-                //window.open('http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/categoriasentto','_self');
+                window.open('../dashboardspeech/categoriasentto','_self');
+
             }
         });
     };

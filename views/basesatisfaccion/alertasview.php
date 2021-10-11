@@ -339,7 +339,7 @@ function eliminarDato(params1){
 			var respuesta = JSON.parse(response);
 			console.log(respuesta);
 			if(respuesta == 1){
-				window.location.href = "http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/alertasvaloracion";
+				window.location.href = "../basesatisfaccion/alertasvaloracion";
 
 			}else{
 				alert("Error al intentar eliminar la alerta");

@@ -199,9 +199,7 @@ function enviar(){
 				var respuesta = JSON.parse(response);
 				console.log(respuesta);
 				if(respuesta == 1){
-					window.location.href = "https://172.20.100.50/qa/web/index.php/controlalinearvoc/updatevocalinear?txtPcrc="+varPcrc+'&varSession='+varSelec;
-					//window.location.href='updatevocalinear?txtPcrc='+varPcrc+'&varSession='+varSelec;
-
+					window.location.href = "../controlalinearvoc/updatevocalinear?txtPcrc="+varPcrc+'&varSession='+varSelec;
 				}
 	                }
 	            });
@@ -232,7 +230,7 @@ function enviar(){
 				var respuesta = JSON.parse(response);
 				console.log(respuesta);
 				if(respuesta == 1){
-					window.location.href = "http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/updatevoc?txtPcrc="+varPCRC;
+					window.location.href = "../controlvoc/updatevoc?txtPcrc="+varPCRC;
 				}else{
 					alert("Error al intentar eliminar la alerta");
 				}
@@ -243,6 +241,6 @@ function enviar(){
 
 	function menuPrincipal(){	
 		var varPCRC = "<?php echo $txtIdPcrc; ?>";	
-        	window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/indexvoc?arbol_idV='+varPCRC ,'_self');
+        	window.open('../controlvoc/indexvoc?arbol_idV='+varPCRC ,'_self');
     	};
 </script>

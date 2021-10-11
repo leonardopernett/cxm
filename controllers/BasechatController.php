@@ -41,7 +41,7 @@ use app\models\BasechatMotivos;
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno();
+                            return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                         ]
@@ -1794,13 +1794,13 @@ public function actionElegirimportar(){
 //
                 $vartipo = $sheet->getCell("IN".$row)->getValue();
                 if ($vartipo == "Mensajería :: WhatsApp") {                        
-                    $varpcrc = 2922;
+                    $varpcrc = 3513;
                     $varcliente = 2919;
                     $varrn = 'BW';
                     $varinstitucion = '27';
                     $varindustria = '27';
                 }else{
-                     $varpcrc = 2922;
+                     $varpcrc = 3513;
                      $varcliente = 2919;                        
                      $varrn = 'BW';
                      $varinstitucion = '27';
@@ -2280,7 +2280,7 @@ public function actionElegirimportar(){
         $varCorreo = Yii::$app->request->get("var_Destino");
         $sessiones = Yii::$app->user->identity->id;
 
-        $valist = Yii::$app->db->createCommand("select bt.ticked_id 'NumeroTicket', bt.fecha_creacion 'FechaCreacion', bt.fecha_respuesta 'FechaRespuesta', bt.fecha_transaccion 'FechaTransaccion', bt.nombre_cliente 'Cliente', bt.id_agente 'Agente', bt.tipologia 'Tipologia', bt.tipo_producto 'TipoProducto', bt.comentario_adicional 'SentirCliente', bt.nps 'Pregunta1', bt.csat 'Pregunta2', bt.ces 'Pregunta3', bt.fcr 'Pregunta4', bt.conocimiento 'Pregunta5', bf.fechacalificacion 'FechaCalificacion', bf.fechazendeks 'FechaZendesk',  bt.basesatisfaccion_id  'Basesatisfaccion' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on  bc.idlista = bm.idlista   inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista inner join tbl_basechat_tigob bt on bf.ticked_id = bt.ticked_id and bf.basesatisfaccion_id = bt.basesatisfaccion_id where bf.anulado = 0 and bt.anulado = 0 AND bt.pcrc = 2922 group by NumeroTicket, Basesatisfaccion")->queryAll();
+        $valist = Yii::$app->db->createCommand("select bt.ticked_id 'NumeroTicket', bt.fecha_creacion 'FechaCreacion', bt.fecha_respuesta 'FechaRespuesta', bt.fecha_transaccion 'FechaTransaccion', bt.nombre_cliente 'Cliente', bt.id_agente 'Agente', bt.tipologia 'Tipologia', bt.tipo_producto 'TipoProducto', bt.comentario_adicional 'SentirCliente', bt.nps 'Pregunta1', bt.csat 'Pregunta2', bt.ces 'Pregunta3', bt.fcr 'Pregunta4', bt.conocimiento 'Pregunta5', bf.fechacalificacion 'FechaCalificacion', bf.fechazendeks 'FechaZendesk',  bt.basesatisfaccion_id  'Basesatisfaccion' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on  bc.idlista = bm.idlista   inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista inner join tbl_basechat_tigob bt on bf.ticked_id = bt.ticked_id and bf.basesatisfaccion_id = bt.basesatisfaccion_id where bf.anulado = 0 and bt.anulado = 0 AND bt.pcrc = 3513group by NumeroTicket, Basesatisfaccion")->queryAll();
 
         $phpExc = new \PHPExcel();
         $phpExc->getProperties()

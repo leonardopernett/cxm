@@ -278,7 +278,7 @@ if ($fechaActual == null) {
     .w3-border-pale-red,.w3-hover-border-pale-red:hover{border-color:#ffe7e7!important}.w3-border-pale-green,.w3-hover-border-pale-green:hover{border-color:#e7ffe7!important}
     .w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffffcc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -500,8 +500,7 @@ if ($fechaActual == null) {
         else{
             $.ajax({
                 method: "post",
-                //url: "http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/prueba",
-                url: "https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/prueba",
+                url: "prueba",
                 data : {
                     arbol_id : arbolTxt,
                     pcrc_text : arregloarbol,
@@ -595,8 +594,7 @@ if ($fechaActual == null) {
             }else{
                 $.ajax({
                     method: "get",
-                    // url: "http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/createfocalizadaup",
-                    url: "https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/createfocalizadaup",
+                    url: "createfocalizadaup",
                     // url: "createfocalizada",
                     data: {
                         txtvarcliente : varcliente,
@@ -609,8 +607,7 @@ if ($fechaActual == null) {
                     success : function(response){ 
                         var numRta2 =   JSON.parse(response);    
                         console.log(numRta2);
-                        window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/update2/'+varIDs+'?evaluados_id='+varusuario,'_self');
-                        // window.open('http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/update2/'+varIDs+'?evaluados_id='+varusuario,'_self');
+                        window.open('../controlprocesos/update2/'+varIDs+'?evaluados_id='+varusuario,'_self');
                     }
                 });
             }

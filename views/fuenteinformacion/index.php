@@ -20,12 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
     $varfecha = Yii::$app->db->createCommand("SELECT distinct fechacreacion from tbl_tmpvaloradosdistribucion ")->queryScalar();
 
     $varcantidadasesorjarvis = Yii::$app->db->createCommand("SELECT count(t.documento) cantidad_jarvis FROM tbl_tmpvaloradosdistribucion t
-                                            WHERE t.cargo = 'Representante De Servicio' AND t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajer�a')")->queryScalar();
+                                            WHERE t.cargo = 'Representante De Servicio' AND t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajeria')")->queryScalar();
     $varcantidadasesornuevo = Yii::$app->db->createCommand("SELECT count(lista.documento) valorado_nuevo from
                                             (SELECT t.documento, t.nombreempleado, t.usuario_red, t.idpcrc, t.nombrepcrc
                                             FROM tbl_tmpvaloradosdistribucion t
                                             WHERE t.cargo = 'Representante De Servicio' AND t.usuario_red IS NOT NULL AND 
-                                            t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajer�a')) lista
+                                            t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajeria')) lista
                                             WHERE lista.usuario_red NOT IN (SELECT e.dsusuario_red FROM tbl_evaluados e)")->queryScalar();
 
     $varcantidadasesornuevo = Yii::$app->db->createCommand("SELECT COUNT(dsusuario_red) from  tbl_evaluados WHERE fechacreacion = (SELECT MAX(fechacreacion) FROM tbl_evaluados)")->queryScalar();
@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 
 <header class="masthead">
@@ -128,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 <?php
-if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953"){ ?>
+if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
 <div class="CapaUno" style="display: inline;">
     <div class="row">
         <div class="col-md-12">
@@ -139,7 +139,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                         <div class="card1 mb">
                             <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Subir información: </label>
                             <?= Html::a('Actualiza Valorados',  ['usuarios_valorado'], ['class' => 'btn btn-success',
-                                            'style' => 'background-color: #337ab7',
+                                            'style' => 'background-color: #f28e41',
                                             'data-toggle' => 'tooltip',
                                             'data' => [
                                                 'confirm' => "Este proceso dura unos minutos para copiar la base de distribución de personal, desea continuar con el proceso?",
@@ -153,7 +153,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                         <div class="card1 mb">
                             <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Procesar nuevos de la distribución: </label>
                             <?= Html::a('Nuevos distribución',  ['nuevosdistribucion'], ['class' => 'btn btn-success',
-                                            'style' => 'background-color: #337ab7',
+                                            'style' => 'background-color: #f28e41',
                                             'data-toggle' => 'tooltip',
 					    'data' => [
                                                 'confirm' => "Este proceso crea los lider nuevos y los evaluados de la distribución de personal, desea continuar con el proceso?",
@@ -164,25 +164,23 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                              
                         </div>
                     </div>
-		    <div class="col-md-3">
+                    <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Lider: </label>
-                            <?= Html::button('Exportar', ['value' => url::to('exportarlider'), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
-                               ?>
-                               <?php
-                                   Modal::begin([
-                                       'header' => '<h4>Descargando listado...</h4>',
-                                       'id' => 'modal1',
-                                       //'size' => 'modal-lg',
-                                   ]);
-
-                                   echo "<div id='modalContent1'></div>";
-                                                                   
-                                   Modal::end();
-                               ?>
+                            <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Proceso de actualización de equipos: </label>
+                            <?= Html::a('Actualizar equipos',  ['actualizacionequipos'], ['class' => 'btn btn-success',
+                                            'style' => 'background-color: #f28e41',
+                                            'data-toggle' => 'tooltip',
+					    'data' => [
+                                                'confirm' => "Este proceso actualiza los equipos según la distribución de personal, desea continuar con el proceso?",
+                                                'method' => 'post',
+                                            ],
+                                            'title' => 'Actualiza equipos según la distribución de Personal'])
+                            ?>
                              
                         </div>
                     </div>
+
+		    
 	             <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Pcrc: </label>
@@ -245,16 +243,20 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                     </div>
 	             <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Proceso de actualización de equipos: </label>
-                            <?= Html::a('Actualizar equipos',  ['actualizacionequipos'], ['class' => 'btn btn-success',
-                                            'style' => 'background-color: #337ab7',
-                                            'data-toggle' => 'tooltip',
-					    'data' => [
-                                                'confirm' => "Este proceso actualiza los equipos según la distribución de personal, desea continuar con el proceso?",
-                                                'method' => 'post',
-                                            ],
-                                            'title' => 'Actualiza equipos según la distribución de Personal'])
-                            ?>
+                            <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Lider: </label>
+                            <?= Html::button('Exportar', ['value' => url::to('exportarlider'), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
+                               ?>
+                               <?php
+                                   Modal::begin([
+                                       'header' => '<h4>Descargando listado...</h4>',
+                                       'id' => 'modal1',
+                                       //'size' => 'modal-lg',
+                                   ]);
+
+                                   echo "<div id='modalContent1'></div>";
+                                                                   
+                                   Modal::end();
+                               ?>
                              
                         </div>
                     </div>

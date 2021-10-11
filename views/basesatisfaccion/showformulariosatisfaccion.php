@@ -108,104 +108,149 @@ $banderaSaltoComentario = true;
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
                 <tr>
                     <td>
-                        <?php
-                        if (!empty($data->basesatisfaccion->buzon)) {
-                            if($data->basesatisfaccion->aliados == 'CLARO'){
-                                $url_buzon = $data->basesatisfaccion->buzon;
-                                // $file = 'file.txt';
-                                // $data = 'this is your string to write';
-                                // file_put_contents($file, $data);
-                                // $temp = tmpfile();
-                                // fwrite($temp, "escribiendo en el archivo temporal");
-                                // fseek($temp, 0);
-                                // echo fread($temp, 1024);
-                                // fclose($temp); // esto elimina el archivo
-                                // echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                // . Yii::t("app", "Grabaci처n buz처n"), $url_buzon, ['target' => "_blank"]);
-                                echo Html::label("Identificador buzon");
-                                echo " ";
-                                echo Html::input("text", "idbuzon", $data->basesatisfaccion->buzon,array('readonly'=>true,'style'=>'width:600px'));
-                                
-                            }
-                            if($data->basesatisfaccion->aliados == 'KNT'){
-                                $url_buzon = explode("/web/", $data->basesatisfaccion->buzon);
-                                echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                . Yii::t("app", "Grabaci처n buz처n"), Url::to("@web/" . $url_buzon[1]), ['target' => "_blank"]);
-                            }
+                        <div class="row">
+                            <div class="col-md-12">
+                            <?php
+                            if (!empty($data->basesatisfaccion->buzon)) {
+                                if($data->basesatisfaccion->aliados == 'CLARO'){
+                                    $url_buzon = $data->basesatisfaccion->buzon;
+                                    // $file = 'file.txt';
+                                    // $data = 'this is your string to write';
+                                    // file_put_contents($file, $data);
+                                    // $temp = tmpfile();
+                                    // fwrite($temp, "escribiendo en el archivo temporal");
+                                    // fseek($temp, 0);
+                                    // echo fread($temp, 1024);
+                                    // fclose($temp); // esto elimina el archivo
+                                    // echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                    // . Yii::t("app", "Grabaci처n buz처n"), $url_buzon, ['target' => "_blank"]);
+                                    echo Html::label("Identificador buzon");
+                                    echo " ";
+                                    echo Html::input("text", "idbuzon", $data->basesatisfaccion->buzon,array('readonly'=>true,'style'=>'width:600px'));
+                                    
+                                }
+                                if($data->basesatisfaccion->aliados == 'KNT'){
+                                    $url_buzon = explode("/web/", $data->basesatisfaccion->buzon);
+                                    echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                    . Yii::t("app", "Grabaci처n buz처n"), Url::to("@web/" . $url_buzon[1]), ['target' => "_blank"]);
+                                }
 
-                        } else {
-                            echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                    . Yii::t("app", "No se encontr처 buz처n"), $data->basesatisfaccion->buzon);
-                        }
-                        ?>
+                            } else {
+                                echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                        . Yii::t("app", "No se encontr처 buz처n"), $data->basesatisfaccion->buzon);
+                            }
+                            ?>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <?php
-                        if (!empty($data->basesatisfaccion->llamada)) {
-                            if($data->basesatisfaccion->aliados == 'CLARO'){
-                                echo Html::label("Identificador llamada");
-                                echo " ";
-                                echo Html::input("text", "idllamada", $data->basesatisfaccion->llamada,array('readonly'=>true,'style'=>'width:600px'));
-                            }else{
-                                $llamada = json_decode($data->basesatisfaccion->llamada);
-                                if (count($llamada) > 1) {
-                                    $i = 1;
-                                    foreach ($llamada as $value) {
+                        <div class="row">
+                            <div class="col-md-12">
+                            <?php
+                            if (!empty($data->basesatisfaccion->llamada)) {
+                                if($data->basesatisfaccion->aliados == 'CLARO'){
+                                    echo Html::label("Identificador llamada");
+                                    echo " ";
+                                    echo Html::input("text", "idllamada", $data->basesatisfaccion->llamada,array('readonly'=>true,'style'=>'width:600px'));
+                                }else{
+                                    $llamada = json_decode($data->basesatisfaccion->llamada);
+                                    if (count($llamada) > 1) {
+                                        $i = 1;
+                                        foreach ($llamada as $value) {
+                                            echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                                    . Yii::t("app", "Grabaci처n Llamada") . " - " . $i . " ", $value->llamada, ['target' => "_blank"]);
+                                            $i++;
+                                        }
+                                    } else {
                                         echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                                . Yii::t("app", "Grabaci처n Llamada") . " - " . $i . " ", $value->llamada, ['target' => "_blank"]);
-                                        $i++;
+                                                . Yii::t("app", "Grabaci처n Llamada"), $llamada[0]->llamada, ['target' => "_blank"]);
                                     }
-                                } else {
-                                    echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                            . Yii::t("app", "Grabaci처n Llamada"), $llamada[0]->llamada, ['target' => "_blank"]);
+
                                 }
 
-                            }
+                            } else {
+                                $varGenesysCloud = $data->basesatisfaccion->tipo_encuesta;
 
-                        } else {
-                            $varGenesysCloud = $data->basesatisfaccion->tipo_encuesta;
+                                if (strlen($varGenesysCloud) > 1) {
+                                    $varGC = substr($varGenesysCloud, 1);
 
-                            if (strlen($varGenesysCloud) > 1) {
-                                $varGC = substr($varGenesysCloud, 1);
+                                    $varGeneral = $data->basesatisfaccion->connid;
+                                    $varParte1 = substr($varGeneral, -32,-24);
+                                    $varParte2 = substr($varGeneral, -24,-20);
+                                    $varParte3 = substr($varGeneral, -20,-16);
+                                    $varParte4 = substr($varGeneral, -16,-12);
+                                    $varParte5 = substr($varGeneral, -12);
+                                    
+                                    $varConnidGenesysCloud = $varParte1."-".$varParte2."-".$varParte3."-".$varParte4."-".$varParte5;
+                                    //$varUrlGenesysCloud = "https://apps.mypurecloud.com/directory/#/engage/admin/interactions/";
+                                    $varUrlGenesysCloud = "https://apps.usw2.pure.cloud/directory/#/engage/admin/interactions/";
 
-                                $varGeneral = $data->basesatisfaccion->connid;
-                                $varParte1 = substr($varGeneral, -32,-24);
-                                $varParte2 = substr($varGeneral, -24,-20);
-                                $varParte3 = substr($varGeneral, -20,-16);
-                                $varParte4 = substr($varGeneral, -16,-12);
-                                $varParte5 = substr($varGeneral, -12);
-                                
-                                $varConnidGenesysCloud = $varParte1."-".$varParte2."-".$varParte3."-".$varParte4."-".$varParte5;
-                                //$varUrlGenesysCloud = "https://apps.mypurecloud.com/directory/#/engage/admin/interactions/";
-                                $varUrlGenesysCloud = "https://apps.usw2.pure.cloud/directory/#/engage/admin/interactions/";
-
-                                if ($varGC = "G") {
-                                    echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                                . Yii::t("app", "Grabaci처n Llamada"), $varUrlGenesysCloud.$varConnidGenesysCloud, ['target' => "_blank"]);
+                                    if ($varGC = "G") {
+                                        echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                                    . Yii::t("app", "Grabaci처n Llamada"), $varUrlGenesysCloud.$varConnidGenesysCloud, ['target' => "_blank"]);
+                                    }else{
+                                        echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                            . Yii::t("app", "No se encontr처 llamada"), $data->basesatisfaccion->llamada);
+                                    }  
                                 }else{
                                     echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
                                         . Yii::t("app", "No se encontr처 llamada"), $data->basesatisfaccion->llamada);
-                                }  
-                            }else{
-                                echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                    . Yii::t("app", "No se encontr처 llamada"), $data->basesatisfaccion->llamada);
-                            }                       
-                        }
-                        ?>
+                                }                       
+                            }
+                            ?>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <b><i class="fas fa-envelope" style="font-size: 25px; color: #002855;"></i> <?= Yii::t('app', 'Transcripci처n: ') ?></b> <?php echo $vartexto ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b><i class="fas fa-envelope" style="font-size: 25px; color: #002855;"></i> <?= Yii::t('app', 'Transcripci처n: ') ?></b> <?php echo $vartexto ?>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <b><i class="fas fa-smile" style="font-size: 25px; color: #002855;"></i> <?= Yii::t('app', 'Valencia emocional: ') ?></b> <?php echo $varvalencia ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b><i class="fas fa-smile" style="font-size: 25px; color: #002855;"></i> <?= Yii::t('app', 'Valencia emocional: ') ?></b> <?php echo $varvalencia ?>
+                            </div>
+                        </div>                        
                     </td>
                 </tr>
+
+                <?php if ($varcontenido != 0) { ?>
+                    
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <b><i class="fas fa-file" style="font-size: 25px; color: #002855;"></i> <?= Yii::t('app', 'Ingresar nueva valencia emocional: ') ?></b>
+                                </div>
+                                <div  class="col-md-4">
+                                    <select id="idselectvalencias" name="nuevavalencia" class="js-example-basic-single form-control" >
+                                        <option value="">Seleccione</option>
+                                        <option value="Negativo">Negativo</option>
+                                        <option value="Neutro">Neutro</option>
+                                        <option value="Positivo">Positivo</option>                            
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <div onclick="enviarvalencia();" class="btn btn-primary" style="height: 34px;" method='post' id="botones2" >
+                                        Guardar
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </td>
+                    </tr>
+
+                <?php } ?>
+
             </table>
         </div>
         <?php if ($data->preview != true) : ?>        
@@ -3581,5 +3626,30 @@ $banderaSaltoComentario = true;
 
     function myFunction2() {
         document.getElementById("txt_comentarios_1").value = "1. Oportunidad de Mejora que impacten la Promesa de Solucion del Embajador:  \n\n\n\n\n2. Oportunidad de Mejora que impacten la Promesa de Solucion del Canal:  \n\n\n\n\n3. Oportunidad de Mejora que impacten los Productos:  \n\n\n\n\n4. Oportunidad de Mejora que impacten los Procedimientos/Politicas:  \n\n\n\n\n5. Contiene la percepcion del usuario en los siguientes aspectos: \n5.1. Segmento de Cliente: \n5.2. Que piensa, siente?: \n5.3. Que oye?: \n5.4. Que ve?: \n5.5. Que dice y hace?: ";
+    }
+
+    function enviarvalencia(){
+        var varidselectvalencias = document.getElementById("idselectvalencias").value;
+        var varconnid = "<?php echo $varConnids; ?>";
+
+        if (varidselectvalencias == "") {
+            event.preventDefault();
+            swal.fire("　� Advertencia !!!","Debe de seleccionar una valencia","warning");
+            return;
+        }else{
+            $.ajax({
+                method: "post",
+                url: "enviarvalencias",
+                data: {
+                    txtvaridselectvalencias : varidselectvalencias,
+                    txtvarconnid : varconnid,
+                },
+                 success : function(response){
+                    numRta =   JSON.parse(response);
+                    console.log(numRta);
+                    location.reload();
+                },
+            });
+        }
     }
 </script>

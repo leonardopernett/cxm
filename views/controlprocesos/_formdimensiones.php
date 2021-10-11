@@ -67,7 +67,7 @@ $fechaActual = Yii::$app->db->createCommand("select distinct fechacreacion from 
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -214,8 +214,7 @@ $fechaActual = Yii::$app->db->createCommand("select distinct fechacreacion from 
         else{
             $.ajax({
                 method: "post",
-                //url: "http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/prueba",
-                url: "https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/prueba",
+                url: "prueba",
                 data : {
                     arbol_id : arbolTxt,
                     pcrc_text : arregloarbol,

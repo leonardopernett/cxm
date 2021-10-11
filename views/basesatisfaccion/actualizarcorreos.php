@@ -107,8 +107,8 @@ $fechaActual = date('Y-m-d');
             }else{
                 $.ajax({
                     method: "post",
-                    url: "https://172.20.100.50/qa/web/index.php/basesatisfaccion/pruebaactualizar",
-                    //url: "http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/pruebagrupal",
+                    url: "pruebaactualizar",
+
                     data : {
                         varusuarios : varUsua,
                         varcorreos : varCorreo,                      

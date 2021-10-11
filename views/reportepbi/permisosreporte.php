@@ -178,7 +178,7 @@ function permisousa(){
 				console.log(respuesta);
 				if(respuesta != ""){
                     window.location.href='permisosreporte?model='+respuesta+'&workspace='+vararearab+'&reporte='+varidrepor+'&nombrerepor='+varnombrerep;
-					//window.location.href = "http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/updatevoc?txtPcrc="+varPCRC;
+
 				}else{
 					alert("Error al intentar eliminar la alerta");
 				}

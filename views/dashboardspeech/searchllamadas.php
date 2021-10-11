@@ -12,6 +12,7 @@ use yii\bootstrap\Modal;
 use yii\db\Query;
 use app\models\SpeechCategorias; 
 
+
 $js = <<< 'SCRIPT'
 /* To initialize BS3 popovers set this below */
 $(function () { 
@@ -57,8 +58,14 @@ $this->title = 'Dashboard Voz del Cliente';
     $txttxtvarfechainireal = $txtvarfechainireal;
     $txttxtvarfechafinreal = $txtvarfechafinreal;
 
+    $txtListLideres = Yii::$app->db->createCommand("select distinct u.usua_id, u.usua_nombre, e.id from tbl_roles r     inner join rel_usuarios_roles ur on r.role_id = ur.rel_role_id inner join tbl_usuarios u on ur.rel_usua_id = u.usua_id inner join tbl_equipos e on u.usua_id = e.usua_id inner join tbl_arbols_equipos ae on e.id = ae.equipo_id  inner join tbl_arbols a on ae.arbol_id = a.id  inner join tbl_speech_servicios ss on a.arbol_id = ss.arbol_id inner join tbl_speech_parametrizar sp on ss.id_dp_clientes = sp.id_dp_clientes where sp.cod_pcrc in ('$txtvarcodigopcrc') and a.activo = 0  and r.role_id = 273")->queryAll();
+    $listDatalideres = ArrayHelper::map($txtListLideres, 'id', 'usua_nombre');
+
+    $txtservicios = Yii::$app->db->createCommand("select distinct ss.nameArbol from tbl_speech_servicios ss inner join tbl_speech_parametrizar sp on ss.id_dp_clientes = sp.id_dp_clientes where sp.cod_pcrc in ('$txtvarcodigopcrc')")->queryScalar();
+
+
 ?>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css" >
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 <style type="text/css">
     .card {
@@ -128,7 +135,7 @@ $this->title = 'Dashboard Voz del Cliente';
   .masthead {
     height: 25vh;
     min-height: 100px;
-    background-image: url('../../images/Dashboard-Escuchar-+.png');
+    background-image: url('../../images/GestionBT.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -157,7 +164,7 @@ $this->title = 'Dashboard Voz del Cliente';
     <div class="row">
         <div class="col-md-12">
           <div class="card1 mb">
-            <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i> Selecci√≥n de datos:</label>
+            <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i> </label>
             <div class="row">
               <div class="col-md-3">
                 <label><?= Yii::t('app', 'Indicadores') ?></label>
@@ -204,6 +211,38 @@ $this->title = 'Dashboard Voz del Cliente';
                 <?= $form->field($model, 'login_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($var, ['prompt' => 'Seleccionar...', 'id'=>"idcontact"])->label('') ?> 
               </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label><?= Yii::t('app', 'Seleccionar Lider') ?></label>
+                    <?=  $form->field($model, 'servicio', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listDatalideres,
+                                            [
+                                                'prompt'=>'Seleccionar lider...',
+                                                'onchange' => '
+                                                    $.get(
+                                                        "' . Url::toRoute('dashboardspeech/listarlideresx') . '", 
+                                                        {id: $(this).val()}, 
+                                                        function(res){
+                                                            $("#requester2").html(res);
+                                                        }
+                                                    );
+                                                ',
+
+                                            ]
+                                )->label(''); 
+                    ?>
+                </div>
+                <div class="col-md-6">
+                    <label><?= Yii::t('app', 'Seleccionar Asesor') ?></label>
+                    <?= $form->field($model,'fechallamada', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
+                                            [],
+                                            [
+                                                'prompt' => 'Seleccionar asesor...',
+                                                'id' => 'requester2'
+                                            ]
+                                        )->label('');
+                    ?>
+                </div>
+            </div>
             <br>
             <div class="row">
                 <div class="col-md-3">
@@ -240,7 +279,7 @@ $this->title = 'Dashboard Voz del Cliente';
                 <?php if ($txttxtvarcantllamadasb != 0) {  ?>
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #827DF9;"></i> Descargar gesti√≥n: </label> 
+                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #827DF9;"></i> Descargar gesti&oacute;n: </label> 
                         <?= Html::button('Descargar', ['value' => url::to(['descargarcalls','varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$varcategoriass, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'consinmotivos'=>$varidloginid]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
                         ?> 
 
@@ -265,28 +304,34 @@ $this->title = 'Dashboard Voz del Cliente';
 <?php ActiveForm::end(); ?>
   <hr>
     <div class="row">
-        <div class="col-md-4">
-          <div class="card mb">
-            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Pcrc Seleccionado:</label>
-            <label><?php echo $txtvarcodigopcrc.' - '.$txtnombrepcrc; ?></label>
-          </div>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
           <div class="card mb">
             <label><i class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></i> Rango de Fechas:</label>
-            <label><?php echo $txttxtvarfechainireal.' - '.$txttxtvarfechafinreal; ?></label>
+            <label style="font-size: 14px; text-align: center;"><?php echo $txttxtvarfechainireal.' - '.$txttxtvarfechafinreal; ?></label>
           </div>
         </div>
         <div class="col-md-2">
           <div class="card mb">
+            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Servicio:</label>
+            <label style="font-size: 15px; text-align: center;"><?php echo $txtservicios; ?></label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb">
+            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Programa Pcrc:</label>
+            <label style="font-size: 15px; text-align: center;"><?php echo $txtvarcodigopcrc.' - '.$txtnombrepcrc; ?></label>
+          </div>
+        </div>        
+        <div class="col-md-2">
+          <div class="card mb">
             <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Llamadas general:</label>
-            <label  style="font-size: 23px; text-align: center;"><?php echo $txttxtvarcantllamadas; ?></label>
+            <label  style="font-size: 15px; text-align: center;"><?php echo $txttxtvarcantllamadas; ?></label>
           </div>
         </div>
         <div class="col-md-2">
           <div class="card mb">
             <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Llamadas buscadas:</label>
-            <label  style="font-size: 23px; text-align: center;"><?php echo $txttxtvarcantllamadasb; ?></label>
+            <label  style="font-size: 15px; text-align: center;"><?php echo $txttxtvarcantllamadasb; ?></label>
           </div>
         </div>
   </div>
@@ -302,25 +347,120 @@ $this->title = 'Dashboard Voz del Cliente';
                 'dataProvider' => $dataProvider,
                 'columns' => [
                     [
-                        'attribute' => 'Id de llamadas',
+                        'attribute' => 'Id llamada',
                         'value' => 'callId',
                     ],
                     [
-                        'attribute' => 'Fecha y hora real',
+                        'attribute' => 'Fecha',
                         'value' => 'fechareal',
                     ],
                     [
-                        'attribute' => 'Servicio',
-                        'value' => 'servicio',
-                    ],
-                    [
-                        'attribute' => 'Agente',
+                        'attribute' => 'Asesor',
                         'value' => 'login_id',
                     ],
                     [
-                        'attribute' => 'Id redbox',
+                        'attribute' => 'redbox',
                         'value' => 'idredbox',
                     ],  
+                    [
+                        'attribute' => 'Encuesta',
+                        'value' => function($data){
+                            return $data->getsencuestas($data->connid);
+                        }
+                    ],                      
+                    [
+                        'attribute' => 'Tipologia',
+                        'value' => function($data){
+                            return $data->getstipologia($data->connid);
+                        }
+                    ],                                         
+                    [
+                        'attribute' => 'Buzon',
+                        'value' => function($data){
+                            return $data->getsbuzon($data->connid);
+                        }
+                    ],                                                             
+                    [
+                        'attribute' => 'Estado',
+                        'value' => function($data){
+                            return $data->getsestado($data->iddashboardspeechcalls);
+                        }
+                    ],                                         
+                    [
+                        'attribute' => 'Valorador',
+                        'value' => function($data){
+                            return $data->getsresposanble($data->iddashboardspeechcalls);
+                        }
+                    ],
+                    [
+                        'attribute' => 'Marca',
+                        'value' => function($data){
+                            return $data->getsmarca($data->iddashboardspeechcalls);
+                        }
+                    ],
+                    [
+                        'attribute' => 'Canal',
+                        'value' => function($data){
+                            return $data->getscanal($data->iddashboardspeechcalls);
+                        }
+                    ],
+                    [
+                        'attribute' => 'Agente',
+                        'value' => function($data){
+                            return $data->getsagente($data->iddashboardspeechcalls);
+                        }
+                    ], 
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'headerOptions' => ['style' => 'color:#337ab7;',],
+                        'contentOptions' => ['style' => 'text-align: center;',],
+                        //'template' => '{view}{update}{delete}',
+                        'template' => '{update}',
+                        'buttons' => 
+                                [
+                                   'update' => function ($url, $model) {
+                                       $idspeech = $model->iddashboardspeechcalls;
+                                                                                
+                                            $varextensiones = $model->extension;
+                                            $varservicios = $model->servicio;
+                                            if (strlen($varextensiones) <= 3) {
+                                                $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct sc.cod_pcrc FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.rn IN ('$varextensiones')")->queryScalar();
+
+                                                
+                                            }else{
+                                                if (strlen($varextensiones) == 6 || strlen($varextensiones) == 6) {
+                                                    $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct sc.cod_pcrc FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
+
+                                                }else{
+                                                    $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct sc.cod_pcrc FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.usuared IN ('$varextensiones')")->queryScalar();
+                                                }
+                                            }
+                                                        
+
+                                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-calculator" style="font-size: 17px; color: #C178G9; display: inline;"></i>'),
+                                                            'javascript:void(0)',
+                                                            [
+                                                                'title' => Yii::t('app', 'Resultados VOC'),
+                                                                //'data-pjax' => '0',
+                                                                'onclick' => "
+                                                                    generarcarga2();                        
+                                                                    $.ajax({
+                                                                        type     :'get',
+                                                                        cache    : false,
+                                                                        url  : '" . Url::to(['viewrtas',
+                                                                        'idspeechcalls' => $model->iddashboardspeechcalls, 'varcodpcrc'=>$varcomprobacion]) . "',
+                                                                        success  : function(response) {
+                                                                            $('#ajax_result').html(response);
+                                                                        }
+                                                                    });
+                                                                return false;",
+                                                            ]);
+
+
+                                                                               
+                                    }
+                                ]                              
+                    ],
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7;',],
@@ -330,11 +470,15 @@ $this->title = 'Dashboard Voz del Cliente';
                         'buttons' => 
                                 [
                                     'view' => function ($url, $model) {   
+                                        $txtidredbox = $model->idredbox;
+                                        $txtidgrabadora = $model->idgrabadora;
 
+                                        if ($txtidredbox != null && $txtidgrabadora != null) {
+                                           
                                             return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #ff3838; display: inline;"></i>'),
                                                 'javascript:void(0)',
                                                 [
-                                                    'title' => Yii::t('app', 'Llamadas'),
+                                                    'title' => Yii::t('app', 'Escucha VOC'),
                                                     //'data-pjax' => '0',
                                                     'onclick' => "
                                                         generarcarga();                        
@@ -342,7 +486,7 @@ $this->title = 'Dashboard Voz del Cliente';
                                                             type     :'get',
                                                             cache    : false,
                                                             url  : '" . Url::to(['viewcalls',
-                                                            'idlogin' => $model->login_id, 'idredbox' => $model->idredbox, 'idgrabadora' => $model->idgrabadora]) . "',
+                                                            'idlogin' => $model->login_id, 'idredbox' => $model->idredbox, 'idgrabadora' => $model->idgrabadora, 'idconnid' => $model->connid]) . "',
                                                             success  : function(response) {
                                                                 $('#ajax_result').html(response);
                                                             }
@@ -358,6 +502,99 @@ $this->title = 'Dashboard Voz del Cliente';
                                             //         'method' => 'post',
                                             //     ],
                                             // ]);  
+                                        }
+                                    }
+                                ]                              
+                    ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'headerOptions' => ['style' => 'color:#337ab7;',],
+                        'contentOptions' => ['style' => 'text-align: center;',],
+                        //'template' => '{view}{update}{delete}',
+                        'template' => '{update}',
+                        'buttons' => 
+                                [
+                                   'update' => function ($url, $model) {
+                                        $idspeech = $model->iddashboardspeechcalls;
+                                        $idloginid = $model->login_id;
+                                        $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) AS callId FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$idspeech')")->queryScalar();
+                                        $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta in ('$concatenarspeech')")->queryScalar();
+                                        $txttmpejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_tmpejecucionformularios te WHERE te.dsfuente_encuesta in ('$concatenarspeech')")->queryScalar();
+                                        $txtidejecucion = Yii::$app->db->createCommand("SELECT te.id FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta in ('$concatenarspeech')")->queryScalar();
+
+                                        $idconnId = $model->connid;
+                                        if ($idconnId != "") {
+                                            $idbase = Yii::$app->db->createCommand("select b.id from tbl_base_satisfaccion b where b.connid in ('$idconnId')")->queryScalar();
+                                        }else{
+                                            $idbase = "";
+                                        }
+                                        
+                                        if ($txtejecucion == 0 && $txttmpejecucion == 0) {
+                                            $varextensiones = $model->extension;
+                                            $varservicios = $model->servicio;
+                                            if (strlen($varextensiones) <= 3) {
+                                                $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct CONCAT(sc.cod_pcrc,' - ',sc.pcrc) FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.rn IN ('$varextensiones')")->queryScalar();
+
+                                                $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.rn IN ('$varextensiones')")->queryScalar();
+                                            }else{
+                                                if (strlen($varextensiones) == 6 || strlen($varextensiones) == 6) {
+                                                    $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct CONCAT(sc.cod_pcrc,' - ',sc.pcrc) FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
+
+                                                    $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
+                                                }else{
+                                                    $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct CONCAT(sc.cod_pcrc,' - ',sc.pcrc) FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.usuared IN ('$varextensiones')")->queryScalar();
+
+                                                    $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.usuared IN ('$varextensiones')")->queryScalar();
+                                                }
+                                            }
+                                            // $varbasesatis = $model->basesatisfaccion_id;
+                                            // $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = $varticket and basesatisfaccion_id = $varbasesatis ")->queryScalar();
+                                                    // if ($varcomprobacion == 0) {
+
+                                                    if ($idbase != "") {
+
+                                                        if (strlen($idloginid) > 7) {
+                                                        return Html::a('<i id="idimage" class="fas fa-edit" style="font-size: 17px; color: #4dbdff; display: inline;"></i>'
+                                                                    , Url::to(['basesatisfaccion/showformulariogestion',
+                                                                        'basesatisfaccion_id' => $idbase, 'preview' => 5, 'fill_values' => false, 'banderaescalado' => false, 'aleatorio'=> 0]), ['title' => Yii::t('yii', 'Gestionar'),'target' => "_blank"]);
+                                                        }
+
+                                                        
+                                                    }else{
+
+                                                        if (strlen($idloginid) > 7) {
+                                                        return Html::a(
+                                                            '<i id="idimage" class="fas fa-edit" style="font-size: 17px; color: #4c6ef5; display: inline;"></i>', 
+                                                            Url::to(['valoraspeech', 'idspeechcalls' => $model->iddashboardspeechcalls, 'varcodpcrc'=>$varcomprobacion, 'varservisioname' => $varnombreservicio]), ['title' => Yii::t('yii', 'ValoraciÛn VOC'), 'data-pjax' => 0, 'target' => "_blank"]
+                                                        );
+                                                        }
+                                                    }
+                                                        
+
+
+                                                    // }else{
+                                                    //     return Html::a('<span class="fas fa-eye" style="font-size: 20px; color: #4ad427;" ></span>'
+                                                    //                     , Url::to(['showbasechatview',
+                                                    //                         'basechatid' => $model->idbasechat_tigob]), ['title' => Yii::t('yii', 'ver GestiÛn')]);
+                                                    // }
+                                                // },
+                                        }else{
+                                            if ($idbase == "") {
+                                                return Html::a('<i id="idimage" class="fas fa-search" style="font-size: 17px; color: #4c6ef5; display: inline;"></i>'
+                                                        , Url::to(['formularios/showformulariodiligenciadohistorico'
+                                                        , 'tmp_id' => $txtidejecucion,'view'=>"reportes/historicoformularios"]), [
+                                                        'title' => Yii::t('yii', 'ver formulario'),
+                                                        'target' => "_blank"
+                                                ]);
+                                            }else{
+                                                return Html::a('<i id="idimage" class="fas fa-search" style="font-size: 17px; color: #4dbdff; display: inline;"></i>', Url::to(['basesatisfaccion/showformulariogestion'
+                                                    , 'basesatisfaccion_id' => $idbase, 'banderaescalado'=> 0, 'aleatorio' => false ,'preview' => 1, 'fill_values' => true,'view'=>"reportes/historicoformularios"]), [
+                                                    'title' => Yii::t('yii', 'ver formulario'),
+                                                    'target' => "_blank"
+                                                ]);
+                                            }                                  
+                                        }
+                                        
                                     }
                                 ]                              
                     ],
@@ -381,7 +618,7 @@ $this->title = 'Dashboard Voz del Cliente';
 
         if (varidcontact == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debes seleccionar si contiene o no contiene parametrizaci√≥n","warning");
+            swal.fire("!!! Advertencia !!!","Debes seleccionar si contiene o no contiene parametrizaciÛn","warning");
             return;
         }else{
             if (varidindicador == "" && varidmotivos == "") {
@@ -398,7 +635,17 @@ $this->title = 'Dashboard Voz del Cliente';
           icon: 'success',
           title: 'Buscando llamada seleccionada...',
           showConfirmButton: false,
-          timer: 9000
+          timer: 4500
+        })
+    };
+
+    function generarcarga2(){
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Realizando calculo...',
+          showConfirmButton: false,
+          timer: 400
         })
     };
 </script>

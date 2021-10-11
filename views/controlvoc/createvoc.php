@@ -718,7 +718,6 @@ $this->params['breadcrumbs'][] = $this->title;
    
       $.ajax({
               method: "post",
-              //url: "https://172.20.100.50/qa/web/index.php/controlvoc/listashijo",
               url: "listashijo",
               data : {
                 txtvmotivo : varMotivo,
@@ -739,7 +738,7 @@ $this->params['breadcrumbs'][] = $this->title;
   };
 
   function enviar(){
-    window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/alertas','_blank');
+    window.open('../basesatisfaccion/alertas','_blank');
   };
 
   function generated(){
@@ -836,7 +835,6 @@ $this->params['breadcrumbs'][] = $this->title;
    if (control = 1) {
       $.ajax({
               method: "post",
-              //url: "https://172.20.100.50/qa/web/index.php/controlvoc/createfocalizada",
               url: "createfocalizada",
               data : {
                 txtvArbol : varArbol,
@@ -875,8 +873,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     title: "!!! OK !!!",
                                     text: "Datos guardados correctamente."
                                 }).then(function() {
-                                    //window('http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/index');
-				    window.location.href = 'http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/index';
+				    window.location.href = '../controlvoc/index';
                                 });
                             });
                           }else{

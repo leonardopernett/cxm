@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">

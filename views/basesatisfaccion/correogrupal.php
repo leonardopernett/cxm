@@ -1,3 +1,4 @@
+
 <?php
 
 use yii\helpers\Html;
@@ -164,7 +165,6 @@ $fechaActual = date('Y-m-d');
              $.ajax({
                 method: "post",
                 url: "prueba",
-                //url: "http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/pruebagrupal",
                 data : {
                     varcorreos : selectes,                    
                 },
@@ -202,7 +202,6 @@ $fechaActual = date('Y-m-d');
              $.ajax({
                 method: "post",
                 url: "comprobacion",
-                //url: "http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/pruebagrupal",
                 data : {
                     varcorreos : varUsu,                    
                 },
@@ -223,7 +222,6 @@ $fechaActual = date('Y-m-d');
 							$.ajax({
 				                method: "post",
 				                url: "comprobacionlista",
-				                //url: "http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/pruebagrupal",
 				                data : {
 				                    varcorreos : varUsu,                    
 				                },
@@ -241,7 +239,7 @@ $fechaActual = date('Y-m-d');
 					                title: "!!! Advertencia !!!",
 					                text: "Algunos correos no se encontraron, favor actualizar."
 					            }).then(function() {
-					                window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/actualizarcorreos','_blank');
+					                window.open('../basesatisfaccion/actualizarcorreos','_blank');
 					            });
 					        });
 		            	return; 		                	

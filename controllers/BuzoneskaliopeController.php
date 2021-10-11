@@ -14,11 +14,19 @@ use yii\filters\AccessControl;
 use yii\db\Query;
 use yii\db\mssql\PDO;
 use yii\web\UploadedFile;
+use yii\web\Controller;
+use yii\helpers\Url;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use app\models\UploadForm2;
 use app\models\BuzonesKaliope;
 use GuzzleHttp;
+use app\models\BaseSatisfaccion; 
+use app\models\BaseSatisfaccionSearch;
+use app\models\Formularios;
+
+
+
 
   class BuzoneskaliopeController extends \yii\web\Controller {
 
@@ -55,7 +63,8 @@ use GuzzleHttp;
 
       $form = Yii::$app->request->post();
       if ($model->load($form)) {
-          $varpcrc = $model->arbol_id;
+          // $varpcrc = $model->arbol_id;
+          $varpcrc = 18;
           $varfecha = explode(" ", $model->fechacreacion);
           $varFechaInicio = $varfecha[0];
           $varFechaFin = date('Y-m-d',strtotime($varfecha[2]));
@@ -113,22 +122,50 @@ use GuzzleHttp;
     }
 
     public function actionTranscripcionkaliope(){
-      $txtvaridruta = Yii::$app->request->POST("txtvaridruta");
+      $txtvaridruta = Yii::$app->request->GET("txtvaridruta");
+      $txtconnid = '04321012431610129768';
 
-      $client = new GuzzleHttp\Client([
-        'verify' => false
-      ]);
+      ob_start();
+      $curl = curl_init();
 
-      $res = $client->request('POST', 'https://api-migi.analiticagrupokonectacloud.com/ ', [
-        'headers' => [
-            'Content-Type' => 'application/json'
-          ],
-        'json' => [
-          'connid' => $txtvaridruta,
-        ]
-      ]);
+      curl_setopt_array($curl, array(
+        CURLOPT_SSL_VERIFYPEER=> false,
+        CURLOPT_SSL_VERIFYHOST => false,
+        CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS =>'{"connid": "'.$txtvaridruta.'"}',
+        CURLOPT_HTTPHEADER => array(
+          'Content-Type: application/json'
+        ),
+      ));
+
+      $response = curl_exec($curl);
+
+      curl_close($curl);
+      ob_clean();
+
+      if (!$response) {
+        die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+      }
+
+      $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+      if (count($response) == 0) {
+        die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+      }
       
-      die(json_encode($res));
+      // var_dump($response[0]['transcription']);
+      // var_dump($response[0]['valencia']);
+
+      $varrespuesta = 'Transcripcion: '.$response[0]['transcription'].'  *****  Valencia emocional: '.$response[0]['valencia'];
+      
+      die(json_encode($varrespuesta));
     }
 
     public function actionGenerarlogs(){
@@ -137,18 +174,21 @@ use GuzzleHttp;
       ini_set("memory_limit", "1024M");
       ini_set( 'post_max_size', '1024M' );
 
-      $varanno = date('Y');
-      $varmes = date('m');
-      $vardia = date('d') - 1;
+      ignore_user_abort(true);
+      set_time_limit(900);
 
-      $varfechainicial = $varanno.'-'.$varmes.'-'.$vardia;
-      // $varfechainicial = '2021-07-04';
+      $fecha_actual = date("Y-m-d");
 
-      $varlista = Yii::$app->db->createCommand("SELECT b.connid, b.created FROM tbl_base_satisfaccion b WHERE b.created BETWEEN '$varfechainicial 00:00:00' AND '$varfechainicial 23:59:59' AND b.connid != '' AND b.tipo_inbox IN ('ALEATORIO','NORMAL')AND b.buzon = ''")->queryAll();
+      $varfechainicial = date("Y-m-d",strtotime($fecha_actual."- 1 days")); 
+
+      $varlista = Yii::$app->db->createCommand("SELECT b.connid, b.created FROM tbl_base_satisfaccion b WHERE b.fecha_satu BETWEEN '$varfechainicial 00:00:00' AND '$varfechainicial 23:59:59' AND b.connid IS NOT NULL AND b.tipo_inbox IN ('ALEATORIO','NORMAL') ")->queryAll();
 
       foreach ($varlista as $key => $value) {
         $txtvaridruta = $value['connid'];
         $txtcreated = $value['created'];
+
+        $vartexto = null;
+        $varvalencia = null;
 
         ob_start();
         $curl = curl_init();
@@ -190,6 +230,10 @@ use GuzzleHttp;
         }else{
           $vartexto = $response[0]['transcription'];
           $varvalencia = $response[0]['valencia'];
+
+          if ($varvalencia == "NULL") {
+            $varvalencia = "Buzón sin información";
+          }
 
           Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
                                            'connid' => $txtvaridruta,

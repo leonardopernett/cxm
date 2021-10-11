@@ -31,6 +31,7 @@ use app\models\EvaluacionNovedadeslog;
 use app\models\EvaluacionCumplimiento;
 use app\models\EvaluacionNovedadesgeneral;
 use app\models\EvaluacionNovedadespares;
+use app\models\EvaluacionDesarrollo;
 
   class EvaluacionDesarrolloController extends \yii\web\Controller {
 
@@ -38,13 +39,13 @@ use app\models\EvaluacionNovedadespares;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['importarusuarios','parametrizardatos','createnivel','verniveles','createeval','verevaluacion','createtipo','vertipo','createcompetencia','vercompetencia','createpreguntas','vercomportamiento','usuarios_evalua', 'createrespuestas', 'verrespuesta', 'importarcompetencia','importarcomporta', 'createbloque', 'verbloque','evaluacionauto','createautoeva','createautodesarrollo','novedadauto','evaluacionjefe','createjefeeva','novedadjefe','importarusuarioseval','importarmensaje','createmensaje','evaluacionpar','evaluacionpares','createautopares','createpardesarrollo','createjefedesarrollo','restringirevalua','novedadpares','evaluacioncargo','evaluaciondecargos','createautocargos','createcargodesarrollo','novedadcargos','novedadesglobales','novedadgeneral','editarplannovedad','feedbackresultado','gestionnovedades','createnovedadgeneral', 'evaluacionfeedback', 'validaevaluado', 'crearresultadofb', 'resultadoevaluacion','eliminarnovedades','editarnovedaddelete','paramsevaluacion'],
+            'only' => ['importarusuarios','parametrizardatos','createnivel','verniveles','createeval','verevaluacion','createtipo','vertipo','createcompetencia','vercompetencia','createpreguntas','vercomportamiento','usuarios_evalua', 'createrespuestas', 'verrespuesta', 'importarcompetencia','importarcomporta', 'createbloque', 'verbloque','evaluacionauto','createautoeva','createautodesarrollo','novedadauto','evaluacionjefe','createjefeeva','novedadjefe','importarusuarioseval','importarmensaje','createmensaje','evaluacionpar','evaluacionpares','createautopares','createpardesarrollo','createjefedesarrollo','restringirevalua','novedadpares','evaluacioncargo','evaluaciondecargos','createautocargos','createcargodesarrollo','novedadcargos','novedadesglobales','novedadgeneral','editarplannovedad','feedbackresultado','gestionnovedades','createnovedadgeneral', 'evaluacionfeedback', 'validaevaluado', 'crearresultadofb', 'resultadoevaluacion','eliminarnovedades','editarnovedaddelete','paramsevaluacion','exportarrtadashboard'],
             'rules' => [
               [
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isCuadroMando()  || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerevaluacion();
+                            return Yii::$app->user->identity->isCuadroMando()  || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerdirectivo();
                         },
               ],
             ]
@@ -1318,7 +1319,9 @@ use app\models\EvaluacionNovedadespares;
     
     $vardocumentojefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua WHERE documento = $txtvardocumento")->queryScalar();
     
-    $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documento = $txtvardocumento AND idevaluaciontipo = 2 group by documentoevaluado")->queryScalar();
+ 	// $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documento = $txtvardocumento AND idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
+
+    $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento AND idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
 
     if($vardocumentojefe > 1){
       $varnopares = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_novedadesgeneral WHERE documento = $txtvardocumento AND aprobado = 1")->queryScalar();
@@ -1330,6 +1333,7 @@ use app\models\EvaluacionNovedadespares;
     }
     $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua WHERE documento_jefe = $vardocumentojefe")->queryScalar();
    
+    // if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
     if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
       $txtRta = 1;
     } else{
@@ -1367,6 +1371,144 @@ use app\models\EvaluacionNovedadespares;
                                   'anulado' => 0,                              
                                   'usua_id' => Yii::$app->user->identity->id,
                               ])->execute(); 
+
+        $varlistbloques = Yii::$app->db->createCommand("select * from tbl_evaluacion_bloques where anulado = 0")->queryAll();
+
+        $varconteobloque = null;
+        $varArraySumaB = array();
+        foreach ($varlistbloques as $key => $value) {          
+          $varidbloque = $value['idevaluacionbloques'];
+          $varconteobloque = $varconteobloque + 1;
+
+          $totalcomp = 0;
+          $varArrayPromedio = array();
+
+          $valortotal1Auto = 0;
+          $valortotal2Jefe = 0;
+          $valortotal3Cargo = 0;
+          $valortotal4Pares = 0;
+          $listadocompetencias = Yii::$app->db->createCommand("select ec.namecompetencia, eb.idevaluacionbloques, eb.namebloque, es.idevaluacioncompetencia
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = $varidbloque
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+          $varconteocompetencia = 0;
+          foreach ($listadocompetencias as $key => $value) {
+            $nombrecompetencias = $value['namecompetencia'];
+            $varidevaluacionbloques = $value['idevaluacionbloques'];
+            $varidcompetencia = $value['idevaluacioncompetencia'];                                        
+            
+            $varconteocompetencia = $varconteocompetencia + 1;
+            $varcolor2 = null;
+
+            $listacompetencia1 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 1 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+            foreach ($listacompetencia1 as $key => $value1) {
+              $valortotal1Auto = $value1['%Competencia'];
+              $varmensaje = $value1['mensaje'];
+            }
+
+            $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 3 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+            foreach ($listacompetencia2 as $key => $value2) {
+              $valortotal2Jefe = $value2['%Competencia'];
+            }
+
+            $listacompetencia3 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 2 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+            foreach ($listacompetencia3 as $key => $value3) {
+              $valortotal3Cargo = $value3['%Competencia'];
+            }
+
+            $listacompetencia4 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 4 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+            foreach ($listacompetencia4 as $key => $value4) {
+              $valortotal4Pares = $value4['%Competencia'];
+            }
+
+            $txtnotafinal1 = null;
+            if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
+              $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
+            }
+
+            if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
+              $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2); 
+            }
+
+            if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
+              $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2);
+            }
+
+            if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
+              $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal4Pares * 5) /100) + (($valortotal3Cargo * 30) /100),2);                            
+            }
+
+            Yii::$app->db->createCommand()->insert('tbl_evaluacion_rtafeedback_detalle',[
+                                  'documento' => $txtvardocumento,
+                                  'idevaluacionbloques' => $varidbloque,
+                                  'idevaluacioncompetencia' => $varidcompetencia,
+                                  'notacompetencia' => $txtnotafinal1,
+                                  'fechacreacion' => date("Y-m-d"),
+                                  'anulado' => 0,                              
+                                  'usua_id' => Yii::$app->user->identity->id,
+                              ])->execute(); 
+          }
+        } 
 
         $txtrta = 1;
 
@@ -1980,6 +2122,2174 @@ use app\models\EvaluacionNovedadespares;
        'varlistaseguimientofeedback' => $varlistaseguimientofeedback,
       ]);
   }
+
+      public function actionExportarrtadashboard(){
+        $model = new EvaluacionDesarrollo();
+        $varlistrtadesarrollo = null;
+        $varnombrec = null;
+        $varrol = null;
+        $varrtaA = 0;
+        $varrtaJ = 0;
+        $varrtaP = 0;
+        $varrtaC = 0;
+        $txtProcentaje = 0;
+        $vardocumento = null;
+
+        $form = Yii::$app->request->post();
+        if($model->load($form)){
+          $vardocumento = $model->idevaluador;
+          $varlistrtadesarrollo = Yii::$app->db->createCommand("SELECT COUNT(*) FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento'")->queryScalar();;
+
+          $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
+          $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
+
+          $varrtaA = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 1")->queryScalar();
+          $varrtaJ = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 3")->queryScalar();
+          $varrtaP = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 4")->queryScalar();
+          $varrtaC = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 2")->queryScalar();
+
+          $varlistbloques = Yii::$app->db->createCommand("select * from tbl_evaluacion_bloques where anulado = 0")->queryAll();
+          $varconteobloque = 0;
+          $varconteocompetencia = 0;
+          $varArraySumaB = array();
+          foreach ($varlistbloques as $key => $value) {
+            $varidbloque = $value['idevaluacionbloques'];
+            $varconteobloque = $varconteobloque + 1;
+
+            $totalcomp = 0;
+            $varArrayPromedio = array();
+            $valortotal1Auto = 0;
+            $valortotal2Jefe = 0;
+            $valortotal3Cargo = 0;
+            $valortotal4Pares = 0;
+
+            $listadocompetencias = Yii::$app->db->createCommand("select ec.namecompetencia, eb.idevaluacionbloques, eb.namebloque, es.idevaluacioncompetencia FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = $varidbloque
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+            foreach ($listadocompetencias as $key => $value) {
+              $nombrecompetencias = $value['namecompetencia'];
+              $varidevaluacionbloques = $value['idevaluacionbloques'];
+              $varidcompetencia = $value['idevaluacioncompetencia'];                                        
+              $varconteocompetencia = $varconteocompetencia + 1;
+              $varcolor2 = null;
+
+              $listacompetencia1 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 1 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+              foreach ($listacompetencia1 as $key => $value1) {
+                $valortotal1Auto = $value1['%Competencia'];
+                $varmensaje = $value1['mensaje'];
+              }
+
+              $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 3 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+              foreach ($listacompetencia2 as $key => $value2) {
+                $valortotal2Jefe = $value2['%Competencia'];
+              }
+
+              $listacompetencia3 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 2 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+              foreach ($listacompetencia3 as $key => $value3) {
+                $valortotal3Cargo = $value3['%Competencia'];
+              }
+
+              $listacompetencia4 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 4 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+              foreach ($listacompetencia4 as $key => $value4) {
+                $valortotal4Pares = $value4['%Competencia'];
+              }
+
+              $txtnotafinal1 = null;
+              if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
+                $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
+              }
+              if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
+                $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2);  
+              }
+              if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
+                $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2); 
+              }
+              if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
+                $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 5) /100) + (($valortotal4Pares * 30) /100),2);    
+              }
+
+              $totalcomp = $totalcomp + 1;
+              array_push($varArrayPromedio, $txtnotafinal1);
+            }
+
+            if ($totalcomp != 0) {
+              $varPromedios = round(array_sum($varArrayPromedio) / $totalcomp,2);
+            }else{
+              $varPromedios = 0;
+            }
+
+            if ($varidbloque == 1) {
+              $vartotalb = round(($varPromedios * (40 / 100)),2);
+            }else{
+              if ($varidbloque == 2) {
+                $vartotalb = round(($varPromedios * (20 / 100)),2);
+              }else{
+                if ($varidbloque == 3) {
+                  $vartotalb = round(($varPromedios * (40 / 100)),2);
+                }
+              }
+            }
+            array_push($varArraySumaB, $vartotalb); 
+          }
+
+          $txtProcentaje =  round(array_sum($varArraySumaB),2);
+        }
+
+        return $this->render('exportarrtadashboard',[
+          'model' => $model,
+          'varlistrtadesarrollo' => $varlistrtadesarrollo,
+          'varnombrec' => $varnombrec,
+          'varrol' => $varrol,
+          'varrtaA' => $varrtaA,
+          'varrtaJ' => $varrtaJ,
+          'varrtaP' => $varrtaP,
+          'varrtaC' => $varrtaC,
+          'txtProcentaje' => $txtProcentaje,
+          'vardocumento' => $vardocumento,
+        ]);
+      }
+
+      public function actionEnviararchivouno(){
+        $model = new EvaluacionDesarrollo();
+        $varlistrtadesarrollo = null;
+        $varnombrec = null;
+        $varrol = null;
+        $varrtaA = 0;
+        $varrtaJ = 0;
+        $varrtaP = 0;
+        $varrtaC = 0;
+        $txtProcentaje = 0;
+        $vardocumento = null;
+
+        $form = Yii::$app->request->post();
+        if($model->load($form)){
+          $varcorreo = $model->comentarios;
+
+          $phpExc = new \PHPExcel();
+          $phpExc->getProperties()
+                  ->setCreator("Konecta")
+                  ->setLastModifiedBy("Konecta")
+                  ->setTitle("Archivo Resultados Evaluacion Desarrollo Opcion 1")
+                  ->setSubject("Archivo Resultados Evaluacion Desarrollo Opcion 1")
+                  ->setDescription("Este archivo contiene el proceso de la evaluacion de desarrollo opcion 1")
+                  ->setKeywords("Archivo Resultados Evaluacion Desarrollo Opcion 1");
+          $phpExc->setActiveSheetIndex(0);
+
+          $phpExc->getActiveSheet()->setShowGridlines(False);
+
+          $styleArray = array(
+                  'alignment' => array(
+                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ),
+                );
+
+          $styleArraySize = array(
+                  'font' => array(
+                          'bold' => true,
+                          'size'  => 15,
+                  ),
+                  'alignment' => array(
+                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ), 
+                );
+
+          $styleColor = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '28559B'),
+                  )
+                );
+
+          $styleColorBA = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'F9BD4C'),
+                  )
+                );
+
+          $styleColorBB = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22D7CF'),
+                  )
+                );
+
+          $styleColorBC = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '49de70'),
+                  )
+                );
+
+          $styleArrayTitle = array(
+                  'font' => array(
+                    'bold' => false,
+                    'color' => array('rgb' => 'FFFFFF')
+                  )
+                );
+
+          $styleArraySubTitle = array(              
+                  'fill' => array( 
+                          'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                          'color' => array('rgb' => '4298B5'),
+                  )
+                );
+
+          $styleArraySubTitle2 = array(              
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'C6C6C6'),
+                  )
+                );  
+
+          // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+          $styleArrayBody = array(
+                  'font' => array(
+                      'bold' => false,
+                      'color' => array('rgb' => '2F4F4F')
+                  ),
+                  'borders' => array(
+                      'allborders' => array(
+                          'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                          'color' => array('rgb' => 'DDDDDD')
+                      )
+                  )
+                );
+
+          $styleColorLess = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '92DD5B'),
+                  )
+                );
+
+          $styleColorMiddle = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'CED9D5'),
+                  )
+                );
+
+          $styleColorhigh = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22CCC4'),
+                  )
+                );
+
+          $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+          $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+          $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AR1');
+
+          $phpExc->getActiveSheet()->SetCellValue('A2','Datos Generales');
+          $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A2:G2');
+          
+          $phpExc->getActiveSheet()->SetCellValue('A3','Cedula Evaluado');
+          $phpExc->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('B3','Evaluado');
+          $phpExc->getActiveSheet()->getStyle('B3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('C3','Auto');
+          $phpExc->getActiveSheet()->getStyle('C3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('D3','Jefe');
+          $phpExc->getActiveSheet()->getStyle('D3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('E3','Colaborador');
+          $phpExc->getActiveSheet()->getStyle('E3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('F3','Par');
+          $phpExc->getActiveSheet()->getStyle('F3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('G3','Nota Final');
+          $phpExc->getActiveSheet()->getStyle('G3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('H2','Bloque Compentencias');
+          $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColorBA);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('H2:AB2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AB3','Nota Bloque Compentencias');
+          $phpExc->getActiveSheet()->getStyle('AB3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AB3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AB3')->applyFromArray($styleColorBA);
+
+          $phpExc->getActiveSheet()->SetCellValue('AC2','Bloque Organizacional');
+          $phpExc->getActiveSheet()->getStyle('AC2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleColorBB);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AC2:AG2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AG3','Nota Bloque Organizacional');
+          $phpExc->getActiveSheet()->getStyle('AG3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AG3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AG3')->applyFromArray($styleColorBB);
+
+          $phpExc->getActiveSheet()->SetCellValue('AH2','Bloque Desempeno');
+          $phpExc->getActiveSheet()->getStyle('AH2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleColorBC);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AH2:AP2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AP3','Nota Bloque Desempeno');
+          $phpExc->getActiveSheet()->getStyle('AP3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AP3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AP3')->applyFromArray($styleColorBC);
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ2','Comentarios y Observaciones');
+          $phpExc->getActiveSheet()->getStyle('AQ2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AQ2:AR2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ3','Comentarios');
+          $phpExc->getActiveSheet()->getStyle('AQ3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('AR3','Observaciones Feedback');
+          $phpExc->getActiveSheet()->getStyle('AR3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArrayTitle);
+
+          $txtlistadoDNI = Yii::$app->db->createCommand("SELECT DISTINCT er.documento, er.notafinal FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0")->queryAll();
+
+          $numCell = 4;
+          foreach ($txtlistadoDNI as $key => $value) {
+            $vardocumento = $value['documento'];
+
+            $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
+            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
+
+            $varrtaA = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 1")->queryScalar();
+            $varrtaJ = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 3")->queryScalar();
+            $varrtaP = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 4")->queryScalar();
+            $varrtaC = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 2")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $vardocumento);
+            $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varnombrec);
+            $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varrtaA);
+            $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varrtaJ);
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varrtaP);
+            $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varrtaC);
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['notafinal']);
+
+            $varlistarBloqueA = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 1")->queryAll();
+
+            $lastColumn = 'H';
+            $conteocolumnzBA = 0;
+            foreach ($varlistarBloqueA as $key => $value) {
+
+              $idcompetencia = $value['idevaluacioncompetencia'];
+              $varcompetencia = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetencia)")->queryScalar();
+
+              $conteocolumnzBA = $conteocolumnzBA + 1;
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Competencia');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcompetencia);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              
+              $lastColumn++; 
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Competencia');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['notacompetencia']);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              $lastColumn++;
+            }
+
+            $varNotaFinaBA = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 1")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AB'.$numCell, $varNotaFinaBA);
+
+
+            $varlistarBloqueB = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 2")->queryAll();
+
+            $lastColumn = 'AC';
+            $conteocolumnzBB = 0;
+            foreach ($varlistarBloqueB as $key => $value) {
+              $idcompetenciaB = $value['idevaluacioncompetencia'];
+              $varcompetenciaB = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetenciaB)")->queryScalar();
+
+              $conteocolumnzBB = $conteocolumnzBB + 1;
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Organizacional');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcompetenciaB);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              
+              $lastColumn++; 
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Organizacional');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['notacompetencia']);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              $lastColumn++;
+            }
+
+            $varNotaFinaBB = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 2")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $varNotaFinaBB);
+
+
+            $varlistarBloqueC = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 3")->queryAll();
+
+            $lastColumn = 'AH';
+            $conteocolumnzBC = 0;
+            foreach ($varlistarBloqueC as $key => $value) {
+              $idcompetenciaC = $value['idevaluacioncompetencia'];
+              $varcompetenciaC = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetenciaC)")->queryScalar();
+
+              $conteocolumnzBC = $conteocolumnzBC + 1;
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Desempeno');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcompetenciaC);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              
+              $lastColumn++; 
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Desempeno');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['notacompetencia']);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              
+              $lastColumn++; 
+            }
+
+            $varNotaFinaBC = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 3")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AP'.$numCell, $varNotaFinaBC);
+
+            $varcomentarios2 = null;
+            $can = 0;
+            $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $vardocumento AND  es.comentarios != ''")->queryAll();
+            foreach ($varcomentarios as $key => $value) {
+                $can = $can + 1;
+                $varcomentarios2 = $varcomentarios2.' '.$can.'-. '.$value['comentarios'];            
+            }
+
+            $phpExc->getActiveSheet()->setCellValue('AQ'.$numCell, $varcomentarios2);
+
+            $varcomentariosfeedback = null;
+            $varcomentariosfeedback = Yii::$app->db->createCommand("SELECT er.observacion_feedback FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0 AND  er.documento IN ($vardocumento)")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AR'.$numCell, $varcomentariosfeedback);
+
+
+
+            $numCell = $numCell + 1;  
+          }
+          $hoy = getdate();
+              $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_ArchivoEvalDlloOpcion1";
+                  
+              $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+                    
+            $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+              $tmpFile.= ".xls";
+
+              $objWriter->save($tmpFile);
+
+              $message = "<html><body>";
+              $message .= "<h3>Se ha realizado el envio correcto del archivo de la evaluacion de desarrollo opcion 1</h3>";
+              $message .= "</body></html>";
+
+              Yii::$app->mailer->compose()
+                            ->setTo($varcorreo)
+                            ->setFrom(Yii::$app->params['email_satu_from'])
+                            ->setSubject("Archivo Resultados Evaluacion Desarrollo Opcion 1")
+                            ->attach($tmpFile)
+                            ->setHtmlBody($message)
+                            ->send();
+
+              return $this->redirect('exportarrtadashboard',[
+                'model' => $model,
+                'varlistrtadesarrollo' => $varlistrtadesarrollo,
+                'varnombrec' => $varnombrec,
+                'varrol' => $varrol,
+                'varrtaA' => $varrtaA,
+                'varrtaJ' => $varrtaJ,
+                'varrtaP' => $varrtaP,
+                'varrtaC' => $varrtaC,
+                'txtProcentaje' => $txtProcentaje,
+                'vardocumento' => $vardocumento,
+              ]);
+        }
+
+        return $this->renderAjax('enviararchivouno',[
+          'model' => $model,
+        ]);
+      }
+
+      public function actionEnviararchivodos(){
+        $model = new EvaluacionDesarrollo();
+        $varlistrtadesarrollo = null;
+        $varnombrec = null;
+        $varrol = null;
+        $varrtaA = 0;
+        $varrtaJ = 0;
+        $varrtaP = 0;
+        $varrtaC = 0;
+        $txtProcentaje = 0;
+        $vardocumento = null;
+
+        $form = Yii::$app->request->post();
+        if($model->load($form)){
+          $varcorreo = $model->comentarios;
+
+          $phpExc = new \PHPExcel();
+          $phpExc->getProperties()
+                  ->setCreator("Konecta")
+                  ->setLastModifiedBy("Konecta")
+                  ->setTitle("Archivo Resultados Evaluacion Desarrollo Opcion 2")
+                  ->setSubject("Archivo Resultados Evaluacion Desarrollo Opcion 2")
+                  ->setDescription("Este archivo contiene el proceso de la evaluacion de desarrollo opcion 1")
+                  ->setKeywords("Archivo Resultados Evaluacion Desarrollo Opcion 2");
+          $phpExc->setActiveSheetIndex(0);
+
+          $phpExc->getActiveSheet()->setShowGridlines(False);
+
+          $styleArray = array(
+                  'alignment' => array(
+                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ),
+                );
+
+          $styleArraySize = array(
+                  'font' => array(
+                          'bold' => true,
+                          'size'  => 15,
+                  ),
+                  'alignment' => array(
+                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ), 
+                );
+
+          $styleColor = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '28559B'),
+                  )
+                );
+
+          $styleColorBA = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'F9BD4C'),
+                  )
+                );
+
+          $styleColorBB = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22D7CF'),
+                  )
+                );
+
+          $styleColorBC = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '49de70'),
+                  )
+                );
+
+          $styleArrayTitle = array(
+                  'font' => array(
+                    'bold' => false,
+                    'color' => array('rgb' => 'FFFFFF')
+                  )
+                );
+
+          $styleArraySubTitle = array(              
+                  'fill' => array( 
+                          'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                          'color' => array('rgb' => '4298B5'),
+                  )
+                );
+
+          $styleArraySubTitle2 = array(              
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'C6C6C6'),
+                  )
+                );  
+
+          // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+          $styleArrayBody = array(
+                  'font' => array(
+                      'bold' => false,
+                      'color' => array('rgb' => '2F4F4F')
+                  ),
+                  'borders' => array(
+                      'allborders' => array(
+                          'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                          'color' => array('rgb' => 'DDDDDD')
+                      )
+                  )
+                );
+
+          $styleColorLess = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '92DD5B'),
+                  )
+                );
+
+          $styleColorMiddle = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'CED9D5'),
+                  )
+                );
+
+          $styleColorhigh = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22CCC4'),
+                  )
+                );
+
+          $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+          $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+          $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AR1');
+
+          $phpExc->getActiveSheet()->SetCellValue('A2','Datos Generales');
+          $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A2:G2');
+          
+          $phpExc->getActiveSheet()->SetCellValue('A3','Cedula Evaluado');
+          $phpExc->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('B3','Evaluado');
+          $phpExc->getActiveSheet()->getStyle('B3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('C3','--');
+          $phpExc->getActiveSheet()->getStyle('C3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('D3','Cedula Evaluador');
+          $phpExc->getActiveSheet()->getStyle('D3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('E3','Evaluador');
+          $phpExc->getActiveSheet()->getStyle('E3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('F3','Tipo');
+          $phpExc->getActiveSheet()->getStyle('F3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('G3','Nota Final');
+          $phpExc->getActiveSheet()->getStyle('G3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('H2','Bloque Compentencias');
+          $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColorBA);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('H2:AB2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AB3','Nota Bloque Compentencias');
+          $phpExc->getActiveSheet()->getStyle('AB3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AB3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AB3')->applyFromArray($styleColorBA);
+
+          $phpExc->getActiveSheet()->SetCellValue('AC2','Bloque Organizacional');
+          $phpExc->getActiveSheet()->getStyle('AC2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleColorBB);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AC2:AG2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AG3','Nota Bloque Organizacional');
+          $phpExc->getActiveSheet()->getStyle('AG3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AG3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AG3')->applyFromArray($styleColorBB);
+
+          $phpExc->getActiveSheet()->SetCellValue('AH2','Bloque Desempeno');
+          $phpExc->getActiveSheet()->getStyle('AH2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleColorBC);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AH2:AP2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AP3','Nota Bloque Desempeno');
+          $phpExc->getActiveSheet()->getStyle('AP3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AP3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AP3')->applyFromArray($styleColorBC);
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ2','Comentarios y Observaciones');
+          $phpExc->getActiveSheet()->getStyle('AQ2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AQ2:AR2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ3','Comentarios');
+          $phpExc->getActiveSheet()->getStyle('AQ3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('AR3','Observaciones Feedback');
+          $phpExc->getActiveSheet()->getStyle('AR3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArrayTitle);
+
+
+          $txtlistadoDNI = Yii::$app->db->createCommand("SELECT er.documento, ed.idevaluador, ed.idevaluaciontipo, er.notafinal FROM tbl_evaluacion_desarrollo ed INNER JOIN tbl_evaluacion_resulta_feedback er ON ed.idevalados = er.documento  WHERE er.anulado = 0")->queryAll();
+
+          $numCell = 4;
+          foreach ($txtlistadoDNI as $key => $value) {
+            $vardocumento = $value['documento'];
+            $varevaluador = $value['idevaluador'];
+            $vartipoevaluacion = $value['idevaluaciontipo'];
+
+            $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
+            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
+
+            $varrtaA = '--';
+            $varrtaJ = $varevaluador;
+            $varrtaP = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $varevaluador")->queryScalar();
+
+            $varrol = null;
+            if ($vartipoevaluacion == 1) {
+              $varrol = 'Auto';
+            }else{
+              if ($vartipoevaluacion == 3) {
+                $varrol = 'Jefe';
+              }else{
+                if ($vartipoevaluacion == 4) {
+                  $varrol = 'Par';
+                }else{
+                  if ($vartipoevaluacion == 2) {
+                    $varrol = 'A cargo';
+                  }
+                }
+              }
+            }
+            $varrtaC = $varrol;
+
+            $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $vardocumento);
+            $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varnombrec);
+            $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varrtaA);
+            $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varrtaJ);
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varrtaP);
+            $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varrtaC);
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['notafinal']);
+
+            $varlistarBloqueA = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 1")->queryAll();
+
+            $lastColumn = 'H';
+            $conteocolumnzBA = 0;
+            foreach ($varlistarBloqueA as $key => $value) {
+              $idcompetencia = $value['idevaluacioncompetencia'];
+              $varcompetencia = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetencia)")->queryScalar();
+
+              $conteocolumnzBA = $conteocolumnzBA + 1;
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Competencia');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcompetencia);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              
+              $lastColumn++; 
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Competencia');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['notacompetencia']);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              $lastColumn++;
+            }
+
+            $varNotaFinaBA = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 1")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AB'.$numCell, $varNotaFinaBA);
+
+
+            $varlistarBloqueB = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 2")->queryAll();
+
+            $lastColumn = 'AC';
+            $conteocolumnzBB = 0;
+            foreach ($varlistarBloqueB as $key => $value) {
+              $idcompetenciaB = $value['idevaluacioncompetencia'];
+              $varcompetenciaB = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetenciaB)")->queryScalar();
+
+              $conteocolumnzBB = $conteocolumnzBB + 1;
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Organizacional');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcompetenciaB);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              
+              $lastColumn++; 
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Organizacional');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['notacompetencia']);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              $lastColumn++;
+            }
+
+            $varNotaFinaBB = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 2")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $varNotaFinaBB);
+
+
+            $varlistarBloqueC = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 3")->queryAll();
+
+            $lastColumn = 'AH';
+            $conteocolumnzBC = 0;
+            foreach ($varlistarBloqueC as $key => $value) {
+              $idcompetenciaC = $value['idevaluacioncompetencia'];
+              $varcompetenciaC = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetenciaC)")->queryScalar();
+
+              $conteocolumnzBC = $conteocolumnzBC + 1;
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Desempeno');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcompetenciaC);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+
+              
+              $lastColumn++; 
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Desempeno');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['notacompetencia']);           
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              
+              $lastColumn++; 
+            }
+
+            $varNotaFinaBC = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 3")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AP'.$numCell, $varNotaFinaBC);
+
+            $varcomentarios2 = null;
+            $can  = 0;
+            $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $vardocumento AND  es.comentarios != ''")->queryAll();
+            foreach ($varcomentarios as $key => $value) {
+                $can = $can + 1;
+                $varcomentarios2 = $varcomentarios2.' '.$can.'-. '.$value['comentarios'];            
+            }
+
+            $phpExc->getActiveSheet()->setCellValue('AQ'.$numCell, $varcomentarios2);
+
+            $varcomentariosfeedback = null;
+            $varcomentariosfeedback = Yii::$app->db->createCommand("SELECT er.observacion_feedback FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0 AND  er.documento IN ($vardocumento)")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AR'.$numCell, $varcomentariosfeedback);
+
+
+            $numCell = $numCell + 1; 
+          }
+
+          $hoy = getdate();
+              $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_ArchivoEvalDlloOpcion2";
+                  
+              $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+                    
+            $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+              $tmpFile.= ".xls";
+
+              $objWriter->save($tmpFile);
+
+              $message = "<html><body>";
+              $message .= "<h3>Se ha realizado el envio correcto del archivo de la evaluacion de desarrollo opcion 2</h3>";
+              $message .= "</body></html>";
+
+              Yii::$app->mailer->compose()
+                            ->setTo($varcorreo)
+                            ->setFrom(Yii::$app->params['email_satu_from'])
+                            ->setSubject("Archivo Resultados Evaluacion Desarrollo Opcion 2")
+                            ->attach($tmpFile)
+                            ->setHtmlBody($message)
+                            ->send();
+
+              return $this->redirect('exportarrtadashboard',[
+                'model' => $model,
+                'varlistrtadesarrollo' => $varlistrtadesarrollo,
+                'varnombrec' => $varnombrec,
+                'varrol' => $varrol,
+                'varrtaA' => $varrtaA,
+                'varrtaJ' => $varrtaJ,
+                'varrtaP' => $varrtaP,
+                'varrtaC' => $varrtaC,
+                'txtProcentaje' => $txtProcentaje,
+                'vardocumento' => $vardocumento,
+              ]);
+        }
+
+        return $this->renderAjax('enviararchivodos',[
+          'model' => $model,
+        ]);
+      }
+
+      public function actionEnviargeneral(){
+        $model = new EvaluacionDesarrollo();
+        $varlistrtadesarrollo = null;
+        $varnombrec = null;
+        $varrol = null;
+        $varrtaA = 0;
+        $varrtaJ = 0;
+        $varrtaP = 0;
+        $varrtaC = 0;
+        $txtProcentaje = 0;
+        $vardocumento = null;
+
+        $form = Yii::$app->request->post();
+        if($model->load($form)){
+          $varcorreo = $model->comentarios;
+
+          $phpExc = new \PHPExcel();
+          $phpExc->getProperties()
+                  ->setCreator("Konecta")
+                  ->setLastModifiedBy("Konecta")
+                  ->setTitle("Archivo Resultados Evaluacion Desarrollo General Opcion 1")
+                  ->setSubject("Archivo Resultados Evaluacion Desarrollo General Opcion 1")
+                  ->setDescription("Este archivo contiene el proceso de la evaluacion de desarrollo general opcion 1")
+                  ->setKeywords("Archivo Resultados Evaluacion Desarrollo General Opcion 1");
+          $phpExc->setActiveSheetIndex(0);
+
+          $phpExc->getActiveSheet()->setShowGridlines(False);
+
+          $styleArray = array(
+                  'alignment' => array(
+                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ),
+                );
+
+          $styleArraySize = array(
+                  'font' => array(
+                          'bold' => true,
+                          'size'  => 15,
+                  ),
+                  'alignment' => array(
+                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ), 
+                );
+
+          $styleColor = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '28559B'),
+                  )
+                );
+
+          $styleColorBA = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'F9BD4C'),
+                  )
+                );
+
+          $styleColorBB = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22D7CF'),
+                  )
+                );
+
+          $styleColorBC = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '49de70'),
+                  )
+                );
+
+          $styleArrayTitle = array(
+                  'font' => array(
+                    'bold' => false,
+                    'color' => array('rgb' => 'FFFFFF')
+                  )
+                );
+
+          $styleArraySubTitle = array(              
+                  'fill' => array( 
+                          'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                          'color' => array('rgb' => '4298B5'),
+                  )
+                );
+
+          $styleArraySubTitle2 = array(              
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'C6C6C6'),
+                  )
+                );  
+
+          // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+          $styleArrayBody = array(
+                  'font' => array(
+                      'bold' => false,
+                      'color' => array('rgb' => '2F4F4F')
+                  ),
+                  'borders' => array(
+                      'allborders' => array(
+                          'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                          'color' => array('rgb' => 'DDDDDD')
+                      )
+                  )
+                );
+
+          $styleColorLess = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '92DD5B'),
+                  )
+                );
+
+          $styleColorMiddle = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'CED9D5'),
+                  )
+                );
+
+          $styleColorhigh = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22CCC4'),
+                  )
+                );
+
+          $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+          $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+          $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AR1');
+
+          $phpExc->getActiveSheet()->SetCellValue('A2','Datos Generales');
+          $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A2:G2');
+          
+          $phpExc->getActiveSheet()->SetCellValue('A3','Cedula Evaluado');
+          $phpExc->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('B3','Evaluado');
+          $phpExc->getActiveSheet()->getStyle('B3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('C3','Auto');
+          $phpExc->getActiveSheet()->getStyle('C3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('D3','Jefe');
+          $phpExc->getActiveSheet()->getStyle('D3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('E3','Colaborador');
+          $phpExc->getActiveSheet()->getStyle('E3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('F3','Par');
+          $phpExc->getActiveSheet()->getStyle('F3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('G3','Nota Final');
+          $phpExc->getActiveSheet()->getStyle('G3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('H2','Bloques');
+          $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('H2:AQ2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ2','Comentarios y Observaciones');
+          $phpExc->getActiveSheet()->getStyle('AQ2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AQ2:AR2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ3','Comentarios');
+          $phpExc->getActiveSheet()->getStyle('AQ3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('AR3','Observaciones Feedback');
+          $phpExc->getActiveSheet()->getStyle('AR3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ2','Comentarios y Observaciones');
+          $phpExc->getActiveSheet()->getStyle('AQ2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AQ2:AR2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ3','Comentarios');
+          $phpExc->getActiveSheet()->getStyle('AQ3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('AR3','Observaciones Feedback');
+          $phpExc->getActiveSheet()->getStyle('AR3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArrayTitle);
+
+          $txtlistadoDNI = Yii::$app->db->createCommand("SELECT DISTINCT es.documentoevaluado FROM tbl_evaluacion_solucionado es WHERE es.anulado = 0 ")->queryAll();
+
+          $numCell = 4;
+          foreach ($txtlistadoDNI as $key => $value) {
+            $vardocumento = $value['documentoevaluado'];
+
+            $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua where documento = $vardocumento")->queryScalar();
+            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua where documento in ('$vardocumento')")->queryScalar();
+
+            $varrtaA = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 1")->queryScalar();
+            $varrtaJ = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 3")->queryScalar();
+            $varrtaP = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 4")->queryScalar();
+            $varrtaC = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 2")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $vardocumento);
+            $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varnombrec);
+            $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varrtaA);
+            $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varrtaJ);
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varrtaP);
+            $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varrtaC);
+
+            $varlistbloques = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_bloques eb WHERE eb.anulado = 0 ORDER BY eb.idevaluacionbloques DESC ")->queryAll();
+
+            $varconteobloque = 0;
+            $varconteocompetencia = 0;
+            $varArraySumaB = array();
+            $lastColumn = 'H';
+            foreach ($varlistbloques as $key => $value) {
+              $varidbloque = $value['idevaluacionbloques'];
+              $varconteobloque = $varconteobloque + 1;
+
+              $totalcomp = 0;
+              $varArrayPromedio = array();
+              $valortotal1Auto = 0;
+              $valortotal2Jefe = 0;
+              $valortotal3Cargo = 0;
+              $valortotal4Pares = 0;
+
+              $listadocompetencias = Yii::$app->db->createCommand("select ec.namecompetencia, eb.idevaluacionbloques, eb.namebloque, es.idevaluacioncompetencia FROM tbl_evaluacion_solucionado es INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia  INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia  INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+              WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = $varidbloque
+              GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+              
+              foreach ($listadocompetencias as $key => $value) {
+                $nombrecompetencias = $value['namecompetencia'];
+                $varidevaluacionbloques = $value['idevaluacionbloques'];
+                $varidcompetencia = $value['idevaluacioncompetencia'];                                        
+                $varconteocompetencia = $varconteocompetencia + 1;
+                $varcolor2 = null;
+
+                if ($varidbloque == '3') {
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Bloque Desempeno');
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+                }else{
+                  if ($varidbloque == '2') {
+                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Bloque Organizacional');
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+                  }else{
+                    if ($varidbloque == '1') {
+                      $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Bloque Competencia');
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+                    }
+                  }
+                }
+                
+  
+                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $nombrecompetencias);           
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+  
+                
+                $lastColumn++; 
+
+                $listacompetencia1 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 1 AND ec.namecompetencia = '$nombrecompetencias'
+                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                foreach ($listacompetencia1 as $key => $value1) {
+                  $valortotal1Auto = $value1['%Competencia'];
+                  $varmensaje = $value1['mensaje'];
+                }
+
+                $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 3 AND ec.namecompetencia = '$nombrecompetencias'
+                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                foreach ($listacompetencia2 as $key => $value2) {
+                  $valortotal2Jefe = $value2['%Competencia'];
+                }
+
+                $listacompetencia3 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 2 AND ec.namecompetencia = '$nombrecompetencias'
+                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                foreach ($listacompetencia3 as $key => $value3) {
+                  $valortotal3Cargo = $value3['%Competencia'];
+                }
+
+                $listacompetencia4 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 4 AND ec.namecompetencia = '$nombrecompetencias'
+                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                foreach ($listacompetencia4 as $key => $value4) {
+                  $valortotal4Pares = $value4['%Competencia'];
+                }
+
+                $txtnotafinal1 = null;
+                if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
+                  $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
+                }
+                if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
+                  $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2);  
+                }
+                if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
+                  $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2); 
+                }
+                if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
+                  $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 5) /100) + (($valortotal4Pares * 30) /100),2);    
+                }
+
+                $totalcomp = $totalcomp + 1;
+                array_push($varArrayPromedio, $txtnotafinal1);
+                
+                if ($varidbloque == '3') {
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Desempeno');
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+                }else{
+                  if ($varidbloque == '2') {
+                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Organizacional');
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+                  }else{
+                    if ($varidbloque == '1') {
+                      $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Competencia');
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+                    }
+                  }
+                }
+                               
+  
+                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtnotafinal1);           
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                
+                $lastColumn++; 
+                
+              }
+
+              if ($totalcomp != 0) {
+                $varPromedios = round(array_sum($varArrayPromedio) / $totalcomp,2);
+              }else{
+                $varPromedios = 0;
+              }
+
+              if ($varidbloque == 1) {
+                $vartotalb = round(($varPromedios * (40 / 100)),2);
+              }else{
+                if ($varidbloque == 2) {
+                  $vartotalb = round(($varPromedios * (20 / 100)),2);
+                }else{
+                  if ($varidbloque == 3) {
+                    $vartotalb = round(($varPromedios * (40 / 100)),2);
+                  }
+                }
+              }
+              array_push($varArraySumaB, $vartotalb);
+
+              $txtsum = array_sum($varArrayPromedio);
+              $txtrtafinal = round((array_sum($varArrayPromedio) / $varconteocompetencia), 1);
+
+              if ($varidbloque == 1) {
+                $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
+                $rtapornetaje = (40 / 100);
+              }
+              if ($varidbloque == 3) {
+                $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
+                $rtapornetaje = (40 / 100);
+              }
+              if ($varidbloque == 2) {
+                $varrtafinal = round(($txtrtafinal * (20 / 100)),2);
+                $rtapornetaje = (20 / 100);
+              }
+
+              if ($varidbloque == '3') {
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Final Desempeno');
+                $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+              }else{
+                if ($varidbloque == '2') {
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Final Organizacional');
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+                }else{
+                  if ($varidbloque == '1') {
+                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Final Competencia');
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+                  }
+                }
+              }
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varrtafinal);
+              $lastColumn++;  
+
+            }
+
+            $txtProcentaje =  round(array_sum($varArraySumaB),2);
+
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $txtProcentaje);  
+
+	    $varcomentarios2 = null;
+            $can  = 0;
+            $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $vardocumento AND  es.comentarios != ''")->queryAll();
+            foreach ($varcomentarios as $key => $value) {
+                $can = $can + 1;
+                $varcomentarios2 = $varcomentarios2.' '.$can.'-. '.$value['comentarios'];            
+            }
+
+            $phpExc->getActiveSheet()->setCellValue('AQ'.$numCell, $varcomentarios2);
+
+            $varcomentariosfeedback = null;
+            $varcomentariosfeedback = Yii::$app->db->createCommand("SELECT er.observacion_feedback FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0 AND  er.documento IN ($vardocumento)")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AR'.$numCell, $varcomentariosfeedback);
+                   
+
+            $numCell = $numCell + 1; 
+          }
+
+          $hoy = getdate();
+              $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_ArchivoEvalDlloGeneralOpcion1";
+                  
+              $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+                    
+            $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+              $tmpFile.= ".xls";
+
+              $objWriter->save($tmpFile);
+
+              $message = "<html><body>";
+              $message .= "<h3>Se ha realizado el envio correcto del archivo de la evaluacion de desarrollo General opcion 1</h3>";
+              $message .= "</body></html>";
+
+              Yii::$app->mailer->compose()
+                            ->setTo($varcorreo)
+                            ->setFrom(Yii::$app->params['email_satu_from'])
+                            ->setSubject("Archivo Resultados Evaluacion Desarrollo General Opcion 1")
+                            ->attach($tmpFile)
+                            ->setHtmlBody($message)
+                            ->send();
+
+              return $this->redirect('exportarrtadashboard',[
+                'model' => $model,
+                'varlistrtadesarrollo' => $varlistrtadesarrollo,
+                'varnombrec' => $varnombrec,
+                'varrol' => $varrol,
+                'varrtaA' => $varrtaA,
+                'varrtaJ' => $varrtaJ,
+                'varrtaP' => $varrtaP,
+                'varrtaC' => $varrtaC,
+                'txtProcentaje' => $txtProcentaje,
+                'vardocumento' => $vardocumento,
+              ]);          
+              
+        }
+
+        return $this->renderAjax('enviargeneral',[
+          'model' => $model,
+        ]);
+      }
+
+
+      public function actionEnviargeneraldos(){
+        $model = new EvaluacionDesarrollo();
+        $varlistrtadesarrollo = null;
+        $varnombrec = null;
+        $varrol = null;
+        $varrtaA = 0;
+        $varrtaJ = 0;
+        $varrtaP = 0;
+        $varrtaC = 0;
+        $txtProcentaje = 0;
+        $vardocumento = null;
+
+        $form = Yii::$app->request->post();
+        if($model->load($form)){
+          $varcorreo = $model->comentarios;
+
+          $phpExc = new \PHPExcel();
+          $phpExc->getProperties()
+                  ->setCreator("Konecta")
+                  ->setLastModifiedBy("Konecta")
+                  ->setTitle("Archivo Resultados Evaluacion Desarrollo General Opcion 2")
+                  ->setSubject("Archivo Resultados Evaluacion Desarrollo General Opcion 2")
+                  ->setDescription("Este archivo contiene el proceso de la evaluacion de desarrollo general opcion 2")
+                  ->setKeywords("Archivo Resultados Evaluacion Desarrollo General Opcion 1");
+          $phpExc->setActiveSheetIndex(0);
+
+          $phpExc->getActiveSheet()->setShowGridlines(False);
+
+          $styleArray = array(
+                  'alignment' => array(
+                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ),
+                );
+
+          $styleArraySize = array(
+                  'font' => array(
+                          'bold' => true,
+                          'size'  => 15,
+                  ),
+                  'alignment' => array(
+                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  ), 
+                );
+
+          $styleColor = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '28559B'),
+                  )
+                );
+
+          $styleColorBA = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'F9BD4C'),
+                  )
+                );
+
+          $styleColorBB = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22D7CF'),
+                  )
+                );
+
+          $styleColorBC = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '49de70'),
+                  )
+                );
+
+          $styleArrayTitle = array(
+                  'font' => array(
+                    'bold' => false,
+                    'color' => array('rgb' => 'FFFFFF')
+                  )
+                );
+
+          $styleArraySubTitle = array(              
+                  'fill' => array( 
+                          'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                          'color' => array('rgb' => '4298B5'),
+                  )
+                );
+
+          $styleArraySubTitle2 = array(              
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'C6C6C6'),
+                  )
+                );  
+
+          // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+          $styleArrayBody = array(
+                  'font' => array(
+                      'bold' => false,
+                      'color' => array('rgb' => '2F4F4F')
+                  ),
+                  'borders' => array(
+                      'allborders' => array(
+                          'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                          'color' => array('rgb' => 'DDDDDD')
+                      )
+                  )
+                );
+
+          $styleColorLess = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '92DD5B'),
+                  )
+                );
+
+          $styleColorMiddle = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => 'CED9D5'),
+                  )
+                );
+
+          $styleColorhigh = array( 
+                  'fill' => array( 
+                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                      'color' => array('rgb' => '22CCC4'),
+                  )
+                );
+
+          $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+          $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+          $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AR1');
+
+          $phpExc->getActiveSheet()->SetCellValue('A2','Datos Generales');
+          $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A2:G2');
+          
+          $phpExc->getActiveSheet()->SetCellValue('A3','Cedula Evaluado');
+          $phpExc->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('B3','Evaluado');
+          $phpExc->getActiveSheet()->getStyle('B3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('B3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('C3','--');
+          $phpExc->getActiveSheet()->getStyle('C3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('C3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('D3','Cedula Evaluador');
+          $phpExc->getActiveSheet()->getStyle('D3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('D3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('E3','Evaluador');
+          $phpExc->getActiveSheet()->getStyle('E3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('E3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('F3','Tipo');
+          $phpExc->getActiveSheet()->getStyle('F3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('G3','Nota Final');
+          $phpExc->getActiveSheet()->getStyle('G3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('H2','Bloques');
+          $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('H2:AQ2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ2','Comentarios y Observaciones');
+          $phpExc->getActiveSheet()->getStyle('AQ2')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ2')->applyFromArray($styleArrayTitle);
+          $phpExc->setActiveSheetIndex(0)->mergeCells('AQ2:AR2');
+
+          $phpExc->getActiveSheet()->SetCellValue('AQ3','Comentarios');
+          $phpExc->getActiveSheet()->getStyle('AQ3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AQ3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('AR3','Observaciones Feedback');
+          $phpExc->getActiveSheet()->getStyle('AR3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArray);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArrayTitle);
+
+          $txtlistadoDNI = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_desarrollo es WHERE es.anulado = 0 ")->queryAll();
+
+          $numCell = 4;
+          foreach ($txtlistadoDNI as $key => $value) {
+            $vardocumento = $value['idevalados'];
+            $varevaluador = $value['idevaluador'];
+            $vartipoevaluacion = $value['idevaluaciontipo'];
+
+            $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
+            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
+
+            $varrtaA = '--';
+            $varrtaJ = $varevaluador;
+            $varrtaP = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $varevaluador")->queryScalar();
+
+            $varrol = null;
+            if ($vartipoevaluacion == 1) {
+              $varrol = 'Auto';
+            }else{
+              if ($vartipoevaluacion == 3) {
+                $varrol = 'Jefe';
+              }else{
+                if ($vartipoevaluacion == 4) {
+                  $varrol = 'Par';
+                }else{
+                  if ($vartipoevaluacion == 2) {
+                    $varrol = 'A cargo';
+                  }
+                }
+              }
+            }
+            $varrtaC = $varrol;
+
+            $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $vardocumento);
+            $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varnombrec);
+            $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varrtaA);
+            $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varrtaJ);
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varrtaP);
+            $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varrtaC);
+
+
+            $varlistbloques = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_bloques eb WHERE eb.anulado = 0 ORDER BY eb.idevaluacionbloques DESC ")->queryAll();
+
+            $varconteobloque = 0;
+            $varconteocompetencia = 0;
+            $varArraySumaB = array();
+            $lastColumn = 'H';
+            foreach ($varlistbloques as $key => $value) {
+              $varidbloque = $value['idevaluacionbloques'];
+              $varconteobloque = $varconteobloque + 1;
+
+              $totalcomp = 0;
+              $varArrayPromedio = array();
+              $valortotal1Auto = 0;
+              $valortotal2Jefe = 0;
+              $valortotal3Cargo = 0;
+              $valortotal4Pares = 0;
+
+              $listadocompetencias = Yii::$app->db->createCommand("select ec.namecompetencia, eb.idevaluacionbloques, eb.namebloque, es.idevaluacioncompetencia FROM tbl_evaluacion_solucionado es INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia  INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia  INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+              WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = $varidbloque
+              GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+              
+              foreach ($listadocompetencias as $key => $value) {
+                $nombrecompetencias = $value['namecompetencia'];
+                $varidevaluacionbloques = $value['idevaluacionbloques'];
+                $varidcompetencia = $value['idevaluacioncompetencia'];                                        
+                $varconteocompetencia = $varconteocompetencia + 1;
+                $varcolor2 = null;
+
+                if ($varidbloque == '3') {
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Bloque Desempeno');
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+                }else{
+                  if ($varidbloque == '2') {
+                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Bloque Organizacional');
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+                  }else{
+                    if ($varidbloque == '1') {
+                      $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Bloque Competencia');
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+                    }
+                  }
+                }
+                
+  
+                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $nombrecompetencias);           
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+  
+                
+                $lastColumn++; 
+
+                $listacompetencia1 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 1 AND ec.namecompetencia = '$nombrecompetencias'
+                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                foreach ($listacompetencia1 as $key => $value1) {
+                  $valortotal1Auto = $value1['%Competencia'];
+                  $varmensaje = $value1['mensaje'];
+                }
+
+                $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 3 AND ec.namecompetencia = '$nombrecompetencias'
+                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                foreach ($listacompetencia2 as $key => $value2) {
+                  $valortotal2Jefe = $value2['%Competencia'];
+                }
+
+                $listacompetencia3 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 2 AND ec.namecompetencia = '$nombrecompetencias'
+                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                foreach ($listacompetencia3 as $key => $value3) {
+                  $valortotal3Cargo = $value3['%Competencia'];
+                }
+
+                $listacompetencia4 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 4 AND ec.namecompetencia = '$nombrecompetencias'
+                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                foreach ($listacompetencia4 as $key => $value4) {
+                  $valortotal4Pares = $value4['%Competencia'];
+                }
+
+                $txtnotafinal1 = null;
+                if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
+                  $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
+                }
+                if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
+                  $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2);  
+                }
+                if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
+                  $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2); 
+                }
+                if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
+                  $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 5) /100) + (($valortotal4Pares * 30) /100),2);    
+                }
+
+                $totalcomp = $totalcomp + 1;
+                array_push($varArrayPromedio, $txtnotafinal1);
+                
+                if ($varidbloque == '3') {
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota  Desempeno');
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+                }else{
+                  if ($varidbloque == '2') {
+                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota  Organizacional');
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+                  }else{
+                    if ($varidbloque == '1') {
+                      $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Competencia');
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                      $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+                    }
+                  }
+                }
+                               
+  
+                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtnotafinal1);           
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                
+                $lastColumn++; 
+                
+              }
+
+              if ($totalcomp != 0) {
+                $varPromedios = round(array_sum($varArrayPromedio) / $totalcomp,2);
+              }else{
+                $varPromedios = 0;
+              }
+
+              if ($varidbloque == 1) {
+                $vartotalb = round(($varPromedios * (40 / 100)),2);
+              }else{
+                if ($varidbloque == 2) {
+                  $vartotalb = round(($varPromedios * (20 / 100)),2);
+                }else{
+                  if ($varidbloque == 3) {
+                    $vartotalb = round(($varPromedios * (40 / 100)),2);
+                  }
+                }
+              }
+              array_push($varArraySumaB, $vartotalb);
+
+              $txtsum = array_sum($varArrayPromedio);
+              $txtrtafinal = round((array_sum($varArrayPromedio) / $varconteocompetencia), 1);
+
+              if ($varidbloque == 1) {
+                $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
+                $rtapornetaje = (40 / 100);
+              }
+              if ($varidbloque == 3) {
+                $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
+                $rtapornetaje = (40 / 100);
+              }
+              if ($varidbloque == 2) {
+                $varrtafinal = round(($txtrtafinal * (20 / 100)),2);
+                $rtapornetaje = (20 / 100);
+              }
+
+              if ($varidbloque == '3') {
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Final Desempeno');
+                $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBC);
+              }else{
+                if ($varidbloque == '2') {
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Final Organizacional');
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBB);
+                }else{
+                  if ($varidbloque == '1') {
+                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Nota Final Competencia');
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->getFont()->setBold(true);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleArray);
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.'3')->applyFromArray($styleColorBA);
+                  }
+                }
+              }
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varrtafinal);
+              $lastColumn++;  
+
+            }
+
+            $txtProcentaje =  round(array_sum($varArraySumaB),2);
+
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $txtProcentaje);  
+
+            $varcomentarios2 = null;
+            $can  = 0;
+            $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $vardocumento AND  es.comentarios != ''")->queryAll();
+            foreach ($varcomentarios as $key => $value) {
+                $can = $can + 1;
+                $varcomentarios2 = $varcomentarios2.' '.$can.'-. '.$value['comentarios'];            
+            }
+
+            $phpExc->getActiveSheet()->setCellValue('AQ'.$numCell, $varcomentarios2);
+
+            $varcomentariosfeedback = null;
+            $varcomentariosfeedback = Yii::$app->db->createCommand("SELECT er.observacion_feedback FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0 AND  er.documento IN ($vardocumento)")->queryScalar();
+
+            $phpExc->getActiveSheet()->setCellValue('AR'.$numCell, $varcomentariosfeedback);
+                   
+
+            $numCell = $numCell + 1; 
+          }
+        
+
+          $hoy = getdate();
+              $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_ArchivoEvalDlloGeneralOpcion2";
+                  
+              $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+                    
+            $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+              $tmpFile.= ".xls";
+
+              $objWriter->save($tmpFile);
+
+              $message = "<html><body>";
+              $message .= "<h3>Se ha realizado el envio correcto del archivo de la evaluacion de desarrollo general opcion 2</h3>";
+              $message .= "</body></html>";
+
+              Yii::$app->mailer->compose()
+                            ->setTo($varcorreo)
+                            ->setFrom(Yii::$app->params['email_satu_from'])
+                            ->setSubject("Archivo Resultados Evaluacion Desarrollo General Opcion 2")
+                            ->attach($tmpFile)
+                            ->setHtmlBody($message)
+                            ->send();
+
+              return $this->redirect('exportarrtadashboard',[
+                'model' => $model,
+                'varlistrtadesarrollo' => $varlistrtadesarrollo,
+                'varnombrec' => $varnombrec,
+                'varrol' => $varrol,
+                'varrtaA' => $varrtaA,
+                'varrtaJ' => $varrtaJ,
+                'varrtaP' => $varrtaP,
+                'varrtaC' => $varrtaC,
+                'txtProcentaje' => $txtProcentaje,
+                'vardocumento' => $vardocumento,
+              ]);
+        }
+
+        return $this->renderAjax('enviargeneraldos',[
+          'model' => $model,
+        ]);
+      }
+
+
+
 
   }
 

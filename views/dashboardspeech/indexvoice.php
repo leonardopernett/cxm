@@ -124,7 +124,7 @@ $this->title = 'Dashboard Voz del Cliente';
     if ($fechaIniCat < '2020-01-01') {
       $txtIdCatagoria1 = 2681;
     }else{
-      if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '3263' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3410' || $idArbol == '3310') {
+      if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '485' || $idArbol == '3263' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3410' || $idArbol == '3310' || $idArbol == '3436') {
         $txtIdCatagoria1 = 1105;
       }else{
         $txtIdCatagoria1 = 1114;
@@ -264,7 +264,7 @@ $this->title = 'Dashboard Voz del Cliente';
     } 
     $arrayVaridcatAgente = implode(", ", $varListidcateAgente);
 ?>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 <style type="text/css">
     .card {
@@ -467,6 +467,13 @@ $this->title = 'Dashboard Voz del Cliente';
                 </tr>
                 <tr>
                   <?php 
+                    $arrayVarresponagenteMas = null;
+                    $arrayVarresponcanalMas = null;
+                    $arrayVarresponmarcaMas = null;
+                    $arrayVarresponagenteMenos = null;
+                    $arrayVarresponcanalMenos = null;
+                    $arrayVarresponmarcaMenos = null;
+                 
             //inicio c�lculo del IDA
                     $varNum  = 0;
                     $titulos = array();
@@ -485,7 +492,7 @@ $this->title = 'Dashboard Voz del Cliente';
                     $arraylistanombre = array();
                     $arraylistaresponsables = array();
                     $arraylistaresponsable = array();
- 		            $arraytotalagente = 0;
+                $arraytotalagente = 0;
                     $arraytotalcanal = 0;
                     $arraytotalmarca = 0;
                     $responsable = array("Total Agente","Total Canal","Total Marca");
@@ -891,11 +898,115 @@ $this->title = 'Dashboard Voz del Cliente';
                                     $txtRtaIndicador = 0;
                                   }
 
+                                    //para el calculo por responsabilidad
+                                    //diego
+                                    if($varListadorespo){
+                                      $txtRtaIndicador1 = null;
+                                      $txtRtaIndicador2 = null;
+                                      $txtRtaIndicador3 = null;
+                                      $varArrayVariable1 = array();
+                                      $varArrayVariable2 = array();
+                                      $varArrayVariable3 = array();
+                                      $varListVariables2 = Yii::$app->db->createCommand("SELECT idcategoria, responsable FROM tbl_speech_categorias WHERE idcategoria IN ($arrayVariable)")->queryAll();
+                                      //$varListVariables2 = Yii::$app->db->createCommand("SELECT idcategoria, responsable FROM tbl_speech_categorias WHERE idcategoria IN ($arrayVariable)")->queryScalar();
+                                      foreach ($varListVariables2 as $key => $value) {
+                                        $varidcategoria = $value['idcategoria'];
+                                        $varresponsable = $value['responsable'];
+                                        if ($varresponsable == 1){
+                                            array_push($varArrayVariable1, $varidcategoria);
+                                        }
+                                        else{
+                                          if ($varresponsable == 2){
+                                              array_push($varArrayVariable2, $varidcategoria);
+                                          }else{
+                                            if ($varresponsable == 3){
+                                                array_push($varArrayVariable3, $varidcategoria);
+                                            }
+                                          }
+                                        }
+                                      }
+
+                                      $varTotalvariables1 = count($varArrayVariable1);
+                                      if (count($varArrayVariable1) > 0){
+                                        $arrayVariable1 = implode(", ", $varArrayVariable1);
+                                        $varconteo1 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable1) and idvariable in ($arrayVariable1)")->queryScalar();
+                                        if ($varconteo1 == $varTotalvariables1 || $varconteo1 == null) {
+                                          $txtRtaIndicador1 = 0;
+                                        }else{
+                                          $txtRtaIndicador1 = 1;
+                                      }
+                                      
+                                        array_push($varArrayPromedio1, $txtRtaIndicador1);
+                                      }
+                                      $varTotalvariables2 = count($varArrayVariable2);
+                                      if (count($varArrayVariable2) > 0){
+                                        $arrayVariable2 = implode(", ", $varArrayVariable2); 
+                                        
+                                          $varconteo2 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable2) and idvariable in ($arrayVariable2)")->queryScalar();
+                                          if ($varconteo2 == $varTotalvariables2 || $varconteo2 == null) {
+                                            $txtRtaIndicador2 = 0;
+                                          }else{
+                                            $txtRtaIndicador2 = 1;
+                                          }
+                                          array_push($varArrayPromedio2, $txtRtaIndicador2);
+                                      }    
+                                        $varTotalvariables3 = count($varArrayVariable3);                                
+                                        if (count($varArrayVariable3) > 0){
+                                            $arrayVariable3 = implode(", ", $varArrayVariable3);
+                                            $varconteo3 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVariable3) and idvariable in ($arrayVariable3)")->queryScalar();
+                                            if ($varconteo3 == $varTotalvariables3 || $varconteo3 == null) {
+                                              $txtRtaIndicador3 = 0;
+                                            }else{
+                                              $txtRtaIndicador3 = 1;
+                                            }
+                                            array_push($varArrayPromedio3, $txtRtaIndicador3);
+                                        }                    
+                              
+                                    }
+
                                   array_push($varArrayPromedio, $txtRtaIndicador); 
                                 }
+                                if($varListadorespo){
+                                  $varArrayInidicador1 = array_sum($varArrayPromedio1);
+                                  $varArrayInidicador2 = array_sum($varArrayPromedio2);
+                                  $varArrayInidicador3 = array_sum($varArrayPromedio3);
+                                }
+
                                 $varArrayInidicador = array_sum($varArrayPromedio);
+
+
                               }else{
                                 $varListCallid = Yii::$app->db->createCommand("select callid from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and  extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' group by callid")->queryAll();                          
+
+                                  //para el calculo por responsabilidad
+                                  if($varListadorespo){
+                                    $txtRtaIndicador1 = null;
+                                    $txtRtaIndicador2 = null;
+                                    $txtRtaIndicador3 = null;
+                                    $varArrayVariable1 = array();
+                                    $varArrayVariable2 = array();
+                                    $varArrayVariable3 = array();
+                                    $varListVariables2 = Yii::$app->db->createCommand("SELECT idcategoria, responsable FROM tbl_speech_categorias WHERE idcategoria IN ($arrayVariableMenos) AND cod_pcrc in ('$varCodPcrc')")->queryAll();
+                                    //$varListVariables2 = Yii::$app->db->createCommand("SELECT idcategoria, responsable FROM tbl_speech_categorias WHERE idcategoria IN ($arrayVariable)")->queryScalar();
+                                    foreach ($varListVariables2 as $key => $value) {
+                                      $varidcategoria = $value['idcategoria'];
+                                      $varresponsable = $value['responsable'];
+                                      if ($varresponsable == 1){
+                                          array_push($varArrayVariable1, $varidcategoria);
+                                      }
+                                      else{
+                                        if ($varresponsable == 2){
+                                              array_push($varArrayVariable2, $varidcategoria);
+                                        }else{
+                                          if ($varresponsable == 3){
+                                                array_push($varArrayVariable3, $varidcategoria);
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+
+
 
                                 foreach ($varListCallid as $key => $value) {
                                   $txtCallid = $value['callid'];
@@ -925,8 +1036,87 @@ $this->title = 'Dashboard Voz del Cliente';
                                   }
 
                                   array_push($varArrayPromedio, $txtRtaIndicador); 
+                                
+                                
+
+                                    //diego
+                                    //agente
+                                    if ($arrayVarresponagenteMas != "") {
+                                      $varconteomas1 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVarresponagenteMas) and idvariable in ($arrayVarresponagenteMas)")->queryScalar();
+                                    }else{
+                                      $varconteomas1 = 0;
+                                    }
+                                    
+
+                                    if ($arrayVarresponagenteMenos != "") {
+                                      $varconteomeno1 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVarresponagenteMenos) and idvariable in ($arrayVarresponagenteMenos)")->queryScalar();
+                                    }else{
+                                      $varconteomeno1 = 0;
+                                    }
+
+                                    if ($varconteomeno1 == null || $varconteomeno1 == 0 && $varconteomas1 == $varTotalvariables) {
+                                      $txtRtaIndicador1 = 1;
+                                    }else{
+                                      $txtRtaIndicador1 = 0;
+                                    }
+
+                                    array_push($varArrayPromedio1, $txtRtaIndicador1); 
+                                                                                                     
+                                  
+                                    //Canal
+                                    if ($arrayVarresponcanalMas != "") {
+                                      $varconteomas2 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVarresponcanalMas) and idvariable in ($arrayVarresponcanalMas)")->queryScalar();
+                                    }else{
+                                      $varconteomas2 = 0;
+                                    }
+                                    
+
+                                    if ($arrayVarresponcanalMenos != "") {
+                                      $varconteomeno2 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVarresponcanalMenos) and idvariable in ($arrayVarresponcanalMenos)")->queryScalar();
+                                    }else{
+                                      $varconteomeno2 = 0;
+                                    }
+
+                                    if ($varconteomeno2 == null || $varconteomeno2 == 0 && $varconteomas2 == $varTotalvariables) {
+                                      $txtRtaIndicador2 = 1;
+                                    }else{
+                                      $txtRtaIndicador2 = 0;
+                                    }
+
+                                    array_push($varArrayPromedio2, $txtRtaIndicador2);                                  
+                                 
+
+                                  //Marca
+                                  if ($arrayVarresponmarcaMas != "") {
+                                    $varconteomas3 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVarresponmarcaMas) and idvariable in ($arrayVarresponmarcaMas)")->queryScalar();
+                                  }else{
+                                    $varconteomas3 = 0;
+                                  }
+                                  
+
+                                  if ($arrayVarresponmarcaMenos != "") {
+                                    $varconteomeno3 = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid and idindicador in ($arrayVarresponmarcaMenos) and idvariable in ($arrayVarresponmarcaMenos)")->queryScalar();
+                                  }else{
+                                    $varconteomeno3 = 0;
+                                  }
+
+                                  if ($varconteomeno3 == null || $varconteomeno3 == 0 && $varconteomas3 == $varTotalvariables) {
+                                    $txtRtaIndicador3 = 1;
+                                  }else{
+                                    $txtRtaIndicador3 = 0;
+                                  }
+
+                                  array_push($varArrayPromedio3, $txtRtaIndicador3); 
+                            
                                 }
+
                                 $varArrayInidicador = array_sum($varArrayPromedio);
+                                $varArrayInidicador1 = array_sum($varArrayPromedio1);
+                                $varArrayInidicador2 = array_sum($varArrayPromedio2);
+                                $varArrayInidicador3 = array_sum($varArrayPromedio3);                       
+
+
+
                                 // var_dump($varArrayInidicador);
                               }
                             }
@@ -1123,7 +1313,7 @@ $this->title = 'Dashboard Voz del Cliente';
                           <tbody>
                           
                           <?php  
-			                  $sumaagente = 0; 
+                        $sumaagente = 0; 
                               $sumacanal = 0;
                               $sumamarca = 0;                        
                             for($i = 0; $i < count($arraylistaagente); $i++){
@@ -1153,17 +1343,17 @@ $this->title = 'Dashboard Voz del Cliente';
               </div> 
               <div class="col-md-6">
                 <div class="card2 mb">
-		     <?php
+         <?php
 
-                  	if ($arraytotalagente != 0 && $sumaagente !=0){
-                    	  $txttotalpromedio1 = $arraytotalagente / $sumaagente;
-                    	}
-                    	if ($arraytotalcanal != 0 && $sumacanal !=0){
-                  	  $txttotalpromedio2 = $arraytotalcanal / $sumacanal;
-                    	}
-                  	if ($arraytotalmarca != 0 && $sumamarca !=0){
-                  	$txttotalpromedio3 = $arraytotalmarca / $sumamarca;}
-                  	$arraylistaresponsable = array($txttotalpromedio1,$txttotalpromedio2,$txttotalpromedio3);
+                    if ($arraytotalagente != 0 && $sumaagente !=0){
+                        $txttotalpromedio1 = $arraytotalagente / $sumaagente;
+                      }
+                      if ($arraytotalcanal != 0 && $sumacanal !=0){
+                      $txttotalpromedio2 = $arraytotalcanal / $sumacanal;
+                      }
+                    if ($arraytotalmarca != 0 && $sumamarca !=0){
+                    $txttotalpromedio3 = $arraytotalmarca / $sumamarca;}
+                    $arraylistaresponsable = array($txttotalpromedio1,$txttotalpromedio2,$txttotalpromedio3);
                      ?>
                     <div id="containerResponsable" class="highcharts-container" style="width: 600px; height: 180px;  display:block; margin:auto;"></div>
                      <br>               
@@ -1633,21 +1823,21 @@ $this->title = 'Dashboard Voz del Cliente';
           ?>
         </div>
       </div>
-      <?php if ($txtTotalRedbox != "0" && $txtTotalGrabadora != "0") {  ?>
+      <?php // if ($sessiones != '0') {  ?>
         <div class="col-md-3">
           <div class="card1 mb">
             <label style="font-size: 15px;"><i class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></i> Buscar llamadas: </label>
             <?= Html::a('Llamadas',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
-                          'style' => 'background-color: #337ab7',
+                          'style' => 'background-color: #337ab7', 'target' => "_blank",
                           'data-toggle' => 'tooltip',
                           'title' => 'Buscar llamadas']) 
             ?>
           </div>
         </div>
-      <?php } ?>
+      <?php // } ?>
     </div>
 
-    <?php if ($sessiones == '2911' || $sessiones == '2953' || $sessiones == '3468' || $sessiones == '57' ) { ?>
+    <?php if ($sessiones == '57' || $sessiones == '2953' || $sessiones == '3229' || $sessiones == '3468' ) { ?>
     <br>
     <div class="row">
       <div class="col-md-3">
@@ -1813,7 +2003,7 @@ function sortTable(n,type) {
 
     $.ajax({
               method: "get",
-              //url: "https://172.20.100.50/qa/web/index.php/dashboardspeech/listashijo",
+
               url: "listashijo",
               data : {
                 txtvindicador : varIndicador,
@@ -1852,7 +2042,7 @@ function sortTable(n,type) {
 
     $.ajax({
                 method: "get",
-                // url: "http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/prueba",
+
                 url: "listashijos",
                 data : {
                     txtvindicador : varIndicador,
@@ -1887,7 +2077,7 @@ function sortTable(n,type) {
 
     $.ajax({
               method: "get",
-              //url: "https://172.20.100.50/qa/web/index.php/dashboardspeech/listashijo",
+
               url: "listashijo1",
               data : {
                 txtvindicador : varIndicador,
@@ -1926,7 +2116,7 @@ function sortTable(n,type) {
 
     $.ajax({
                 method: "get",
-                // url: "http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/prueba",
+
                 url: "listashijos1",
                 data : {
                     txtvindicador : varIndicador,
@@ -2459,8 +2649,8 @@ function sortTable(n,type) {
             });
         }       
 
-        window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/dashboardspeech/index','_self');
-        // window.open('http://127.0.0.1/qa_pruebas/web/index.php/dashboardspeech/index','_self');
+        window.open('../dashboardspeech/index','_self');
+
     };
 
 </script>

@@ -38,7 +38,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
     $MesAnterior = date("m") - 1;
 
 ?>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 <style type="text/css">
     .card {
@@ -108,7 +108,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
   .masthead {
     height: 25vh;
     min-height: 100px;
-    background-image: url('../../images/Dashboard-Escuchar-+.png');
+    background-image: url('../../images/Parametrizador.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

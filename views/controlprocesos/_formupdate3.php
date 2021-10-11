@@ -40,7 +40,7 @@ $this->title = 'Actualizar Cantidad Valoracion';
 		&nbsp;&nbsp;
 		<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
-		<?php $var2 = ['AGENTES' => 'AGENTES', 'ALTO VALOR' => 'ALTO VALOR', 'CALIDAD DEL ENTRENAMIENTO' => 'CALIDAD DEL ENTRENAMIENTO', 'HEROES POR EL CLIENTE' => 'HEROES POR EL CLIENTE', 'OJT' => 'OJT', 'OTROS' => 'OTROS', 'PRESICION Y APRENDIZAJE' => 'PRECISION Y APRENDIZAJE', 'PROCESO' => 'PROCESO', 'PROTECCION DE LA EXPERIENCIA' => 'PROTECCION DE LA EXPERIENCIA', 'PRUEBAS' => 'PRUEBAS']; ?>
+		<?php $var2 = ['AGENTES' => 'AGENTES', 'ALTO VALOR' => 'ALTO VALOR', 'CALIDAD DEL ENTRENAMIENTO' => 'CALIDAD DEL ENTRENAMIENTO', 'HEROES POR EL CLIENTE' => 'HEROES POR EL CLIENTE', 'OJT' => 'OJT', 'OTROS' => 'OTROS', 'PRECISIÓN Y APRENDIZAJE' => 'PRECISIÓN Y APRENDIZAJE', 'PROCESO' => 'PROCESO', 'PROTECCION DE LA EXPERIENCIA' => 'PROTECCION DE LA EXPERIENCIA', 'PRUEBAS' => 'PRUEBAS']; ?>
 		
 		<?= $form->field($model, "dimensions")->dropDownList($var2, ['prompt' => 'Seleccione una opcion', 'id'=>"id_dimensions"])->label('Dimensiones') ?>
 

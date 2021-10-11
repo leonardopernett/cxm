@@ -21,7 +21,7 @@ function cerrarVentana(){
 		<h4>¿Seguro que desea salir sin guardar el registro?</h4>
 	</div>
 	<div>
-	    <a class="btn btn-default soloCancelar" style="background-color:#337ab7" data-toggle="tooltip" title="Aceptar" href="/qa_managementv2/web/index.php/controlprocesos/index"> Aceptar </a>	
+	    <a class="btn btn-default soloCancelar" style="background-color:#337ab7" data-toggle="tooltip" title="Aceptar" href="../controlprocesos/index"> Aceptar </a>	
 <!-- 	   	<a class="btn btn-default soloCancelar" style="background-color:#707372" data-toggle="tooltip" title="Cerrar" onclick="CerrarVentana()" > Cancelar </a>		 -->
 	</div>
 

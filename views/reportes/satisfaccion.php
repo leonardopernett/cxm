@@ -24,7 +24,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   .masthead {
     height: 25vh;
     min-height: 100px;
-    background-image: url('../../images/Reporte-Satisfacción.png');
+    background-image: url('../../images/Reporte-Satisfaccion.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

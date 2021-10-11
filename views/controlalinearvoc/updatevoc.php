@@ -77,8 +77,7 @@ function enviar(){
 				console.log(response);
 				var respuesta = JSON.parse(response);
 				console.log(respuesta);
-				if(respuesta != 0){
-					//window.location.href = "https://172.20.100.50/qa/web/index.php/controlalinearvoc/updatevocalinear?txtPcrc="+varPcrc+'&varSession='+varSelec;
+				if(respuesta != 0){					
 					window.location.href='updatevocalinear?txtPcrc='+varPcrc+'&varSession='+varSelec;
 
 				}
@@ -90,7 +89,5 @@ function enviar(){
 	function menuPrincipal(){	
 		var varPCRC = "<?php echo $txtIdPcrc; ?>";
 		window.location.href='indexvoc?arbol_idV='+varPCRC ,'_self';	
-        	//window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/controlalinearvoc/indexvoc?arbol_idV='+varPCRC ,'_self');
-			//window.location.href='updatevocalinear?txtPcrc='+varPcrc+'&varSession='+varSelec;
     	};
 </script>

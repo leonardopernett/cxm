@@ -66,7 +66,7 @@ use yii\bootstrap\Modal;
       .masthead {
         height: 25vh;
         min-height: 100px;
-        background-image: url('https://qa.grupokonecta.local/qa_managementv2/web/images/Reporte-VOC2.png');
+        background-image: url('../../images/Reporte-VOC2.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;

@@ -50,6 +50,8 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'per_ba')->checkbox() ?>
 
+    <?= $form->field($model, 'per_directivo')->checkbox() ?>
+
 
     
     <div class="form-group">

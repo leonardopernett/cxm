@@ -12,7 +12,7 @@ use app\models\ControlProcesosPlan;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
-$txtListResponsable = Yii::$app->db->createCommand("select u.usua_id, u.usua_nombre from tbl_usuarios u inner join rel_usuarios_roles ur on u.usua_id = ur.rel_usua_id inner join tbl_roles r on ur.rel_role_id = r.role_id where 		r.role_id in (270, 274, 276) order by u.usua_nombre")->queryAll();
+$txtListResponsable = Yii::$app->db->createCommand("select u.usua_id, u.usua_nombre from tbl_usuarios u inner join rel_usuarios_roles ur on u.usua_id = ur.rel_usua_id inner join tbl_roles r on ur.rel_role_id = r.role_id where 		r.role_id in (270, 309, 274, 276) order by u.usua_nombre")->queryAll();
 
 $listData2 = ArrayHelper::map($txtListResponsable, 'usua_id', 'usua_nombre');
 

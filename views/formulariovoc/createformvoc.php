@@ -29,7 +29,7 @@ $txtLider = Yii::$app->db->createCommand("select usua_id from tbl_equipos where 
 $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = '$txtLider'")->queryScalar();
 
 ?>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <style type="text/css">
   @import url('https://fonts.googleapis.com/css?family=Nunito');
     .card {
@@ -474,7 +474,7 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
     };
 
     function enviar(){
-        window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/basesatisfaccion/alertas','_blank');
+        window.open('../basesatisfaccion/alertas','_blank');
     };
 
     function generated(){
@@ -674,8 +674,8 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
                                                 success : function(response){ 
                                                     var numRta2 =   JSON.parse(response);    
                                                     console.log(numRta2);
-                                                    // window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/formulariovoc/index','_self');
-                                                    window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/formulariovoc/index','_self');
+
+                                                    window.open('../formulariovoc/index','_self');
                                                 }
                                               });
                                             }else{

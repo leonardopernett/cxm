@@ -100,6 +100,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'per_externo',
                 'value' => $model->getStringBoolean($model->per_externo)
+            ],                        
+            [
+                'attribute' => 'per_directivo',
+                'value' => $model->getStringBoolean($model->per_directivo)
             ],
         ],
     ])

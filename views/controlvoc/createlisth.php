@@ -76,7 +76,6 @@ $this->params['breadcrumbs'][] = $this->title;
 		}else{
 			$.ajax({
 			        method: "post",
-			        //url: "https://172.20.100.50/qa/web/index.php/controlvoc/createmotivo",
 			        url: "createmotivo",
 			        data : {
 			          txtvsesion : varSesiones,

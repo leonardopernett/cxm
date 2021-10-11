@@ -30,6 +30,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
     public $verEvaluacion;
     public $verExterno;
     public $verBA;
+    public $verDirectivo;
     public $hacerValoracion;
     public $grupousuarioid;
     /**
@@ -63,6 +64,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                     . "per_evaluacion as verEvaluacion, "
                     . "per_externo as verExterno, "
                     . "per_ba as verBA, "
+                    . "per_directivo as verDirectivo, "
                     . "per_adminprocesos as adminProcesos, "
                     . "per_editarequiposvalorados as edEqipoValorado, "
                     . "per_inboxaleatorio as verInboxAleatorio, per_realizar_valoracion AS hacerValoracion, "
@@ -130,6 +132,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                 . "per_evaluacion as verEvaluacion, "
                 . "per_externo as verExterno, "
                 . "per_ba as verBA, "
+                . "per_directivo as verDirectivo, "
                 . "per_adminprocesos as adminProcesos, "
                 . "per_editarequiposvalorados as edEqipoValorado, "
                 . "per_inboxaleatorio as verInboxAleatorio, per_realizar_valoracion AS hacerValoracion, "
@@ -403,6 +406,18 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
      */
     public function isVerBA() {
         return ($this->verBA) ? true : false;
+    }
+
+    /**
+     * Valida si el usuario tiene permisos para los tecnicos externo
+     * 
+     * @return boolean
+     * @author Andersson
+     * @copyright Konecta
+     * @version Release: $Id$
+     */
+    public function isVerdirectivo() {
+        return ($this->verDirectivo) ? true : false;
     }
 
     /**

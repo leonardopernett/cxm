@@ -157,8 +157,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 success : function(response){
                     numRta =   JSON.parse(response);
-                    window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/evaluaciondesarrollo/index','_self');
-                    // window.open('http://127.0.0.1/qa_pruebas/web/index.php/evaluaciondesarrollo/index','_self');
+                    window.open('../evaluaciondesarrollo/index','_self');
+
                 }
             });
         }
@@ -317,8 +317,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 success : function(response){
                     numRta =   JSON.parse(response);
-                    window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/evaluaciondesarrollo/index','_self');
-                    // window.open('http://127.0.0.1/qa_pruebas/web/index.php/evaluaciondesarrollo/index','_self');
+                    window.open('../evaluaciondesarrollo/index','_self');
+
                 }
         });
     };
@@ -385,8 +385,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         success : function(response){
                             numRta =   JSON.parse(response);
-                            window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/evaluaciondesarrollo/index','_self');
-                            // window.open('http://127.0.0.1/qa_pruebas/web/index.php/evaluaciondesarrollo/index','_self');
+                            window.open('../evaluaciondesarrollo/index','_self');
+
                         }
                 });  
             }

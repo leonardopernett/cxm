@@ -147,8 +147,6 @@ $datacolab = (array)json_decode($dataper);
 				console.log(Rta);
 				if(Rta != ""){
                     window.location.href='permisocolabora?dataper='+JSON.stringify(Rta)+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep;
-                    //window.location.href='permisocolabora?dataper='+JSON.stringify(Rta)+'&workspace='+vararearab+'&nombrerepor='+varnombrerep; 
-					//window.location.href = "http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/updatevoc?txtPcrc="+varPCRC;
 				}else{
 					alert("Error al intentar eliminar la alerta");
 				}

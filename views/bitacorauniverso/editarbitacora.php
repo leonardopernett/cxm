@@ -103,7 +103,7 @@ use yii\bootstrap\Modal;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../../css/font-awesome/css/font-awesome.css"  >
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
@@ -296,7 +296,7 @@ use yii\bootstrap\Modal;
       } else {    
         $.ajax({
                   method: "post",
-                  url : "https://qa.grupokonecta.local/qa_managementv2/web/index.php/bitacorauniverso/actualbitacora",
+                  url : "../../bitacorauniverso/actualbitacora",
                   data : {
                     txtvidbitauni : varidbitauni,
                     txtvFechacierre : varFechacierre,
@@ -312,7 +312,7 @@ use yii\bootstrap\Modal;
                                         title: "!!! OK !!!",
                                         text: "Datos guardados correctamente."
                                     }).then(function() {                                   
-                                      window.location.href = 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/bitacorauniverso/reportebitacorauni';
+                                      window.location.href = '../../bitacorauniverso/reportebitacorauni';
                                     });
                                 });
                               }else{
@@ -346,7 +346,7 @@ use yii\bootstrap\Modal;
             
             $.ajax({
                 method : "post",
-                url : "https://qa.grupokonecta.local/qa_managementv2/web/index.php/bitacorauniverso/updatebitacora",
+                url : "updatebitacora",
                 data : {
                     txtvaridbitacora : varidbitacora,
                     txtvarfechacierre : varfechacierre,

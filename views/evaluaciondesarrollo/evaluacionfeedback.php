@@ -73,6 +73,9 @@ $titulos = array();
     $txtnotafinal = null;
     $tipocoaching = '';
 
+    $varresultado =0;
+$txtNotasFinal = 0;
+
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito');
@@ -184,7 +187,7 @@ $titulos = array();
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -197,6 +200,10 @@ $titulos = array();
   </div>
 </header>
 <br><br>
+<?php
+// if($sessiones != "3205" || $sessiones != "2953"){ 
+
+?>
 
 
 <div id="idCapa" style="display: none">
@@ -261,13 +268,13 @@ if($vardocumentosijefe){ ?>
                                    En Konecta somos Gente Buena - Buena Gente 
                                     </div>
                                 </div>
-				<?php 
+        <?php 
                                 } else {?>
-				<div class="panel panel-default">
+        <div class="panel panel-default">
                                     <div class="panel-body " style="background-color: #f0f8ff;">El feedback debe ser documentado por el jefe actual de la persona
                                     </div>
                                 </div>
-				<?php 
+        <?php 
                                 }?>
                             </div>  
 
@@ -298,7 +305,7 @@ if($vardocumentosijefe){ ?>
         $varsumacompetencia = 0;
         $varmenorcompetencia = 0;
         $prueba = "doughnut-chart".$varNum;
-	    $evaluacompe1 = 0;
+      $evaluacompe1 = 0;
         $evaluaorgan1 = 0;
         $evaluadese1 = 0;
         $evaluacompe2 = 0;
@@ -310,7 +317,7 @@ if($vardocumentosijefe){ ?>
         $evaluacompe4 = 0;
         $evaluaorgan4 = 0;
         $evaluadese4  = 0;
-	$bloque1 =0;
+  $bloque1 =0;
         $bloque2 =0;
         $bloque3 =0;        
         $varcomentarios2 = '';
@@ -346,123 +353,175 @@ if($vardocumentosijefe){ ?>
             }
         }
 
-        for ($i = 1; $i <= 4; $i++) {
-            
-            $listacompetenciat = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
-                                                FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
-                                                ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque, ef.mensaje
-                                                FROM tbl_evaluacion_solucionado es
-                                                INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
-                                                INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
-                                                inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
-                                                INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
-                                                INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
-                                                LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
-                                                WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = $i 
-                                                GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques")->queryAll();
 
-            foreach ($listacompetenciat as $key => $value) {
-                $varsumacompetencia = $varsumacompetencia + $value['%Competencia'];
-                
-                
-                if($i == 1){
-                    $varconteocompetencia = $varconteocompetencia + 1;
-                    
-                    if($value['idevaluacionbloques'] == 1){ 
+        $varArraySumaB = array();
 
-                        $evaluacompe1 = $evaluacompe1 + ($value['%Competencia'] * 40) / 100;
-                        $bloque1 = $bloque1 + 1;
-                    }
-                    if($value['idevaluacionbloques'] == 2){
+        foreach ($varlistbloques as $key => $value) {
+            $varidbloque = $value['idevaluacionbloques'];  
+            $varconteobloque = $varconteobloque + 1;
 
-                        $evaluaorgan1 = $evaluaorgan1 + ($value['%Competencia'] * 20) / 100;                        
-                        $bloque2 = $bloque2 + 1;
-                    }
-                    if($value['idevaluacionbloques'] == 3){
-                        
-                        $evaluadese1 = $evaluadese1 + ($value['%Competencia'] * 40) / 100;
-                        $bloque3 = $bloque3 + 1;
-                    }                 
-                }
-                if($i == 3){
-                    if($value['idevaluacionbloques'] == 1){
-                        $evaluacompe2 = $evaluacompe2 + ($value['%Competencia'] * 40) / 100;
-                    }
-                    if($value['idevaluacionbloques'] == 2){
-                        $evaluaorgan2 = $evaluaorgan2 + ($value['%Competencia'] * 20) / 100;
-                    }
-                    if($value['idevaluacionbloques'] == 3){
-                        $evaluadese2 = $evaluadese2 + ($value['%Competencia'] * 40) / 100;
-                    }                 
-                }
-                if($i == 4){
-                    if($value['idevaluacionbloques'] == 1){
-                        $evaluacompe3 = $evaluacompe3 + ($value['%Competencia'] * 40) / 100;
-                    }
-                    if($value['idevaluacionbloques'] == 2){
-                        $evaluaorgan3 = $evaluaorgan3 + ($value['%Competencia'] * 20) / 100;
-                    }
-                    if($value['idevaluacionbloques'] == 3){
-                        $evaluadese3 = $evaluadese3 + ($value['%Competencia'] * 40) / 100;
-                    }                 
-                }
-                if($i == 2){
-                    if($value['idevaluacionbloques'] == 1){
-                        $evaluacompe4 = $evaluacompe4 + ($value['%Competencia'] * 40) / 100;
-                    }
-                    if($value['idevaluacionbloques'] == 2){
-                        $evaluaorgan4 = $evaluaorgan4 + ($value['%Competencia'] * 20) / 100;
-                    }
-                    if($value['idevaluacionbloques'] == 3){
-                        $evaluadese4 = $evaluadese4 + ($value['%Competencia'] * 40) / 100;
-                    }                 
-                }
-            }            
-        }
-	if($evaluacompe1 > 0){
-            
-            $evaluacompe1 = $evaluacompe1 / $bloque1;
-            $evaluaorgan1 = $evaluaorgan1 / $bloque2; 
-            $evaluadese1 = $evaluadese1 / $bloque3;
-        }
-        if($evaluacompe2 > 0){
-            $evaluacompe2 = $evaluacompe2 / $bloque1;
-            $evaluaorgan2 = $evaluaorgan2 / $bloque2;
-            $evaluadese2 = $evaluadese2 / $bloque3;
-        }
-        if($evaluacompe3 > 0){
-            $evaluacompe3 = $evaluacompe3 / $bloque1;
-            $evaluaorgan3 = $evaluaorgan3 / $bloque2;
-            $evaluadese3 = $evaluadese3 / $bloque3;
-        }
-        if($evaluacompe4 > 0){
-            $evaluacompe4 = $evaluacompe4 / $bloque1;
-            $evaluaorgan4 = $evaluaorgan4 / $bloque2;
-            $evaluadese4 = $evaluadese4 / $bloque3;
+            $totalcomp = 0;
+                              $varArrayPromedio = array();
+                              
+                            //se calcula los % de las competencias mediante los pesos que están en los requerimientos
+                                $valortotal1Auto = 0;
+                                $valortotal2Jefe = 0;
+                                $valortotal3Cargo = 0;
+                                $valortotal4Pares = 0;
+                                $listadocompetencias = Yii::$app->db->createCommand("select ec.namecompetencia, eb.idevaluacionbloques, eb.namebloque, es.idevaluacioncompetencia
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = $varidbloque
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                                foreach ($listadocompetencias as $key => $value) {
+
+
+                                        
+                                    $nombrecompetencias = $value['namecompetencia'];
+                                    $varidevaluacionbloques = $value['idevaluacionbloques'];
+                                    $varidcompetencia = $value['idevaluacioncompetencia'];                                        
+                                    $varconteocompetencia = $varconteocompetencia + 1;
+                                    $varcolor2 = null;
+
+
+
+
+                                   
+                                    $listacompetencia1 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 1 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                    
+                                    foreach ($listacompetencia1 as $key => $value1) {
+                                       
+                                        $valortotal1Auto = $value1['%Competencia'];
+                                        $varmensaje = $value1['mensaje'];
+                                    }
+
+
+
+                                    $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 3 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                    
+                                    foreach ($listacompetencia2 as $key => $value2) {
+                                        $valortotal2Jefe = $value2['%Competencia'];
+                                    }    
+                                    $listacompetencia3 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 2 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                    
+                                    foreach ($listacompetencia3 as $key => $value3) {
+                                        $valortotal3Cargo = $value3['%Competencia'];
+                                    }
+
+                                    $listacompetencia4 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 4 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                   
+                                    foreach ($listacompetencia4 as $key => $value4) {
+                                        $valortotal4Pares = $value4['%Competencia'];
+                                    }
+
+
+                                    $txtnotafinal1 = null;
+                                    if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
+                                        $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
+                                        // var_dump("Entra 1");
+
+                                    }
+                                    if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
+                                        $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2);  
+                                        // var_dump("Entra 2");
+              
+                                    }
+                                    if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
+                                        $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2); 
+                                        // var_dump("Entra 3");
+          
+                                    }
+                                    if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
+                                        $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 5) /100) + (($valortotal4Pares * 30) /100),2);    
+                                        // var_dump("Entra 4");                        
+                                    }
+
+
+                                    $totalcomp = $totalcomp + 1;
+                                    array_push($varArrayPromedio, $txtnotafinal1);
+                                }         
+        if ($totalcomp != 0) {    
+	$varPromedios = round(array_sum($varArrayPromedio) / $totalcomp,2);
+	}else{
+	$varPromedios = 0;
+	}
+
+
+                                    if ($varidbloque == 1) {
+                                      $vartotalb = round(($varPromedios * (40 / 100)),2);
+                                    }else{
+                                      if ($varidbloque == 2) {
+                                        $vartotalb = round(($varPromedios * (20 / 100)),2);
+                                      }else{
+                                        if ($varidbloque == 3) {
+                                          $vartotalb = round(($varPromedios * (40 / 100)),2);
+                                        }    
+                                      }
+                                    }              
+// var_dump($varPromedios);  
+
+                                    array_push($varArraySumaB, $vartotalb);            
         }
 
-        $txtevalua1 = $evaluacompe1 + $evaluaorgan1 + $evaluadese1;
-        $txtevalua2 = $evaluacompe2 + $evaluaorgan2 + $evaluadese2;
-        $txtevalua3 = $evaluacompe3 + $evaluaorgan3 + $evaluadese3;
-        $txtevalua4 = $evaluacompe4 + $evaluaorgan4 + $evaluadese4;
-        //var_dump($txtevalua1 );
- 	    //var_dump($txtevalua2);
-         $txtnotafinal = null;
-        if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 == 0 && $txtevalua4 == 0) {
-            $txtnotafinal = (($txtevalua1 * 20)/100) + (($txtevalua2 * 80) /100);
-        }
-        if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 == 0 && $txtevalua4 != 0) {
-            $txtnotafinal = (($txtevalua1 * 15)/100) + (($txtevalua2 * 70) /100) + (($txtevalua4 * 15) /100);             
-        }
-        if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 != 0 && $txtevalua4 == 0) {
-            $txtnotafinal = (($txtevalua1 * 10)/100) + (($txtevalua2 * 60) /100) + (($txtevalua3 * 30) /100);            
-        }
-        if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 != 0 && $txtevalua4 != 0) {
-	   $txtnotafinal = (($txtevalua1 * 5)/100) + (($txtevalua2 * 60) /100) + (($txtevalua3 * 5) /100) + (($txtevalua4 * 30) /100);
-
-        }
         
-        $txtProcentaje = $txtnotafinal;
+        
+        // $txtProcentaje = $txtnotafinal;
+        $txtProcentaje =  round(array_sum($varArraySumaB),2);
         if($txtProcentaje >= 85 && $varmenorcompetencia == 0) {
             $tipocoaching = 'Opcional';
         } else if($txtProcentaje >= 85 && $varmenorcompetencia == 1){
@@ -470,7 +529,7 @@ if($vardocumentosijefe){ ?>
             } else if($txtProcentaje <= 85 && $varmenorcompetencia == 1) {
                 $tipocoaching = 'Obligatorio';
                 }
-        
+        $txtNotasFinal = round($txtProcentaje,2);
         array_push($titulos, $txtProcentaje);
     ?>    <div id="CapaTres" style="display: inline">
             <div class="row">
@@ -509,7 +568,8 @@ if($vardocumentosijefe){ ?>
             </div>
     </div> 
     <?php
-        
+        $varArraySumaB = array();
+
         foreach ($varlistbloques as $key => $value) {
             $varidbloque = $value['idevaluacionbloques'];  
             $varconteobloque = $varconteobloque + 1;
@@ -537,39 +597,146 @@ if($vardocumentosijefe){ ?>
                         
                         <div class="row">                    
                             <?php 
-                                $listacompetencia = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
-                                                    FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
-                                                    ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque, ef.mensaje
-                                                    FROM tbl_evaluacion_solucionado es
-                                                    INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
-                                                    INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
-                                                    inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
-                                                    INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
-                                                    INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
-                                                    LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
-                                                    WHERE es.documentoevaluado = $documento and ec.idevaluacionbloques = $varidbloque 
-                                                    GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques")->queryAll();
-                                
-                                foreach ($listacompetencia as $key => $value) {
-                                    $varidcompetencia = $value['idevaluacioncompetencia'];
+
+                              $totalcomp = 0;
+                              $varArrayPromedio = array();
+                              
+                            //se calcula los % de las competencias mediante los pesos que están en los requerimientos
+                                $valortotal1Auto = 0;
+                                $valortotal2Jefe = 0;
+                                $valortotal3Cargo = 0;
+                                $valortotal4Pares = 0;
+                                $listadocompetencias = Yii::$app->db->createCommand("select ec.namecompetencia, eb.idevaluacionbloques, eb.namebloque, es.idevaluacioncompetencia
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = $varidbloque
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+
+                                foreach ($listadocompetencias as $key => $value) {
+                                        
+                                    $nombrecompetencias = $value['namecompetencia'];
+                                    $varidevaluacionbloques = $value['idevaluacionbloques'];
+                                    $varidcompetencia = $value['idevaluacioncompetencia'];                                        
                                     $varconteocompetencia = $varconteocompetencia + 1;
                                     $varcolor2 = null;
-                                    if($value['%Competencia'] < 85){
-                                        $varcolor2 = "color: #f5500f;";
-                                    }else{
-                                        $varcolor2 = "color: #0d0d0d;";
+
+
+
+
+                                   
+                                    $listacompetencia1 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 1 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                    
+                                    foreach ($listacompetencia1 as $key => $value1) {
+                                       
+                                        $valortotal1Auto = $value1['%Competencia'];
+                                        $varmensaje = $value1['mensaje'];
                                     }
+
+                                    $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 3 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                    
+                                    foreach ($listacompetencia2 as $key => $value2) {
+                                        $valortotal2Jefe = $value2['%Competencia'];
+                                    }    
+                                    $listacompetencia3 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 2 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                    
+                                    foreach ($listacompetencia3 as $key => $value3) {
+                                        $valortotal3Cargo = $value3['%Competencia'];
+                                    }
+
+                                    $listacompetencia4 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
+                                                        FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
+                                                        ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque,et.tipoevaluacion ,ef.mensaje, count(es.idevaluacioncompetencia) canti
+                                                        FROM tbl_evaluacion_solucionado es
+                                                        INNER JOIN tbl_evaluacion_respuestas2 er ON es.idevaluacionrespuesta = er.idevaluacionrespuesta
+                                                        INNER JOIN tbl_usuarios_evalua_feedback ue ON es.documentoevaluado = ue.documento
+                                                        inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel
+                                                        INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
+                                                        LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
+                                                        INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
+                                                        WHERE es.documentoevaluado = $documento AND es.idevaluaciontipo = 4 AND ec.namecompetencia = '$nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                   
+                                    foreach ($listacompetencia4 as $key => $value4) {
+                                        $valortotal4Pares = $value4['%Competencia'];
+                                    }
+
+
+                                    $txtnotafinal1 = null;
+                                    if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
+                                        $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
+
+                                    }
+                                    if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
+                                        $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2);  
+         
+                                    }
+                                    if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
+                                        $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2); 
+          
+                                    }
+                                    if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
+                                        $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal4Pares * 5) /100) + (($valortotal3Cargo * 30) /100),2);                            
+                                    }
+
+                                        if($txtnotafinal1 < 85){
+                                            $varcolor2 = "color: #f5500f;";
+                                        }else{
+                                            $varcolor2 = "color: #0d0d0d;";
+                                        }
                             ?>
                                     
                                     <div class="col-md-6">
                                         <div class="card1 mb">  
                                             <div class="row">                                    
                                                 <div class="col-md-6">
-                                                    <label style="font-size: 16px;"><i class="fas fa-bookmark" style="font-size: 15px; <?php echo $varcolor; ?>"></i> <?php echo $value['namecompetencia'].'.'; ?></label>   
+                                                    <label style="font-size: 16px;"><i class="fas fa-bookmark" style="font-size: 15px; <?php echo $varcolor; ?>"></i> <?php echo $nombrecompetencias.'.'; ?></label>   
                                                 </div>
                                                 <div class="col-md-6">
-                                                   <label id="<?php echo 'idtext'.$varconteocompetencia.$varconteobloque; ?>" style="font-size: 15px; <?php echo $varcolor2; ?>"> <?php echo $value['%Competencia'].'% '; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>                                                   
-                                                   <?php if($value['%Competencia'] < 85 && $value['idevaluacionbloques'] == 1){?>
+                                                   <label id="<?php echo 'idtext'.$varconteocompetencia.$varconteobloque; ?>" style="font-size: 15px; <?php echo $varcolor2; ?>"> <?php echo $txtnotafinal1.'% '; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>                                                   
+                                                   <?php if($txtnotafinal1 < 85 && $varidevaluacionbloques == 1){?>
                                                         <div onclick="openmensaje(<?php echo $varconteocompetencia.$varconteobloque; ?>);" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="<?php echo 'idtbn1'.$varconteocompetencia.$varconteobloque; ?>" >
                                                             <span class="fas fa-caret-down" style="font-size: 30px; color: #f7b9b9;" ></span>
                                                         </div>
@@ -581,7 +748,7 @@ if($vardocumentosijefe){ ?>
                                                 <div class="col-md-12">
                                                     <div id="<?php echo 'idmensaje'.$varconteocompetencia.$varconteobloque; ?>" style="display: none">
                                                         <div class="panel panel-default">
-                                                            <div class="panel-body" style="background-color: #f0f8ff; font-size: 16px;"><?php echo $value['mensaje']; ?>
+                                                            <div class="panel-body" style="background-color: #f0f8ff; font-size: 16px;"><?php echo $varmensaje; ?>
                                                             </div>
                                                         </div>
                                                     </div>                
@@ -593,6 +760,7 @@ if($vardocumentosijefe){ ?>
                                     </div>
                                 <?php 
                                     } 
+
                                 ?>
                         </div>
                     </div>
@@ -600,7 +768,10 @@ if($vardocumentosijefe){ ?>
             </div>
           <?php ActiveForm::end(); ?>
         </div> 
-    <?php } ?>
+        <?php 
+          }
+
+        ?>
     
         <div id="capaSiete" style="display: none"> 
             <div class="row">
@@ -656,7 +827,7 @@ if($vardocumentosijefe){ ?>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></i> Guardar feddback: </label> 
+                                <label style="font-size: 16px;"><i class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></i> Guardar feedback: </label> 
                                 <div onclick="guardaenvia();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                   Guardar y Enviar
                                 </div>
@@ -710,6 +881,18 @@ if($vardocumentosijefe){ ?>
 
   <?php } ?>
 
+<?php 
+// } else { 
+if($sessiones != "3205" || $sessiones != "2953"){ 
+?>
+  <div class="Nueve">
+    <div class="row">
+        
+    </div>
+  </div><br>
+
+  <?php } ?>
+
 <script type="text/javascript">
 var vardocumento = '<?php echo $documento; ?>';
 
@@ -749,7 +932,7 @@ var vardocumento = '<?php echo $documento; ?>';
 });
     function carguedato(){
        
-	    var vardocumento = document.getElementById("idlistaevaluado").value;
+      var vardocumento = document.getElementById("idlistaevaluado").value;
         var varmodelo= 0;
         $.ajax({
                 method : "get",
@@ -861,18 +1044,21 @@ var vardocumento = '<?php echo $documento; ?>';
             },
             success : function(response){
                 numRta2 =   JSON.parse(response);
-                // window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/evaluaciondesarrollo/index','_self');
-                window.open('https://172.20.100.50/qa/web/index.php/evaluaciondesarrollo/index','_self');
+
+                window.open('../evaluaciondesarrollo/index','_self');
             }
         });
     };
     
     function guardaenvia(){
         var varobservafeedback = document.getElementById('Idcomentarios').value;
-		var varNotafinal = '<?php echo $txtnotafinal; ?>';
-        var vardocumento = '<?php echo $documento; ?>';		
-		var vardocumentojefe = '<?php echo $vardocument; ?>';
-	var vartipocoaching = '<?php echo $tipocoaching; ?>';
+    	var varNotafinal = '<?php echo $txtNotasFinal; ?>';
+	// var varDataNum = [<?= join($titulos, ',')?>];
+    	// var varNotafinal = varDataNum[0];
+
+        var vardocumento = '<?php echo $documento; ?>';   
+    var vardocumentojefe = '<?php echo $vardocument; ?>';
+  var vartipocoaching = '<?php echo $tipocoaching; ?>';
         var varmodelo = 0;
         var vardocumentoblanco = 0;
         if(!varobservafeedback){
@@ -882,15 +1068,15 @@ var vardocumento = '<?php echo $documento; ?>';
           return;
       } else {
 
-		    $.ajax({
+        $.ajax({
                 method: "get",
                 url: "crearresultadofb",
                 data : {         
-                	varobservafeedback : varobservafeedback,
-                	varNotafinal : varNotafinal,
-                	vardocumento : vardocumento,
+                  varobservafeedback : varobservafeedback,
+                  varNotafinal : varNotafinal,
+                  vardocumento : vardocumento,
                         vardocumentojefe  : vardocumentojefe,
-			vartipocoaching  : vartipocoaching,
+      vartipocoaching  : vartipocoaching,
                 },
                 success : function(response){ 
                     var numRta =   JSON.parse(response); 
@@ -915,8 +1101,9 @@ var vardocumento = '<?php echo $documento; ?>';
                     }
                 }
             });
+ 
       }
-	};
+  };
 
     function openmensaje(competencia){
        var varcompe = competencia;       

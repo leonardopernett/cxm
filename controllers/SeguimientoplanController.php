@@ -29,7 +29,7 @@ use PHPExcel_IOFactory;
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isHacerMonitoreo();
+                            return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                         ]

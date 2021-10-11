@@ -72,7 +72,7 @@ $this->title = 'Ver la Valoración';
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -213,7 +213,6 @@ $this->title = 'Ver la Valoración';
     }
 
     function goesit(){
-        // window.open('http://127.0.0.1/qa_pruebas/web/index.php/planvaloracion/index','_blank');
-        window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/planvaloracion/index','_blank');
+        window.open('../planvaloracion/index','_blank');
     };
 </script>

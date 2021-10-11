@@ -107,7 +107,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                     var numRta =  JSON.parse(response);                
                     console.log(numRta);
                     if (numRta != 0) {
-                        window.location.href = "http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardvoz/detallevoz?varCodificacion="+varPcrc;
+                        window.location.href = "../dashboardvoz/detallevoz?varCodificacion="+varPcrc;
                     }                    
                 }
             });  

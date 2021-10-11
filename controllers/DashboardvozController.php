@@ -29,7 +29,7 @@ use app\models\ControlVolumenxencuestasdq;
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isControlProcesoCX();
+                            return Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                         },
                             ],
                         ]

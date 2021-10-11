@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -205,6 +205,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             ?> 
                         </div>
                     </div>
+
+                    <?php   // if($sessiones == 2953) { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;">remover técnico/lider: </label>
@@ -223,9 +225,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             ?> 
                         </div>
                     </div>
+                    <?php   // } ?>
 		
                     <?php if($txtConteo == "0") { ?>
-                    <?php  // if($sessiones == 2953) { ?>
+                    <?php  //   if($sessiones == 2953) { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"> clonar plan: </label>                            
@@ -234,7 +237,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>                            
                         </div>
                     </div>
-                    <?php  // } ?>
+                    <?php  //   } ?>
                     <?php } ?>
 		
                 </div>
@@ -337,7 +340,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 # code...
                                                                 break;
                                                         } 
-                                 if ($model->tipo_corte == "Corte ".$txtMes." - General Konecta" || $model->tipo_corte == "Corte ".$txtMes." - Grupo Bancolombia" || $model->tipo_corte == "Corte ".$txtMes." - Directv" || $model->tipo_corte == "Corte ".$txtMes." - Nutresa") {                          
+                                  if ($model->tipo_corte == "Corte ".$txtMes." - General Konecta" || $model->tipo_corte == "Corte ".$txtMes." - Grupo Bancolombia" || $model->tipo_corte == "Corte ".$txtMes." - Directv" || $model->tipo_corte == "Corte ".$txtMes." - Nutresa") {                          
                                             //return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['create'=>Yii::t('app','create'),]);
                                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>',['update2', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                                                 'class' => '',
@@ -345,7 +348,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'method' => 'post',
                                                 ],
                                             ]);
-                                 }
+                                  }
                                 
                                  },
                                          'delete' => function($url, $model){

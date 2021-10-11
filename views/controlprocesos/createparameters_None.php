@@ -397,9 +397,7 @@ use yii\helpers\ArrayHelper;
             }else{
                 $.ajax({
                     method: "get",
-                    // url: "http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/createfocalizada",
-                     url: "https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/createfocalizada",
-                    // url: "createfocalizada",
+                    url: "../controlprocesos/createfocalizada",
                     data: {
                         txtvarcliente : varcliente,
                         txtvarservicio : varservicio,
@@ -410,8 +408,7 @@ use yii\helpers\ArrayHelper;
                     success : function(response){ 
                         var numRta2 =   JSON.parse(response);    
                         console.log(numRta2);
-                        window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/controlprocesos/create?usua_id='+varusuario,'_self');
-                        // window.open('http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/create?usua_id='+varusuario,'_self');
+                        window.open('.../controlprocesos/create?usua_id='+varusuario,'_self');
                     }
                 });
             }
@@ -500,8 +497,6 @@ use yii\helpers\ArrayHelper;
         else{
             $.ajax({
                 method: "post",
-                //url: "http://127.0.0.1/qa_pruebas/web/index.php/controlprocesos/prueba",
-                //url: "http://qa.allus.com.co/qa_managementv2/web/index.php/controlprocesos/prueba",
         url: "prueba",
                 data : {
                     arbol_id : arbolTxt,

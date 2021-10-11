@@ -27,6 +27,7 @@ use app\models\SpeechServicios;
 use app\models\SpeechCategorias; 
 use app\models\SpeechParametrizar;
 use app\models\Dashboardspeechcalls;
+use app\models\Formularios;
 
   class DashboardspeechController extends \yii\web\Controller {
 
@@ -40,7 +41,7 @@ use app\models\Dashboardspeechcalls;
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isControlProcesoCX();
+                            return Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                         },
               ],
             ]
@@ -363,6 +364,7 @@ use app\models\Dashboardspeechcalls;
                                           'servicio' => $varDatos[7],
                                           'fechareal' => $varDatos[8],
                                           'idredbox'  => $varDatos[9],
+                                          'idgrabadora'  => $varDatos[10],
                                           'fechacreacion' => $txtfechacreacion,
                                           'anulado' => $txtanulado,
                                       ])->execute();                          
@@ -982,6 +984,7 @@ use app\models\Dashboardspeechcalls;
         $txtcodigoCC = $VarCodsPcrc;
 
         $varListIndiVari = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria order by idcategorias asc")->queryAll();
+        $varListIndi = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria order by idcategorias asc")->queryAll();
         $varListadorespo = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') and responsable is not null group by idcategoria order by idcategorias asc")->queryAll();
         $varlistarespo = Yii::$app->db->createCommand("select responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria,responsable order by idcategorias asc")->queryAll();
         $varlistaindica = Yii::$app->db->createCommand("select responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria,responsable order by idcategorias asc")->queryAll();
@@ -989,11 +992,16 @@ use app\models\Dashboardspeechcalls;
         $vartotalindica = count($varlistaindica);
     //Diego para lo de responsabilidad IDA
         if($varListadorespo) {
-            $lastColumn = 'M'; 
+             $lastColumn = 'G';
+	    foreach ($varListIndi as $key => $value) {
+		$lastColumn++;
+            }
+           
+           // $lastColumn = $lastColumn + count($varListIndiVari); 
             $numCell = 4;
             $varlistaresponsable = array();
             foreach ($varListIndiVari as $key => $value) {
-
+            $varnomresponsable = ''; 
             $varresponsable = $value['responsable'];
             $varidcategoria1 = $value['idcategorias'];
             if ($varresponsable == 1){
@@ -1534,7 +1542,7 @@ use app\models\Dashboardspeechcalls;
         if ($fechaIniCat < '2020-01-01') {
           $txtIdCatagoria1 = 2681;
         }else{
-          if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3263' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110') {
+          if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '485' || $idArbol == '2575' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3263' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436') {
             $txtIdCatagoria1 = 1105;
           }else{
             $txtIdCatagoria1 = 1114;
@@ -2385,15 +2393,10 @@ use app\models\Dashboardspeechcalls;
           }
           $numCell++;
         } 
-
-
-	$varListagente = Yii::$app->db->createCommand("SELECT DISTINCT t.call_id, t.usuario_red, COUNT(t.usuario_red) as canti, SUM(t.subtotalagente), FORMAT((SUM(t.subtotalagente) * 100) / COUNT(t.usuario_red),2) AS promedio 
-                                                      FROM tbl_tmpcategoriaagente t 
-                                                      WHERE t.fecha_ini >= '$var_FechaIni' AND t.fecha_fin <= '$var_FechaFin'
-                                                      AND t.id_pcrc = '$txtCodPcrcok'
-                                                      GROUP BY t.usuario_red ORDER BY promedio DESC")->queryAll();
+        // Proceso para sacar porcentaje o promedio del IDA por asesor en el acto
+	      $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND idcategoria IN ($txtIdCatagoria1) GROUP BY login_id")->queryAll();
               
-        if(count($varListagente) > 0){
+        
           $numCell = $numCell + 1;
           $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'TOTAL CATEGORIZACION AGENTE POR ASESOR');
           $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':J'.$numCell);
@@ -2419,28 +2422,69 @@ use app\models\Dashboardspeechcalls;
           $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
           $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
           $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
-
                                     
-          // fin 
-          $numCell = $numCell + 1;
           
+          $numCell = $numCell + 1;          
           foreach ($varListagente as $key => $value11) {
 
               $lastColumn = 'A';
-              $varusuared = $value11['usuario_red']; 
-              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varusuared);
+              $varusuariologin = $value11['login_id']; 
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varusuariologin);
+
+
               $lastColumn = 'B';
-              $varpromedio = $value11['canti']; 
+              $varpromedio = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND idcategoria IN ($txtIdCatagoria1) AND login_id IN ('$varusuariologin')")->queryScalar(); 
               $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varpromedio);
+
+
               $lastColumn = 'C';
-              $varpromedio = $value11['promedio']; 
-              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varpromedio);
+              $varCallid = Yii::$app->db->createCommand("SELECT  DISTINCT callId FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND login_id IN ('$varusuariologin')")->queryAll();
+
+              $vararracallid = array();
+              foreach ($varCallid as $key => $value) {
+                array_push($vararracallid, $value['callId']);
+              }
+              $varlistascallids = implode(", ",$vararracallid);
+
+              $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.cod_pcrc IN ('$txtCodPcrcok') AND sc.idcategorias in (2) AND sc.responsable IN (1)")->queryAll();
+
+              $countpositivas = 0;
+              $countnegativas = 0;
+              $countpositicasc = 0;
+              $countnegativasc = 0;
+              foreach ($varlistvariables as $key => $value) {
+                $varorientaciones = $value['orientacionsmart'];
+                $varidcategoriav = $value['idcategoria'];
+                $varcategoriap = $value['programacategoria'];
+
+                if ($varorientaciones == '1') {
+                  $countnegativas = $countnegativas + 1;
+                  $contarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND s.callid IN ($varlistascallids) AND extension IN ('$txtParametros') AND s.idvariable IN ($varidcategoriav) AND s.idindicador IN ($varidcategoriav) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+
+                  if ($contarnegativas != '0') {
+                    $countnegativasc = $contarnegativas;
+                  }
+                }else{
+                  if ($varorientaciones == '2') {
+                    $countpositivas = $countpositivas + 1;
+                    $contarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND s.callid IN ($varlistascallids) AND extension IN ('$txtParametros') AND s.idvariable IN ($varidcategoriav) AND s.idindicador IN ($varidcategoriav) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+
+                    if ($contarpositivas != '0') {
+                      $countpositicasc = $contarpositivas;
+                    }
+                  }
+                }
+              }
+
+              if ($varlistvariables != 0 && $countnegativasc != 0) {
+                $resultadosIDA = round(100 - (($countnegativasc - $countpositicasc)/count($varlistvariables)),2);
+              }else{
+                $resultadosIDA = 0;
+              }
+ 
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $resultadosIDA);
               $numCell++;
-          }
-      }
-
-        // fin
-
+          }	
         
             
       
@@ -4273,7 +4317,9 @@ public function actionCantidadentto(){
             $varidspeechindi = $model->idcategoria;
             $varidspeechvar = $model->nombreCategoria;
             $varidmotivos = $model->extension;
-            $varidloginid = $model->login_id;            
+            $varidloginid = $model->login_id;      
+            $varlider = $model->servicio;
+            $varasesor = $model->fechallamada;
 
             // Si el filtro es Contiene dejo el proceso normal.
             if ($varidloginid == "1") {
@@ -4329,13 +4375,33 @@ public function actionCantidadentto(){
             $params3 = $txtvarfechasinicio;
             $params4 = $txtvarfechasfin;
 
-            $dataProvider = $model->buscarsllamadas($params1,$params2,$params3,$params4,$varcategoriass,$varidloginid,$paramscalls);
+            $dataProvider = $model->buscarsllamadas($params1,$params2,$params3,$params4,$varcategoriass,$varidloginid,$paramscalls,$varlider,$varasesor);
 
+            $txtresultadoasesor = null;
+            $txtarrayasesores = null;
+
+            if ($varasesor == "") {
+                $txtresultadoasesor = Yii::$app->db->createCommand("select distinct e.dsusuario_red from tbl_evaluados e     inner join tbl_equipos_evaluados ee on e.id = ee.evaluado_id where ee.equipo_id in ('$varlider') and e.dsusuario_red not like '%usar%'")->queryAll();
+
+                $arraylistasesores = array();
+                foreach ($txtresultadoasesor as $key => $value) {
+                    array_push($arraylistasesores, $value['dsusuario_red']);
+                }
+                $txtarrayasesores = implode("', '", $arraylistasesores);
+            }else{
+                $txtarrayasesores = $varasesor;
+            }
 
             if ($varidloginid == "1") {
+              if ($varlider == "" && $varasesor == "") {
                 $txtvisualcallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($varcategoriass) group by callId ")->queryAll();
 
                  $txttxtvarcantllamadasb = count($txtvisualcallid);
+              }else{
+                $txtvisualcallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($varcategoriass) and login_id in ('$txtarrayasesores') group by callId ")->queryAll();
+
+                 $txttxtvarcantllamadasb = count($txtvisualcallid);
+              }               
               
               
             }else{
@@ -4346,7 +4412,11 @@ public function actionCantidadentto(){
               }
               $arraycallids = implode(", ", $txtarraylistcallid);
               
-              $txttxtvarcantllamadasb = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($paramscalls) and callId not in ($arraycallids)")->queryScalar();
+              if ($varlider == "" && $varasesor == "") {
+                $txttxtvarcantllamadasb = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($paramscalls) and callId not in ($arraycallids)")->queryScalar();
+              }else{
+                $txttxtvarcantllamadasb = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($paramscalls) and callId not in ($arraycallids) and login_id in ('$txtarrayasesores')")->queryScalar();
+              }
 
             }
             
@@ -4481,7 +4551,10 @@ public function actionCantidadentto(){
       $varidlogin = Yii::$app->request->get('idlogin');
       $varidredbox = Yii::$app->request->get('idredbox');  
       $varidgrabadora = Yii::$app->request->get('idgrabadora');
+      $varidconnid = Yii::$app->request->get('idconnid');
       $varResultado = null;
+      $vartexto = $varidconnid;
+      $varvalencia = null;
 
       if ($varidredbox != "" && $varidgrabadora != "") {
         ob_start();
@@ -4517,17 +4590,69 @@ public function actionCantidadentto(){
         $elementos = substr( $elementos,4,-5 );
 
         $varResultado = $elementos;
+
       }else{
         $varidredbox = 0;
         $varidgrabadora = 0;
       }
-      
+
+      if ($varidconnid != null) {
+        $varidconnid = Yii::$app->db->createCommand("SELECT b.connid FROM tbl_base_satisfaccion b WHERE b.connid in ('$varidconnid') ")->queryScalar();
+        ob_start();
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_SSL_VERIFYPEER=> false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS =>'{"connid": "'.$varidconnid.'"}',
+          CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        var_dump($response);
+
+        curl_close($curl);
+        ob_clean();
+
+        if (!$response) {
+          // die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+          $vartexto = "Error al buscar transcipcion";
+          $varvalencia = "Error al buscar valencia emocioanl";
+        }
+
+        $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+        if (count($response) == 0) {
+          // die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+          $vartexto = "Transcripcion no encontrada";
+          $varvalencia = "Valencia emocional no encontrada";
+        }else{
+          $vartexto = $response[0]['transcription'];
+          $varvalencia = $response[0]['valencia'];
+        }
+
+      }else{
+        $vartexto = "No aplica";
+        $varvalencia = "No aplica";
+      }      
 
       return $this->renderAjax('viewcalls',[
         'varidlogin' => $varidlogin,
         'varidredbox' => $varidredbox,
         'varidgrabadora' => $varidgrabadora,
         'varResultado' => $varResultado,
+        'vartexto' => $vartexto,
+        'varvalencia' => $varvalencia,
         ]);
     }
 
@@ -5152,7 +5277,916 @@ public function actionCantidadentto(){
           $varres = 1;
           die(json_encode($varres));
                     
+      }public function actionGetarbolesbyroles($search = null, $id = null) {
+                $out = ['more' => false];
+                $grupo = Yii::$app->user->identity->grupousuarioid;
+                if (!is_null($search)) {
+                    $data = \app\models\Arboles::find()
+                            ->joinWith('permisosGruposArbols')
+                            ->join('INNER JOIN', 'tbl_grupos_usuarios', 'tbl_permisos_grupos_arbols.grupousuario_id = tbl_grupos_usuarios.grupos_id')
+                            ->select(['id' => 'tbl_arbols.id', 'text' => 'UPPER(tbl_arbols.dsname_full)'])
+                            ->where([
+                                "sncrear_formulario" => 1,
+                                "snhoja" => 1,
+                                "grupousuario_id" => $grupo])
+                            ->andWhere(['not', ['formulario_id' => null]])
+                            ->andWhere('name LIKE "%' . $search . '%" ')
+                            ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
+                            ->orderBy("dsorden ASC")
+                            ->asArray()
+                            ->all();
+                    $out['results'] = array_values($data);
+                } elseif (!empty($id)) {
+                    $data = \app\models\Arboles::find()
+                            ->joinWith('permisosGruposArbols')
+                            ->join('INNER JOIN', 'tbl_grupos_usuarios', 'tbl_permisos_grupos_arbols.grupousuario_id = tbl_grupos_usuarios.grupos_id')
+                            ->select(['id' => 'tbl_arbols.id', 'text' => 'UPPER(tbl_arbols.dsname_full)'])
+                            ->where([
+                                "sncrear_formulario" => 1,
+                                "snhoja" => 1,
+                                "grupousuario_id" => $grupo])
+                            ->andWhere(['not', ['formulario_id' => null]])
+                            ->andWhere('tbl_arbols.id = ' . $id)
+                            ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
+                            ->orderBy("dsorden ASC")
+                            ->asArray()
+                            ->all();
+                    $out['results'] = array_values($data);
+                } else {
+                    $out['results'] = ['id' => 0, 'text' => Yii::t('app', 'No matching records found')];
+                }
+                echo \yii\helpers\Json::encode($out);
+    }
+
+    public function actionValoraspeech($idspeechcalls,$varcodpcrc,$varservisioname){
+      $modelA = new \app\models\Arboles();
+      $modelD = new \app\models\Dimensiones();
+      $modelE = new \app\models\Evaluados;
+      $txtidspeechcalls = $idspeechcalls;
+      $txtvarcodpcrc = $varcodpcrc;
+      $txtvarservisioname = $varservisioname;
+      $vardocumento = null;
+
+
+      $txtLoginId = Yii::$app->db->createCommand("SELECT DISTINCT d.login_id FROM tbl_dashboardspeechcalls d  WHERE  d.iddashboardspeechcalls in ('$txtidspeechcalls')")->queryScalar();
+
+      $varcomprobacion = is_numeric($txtLoginId);
+
+      if ($varcomprobacion == false) {
+        $varlistjarvis = Yii::$app->get('dbjarvis2')->createCommand("SELECT ur.documento FROM dp_usuarios_red ur WHERE ur.usuario_red like '$txtLoginId'")->queryScalar();
+
+        if ($varlistjarvis == "") {
+          $vardocumento = Yii::$app->get('dbjarvis2')->createCommand("SELECT ur.documento FROM dp_usuarios_red ur INNER JOIN dp_usuarios_actualizacion ua ON  ur.documento = ua.documento  WHERE ua.usuario LIKE  '$txtLoginId' GROUP  BY  ua.usuario")->queryScalar();
+        }else{
+          $vardocumento = $varlistjarvis;
+        }
+
+      }else{
+        $vardocumento = $txtLoginId;
       }
+
+      $txtEvaluado = Yii::$app->db->createCommand("SELECT DISTINCT e.name FROM tbl_evaluados e  WHERE  e.identificacion in ('$vardocumento')")->queryScalar();
+
+      $txtEvaluadoid = Yii::$app->db->createCommand("SELECT DISTINCT e.id FROM tbl_evaluados e  WHERE  e.identificacion in ('$vardocumento')")->queryScalar();
+
+      $txtConjuntoSpeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$txtidspeechcalls')")->queryScalar();
+
+      $txtconnids = Yii::$app->db->createCommand("SELECT DISTINCT d.connid FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$txtidspeechcalls')")->queryScalar();
+      
+
+      return $this->render('valoraspeech',[
+        'txtidspeechcalls' => $txtidspeechcalls,
+        'modelA' => $modelA,
+        'modelD' => $modelD,
+        'modelE' => $modelE,
+        'txtEvaluado' => $txtEvaluado,
+        'txtConjuntoSpeech' => $txtConjuntoSpeech,
+        'txtEvaluadoid' => $txtEvaluadoid,
+        'txtconnids' => $txtconnids,
+        'txtvarcodpcrc' => $txtvarcodpcrc,
+        'txtvarservisioname' => $txtvarservisioname,
+      ]);
+    }
+
+    public function actionGuardarpaso2($preview = 0) {
+      $modelA = new \app\models\Arboles();
+      $modelD = new \app\models\Dimensiones();
+      $modelE = new \app\models\Evaluados;
+      $modelE->scenario = "monitoreo";
+
+      if (isset($_POST) && !empty($_POST)) {
+        $arbol_id = $_POST["Arboles"]["arbol_id"];
+        $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
+        $formulario_id = $infoArbol->formulario_id;
+        $dimension_id = $_POST["Dimensiones"]["dimension_id"];
+        $evaluado_id = $_POST["evaluado_id"];
+        $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? $_POST["tipo_interaccion"] : 1;
+        $usua_id = Yii::$app->user->identity->id;
+        $created = ($preview == 1) ? 0 : date("Y-m-d H:i:s");
+        $sneditable = 1;
+        $dsfuente_encuesta = $_POST["dsfuente_encuesta"];
+
+        //CONSULTO SI YA EXISTE LA EVALUACION
+        $condition = [
+          "usua_id" => $usua_id,
+          "arbol_id" => $arbol_id,
+          "evaluado_id" => $evaluado_id,
+          "dimension_id" => $dimension_id,
+          "basesatisfaccion_id" => null,
+          "sneditable" => $sneditable,
+        ];
+
+        $idTmpForm = \app\models\Tmpejecucionformularios::findOne($condition);
+
+        //SI NO EXISTE EL TMP FORMULARIO LO CREO
+        if (empty($idTmpForm)) {
+          $tmpeje = new \app\models\Tmpejecucionformularios();
+          $tmpeje->dimension_id = $dimension_id;
+          $tmpeje->arbol_id = $arbol_id;
+          $tmpeje->usua_id = $usua_id;
+          $tmpeje->evaluado_id = $evaluado_id;
+          $tmpeje->formulario_id = $formulario_id;
+          $tmpeje->created = $created;
+          $tmpeje->sneditable = $sneditable;
+          $tmpeje->dsfuente_encuesta = $dsfuente_encuesta;
+          date_default_timezone_set('America/Bogota');
+          $tmpeje->hora_inicial = date("Y-m-d H:i:s");
+
+          //echo "<pre>";
+          //print_r($tmpeje); die;
+          //EN CASO DE SELECCIONAR ITERACCION AUTOMATICA
+          //CONSULTAMOS LA ITERACCION
+
+          if ($tipoInteraccion == 0) {
+            try {
+              $modelFormularios = new Formularios;
+              $enlaces = $modelFormularios->getEnlaces($evaluado_id);
+              if ($enlaces && count($enlaces) > 0) {
+                $json = json_encode($enlaces);
+                $tmpeje->url_llamada = $json;
+              }
+            } catch (Exception $e) {
+              \Yii::error('#####' . __FILE__ . ':' . __LINE__
+                  . $exc->getMessage() . '#####', 'redbox');
+              $msg = Yii::t('app', 'Error redbox');
+              Yii::$app->session->setFlash('danger', $msg);
+            }
+
+            $showInteraccion = 1;
+            $showBtnIteraccion = 1;
+          }else{
+            $showInteraccion = 0;
+            $showBtnIteraccion = 0;
+          }
+          $tmpeje->tipo_interaccion = $tipoInteraccion;
+          $tmpeje->save();
+          $idTmp = $tmpeje->id;
+        }else{
+          $idTmp = $idTmpForm->id;
+          // EN CASO DE SELECCIONAR ITERACCION MANUAL
+          // ELIMINAMOS EL REGSTRO ANTERIOR
+          $showInteraccion = 1;
+          $showBtnIteraccion = 1;
+          //SI ES AUTOMATICA Y ES VACIA
+          if ($tipoInteraccion == 0 && empty($idTmpForm->url_llamada)) {
+            //CONSULTA DE LLAMADAS Y PANTALLAS CON WS 
+            try {
+              $modelFormularios = new Formularios;
+              $enlaces = $modelFormularios->getEnlaces($evaluado_id);
+              if ($enlaces && count($enlaces) > 0) {
+                date_default_timezone_set('America/Bogota');
+                $idTmpForm->hora_inicial = date("Y-m-d H:i:s");
+                $json = json_encode($enlaces);
+                $idTmpForm->url_llamada = $json;
+                $idTmpForm->tipo_interaccion = $tipoInteraccion;
+                $idTmpForm->save();
+              }else{
+                date_default_timezone_set('America/Bogota');
+                $idTmpForm->hora_inicial = date("Y-m-d H:i:s");
+                $idTmpForm->url_llamada = "";
+                $idTmpForm->tipo_interaccion = $tipoInteraccion;
+                $idTmpForm->save();
+                $msg = Yii::t('app', 'Error redbox');
+                Yii::$app->session->setFlash('danger', $msg);
+              }
+            } catch (Exception $e) {
+              \Yii::error('#####' . __FILE__ . ':' . __LINE__
+                                        . $exc->getMessage() . '#####', 'redbox');
+              $msg = Yii::t('app', 'Error redbox');
+              Yii::$app->session->setFlash('danger', $msg);
+            }
+
+            // SI ES MANUAL
+          }elseif ($tipoInteraccion == 1) {
+            $idTmpForm->url_llamada = '';
+            $idTmpForm->tipo_interaccion = $tipoInteraccion;
+            date_default_timezone_set('America/Bogota');
+            $idTmpForm->hora_inicial = date("Y-m-d H:i:s");
+
+            $idTmpForm->save();
+            $showInteraccion = 0;
+            $showBtnIteraccion = 0;
+          }
+        }
+
+        return $this->redirect([
+                                "showformulario",
+                                "formulario_id" => $idTmp,
+                                "preview" => $preview,
+                                "escalado" => 0,
+                                "showInteraccion" => base64_encode($showInteraccion),
+                                "showBtnIteraccion" => base64_encode($showBtnIteraccion)]);
+
+      }
+    }
+
+    public function actionShowformulario($formulario_id, $preview, $fill_values = false) {
+        //DATOS QUE SERAN ENVIADOS AL FORMULARIO
+                $data = new \stdClass();                                
+                $model = new SpeechParametrizar();
+
+                //OBTENGO EL FORMULARIO
+                $TmpForm = \app\models\Tmpejecucionformularios::findOne($formulario_id);
+
+                if (is_null($TmpForm)) {
+                    Yii::$app->session->setFlash('danger', Yii::t('app', 'Formulario no exite'));
+                    return $this->redirect(['interaccionmanual']);
+                }
+
+                $data->tmp_formulario = $TmpForm;
+
+                //OBTEGO EL ID DEL EQUIPO Y EL ID DEL LIDER
+                $datos_eq_li = \app\models\Equipos::getEquipoLider($TmpForm->evaluado_id, $TmpForm->arbol_id);
+
+                if (count($datos_eq_li) > 0) {
+                    $data->equipo_id = $datos_eq_li["equipo_id"];
+                    $data->usua_id_lider = $datos_eq_li["lider"];
+                } else {
+                    $data->equipo_id = "";
+                    $data->usua_id_lider = "";
+                }
+
+                //NOMBRE DEL EVALUADO
+                $evaluado = \app\models\Evaluados::findOne($TmpForm->evaluado_id);
+                $data->evaluado = $evaluado->name;
+
+                //INFORMACION ADICIONAL
+                $arbol = \app\models\Arboles::findOne($TmpForm->arbol_id);
+                $data->info_adicional = [
+                    'problemas' => $arbol->snactivar_problemas,
+                    'tipo_llamada' => $arbol->snactivar_tipo_llamada
+                ];
+                $data->ruta_arbol = $arbol->dsname_full;
+                //$data->dimension = \app\models\Dimensiones::findOne($TmpForm->dimension_id);
+                $data->dimension = \yii\helpers\ArrayHelper::map(\app\models\Dimensiones::find()->all(), 'id', 'name');
+                $data->detalles = \app\models\Tmpejecucionbloquedetalles::getAllByFormId($formulario_id);
+                $data->totalBloques = \app\models\Tmpejecucionbloques::findAll(['tmpejecucionformulario_id' => $TmpForm->id]);
+
+                //CALIFICACIONES
+                $tmp_calificaciones_ids = $tmp_tipificaciones_ids = array();
+                foreach ($data->detalles as $j => $d) {
+                    if (!in_array($d->calificacion_id, $tmp_calificaciones_ids)) {
+                        $tmp_calificaciones_ids[] = $d->calificacion_id;
+                    }
+                    if (!in_array($d->tipificacion_id, $tmp_tipificaciones_ids)) {
+                        $tmp_tipificaciones_ids[] = $d->tipificacion_id;
+                    }
+                    if ($d->tipificacion_id != null) {
+                        $data->detalles[$j]->tipif_seleccionados = \app\models\TmpejecucionbloquedetallesTipificaciones::getTipificaciones($d->id);
+                    } else {
+                        $data->detalles[$j]->tipif_seleccionados = array();
+                    }
+                }
+
+                //CALIFICACIONES Y TIPIFICACIONES
+                $data->calificaciones = \app\models\Calificaciondetalles::getDetallesFromIds($tmp_calificaciones_ids);
+                $data->calificacionesArray = \app\models\Calificaciondetalles::getDetallesFromIdsAsArray($tmp_calificaciones_ids);
+                $data->tipificaciones = \app\models\Tipificaciondetalles::getDetallesFromIds($tmp_tipificaciones_ids);
+
+                //TRANSACCIONES Y ENFOQUES
+                $data->transacciones = \yii\helpers\ArrayHelper::map(\app\models\Transacions::find()->all(), 'id', 'name');
+                $data->enfoques = \app\models\Tableroenfoques::find()->asArray()->all();
+
+                //FORMULARIO ID
+                $data->formulario_id = $formulario_id;
+
+                /* OBTIENE EL LISTADO DETALLADO DE TABLERO DE EXPERIENCIAS Y LLAMADA
+                  EN MODO VISUALIZACIÓN FORMULARIO. */
+                $data->tablaproblemas = \app\models\Ejecuciontableroexperiencias::
+                                find()
+                                ->where(["ejecucionformulario_id" => $TmpForm->ejecucionformulario_id])->all();
+                $data->tablallamadas = \app\models\Ejecuciontiposllamada::getTabLlamByIdEjeForm($TmpForm->ejecucionformulario_id);
+                $data->list_Add_feedbacks = \app\models\Tmpejecucionfeedbacks::getJoinTipoFeedbacks($formulario_id);
+
+                //PREVIEW
+                $data->preview = $preview == 1 ? true : false;
+                $data->fill_values = $fill_values;
+                //busco el formulario al cual esta atado la valoracion a cargar
+                //y valido de q si tenga un formulario, de lo contrario se fija 
+                //en 1 por defecto
+                $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
+                if (!isset($TmpForm->subi_calculo)) {
+                    //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                    if (isset($data->formulario->subi_calculo)) {
+                        $TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                        $TmpForm->save();
+                        $array_indices_TmpForm = \app\models\Textos::find()
+                                ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
+                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                                ->asArray()
+                                ->all();
+                        foreach ($array_indices_TmpForm as $value) {
+                            $data->indices_calcular[$value['id']] = $value['text'];
+                        }
+                    }
+                } else {
+                    if (isset($data->formulario->subi_calculo)) {
+                        $array_indices_TmpForm = \app\models\Textos::find()
+                                ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
+                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                                ->asArray()
+                                ->all();
+                        foreach ($array_indices_TmpForm as $value) {
+                            $data->indices_calcular[$value['id']] = $value['text'];
+                        }
+                    }
+                }
+
+                if($data->tmp_formulario->hora_inicial != "" AND $data->tmp_formulario->hora_final != ""){
+                    $inicial = new DateTime($data->tmp_formulario->hora_inicial);
+                    $final = new DateTime($data->tmp_formulario->hora_final);
+
+                    $dteDiff1  = $inicial->diff($final);
+
+                    $dteDiff1->format("Y-m-d H:i:s");
+
+                    //print_r($dteDiff1); die;
+
+                    $data->fecha_inicial = $data->tmp_formulario->hora_inicial;
+                    $data->fecha_final = $data->tmp_formulario->hora_final;
+                    $data->minutes = $dteDiff1->h . ":" . $dteDiff1->i . ":" . $dteDiff1->s;
+                }
+
+                /*$data->mod_fecha_inicial = "";
+                $data->mod_fecha_final = "";
+                $data->mod_minutes = "";
+
+                if($data->tmp_formulario->mod_hora_inicial != "" AND $data->tmp_formulario->mod_hora_final != ""){
+                    $inicial = new DateTime($data->tmp_formulario->mod_hora_inicial);
+                    $final = new DateTime($data->tmp_formulario->mod_hora_final);
+
+                    $dteDiff2  = $inicial->diff($final);
+
+                    $dteDiff2->format("Y-m-d H:i:s");
+
+                    //print_r($dteDiff2); die;
+
+                    $data->mod_fecha_inicial = $data->tmp_formulario->mod_hora_inicial;
+                    $data->mod_fecha_final = $data->tmp_formulario->mod_hora_final;
+                    $data->mod_minutes = $dteDiff2->h . ":" . $dteDiff2->i . ":" . $dteDiff2->s . " Segundos ";
+
+                    $uno = $dteDiff1->h + $dteDiff2->h;
+                    $dos = $dteDiff1->i + $dteDiff2->i;
+                    $tres = $dteDiff1->s + $dteDiff2->s;
+
+                    $data->tiempototal = $uno . ":" . $dos . ":" . $tres . " Segundos ";
+                    
+                }*/
+
+                $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$formulario_id'")->queryScalar();
+             
+            //DATOS GENERALES
+               /* $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
+                $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
+                $data->idcliente =  $varIdcliente;
+                $data->codpcrc =  $varCodpcrc;*/
+    
+        //DATOS GENERALES
+
+                $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = '$TmpForm->arbol_id'")->queryScalar();
+
+                 $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = '$TmpForm->arbol_id'")->queryScalar();
+               //$varIdclienteSel = Yii::$app->db->createCommand("select id_dp_clientes FROM tbl_speech_servicios WHERE arbol_id = '$varidarbol'")->queryScalar();
+
+                //SELECT * FROM tbl_speech_servicios WHERE arbol_id = 17
+                 //SELECT a.id, a.name FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = 2559
+
+                $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
+                $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
+                if(is_numeric($varIdclienteSel)){
+                    $varIdclienteSel = $varIdclienteSel;
+                }else{
+                    $varIdclienteSel = 0;
+                }
+        if($varIdclienteSel > 0){
+                    $data->idcliente =  $varIdclienteSel;
+                }else{
+                    $data->idcliente =  $varIdcliente;
+                }
+                //$data->idcliente =  $varIdcliente;
+                $data->varidarbol =  $varidarbol;
+                $data->codpcrc =  $varCodpcrc;
+                $data->IdclienteSel =$varIdclienteSel;
+                $data->varIdformu =  $varIdformu;
+
+
+                //$data->indices_calcular = call_user_func_array('array_merge', $data->indices_calcular);
+                /* if (!isset($data->formulario)) {
+                  $data->formulario = new Formularios();
+                  $data->formulario->id_plantilla_form = 1;
+                  } */
+
+                // echo "<pre>";
+                // print_r($data); die;
+                return $this->render('show-formulario', [
+                                                        'data' => $data,                            
+                                                        'model' => $model,
+                ]);
+    }
+
+    public function actionEliminartmpform($tmp_form) {
+
+      \app\models\Tmpejecucionformularios::deleteAll(["id" => $tmp_form]);
+
+      Yii::$app->session->setFlash('success', Yii::t('app', 'Formulario borrado'));
+      return $this->redirect(['index']);
+    }
+
+    public function actionGuardaryenviarformulario() {
+
+      $txtanulado = 0;
+                $txtfechacreacion = date("Y-m-d");
+                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
+                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
+                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
+                $arrFormulario = [];
+                $arrayCountBloques = [];
+                $arrayBloques = [];
+
+                $varid_clientes = $_POST['id_dp_clientes'];
+                $varid_centro_costo = $_POST['requester'];                
+                $count = 0;
+                $tmp_id = $_POST['tmp_formulario_id'];
+                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
+                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
+                $arrFormulario["dimension_id"] = $_POST['dimension_id'];
+                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
+                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
+                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
+                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
+                $arrFormulario["sn_mostrarcalculo"] = 1;
+                $view = (isset($_POST['view']))?$_POST['view']:null;
+                //$arrFormulario["subi_calculo"] = !isset($_POST['subi_calculo']) ? '' : $_POST['subi_calculo'];
+                //CONSULTA DEL FORMULARIO
+                $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
+                if (isset($_POST['subi_calculo']) AND $_POST['subi_calculo'] != '') {
+                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
+                    $data->save();
+                }
+                //$formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
+                /* if (isset($formulario->subi_calculo)) {
+                  $arrFormulario["subi_calculo"] .= ','.$formulario->subi_calculo;
+                  } */
+                /* EDITO EL TMP FORMULARIO  GERMAN*/
+                $model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
+                //echo "<pre>";
+                //print_r($model); die;
+                // $model->usua_id_actual = Yii::$app->user->identity->id;
+                // $model->save();
+
+                // if($model['hora_final'] != ""){
+                //     $model->mod_hora_final = date("Y-m-d H:i:s");
+                //     $model->save();
+                // }else{
+                //     $model->hora_final = date("Y-m-d H:i:s");
+                //     $model->save();
+                // }
+
+
+                
+                //TO-DO  : COMENTAR LINEA EN CASO DE NO NECESITAR LO DE ADICIONAR Y ESCALAR
+                /* Guardo en la tabla tbl_registro_ejec para tener un seguimiento 
+                 * de los diversos involucrados en la valoracion en el tiempo */
+                $modelRegistro = \app\models\RegistroEjec::findOne(['ejec_form_id' => $model->ejecucionformulario_id, 'valorador_id' => $model->usua_id]);
+                if (!isset($modelRegistro)) {
+                    $modelRegistro = new \app\models\RegistroEjec();
+                    $modelRegistro->ejec_form_id = $tmp_id;
+                    $modelRegistro->descripcion = 'Primera valoración';
+                }
+                //$modelRegistro = new \app\models\RegistroEjec();
+                $modelRegistro->dimension_id = $_POST['dimension_id'];
+                $modelRegistro->valorado_id = $data->evaluado_id;
+                $modelRegistro->valorador_id = $data->usua_id;
+                $modelRegistro->pcrc_id = $data->arbol_id;
+                $modelRegistro->tipo_interaccion = $data->tipo_interaccion;
+                $modelRegistro->fecha_modificacion = date("Y-m-d H:i:s");
+                $fecha_inicial_mod = $_POST['hora_modificacion'];
+                $modelRegistro->save();
+                //FIN
+                \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
+                \app\models\Tmpejecucionsecciones::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
+                \app\models\Tmpejecucionbloques::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
+                
+                //Para cliente y centros de costos
+                $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$tmp_id'")->queryScalar();
+                $varcliente = Yii::$app->db->createCommand("select cliente from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
+                $varpcrc = Yii::$app->db->createCommand("select CONCAT_WS(' - ', cod_pcrc, pcrc) from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
+                $vardirector = Yii::$app->db->createCommand("select director_programa from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
+                $varcuidad = Yii::$app->db->createCommand("select ciudad from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
+          $vargerente = Yii::$app->db->createCommand("select gerente_cuenta from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
+                //fin
+                
+                
+                /* GUARDO LAS CALIFICACIONES */
+                foreach ($arrCalificaciones as $form_detalle_id => $calif_detalle_id) {
+                    $arrDetalleForm = [];
+                    //se valida que existan check de pits seleccionaddos y se valida
+                    //que exista el del bloquedetalle actual para actualizarlo
+                    if (count($arrCheckPits) > 0) {
+                        if (isset($arrCheckPits[$form_detalle_id])) {
+                            $arrDetalleForm["c_pits"] = $arrCheckPits[$form_detalle_id];
+                        }
+                    }
+                    if (empty($calif_detalle_id)) {
+                        $arrDetalleForm["calificaciondetalle_id"] = -1;
+                    } else {
+                        $arrDetalleForm["calificaciondetalle_id"] = $calif_detalle_id;
+                    }
+
+                    \app\models\Tmpejecucionbloquedetalles::updateAll($arrDetalleForm, ["id" => $form_detalle_id]);
+                    $calificacion = \app\models\Tmpejecucionbloquedetalles::findOne(["id" => $form_detalle_id]);
+                    $calificacionDetalle = \app\models\Calificaciondetalles::findOne(['id' => $calificacion->calificaciondetalle_id]);
+                    //Cuento las preguntas en las cuales esta seleccionado el NA
+                    //lleno $arrayBloques para tener marcados en que bloques no se selecciono el check
+                    if (!in_array($calificacion->bloque_id, $arrayBloques) && (strtoupper($calificacionDetalle->name) == 'NA')) {
+                        $arrayBloques[] = $calificacion->bloque_id;
+                        //inicio $arrayCountBloques
+                        $arrayCountBloques[$count] = [($calificacion->bloque_id) => 1];
+                        $count++;
+                    } else {
+                        //actualizo $arrayCountBloques sumandole 1 cada q encuentra un NA de ese bloque
+                        if (count($arrayCountBloques) != 0) {
+                            if ((array_key_exists($calificacion->bloque_id, $arrayCountBloques[count($arrayCountBloques) - 1])) && (strtoupper($calificacionDetalle->name) == 'NA')) {
+                                $arrayCountBloques[count($arrayCountBloques) - 1][$calificacion->bloque_id] = ($arrayCountBloques[count($arrayCountBloques) - 1][$calificacion->bloque_id] + 1);
+                            }
+                        }
+                    }
+                }
+                //$arrayCountBloques = call_user_func_array('array_merge', $arrayCountBloques);
+                //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
+                foreach ($arrayCountBloques as $dato) {
+                    $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
+                                    ->from("tbl_tmpejecucionbloquedetalles")
+                                    ->where(['tmpejecucionformulario_id' => $tmp_id, 'bloque_id' => key($dato)])->asArray()->all();
+                    if ($dato[key($dato)] == $totalPreguntasBloque["0"]["preguntas"]) {
+                        \app\models\Tmpejecucionbloques::updateAll(['snna' => 1], ['tmpejecucionformulario_id' => $tmp_id, 'bloque_id' => key($dato)]);
+                    }
+                }
+                //actualizo las secciones, la cuales tienen todos sus bloques con la opcion snna en 1
+                $secciones = \app\models\Tmpejecucionsecciones::findAll(['tmpejecucionformulario_id' => $tmp_id]);
+                foreach ($secciones as $seccion) {
+                    $bloquessnna = \app\models\Tmpejecucionformularios::find()->select("s.seccion_id AS id,COUNT(b.id) AS conteo")
+                                    ->from("tbl_tmpejecucionformularios f")->join("LEFT JOIN", "tbl_tmpejecucionsecciones s", "s.tmpejecucionformulario_id = f.id")
+                                    ->join("LEFT JOIN", "tbl_tmpejecucionbloques b", "b.tmpejecucionseccion_id=s.id")
+                                    ->where(['b.snna' => 1, 's.seccion_id' => ($seccion->seccion_id), 'f.id' => $tmp_id])
+                                    ->groupBy("s.id")->asArray()->all();
+                    $totalBloques = \app\models\Tmpejecucionformularios::find()->select("s.seccion_id AS id,COUNT(b.id) AS conteo")
+                                    ->from("tbl_tmpejecucionformularios f")->join("LEFT JOIN", "tbl_tmpejecucionsecciones s", "s.tmpejecucionformulario_id = f.id")
+                                    ->join("LEFT JOIN", "tbl_tmpejecucionbloques b", "b.tmpejecucionseccion_id=s.id")
+                                    ->where(['s.seccion_id' => ($seccion->seccion_id), 'f.id' => $tmp_id])
+                                    ->groupBy("s.id")->asArray()->all();
+                    if (count($bloquessnna) > 0) {
+                        if ($bloquessnna[0]['conteo'] == $totalBloques[0]['conteo']) {
+                            \app\models\Tmpejecucionsecciones::updateAll(['snna' => 1], ['tmpejecucionformulario_id' => $tmp_id, 'seccion_id' => ($seccion->seccion_id)]);
+                        }
+                    }
+                }
+                /* GUARDO TIPIFICACIONES */
+                foreach ($arrTipificaciones as $form_detalle_id => $tipif_array) {
+                    if (empty($tipif_array))
+                        continue;
+
+                    \app\models\TmpejecucionbloquedetallesTipificaciones::updateAll(["sncheck" => 0]
+                            , ["tmpejecucionbloquedetalle_id" => $form_detalle_id]);
+
+                    \app\models\TmpejecucionbloquedetallesTipificaciones::updateAll(["sncheck" => 1]
+                            , "tmpejecucionbloquedetalle_id = '" . $form_detalle_id . "' "
+                            . "AND tipificaciondetalle_id IN(" . implode(",", $tipif_array) . ")");
+                }
+
+                /* GUARDO SUBTIPIFICACIONES */
+                foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
+                    $sql = "UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a ";
+                    $sql .= "INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b ";
+                    $sql .= "ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id ";
+                    $sql .= "SET a.sncheck = 1 ";
+                    $sql .= "WHERE b.tmpejecucionbloquedetalle_id = " . $form_detalle_id;
+                    $sql .= " AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")";
+                    $command = \Yii::$app->db->createCommand($sql);
+                    $command->execute();
+                }
+                foreach ($arrComentariosSecciones as $secc_id => $comentario) {
+
+                    \app\models\Tmpejecucionsecciones::updateAll(["dscomentario" => $comentario]
+                            , [
+                        "seccion_id" => $secc_id
+                        , "tmpejecucionformulario_id" => $tmp_id
+                    ]);
+                }
+                //TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
+                $tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
+                date_default_timezone_set('America/Bogota');
+                
+                if($data['hora_final'] != ""){
+                        $inicial = new DateTime($fecha_inicial_mod);
+                        $final = new DateTime(date("Y-m-d H:i:s"));
+
+                        $dteDiff  = $inicial->diff($final);
+
+                        $dteDiff->format("Y-m-d H:i:s");
+
+                        $tiempo_modificacion_actual = $dteDiff->h . ":" . $dteDiff->i . ":" . $dteDiff->s;
+
+                        $tmp_ejecucion->cant_modificaciones = $tmp_ejecucion->cant_modificaciones + 1;
+
+                        // $suma = strtotime($tmp_ejecucion->tiempo_modificaciones) + strtotime($tiempo_modificacion_actual);
+
+                        // $suma1 = date("h:i:s", $suma); //01:57:48
+                        $date = new DateTime($tiempo_modificacion_actual);
+                        //print_r($data); die;
+                        $suma2 = $this->sumarhoras($tmp_ejecucion->tiempo_modificaciones, $date->format('H:i:s'));
+                        // //$tmp_ejecucion->tiempo_modificaciones = $dt->format('H:i:s');
+                        // print_r("este: " . $tmp_ejecucion->tiempo_modificaciones . " mas : " . $tiempo_modificacion_actual . " es igual a : " .  $suma2); die;
+
+                        $tmp_ejecucion->tiempo_modificaciones = $suma2;
+
+                        $tmp_ejecucion->save();
+                }else{
+                    $pruebafecha = date("Y-m-d H:i:s");
+                    $tmp_ejecucion->hora_final = $pruebafecha;
+                    $tmp_ejecucion->save();
+                }
+                // echo "<pre>";
+                // print_r($tmp_ejecucion); die;
+
+                /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
+                $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
+
+    //Proceso para guardar clientes y centro de costos
+                            
+                /*$varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu '")->queryScalar();
+                                
+                if($varIdcliente){
+
+                    Yii::$app->db->createCommand()->update('tbl_registro_ejec_cliente',[
+                                                    'id_dp_clientes' => $varid_clientes,
+                                                    'cod_pcrc' => $varid_centro_costo,
+                                                    'cliente' => $varcliente,
+                                                    'pcrc' => $varpcrc,
+                                                    'ciudad' => $varcuidad,
+                                                    'director_programa' => $vardirector,
+                                                    'gerente' => $vargerente,
+                                                    'fechacreacion' => $txtfechacreacion,
+                                                    'anulado' => $txtanulado,
+                                                ],'ejec_form_id ='.$varIdformu .'')->execute();   
+                }else{
+
+                //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
+                // $txtidejec_formu = intval($txtidejec_formu) + 1;
+                //insertar Cliente y centro de costo
+                //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
+
+            $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
+                    Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
+                        'ejec_form_id' => $txtidejec_formu,
+                        'id_dp_clientes' => $varid_clientes,
+                        'cod_pcrc' => $varid_centro_costo,
+                        'cliente' => $varcliente,
+                        'pcrc' => $varpcrc,
+                        'ciudad' => $varcuidad,
+                        'director_programa' => $vardirector,
+                        'gerente' => $vargerente,
+                        'fechacreacion' => $txtfechacreacion,
+                        'anulado' => $txtanulado,
+                    ])->execute();
+                }*/
+
+                /* validacion de guardado exitoso del tmp y paso a las tablas de ejecucion
+                en caso de no cumplirla, se redirige nuevamente al formulario */
+                if (!$validarPasoejecucionform) {
+                    Yii::$app->session->setFlash('danger', Yii::t('app', 'error exception tmpejecucion to ejecucion'));
+                    if ($model->tipo_interaccion == 0) {
+                        $showInteraccion = 1;
+                        $showBtnIteraccion = 1;
+                    } else {
+                        $showInteraccion = 0;
+                        $showBtnIteraccion = 0;
+                    }
+                    return $this->redirect(['showformulario'
+                                , "formulario_id" => $model->id
+                                , "preview" => 0
+                                , "escalado" => 0
+                                , "view" => $view
+                                , "showInteraccion" => base64_encode($showInteraccion)
+                                , "showBtnIteraccion" => base64_encode($showBtnIteraccion)]);
+                }
+                /**
+                 * Se envia datos a la aplicacion amigo, indicando que se realizo una valoracion
+                 */
+                //TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
+                /**/
+                $modelEvaluado = \app\models\Evaluados::findOne(["id" => $tmp_ejecucion->evaluado_id]);
+                $ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
+                // $params = [];
+                // $params['titulo'] = 'Te han realizado una valoración';
+                // $params['pcrc'] = '';
+                // $params['descripcion'] = '';
+                // $params['notificacion'] = 'SI';
+                // $params['muro'] = 'NO';
+                // $params['usuariored'] = $modelEvaluado->dsusuario_red;
+                // $params['cedula'] = '';
+                // $params['plataforma'] = 'QA';
+                // $params['url'] = '' . Url::to(['formularios/showformulariodiligenciadoamigo'], true) . '?form_id=' . base64_encode($ejecucion[0]->id);
+
+                // Aqui 2021-04-27 parte que se desomenta para amigo
+
+                //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
+                //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
+                //if (!$webservicesresponse && $tmp_ejecucion == '') {
+                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));
+                //}
+
+                //Proceso para guardar clientes y centro de costos
+               
+    $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu '")->queryScalar();
+                
+                if($varIdcliente){
+
+                    Yii::$app->db->createCommand()->update('tbl_registro_ejec_cliente',[
+                                                    'id_dp_clientes' => $varid_clientes,
+                                                    'cod_pcrc' => $varid_centro_costo,
+                                                    'cliente' => $varcliente,
+                                                    'pcrc' => $varpcrc,
+                                                    'ciudad' => $varcuidad,
+                                                    'director_programa' => $vardirector,
+                'gerente' => $vargerente,
+                                                    'fechacreacion' => $txtfechacreacion,
+                                                    'anulado' => $txtanulado,
+                                                ],'ejec_form_id ='.$varIdformu .'')->execute();   
+                }else{
+
+                //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
+           // $txtidejec_formu = intval($txtidejec_formu) + 1;
+               //insertar Cliente y centro de costo
+                  //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
+        $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar(); 
+                    Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
+                        'ejec_form_id' => $txtidejec_formu,
+                        'id_dp_clientes' => $varid_clientes,
+                        'cod_pcrc' => $varid_centro_costo,
+                        'cliente' => $varcliente,
+                        'pcrc' => $varpcrc,
+                        'ciudad' => $varcuidad,
+                        'director_programa' => $vardirector,
+      'gerente' => $vargerente,
+                        'fechacreacion' => $txtfechacreacion,
+                        'anulado' => $txtanulado,
+                    ])->execute();
+            }
+               
+                
+
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Formulario guardado'));
+
+                return $this->redirect(['index']);
+
+
+    }
+
+
+    public function actionParamscategorias($txtServicioCategorias){
+      $txtnamepcrc = Yii::$app->db->createCommand("SELECT DISTINCT  CONCAT(s.cod_pcrc,' - ',s.pcrc) AS Namecategoria FROM tbl_speech_categorias s WHERE s.anulado = 0 AND s.cod_pcrc IN ('$txtServicioCategorias')")->queryScalar();
+
+      $txtspeechid = Yii::$app->db->createCommand("SELECT DISTINCT p.id_dp_clientes FROM tbl_speech_parametrizar p INNER JOIN tbl_speech_categorias s ON p.cod_pcrc = s.cod_pcrc WHERE s.anulado = 0 AND s.cod_pcrc IN ('$txtServicioCategorias')")->queryScalar();
+
+      $txtserviciosp = Yii::$app->db->createCommand("SELECT s.nameArbol FROM tbl_speech_servicios s WHERE s.id_dp_clientes = $txtspeechid")->queryScalar();
+
+      $txtlistindicadores = Yii::$app->db->createCommand("SELECT DISTINCT  * FROM tbl_speech_categorias s WHERE s.anulado = 0 AND s.cod_pcrc IN ('$txtServicioCategorias') and s.idcategorias = 1")->queryAll();
+
+      return $this->render('paramscategorias',[
+        'txtnamepcrc' => $txtnamepcrc,
+        'txtspeechid' => $txtspeechid,
+        'txtserviciosp' => $txtserviciosp,
+        'txtlistindicadores' => $txtlistindicadores,
+      ]);
+    }
+
+    public function actionEditarcompetencia(){
+      $varpcrc = Yii::$app->request->get('varcodpcrc');
+      $varidcategoria = Yii::$app->request->get('varidcategoria');  
+      $varnombres = Yii::$app->request->get('varnombre');  
+      $model = new SpeechCategorias();
+
+
+      return $this->renderAjax('editarcompetencia',[
+        'varpcrc' => $varpcrc,
+        'varidcategoria' => $varidcategoria,
+        'varnombres' => $varnombres,
+        'model' => $model,
+      ]);
+    }
+
+    public function actionActualizaindicador(){
+      $idspeech = Yii::$app->request->get("idspeech");
+      $varpcrc = Yii::$app->request->get("varpcrc");
+      $txtvartxtConteoid = Yii::$app->request->get("txtvartxtConteoid");
+
+      Yii::$app->db->createCommand("UPDATE tbl_speech_categorias sc SET sc.componentes = $txtvartxtConteoid WHERE sc.anulado = 0 AND sc.idspeechcategoria = $idspeech  AND sc.cod_pcrc IN ('$varpcrc')")->execute();
+
+      $txtname = Yii::$app->db->createCommand("SELECT sc.nombre FROM tbl_speech_categorias sc  WHERE sc.anulado = 0 AND sc.idspeechcategoria = $idspeech  AND sc.cod_pcrc IN ('$varpcrc')")->queryScalar();
+
+
+      Yii::$app->db->createCommand("UPDATE tbl_speech_categorias sc SET sc.componentes = $txtvartxtConteoid WHERE sc.anulado = 0 AND sc.cod_pcrc IN ('$varpcrc') AND sc.idcategorias in (2) AND sc.tipoindicador in ('$txtname')")->execute();
+
+      $varrtas = 0;
+
+      die(json_encode($varrtas));
+    }
+
+    public function actionViewrtas($idspeechcalls,$varcodpcrc){
+      $varcod_pcrc = $varcodpcrc;
+      $varidspeechcalls = $idspeechcalls;
+
+      $varCallid = Yii::$app->db->createCommand("SELECT d.callId FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $varidspeechcalls")->queryScalar();
+
+      $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc  WHERE sc.anulado = 0 AND sc.cod_pcrc IN ('$varcod_pcrc') AND sc.idcategorias in (2) AND sc.responsable IN (1)")->queryAll();
+
+      $countpositivas = 0;
+      $countnegativas = 0;
+      $countpositicasc = 0;
+      $countnegativasc = 0;
+
+      foreach ($varlistvariables as $key => $value) {
+        $varorientaciones = $value['orientacionsmart'];
+        $varidcategoriav = $value['idcategoria'];
+        $varcategoriap = $value['programacategoria'];
+
+        if ($varorientaciones == '2') {
+          $countnegativas = $countnegativas + 1;
+          $contarnegativas = Yii::$app->db->createCommand("SELECT COUNT(s.idvariable) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$varcategoriap') AND s.callid IN ($varCallid) AND s.idvariable IN ($varidcategoriav)")->queryScalar();
+
+          if ($contarnegativas == '1') {
+            $countnegativasc = $countnegativasc + 1;
+          }
+        }else{
+          if ($varorientaciones == '1') {
+            $countpositivas = $countpositivas + 1;
+            $contarpositivas = Yii::$app->db->createCommand("SELECT COUNT(s.idvariable) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$varcategoriap') AND s.callid IN ($varCallid) AND s.idvariable IN ($varidcategoriav)")->queryScalar();
+
+            if ($contarpositivas == '1') {
+              $countpositicasc = $countpositicasc + 1;
+            }
+          }
+        }
+      }
+
+      $totalvariables = count($varlistvariables);
+      if ($varlistvariables != 0 && $countnegativasc != 0) {
+        $resultadosIDA = round((($countpositicasc + ($countnegativas - $countnegativasc)) / count($varlistvariables)),2);
+      }else{
+        $resultadosIDA = 0;
+      }
+      
+
+      $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeechcalls')")->queryScalar();
+      $txtejecucion = Yii::$app->db->createCommand("SELECT DISTINCT round(te.score,2) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
+      if ($txtejecucion == '') {
+        $txtejecucion = '--';
+        $txtpromediorta = $resultadosIDA;
+      }else{
+        $txtpromediorta = round(($resultadosIDA + $txtejecucion) / 2,2);
+      }      
+
+      $txtvarcallid = Yii::$app->db->createCommand("SELECT DISTINCT d.callId FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeechcalls')")->queryScalar();
+      $txtvarhoras = Yii::$app->db->createCommand("SELECT DISTINCT d.fechareal FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeechcalls')")->queryScalar();
+      $txtusuarios = Yii::$app->db->createCommand("SELECT DISTINCT d.login_id FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeechcalls')")->queryScalar();
+
+      return $this->renderAjax('viewrtas',[
+        'resultadosIDA' => $resultadosIDA,
+        'countpositivas' => $countpositivas,
+        'countnegativas' => $countnegativas,
+        'countpositicasc' => $countpositicasc,
+        'countnegativasc' => $countnegativasc,
+        'totalvariables' => $totalvariables,
+        'txtejecucion' => $txtejecucion,
+        'txtpromediorta' => $txtpromediorta,
+        'txtvarcallid' => $txtvarcallid,
+        'txtvarhoras' => $txtvarhoras,
+        'txtusuarios' => $txtusuarios,
+      ]);
+    }
 
 
   }

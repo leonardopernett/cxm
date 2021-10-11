@@ -38,7 +38,7 @@ class Roles extends \yii\db\ActiveRecord {
             [['per_cuadrodemando', 'per_estadisticaspersonas',
             'per_hacermonitoreo', 'per_reportes', 'per_modificarmonitoreo',
             'per_adminsistema', 'per_adminprocesos',
-            'per_editarequiposvalorados', 'per_inboxaleatorio', 'per_desempeno', 'per_abogado', 'per_jefeop', 'per_tecdesempeno', 'per_alertas', 'per_evaluacion','per_externo'], 'integer'],
+            'per_editarequiposvalorados', 'per_inboxaleatorio', 'per_desempeno', 'per_abogado', 'per_jefeop', 'per_tecdesempeno', 'per_alertas', 'per_evaluacion','per_externo','per_directivo'], 'integer'],
             [['role_nombre', 'role_descripcion'], 'string', 'max' => 50],
             [['role_nombre', 'role_descripcion'], 'required']
         ];
@@ -68,6 +68,7 @@ class Roles extends \yii\db\ActiveRecord {
             'per_alertas' => Yii::t('app', 'Alertas Tecnico CX'),
             'per_evaluacion' => Yii::t('app', 'Evaluacion administrativos'),
             'per_externo' => Yii::t('app', 'Tecnico CX Externo'),
+            'per_directivo' => Yii::t('app', 'Rol Directivo'),
             
         ];
     }

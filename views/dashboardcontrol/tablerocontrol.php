@@ -291,14 +291,14 @@ $this->title = 'Métricas de Productividad/Valoración';
 
 <script type="text/javascript">
     function verVolumenGestion(){
-        window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardcontrol/vervolumengestion','_blank');
+        window.open('../dashboardcontrol/vervolumengestion','_blank');
     };
 
     function verVolumenCosto(){
-        window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardcontrol/vervolumencostos','_blank');
+        window.open('../dashboardcontrol/vervolumencostos','_blank');
     };
 
     function verVolumenValorador(){
-        window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/dashboardcontrol/vervolumenvalorador','_blank');
+        window.open('../dashboardcontrol/vervolumenvalorador','_blank');
     };
 </script>

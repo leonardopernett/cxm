@@ -22,7 +22,7 @@ use Yii;
  * @property string $fechacreacion
  * @property integer $anulado
  */
-class TblControlDimensionamiento extends \yii\db\ActiveRecord
+class Controldimensionamiento extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

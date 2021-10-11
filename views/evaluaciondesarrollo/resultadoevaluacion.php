@@ -188,7 +188,7 @@ $titulos = array();
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -808,8 +808,8 @@ var vardocumento = '<?php echo $documento; ?>';
             },
             success : function(response){
                 numRta2 =   JSON.parse(response);
-                // window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/evaluaciondesarrollo/index','_self');
-                window.open('https://172.20.100.50/qa/web/index.php/evaluaciondesarrollo/index','_self');
+
+                window.open('../evaluaciondesarrollo/index','_self');
             }
         });
     };

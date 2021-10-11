@@ -195,11 +195,7 @@ $sessiones = Yii::$app->user->identity->id;
                 <?= Html::a(Yii::t('app', 'Create Usuarios'), ['create'], ['class' => 'btn btn-success']) ?>
                 <?= Html::a(Yii::t('app', 'Export Logeventsadmin'), "javascript:void(0)", ['class' => 'btn btn-danger', "id" => "exportar"]) ?>
                 <?= Html::a(Yii::t('app', 'Limpiar Filtros'), ['limpiarfiltros'], ['class' => 'btn btn-default']) ?>
-		<?php
-		if( $sessiones == 3205){ ?>
-                 <?= Html::a(Yii::t('app', 'Actualiza usuarios Evalua.'), ['usuarios_evalua'], ['class' => 'btn btn-default']) ?>
-                <?php }
-                ?>
+		
 
                 </p>
 

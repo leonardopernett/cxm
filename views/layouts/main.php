@@ -17,9 +17,10 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <!--Fontawesome CDN-->
-        <link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+        <link rel="stylesheet" href="/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <?= Html::csrfMetaTags() ?>
@@ -94,17 +95,30 @@ AppAsset::register($this);
                 color: #00968F;
                 text-decoration: none !important;
                 /*background-color: #a0daeb;*/
-        	font-weight: bold;
-        	font-feature-settings: "frac";
+            font-weight: bold;
+            font-feature-settings: "frac";
             }
-	    .dropdown-menu > .row > .col-md-6 > li > a:hover, .dropdown-menu > .row > .col-md-3 > li > a:focus{
+            .dropdown-menu > .row > .col-md-6 > li > a:hover, .dropdown-menu > .row > .col-md-3 > li > a:focus{
                 color: #00968F;
                 text-decoration: none !important;
                 /*background-color: #a0daeb;*/
                 font-weight: bold;
                 font-feature-settings: "frac";
             }
-            .menutitulos {
+            .dropdown-menu > .row > .col-md-12 > li > a:hover, .dropdown-menu > .row > .col-md-3 > li > a:focus{
+                color: #00968F;
+                text-decoration: none !important;
+                /*background-color: #a0daeb;*/
+                font-weight: bold;
+                font-feature-settings: "frac";
+            }
+            .dropdown-menu > .row > .col-md-4 > li > a:hover, .dropdown-menu > .row > .col-md-3 > li > a:focus{
+                color: #00968F;
+                text-decoration: none !important;
+                /*background-color: #a0daeb;*/
+                font-weight: bold;
+                font-feature-settings: "frac";
+            }            .menutitulos {
                 font-family: "Nunito";
                 font-size: 130%;
                 color: #999;
@@ -156,8 +170,8 @@ AppAsset::register($this);
                 NavBar::begin([
                     'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
                     // 'brandLabel' => 'CX-MANAGEMENT',
-                            // ["alt" => "home QA","style" => "width: 250px; margin-top: 8px; margin-left: -10px"]),
-                            ["alt" => "home QA","style" => "width: 250px; margin-top: 10px"]),
+                            // ["alt" => "home QA","style" => "width: 200px; margin-top: 8px; margin-left: -10px"]),
+                            ["alt" => "home QA","style" => "width: 200px; margin-top: 10px"]),
                     'brandUrl' => Yii::$app->homeUrl,
                     'options' => [
                         'class' => 'navbar navbar-inverse navbar-static-top',
@@ -171,103 +185,49 @@ AppAsset::register($this);
                         'activateParents' => true,
                         'encodeLabels' => false,
                         'options' => ['class' => 'navbar-nav navbar-right'],
-                        'items' => [                      
+                        'items' => [ 
+                            [                              
+                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;DASHBOARD BI&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo(),                                
+                                'items' => [
+                                    '<div class="row">',
+                                        
+                                        '<div class="col-md-12">',
+                                            '<li class="dropdown-headercx2">&nbsp;Dashboard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>',  
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte BI&nbsp;&nbsp;'),
+                                                    'url' => ['/reportepbi/reporte'],
+                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                        '</div>',
+                                    '</div>',
+                                ],
+                            ],                     
                             [
+
                                 'class' => 'ico1',
                                 'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
                                 'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerDesempeno(),
                                 'items' => [
                                     '<div class="row">',
-                                        '<div class="col-md-6">',
-                                            '<li class="dropdown-headercx2">&nbsp;Escucha</li>',
-                                            '<li class="dropdown-headercx">&nbsp;Aplicación de la Encuesta</li>',
+
+                                        '<div class="col-md-12">',                                            
+                                            '<li class="dropdown-headercx2">&nbsp;Administrador</li>',    
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuesta (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx2">&nbsp;Analiza y decide</li>',
-                                            '<li class="dropdown-headercx">&nbsp;Tableros automáticos</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Power BI'),
-                                                    'url' => ['/reportepbi/reporte'],
-                                                    'visible' => Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isReportes(),
-                                                ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">&nbsp;Text Analytics</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Text (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
-                                            
-                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
-                                        '</div>',  
-                                        '<div class="col-md-6">',
-                                        '<li class="dropdown-headercx2">&nbsp;Protege y mejora</li>',
-                                            '<li class="dropdown-headercx">Gestión de Coaching</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Coaching (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx2">Administrador</li>',                                            
-                                            '<li class="dropdown-headercx">Gestión de Usuarios</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Configurar formuarios(Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],    
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestión (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
-                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
-					    '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">Gestión de Encuestas</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Parametrización Encuestas'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Parametrizaci&oacute;n Encuestas&nbsp;&nbsp;'),
                                                     'url' => ['/controlencuestas/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],                                            
+                                                ],
+                                                '<br>',
+                                            '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',    
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hoja de Vida del Cliente&nbsp;&nbsp;'),
+                                                    'url' => ['/hvinfopersonal/index'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                ],                                              
                                             
                                         '</div>',  
-                                        '<div class="col-md-6">',
-                                            
-                                        '</div>',                                        
+
                                     '</div>',
                                 ],
                                 
@@ -275,491 +235,399 @@ AppAsset::register($this);
                             [
                                 
                                 'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Voen.png" width="40" height="25">'.Yii::t('app','&nbsp;VOE&nbsp;&nbsp;&nbsp;&nbsp;'),
-                                'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerevaluacion(),
+                                'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                 'items' => [
                                     '<div class="row">',
-                                        '<div class="col-md-6">',
+                                        
+                                        '<div class="col-md-12">',
                                             '<li class="dropdown-headercx2">&nbsp;Escucha</li>',
-                                            '<li class="dropdown-headercx ico1">&nbsp;Aplicación de la Encuesta</li>',
-                                                [                                                    
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuesta (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">&nbsp;Evaluación de Desarrollo</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Evaluaci&oacute;n de Desarrollo&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestionar evaluaciones'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Realizar Evaluaciones&nbsp;&nbsp;'),
                                                     'url' => ['/evaluaciondesarrollo/index'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
-						[
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestionar feedback'),
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Realizar Feedbacks&nbsp;&nbsp;'),
                                                     'url' => ['/evaluaciondesarrollo/evaluacionfeedback','model'=>"",'documento'=>0],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
-						[
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Mis Resultados'),
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Mis Resultados&nbsp;&nbsp;'),
                                                     'url' => ['/evaluaciondesarrollo/resultadoevaluacion','model'=>""],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
-[
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard'),
+                                                '<br>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Universo&nbsp;&nbsp;</li>',
+                                                [
+
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Bit&aacute;cora&nbsp;&nbsp;'),
+                                                    'url' => ['/bitacorauniverso/index'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                            '<br>',
+                                            '<li class="dropdown-headercx2">&nbsp;Analizar y Decidir</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Resultados Evaluaci&oacute;n Desarrollo&nbsp;&nbsp;'),
                                                     'url' => ['/evaluaciondesarrollo/resultadodashboard'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
-                                            '<li class="divider"></li>',
-					    '<li class="dropdown-headercx">&nbsp;Bitácora Universo</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestión Bitácora Universo'),
-                                                     'url' => ['/bitacorauniverso/index'],
-                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno(),
-                                                ],                                            
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx2">&nbsp;Analiza y decide</li>',
-                                            '<li class="dropdown-headercx">&nbsp;Tableros automáticos</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Power BI'),
-                                                    'url' => ['/reportepbi/reporte'],
-                                                    'visible' => Yii::$app->user->identity->isReportes(),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Extractar Resultados&nbsp;&nbsp;'),
+                                                    'url' => ['/evaluaciondesarrollo/exportarrtadashboard'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">&nbsp;Text Analytics</li>',
+                                            '<br>',
+                                            '<li class="dropdown-headercx2">&nbsp;Administrador</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Text (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],   
-                                              
-                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                       
-                                        '</div>',                                          
-                                        '<div class="col-md-6">',
-                                        '<li class="dropdown-headercx2">&nbsp;Protege y mejora</li>',
-                                        '<li class="dropdown-headercx">Gestión de Coaching</li>',
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Coaching (Por definir)'),
-                                                // 'url' => ['/site/dashboard'],
-                                                // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                            ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx2">Administrador</li>',
-                                            '<li class="dropdown-headercx">Gestión de Formularios</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestión (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ], 
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">Gestión de Usuarios</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestión (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">Gestión de Evaluaciones</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestionar novedades'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Novedades Evaluaci&oacute;n Desarrollo&nbsp;&nbsp;'),
                                                     'url' => ['/evaluaciondesarrollo/gestionnovedades'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Modulo parametrizador'),
-                                                    'url' => ['/evaluaciondesarrollo/paramsevaluacion'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
-                                        '</div>',  
-                                        '<div class="col-md-6">',
-                                            
-                                        '</div>',                                        
+                                            '<br>',
+                                        '</div>',
+
                                     '</div>',
                                 ],
                                 
                             ], 
                             [                              
                                 'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Vouxn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOUX&nbsp;&nbsp;&nbsp;&nbsp;'),                                
-                                'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX(),                                
+                                'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),                                
                                 'items' => [
                                     '<div class="row">',
+                                        
                                         '<div class="col-md-3">',
-                                            '<li class="dropdown-headercx2">&nbsp;Escucha</li>',
-                                            '<li class="dropdown-headercx">&nbsp;Aplicación Valoración</li>',
+                                            '<li class="dropdown-headercx2">&nbsp;Planear</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Planeaci&oacute;n del Responsable CX&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Valorar Interacción'),
-                                                    'url' => ['/formularios/interaccionmanual'],
-                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno(),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Crear Dimensionamiento&nbsp;&nbsp;'),
+                                                    'url' => ['/controldimensionamiento/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuestas Telefónicas'),
-                                                    'url' => ['/basesatisfaccion/encuestatelefonica'],
-                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo(),
-                                                ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx2">&nbsp;Analiza y decide</li>',
-                                            '<li class="dropdown-headercx">&nbsp;Tableros Automáticos CX</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                    'url' => ['/site/dashboard'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Asignar Plan de Valoraci&oacute;n&nbsp;&nbsp;'),
+                                                    'url' => ['/controlprocesos/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                   'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Escuchar +'),
-                                                    'url' => ['/dashboardspeech/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA(),
-                                                ],
-
-                                                [
-                                                   'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Ejecutivo'),
-                                                    'url' => ['/dashboardvoz/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Control de Proceso CX'),
-                                                    'url' => ['control/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte satisfacción'),
-                                                    'url' => ['/reportes/satisfaccion'],
-                                                    'visible' => Yii::$app->user->identity->isReportes(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Control de &nbsp;&nbsp;Satisfacción'),
-                                                    'url' => ['/reportes/controlsatisfaccion'],
-                                                    'visible' => Yii::$app->user->identity->isReportes(),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Seguimiento Plan de Valoraci&oacute;n&nbsp;&nbsp;'),
+                                                    'url' => ['/seguimientoplan/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                             '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">&nbsp;Escucha Focalizada</li>',
+                                            '<li class="dropdown-headercx2">&nbsp;Escuchar</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Procesos de Valoraci&oacute;n&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Inst. Escucha Focalizada'),
-                                                    'url' => ['/formulariovoc/index'],
-                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestión Satisfacción'),
-                                                    'url' => ['/basesatisfaccion/index'],
-                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestión Satisfacción Proceso'),
-                                                    'url' => ['/basesatisfaccion/inboxaleatorio'],
-                                                    'visible' => Yii::$app->user->identity->isVerInboxAleatorio(),
-                                                ],
-                                    		[
-                                        	    'label' => Yii::t('app', '&nbsp;&nbsp;Gestion Satisfaccion &nbsp;&nbsp;Declinaciones'),
-                                        	    'url' => ['/basesatisfaccion/inboxdeclinadas'],
-                                        	    'visible' => Yii::$app->user->identity->isVerInboxAleatorio(),
-		                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestión Chat'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuestas Tigo&nbsp;&nbsp;'),
                                                     'url' => ['/basechat/index'],
-                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno(),
-                                                ],                                    
-                                        '</div>',  
-                                        '<div class="col-md-3">', 
-                                            '<li class="dropdown-headercx2">&nbsp;Protege y mejora</li>',
-                                            '<li class="dropdown-headercx">&nbsp;Gestión de Alertas</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Enviar Feedback Express'),
-                                                    'url' => ['/feedback/create'],
-                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno(),
+                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Crear Alerta'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuestas de Procesos&nbsp;&nbsp;'),
+                                                    'url' => ['/basesatisfaccion/inboxaleatorio'],
+                                                    'visible' => Yii::$app->user->identity->isVerInboxAleatorio()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuestas  Satisfacci&oacute;n&nbsp;&nbsp;'),
+                                                    'url' => ['/basesatisfaccion/index'],
+                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuestas Telef&oacute;nicas&nbsp;&nbsp;'),
+                                                    'url' => ['/basesatisfaccion/encuestatelefonica'],
+                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Escucha Focalizada&nbsp;&nbsp;'),
+                                                    'url' => ['/formulariovoc/index'],
+                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Valoraci&oacute;n Manual&nbsp;&nbsp;'),
+                                                    'url' => ['/formularios/interaccionmanual'],
+                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                            '<li class="divider"></li>',
+                                            '<li class="dropdown-headercx2">&nbsp;Proteger y Mejorar</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n de Alertas&nbsp;&nbsp;</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Crear Alertas&nbsp;&nbsp;'),
                                                     'url' => ['basesatisfaccion/alertas'],
-                                                    'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno(),
-                                                ],
-                                                '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">&nbsp;Gestión de Coaching</li>',
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestión Feedback'),
-                                                    'url' => ['/reportes/feedbackexpress'],
-                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno(),
+                                                    'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Alerta resumen'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Notificaci&oacute;n de Alertas&nbsp;&nbsp;'),
                                                     'url' => ['/site/dashboardalertas'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno(),
                                                 ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">&nbsp;Alinear +</li>',
+                                                '<br>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n de Coaching&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Alinear +'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Crear Feedback Express&nbsp;&nbsp;'),
+                                                    'url' => ['/feedback/create'],
+                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                '<br>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n de Alinear +&nbsp;&nbsp;</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Crear Alinear +&nbsp;&nbsp;'),
                                                     'url' => ['/controlalinearvoc/index'],
-                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo(),
+                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                        '</div>',
+                                        '<div class="col-md-3">',                                                
+                                                '<li class="dropdown-headercx ico1">&nbsp;Segundo Calificador&nbsp;&nbsp;</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Notificaciones&nbsp;&nbsp;'),
+                                                    'url' => ['/site/segundocalificador'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                             '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx2">Responsable de Experiencia</li>',
-                                            '<li class="dropdown-headercx">Planeación del Proceso</li>',
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Equipo de Trabajo'),
-                                                'url' => ['/controlprocesos/index'],
-                                                'visible' => Yii::$app->user->identity->isControlProcesoCX(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Seguimiento Equipo de Trabajo'),
-                                                'url' => ['/seguimientoplan/index'],
-                                                'visible' => Yii::$app->user->identity->isControlProcesoCX(),
-                                            ],
-                                    	    [
-                                        	'label' => Yii::t('app', '&nbsp;&nbsp;Control de Dimensionamiento'),
-                                        	'url' => ['/controldimensionamiento/index'],
-                                        	'visible' => Yii::$app->user->identity->isControlProcesoCX(),
-                                    	    ],
-                                            
-                                        '</div>', 
-                                        '<div class="col-md-3">',
-                                                                                    
-                                        '<li class="dropdown-headercx">Data de Informes</li>',
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Histórico Formularios'),
-                                                'url' => ['/reportes/historicoformularios'],
-                                                'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isVerexterno(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Extractar Formularios'),
-                                                'url' => ['/reportes/extractarformulario'],
-                                                'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Valorados'),
-                                                'url' => ['/reportes/valorados'],
-                                                'visible' => Yii::$app->user->identity->isReportes(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Declinaciones'),
-                                                'url' => ['/reportes/declinaciones'],
-                                                'visible' => Yii::$app->user->identity->isReportes(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Segundo Calificador'),
-                                                'url' => ['/reportes/reportesegundocalificador'],
-                                                'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Alertas de Valoración'),
-                                                'url' => ['basesatisfaccion/alertasvaloracion'],
-                                                'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno(),
-                                            ], 
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Plan de Valoración Técnico'),
-                                                'url' => ['/planvaloracion/index'],
-                                                'visible' => Yii::$app->user->identity->isReportes(),
-                                            ], 
-                                            //[
-                                            //    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Escucha Focalizada'),
-                                            //    'url' => ['/controlvoc/reportevoc'],
-                                            //    'visible' => Yii::$app->user->identity->isReportes(),
-                                            //], 
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Reporte - VOC -'),
-                                                'url' => ['/formulariovoc/reportformvoc'],
-                                                'visible' => Yii::$app->user->identity->isReportes(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Alinear + - VOC -'),
-                                                'url' => ['/controlalinearvoc/reportealinearvoc'],
-                                                'visible' => Yii::$app->user->identity->isReportes(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Histórico &nbsp;&nbsp;Satisfacción'),
-                                                'url' => ['/reportes/historicosatisfaccion'],
-                                                'visible' => Yii::$app->user->identity->isReportes(),
-                                            ],
-                        [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Power BI'),
-                                                'url' => ['/reportepbi/reporte'],
-                                                'visible' => Yii::$app->user->identity->isReportes(),
-                                            ],
-                                        '<li class="divider"></li>',
+                                            '<li class="dropdown-headercx2">&nbsp;Analizar y Decidir</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Informes - Resultados de Procesos&nbsp;&nbsp;</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Ejecutivo&nbsp;&nbsp;'),
+                                                    'url' => ['/dashboardvoz/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Escuchar +&nbsp;&nbsp;'),
+                                                    'url' => ['/dashboardspeech/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Escuchar + 2.0&nbsp;&nbsp;'),
+                                                    'url' => ['/dashboardspeechdos/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
 
-                                        '<li class="dropdown-headercx2">Administrador</li>',
-                                        '<li class="dropdown-headercx">Gestión de Usuarios</li>',
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Roles'),
-                                                'url' => ['/roles/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Usuarios'),
-                                                'url' => ['/usuarios/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],                                                
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Grupos usuarios'),
-                                                'url' => ['/gruposusuarios/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Equipo de Evaluados'),
-                                                'url' => ['/equipos/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isEdEqipoValorado(),
-                                            ],
-                                    	    [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Valorados'),
-                                        	'url' => ['/evaluados/index'],
-                                        	'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isEdEqipoValorado(),
-                                    	    ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Cambios en administradores '),
-                                                'url' => ['/logeventsadmin/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],
-					    [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Fuentes de Información '),
-                                                'url' => ['/fuenteinformacion/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],
-                                            '<li class="divider"></li>',
-                                            '<li class="dropdown-headercx">Segundo Calificador</li>',
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Segundo calificador'),
-                                                'url' => ['/site/segundocalificador'],
-                                                'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno(),
-                                            ],
-                                                                                    
+                                                '<br>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Informes - Control de Procesos&nbsp;&nbsp;</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Declinaciones Captura Manual&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/declinaciones'],
+                                                    'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Declinaciones Encuestas&nbsp;&nbsp;'),
+                                                    'url' => ['/basesatisfaccion/inboxdeclinadas'],
+                                                    'visible' => Yii::$app->user->identity->isVerInboxAleatorio()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Resultados KPIs Satisfacci&oacute;n&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/satisfaccion'],
+                                                    'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Tipologia Encuestas&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/historicosatisfaccion'],
+                                                    'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                '<br>',  
+                                                '<li class="dropdown-headercx ico1">&nbsp;Data Para Creaci&oacute;n de Reportes&nbsp;&nbsp;</li>',                                              
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Extractar Formularios&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/extractarformulario'],
+                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Alertas&nbsp;&nbsp;'),
+                                                    'url' => ['basesatisfaccion/alertasvaloracion'],
+                                                    'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],                                                
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Alinear +&nbsp;&nbsp;'),
+                                                    'url' => ['/controlalinearvoc/reportealinearvoc'],
+                                                    'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],                   
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Feedback&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/feedbackexpress'],
+                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Formularios&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/historicoformularios'],
+                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico Segundo Calificador&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/reportesegundocalificador'],
+                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Valorados&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/valorados'],
+                                                    'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Satisfacci&oacute;n&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/historicosatisfaccion'],
+                                                    'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
                                         '</div>',
                                         '<div class="col-md-3">',
-                                        '<li class="dropdown-headercx">Gestión de Formularios</li>',
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Formularios'),
-                                                'url' => ['/formularios/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Secciones'),
-                                                'url' => ['/seccions/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Bloques'),
-                                                'url' => ['/bloques/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Bloque Detalle'),
-                                                'url' => ['/bloquedetalles/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Textos'),
-                                                'url' => ['/textos/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Tipificaciones'),
-                                                'url' => ['/tipificaciones/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Programa PCRC'),
-                                                'url' => ['/arboles/index'],
-                                                'visible' => Yii::$app->user->identity->isEdEqipoValorado(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Interacciones'),
-                                                'url' => ['/transacions/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Dimensiones'),
-                                                'url' => ['/dimensiones/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Declinaciones'),
-                                                'url' => ['/declinaciones/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Calificaciones'),
-                                                'url' => ['/calificacions/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Feedbacks'),
-                                                'url' => ['/categoriafeedbacks/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                            ],
-                                        '<li class="divider"></li>',
-                                        '<li class="dropdown-headercx">Gestión BD - Público Objetivo&nbsp;&nbsp;</li>',
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Administrar Cortes'),
-                                                'url' => ['/admincortes/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Desvinculación Equipos'),
-                                                'url' => ['/peticionequipos/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Monitoreo de Categorización'),
-                                                'url' => ['/categorizacion/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],
-                                            [
-                                                'label' => Yii::t('app', '&nbsp;&nbsp;Buzones Kaliope'),
-                                                'url' => ['/buzoneskaliope/index'],
-                                                'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                            ],
-                                        '<li class="divider"></li>',
-                                        
-                                        '<li class="dropdown-headercx">&nbsp;Encuestas de Satisfacción</li>',
+                                            '<li class="dropdown-headercx2">&nbsp;Administrador</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n de Usuarios&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Módulo Parametrización'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Roles&nbsp;&nbsp;'),
+                                                    'url' => ['/roles/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Usuarios&nbsp;&nbsp;'),
+                                                    'url' => ['/usuarios/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Grupo de Usuarios&nbsp;&nbsp;'),
+                                                    'url' => ['/gruposusuarios/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],                                                
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Equipo de Evaluados&nbsp;&nbsp;'),
+                                                    'url' => ['/equipos/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isEdEqipoValorado(),
+                                                ],                                                
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Valorados&nbsp;&nbsp;'),
+                                                    'url' => ['/evaluados/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isEdEqipoValorado(),
+                                                ],                                                
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Cambio en Adminitradores&nbsp;&nbsp;'),
+                                                    'url' => ['/logeventsadmin/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],                                                
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Distribuci&oacute;n&nbsp;&nbsp;'),
+                                                    'url' => ['/fuenteinformacion/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],
+                                                '<br>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n de Formularios&nbsp;&nbsp;</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Formularios'),
+                                                    'url' => ['/formularios/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Secciones'),
+                                                    'url' => ['/seccions/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Bloques'),
+                                                    'url' => ['/bloques/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Bloque Detalle'),
+                                                    'url' => ['/bloquedetalles/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Textos'),
+                                                    'url' => ['/textos/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Tipificaciones'),
+                                                    'url' => ['/tipificaciones/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Programa PCRC'),
+                                                    'url' => ['/arboles/index'],
+                                                    'visible' => Yii::$app->user->identity->isEdEqipoValorado(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Interacciones'),
+                                                    'url' => ['/transacions/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Dimensiones'),
+                                                    'url' => ['/dimensiones/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Declinaciones'),
+                                                    'url' => ['/declinaciones/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Calificaciones'),
+                                                    'url' => ['/calificacions/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Feedbacks'),
+                                                    'url' => ['/categoriafeedbacks/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+                                        '</div>',
+                                        '<div class="col-md-3">',
+                                                '<li class="dropdown-headercx">Gesti&oacute;n BD - P&uacute;blico Objetivo&nbsp;&nbsp;</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Administrar Cortes'),
+                                                    'url' => ['/admincortes/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Desvinculaci&oacute;n Equipos'),
+                                                    'url' => ['/peticionequipos/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Monitoreo de Categorizaci&oacute;n'),
+                                                    'url' => ['/categorizacion/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],
+                                                // [
+                                                //    'label' => Yii::t('app', '&nbsp;&nbsp;Buzones Kaliope'),
+                                                //    'url' => ['/buzoneskaliope/index'],
+                                                //    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                // ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesamiento Entto'),
+                                                    'url' => ['/idageneral/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesos Administrador'),
+                                                    'url' => ['/procesosadministrador/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                ],
+                                                '<br>',                                            
+                                                '<li class="dropdown-headercx">&nbsp;Encuestas de Satisfacci&oacute;n</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;M&oacute;dulo Parametrizaci&oacute;n'),
                                                     'url' => ['/parametrizacion-encuesta/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminProcesos(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Errores Satu'),
                                                     'url' => ['/erroressatu/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Regla de Negocios'),
                                                     'url' => ['/reglanegocio/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminProcesos(),
                                                 ],
-                                    		[
-                                        	    'label' => Yii::t('app', '&nbsp;&nbsp;Informe aleatoriedad'),
-                                        	    'url' => ['/informeinboxaleatorio/index'],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Informe aleatoriedad'),
+                                                    'url' => ['/informeinboxaleatorio/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminProcesos(),
-                                    		],
+                                                ],
+                                        '</div>',
 
-                                        '</div>',                                            
                                     '</div>',
                                 ],
-                            ],        
+
+                            ],         
                             [
                                 'label' =>
                                 '<p class="cxlogueo">&nbsp;&nbsp;&nbsp;&nbsp;'.ucwords(strtolower(Yii::$app->user->identity->fullName)).' <i class="fas fa-sign-out-alt"></i></p>',
@@ -775,7 +643,7 @@ AppAsset::register($this);
             ?>
         </nav>
 
-            <script defer src="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/js.js"></script>
+            <script defer src="/qa_managementv2/web/font_awesome_local/js.js"></script>
             
         <div class="wrap">
             <div class="container-fluid">		
@@ -790,7 +658,7 @@ AppAsset::register($this);
             
         <footer class="footer2">
             <div class="container1">
-                <div class="col-md-12" style="background-image: url('https://qa.grupokonecta.local/qa_managementv2/web/images/link.png');
+                <div class="col-md-12" style="background-image: url('/qa_managementv2/web/images/link.png');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;"><br>

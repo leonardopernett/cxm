@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
   $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = '$txtLider'")->queryScalar();
 
 ?>
-<link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <style type="text/css">
   @import url('https://fonts.googleapis.com/css?family=Nunito');
     .card {
@@ -536,7 +536,6 @@ $this->params['breadcrumbs'][] = $this->title;
    
       $.ajax({
               method: "post",
-              //url: "https://172.20.100.50/qa/web/index.php/controlvoc/listashijo",
               url: "listashijo",
               data : {
                 txtvmotivo : varMotivo,
@@ -557,7 +556,7 @@ $this->params['breadcrumbs'][] = $this->title;
   };
 
   function enviar(){
-    window.open('http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/alertas','_blank');
+    window.open('../basesatisfaccion/alertas','_blank');
   };
 
   function generar(){
@@ -616,7 +615,6 @@ $this->params['breadcrumbs'][] = $this->title;
     }else{
       $.ajax({
               method: "post",
-              //url: "https://172.20.100.50/qa/web/index.php/controlvoc/createfocalizada",
               url: "createfocalizada",
               data : {
                 txtvArbol : varArbol,
@@ -653,9 +651,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     title: "!!! OK !!!",
                                     text: "Datos guardados correctamente."
                                 }).then(function() {
-                                    //window('http://qa.allus.com.co/qa_managementv2/web/index.php/controlvoc/index');
-            window.location.href = 'http://qa.allus.com.co/qa_managementv2/web/index.php/controlalinearvoc/index';
-            //window.location.href = 'https://172.20.100.50/qa/web/index.php/controlalinearvoc/index';
+            window.location.href = '../controlalinearvoc/index';
             
                                 });
                             });
@@ -744,7 +740,6 @@ $this->params['breadcrumbs'][] = $this->title;
     //AJAX
     $.ajax({
               method: "post",
-              //url: "https://172.20.100.50/qa/web/index.php/controlvoc/createlistavoc",
               url: "createmediratributoalinearvoc",
               data : {
                 data : JSON.stringify(array_elementos)
