@@ -10,6 +10,8 @@ runtime/debug/mail/*
 web/categorias/*
 web/avonencuestas/*
 web/A.TXT
+web/a.txt
+runtime/DB/*
 
 
 !.gitkeep
