@@ -9,6 +9,7 @@ runtime/debug/*
 runtime/debug/mail/*
 web/categorias/*
 web/avonencuestas/*
+web/A.TXT
 
 
 !.gitkeep
