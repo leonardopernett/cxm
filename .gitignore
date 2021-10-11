@@ -12,7 +12,7 @@ web/avonencuestas/*
 web/A.TXT
 web/a.txt
 runtime/DB/*
-
+web/assets/*
 
 !.gitkeep
 !runtime/debug/mail
