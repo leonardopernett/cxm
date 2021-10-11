@@ -276,10 +276,11 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         ?>
                     </div>
                 </div>
+<php if($sessiones == "2953") { ?>
                 <?php if ($txttxtvarcantllamadasb != 0) {  ?>
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #827DF9;"></i> Descargar gestión: </label> 
+                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #827DF9;"></i> Descargar gestiones: </label> 
                         <?= Html::button('Descargar', ['value' => url::to(['descargarcalls','varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$varcategoriass, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'consinmotivos'=>$varidloginid]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
                         ?> 
 
@@ -297,6 +298,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                     </div>
                 </div>
                 <?php } ?>
+<?php } ?>
             </div>
           </div>
         </div>
