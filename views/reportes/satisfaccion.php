@@ -211,7 +211,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                                   confirmButtonText: 'Ok'
                                 }).then((result) => {
                                   if (result.value) {
-                                    window.location.href = 'http://qa.allus.com.co/qa_managementv2/web/index.php/reportes/satisfaccion';
+                                    window.location.href = '../reportes/satisfaccion';
                                   }
                             }); 
                         </script>";
@@ -237,7 +237,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                                   confirmButtonText: 'Ok'
                                 }).then((result) => {
                                   if (result.value) {
-                                    window.location.href = 'https://qa.grupokonecta.local/qa_managementv2/web/index.php/reportes/satisfaccion';
+                                    window.location.href = '../reportes/satisfaccion';
                                   }
                             }); 
                         </script>";

@@ -35,7 +35,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
   .masthead {
     height: 25vh;
     min-height: 100px;
-    background-image: url('https://qa.grupokonecta.local/qa_managementv2/web/images/Reporte-Historico.png');
+    background-image: url('../../Reporte-Historico.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

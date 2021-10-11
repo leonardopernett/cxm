@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		    $.ajax({
                 method: "post",
-                //url: "https://172.20.100.50/qa/web/index.php/peticionequipos/desvincular",
+
                 url: "desvincular",
                 data : {         
                 	txtNamesC : varNamesC,
@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     // console.log("a",numRta);
 
                     if (numRta == 1) {
-                        location.href =" https://qa.grupokonecta.local/qa_managementv2/web/index.php/peticionequipos/index";
+                        location.href ="../peticionequipos/index";
                     }else{
                         event.preventDefault();
                             swal.fire("!!! Advertencia !!!","No es posible realizar dicha accion.","warning");

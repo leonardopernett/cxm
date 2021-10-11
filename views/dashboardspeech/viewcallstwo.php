@@ -65,7 +65,7 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 							<div class="col-md-12" align="center">
 								<i class="fas fa-download" style="font-size: 60px; color: #ceabab; align-self: center;"></i>
 							
-								<a style="font-size: 13px;" rel="stylesheet" type="text/css" href="https://qa.grupokonecta.local/qa_managementv2/web/downloadfiles/Manual Configuración Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
+								<a style="font-size: 13px;" rel="stylesheet" type="text/css" href="/qa_managementv2/web/downloadfiles/Manual Configuración Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
 							</div>
 						</div>
 					</div>

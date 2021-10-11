@@ -1440,7 +1440,7 @@ class BasesatisfaccionController extends Controller {
                             $params['usuariored'] = $value;
                             $params['cedula'] = '';
                             $params['plataforma'] = 'QA';
-                            $params['url'] = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showencuestaamigo?form_id=' . base64_encode($nModel->id);
+                            $params['url'] = '../basesatisfaccion/showencuestaamigo?form_id=' . base64_encode($nModel->id);
                 //Se comenta webservicesresponse para QA por caida de Amigo - 13-02-2019 -
                             //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
                             $webservicesresponse = null;
@@ -4254,7 +4254,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     $idnoti = \app\models\Notificaciones::findOne(["asesor" => $usuario, "ano" => $ano, "mes" => $mes]);
 
 
-                    $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=no';
+                    $url = '../basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=no';
                     if($alert == 3){
                         $titulo = 'Acabas de recibir un pliego de cargos';
                     }else{                        
@@ -4265,15 +4265,15 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                     if($alert == 1){
                         $titulo = 'Un asesor de tu grupo ha recibido una notificacion por bajo desempeño';
-                        $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
+                        $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
                         $this->notificar($lider, $titulo, $url); // Notificar Lider
                     }else if($alert == 2){
                         $titulo = 'Un asesor de tu grupo ha recibido una notificacion por bajo desempeño';
-                        $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
+                        $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
                         $this->notificar($lider, $titulo, $url); // Notificar Lider 
                     }else{
                         $titulo = 'Un asesor de tu grupo ha recibido un pliego de cargos';
-                        $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
+                        $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
                         $this->notificar($lider, $titulo, $url); // Notificar Lider
                         //$this->enviarcorreo($usuario, $lider, $url);
                     }
@@ -4353,7 +4353,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 foreach ($lideres as $value1) {
                     $titulo = "te queda poco tiempo para responder a esta alerta!!!";
-                    $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($value1['id']) . '&lider=si';
+                    $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($value1['id']) . '&lider=si';
                     $usuario = $value1['lider'];
                     $this->notificar($usuario, $titulo, $url);
                 }
@@ -4384,7 +4384,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 foreach ($asesores as $value1) {
                     $titulo = "te queda poco tiempo para responder a esta alerta!!!";
-                    $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($value1['id']) . '&lider=no';
+                    $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($value1['id']) . '&lider=no';
                     $usuario = $value1['lider'];
                     $this->notificar($usuario, $titulo, $url);
                 }
@@ -4434,7 +4434,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         $model->notificado_lider = "si";
                         $model->fecha_finalizacion = date("Y-m-d H:i:s");
                         $titulo = "El lider ha respondido a tu compromiso por bajo desempeño!!!";
-                        $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no';
+                        $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no';
                         $usuario = $model->asesor;
                         $this->notificar($usuario, $titulo, $url);
                     }
@@ -4524,7 +4524,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         if(isset($respuestas['respuesta_asesor'])){
                             $lider = $model['lider'];
                             $titulo = "Un asesor de tu grupo ha generado un compromiso por bajo desempeño";
-                            $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=si';
+                            $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=si';
 
                             $this->notificar($lider, $titulo, $url); // Notificar Lider
                         }
@@ -4572,7 +4572,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $id = \Yii::$app->request->get('id');
                 $motivo = \Yii::$app->request->get('motivo');
 
-                $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no&jefeop=si';
+                $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no&jefeop=si';
                 //print_r($asesor . " justificacion: " . $justificacion); die;
                 $coordinador = Yii::$app->user->identity->username;
                 $despedir = new Despido();
@@ -4604,7 +4604,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 //print_r($justificacion); die;
 
-                $url = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no&jefeop=si';
+                $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no&jefeop=si';
                 //print_r($asesor . " justificacion: " . $justificacion); die;
 
                 $coordinador = Yii::$app->user->identity->username;

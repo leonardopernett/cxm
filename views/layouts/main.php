@@ -187,7 +187,7 @@ AppAsset::register($this);
                         'options' => ['class' => 'navbar-nav navbar-right'],
                         'items' => [ 
                             [                              
-                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;DASHBOARD BI&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'label' => '<img src="/qa_managementv2/web/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;DASHBOARD BI&nbsp;&nbsp;&nbsp;&nbsp;'),                                
                                 'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo(),                                
                                 'items' => [
                                     '<div class="row">',
@@ -206,7 +206,7 @@ AppAsset::register($this);
                             [
 
                                 'class' => 'ico1',
-                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
+                                'label' => '<img src="https:/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
                                 'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerDesempeno(),
                                 'items' => [
                                     '<div class="row">',
@@ -234,7 +234,7 @@ AppAsset::register($this);
                             ], 
                             [
                                 
-                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Voen.png" width="40" height="25">'.Yii::t('app','&nbsp;VOE&nbsp;&nbsp;&nbsp;&nbsp;'),
+                                'label' => '<img src="/qa_managementv2/web/images/Voen.png" width="40" height="25">'.Yii::t('app','&nbsp;VOE&nbsp;&nbsp;&nbsp;&nbsp;'),
                                 'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                 'items' => [
                                     '<div class="row">',
@@ -292,7 +292,7 @@ AppAsset::register($this);
                                 
                             ], 
                             [                              
-                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Vouxn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOUX&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'label' => '<img src="/qa_managementv2/web/images/Vouxn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOUX&nbsp;&nbsp;&nbsp;&nbsp;'),                                
                                 'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),                                
                                 'items' => [
                                     '<div class="row">',

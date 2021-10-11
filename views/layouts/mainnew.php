@@ -17,7 +17,7 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <!--Fontawesome CDN-->
-        <link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+        <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -187,7 +187,7 @@ AppAsset::register($this);
                         'options' => ['class' => 'navbar-nav navbar-right'],
                         'items' => [ 
                             [                              
-                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;DASHBOARD BI&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'label' => '<img src="/qa_managementv2/web/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;DASHBOARD BI&nbsp;&nbsp;&nbsp;&nbsp;'),                                
                                 'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo(),                                
                                 'items' => [
                                     '<div class="row">',
@@ -206,7 +206,7 @@ AppAsset::register($this);
                             [
 
                                 'class' => 'ico1',
-                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
+                                'label' => '<img src="/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
                                 'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerDesempeno(),
                                 'items' => [
                                     '<div class="row">',
@@ -227,7 +227,7 @@ AppAsset::register($this);
                             ], 
                             [
                                 
-                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Voen.png" width="40" height="25">'.Yii::t('app','&nbsp;VOE&nbsp;&nbsp;&nbsp;&nbsp;'),
+                                'label' => '<img src="/qa_managementv2/web/images/Voen.png" width="40" height="25">'.Yii::t('app','&nbsp;VOE&nbsp;&nbsp;&nbsp;&nbsp;'),
                                 'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                 'items' => [
                                     '<div class="row">',
@@ -280,7 +280,7 @@ AppAsset::register($this);
                                 
                             ], 
                             [                              
-                                'label' => '<img src="https://qa.grupokonecta.local/qa_managementv2/web/images/Vouxn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOUX&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'label' => '<img src="/qa_managementv2/web/images/Vouxn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOUX&nbsp;&nbsp;&nbsp;&nbsp;'),                                
                                 'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),                                
                                 'items' => [
                                     '<div class="row">',
@@ -615,7 +615,7 @@ AppAsset::register($this);
             ?>
         </nav>
 
-            <script defer src="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/js.js"></script>
+            <script defer src="/qa_managementv2/web/font_awesome_local/js.js"></script>
             
         <div class="wrap">
             <div class="container-fluid">		
@@ -630,7 +630,7 @@ AppAsset::register($this);
             
         <footer class="footer2">
             <div class="container1">
-                <div class="col-md-12" style="background-image: url('https://qa.grupokonecta.local/qa_managementv2/web/images/link.png');
+                <div class="col-md-12" style="background-image: url('/qa_managementv2/web/images/link.png');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;"><br>

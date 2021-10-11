@@ -988,7 +988,7 @@ class BasesatisfaccionController extends Controller {
                         $params['usuariored'] = $value;
                         $params['cedula'] = '';
                         $params['plataforma'] = 'QA';
-                        $params['url'] = 'http://qa.allus.com.co/qa_managementv2/web/index.php/basesatisfaccion/showencuestaamigo?form_id=' . base64_encode($nModel->id);
+                        $params['url'] = '../basesatisfaccion/showencuestaamigo?form_id=' . base64_encode($nModel->id);
                         $webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
                         $tmp_basesatisfaccion = $nModel->id;
                         if (!$webservicesresponse && $tmp_basesatisfaccion == '') {

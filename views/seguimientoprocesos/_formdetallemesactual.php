@@ -113,7 +113,7 @@ $this->title = 'Vista Valorador';
 	  			foreach ($listado2 as $key => $value2) {
 	  		?>
 		  		<tr>
-					<td><a href="http://qa.allus.com.co/qa_managementv2/web/index.php/reportes/historicoformularios" target="_blank"><img src="../../../web/images/ico-view.png" style="cursor:hand"></a></td>		
+					<td><a href="../reportes/historicoformularios" target="_blank"><img src="../../../web/images/ico-view.png" style="cursor:hand"></a></td>		
 		  			<td class="text-center"><?php echo $varIdArbol = $value2['fecha'];?></td>
 		  			<td class="text-center"><?php echo $varIdArbol = $value2['total'];?></td>
 		  		</tr>
