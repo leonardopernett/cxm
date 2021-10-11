@@ -206,7 +206,7 @@ AppAsset::register($this);
                             [
 
                                 'class' => 'ico1',
-                                'label' => '<img src="https:/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
+                                'label' => '<img src="/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
                                 'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerDesempeno(),
                                 'items' => [
                                     '<div class="row">',
