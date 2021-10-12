@@ -2438,49 +2438,51 @@ use app\models\Formularios;
 
 
               $lastColumn = 'C';
-              $varCallid = Yii::$app->db->createCommand("SELECT  DISTINCT callId FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND login_id IN ('$varusuariologin')")->queryAll();
+              $varcountarCallid = Yii::$app->db->createCommand("SELECT DISTINCT callId FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND login_id IN ('$varusuariologin')")->queryAll();
 
-              $vararracallid = array();
-              foreach ($varCallid as $key => $value) {
-                array_push($vararracallid, $value['callId']);
-              }
-              $varlistascallids = implode(", ",$vararracallid);
+              $varindicadorarray = array();
+              $varconteocallid = 0;
+              foreach ($varcountarCallid as $key => $value) {
+                $varcallids = $value['callId'];
+                $varconteocallid = $varconteocallid + 1;
 
-              $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.cod_pcrc IN ('$txtCodPcrcok') AND sc.idcategorias in (2) AND sc.responsable IN (1)")->queryAll();
+                $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.cod_pcrc IN ('$txtCodPcrcok') AND sc.idcategorias in (2) AND sc.responsable IN (1)")->queryAll();
 
-              $countpositivas = 0;
-              $countnegativas = 0;
-              $countpositicasc = 0;
-              $countnegativasc = 0;
-              foreach ($varlistvariables as $key => $value) {
-                $varorientaciones = $value['orientacionsmart'];
-                $varidcategoriav = $value['idcategoria'];
-                $varcategoriap = $value['programacategoria'];
+                $varlistanegativo = array();
+                $varlistapositivo = array();
+                $varconteonegativas = 0;
+                $varconteopositivas = 0;
+                $varconteogeneral = 0;
+                foreach ($varlistvariables as $key => $value) {
+                  $varorientacionsmart = $value['orientacionsmart'];
+                  $varcategoriaidspeech = $value['idcategoria'];
+                  $varconteogeneral = $varconteogeneral + 1;
 
-                if ($varorientaciones == '1') {
-                  $countnegativas = $countnegativas + 1;
-                  $contarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND s.callid IN ($varlistascallids) AND extension IN ('$txtParametros') AND s.idvariable IN ($varidcategoriav) AND s.idindicador IN ($varidcategoriav) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
-
-                  if ($contarnegativas != '0') {
-                    $countnegativasc = $contarnegativas;
-                  }
-                }else{
-                  if ($varorientaciones == '2') {
-                    $countpositivas = $countpositivas + 1;
-                    $contarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND s.callid IN ($varlistascallids) AND extension IN ('$txtParametros') AND s.idvariable IN ($varidcategoriav) AND s.idindicador IN ($varidcategoriav) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
-
-                    if ($contarpositivas != '0') {
-                      $countpositicasc = $contarpositivas;
+                  if ($varorientacionsmart == "2") {
+                    array_push($varlistanegativo, $varcategoriaidspeech);
+                    $varconteonegativas = $varconteonegativas + 1;
+                  }else{
+                    if ($varorientacionsmart == "1") {
+                      array_push($varlistapositivo, $varcategoriaidspeech);
+                      $varconteopositivas = $varconteopositivas + 1;
                     }
                   }
                 }
+                $varvariablesnegativas = implode(", ", $varlistanegativo);
+                $varvariablespositivas = implode(", ", $varlistapositivo);
+
+                $varcontarvarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablesnegativas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+
+
+                $varcontarvarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablespositivas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+
+                $varResultado = (($varconteonegativas - $varcontarvarnegativas) + $varcontarvarpositivas) / $varconteogeneral;
+
+                array_push($varindicadorarray, $varResultado);
+
               }
 
-              if ($varlistvariables != 0 && $countnegativasc != 0) {
-                $resultadosIDA = round(100 - (($countnegativasc - $countpositicasc)/count($varlistvariables)),2);
-              }else{
-                $resultadosIDA = 0;
-              }
+              $resultadosIDA = round((array_sum($varindicadorarray) / $varconteocallid) * 100,2);
  
               $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $resultadosIDA);
               $numCell++;

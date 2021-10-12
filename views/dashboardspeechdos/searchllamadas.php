@@ -276,7 +276,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         ?>
                     </div>
                 </div>
-<php if($sessiones == "2953") { ?>
+<?php if($sessiones == "2953") { ?>
                 <?php if ($txttxtvarcantllamadasb != 0) {  ?>
                 <div class="col-md-3">
                     <div class="card1 mb">
