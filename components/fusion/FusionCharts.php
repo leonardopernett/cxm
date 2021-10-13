@@ -26,7 +26,7 @@ function encodeDataURL($strDataURL, $addNoCacheStr = false) {
 // Param: $mask - what part of the date to return "m' for month,"d" for day, and "y" for year
 // Param: $dateTimeStr - MySQL date/time format (yyyy-mm-dd HH:ii:ss)
 function datePart($mask, $dateTimeStr) {
-    @list($datePt, $timePt) = explode(" ", $dateTimeStr);
+    list($datePt, $timePt) = explode(" ", $dateTimeStr);
     $arDatePt = explode("-", $datePt);
     $dataStr = "";
     // Ensure we have 3 parameters for the date
