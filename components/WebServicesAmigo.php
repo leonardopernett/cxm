@@ -76,7 +76,6 @@ class WebServicesAmigo extends Component {
                         . $result . '#####', 'redbox');
                 return false;
             }
-            return false;
         } catch (\Exception $exc) {
             \Yii::error('#####' . __FILE__ . ':' . __LINE__ . ':'
                     . __FUNCTION__
