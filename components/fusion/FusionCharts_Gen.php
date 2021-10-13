@@ -130,7 +130,7 @@ class FusionCharts {
     # when we create object of FusionCharts, then Constructor will auto run and initialize 
     # chats array parameter like chartType, width, height, chartsID
 
-    function FusionCharts($chartType = "column2d", $width = "400", $height = "300", $chartID = "", $isTransparent = "") {
+    public function FusionCharts($chartType = "column2d", $width = "400", $height = "300", $chartID = "", $isTransparent = "") {
 
         $this->wMode = $isTransparent;
         # Setting All Charts Array
@@ -254,25 +254,25 @@ class FusionCharts {
 ##------------ PUBLIC FUNCTIONS ----------------------------------------------------------------
     # Special Character
 
-    function encodeXMLChars($option = true) {
+    public function encodeXMLChars($option = true) {
         $this->$encodeChars = $option;
     }
 
     # Setting Parameter Delimiter, Defult Parameter Separator is ";"
 
-    function setParamDelimiter($strDel) {
+    public function setParamDelimiter($strDel) {
         $this->del = $strDel;
     }
 
     # Database type set like ORACLE and MYSQL
 
-    function setDataBaseType($dbType) {
+    public function setDataBaseType($dbType) {
         $this->DataBaseType = strtolower($dbType);
     }
 
     # Setting path of SWF file. file name like FCF_Column3D.swf. where FCF_ is common for all SWF file
 
-    function setSWFPath($SWFPath) {
+    public function setSWFPath($SWFPath) {
         $this->SWFPath = $SWFPath;
         $this->SWFFile = $this->SWFPath . "FCF_" . $this->chartSWF[$this->chartType][0] . ".swf";
     }
@@ -280,7 +280,7 @@ class FusionCharts {
     # We can add or change single Chart parameter by setChartParam function
     # its take Parameter Name and its Value
 
-    function setChartParam($paramName, $paramValue) {
+    public function setChartParam($paramName, $paramValue) {
         $this->chartParams[$paramName] = $this->encodeSpecialChars($paramValue);
     }
 
@@ -288,7 +288,7 @@ class FusionCharts {
     # its take parameterset [ caption=xyz caption;subCaption=abcd abcd abcd;xAxisName=x axis;yAxisName=y's axis;bgColor=f2fec0;animation=1 ]
     # Defult Parameter Separator is ";"
 
-    function setChartParams($strParam) {
+    public function setChartParams($strParam) {
         $listArray = explode($this->del, $strParam);
         foreach ($listArray as $valueArray) {
             $paramValue = explode("=", $valueArray, 2);
@@ -300,14 +300,14 @@ class FusionCharts {
 
     # Setting Categories Parameter into categoriesParam variables
 
-    function setCategoriesParams($strParam) {
+    public function setCategoriesParams($strParam) {
 
         $this->categoriesParam .= $this->ConvertParamToXMLAttribute($strParam);
     }
 
     # Function addCategoryFromDatabase adding Category from dataset
 
-    function addCategoryFromDatabase($query_result, $categoryColumn) {
+    public function addCategoryFromDatabase($query_result, $categoryColumn) {
         if ($this->DataBaseType == "mysql") {
             # fetching recordset till eof
             while ($row = mysql_fetch_array($query_result)) {
@@ -325,7 +325,7 @@ class FusionCharts {
 
     # Function addCategoryFromArray adding Category from Array
 
-    function addCategoryFromArray($categoryArray) {
+    public function addCategoryFromArray($categoryArray) {
         # convert array to category set
         foreach ($categoryArray as $value) {
             # adding category
@@ -335,7 +335,7 @@ class FusionCharts {
 
     # Function for create set and catagory, dataset , set from array
 
-    function addChartDataFromArray($dataArray, $dataCatArray = "") {
+    public function addChartDataFromArray($dataArray, $dataCatArray = "") {
         if (is_array($dataArray)) {
             if ($this->seriesType == 1) {
                 # Single series Array
@@ -376,7 +376,7 @@ class FusionCharts {
 
     # Function addCategory adding Category and vLine element
 
-    function addCategory($label = "", $catParam = "", $vlineParam = "") {
+    public function addCategory($label = "", $catParam = "", $vlineParam = "") {
         $strCatXML = "";
         $strParam = "";
         $label = $this->encodeSpecialChars($label);
@@ -404,7 +404,7 @@ class FusionCharts {
 
     # adding dataset array element
 
-    function addDataset($seriesName, $strParam = "") {
+    public function addDataset($seriesName, $strParam = "") {
         $this->datasetCounter++;
         $this->createDataset($this->datasetCounter);
 
@@ -429,7 +429,7 @@ class FusionCharts {
 
     # Function addChartData adding set data element
 
-    function addChartData($value = "", $setParam = "", $vlineParam = "") {
+    public function addChartData($value = "", $setParam = "", $vlineParam = "") {
         $strSetXML = "";
 
         # Choosing dataset depend on seriesType and getting XML set
@@ -461,7 +461,7 @@ class FusionCharts {
     # database, by Default, from MySql recordset. You can use setDatabaseType() function -
     # to set the type of database to work on.
 
-    function addDatasetsFromDatabase($query_result, $ctrlField, $valueField, $datsetParamArray = "", $link = "") {
+    public function addDatasetsFromDatabase($query_result, $ctrlField, $valueField, $datsetParamArray = "", $link = "") {
 
         # Initialize variables
         $paramset = "";
