@@ -7,22 +7,25 @@
 // If you've parameters in your dataURL, you necessarily need to encode it.
 // Param: $strDataURL - dataURL to be fed to chart
 // Param: $addNoCacheStr - Whether to add aditional string to URL to disable caching of data
-function encodeDataURL($strDataURL, $addNoCacheStr = false) {
-    //Add the no-cache string if required
-    if ($addNoCacheStr == true) {
-        // We add ?FCCurrTime=xxyyzz
-        // If the dataURL already contains a ?, we add &FCCurrTime=xxyyzz
-        // We replace : with _, as FusionCharts cannot handle : in URLs
-        if (strpos(strDataURL, "?") <> 0)
-            $strDataURL .= "&FCCurrTime=" . Date("H_i_s");
-        else
-            $strDataURL .= "?FCCurrTime=" . Date("H_i_s");
-    }
-    // URL Encode it
-    return urlencode($strDataURL);
-}
 
-// datePart function converts MySQL database based on requested mask
+
+class encodeData  {
+    function encodeDataURL($strDataURL, $addNoCacheStr = false) {
+        //Add the no-cache string if required
+        if ($addNoCacheStr == true) {
+            // We add ?FCCurrTime=xxyyzz
+            // If the dataURL already contains a ?, we add &FCCurrTime=xxyyzz
+            // We replace : with _, as FusionCharts cannot handle : in URLs
+            if (strpos($strDataURL, "?") <> 0)
+                $strDataURL .= "&FCCurrTime=" . Date("H_i_s");
+            else
+                $strDataURL .= "?FCCurrTime=" . Date("H_i_s");
+        }
+        // URL Encode it
+        return urlencode($strDataURL);
+    }
+
+    // datePart function converts MySQL database based on requested mask
 // Param: $mask - what part of the date to return "m' for month,"d" for day, and "y" for year
 // Param: $dateTimeStr - MySQL date/time format (yyyy-mm-dd HH:ii:ss)
 function datePart($mask, $dateTimeStr) {
@@ -134,5 +137,10 @@ HTMLCHART;
 function boolToNum($bVal) {
     return (($bVal == true) ? 1 : 0);
 }
+}
+
+
+
+
 
 ?>

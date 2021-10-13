@@ -5,9 +5,9 @@
 // Our MySQL database (blueprintdb) for the Blueprint Application
 // Function to connect to the DB
 
-class conexionbd {
+class conexiondb {
 
-    static public function connectToDB() {
+    function connectToDB() {
         // These four parameters must be changed dependent on your MySQL settings
         $hostdb = 'HostURL';   // MySQl host
         $userdb = 'username';    // MySQL username
@@ -30,7 +30,6 @@ class conexionbd {
         }
         return $link;
     }
-    
 }
 
 
