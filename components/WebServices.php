@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Component;
 use yii\base\Exception;
 use SoapClient;
+use SoapFault;
 
 class WebServices extends Component {
 
@@ -89,7 +90,7 @@ class WebServices extends Component {
     private function validateStringXml($string) {
 
         try {
-            $content = @file_get_contents($string);            
+            $content = file_get_contents($string);            
             if ($content && !empty($content)) {                
                 $resulXml = simplexml_load_string($content);                
                 if ($resulXml) {
