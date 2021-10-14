@@ -112,10 +112,6 @@ class HvInfopersonalController extends Controller {
 
     public function actionCrear(){
 
-      $usuario = Yii::$app->db->createCommand('SELECT * FROM tbl_hv_infopersonal WHERE usua_id=:id')
-      ->bindParam(':id', Yii::$app->user->identity->id)
-      ->queryOne();
-
         $pcrc = Yii::$app->get('dbjarvis')->createCommand('select * from dp_pcrc')->queryAll();
         $clientes = Yii::$app->get('dbjarvis')->createCommand('select * from dp_clientes')->queryAll();
         $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
