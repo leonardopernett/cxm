@@ -765,7 +765,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       
           $sheet = $objPHPExcel->getSheet(0);
           $highestRow = $sheet->getHighestRow();
-          $highestcolumn = $sheet->getHighestColumn();
       
           for ($row = 3; $row <= $highestRow; $row++) {
             Yii::$app->db->createCommand()->insert('tbl_hv_infopersonal',[                                        
@@ -831,7 +830,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
 
       $varCorreo = Yii::$app->request->post("email");
 
-      $sessiones = Yii::$app->user->identity->id;
 
       $varlistusuarios = Yii::$app->db->createCommand("SELECT u.cliente,u.director, u.gerente , u.pcrc,
       u.hvnombre, u.hvidentificacion,u.hvdireccionoficina, u.hvdireccioncasa,u.hvemailcorporativo, u.hvmovil, u.hvcontactooficina,
@@ -857,16 +855,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               ),
           );
 
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
       $styleColor = array( 
               'fill' => array( 
                   'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -878,13 +866,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               'font' => array(
                 'bold' => false,
                 'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
               )
           );
 
@@ -909,26 +890,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               )
           );
 
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'E3AD48'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'DD6D5B'),
-              )
-          );
 
       $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
 
@@ -1256,7 +1217,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       ->setHtmlBody($message)
                       ->send();
 
-      $rtaenvio = 1;
        Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
       return $this->redirect(['index']);
 
@@ -1294,16 +1254,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               ),
           );
 
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
       $styleColor = array( 
               'fill' => array( 
                   'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -1315,13 +1265,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               'font' => array(
                 'bold' => false,
                 'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
               )
           );
 
@@ -1343,27 +1286,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       'style' => \PHPExcel_Style_Border::BORDER_THIN,
                       'color' => array('rgb' => 'DDDDDD')
                   )
-              )
-          );
-
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'E3AD48'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'DD6D5B'),
               )
           );
 
@@ -1693,7 +1615,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       ->setHtmlBody($message)
                       ->send();
 
-      $rtaenvio = 1;
        Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
       return $this->redirect(['index']);
 
@@ -1701,7 +1622,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
 
      public function actionExcelexporteventosadmin(){
       $varCorreo = Yii::$app->request->post("email");
-      $sessiones = Yii::$app->user->identity->id;
 
 
       $evento =Yii::$app->db->createCommand("SELECT u.director, u.gerente, u.cliente, u.hvnombre, u.hvidentificacion, 
@@ -1727,16 +1647,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               ),
           );
 
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
       $styleColor = array( 
               'fill' => array( 
                   'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -1748,13 +1658,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               'font' => array(
                 'bold' => false,
                 'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
               )
           );
 
@@ -1776,27 +1679,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       'style' => \PHPExcel_Style_Border::BORDER_THIN,
                       'color' => array('rgb' => 'DDDDDD')
                   )
-              )
-          );
-
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'E3AD48'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'DD6D5B'),
               )
           );
 
@@ -1909,7 +1791,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       ->setHtmlBody($message)
                       ->send();
 
-      $rtaenvio = 1;
        Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
       return $this->redirect(['index']);
      }
@@ -1942,16 +1823,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               ),
           );
 
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
       $styleColor = array( 
               'fill' => array( 
                   'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -1963,13 +1834,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               'font' => array(
                 'bold' => false,
                 'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
               )
           );
 
@@ -1991,27 +1855,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       'style' => \PHPExcel_Style_Border::BORDER_THIN,
                       'color' => array('rgb' => 'DDDDDD')
                   )
-              )
-          );
-
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'E3AD48'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'DD6D5B'),
               )
           );
 
@@ -2124,7 +1967,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       ->setHtmlBody($message)
                       ->send();
 
-      $rtaenvio = 1;
        Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
       return $this->redirect(['index']);
      }
