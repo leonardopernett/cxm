@@ -2,8 +2,6 @@
 
 namespace app\controllers;
 
-/* ini_set('upload_max_filesize', '50M');
- */
 use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
@@ -120,7 +118,6 @@ class HvInfopersonalController extends Controller {
 
         $pcrc = Yii::$app->get('dbjarvis')->createCommand('select * from dp_pcrc')->queryAll();
         $clientes = Yii::$app->get('dbjarvis')->createCommand('select * from dp_clientes')->queryAll();
-        $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
         $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
         $paises = Yii::$app->db->createCommand('SELECT pais FROM tbl_hv_pais ORDER BY pais ASC')->queryAll();
         $ciudad = Yii::$app->db->createCommand('SELECT ciudad  FROM tbl_hv_ciudad ORDER BY ciudad ASC')->queryAll();
@@ -302,7 +299,6 @@ class HvInfopersonalController extends Controller {
       $pcrc = Yii::$app->get('dbjarvis')->createCommand('select * from dp_pcrc')->queryAll();
       $clientes = Yii::$app->get('dbjarvis')->createCommand('select * from dp_clientes')->queryAll();
       $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
-      $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
       $paises = Yii::$app->db->createCommand('SELECT pais FROM tbl_hv_pais ORDER BY pais ASC')->queryAll();
       $ciudad = Yii::$app->db->createCommand('SELECT ciudad  FROM tbl_hv_ciudad ORDER BY ciudad ASC')->queryAll();
 
@@ -460,25 +456,6 @@ class HvInfopersonalController extends Controller {
     }           
 
     public function actionActualizar(){
-      /* 
-              $data2 = count($res2);
-              $data  = count($res);
-
-              for ($i = 0; $i <  $data; $i++) {
-                Yii::$app->db->createCommand('update tbl_hv_infopersonal set hobbies(user_id ,hobbies_id) values (:user_id, :hobbies_id)')
-                ->bindValue(":user_id" , Yii::$app->request->post('id'))
-                ->bindValue(":hobbies_id" , $res[$i])
-                ->execute();
-            }
-
-
-              Yii::$app->db->createCommand('DELETE FROM tbl_hv_info_hobbies WHERE user_id=:id')
-              ->bindParam(':id',Yii::$app->request->post('id'))
-              ->execute();
-
-              Yii::$app->db->createCommand('DELETE FROM tbl_hv_info_gustos WHERE user_id=:id')
-              ->bindParam(':id',Yii::$app->request->post('id'))
-              ->execute(); */
             Yii::$app->db->createCommand()->update('tbl_hv_infopersonal',[
                   'estadocivil' => Yii::$app->request->post('estadocivil'),
                   'numerohijos' => Yii::$app->request->post('numerohijos'),
@@ -496,12 +473,12 @@ class HvInfopersonalController extends Controller {
     
             if(empty($user_hijos)){
               Yii::$app->db->createCommand()->insert('tbl_hv_nombre_hijos',[
-                "nombre"  => $_POST['nombre'],
+                "nombre"  => Yii::$app->request->post('nombre'),
                 "user_id" => Yii::$app->request->post('id')
               ])->execute();
             }else {
               Yii::$app->db->createCommand()->update('tbl_hv_nombre_hijos',[
-                "nombre"  => $_POST['nombre'],
+                "nombre"  => Yii::$app->request->post('nombre'),
                 "user_id" => Yii::$app->request->post('id')
               ],'user_id=:id') 
               ->bindParam(':id',Yii::$app->request->post('id')) 
@@ -637,13 +614,6 @@ class HvInfopersonalController extends Controller {
     }
 
      public function actionhobbies($search = null){
-       /*  $data = \app\models\Hobbies::find()
-                            ->select(['id' => 'id', 'text' => 'UPPER(text)'])
-                            ->where('text LIKE "%' . $search . '%"')
-                            ->orderBy('text')
-                            ->asArray()
-                            ->all();
-        */
           $data = Yii::$app->db->createCommand('select * from hobbies')->queryAll();
           $out['results'] = array_values($data);
           echo \yii\helpers\Json::encode($out);
@@ -783,7 +753,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
      }
 
      public function Importexcel($name){
-          /* $inputFile = 'categorias/' . $name . '.xlsx'; */
           $inputFile  = $name;
       
           try {
@@ -980,13 +949,13 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('C2','Gerente');
       $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('D2','Pcrc');
       $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
@@ -1417,13 +1386,13 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('C2','Gerente');
       $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('D2','Pcrc');
       $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
@@ -1851,13 +1820,13 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('C2','Gerente');
       $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('D2','Nombre');
       $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
@@ -2066,13 +2035,13 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('C2','Gerente');
       $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('D2','Nombre');
       $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
