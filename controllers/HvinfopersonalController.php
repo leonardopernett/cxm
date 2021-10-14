@@ -5,6 +5,7 @@ namespace app\controllers;
 /* ini_set('upload_max_filesize', '50M');
  */
 use Yii;
+use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\filters\VerbFilter;
@@ -576,10 +577,6 @@ class HvInfopersonalController extends Controller {
       // ->attach($tmpFile)
       ->setHtmlBody($message)
       ->send(); 
-      Yii::$app->session->setFlash('info2','Registro creado Exitosamente');   
-      return $this->redirect(['index']); 
-    
-
       Yii::$app->session->setFlash('eventos','Evento Creado Exitosamente');
        return $this->redirect(['eventos', 'id'=>Yii::$app->request->post('idhvinforpersonal')]);
     }
@@ -607,11 +604,6 @@ class HvInfopersonalController extends Controller {
       // ->attach($tmpFile)
       ->setHtmlBody($message)
       ->send(); 
-
-      Yii::$app->session->setFlash('info2','Registro creado Exitosamente');   
-      return $this->redirect(['index']); 
-    
-
         Yii::$app->session->setFlash('eventos','Evento Eliminado Exitosamente');
        return $this->redirect(['eventos','id'=>$id_user]);
     }
@@ -1955,7 +1947,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
 
      public function actionExcelexporteventos(){
       $varCorreo = Yii::$app->request->post("email");
-      return     $varCorreo;
       $sessiones = Yii::$app->user->identity->id;
 
 
