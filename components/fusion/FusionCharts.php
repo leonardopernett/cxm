@@ -29,7 +29,7 @@ class encodeData  {
 // Param: $mask - what part of the date to return "m' for month,"d" for day, and "y" for year
 // Param: $dateTimeStr - MySQL date/time format (yyyy-mm-dd HH:ii:ss)
 function datePart($mask, $dateTimeStr) {
-    list($datePt, $timePt) = explode(" ", $dateTimeStr);
+    list($datePt, /*$timePt*/) = explode(" ", $dateTimeStr);
     $arDatePt = explode("-", $datePt);
     $dataStr = "";
     // Ensure we have 3 parameters for the date
@@ -40,8 +40,10 @@ function datePart($mask, $dateTimeStr) {
             case "m": return (int) $month;
             case "d": return (int) $day;
             case "y": return (int) $year;
+
+            default: return (trim($month . "/" . $day . "/" . $year));
         }
-        // default to mm/dd/yyyy
+        
         return (trim($month . "/" . $day . "/" . $year));
     }
     return $dataStr;
@@ -138,9 +140,3 @@ function boolToNum($bVal) {
     return (($bVal == true) ? 1 : 0);
 }
 }
-
-
-
-
-
-?>
