@@ -126,9 +126,7 @@ $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
 
                                 $txtlistgestion = Yii::$app->get('dbslave')->createCommand("select * from tbl_plan_escalamientos where anulado = 0 and tecnicolider in ($varlistasgestionados) and estado  = 0 and fechacreacion between '$varfechainicio' and '$varfechafin'")->queryAll();
-                            }else{
-                                $txtlistgestion = Yii::$app->get('dbslave')->createCommand("select * from tbl_plan_escalamientos where anulado = 0  and estado  = 0 and fechacreacion between '$varfechainicio' and '$varfechafin'")->queryAll();
-                            }
+                            
                             
 
                             foreach ($txtlistgestion as $key => $value) {
@@ -171,7 +169,7 @@ $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
                             </tr>
                         <?php
-                            }
+                            } }
                         ?>
                     </tbody>
                 </table>
