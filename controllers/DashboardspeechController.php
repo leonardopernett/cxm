@@ -2471,10 +2471,17 @@ use app\models\Formularios;
                 $varvariablesnegativas = implode(", ", $varlistanegativo);
                 $varvariablespositivas = implode(", ", $varlistapositivo);
 
-                $varcontarvarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablesnegativas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
-
-
-                $varcontarvarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablespositivas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+                if ($varvariablesnegativas != null) {
+                  $varcontarvarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablesnegativas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+                }else{
+                  $varcontarvarnegativas = 0;
+                }
+                
+                if ($varvariablespositivas != null) {
+                  $varcontarvarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablespositivas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+                }else{
+                  $varcontarvarpositivas = 0;
+                }
 
                 $varResultado = (($varconteonegativas - $varcontarvarnegativas) + $varcontarvarpositivas) / $varconteogeneral;
 
@@ -5573,7 +5580,7 @@ public function actionCantidadentto(){
                 $data->formulario_id = $formulario_id;
 
                 /* OBTIENE EL LISTADO DETALLADO DE TABLERO DE EXPERIENCIAS Y LLAMADA
-                  EN MODO VISUALIZACIÓN FORMULARIO. */
+                  EN MODO VISUALIZACIï¿½N FORMULARIO. */
                 $data->tablaproblemas = \app\models\Ejecuciontableroexperiencias::
                                 find()
                                 ->where(["ejecucionformulario_id" => $TmpForm->ejecucionformulario_id])->all();
@@ -5775,7 +5782,7 @@ public function actionCantidadentto(){
                 if (!isset($modelRegistro)) {
                     $modelRegistro = new \app\models\RegistroEjec();
                     $modelRegistro->ejec_form_id = $tmp_id;
-                    $modelRegistro->descripcion = 'Primera valoración';
+                    $modelRegistro->descripcion = 'Primera valoraciï¿½n';
                 }
                 //$modelRegistro = new \app\models\RegistroEjec();
                 $modelRegistro->dimension_id = $_POST['dimension_id'];
@@ -6002,7 +6009,7 @@ public function actionCantidadentto(){
                 $modelEvaluado = \app\models\Evaluados::findOne(["id" => $tmp_ejecucion->evaluado_id]);
                 $ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
                 // $params = [];
-                // $params['titulo'] = 'Te han realizado una valoración';
+                // $params['titulo'] = 'Te han realizado una valoraciï¿½n';
                 // $params['pcrc'] = '';
                 // $params['descripcion'] = '';
                 // $params['notificacion'] = 'SI';
@@ -6017,7 +6024,7 @@ public function actionCantidadentto(){
                 //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
                 //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                 //if (!$webservicesresponse && $tmp_ejecucion == '') {
-                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));
+                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexiï¿½n con la plataforma Amigo'));
                 //}
 
                 //Proceso para guardar clientes y centro de costos
