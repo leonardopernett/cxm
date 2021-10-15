@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\base\Exception;
 
 /**
  * BaseSatisfaccionController implements the CRUD actions for BaseSatisfaccion model.

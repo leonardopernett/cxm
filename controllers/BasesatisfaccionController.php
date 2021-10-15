@@ -34,6 +34,7 @@ use yii\base\Model;
 use app\models\Reglanegocio;
 use app\models\Equipos;
 use app\models\UploadForm2;
+use yii\base\Exception;
 
 /**
  * BaseSatisfaccionController implements the CRUD actions for BaseSatisfaccion model.
@@ -625,8 +626,8 @@ class BasesatisfaccionController extends Controller {
 
                                 }
                             }
-                return $this->redirect('encuestatelefonica');
                             fclose($gestor);
+                return $this->redirect('encuestatelefonica');
                         }
                     }
                 }
