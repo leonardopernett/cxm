@@ -8,6 +8,7 @@ use app\models\BloquedetallesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * BloquedetallesController implements the CRUD actions for Bloquedetalles model.
@@ -162,7 +163,6 @@ class BloquedetallesController extends Controller {
                             'bloque_id' => $bloqeId,
                 ]);
             }
-            Yii::$app->end();
         }
         //----------------------------------------------------------------------
 
@@ -181,7 +181,7 @@ class BloquedetallesController extends Controller {
                             'bloque_id' => $bloqeId,
                 ]);
             }
-        } catch (Exception $ex) {
+        } catch (Exception $exc) {
             Yii::warning($exc->getMessage());
         }
     }
@@ -219,7 +219,6 @@ class BloquedetallesController extends Controller {
                             'bloque_id' => $bloqeId,
                 ]);
             }
-            Yii::$app->end();
         }
         //----------------------------------------------------------------------
         try {
