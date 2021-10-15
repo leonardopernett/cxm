@@ -327,13 +327,18 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
             }
             $varscategorias = implode(", ", $vararraycategoria);
 
-            $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 3 AND sc.componentes = 1")->queryScalar();
+            if ($varscategorias != "") {
+                $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 3 AND sc.componentes = 1")->queryScalar();
 
-            if ($varcount == '') {
-                $data = '--';
+                if ($varcount == "") {
+                    $data = "--";
+                }else{
+                    $data = $varcount;
+                }
             }else{
-                $data = $varcount;
+                $data = "--";
             }
+            
             
         }
 
@@ -361,13 +366,18 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
             }
             $varscategorias = implode(", ", $vararraycategoria);
 
-            $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 2 AND sc.componentes = 1")->queryScalar();
+            if ($varscategorias != "") {
+                $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 2 AND sc.componentes = 1")->queryScalar();
 
-            if ($varcount == '') {
-                $data = '--';
+                if ($varcount == "") {
+                    $data = "--";
+                }else{
+                    $data = $varcount;
+                }
             }else{
-                $data = $varcount;
+                $data = "--";
             }
+            
         }
 
         return $data;
@@ -394,13 +404,18 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
             }
             $varscategorias = implode(", ", $vararraycategoria);
 
-            $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 1 AND sc.componentes = 1")->queryScalar();
+            if ($varscategorias != "") {
+                $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 1 AND sc.componentes = 1")->queryScalar();
 
-            if ($varcount == '') {
-                $data = '--';
+                if ($varcount == "") {
+                    $data = "--";
+                }else{
+                    $data = $varcount;
+                }
             }else{
-                $data = $varcount;
+                $data = "--";
             }
+            
         }
 
         return $data;

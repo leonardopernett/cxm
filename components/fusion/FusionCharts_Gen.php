@@ -130,7 +130,7 @@ class FusionCharts {
     # when we create object of FusionCharts, then Constructor will auto run and initialize 
     # chats array parameter like chartType, width, height, chartsID
 
-    function FusionCharts($chartType = "column2d", $width = "400", $height = "300", $chartID = "", $isTransparent = "") {
+    public function FusionCharts($chartType = "column2d", $width = "400", $height = "300", $chartID = "", $isTransparent = "") {
 
         $this->wMode = $isTransparent;
         # Setting All Charts Array
@@ -254,25 +254,25 @@ class FusionCharts {
 ##------------ PUBLIC FUNCTIONS ----------------------------------------------------------------
     # Special Character
 
-    function encodeXMLChars($option = true) {
+    public function encodeXMLChars($option = true) {
         $this->$encodeChars = $option;
     }
 
     # Setting Parameter Delimiter, Defult Parameter Separator is ";"
 
-    function setParamDelimiter($strDel) {
+    public function setParamDelimiter($strDel) {
         $this->del = $strDel;
     }
 
     # Database type set like ORACLE and MYSQL
 
-    function setDataBaseType($dbType) {
+    public function setDataBaseType($dbType) {
         $this->DataBaseType = strtolower($dbType);
     }
 
     # Setting path of SWF file. file name like FCF_Column3D.swf. where FCF_ is common for all SWF file
 
-    function setSWFPath($SWFPath) {
+    public function setSWFPath($SWFPath) {
         $this->SWFPath = $SWFPath;
         $this->SWFFile = $this->SWFPath . "FCF_" . $this->chartSWF[$this->chartType][0] . ".swf";
     }
@@ -280,7 +280,7 @@ class FusionCharts {
     # We can add or change single Chart parameter by setChartParam function
     # its take Parameter Name and its Value
 
-    function setChartParam($paramName, $paramValue) {
+    public function setChartParam($paramName, $paramValue) {
         $this->chartParams[$paramName] = $this->encodeSpecialChars($paramValue);
     }
 
@@ -288,7 +288,7 @@ class FusionCharts {
     # its take parameterset [ caption=xyz caption;subCaption=abcd abcd abcd;xAxisName=x axis;yAxisName=y's axis;bgColor=f2fec0;animation=1 ]
     # Defult Parameter Separator is ";"
 
-    function setChartParams($strParam) {
+    public function setChartParams($strParam) {
         $listArray = explode($this->del, $strParam);
         foreach ($listArray as $valueArray) {
             $paramValue = explode("=", $valueArray, 2);
@@ -300,14 +300,14 @@ class FusionCharts {
 
     # Setting Categories Parameter into categoriesParam variables
 
-    function setCategoriesParams($strParam) {
+    public function setCategoriesParams($strParam) {
 
         $this->categoriesParam .= $this->ConvertParamToXMLAttribute($strParam);
     }
 
     # Function addCategoryFromDatabase adding Category from dataset
 
-    function addCategoryFromDatabase($query_result, $categoryColumn) {
+    public function addCategoryFromDatabase($query_result, $categoryColumn) {
         if ($this->DataBaseType == "mysql") {
             # fetching recordset till eof
             while ($row = mysql_fetch_array($query_result)) {
@@ -325,7 +325,7 @@ class FusionCharts {
 
     # Function addCategoryFromArray adding Category from Array
 
-    function addCategoryFromArray($categoryArray) {
+    public function addCategoryFromArray($categoryArray) {
         # convert array to category set
         foreach ($categoryArray as $value) {
             # adding category
@@ -335,7 +335,7 @@ class FusionCharts {
 
     # Function for create set and catagory, dataset , set from array
 
-    function addChartDataFromArray($dataArray, $dataCatArray = "") {
+    public function addChartDataFromArray($dataArray, $dataCatArray = "") {
         if (is_array($dataArray)) {
             if ($this->seriesType == 1) {
                 # Single series Array
@@ -376,7 +376,7 @@ class FusionCharts {
 
     # Function addCategory adding Category and vLine element
 
-    function addCategory($label = "", $catParam = "", $vlineParam = "") {
+    public function addCategory($label = "", $catParam = "", $vlineParam = "") {
         $strCatXML = "";
         $strParam = "";
         $label = $this->encodeSpecialChars($label);
@@ -404,7 +404,7 @@ class FusionCharts {
 
     # adding dataset array element
 
-    function addDataset($seriesName, $strParam = "") {
+    public function addDataset($seriesName, $strParam = "") {
         $this->datasetCounter++;
         $this->createDataset($this->datasetCounter);
 
@@ -429,7 +429,7 @@ class FusionCharts {
 
     # Function addChartData adding set data element
 
-    function addChartData($value = "", $setParam = "", $vlineParam = "") {
+    public function addChartData($value = "", $setParam = "", $vlineParam = "") {
         $strSetXML = "";
 
         # Choosing dataset depend on seriesType and getting XML set
@@ -461,7 +461,7 @@ class FusionCharts {
     # database, by Default, from MySql recordset. You can use setDatabaseType() function -
     # to set the type of database to work on.
 
-    function addDatasetsFromDatabase($query_result, $ctrlField, $valueField, $datsetParamArray = "", $link = "") {
+    public function addDatasetsFromDatabase($query_result, $ctrlField, $valueField, $datsetParamArray = "", $link = "") {
 
         # Initialize variables
         $paramset = "";
@@ -575,7 +575,7 @@ class FusionCharts {
     # addDataFromDatabase funcion take 5 parameter like query_result, label field, value field 
     # and initialize dataset variables and link
 
-    function addDataFromDatabase($query_result, $db_field_ChartData, $db_field_CategoryNames = "", $strParam = "", $LinkPlaceHolder = "") {
+    public function addDataFromDatabase($query_result, $db_field_ChartData, $db_field_CategoryNames = "", $strParam = "", $LinkPlaceHolder = "") {
 
         $paramset = "";
         if ($this->DataBaseType == "mysql") {
@@ -643,7 +643,7 @@ class FusionCharts {
 
     # setTLine create TrendLine parameter 
 
-    function addTrendLine($strParam) {
+    public function addTrendLine($strParam) {
 
         $listArray = explode($this->del, $strParam);
         foreach ($listArray as $valueArray) {
@@ -657,7 +657,7 @@ class FusionCharts {
 
     #this function sets chart messages
 
-    function setChartMessage($strParam) {
+    public function setChartMessage($strParam) {
         $this->chartMSG = "?";
 
         $listArray = explode($this->del, $strParam);
@@ -673,7 +673,7 @@ class FusionCharts {
     #### - This function is mostly for Future USE -----------------------------
     # set JS constructor of FusionCharts.js
 
-    function setAddChartParams($debugMode, $registerWithJS = 0, $c = "", $scaleMode = "", $lang = "") {
+    public function setAddChartParams($debugMode, $registerWithJS = 0, $c = "", $scaleMode = "", $lang = "") {
         $this->JSC["debugmode"] = $debugMode;
         $this->JSC["registerwithjs"] = $registerWithJS;
         $this->JSC["bgcolor"] = $c;
@@ -683,7 +683,7 @@ class FusionCharts {
 
     # The function SetInitParam() adds extra chart settings 
 
-    function setInitParam($tname, $tvalue) {
+    public function setInitParam($tname, $tvalue) {
 
         $trimName = strtolower(str_replace(" ", "", $tname));
         $this->JSC[$trimName] = $tvalue;
@@ -691,7 +691,7 @@ class FusionCharts {
 
     # getXML render all class arrays to XML output
 
-    function getXML() {
+    public function getXML() {
 
         $this->strXML = "";
 
@@ -758,13 +758,13 @@ class FusionCharts {
 
     # set wMode
 
-    function setwMode($isTransparent = "") {
+    public function setwMode($isTransparent = "") {
         $this->wMode = $isTransparent;
     }
 
     # Function getXML render all class arrays to XML output
 
-    function renderChart($isHTML = false, $display = true) {
+    public function renderChart($isHTML = false, $display = true) {
 
         $this->strXML = $this->getXML();
         $this->SWFFile = $this->SWFPath . "FCF_" . $this->chartSWF[$this->chartType][0] . ".swf";
@@ -795,13 +795,13 @@ class FusionCharts {
 
     # Sets whether chart SWF files are not to be cached 
 
-    function setOffChartCaching($swfNoCache = false) {
+    public function setOffChartCaching($swfNoCache = false) {
         $this->noCache = $swfNoCache;
     }
 
     # Renders Chart form External XML data source
 
-    function renderChartFromExtXML($dataXML) {
+    public function renderChartFromExtXML($dataXML) {
         print $this->renderChartJS($this->SWFFile, "", $dataXML, $this->chartID, $this->width, $this->height, $this->JSC["debugmode"], $this->JSC["registerwithjs"], $this->wMode);
     }
 
@@ -817,7 +817,7 @@ class FusionCharts {
     // $debugMode - Whether to start the chart in debug mode
     // $registerWithJS - Whether to ask chart to register itself with JavaScript
     // $setTransparent - Transparent mode
-    function renderChartJS($chartSWF, $strURL, $strXML, $chartId, $chartWidth, $chartHeight, $debugMode = false, $registerWithJS = false, $setTransparent = "") {
+    public function renderChartJS($chartSWF, $strURL, $strXML, $chartId, $chartWidth, $chartHeight, $debugMode = false, $registerWithJS = false, $setTransparent = "") {
         //First we create a new DIV for each chart. We specify the name of DIV as "chartId"Div.			
         //DIV names are case-sensitive.
         // The Steps in the script block below are:
@@ -882,7 +882,7 @@ class FusionCharts {
     // $debugMode - Whether to start the chart in debug mode
     // $registerWithJS - Whether to ask chart to register itself with JavaScript
     // $setTransparent - Transparent mode
-    function renderChartHTML($chartSWF, $strURL, $strXML, $chartId, $chartWidth, $chartHeight, $debugMode = false, $registerWithJS = false, $setTransparent = "") {
+    public function renderChartHTML($chartSWF, $strURL, $strXML, $chartId, $chartWidth, $chartHeight, $debugMode = false, $registerWithJS = false, $setTransparent = "") {
         // Generate the FlashVars string based on whether dataURL has been provided or dataXML.
 
         $strHTML = "";
@@ -935,14 +935,14 @@ class FusionCharts {
     }
 
     // The function boolToNum() function converts boolean values to numeric (1/0)
-    function boolToNum($bVal) {
+    public function boolToNum($bVal) {
         return (($bVal == true) ? 1 : 0);
     }
 
 ##------------ PRIVATE FUNCTIONS ----------------------------------------------------------------
     # getDatasetXML create set chart xml 
 
-    function getDatasetXML() {
+    public function getDatasetXML() {
         # Calling dataset function depending on seriesType
         switch ($this->seriesType) {
             case 1 :
@@ -963,7 +963,7 @@ class FusionCharts {
     # By getChartParamsXML, we can fetch charts array and convert into XML
     # and return like "caption='xyz' xAxisName='x side' ............
 
-    function getChartParamsXML() {
+    public function getChartParamsXML() {
         $partXML = "";
         # feching charts each array and converting into chat parameter
         foreach ($this->chartParams as $part_type => $part_name) {
@@ -975,7 +975,7 @@ class FusionCharts {
 
     # Function getCategoriesXML for getting Category part XML
 
-    function getCategoriesXML() {
+    public function getCategoriesXML() {
         if ($this->seriesType > 1) {
             $partXML = "";
             # adding categories parameter
@@ -1000,7 +1000,7 @@ class FusionCharts {
     #       <set value='30' />
     #       <set value='26' />
 
-    function getSSDatasetXML() {
+    public function getSSDatasetXML() {
         if ($this->seriesType == 1) {
             $partXML = "";
             foreach ($this->dataset as $part_type => $part_name) {
@@ -1021,7 +1021,7 @@ class FusionCharts {
     #       <set value='26' />
     #     </dataset>
 
-    function getMSDatasetXML() {
+    public function getMSDatasetXML() {
         if ($this->seriesType > 1) {
             $partXML = "";
             foreach ($this->dataset as $part_type => $part_name) {
@@ -1045,7 +1045,7 @@ class FusionCharts {
     #    <line startValue='700000' color='009933' displayvalue='Target' /> 
     # </trendLines>
 
-    function getTrendLinesXML() {
+    public function getTrendLinesXML() {
         $partXML = "";
         $lineXML = "";
         # fetching trendLines array
@@ -1075,7 +1075,7 @@ class FusionCharts {
 
     # adding set element to dataset element for seriesType 1 and 2
 
-    function setSSMSDataArray($value = "", $setParam = "", $vlineParam = "") {
+    public function setSSMSDataArray($value = "", $setParam = "", $vlineParam = "") {
         $strSetXML = "";
         $strParam = "";
         $color = 0;
@@ -1112,38 +1112,38 @@ class FusionCharts {
     ## - - - -   - -   Array Init Functions  - - --- - -- - - - - - - -- - - - - -
     # Function createCategory create array element with in Categories
 
-    function createCategory($catID) {
+    public function createCategory($catID) {
         $this->categoryNames[$catID] = array();
     }
 
     # createDataset dataset array element
 
-    function createDataset($dataID) {
+    public function createDataset($dataID) {
         $this->dataset[$dataID] = array();
     }
 
     # creating set  dataset array element
 
-    function createDataValues($datasetID, $dataID) {
+    public function createDataValues($datasetID, $dataID) {
         $this->dataset[$datasetID][$dataID] = array();
     }
 
     # createTrendLines create TrendLines array
 
-    function createTrendLines($lineID) {
+    public function createTrendLines($lineID) {
         $this->trendLines[$lineID] = array();
     }
 
     # setTLine create TrendLine parameter 
 
-    function setTLine($lineID, $paramName, $paramValue) {
+    public function setTLine($lineID, $paramName, $paramValue) {
         $this->trendLines[$lineID][$paramName] = $paramValue;
     }
 
     # ----- ----------    -----  Misc utility functions  ---- ------ -----------
     # converting ' and " to %26apos; and &quot; 
 
-    function encodeSpecialChars($strValue) {
+    public function encodeSpecialChars($strValue) {
 
         $pattern = "/%(?![\da-f]{2}|[\da-f]{4})/i";
         $strValue = preg_replace($pattern, "%25", $strValue);
@@ -1224,7 +1224,7 @@ class FusionCharts {
     # Its convert pattern link to original link 
     # abcd.php?cid=##Field_name_1##&pname=##Field_name_2##
 
-    function getLinkFromPattern($row, $tempLink) {
+    public function getLinkFromPattern($row, $tempLink) {
         # convert link into array break on '##'
         $aa = explode("##", $tempLink);
         # Reading array
@@ -1244,7 +1244,7 @@ class FusionCharts {
 
     # convertion of semi colon(;) separeted paramater to XML attribute
 
-    function ConvertParamToXMLAttribute($strParam) {
+    public function ConvertParamToXMLAttribute($strParam) {
 
         $xmlParam = "";
         $listArray = explode($this->del, $strParam);
@@ -1260,7 +1260,7 @@ class FusionCharts {
         return $xmlParam;
     }
 
-    function validateParam($paramValue) {
+    public function validateParam($paramValue) {
         if (count($paramValue) >= 2) {
             if (trim($paramValue[0]) == "") {
                 return false;
@@ -1273,7 +1273,7 @@ class FusionCharts {
 
     # Getting Charts series type from charts array. 1 => single series, 2=> multi-series, 3=> scatter and bubble, 4=> MSStacked. defult 1 => single series
 
-    function getSeriesType() {
+    public function getSeriesType() {
         $sValue = 1;
         if (is_array($this->chartSWF[$this->chartType])) {
             $sValue = $this->chartSWF[$this->chartType][1];
@@ -1285,7 +1285,7 @@ class FusionCharts {
 
     #this function returns a color from a list of colors
 
-    function getColor($counter) {
+    public function getColor($counter) {
 
         $strColor = "";
         if ($this->UserColorON == false) {
@@ -1299,13 +1299,13 @@ class FusionCharts {
 
     # Clear User Color 
 
-    function ClearUserColor() {
+    public function ClearUserColor() {
         $this->UserColorON = false;
     }
 
     # add User Colors
 
-    function addColors($ColorList) {
+    public function addColors($ColorList) {
         $listArray = explode($this->del, $ColorList);
         $this->UserColorON = true;
         foreach ($listArray as $valueArray) {
@@ -1316,7 +1316,7 @@ class FusionCharts {
 
     ### ----- Pupulate Color and Chart SWF array  ------ ------- ---------------------
 
-    function colorInit() {
+    public function colorInit() {
         $this->arr_FCColors[] = "AFD8F8";
         $this->arr_FCColors[] = "F6BD0F";
         $this->arr_FCColors[] = "8BBA00";
@@ -1344,7 +1344,7 @@ class FusionCharts {
 
     # Setting FusionCharts SWF file array list and series 
 
-    function setChartArrays() {
+    public function setChartArrays() {
 
         $this->chartSWF['area2d'][0] = "Area2D";
         $this->chartSWF['area2d'][1] = 1;
@@ -1433,7 +1433,7 @@ class FusionCharts {
     # ----------- Public Functions -----------------------------------------------
     # Function addCategory adding Category and vLine element
 
-    function addGanttCategorySet($catParam = "") {
+    public function addGanttCategorySet($catParam = "") {
         $this->GT_categories_Counter++;
         $this->GT_categories[$this->GT_categories_Counter] = array();
         $strParam = "";
@@ -1449,7 +1449,7 @@ class FusionCharts {
 
     # Function addGanttCategory adding Category 
 
-    function addGanttCategory($label = "", $catParam = "") {
+    public function addGanttCategory($label = "", $catParam = "") {
 
         $strCatXML = "";
         $strParam = "";
@@ -1469,14 +1469,14 @@ class FusionCharts {
 
     # Setting Process Parameter into categoriesParam variables
 
-    function setGanttProcessesParams($strParam) {
+    public function setGanttProcessesParams($strParam) {
 
         $this->GT_processes_Param .= $this->ConvertParamToXMLAttribute($strParam);
     }
 
     # Function addGanttProcess adding Process
 
-    function addGanttProcess($label = "", $catParam = "") {
+    public function addGanttProcess($label = "", $catParam = "") {
 
         $strCatXML = "";
         $strParam = "";
@@ -1497,14 +1497,14 @@ class FusionCharts {
 
     # Setting Tasks Parameter into TaskParam variables
 
-    function setGanttTasksParams($strParam) {
+    public function setGanttTasksParams($strParam) {
 
         $this->GT_Tasks_Param .= $this->ConvertParamToXMLAttribute($strParam);
     }
 
     # Function addGanttTasks adding Tasks
 
-    function addGanttTask($label = "", $catParam = "") {
+    public function addGanttTask($label = "", $catParam = "") {
 
         $strCatXML = "";
         $strParam = "";
@@ -1525,13 +1525,13 @@ class FusionCharts {
 
     # Setting Tasks Parameter into ConnectorsParam variables
 
-    function setGanttConnectorsParams($strParam) {
+    public function setGanttConnectorsParams($strParam) {
         $this->GT_Connectors_Param .= $this->ConvertParamToXMLAttribute($strParam);
     }
 
     # Function addGanttConnector adding Connector
 
-    function addGanttConnector($From, $To, $catParam = "") {
+    public function addGanttConnector($From, $To, $catParam = "") {
 
         $strCatXML = "";
         $strParam = "";
@@ -1551,13 +1551,13 @@ class FusionCharts {
 
     # Setting Milestones Parameter into MilestonesParam variables
 
-    function setGanttMilestonesParams($strParam) {
+    public function setGanttMilestonesParams($strParam) {
         $this->GT_Milestones_Param .= $this->ConvertParamToXMLAttribute($strParam);
     }
 
     # Function addGanttMilestones adding Milestones
 
-    function addGanttMilestone($taskID, $catParam = "") {
+    public function addGanttMilestone($taskID, $catParam = "") {
 
         $strCatXML = "";
         $strParam = "";
@@ -1577,14 +1577,14 @@ class FusionCharts {
 
     # Setting Legend Parameter into LegendParam variables
 
-    function setGanttLegendParams($strParam) {
+    public function setGanttLegendParams($strParam) {
 
         $this->GT_legend_Param .= $this->ConvertParamToXMLAttribute($strParam);
     }
 
     # Function addGanttLegendItem adding LegendItem
 
-    function addGanttLegendItem($label, $catParam = "") {
+    public function addGanttLegendItem($label, $catParam = "") {
 
         $strCatXML = "";
         $strParam = "";
@@ -1605,14 +1605,14 @@ class FusionCharts {
 
     # Setting Datatable Parameter into DatatableParam variables
 
-    function setGanttDatatableParams($strParam) {
+    public function setGanttDatatableParams($strParam) {
 
         $this->GT_datatableParam .= $this->ConvertParamToXMLAttribute($strParam);
     }
 
     # Function addGanttDatacolumn adding Datacolumn
 
-    function addGanttDatacolumn($catParam = "") {
+    public function addGanttDatacolumn($catParam = "") {
         $this->GT_datatable_Counter++;
         $this->GT_datatable[$this->GT_datatable_Counter] = array();
         $strParam = "";
@@ -1627,7 +1627,7 @@ class FusionCharts {
 
     # Function addGanttColumnText adding ColumnText
 
-    function addGanttColumnText($label = "", $catParam = "") {
+    public function addGanttColumnText($label = "", $catParam = "") {
 
         $strCatXML = "";
         $strParam = "";
@@ -1649,20 +1649,20 @@ class FusionCharts {
     #-- Gantt array init ------------------------------------------------
     # Function createCategory create array element with in Categories
 
-    function createGanttCategory($catID) {
+    public function createGanttCategory($catID) {
         $this->GT_categories[$catID] = array();
     }
 
     # Function createGanttDatatable create array element with in Datatable
 
-    function createGanttDatatable($catID) {
+    public function createGanttDatatable($catID) {
         $this->GT_datatable[$catID] = array();
     }
 
     #-- GANTT XML genetators -------------------------------------------
     # Function getCategoriesXML for getting Category part XML
 
-    function getGanttCategoriesXML() {
+    public function getGanttCategoriesXML() {
         $partXML = "";
         foreach ($this->GT_categories as $part_type => $part_name) {
             # adding categories parameter
@@ -1682,7 +1682,7 @@ class FusionCharts {
 
     # Function getProcessesXML for getting Processes part XML
 
-    function getProcessesXML() {
+    public function getProcessesXML() {
 
         $partXML = "";
         # adding processes parameter
@@ -1702,7 +1702,7 @@ class FusionCharts {
 
     # Function getProcessesXML for getting Processes part XML
 
-    function getTasksXML() {
+    public function getTasksXML() {
 
         $partXML = "";
         # adding processes parameter
@@ -1722,7 +1722,7 @@ class FusionCharts {
 
     # Function getConnectorsXML for getting Connectors part XML
 
-    function getConnectorsXML() {
+    public function getConnectorsXML() {
         $c = 0;
         $partXML = "";
         # adding connectors parameter
@@ -1747,7 +1747,7 @@ class FusionCharts {
 
     # Function getMilestonesXML for getting Milestones part XML
 
-    function getMilestonesXML() {
+    public function getMilestonesXML() {
         $c = 0;
         $partXML = "";
         # adding Milestones parameter
@@ -1771,7 +1771,7 @@ class FusionCharts {
 
     # Function getLegendXML for getting Legend part XML
 
-    function getLegendXML() {
+    public function getLegendXML() {
         $c = 0;
         $partXML = "";
         # adding Legend parameter
@@ -1795,7 +1795,7 @@ class FusionCharts {
 
     # Function getGanttDatatableXML for getting Category part XML
 
-    function getGanttDatatableXML() {
+    public function getGanttDatatableXML() {
         $partXML = "";
         foreach ($this->GT_datatable as $part_type => $part_name) {
             # adding dataColumn parameter
@@ -1818,7 +1818,7 @@ class FusionCharts {
     ##---------PUBLIC functions ----------------------------------------------------
     # adding Lineset array and parameter to it
 
-    function addLineset($seriesName, $strParam) {
+    public function addLineset($seriesName, $strParam) {
         $this->createLineset();
         $this->lineSetCounter++;
         $this->lineSet[$this->lineCounter][$this->lineSetCounter] = array();
@@ -1835,7 +1835,7 @@ class FusionCharts {
 
     # adding Line's Set data 
 
-    function addLinesetData($value = "", $setParam = "", $vlineParam = "") {
+    public function addLinesetData($value = "", $setParam = "", $vlineParam = "") {
         $strSetXML = "";
         # getting parameter set  
         $strSetXML = $this->setSSMSDataArray($value, $setParam, $vlineParam);
@@ -1849,7 +1849,7 @@ class FusionCharts {
 
     # adding ms dataset and parameter	 
 
-    function addMSSSubDataset($seriesName, $strParam) {
+    public function addMSSSubDataset($seriesName, $strParam) {
         $this->MSSSubDatasetCounter++;
         $this->MSSDataset[$this->MSSDatasetCounter][$this->MSSSubDatasetCounter] = array();
 
@@ -1866,7 +1866,7 @@ class FusionCharts {
 
     # adding set element to dataset element for seriesType 3
 
-    function setScatterBubbleDataArray($value = "", $setParam = "", $vlineParam = "") {
+    public function setScatterBubbleDataArray($value = "", $setParam = "", $vlineParam = "") {
         $strSetXML = "";
         $strParam = "";
         if ($vlineParam == "") {
@@ -1887,7 +1887,7 @@ class FusionCharts {
 
     # setvTLine create TrendLine parameter 
 
-    function setVTrendLines($strParam) {
+    public function setVTrendLines($strParam) {
         $listArray = explode($this->del, $strParam);
         foreach ($listArray as $valueArray) {
             $paramValue = explode("=", $valueArray, 2);
@@ -1900,7 +1900,7 @@ class FusionCharts {
 
     # setSubStylesParam create sub styles array to store parameters
 
-    function addStyleDef($styleName, $styleType, $strParam) {
+    public function addStyleDef($styleName, $styleType, $strParam) {
         $this->styles["definition"]["style"][$this->styleDefCounter]["name"] = $styleName;
         $this->styles["definition"]["style"][$this->styleDefCounter]["type"] = $styleType;
 
@@ -1916,7 +1916,7 @@ class FusionCharts {
 
     # apply styles
 
-    function addStyleApp($toObject, $styles) {
+    public function addStyleApp($toObject, $styles) {
         $this->styles["application"]["apply"][$this->styleAppCounter]["toObject"] = $toObject;
         $this->styles["application"]["apply"][$this->styleAppCounter]["styles"] = $styles;
 
@@ -1927,7 +1927,7 @@ class FusionCharts {
     ## - --  - - XML generators  - - - - ---- - -- - - - -
     # Function getLinesetXML for getting Lineset XML
 
-    function getLinesetXML() {
+    public function getLinesetXML() {
         # if seriesType MSStackedColumn2DLineDY (4) then linset element will be Generate
         if ($this->seriesType == 4) {
             $partXML = "";
@@ -1955,7 +1955,7 @@ class FusionCharts {
     #     </dataset>
     # </dataset>
 
-    function getMSStackedDatasetXML() {
+    public function getMSStackedDatasetXML() {
         if ($this->seriesType == 4) {
             $partXML = "";
 
@@ -1982,7 +1982,7 @@ class FusionCharts {
     #    <line displayValue='vTrendLines' startValue='5' endValue='6' alpha='10' color='ff0000'  />
     # </vTrendlines>
 
-    function getvTrendLinesXML() {
+    public function getvTrendLinesXML() {
         $partXML = "";
         $lineXML = "";
         # fetching vtrendLines array
@@ -2020,7 +2020,7 @@ class FusionCharts {
       </styles>
      */
 
-    function getStylesXML() {
+    public function getStylesXML() {
         $partXML = "";
         $lineXML = "";
         # fetching styles array	
@@ -2058,14 +2058,14 @@ class FusionCharts {
     ## ---------- Array Init functions ----------------------------------------------
     # create Lineset array 
 
-    function createLineset() {
+    public function createLineset() {
         $this->lineCounter++;
         $this->lineSet[$this->lineCounter] = array();
     }
 
     # creating MS-Stacked ataset array element and parameter array
 
-    function createMSSDataset() {
+    public function createMSSDataset() {
         $this->MSSDatasetCounter++;
         $this->MSSDataset[$this->MSSDatasetCounter] = array();
         $this->MSSDatasetParams[$this->MSSDatasetCounter] = array();
@@ -2073,45 +2073,45 @@ class FusionCharts {
 
     # Creating set data with in datset
 
-    function createMSSSetData() {
+    public function createMSSSetData() {
         $this->MSSSetCounter++;
         $this->MSSDataset[$this->MSSDatasetCounter][$this->MSSSubDatasetCounter][$this->MSSSetCounter] = array();
     }
 
     # createStyles create array element with in styles array
 
-    function createStyles($styleID) {
+    public function createStyles($styleID) {
         $this->styles[$styleID] = array();
     }
 
     # createSubStyles create array element with in styles array element with in sub styles array 
     # element for storing sub element parameter
 
-    function createSubStyles($styleID, $subStyle) {
+    public function createSubStyles($styleID, $subStyle) {
         $this->styles[$styleID][$subStyle] = array();
     }
 
     # createvTrendLines create TrendLines array
 
-    function createvTrendLines($lineID) {
+    public function createvTrendLines($lineID) {
         $this->vtrendLines[$lineID] = array();
     }
 
     # setvTLine create TrendLine parameter 
 
-    function setvTLine($lineID, $paramName, $paramValue) {
+    public function setvTLine($lineID, $paramName, $paramValue) {
         $this->vtrendLines[$lineID][$paramName] = $paramValue;
     }
 
     # create sub styles param
 
-    function createSubStylesParam($styleID, $subStyle, $subParam) {
+    public function createSubStylesParam($styleID, $subStyle, $subParam) {
         $this->styles[$styleID][$subStyle][$subParam] = array();
     }
 
     # setSubStylesParam create sub styles array to store parameters
 
-    function setSubStylesParam($styleID, $subStyle, $subParam, $id, $value) {
+    public function setSubStylesParam($styleID, $subStyle, $subParam, $id, $value) {
         $this->styles[$styleID][$subStyle][$subParam][$id] = $value;
     }
 

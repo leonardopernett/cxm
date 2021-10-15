@@ -2471,10 +2471,17 @@ $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboar
                 $varvariablesnegativas = implode(", ", $varlistanegativo);
                 $varvariablespositivas = implode(", ", $varlistapositivo);
 
-                $varcontarvarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablesnegativas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
-
-
-                $varcontarvarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablespositivas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+                if ($varvariablesnegativas != null) {
+                  $varcontarvarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablesnegativas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+                }else{
+                  $varcontarvarnegativas = 0;
+                }
+                
+                if ($varvariablespositivas != null) {
+                  $varcontarvarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablespositivas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
+                }else{
+                  $varcontarvarpositivas = 0;
+                }                
 
                 $varResultado = (($varconteonegativas - $varcontarvarnegativas) + $varcontarvarpositivas) / $varconteogeneral;
 
@@ -4775,6 +4782,11 @@ public function actionCantidadentto(){
         $arraydasboardlist = Yii::$app->db->createCommand("SELECT iddashboardspeechcalls, callId, login_id, fechareal, idredbox, connid  FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtvarprograma')
         AND extension IN ('$txtvarextension') AND fechallamada BETWEEN '$txtvarfechasinicio' AND '$txtvarfechasfin'")->queryAll();
         
+        $varCallid = null;
+        $varlistvariables = null;
+        $resultadosIDA = null;
+        $txtejecucion = null;
+        $txtpromediorta = null;
         $numCell = 7;
         foreach ($arraydasboardlist as $key => $value) {
           $varconnid = $value['connid'];
@@ -4836,22 +4848,64 @@ public function actionCantidadentto(){
           $dataResponsabilidadM = null;
           $dataResponsabilidadC = null;
           $dataResponsabilidadA = null;
-                           
-          
+                                     
           $phpExc->getActiveSheet()->setCellValue('J'.$numCell, $dataResponsabilidadM);
           $phpExc->getActiveSheet()->setCellValue('K'.$numCell, $dataResponsabilidadC);
           $phpExc->getActiveSheet()->setCellValue('L'.$numCell, $dataResponsabilidadA);
+          
+          $varCallid = Yii::$app->db->createCommand("SELECT d.callId FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $varidspeech")->queryScalar();
 
+          $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc  WHERE sc.anulado = 0 AND sc.cod_pcrc IN ('$txtvarcodigopcrc') AND sc.idcategorias in (2) AND sc.responsable IN (1)")->queryAll();
 
+          $countpositivas = 0;
+          $countnegativas = 0;
+          $countpositicasc = 0;
+          $countnegativasc = 0;
+          foreach ($varlistvariables as $key => $value) {
+            $varorientaciones = $value['orientacionsmart'];
+            $varidcategoriav = $value['idcategoria'];
+            $varcategoriap = $value['programacategoria'];
 
+            if ($varorientaciones == '2') {
+              $countnegativas = $countnegativas + 1;
+              $contarnegativas = Yii::$app->db->createCommand("SELECT COUNT(s.idvariable) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$varcategoriap') AND s.callid IN ($varCallid) AND s.idvariable IN ($varidcategoriav)")->queryScalar();
+    
+              if ($contarnegativas == '1') {
+                $countnegativasc = $countnegativasc + 1;
+              }
+            }else{
+              if ($varorientaciones == '1') {
+                $countpositivas = $countpositivas + 1;
+                $contarpositivas = Yii::$app->db->createCommand("SELECT COUNT(s.idvariable) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$varcategoriap') AND s.callid IN ($varCallid) AND s.idvariable IN ($varidcategoriav)")->queryScalar();
+    
+                if ($contarpositivas == '1') {
+                  $countpositicasc = $countpositicasc + 1;
+                }
+              }
+            }
+          }
 
+          if ($varlistvariables != 0 && $countnegativasc != 0) {
+            $resultadosIDA = round((($countpositicasc + ($countnegativas - $countnegativasc)) / count($varlistvariables)),2);
+          }else{
+            $resultadosIDA = 0;
+          }
+
+          $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeech')")->queryScalar();
+          $txtscoreejecucion = Yii::$app->db->createCommand("SELECT DISTINCT round(te.score,2) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
+          if ($txtscoreejecucion == "") {
+            $txtpromediorta = $resultadosIDA;
+          }else{
+            $txtpromediorta = round(($resultadosIDA + $txtejecucion) / 2,2);
+          }  
+
+          $phpExc->getActiveSheet()->setCellValue('M'.$numCell, $resultadosIDA);
+          $phpExc->getActiveSheet()->setCellValue('N'.$numCell, $txtscoreejecucion);
+          $phpExc->getActiveSheet()->setCellValue('O'.$numCell, $txtpromediorta);
 
 
           $numCell++;
         }
-
-
-
 
         $hoy = getdate();
         $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_GestionTecnico_".$txtcentrocostos;
@@ -4873,9 +4927,9 @@ public function actionCantidadentto(){
                         ->setSubject("Envio de la gestion del tecnico ".$txtcentrocostos)
                         ->attach($tmpFile)
                         ->setHtmlBody($message)
-                        ->send();
-        
-        
+                        ->send();        
+
+        return $this->redirect(array('searchllamadas','varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc,         'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio,         'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal,        'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtconsinmotivos));
       }     
 
 
@@ -5916,7 +5970,7 @@ public function actionCantidadentto(){
                 $data->formulario_id = $formulario_id;
 
                 /* OBTIENE EL LISTADO DETALLADO DE TABLERO DE EXPERIENCIAS Y LLAMADA
-                  EN MODO VISUALIZACIÓN FORMULARIO. */
+                  EN MODO VISUALIZACIï¿½N FORMULARIO. */
                 $data->tablaproblemas = \app\models\Ejecuciontableroexperiencias::
                                 find()
                                 ->where(["ejecucionformulario_id" => $TmpForm->ejecucionformulario_id])->all();
@@ -6118,7 +6172,7 @@ public function actionCantidadentto(){
                 if (!isset($modelRegistro)) {
                     $modelRegistro = new \app\models\RegistroEjec();
                     $modelRegistro->ejec_form_id = $tmp_id;
-                    $modelRegistro->descripcion = 'Primera valoración';
+                    $modelRegistro->descripcion = 'Primera valoraciï¿½n';
                 }
                 //$modelRegistro = new \app\models\RegistroEjec();
                 $modelRegistro->dimension_id = $_POST['dimension_id'];
@@ -6345,7 +6399,7 @@ public function actionCantidadentto(){
                 $modelEvaluado = \app\models\Evaluados::findOne(["id" => $tmp_ejecucion->evaluado_id]);
                 $ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
                 // $params = [];
-                // $params['titulo'] = 'Te han realizado una valoración';
+                // $params['titulo'] = 'Te han realizado una valoraciï¿½n';
                 // $params['pcrc'] = '';
                 // $params['descripcion'] = '';
                 // $params['notificacion'] = 'SI';
@@ -6360,7 +6414,7 @@ public function actionCantidadentto(){
                 //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
                 //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                 //if (!$webservicesresponse && $tmp_ejecucion == '') {
-                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));
+                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexiï¿½n con la plataforma Amigo'));
                 //}
 
                 //Proceso para guardar clientes y centro de costos
