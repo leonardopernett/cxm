@@ -2,9 +2,8 @@
 
 namespace app\controllers;
 
-/* ini_set('upload_max_filesize', '50M');
- */
 use Yii;
+use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\filters\VerbFilter;
@@ -113,13 +112,8 @@ class HvInfopersonalController extends Controller {
 
     public function actionCrear(){
 
-      $usuario = Yii::$app->db->createCommand('SELECT * FROM tbl_hv_infopersonal WHERE usua_id=:id')
-      ->bindParam(':id', Yii::$app->user->identity->id)
-      ->queryOne();
-
         $pcrc = Yii::$app->get('dbjarvis')->createCommand('select * from dp_pcrc')->queryAll();
         $clientes = Yii::$app->get('dbjarvis')->createCommand('select * from dp_clientes')->queryAll();
-        $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
         $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
         $paises = Yii::$app->db->createCommand('SELECT pais FROM tbl_hv_pais ORDER BY pais ASC')->queryAll();
         $ciudad = Yii::$app->db->createCommand('SELECT ciudad  FROM tbl_hv_ciudad ORDER BY ciudad ASC')->queryAll();
@@ -301,7 +295,6 @@ class HvInfopersonalController extends Controller {
       $pcrc = Yii::$app->get('dbjarvis')->createCommand('select * from dp_pcrc')->queryAll();
       $clientes = Yii::$app->get('dbjarvis')->createCommand('select * from dp_clientes')->queryAll();
       $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
-      $posicion = Yii::$app->get('dbjarvis')->createCommand('select * from dp_posicion')->queryAll();
       $paises = Yii::$app->db->createCommand('SELECT pais FROM tbl_hv_pais ORDER BY pais ASC')->queryAll();
       $ciudad = Yii::$app->db->createCommand('SELECT ciudad  FROM tbl_hv_ciudad ORDER BY ciudad ASC')->queryAll();
 
@@ -459,25 +452,6 @@ class HvInfopersonalController extends Controller {
     }           
 
     public function actionActualizar(){
-      /* 
-              $data2 = count($res2);
-              $data  = count($res);
-
-              for ($i = 0; $i <  $data; $i++) {
-                Yii::$app->db->createCommand('update tbl_hv_infopersonal set hobbies(user_id ,hobbies_id) values (:user_id, :hobbies_id)')
-                ->bindValue(":user_id" , Yii::$app->request->post('id'))
-                ->bindValue(":hobbies_id" , $res[$i])
-                ->execute();
-            }
-
-
-              Yii::$app->db->createCommand('DELETE FROM tbl_hv_info_hobbies WHERE user_id=:id')
-              ->bindParam(':id',Yii::$app->request->post('id'))
-              ->execute();
-
-              Yii::$app->db->createCommand('DELETE FROM tbl_hv_info_gustos WHERE user_id=:id')
-              ->bindParam(':id',Yii::$app->request->post('id'))
-              ->execute(); */
             Yii::$app->db->createCommand()->update('tbl_hv_infopersonal',[
                   'estadocivil' => Yii::$app->request->post('estadocivil'),
                   'numerohijos' => Yii::$app->request->post('numerohijos'),
@@ -495,12 +469,12 @@ class HvInfopersonalController extends Controller {
     
             if(empty($user_hijos)){
               Yii::$app->db->createCommand()->insert('tbl_hv_nombre_hijos',[
-                "nombre"  => $_POST['nombre'],
+                "nombre"  => Yii::$app->request->post('nombre'),
                 "user_id" => Yii::$app->request->post('id')
               ])->execute();
             }else {
               Yii::$app->db->createCommand()->update('tbl_hv_nombre_hijos',[
-                "nombre"  => $_POST['nombre'],
+                "nombre"  => Yii::$app->request->post('nombre'),
                 "user_id" => Yii::$app->request->post('id')
               ],'user_id=:id') 
               ->bindParam(':id',Yii::$app->request->post('id')) 
@@ -576,10 +550,6 @@ class HvInfopersonalController extends Controller {
       // ->attach($tmpFile)
       ->setHtmlBody($message)
       ->send(); 
-      Yii::$app->session->setFlash('info2','Registro creado Exitosamente');   
-      return $this->redirect(['index']); 
-    
-
       Yii::$app->session->setFlash('eventos','Evento Creado Exitosamente');
        return $this->redirect(['eventos', 'id'=>Yii::$app->request->post('idhvinforpersonal')]);
     }
@@ -607,11 +577,6 @@ class HvInfopersonalController extends Controller {
       // ->attach($tmpFile)
       ->setHtmlBody($message)
       ->send(); 
-
-      Yii::$app->session->setFlash('info2','Registro creado Exitosamente');   
-      return $this->redirect(['index']); 
-    
-
         Yii::$app->session->setFlash('eventos','Evento Eliminado Exitosamente');
        return $this->redirect(['eventos','id'=>$id_user]);
     }
@@ -645,13 +610,6 @@ class HvInfopersonalController extends Controller {
     }
 
      public function actionhobbies($search = null){
-       /*  $data = \app\models\Hobbies::find()
-                            ->select(['id' => 'id', 'text' => 'UPPER(text)'])
-                            ->where('text LIKE "%' . $search . '%"')
-                            ->orderBy('text')
-                            ->asArray()
-                            ->all();
-        */
           $data = Yii::$app->db->createCommand('select * from hobbies')->queryAll();
           $out['results'] = array_values($data);
           echo \yii\helpers\Json::encode($out);
@@ -791,7 +749,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
      }
 
      public function Importexcel($name){
-          /* $inputFile = 'categorias/' . $name . '.xlsx'; */
           $inputFile  = $name;
       
           try {
@@ -804,7 +761,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       
           $sheet = $objPHPExcel->getSheet(0);
           $highestRow = $sheet->getHighestRow();
-          $highestcolumn = $sheet->getHighestColumn();
       
           for ($row = 3; $row <= $highestRow; $row++) {
             Yii::$app->db->createCommand()->insert('tbl_hv_infopersonal',[                                        
@@ -870,7 +826,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
 
       $varCorreo = Yii::$app->request->post("email");
 
-      $sessiones = Yii::$app->user->identity->id;
 
       $varlistusuarios = Yii::$app->db->createCommand("SELECT u.cliente,u.director, u.gerente , u.pcrc,
       u.hvnombre, u.hvidentificacion,u.hvdireccionoficina, u.hvdireccioncasa,u.hvemailcorporativo, u.hvmovil, u.hvcontactooficina,
@@ -896,16 +851,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               ),
           );
 
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
       $styleColor = array( 
               'fill' => array( 
                   'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -917,13 +862,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               'font' => array(
                 'bold' => false,
                 'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
               )
           );
 
@@ -948,26 +886,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               )
           );
 
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'E3AD48'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'DD6D5B'),
-              )
-          );
 
       $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
 
@@ -988,13 +906,13 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('C2','Gerente');
       $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('D2','Pcrc');
       $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
@@ -1295,7 +1213,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       ->setHtmlBody($message)
                       ->send();
 
-      $rtaenvio = 1;
        Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
       return $this->redirect(['index']);
 
@@ -1333,16 +1250,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               ),
           );
 
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
       $styleColor = array( 
               'fill' => array( 
                   'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -1354,13 +1261,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               'font' => array(
                 'bold' => false,
                 'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
               )
           );
 
@@ -1385,27 +1285,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               )
           );
 
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'E3AD48'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'DD6D5B'),
-              )
-          );
-
       $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
 
       $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
@@ -1425,13 +1304,13 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('C2','Gerente');
       $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('D2','Pcrc');
       $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
@@ -1732,7 +1611,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       ->setHtmlBody($message)
                       ->send();
 
-      $rtaenvio = 1;
        Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
       return $this->redirect(['index']);
 
@@ -1740,7 +1618,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
 
      public function actionExcelexporteventosadmin(){
       $varCorreo = Yii::$app->request->post("email");
-      $sessiones = Yii::$app->user->identity->id;
 
 
       $evento =Yii::$app->db->createCommand("SELECT u.director, u.gerente, u.cliente, u.hvnombre, u.hvidentificacion, 
@@ -1766,16 +1643,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               ),
           );
 
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
       $styleColor = array( 
               'fill' => array( 
                   'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -1787,13 +1654,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               'font' => array(
                 'bold' => false,
                 'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
               )
           );
 
@@ -1818,27 +1678,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               )
           );
 
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'E3AD48'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'DD6D5B'),
-              )
-          );
-
       $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
 
 
@@ -1859,13 +1698,13 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('C2','Gerente');
       $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('D2','Nombre');
       $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
@@ -1948,14 +1787,12 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       ->setHtmlBody($message)
                       ->send();
 
-      $rtaenvio = 1;
        Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
       return $this->redirect(['index']);
      }
 
      public function actionExcelexporteventos(){
       $varCorreo = Yii::$app->request->post("email");
-      return     $varCorreo;
       $sessiones = Yii::$app->user->identity->id;
 
 
@@ -1982,16 +1819,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               ),
           );
 
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
       $styleColor = array( 
               'fill' => array( 
                   'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -2003,13 +1830,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               'font' => array(
                 'bold' => false,
                 'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
               )
           );
 
@@ -2034,27 +1854,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
               )
           );
 
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'E3AD48'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'DD6D5B'),
-              )
-          );
-
       $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
 
 
@@ -2075,13 +1874,13 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
       $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('C2','Gerente');
       $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);;
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
 
       $phpExc->getActiveSheet()->SetCellValue('D2','Nombre');
       $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
@@ -2164,7 +1963,6 @@ $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersona
                       ->setHtmlBody($message)
                       ->send();
 
-      $rtaenvio = 1;
        Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
       return $this->redirect(['index']);
      }

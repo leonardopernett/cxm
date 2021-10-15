@@ -49,41 +49,6 @@ class HvInfopersonal extends \yii\db\ActiveRecord
      * @inheritdoc
      */
 
-   /*   public $hvidentificacion;
-     public $hvmovil;
-     public $hvcontactooficina;
-     public $hvautorizacion;
-     public $hvsusceptible;
-     public $anulado;
-     public $usua_id;
-     public $hvsatu;
-     public $fechacontacto;
-     public $fehacreacion;
-     public $cliente;
-     public $director;
-     public $gerente;
-     public $pcrc;
-     public $hvnombre;
-     public $nombrejefe;
-     public $hvdireccionoficina;
-     public $hvdireccioncasa;
-     public $hvemailcorporativo;
-     public $hvpais;
-     public $hvciudad;
-     public $hvmodalidatrabajo;
-     public $areatrabajo;
-     public $rol;
-     public $antiguedadrol;
-     public $tipo;
-     public $nivel;
-     public $afinidad;
-     public $cargojefe;
-     public $rolanterior;
-     public $profesion;
-     public $especializacion;
-     public $maestria;
-     public $doctorado; */
-
     public static function tableName()
     {
         return 'tbl_hv_infopersonal';
