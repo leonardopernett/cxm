@@ -276,7 +276,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         ?>
                     </div>
                 </div>
-<?php if($sessiones == "2953") { ?>
+
                 <?php if ($txttxtvarcantllamadasb != 0) {  ?>
                 <div class="col-md-3">
                     <div class="card1 mb">
@@ -298,7 +298,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                     </div>
                 </div>
                 <?php } ?>
-<?php } ?>
+
             </div>
           </div>
         </div>
@@ -570,7 +570,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                             
                                                             return Html::a(
                                                                 '<i id="idimage" class="fas fa-edit" style="font-size: 17px; color: #4c6ef5; display: inline;"></i>', 
-                                                                Url::to(['valoraspeech', 'idspeechcalls' => $model->iddashboardspeechcalls, 'varcodpcrc'=>$varcomprobacion, 'varservisioname' => $varnombreservicio]), ['title' => Yii::t('yii', 'Valoración VOC'), 'data-pjax' => 0, 'target' => "_blank"]
+                                                                Url::to(['valoraspeech', 'idspeechcalls' => $model->iddashboardspeechcalls, 'varcodpcrc'=>$varcomprobacion, 'varservisioname' => $varnombreservicio]), ['title' => Yii::t('yii', 'Valoraciï¿½n VOC'), 'data-pjax' => 0, 'target' => "_blank"]
                                                             );
                                                         }
                                                     }
@@ -580,7 +580,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                     // }else{
                                                     //     return Html::a('<span class="fas fa-eye" style="font-size: 20px; color: #4ad427;" ></span>'
                                                     //                     , Url::to(['showbasechatview',
-                                                    //                         'basechatid' => $model->idbasechat_tigob]), ['title' => Yii::t('yii', 'ver Gestión')]);
+                                                    //                         'basechatid' => $model->idbasechat_tigob]), ['title' => Yii::t('yii', 'ver Gestiï¿½n')]);
                                                     // }
                                                 // },
                                         }else{
@@ -623,7 +623,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
         if (varidcontact == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debes seleccionar si contiene o no contiene parametrización","warning");
+            swal.fire("!!! Advertencia !!!","Debes seleccionar si contiene o no contiene parametrizaciï¿½n","warning");
             return;
         }else{
             if (varidindicador == "" && varidmotivos == "") {
