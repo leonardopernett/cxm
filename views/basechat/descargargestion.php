@@ -32,7 +32,7 @@ $this->title = 'Gesti√≥n Satisfacci√≥n Chat';
              <label for="txtmedio" style="font-size: 15px;"> Tipo Cargue de Base de Medallia:</label>
                 <select id="txtmedio" class ='form-control'  onchange="accion()">
                           <option value="" disabled selected>seleccione...</option>
-                          <option value="2922">Tigo Colombia</option>
+                          <option value="3513">Tigo Colombia</option>
                           <option value="3272">Tigo Bolivia</option>
                 </select>
           </div>
@@ -89,11 +89,11 @@ $this->title = 'Gesti√≥n Satisfacci√≥n Chat';
 
         if (varDestino == null || varDestino == "") {
             event.preventDefault();
-            swal.fire("°°° Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
+            swal.fire("ÔøΩÔøΩÔøΩ Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
             return;           
         }
         
-        if (varpcrc == 2922){
+        if (varpcrc == 3513){
            //alert(varpcrc);
             $.ajax({
                 method: "get",
