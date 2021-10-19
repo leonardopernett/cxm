@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use Yii;
+use Yii\base\Exception;
 use app\models\EquiposEvaluados;
 use app\models\EquiposEvaluadosSearch;
 use yii\web\Controller;

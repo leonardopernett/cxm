@@ -168,7 +168,7 @@ use app\models\ControlProcesosEquipos;
      public function actionReporteframe(){
       
       $sessiones = Yii::$app->user->identity->id; 
-      #$rutaframe = $_POST["rutaframe"];
+      $rutaframe = $_POST["rutaframe"];
      // $rutaframe = "https://app.powerbi.com/view?r=eyJrIjoiNzAyMWFjY2QtYTBkMC00ODRlLWJjZjYtNDljODdkMzA3NmQ1IiwidCI6IjhkMGNjZmQzLWZhZDctNDhiNy04MzQ3LWE4NWExMzg2MzBmOSIsImMiOjh9";
 
       return $this->render('reporteframe',[
@@ -323,6 +323,7 @@ use app\models\ControlProcesosEquipos;
 
   // FUNCTION SAVE REPORT PERMITS BY USER
   public function save_report_user_permits (){
+    $model = new ReportesAdministracion();
     $sessiones = Yii::$app->user->identity->id;
 
     $list_users = json_decode(($_POST["list_users"]),true);
@@ -344,7 +345,7 @@ use app\models\ControlProcesosEquipos;
         )  
       )
     );
-    @add_log($log_data);
+    add_log($log_data);
     die( json_encode( array("status"=>"1","data"=>"Permisos guardados correctamente") ) );
 
   }
@@ -387,7 +388,7 @@ use app\models\ControlProcesosEquipos;
     }
     else{
       $log_data = array( "id_logs_grupos"=> $info_log["id_logs_grupo"] , "id_usuario" => $info_log["id_user"], "datos" => json_encode( $info_log["data"] ),  "ip" => $_SERVER["REMOTE_ADDR"] );
-      @add_log($log_data);
+      add_log($log_data);
       die( json_encode( array("status"=>"1","data"=>"Accion ejecutada correctamente") ) );
     }
 

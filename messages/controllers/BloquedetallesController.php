@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\Bloquedetalles;
 use app\models\BloquedetallesSearch;
 use yii\web\Controller;
@@ -162,7 +163,7 @@ class BloquedetallesController extends Controller {
                             'bloque_id' => $bloqeId,
                 ]);
             }
-            Yii::$app->end();
+            
         }
         //----------------------------------------------------------------------
 
@@ -181,7 +182,7 @@ class BloquedetallesController extends Controller {
                             'bloque_id' => $bloqeId,
                 ]);
             }
-        } catch (Exception $ex) {
+        } catch (Exception $exc) {
             Yii::warning($exc->getMessage());
         }
     }
@@ -219,7 +220,7 @@ class BloquedetallesController extends Controller {
                             'bloque_id' => $bloqeId,
                 ]);
             }
-            Yii::$app->end();
+            
         }
         //----------------------------------------------------------------------
         try {
