@@ -614,10 +614,6 @@ use app\models\SpeechParametrizar;
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
           Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
           return $this->redirect('categoriasconfig');
-      } else {
-              return $this->render('categoriasupdate', [
-                'model' => $model,
-              ]);
       }
 
           if (Yii::$app->request->get('txtServicioCategorias')) {
