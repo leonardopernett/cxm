@@ -59,7 +59,7 @@ class DetalleparametrizacionController extends Controller {
                         'dataProvider' => $dataProvider,
                         'isAjax' => $isAjax,
                         'id_parametrizacion' => $id_parametrizacion,
-                        'modelCategoriaGestion' => $modelCategoriaGestion,
+                        'modelCategoriaGestion' => $modelGestionCategoria,
                         'idcategoriagestion' => ($idCategoriaGestion != 0) ? $idCategoriaGestion : 0,
             ]);
         }

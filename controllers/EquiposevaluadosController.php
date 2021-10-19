@@ -8,6 +8,7 @@ use app\models\EquiposEvaluadosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * EquiposEvaluadosController implements the CRUD actions for EquiposEvaluados model.

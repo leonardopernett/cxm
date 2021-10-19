@@ -8,6 +8,7 @@ use app\models\ErroresSatuSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * ErroressatuController implements the CRUD actions for ErroresSatu model.
