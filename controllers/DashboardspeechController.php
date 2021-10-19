@@ -28,6 +28,7 @@ use app\models\SpeechCategorias;
 use app\models\SpeechParametrizar;
 use app\models\Dashboardspeechcalls;
 use app\models\Formularios;
+use yii\base\Exception;
 
   class DashboardspeechController extends \yii\web\Controller {
 
@@ -672,10 +673,6 @@ use app\models\Formularios;
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
           Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
           return $this->redirect('categoriasconfig');
-      } else {
-              return $this->render('categoriasupdate', [
-                'model' => $model,
-              ]);
       }
 
           if (Yii::$app->request->get('txtServicioCategorias')) {
@@ -5434,7 +5431,7 @@ public function actionCantidadentto(){
                 $json = json_encode($enlaces);
                 $tmpeje->url_llamada = $json;
               }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
               \Yii::error('#####' . __FILE__ . ':' . __LINE__
                   . $exc->getMessage() . '#####', 'redbox');
               $msg = Yii::t('app', 'Error redbox');
@@ -5478,7 +5475,7 @@ public function actionCantidadentto(){
                 $msg = Yii::t('app', 'Error redbox');
                 Yii::$app->session->setFlash('danger', $msg);
               }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
               \Yii::error('#####' . __FILE__ . ':' . __LINE__
                                         . $exc->getMessage() . '#####', 'redbox');
               $msg = Yii::t('app', 'Error redbox');
