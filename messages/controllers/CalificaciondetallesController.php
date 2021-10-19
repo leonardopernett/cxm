@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\Calificaciondetalles;
 use app\models\CalificaciondetallesSearch;
 use yii\web\Controller;
