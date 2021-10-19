@@ -358,12 +358,7 @@ class ControlprocesosController extends \yii\web\Controller {
 			if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			    Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
 			    return $this->redirect(array('create','usua_id'=>$evaluadoId));
-			} else {
-			        return $this->render('update', [
-			        	'model' => $model,
-					'txtvarevaluadoId' => $txtvarevaluadoId,
-			        ]);
-			        }
+			}
 
 
 			if (Yii::$app->request->get('id')) {
