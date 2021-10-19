@@ -2483,10 +2483,13 @@ $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboar
                   $varcontarvarpositivas = 0;
                 }                
 
-                $varResultado = (($varconteonegativas - $varcontarvarnegativas) + $varcontarvarpositivas) / $varconteogeneral;
+                if ($varconteogeneral != 0) {
+                  $varResultado = (($varconteonegativas - $varcontarvarnegativas) + $varcontarvarpositivas) / $varconteogeneral;
+                }else{
+                  $varResultado = 0;
+                }               
 
                 array_push($varindicadorarray, $varResultado);
-
               }
 
               $resultadosIDA = round((array_sum($varindicadorarray) / $varconteocallid) * 100,2);
