@@ -304,7 +304,7 @@ use app\models\EvaluacionDesarrollo;
         AND a.id_dp_estados NOT IN (305,317,327)
         AND f.fecha_alta_distribucion <= '2020-12-31'	
         AND c.posicion NOT IN('Aprendiz','Pusher', 'Cliente')	
-        AND d.funcion NOT IN('Operación', 'Visitador' COLLATE utf8_unicode_ci)
+        AND d.funcion NOT IN('Operaciï¿½n', 'Visitador' COLLATE utf8_unicode_ci)
         
         AND e.fecha_creacion_usuario = ( SELECT MAX(aa.fecha_creacion_usuario) FROM dp_usuarios_red aa WHERE aa.documento = a.documento ) AND b.id_dp_cargos != 39322")->queryAll();
 
@@ -1921,9 +1921,9 @@ use app\models\EvaluacionDesarrollo;
         $phpExc->getProperties()
                 ->setCreator("Konecta")
                 ->setLastModifiedBy("Konecta")
-                ->setTitle("Lista de usuarios - Evaluación Desarrollo")
-                ->setSubject("Evaluación de Desarrollo")
-                ->setDescription("Este archivo contiene el listado de los usuarios registrados para la evaluación de desarrollo")
+                ->setTitle("Lista de usuarios - Evaluaciï¿½n Desarrollo")
+                ->setSubject("Evaluaciï¿½n de Desarrollo")
+                ->setDescription("Este archivo contiene el listado de los usuarios registrados para la evaluaciï¿½n de desarrollo")
                 ->setKeywords("Lista de usuarios");
         $phpExc->setActiveSheetIndex(0);
 
@@ -3629,7 +3629,12 @@ use app\models\EvaluacionDesarrollo;
               array_push($varArraySumaB, $vartotalb);
 
               $txtsum = array_sum($varArrayPromedio);
-              $txtrtafinal = round((array_sum($varArrayPromedio) / $varconteocompetencia), 1);
+              if ($varconteocompetencia != 0 && $txtsum != 0) {
+                $txtrtafinal = round((array_sum($varArrayPromedio) / $varconteocompetencia), 1);
+              }else{
+                $txtrtafinal = 0;
+              }
+              
 
               if ($varidbloque == 1) {
                 $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
@@ -4182,7 +4187,12 @@ use app\models\EvaluacionDesarrollo;
               array_push($varArraySumaB, $vartotalb);
 
               $txtsum = array_sum($varArrayPromedio);
-              $txtrtafinal = round((array_sum($varArrayPromedio) / $varconteocompetencia), 1);
+              if ($varconteocompetencia != 0 && $txtsum != 0) {
+                $txtrtafinal = round((array_sum($varArrayPromedio) / $varconteocompetencia), 1);
+              }else{
+                $txtrtafinal = 0;
+              }
+              
 
               if ($varidbloque == 1) {
                 $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
