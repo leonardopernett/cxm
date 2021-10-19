@@ -8,6 +8,7 @@ use app\models\CalificaciondetallesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
 
 /**
  * CalificaciondetallesController implements the CRUD actions for Calificaciondetalles model.
@@ -119,7 +120,7 @@ class CalificaciondetallesController extends Controller {
         } else {
             return $this->redirect(['calificacions/index']);
         }
-    }
+    }    
 
     /**
      * Updates an existing Calificaciondetalles model.

@@ -147,7 +147,7 @@ class SeccionsController extends Controller {
                             'formulario_id' => $formulario_id,
                 ]);
             }
-            Yii::$app->end();
+            
         }
         //----------------------------------------------------------------------
 
@@ -194,7 +194,7 @@ class SeccionsController extends Controller {
                             'formulario_id' => $model->formulario_id,
                 ]);
             }
-            Yii::$app->end();
+            
         }
         //----------------------------------------------------------------------
 

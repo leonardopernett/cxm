@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use DateTime;
 use yii\filters\VerbFilter;
@@ -427,7 +428,7 @@ class ControlController extends \yii\web\Controller {
                                     'rangofecha' => $rangofecha,
                         ]);
                     }
-                    Yii::$app->end();
+                    
                 }
             }
 
@@ -456,7 +457,7 @@ class ControlController extends \yii\web\Controller {
                                 'tipo_corte' => $tipo,
                                 'rangofecha' => $rangofecha,
                     ]);
-                    Yii::$app->end();
+                    
                 }
             }
 

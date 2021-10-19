@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\Logeventsadmin;
 use app\models\LogeventsadminSearch;
 use yii\web\Controller;

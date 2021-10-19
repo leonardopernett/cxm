@@ -28,6 +28,7 @@ use app\models\SpeechCategorias;
 use app\models\SpeechParametrizar;
 use app\models\Dashboardspeechcalls;
 use app\models\Formularios;
+use Exception;
 
   class DashboardspeechdosController extends \yii\web\Controller {
 
@@ -5775,6 +5776,7 @@ public function actionCantidadentto(){
       $modelD = new \app\models\Dimensiones();
       $modelE = new \app\models\Evaluados;
       $modelE->scenario = "monitoreo";
+     
 
       if (isset($_POST) && !empty($_POST)) {
         $arbol_id = $_POST["Arboles"]["arbol_id"];
@@ -5827,7 +5829,7 @@ public function actionCantidadentto(){
                 $json = json_encode($enlaces);
                 $tmpeje->url_llamada = $json;
               }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
               \Yii::error('#####' . __FILE__ . ':' . __LINE__
                   . $exc->getMessage() . '#####', 'redbox');
               $msg = Yii::t('app', 'Error redbox');
@@ -5871,8 +5873,9 @@ public function actionCantidadentto(){
                 $msg = Yii::t('app', 'Error redbox');
                 Yii::$app->session->setFlash('danger', $msg);
               }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
               \Yii::error('#####' . __FILE__ . ':' . __LINE__
+              
                                         . $exc->getMessage() . '#####', 'redbox');
               $msg = Yii::t('app', 'Error redbox');
               Yii::$app->session->setFlash('danger', $msg);

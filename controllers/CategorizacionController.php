@@ -82,13 +82,13 @@ use app\models\ControlVolumenxclientedq;
         
         $txtServicios = Yii::$app->db->createCommand("select servicio from tbl_dashboardspeechcalls where anulado = 0 and fechallamada between '$varFechaInicio' and '$varFechaFin' group by servicio")->queryAll();
 
-        foreach ($txtServicios as $key => $value) {
+        foreach ($txtServicios as $value) {
           $varServicio = $value['servicio'];
 
           $txtVarCallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varServicio') and fechallamada between '$varFechaInicio' and '$varFechaFin' group by callid")->queryAll();
 
           $arralistCallid = array();
-          foreach ($txtVarCallid as $key => $value) {
+          foreach ($txtVarCallid as $value) {
             array_push($arralistCallid, $value['callid']);
           }
           $arraycallids = implode(", ", $arralistCallid);
@@ -97,7 +97,7 @@ use app\models\ControlVolumenxclientedq;
 
           $varcountindicador = 0;
           $arraylistindicador = array();
-          foreach ($txtVarIndicadores as $key => $value) {
+          foreach ($txtVarIndicadores as $value) {
             $vararrayid = $value['idcategoria'];
 
             $varconteoindicador = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varServicio') and fechallamada between '$varFechaInicio' and '$varFechaFin' and idcategoria = $vararrayid and callid in ($arraycallids)")->queryScalar();

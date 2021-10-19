@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\Categoriafeedbacks;
 use app\models\CategoriafeedbacksSearch;
 use yii\web\Controller;

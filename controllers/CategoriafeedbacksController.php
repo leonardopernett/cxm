@@ -8,7 +8,7 @@ use app\models\CategoriafeedbacksSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Exception;
 /**
  * CategoriafeedbacksController implements the CRUD actions for Categoriafeedbacks model.
  */
@@ -24,7 +24,7 @@ class CategoriafeedbacksController extends Controller {
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'denyCallback' => function ($rule, $action) {
+                'denyCallback' => function ($action) {
                     $msg = \Yii::t('app', 'The requested Item could not be found.');
                     Yii::$app->session->setFlash('danger', $msg);
                     $url = \yii\helpers\Url::to(['site/index']);

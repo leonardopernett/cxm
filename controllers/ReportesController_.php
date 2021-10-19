@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use Yii;
+use Yii\base\Exception;
 use yii\helpers\Json;
 use yii\data\ArrayDataProvider;
 

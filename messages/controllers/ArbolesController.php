@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\Arboles;
 use app\models\ArbolesSearch;
 use yii\web\Controller;

@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\Bloques;
 use app\models\BloquesSearch;
 use yii\web\Controller;
@@ -166,7 +167,7 @@ class BloquesController extends Controller {
                             'seccion_id' => $seccionId,
                 ]);
             }
-            Yii::$app->end();
+            
         }
         //----------------------------------------------------------------------
         try {
@@ -184,7 +185,7 @@ class BloquesController extends Controller {
                             'seccion_id' => $seccionId,
                 ]);
             }
-        } catch (Exception $ex) {
+        } catch (Exception $exc) {
             Yii::warning($exc->getMessage());
         }
     }
@@ -222,7 +223,7 @@ class BloquesController extends Controller {
                             'seccion_id' => $seccion_id,
                 ]);
             }
-            Yii::$app->end();
+            
         }
         //----------------------------------------------------------------------
         try {
