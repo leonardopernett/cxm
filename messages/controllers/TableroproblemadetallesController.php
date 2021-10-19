@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\Tableroproblemadetalles;
 use app\models\TableroproblemadetallesSearch;
 use yii\web\Controller;

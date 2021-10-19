@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\ErroresSatu;
 use app\models\ErroresSatuSearch;
 use yii\web\Controller;
