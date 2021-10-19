@@ -8,6 +8,7 @@ use app\models\TableroproblemadetallesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * TableroproblemadetallesController implements the CRUD actions for Tableroproblemadetalles model.
@@ -113,7 +114,6 @@ class TableroproblemadetallesController extends Controller {
                                     'model' => $model,
                         ]);
                     }
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tableroproblema/index']);
                 }
@@ -140,7 +140,6 @@ class TableroproblemadetallesController extends Controller {
                                     'model' => $model,
                         ]);
                     }
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tableroproblema/index']);
                 }
