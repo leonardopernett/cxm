@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\web\Response;
 use yii\helpers\Html;
+use yii\base\Exception;
 
 class ControlController extends \yii\web\Controller {
 
@@ -486,7 +487,6 @@ class ControlController extends \yii\web\Controller {
                                     'rangofecha' => $rangofecha,
                         ]);
                     }
-                    Yii::$app->end();
                 }
             }
 
@@ -515,7 +515,6 @@ class ControlController extends \yii\web\Controller {
                                 'tipo_corte' => $tipo,
                                 'rangofecha' => $rangofecha,
                     ]);
-                    Yii::$app->end();
                 }
             }
 
