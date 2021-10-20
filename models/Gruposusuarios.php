@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "tbl_grupos_usuarios".
@@ -145,7 +146,6 @@ class GruposUsuarios extends \yii\db\ActiveRecord
             for ($index = 0; $index < count($models); $index++) {
                 $column = 'A';                
                 $model = $models[$index];
-                //unset($model['usua_email']);
                 unset($model['usua_estado']);
                 unset($model['usua_fechhoratimeout']);
                 foreach ($model as $key=>$value) {

@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\Url;
+use yii\base\Exception;
+
 /**
  * This is the model class for table "tbl_evaluados".
  *
@@ -211,7 +213,6 @@ class Evaluados extends \yii\db\ActiveRecord {
 
     //Automatizacion equipos Teo
     public static function getEvaluadoByNetUser($search) {
-        //$sql = "SELECT * FROM tbl_evaluados WHERE dsusuario_red = :search";
         $sql = "SELECT * FROM tbl_evaluados WHERE identificacion = :search";
         $command = \Yii::$app->db->createCommand($sql);
         $command->bindParam(":search", $search);

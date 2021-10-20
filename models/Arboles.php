@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "tbl_arbols".
@@ -217,7 +218,7 @@ class Arboles extends \yii\db\ActiveRecord {
             $preguntas1 = \Yii::$app->db->createCommand($sql)->queryAll();
 
             return ArrayHelper::map($preguntas1, 'value', 'label');
-        } catch (Exception $e) {
+        } catch (Exception $exc) {
             \Yii::error($exc->getMessage(), 'exception');
         }
     }

@@ -6,6 +6,7 @@ use Yii;
 use PDO;
 use yii\helpers\HtmlPurifier;
 use yii\helpers\ArrayHelper;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "tbl_formularios".
