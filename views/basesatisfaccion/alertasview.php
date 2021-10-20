@@ -172,11 +172,12 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         </div>
         <div style="max-height: 300px; overflow: auto">
             <table class="table table-striped table-bordered tblResDetFeed">
+            <caption>Tabla Proceso</caption>
                 <thead>
                     <tr>
-                        <th><?= Yii::t('app', 'Programa') ?></th>
-                        <th><?= Yii::t('app', 'Cliente') ?></th>
-                        <th><?= Yii::t('app', 'Cantidad de alertas') ?></th>
+                        <th id="programa"><?= Yii::t('app', 'Programa') ?></th>
+                        <th id="cliente"><?= Yii::t('app', 'Cliente') ?></th>
+                        <th id="cantidadAlertas"><?= Yii::t('app', 'Cantidad de alertas') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -198,12 +199,13 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         </div>
         <div style="max-height: 300px; overflow: auto">
             <table class="table table-striped table-bordered tblResDetFeed">
+            <caption>Tabala Resumen Tecnico</caption>
                 <thead>
                     <tr>
-                        <th><?= Yii::t('app', 'Tecnico') ?></th>
-                        <th><?= Yii::t('app', 'Programa') ?></th>
-                        <th><?= Yii::t('app', 'Cliente') ?></th>
-                        <th><?= Yii::t('app', 'Cantidad de alertas') ?></th>
+                        <th id="tecnico"><?= Yii::t('app', 'Tecnico') ?></th>
+                        <th id="programa"><?= Yii::t('app', 'Programa') ?></th>
+                        <th id="cliente"><?= Yii::t('app', 'Cliente') ?></th>
+                        <th id="cantidadAlertas"><?= Yii::t('app', 'Cantidad de alertas') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -234,8 +236,8 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
      				<span class="glyphicon glyphicon-th-list"></span> Exportar
    			</button>
 			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-				<li><a href="#" onclick="javascript:xport.toCSV('Alertas');"> <i class="glyphicon glyphicon-export"></i> Excel 2010</a></li>			
-				<li><a href="#" onclick="javascript:xport.toCSV('Alertas');"> <i class="glyphicon glyphicon-export"></i> Excel 2007</a></li>				
+				<li><a href="#" onclick="javascript:xport.toCSV('Alertas');"> <em class="glyphicon glyphicon-export"></em> Excel 2010</a></li>			
+				<li><a href="#" onclick="javascript:xport.toCSV('Alertas');"> <em class="glyphicon glyphicon-export"></em> Excel 2007</a></li>				
 				<li class="divider"></li>				
 			</ul>
 		</div>
@@ -254,14 +256,15 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 	<br>    
         <div style="max-height: 300px; overflow: auto">
             <table id="Alertas" class="table table-striped table-bordered tblResDetFeed">
+            <caption>Tabla alertas </caption>
                 <thead>
                     <tr>
-                        <th><?= Yii::t('app', 'Fecha') ?></th>
-                        <th><?= Yii::t('app', 'Servicio / PCRC') ?></th>
-                        <th><?= Yii::t('app', 'Valorador') ?></th>
-                        <th><?= Yii::t('app', 'Tipo de Alerta') ?></th>
-                        <th><?= Yii::t('app', 'Detalle') ?></th>
-                        <th><?= Yii::t('app', 'Eliminar') ?></th>
+                        <th id="fecha"><?= Yii::t('app', 'Fecha') ?></th>
+                        <th id="servicioPcrc"><?= Yii::t('app', 'Servicio / PCRC') ?></th>
+                        <th id="valorador"><?= Yii::t('app', 'Valorador') ?></th>
+                        <th id="tipoAlerta"><?= Yii::t('app', 'Tipo de Alerta') ?></th>
+                        <th id="detalle"><?= Yii::t('app', 'Detalle') ?></th>
+                        <th id="eliminar"><?= Yii::t('app', 'Eliminar') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -271,8 +274,8 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                             <td><?= $value["Programa"]; ?></td>
                             <td><?= $value["Tecnico"]; ?></td>
                             <td><?= $value["tipo_alerta"]; ?></td>
-                            <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png"></a></td>
-			    <td><input type="image" src="../../../web/images/ico-delete.png" name="imagenes" style="cursor:hand" id="imagenes" onclick="eliminarDato(<?php echo $value["xid"] ?>);" /></td> 
+                            <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view"></a></td>
+			    <td><input type="image" src="../../../web/images/ico-delete.png" alt="icon-delete" name="imagenes" style="cursor:hand" id="imagenes" onclick="eliminarDato(<?php echo $value["xid"] ?>);" /></td> 
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -292,13 +295,14 @@ else
 	<br>    
         <div style="max-height: 300px; overflow: auto">
             <table id="Alertas" class="table table-striped table-bordered tblResDetFeed">
+            <caption>Tabla alertas</caption>
                 <thead>
                     <tr>
-                        <th><?= Yii::t('app', 'Fecha') ?></th>
-                        <th><?= Yii::t('app', 'Servicio / PCRC') ?></th>
-                        <th><?= Yii::t('app', 'Valorador') ?></th>
-                        <th><?= Yii::t('app', 'Tipo de Alerta') ?></th>
-                        <th><?= Yii::t('app', 'Detalle') ?></th>
+                        <th id="fecha"><?= Yii::t('app', 'Fecha') ?></th>
+                        <th id="servicioPcrc"><?= Yii::t('app', 'Servicio / PCRC') ?></th>
+                        <th id="valorador"><?= Yii::t('app', 'Valorador') ?></th>
+                        <th id="tipoAlerta"><?= Yii::t('app', 'Tipo de Alerta') ?></th>
+                        <th id="detalle"><?= Yii::t('app', 'Detalle') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -308,7 +312,7 @@ else
                             <td><?= $value["Programa"]; ?></td>
                             <td><?= $value["Tecnico"]; ?></td>
                             <td><?= $value["tipo_alerta"]; ?></td>
-                            <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" style="cursor:hand"></a></td>
+                            <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view" style="cursor:hand"></a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

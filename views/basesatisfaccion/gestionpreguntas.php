@@ -23,49 +23,50 @@ $this->title = 'Gestion Preguntas';
 		
 		<div id="datosGenerales" class="col-md-offset-1 col-sm-10" style="">
     		<table class="table table-striped table-bordered detail-view formDinamico">
+			<caption>Tabla datos generales</caption>
     			<tbody>
     				<tr>
-    					<td colspan="2"><div class="alert alert-success">   
+    					<th colspan="2"><div class="alert alert-success">   
     						<center>Respuesta Guardada Satisfactoriamente.</center>
     					</div>
-    				</td>
+    				</th>
 	    			</tr>
 	    			<tr>
 	    				<td>
-	    					<p><b>Pregunta 1:</b> <?=$model->pregunta1?> </p>   
+	    					<p><strong>Pregunta 1:</strong> <?=$model->pregunta1?> </p>   
 	    				</td>
 	    				<td>
-	    					<p><b>Pregunta 2:</b> <?=$model->pregunta2?> </p>   
+	    					<p><strong>Pregunta 2:</strong> <?=$model->pregunta2?> </p>   
 	    				</td>
 	    			</tr>                     
 	    			<tr>
 	    			</tr>
 	    			<tr>
 	    				<td>
-	    					<p><b>Pregunta 3:</b> <?=$model->pregunta3?> </p>   
+	    					<p><strong>Pregunta 3:</strong> <?=$model->pregunta3?> </p>   
 	    				</td>
 	    				<td>
-	    					<p><b>Pregunta 4:</b> <?=$model->pregunta4?> </p>   
-	    				</td>
-	    			</tr>
-	    			<tr>
-	    			</tr>
-	    			<tr>
-	    				<td>
-	    					<p><b>Pregunta 5:</b> <?=$model->pregunta5?> </p>   
-	    				</td>
-	    				<td>
-	    					<p><b>Pregunta 6:</b> <?=$model->pregunta6?> </p>   
+	    					<p><strong>Pregunta 4:</strong> <?=$model->pregunta4?> </p>   
 	    				</td>
 	    			</tr>
 	    			<tr>
 	    			</tr>
 	    			<tr>
 	    				<td>
-	    					<p><b>Pregunta 7:</b> <?=$model->pregunta7?> </p>   
+	    					<p><strong>Pregunta 5:</strong> <?=$model->pregunta5?> </p>   
 	    				</td>
 	    				<td>
-	    					<p><b>Pregunta 8:</b> <?=$model->pregunta8?> </p>   
+	    					<p><strong>Pregunta 6:</strong> <?=$model->pregunta6?> </p>   
+	    				</td>
+	    			</tr>
+	    			<tr>
+	    			</tr>
+	    			<tr>
+	    				<td>
+	    					<p><strong>Pregunta 7:</strong> <?=$model->pregunta7?> </p>   
+	    				</td>
+	    				<td>
+	    					<p><strong>Pregunta 8:</strong> <?=$model->pregunta8?> </p>   
 	    				</td>
 	    			</tr>
 	    			<tr>
@@ -77,6 +78,7 @@ $this->title = 'Gestion Preguntas';
     <?php else: ?> 
     	<div id="datosGenerales" class="col-md-offset-1 col-sm-10" style="">
     		<table class="table table-striped table-bordered detail-view formDinamico">
+			<caption>Tabla datos generales</caption>
     		<?php $form = ActiveForm::begin(); ?>  
     			<tbody>
     			<div class="row seccion-data">
@@ -86,9 +88,9 @@ $this->title = 'Gestion Preguntas';
                             </label>
                         </div></div>
 	    			<tr>
-	    				<td>
+	    				<th>
 	    					<p><?= $form->field($model, 'pregunta1')->textInput(['maxlength' => 200])->label('Pregunta 1:') ?> </p>   
-	    				</td>
+	    				</th>
 	    				<td>
 	    					<p><?= $form->field($model, 'pregunta2')->textInput(['maxlength' => 200])->label('Pregunta 2:') ?> </p> 
 	    				</td>
