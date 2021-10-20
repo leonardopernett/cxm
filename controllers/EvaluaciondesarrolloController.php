@@ -3413,7 +3413,7 @@ use app\models\EvaluacionDesarrollo;
           $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArraySubTitle);
           $phpExc->getActiveSheet()->getStyle('AR3')->applyFromArray($styleArrayTitle);
 
-          $txtlistadoDNI = Yii::$app->db->createCommand("SELECT DISTINCT es.documentoevaluado FROM tbl_evaluacion_solucionado es WHERE es.anulado = 0 ")->queryAll();
+          $txtlistadoDNI = Yii::$app->db->createCommand("SELECT DISTINCT es.idevalados AS documentoevaluado FROM tbl_evaluacion_desarrollo es WHERE es.anulado = 0 AND es.idevalados IS NOT NULL")->queryAll();
 
           $numCell = 4;
           foreach ($txtlistadoDNI as $key => $value) {
