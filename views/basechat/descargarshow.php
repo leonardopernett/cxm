@@ -35,32 +35,33 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card1 mb">
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Gestión</caption>
                     <thead>
                         <tr>
-                            <th colspan="19" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  'Listado de gestión'; ?></label></th>
+                            <th scope="col" colspan="19" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  'Listado de gestión'; ?></label></th>
                         </tr>
                         <tr>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Numero Ticket') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Creacion') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Respuesta') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Transaccion') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', ' Cliente') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipologia') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Producto') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sentir Cliente') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Que tan probable es que recomiendas Tigo a tus familiares y amigos?') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Que tan satisfecho estas con la atención recibida?') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Que tan fácil fue resolver tu consulta/solicitud?') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Resolvimos el motivo de tu solicitud?') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Qué tan satisfecho estas con el conocimiento que demostró el asesor para resolver tu consulta?') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha de calificación') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Zendesk') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Categoria & Motivos') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Solicitud') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Solución') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Observación') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procedimiento') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Numero Ticket') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Creacion') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Respuesta') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Transaccion') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', ' Cliente') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipologia') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Producto') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sentir Cliente') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Que tan probable es que recomiendas Tigo a tus familiares y amigos?') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Que tan satisfecho estas con la atención recibida?') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Que tan fácil fue resolver tu consulta/solicitud?') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Resolvimos el motivo de tu solicitud?') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Qué tan satisfecho estas con el conocimiento que demostró el asesor para resolver tu consulta?') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha de calificación') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Zendesk') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Categoria & Motivos') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Solicitud') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Solución') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Observación') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procedimiento') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>

@@ -49,16 +49,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card1 mb">
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Categorias</caption>
                     <thead>
                         <tr>
-                        <th colspan="4" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de categorias registradas') ?></label></th>
+                        <th scope="col" colspan="4" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de categorias registradas') ?></label></th>
                         </tr>
                         <tr>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'id') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'id') ?></label></th>
 
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Categoria') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Motivos') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PCRC') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Categoria') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Motivos') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PCRC') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>

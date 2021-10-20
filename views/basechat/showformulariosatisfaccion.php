@@ -195,55 +195,55 @@ $banderaSaltoComentario = true;
                             });'); ?>
                         </div>
                         <div id="datosPartida" class="col-sm-12" style="display: none">
-
+                        <caption>Formulario</caption>
                             <table class="table table-striped table-bordered detail-view formDinamico">
-                                <tbody
+                                <tbody>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "Numero del ticket"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "Numero del ticket"); ?></th>
                                         <td><?php echo $data->basesatisfaccion->ticked_id ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "Fecha transacción"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "Fecha transacción"); ?></th>
                                         <td><?php echo $data->basesatisfaccion->fecha_transaccion ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "Nombre del cliente"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "Nombre del cliente"); ?></th>
                                         <td><?php echo $data->basesatisfaccion->nombre_cliente ?></td>
                                     </tr>                                    
                                     <tr>
-                                        <th><?php echo Yii::t("app", "Agente"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "Agente"); ?></th>
                                         <td><?php echo $data->basesatisfaccion->evaluadoid ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "Tipología"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "Tipología"); ?></th>
                                         <td><?php echo $data->basesatisfaccion->tipologia ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "Tipo de producto"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "Tipo de producto"); ?></th>
                                         <td><?php echo $data->basesatisfaccion->tipo_producto ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->preguntas['0']['enunciado_pre'] : 'NO APLICA' ?></th>
+                                        <th scope="row"><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->preguntas['0']['enunciado_pre'] : 'NO APLICA' ?></th>
                                         <td><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->nps : 'NO APLICA' ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->preguntas['1']['enunciado_pre'] : 'NO APLICA' ?></th>
+                                        <th scope="row"><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->preguntas['1']['enunciado_pre'] : 'NO APLICA' ?></th>
                                         <td><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->csat : 'NO APLICA' ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->preguntas['2']['enunciado_pre'] : 'NO APLICA' ?></th>
+                                        <th scope="row"><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->preguntas['2']['enunciado_pre'] : 'NO APLICA' ?></th>
                                         <td><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->ces : 'NO APLICA' ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->preguntas['3']['enunciado_pre'] : 'NO APLICA' ?></th>
+                                        <th scope="row"><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->preguntas['3']['enunciado_pre'] : 'NO APLICA' ?></th>
                                         <td><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->fcr : 'NO APLICA' ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->preguntas['4']['enunciado_pre'] : 'NO APLICA' ?></th>
+                                        <th scope="row"><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->preguntas['4']['enunciado_pre'] : 'NO APLICA' ?></th>
                                         <td><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->conocimiento : 'NO APLICA' ?></td>
                                     </tr> 
                                     <tr>
-                                        <th><?php echo Yii::t("app", "El sentir del cliente"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "El sentir del cliente"); ?></th>
                                         <td><?php echo $data->basesatisfaccion->comentario_adicional ?></td>
                                     </tr>                                  
                                     <!--<tr>
@@ -258,7 +258,7 @@ $banderaSaltoComentario = true;
                                     </tr>-->
                                     <?php //endif;    ?>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "Interaccion"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "Interaccion"); ?></th>
                                         <td>
                                             <?php if ($data->preview) : ?>
                                                 <?=
@@ -281,7 +281,7 @@ $banderaSaltoComentario = true;
                                     if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1):
                                         ?>
                                         <tr>
-                                            <th><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
+                                            <th scope="row"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
                                             <td>
                                                 <?php
                                                 if (!empty($data->tmp_formulario->url_llamada)) {
@@ -455,53 +455,54 @@ $banderaSaltoComentario = true;
                     <div id="datosGenerales" class="col-sm-12" style="display: none">
 
                         <table class="table table-striped table-bordered detail-view formDinamico">
-                            <tbody
+                        <caption>Formulario</caption>
+                            <tbody>
 
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Lider Equipo"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Lider Equipo"); ?></th>
                                     <td><?php echo $data->basesatisfaccion->lider_equipo ?></td>
                                 </tr>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Programa/PCRC"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Programa/PCRC"); ?></th>
                                     <td><?php echo $varnompcrc ?></td>
                                 </tr>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Cliente"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Cliente"); ?></th>
                                     <td><?php echo $varnomservice ?></td>
                                 </tr>                     
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Evaluado ID"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Evaluado ID"); ?></th>
                                     <td><?php echo (isset($data->evaluado)) ? $data->evaluado : ''; ?></td>
                                 </tr>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Fecha Inicio Valoracion"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Fecha Inicio Valoracion"); ?></th>
                                     <td><?php echo $data->tmp_formulario->hora_inicial; ?></td>
                                 </tr>
                                 <?php if(isset($data->fecha_final)){ ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Fecha Fin Valoracion"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Fecha Fin Valoracion"); ?></th>
                                     <td><?php echo $data->fecha_final ?></td>
                                 </tr>
                                 <?php } ?>
                                 <?php if(isset($data->minutes)){ ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Tiempo de Valoracion"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Tiempo de Valoracion"); ?></th>
                                     <td><?php echo $data->minutes ?></td>
                                 </tr>
                                 <?php } ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Cantidad de Modificaciones"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Cantidad de Modificaciones"); ?></th>
                                     <td><?php echo (isset($data->tmp_formulario->cant_modificaciones)) ? $data->tmp_formulario->cant_modificaciones : ''; ?></td>
                                 </tr>
                                 <?php if (isset($data->tmp_formulario->tiempo_modificaciones)) { ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Tiempo total Modificaciones"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Tiempo total Modificaciones"); ?></th>
                                     <td><?php echo $data->tmp_formulario->tiempo_modificaciones ?></td>
                                 </tr>
                                 <?php } ?>
 
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Dimension"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Dimension"); ?></th>
                                     <td><?php
                                         echo Html::dropDownList("dimension"
                                                 , $data->tmp_formulario->dimension_id
@@ -522,7 +523,7 @@ $banderaSaltoComentario = true;
                                 </tr>-->
                                 <?php //endif;   ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Fuente"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Fuente"); ?></th>
                                     <td>
                                         <?php if ($data->preview) : ?>
                                             <?=
@@ -555,7 +556,7 @@ $banderaSaltoComentario = true;
                                 if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1):
                                     ?>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
                                         <td>
                                             <?php
                                             if (!empty($data->tmp_formulario->url_llamada)) {
@@ -589,7 +590,7 @@ $banderaSaltoComentario = true;
                                 if (isset($data->formulario->subi_calculo)):
                                     ?>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "subi_calculo"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "subi_calculo"); ?></th>
                                         <td>
                                             <?php echo implode(',', $data->indices_calcular) ?>
                                         </td>
@@ -598,7 +599,7 @@ $banderaSaltoComentario = true;
                                     if (count($data->indices_calcular) < 5 && !$data->preview):
                                         ?>
                                         <tr>
-                                            <th><?php echo Yii::t("app", "agregar subi"); ?></th>
+                                            <th scope="row"><?php echo Yii::t("app", "agregar subi"); ?></th>
                                             <td>
                                                 <?php
                                                 $max = 5 - count($data->indices_calcular);
@@ -645,12 +646,12 @@ $banderaSaltoComentario = true;
                                         <?php foreach ($data->indices_calcular as $key => $value): ?>
                                             <?php if ($value == 13): ?>
                                                 <tr>
-                                                    <th><?php echo $value ?></th>
+                                                    <th scope="row"><?php echo $value ?></th>
                                                     <td><?php echo ($data->tmp_formulario->attributes['score'] * 100) . '%' ?></td>
                                                 </tr>
                                             <?php else: ?>  
                                                 <tr>
-                                                    <th><?php echo $value ?></th>
+                                                    <th scope="row"><?php echo $value ?></th>
                                                     <?php if ($data->tmp_formulario->attributes['i' . $key . '_nmcalculo'] != ''): ?>
                                                         <td><?php echo ($data->tmp_formulario->attributes['i' . $key . '_nmcalculo'] * 100) . '%' ?></td>
                                                     <?php else: ?> 
@@ -1068,6 +1069,7 @@ $banderaSaltoComentario = true;
                     <?php if ($detalle->isPits == 1): ?>
                         <div class="form-group col-sm-12">
                             <table <?php echo "id='tablapits" . $detalle->seccion_id . "'" ?> class="table table-striped table-bordered detail-view">
+                            <caption>Table</caption>
                                 <tbody>
                                 </tbody>
                             </table>
@@ -1541,11 +1543,12 @@ $banderaSaltoComentario = true;
                  <?php if ($data->fill_values): ?>
                 <?php echo Yii::t("app", "Tablero de Experiencias"); ?><br /><br />
                 <table class="table table-striped table-bordered">
+                <caption>Experiencias</caption>
                     <thead>
                         <tr>
-                            <th>Enfoque</th>
-                            <th>Problema</th>  
-                            <th>Comentarios</th>
+                            <th scope="col">Enfoque</th>
+                            <th scope="col">Problema</th>  
+                            <th scope="col">Comentarios</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1594,10 +1597,11 @@ $banderaSaltoComentario = true;
                  <?php if ($data->fill_values): ?>
                 <?php echo Yii::t("app", "Tiposllamadas"); ?><br /><br />
                 <table class="table table-striped table-bordered">
+                <caption>Tipos de Llamada</caption>
                     <thead>
                         <tr>
-                            <th>Tipo de Llamada</th>
-                            <th>Llamada</th>
+                            <th scope="col">Tipo de Llamada</th>
+                            <th scope="col">Llamada</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1639,9 +1643,10 @@ $banderaSaltoComentario = true;
             <?php if ($data->fill_values): ?>
                 <?php echo Yii::t("app", "Agregar feedback"); ?> <br /><br />
                 <table class="table table-striped table-bordered">
+                <caption>Feddback</caption>
                     <thead>
                         <tr>
-                            <th>Comentario Feedback</th>
+                            <th scope="col">Comentario Feedback</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1720,8 +1725,9 @@ $banderaSaltoComentario = true;
     </div>
         <div id="divTablaPreguntas">
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
+            <caption>Gestión</caption>
                 <tr>
-                    <th>Estado</th>
+                    <th scope="row">Estado</th>
                     <td><?php
                         echo Html::dropDownList("estado"
                                 , $data->basesatisfaccion->estado
@@ -2288,8 +2294,9 @@ $banderaSaltoComentario = true;
         </div>
         <div id="divTablaPreguntas">
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
+            <caption>Buzón</caption>
                 <tr>
-                    <td>
+                    <th>
                         <?php
                         if (!empty($data->basesatisfaccion->buzon)) {
                             echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
@@ -2299,7 +2306,7 @@ $banderaSaltoComentario = true;
                                     . Yii::t("app", "No se encontró buzón"), $data->basesatisfaccion->buzon);
                         }
                         ?>
-                    </td>
+                    </th>
                 </tr>
                 <tr>
                     <td>
@@ -2323,53 +2330,54 @@ $banderaSaltoComentario = true;
         <div class="form-group row">
             <div class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view">
-                    <tbody
+                <caption>...</caption>
+                    <tbody>
                         <tr>
-                            <th><?php echo Yii::t("app", "ANI"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $data->basesatisfaccion->ani ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Identificación"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Identificación"); ?></th>
                             <td><?php echo $data->basesatisfaccion->identificacion ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Nombre"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Nombre"); ?></th>
                             <td><?php echo $data->basesatisfaccion->nombre ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Ext"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Ext"); ?></th>
                             <td><?php echo $data->basesatisfaccion->ext ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipo Servicio"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Tipo Servicio"); ?></th>
                             <td><?php echo $data->basesatisfaccion->tipo_servicio ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipo encuesta"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Tipo encuesta"); ?></th>
                             <td><?php echo $data->basesatisfaccion->tipo_encuesta ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Lider Equipo"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Lider Equipo"); ?></th>
                             <td><?php echo $data->basesatisfaccion->lider_equipo ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Programa/PCRC"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Programa/PCRC"); ?></th>
                             <td><?php echo $data->basesatisfaccion->pcrc0->name ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Cliente"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Cliente"); ?></th>
                             <td><?php echo $data->basesatisfaccion->cliente0->name ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "RN"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "RN"); ?></th>
                             <td><?php echo $data->basesatisfaccion->rn ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Agente"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Agente"); ?></th>
                             <td><?php echo $data->basesatisfaccion->agente ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipología"); ?></th>
+                            <th scope="row"><?php echo Yii::t("app", "Tipología"); ?></th>
                             <td><?php
                                 echo Html::dropDownList("categoria"
                                         , $data->basesatisfaccion->tipologia
@@ -2378,39 +2386,39 @@ $banderaSaltoComentario = true;
                                 ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->preguntas['0']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->preguntas['0']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta1 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->preguntas['1']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->preguntas['1']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta2 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->preguntas['2']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->preguntas['2']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta3 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->preguntas['3']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->preguntas['3']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta4 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->preguntas['4']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->preguntas['4']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta5 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $data->preguntas['5']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $data->preguntas['5']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta6 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $data->preguntas['6']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $data->preguntas['6']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta7 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $data->preguntas['7']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $data->preguntas['7']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta8 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $data->preguntas['8']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th scope="row"><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $data->preguntas['8']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta9 : 'NO APLICA' ?></td>
                         </tr>
                     </tbody>
