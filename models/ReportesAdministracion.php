@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\helpers\Url;
 use GuzzleHttp;
+use yii\base\Exception;
 
 /**
  * ControlProcesosEquipos represents the model behind the search form about `app\models\ControlvocBloque1`.
