@@ -58,6 +58,7 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
     <?php } ?>
         <div id="datosGenerales" class="col-md-offset-2 col-sm-8" style="">
             <table class="table table-striped table-bordered detail-view formDinamico">
+            <caption>Tabla alerta</caption>
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?> 
                 <tbody>
 
@@ -170,7 +171,7 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
 <br>
 <div class="col-md-offset-2 col-sm-8 panel panel-default">
   <div class="panel-body"><center>
-    <p>En el campo de destinatarios se ingresan los correos electronicos de los interesados en la alerta. <b><p style="color: #FE562C">Cada dato debe estar separado por una ","</p></b></p></center>
+    <p>En el campo de destinatarios se ingresan los correos electronicos de los interesados en la alerta. <strong><p style="color: #FE562C">Cada dato debe estar separado por una ","</p></strong></p></center>
   </div>
 </div>
     

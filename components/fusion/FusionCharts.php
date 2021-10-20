@@ -10,7 +10,7 @@
 
 
 class encodeData  {
-    function encodeDataURL($strDataURL, $addNoCacheStr = false) {
+   public function encodeDataURL($strDataURL, $addNoCacheStr = false) {
         //Add the no-cache string if required
         if ($addNoCacheStr == true) {
             // We add ?FCCurrTime=xxyyzz
@@ -28,7 +28,7 @@ class encodeData  {
     // datePart function converts MySQL database based on requested mask
 // Param: $mask - what part of the date to return "m' for month,"d" for day, and "y" for year
 // Param: $dateTimeStr - MySQL date/time format (yyyy-mm-dd HH:ii:ss)
-function datePart($mask, $dateTimeStr) {
+public function datePart($mask, $dateTimeStr) {
     list($datePt, /*$timePt*/) = explode(" ", $dateTimeStr);
     $arDatePt = explode("-", $datePt);
     $dataStr = "";
@@ -58,7 +58,7 @@ function datePart($mask, $dateTimeStr) {
 // $chartId - Id for the chart, using which it will be recognized in the HTML page. Each chart on the page needs to have a unique Id.
 // $chartWidth - Intended width for the chart (in pixels)
 // $chartHeight - Intended height for the chart (in pixels)
-function renderChart($chartSWF, $strURL, $strXML, $chartId, $chartWidth, $chartHeight) {
+public function renderChart($chartSWF, $strURL, $strXML, $chartId, $chartWidth, $chartHeight) {
     //First we create a new DIV for each chart. We specify the name of DIV as "chartId"Div.			
     //DIV names are case-sensitive.
     // The Steps in the script block below are:
@@ -109,7 +109,7 @@ RENDERCHART;
 // $chartId - Id for the chart, using which it will be recognized in the HTML page. Each chart on the page needs to have a unique Id.
 // $chartWidth - Intended width for the chart (in pixels)
 // $chartHeight - Intended height for the chart (in pixels)
-function renderChartHTML($chartSWF, $strURL, $strXML, $chartId, $chartWidth, $chartHeight) {
+public function renderChartHTML($chartSWF, $strURL, $strXML, $chartId, $chartWidth, $chartHeight) {
     // Generate the FlashVars string based on whether dataURL has been provided
     // or dataXML.
     $strFlashVars = "&chartWidth=" . $chartWidth . "&chartHeight=" . $chartHeight;
