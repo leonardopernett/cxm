@@ -141,7 +141,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #C178G9;"></i> Buscar Dimensionamiento: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #9F9AE1;"></em> Buscar Dimensionamiento: </label>
                         
                         
                             <?= $form->field($model, 'month')->dropDownList($varmeses, ['prompt' => 'Seleccione...', 'id'=>"txtmesesid" ])->label('') ?>
@@ -161,7 +161,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #C148D0;"></i> Crear Dimensionamiento: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #C148D0;"></em> Crear Dimensionamiento: </label>
                         <?=  Html::a(Yii::t('app', 'Crear'),
                                                 'javascript:void(0)',
                                                 [
@@ -188,7 +188,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-edit" style="font-size: 15px; color: #559FFF;"></i> Actualizar Dimensionamiento: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 15px; color: #559FFF;"></em> Actualizar Dimensionamiento: </label>
                         <?=  Html::a(Yii::t('app', 'Actualizar'),
                                                 'javascript:void(0)',
                                                 [
@@ -215,7 +215,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #559FFF;"></i> Descargar Informaci&oacute;n: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #559FFF;"></em> Descargar Informaci&oacute;n: </label>
                         <?= Html::button('Descargar', ['value' => url::to('enviararchivo'), 'class' => 'btn btn-success', 'id'=>'modalButton6',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Desargar', 'style' => 'background-color: #337ab7']) 
@@ -238,7 +238,7 @@ $this->registerJs($js);
         </div>
         <div class="col-md-9">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #fd7e14;"></i> Lista de Resultados: </label>
+                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #fd7e14;"></em> Lista de Resultados: </label>
                     <?php 
                         if (count($varListresult) != 0) {
                             foreach ($varListresult as $key => $value) {
@@ -249,9 +249,9 @@ $this->registerJs($js);
                                 $txtFecha = $varMes.' - '.$varAnnio;
                     ?>
                     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
-                        
+                        <caption>Resultados</caption>
                         <thead>
-                            <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo 'Dimensionamiento creado por: '.$value['usua_nombre'].' - Fecha del Dimensionamiento: '.$txtFecha; ?></label></th>
+                            <th scope="col" class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo 'Dimensionamiento creado por: '.$value['usua_nombre'].' - Fecha del Dimensionamiento: '.$txtFecha; ?></label></th>
                         </thead>
                         <tbody>
                             <tr>
@@ -366,7 +366,7 @@ $this->registerJs($js);
 
     if (vartxtmesesid == "") {
       event.preventDefault();
-      swal.fire("¡¡¡ Advertencia !!!","Debe de seleccionar un mes para buscar","warning");
+      swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de seleccionar un mes para buscar","warning");
       return;
     }
   };

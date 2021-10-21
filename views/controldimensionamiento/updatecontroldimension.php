@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-mouse-pointer" style="font-size: 15px; color: #C178G9;"></i> Seleccionar Mes </label>
+        <label style="font-size: 15px;"><em class="fas fa-mouse-pointer" style="font-size: 15px; color: #9F9AE1;"></em> Seleccionar Mes </label>
         <?= $form->field($model, 'month')->dropDownList($varmeses, ['prompt' => 'Seleccione Mes...', 'id'=>"idMesestwo"])->label('') ?>
 
         <?= Html::submitButton(Yii::t('app', 'Seleccionar'),
@@ -109,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     if (varidMeses == "") {
       event.preventDefault();
-      swal.fire("¡¡¡ Advertencia !!!","Debe de seleccionar un mes para actualizar","warning");
+      swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de seleccionar un mes para actualizar","warning");
       return;
     }
   };
