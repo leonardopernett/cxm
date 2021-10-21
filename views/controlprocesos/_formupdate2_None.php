@@ -116,27 +116,27 @@ $this->title = 'Actualizar la Valoraciones';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-address-card" style="font-size: 20px; color: #2CA5FF;"></i> Informacion del plan: </label>
+                <label style="font-size: 20px;"><em class="fas fa-address-card" style="font-size: 20px; color: #2CA5FF;"></em> Informacion del plan: </label>
                 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
                 <div class="row">
                     <div class="col-md-6">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Nombre del técnico: </label>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Nombre del técnico: </label>
                         <?= $form->field($model, "evaluados_id")->textInput(['readonly' => 'readonly', 'value' => $varName, 'id'=>'ValoradoId'])->label('') ?>
                         <?= $form->field($model, "evaluados_id")->textInput(['readonly' => 'readonly', 'value' => $txtIdusua, 'id'=>'ValoradoId', 'class'=>"hidden"])->label('') ?>    
                     </div>
                     <div class="col-md-6">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Corte seleccionado: </label>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Corte seleccionado: </label>
                         <?= $form->field($model, "tipo_corte")->textInput(['readonly' => 'readonly', 'value' => $varName, 'id'=>'CorteId', 'value'=>$txtCortes])->label('') ?>
                         <?= $form->field($model, "tipo_corte")->textInput(['readonly' => 'readonly', 'value' => $varName, 'id'=>'CorteId', 'value'=>$txtCorteId, 'class'=>"hidden"])->label('') ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Porcentaje de dedicación: </label>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Porcentaje de dedicación: </label>
                         <?= $form->field($model, "Dedic_valora")->textInput(['id'=>'DedicValor', 'readonly' => 'readonly', 'value'=> $txtPorcentaje.'%' ])->label('') ?> 
                     </div>
                     <div class="col-md-6">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Cantidad de valoración: </label>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Cantidad de valoración: </label>
                         <?= $form->field($model, "cant_valor")->textInput(['id'=>'CantValor', 'readonly' => 'readonly', 'value'=>$txtCantidad])->label('') ?> 
                     </div>
                 </div>
@@ -150,11 +150,11 @@ $this->title = 'Actualizar la Valoraciones';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-plus-square" style="font-size: 15px; color: #FFC72C;"></i> Agregar dimensionamiento: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-plus-square" style="font-size: 15px; color: #FFC72C;"></em> Agregar dimensionamiento: </label> 
                             <?= Html::a('Agregar',  ['createparameters2', 'id' => $txtProcesos, 'evaluados_id' => $txtIdusua], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #337ab7',
                                                 'data-toggle' => 'tooltip',
@@ -164,7 +164,7 @@ $this->title = 'Actualizar la Valoraciones';
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label>
                             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -182,7 +182,7 @@ $this->title = 'Actualizar la Valoraciones';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-address-book" style="font-size: 20px; color: #B833FF;"></i> Listado del plan: </label>
+                <label><em class="fas fa-address-book" style="font-size: 20px; color: #B833FF;"></em> Listado del plan: </label>
                 <?= 
                         GridView::widget([
                             'dataProvider' => $dataProvider,

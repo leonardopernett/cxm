@@ -89,24 +89,24 @@ $this->title = 'Ver la Valoración';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-address-card" style="font-size: 20px; color: #2CA5FF;"></i> Informacion del plan: </label>
+                <label style="font-size: 20px;"><em class="fas fa-address-card" style="font-size: 20px; color: #2CA5FF;"></em> Informacion del plan: </label>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Nombre del técnico: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Nombre del técnico: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $varNombre; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Cantidad de valoración: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Cantidad de valoración: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $varCantidad; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Porcentaje de dedicación: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Porcentaje de dedicación: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $varPorcentaje.'%'; ?></label>
                     </div>
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Corte seleccionado: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Corte seleccionado: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $varCorte; ?></label>
                     </div>
                 </div>
@@ -119,12 +119,12 @@ $this->title = 'Ver la Valoración';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
                             
-                            <label style="font-size: 15px;"><i class="fas fa-at" style="font-size: 15px; color: #FFC72C;"></i> Enviar por correo: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-at" style="font-size: 15px; color: #FFC72C;"></em> Enviar por correo: </label> 
                             <?= Html::button('Enviar', ['value' => url::to(['gestionenviovaloracion','txtiddelevaluado'=>$varIdusua, 'txtId'=>$varidid]), 'class' => 'btn btn-success', 'id'=>'modalButton5',
                                 'data-toggle' => 'tooltip',                
                                 'title' => 'Enviar', 
@@ -146,7 +146,7 @@ $this->title = 'Ver la Valoración';
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Regresar: </label> 
                             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -156,7 +156,7 @@ $this->title = 'Ver la Valoración';
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-link" style="font-size: 15px; color: #FFC72C;"></i> Reporte del plan de valoracion: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-link" style="font-size: 15px; color: #FFC72C;"></em> Reporte del plan de valoracion: </label> 
                             <div onclick="goesit();" class="btn btn-primary" style="display:inline;" method='post' id="botones1" >
                                 Ir a reporte
                             </div> 
@@ -172,7 +172,7 @@ $this->title = 'Ver la Valoración';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-address-book" style="font-size: 20px; color: #B833FF;"></i> Listado del plan: </label>
+                <label><em class="fas fa-address-book" style="font-size: 20px; color: #B833FF;"></em> Listado del plan: </label>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     //'filterModel' => $searchModel,

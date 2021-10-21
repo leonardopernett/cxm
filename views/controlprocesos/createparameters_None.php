@@ -236,10 +236,10 @@ use yii\helpers\ArrayHelper;
 
                 <div class="w3-row">
                     <a href="javascript:void(0)" onclick="openCity(event, 'Emitida');">
-                        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-list" style="font-size: 13px; color: #559FFF;"></i><strong style="font-size: medium;"> Formularios Valoración</strong></div>
+                        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-list" style="font-size: 13px; color: #559FFF;"></em><strong style="font-size: medium;"> Formularios Valoración</strong></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openCity(event, 'Percibida');">
-                        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-list" style="font-size: 13px; color: #827DF9;"></i><strong style="font-size: medium;"> Formularios VOC</strong></div>
+                        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-list" style="font-size: 13px; color: #827DF9;"></em><strong style="font-size: medium;"> Formularios VOC</strong></div>
                     </a>
                 </div>
 

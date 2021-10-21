@@ -27,7 +27,7 @@ $this->title = 'Actualizar Cantidad Valoracion';
 
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 
 <?php
@@ -40,13 +40,13 @@ $this->title = 'Actualizar Cantidad Valoracion';
 		&nbsp;&nbsp;
 		<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
-		<?php $var2 = ['AGENTES' => 'AGENTES', 'ALTO VALOR' => 'ALTO VALOR', 'CALIDAD DEL ENTRENAMIENTO' => 'CALIDAD DEL ENTRENAMIENTO', 'HEROES POR EL CLIENTE' => 'HEROES POR EL CLIENTE', 'OJT' => 'OJT', 'OTROS' => 'OTROS', 'PRECISIÓN Y APRENDIZAJE' => 'PRECISIÓN Y APRENDIZAJE', 'PROCESO' => 'PROCESO', 'PROTECCION DE LA EXPERIENCIA' => 'PROTECCION DE LA EXPERIENCIA', 'PRUEBAS' => 'PRUEBAS']; ?>
+		<?php $var2 = ['AGENTES' => 'AGENTES', 'ALTO VALOR' => 'ALTO VALOR', 'CALIDAD DEL ENTRENAMIENTO' => 'CALIDAD DEL ENTRENAMIENTO', 'HEROES POR EL CLIENTE' => 'HEROES POR EL CLIENTE', 'OJT' => 'OJT', 'OTROS' => 'OTROS', 'PRECISIï¿½N Y APRENDIZAJE' => 'PRECISIï¿½N Y APRENDIZAJE', 'PROCESO' => 'PROCESO', 'PROTECCION DE LA EXPERIENCIA' => 'PROTECCION DE LA EXPERIENCIA', 'PRUEBAS' => 'PRUEBAS']; ?>
 		
 		<?= $form->field($model, "dimensions")->dropDownList($var2, ['prompt' => 'Seleccione una opcion', 'id'=>"id_dimensions"])->label('Dimensiones') ?>
 
 		<?= $form->field($model, "cant_valor")->textInput(['type' => 'number', 'maxlength' => 10, 'id'=>'cantidad_valoraciones', 'onkeypress'=>"return soloNumeros(event);", 'required'])->label('Cantidad de Valoraciones') ?> 	
 
-		<?php $var = ['Comparte varios PCRC' => 'Comparte varios PCRC', 'Incapacidad' => 'Incapacidad', 'Distribución muestra en OJT y calidad Entto' => 'Distribución muestra en OJT y calidad Entto', 'Varios técnicos con el mismo PCRC' => 'Varios técnicos con el mismo PCRC', 'Licencia/Vacaciones' => 'Licencia/Vacaciones', 'En otras actividades' => 'En otras actividades',  'Suspension' => 'Suspension', 'Calibraciones Incognitas' => 'Calibraciones Incognitas', 'Conexion Tutor' => 'Conexion Tutor', 'Se realiza valoración agente' => 'Se realiza valoración agente', 'Servicio nuevo' => 'Servicio nuevo']; ?>
+		<?php $var = ['Comparte varios PCRC' => 'Comparte varios PCRC', 'Incapacidad' => 'Incapacidad', 'Distribuciï¿½n muestra en OJT y calidad Entto' => 'Distribuciï¿½n muestra en OJT y calidad Entto', 'Varios tï¿½cnicos con el mismo PCRC' => 'Varios tï¿½cnicos con el mismo PCRC', 'Licencia/Vacaciones' => 'Licencia/Vacaciones', 'En otras actividades' => 'En otras actividades',  'Suspension' => 'Suspension', 'Calibraciones Incognitas' => 'Calibraciones Incognitas', 'Conexion Tutor' => 'Conexion Tutor', 'Se realiza valoraciï¿½n agente' => 'Se realiza valoraciï¿½n agente', 'Servicio nuevo' => 'Servicio nuevo']; ?>
 		
 		<?= $form->field($model, "argumentos")->dropDownList($var, ['prompt' => 'Seleccione una opcion', 'id'=>"id_argumentos"]) ?>   				
 	</div>
@@ -65,8 +65,8 @@ $this->title = 'Actualizar Cantidad Valoracion';
 
 	<br>
 	<div align="center">
-		<h6><b><p style="color:red;">!!! Advertencia !!! </p></b></h6>
-		<h7><b>Solo es posible hacer la actualización sobre la cantidad de valoracion modificada si no tiene un argumento valido.</b></h7>
+		<h6><strong><p style="color:red;">!!! Advertencia !!! </p></strong></h6>
+		<h7><strong>Solo es posible hacer la actualizaciï¿½n sobre la cantidad de valoracion modificada si no tiene un argumento valido.</strong></h7>
 	</div>
 <?php
 	}

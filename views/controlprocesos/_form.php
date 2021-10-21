@@ -90,7 +90,7 @@ $this->title = 'Agregar Valorador';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-address-card" style="font-size: 20px; color: #2CA5FF;"></i> Informacion del plan: </label>
+                <label style="font-size: 20px;"><em class="fas fa-address-card" style="font-size: 20px; color: #2CA5FF;"></em> Informacion del plan: </label>
                 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
                 <div class="row">
                     <div class="col-md-6">
@@ -124,11 +124,11 @@ $this->title = 'Agregar Valorador';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-plus-square" style="font-size: 15px; color: #FFC72C;"></i> Agregar Pcrc / dimensión: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-plus-square" style="font-size: 15px; color: #FFC72C;"></em> Agregar Pcrc / dimensión: </label> 
                             <?= 
                                 Html::button('Agregar', ['value' => url::to(['createparameters','usua_id'=>$txtusua_id
                                     ]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar'                                        
@@ -149,7 +149,7 @@ $this->title = 'Agregar Valorador';
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Guardar plan de valoracion: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Guardar plan de valoracion: </label> 
                             <div onclick="guardarbtn();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                               Guardar
                             </div> 
@@ -157,7 +157,7 @@ $this->title = 'Agregar Valorador';
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                             <?= Html::a('Regresar',  ['indexeliminar','evaluadoID' => $varValorador], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -175,7 +175,7 @@ $this->title = 'Agregar Valorador';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-object-ungroup" style="font-size: 20px; color: #FF3F33;"></i> Planes de valoración: </label>
+                <label style="font-size: 20px;"><em class="fas fa-object-ungroup" style="font-size: 20px; color: #FF3F33;"></em> Planes de valoración: </label>
                 <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         //'filterModel' => $searchModel,
