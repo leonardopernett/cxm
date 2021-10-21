@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\BaseSatisfaccion;
 use app\models\BaseSatisfaccionSearch;
 use yii\web\Controller;

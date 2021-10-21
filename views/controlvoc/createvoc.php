@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
 </div> 
 <br>
 <div class="formularios-form" style="display: inline" id="idBloques1">
@@ -80,12 +80,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
   <div id="dtbloque1" class="col-sm-12" style="display: none">
       <table class="table table-striped table-bordered detail-view formDinamico">
+      <caption>Tabla datos</caption>
         <thead>
+        <th></th>
         </thead>
         <tbody>
           <tr>
             <td>
-              <label for="txtPcrc">Programa o PCRC</label>
+              <label for="txtPcrc">Programa o PCRsssC</label>
                     <input type="text" class="form-control" readonly="readonly" id="txtPcrc" value="<?php echo $varNomArbol; ?>" data-toggle="tooltip" title="Programa o PCRC.">              
             </td> 
             <td>
@@ -150,8 +152,9 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
   <div id="dtbloque2" class="col-sm-12" style="display: none">
     <table class="table table-striped table-bordered detail-view formDinamico">
+    <caption>Tabla</caption>
       <thead>
-        
+        <th></th>
       </thead>
       <tbody>
         <tr>
@@ -517,13 +520,14 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
   <div id="dtbloque3" class="col-sm-12" style="display: none">  
     <table class="table table-striped table-bordered detail-view formDinamico">
+    <caption>Tabla datos</caption>
       <thead>
         <tr>
-          <th>
-            <center><label for="txtAtributos">Atributos de Calidad</label></center>
+          <th id="atributosCalidad" style="text-align: center;">
+            <label for="txtAtributos">Atributos de Calidad</label>
           </th>
-          <th>
-            <center><label for="txtFeedback">Feedback en caso de una afectación de calidad</label></center>
+          <th id="FeedbackAfectacion" style="text-align: center;">
+            <label for="txtFeedback">Feedback en caso de una afectación de calidad</label>
           </th>
         </tr>
       </thead>

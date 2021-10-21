@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: 'Nunito',sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -127,7 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-id-card" style="font-size: 20px; color: #827DF9;"></i> Acciones de búsqueda</label>
+                <label><em class="fas fa-id-card" style="font-size: 20px; color: #827DF9;"></em> Acciones de búsqueda</label>
                 <div class="row">
                     <div class="col-md-6">
                         <label style="font-size: 15px;">Seleccionar rango de fecha: </label>
@@ -226,17 +226,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-list" style="font-size: 20px; color: #827DF9;"></i> Listado</label>
+                <label><em class="fas fa-list" style="font-size: 20px; color: #827DF9;"></em> Listado</label>
                 <br>
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Tabla</caption>
                     <thead>
                         <tr>
-                        <th colspan="3" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de buzones registrados') ?></label></th>
+                        <th id="listadobuzonesregistrados" colspan="3" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de buzones registrados') ?></label></th>
                         </tr>
                         <tr>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Pcrc') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Codigo Pcrc') ?></label></th>
-                            <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ruta') ?></label></th>
+                            <th id="nombrePcrc" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Pcrc') ?></label></th>
+                            <th id="codigoPcrc" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Codigo Pcrc') ?></label></th>
+                            <th id="ruta" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ruta') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -265,7 +266,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-eye" style="font-size: 20px; color: #ff8a25;"></i> Verificar Buzones Kaliope</label>
+                <label><em class="fas fa-eye" style="font-size: 20px; color: #ff8a25;"></em> Verificar Buzones Kaliope</label>
                 <br>
                 <label for="txtconnid" style="font-size: 14px;">Ingresar Connid...</label>
                 <input type="text" id="idtxtconnid" name="connid" class="form-control" data-toggle="tooltip" title="Connid">
@@ -286,11 +287,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-bolt" style="font-size: 20px; color: #23e04c;"></i> Generar y guardar transcripciones</label>
+                <label><em class="fas fa-bolt" style="font-size: 20px; color: #23e04c;"></em> Generar y guardar transcripciones</label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 20px; color: #23e04c;"></i> Generar accion</label>
+                            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #23e04c;"></em> Generar accion</label>
                             <div onclick="savelogs();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="btnlogs" >
                                 Aceptar
                             </div>
@@ -299,19 +300,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php if ($sessiones == "0") { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 20px; color: #23e04c;"></i> Descargar Logs</label>
+                            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #23e04c;"></em> Descargar Logs</label>
                         </div>
                     </div>
                     <?php } ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-calendar" style="font-size: 20px; color: #23e04c;"></i> Ultima fecha Logs</label> 
+                            <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 20px; color: #23e04c;"></em> Ultima fecha Logs</label> 
                             <label  style="font-size: 19px;"><?= Yii::t('app', $varDate) ?></label>                    
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-hashtag" style="font-size: 20px; color: #23e04c;"></i> Cantidad registrada</label>
+                            <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #23e04c;"></em> Cantidad registrada</label>
                             <label style="font-size: 19px;"><?= Yii::t('app', $varCant) ?></label>
                         </div>
                     </div>
@@ -325,11 +326,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-12">
       <div class="card1 mb">
         <table align="center">
+        <caption>
+        Tabla
+        </caption>
           <thead>
             <tr>
-              <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
-              <th><?= Yii::t('app', '') ?></th>
-              <th class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion...') ?></h4></th>
+              <th id="cargando" class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+              <th id="cargando"><?= Yii::t('app', '') ?></th>
+              <th id="cargando" class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion...') ?></h4></th>
             </tr>            
           </thead>
         </table>
