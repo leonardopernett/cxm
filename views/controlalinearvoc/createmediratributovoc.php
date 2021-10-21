@@ -31,20 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="row">
       <div class="col-md-offset-2 col-sm-8">
-        <center><h4><?php echo $txtNamePcrc; ?></h4></center>
+        <h4 class="text-center"><?php echo $txtNamePcrc; ?></h4>
         <br>
       </div>
 </div>
 <div class="formularios-form" style="display: inline" id="dtbloque1"> 
 
   <table class="table table-striped table-bordered detail-view formDinamico"  id="tabladatos">
+  <caption>...</caption>
     <thead>
       <tr>
-        <th class="text-center"><?= Yii::t('app', 'Nombre Sesión') ?></th>
-        <th class="text-center"><?= Yii::t('app', 'Nombre Categoría') ?></th>
-        <th class="text-center"><?= Yii::t('app', 'Nombre Atributo') ?></th>        
-        <th class="text-center"><?= Yii::t('app', 'Atributos') ?></th>
-        <th class="text-center"><?= Yii::t('app', 'Acuerdo Alineación') ?></th>
+        <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Sesión') ?></th>
+        <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Categoría') ?></th>
+        <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Atributo') ?></th>        
+        <th scope="col" class="text-center"><?= Yii::t('app', 'Atributos') ?></th>
+        <th scope="col" class="text-center"><?= Yii::t('app', 'Acuerdo Alineación') ?></th>
       </tr>      
     </thead>
     <tbody>    

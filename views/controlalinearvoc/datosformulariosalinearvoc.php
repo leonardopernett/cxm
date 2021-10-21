@@ -30,6 +30,7 @@ $txtcontar = count($txtidbloque);
 </div>
 <div class="capaUno" style="display: none">
     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+    <caption>Alinear</caption>
         <thead>
 
             <tr>
@@ -223,22 +224,22 @@ $txtcontar = count($txtidbloque);
                     $txtSpeech = Yii::$app->db->createCommand("select numidextsp from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();                    
                 ?>
             <tr>           
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Fecha y Hora de la valoracion') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Fecha y Hora de la llamada') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Dimension') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Programa/Pcrc Padre') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Programa/Pcrc') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Formulario') ?></th>            
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Cedula Valorado') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Valorado') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Responsable') ?></th>            
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Valorador') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Rol') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Id Externo Speech') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Usuario de Agente') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Equipo') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Duracion') ?></th>
-                <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Extension') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Fecha y Hora de la valoracion') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Fecha y Hora de la llamada') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Dimension') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Programa/Pcrc Padre') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Programa/Pcrc') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Formulario') ?></th>            
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Cedula Valorado') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Valorado') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Responsable') ?></th>            
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Valorador') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Rol') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Id Externo Speech') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Usuario de Agente') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Equipo') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Duracion') ?></th>
+                <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Extension') ?></th>
             </tr>
                 <tr>
                     <td class="text-center" style="background-color: #4298B5; color: #fff"><?php echo $txtFechacreacion; ?></td>
@@ -259,11 +260,11 @@ $txtcontar = count($txtidbloque);
                     <td class="text-center" style="background-color: #4298B5; color: #fff"><?php echo $txtExtension; ?></td>
                 </tr>
                 <tr>
-                    <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Nombre Sesion') ?></th>
-                    <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Nombre Categoria') ?></th>
-                    <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Atributos') ?></th>
-                    <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Medicion') ?></th>
-                    <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Conclusiones') ?></th>
+                    <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Nombre Sesion') ?></th>
+                    <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Nombre Categoria') ?></th>
+                    <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Atributos') ?></th>
+                    <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Medicion') ?></th>
+                    <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Conclusiones') ?></th>
                  </tr>
                 <?php   
 
@@ -426,22 +427,22 @@ $txtcontar = count($txtidbloque);
                         <tr>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
-                            <td class="text-center"><B>Indicador de Precision</B></td>
+                            <td class="text-center"><strong>Indicador de Precision</strong></td>
                             <td class="text-center"><?php echo $indicadorPrecic1; ?>%</td>
                             <td class="text-center"></td>
                         </tr>
                                      
                        <tr>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Participantes') ?></th>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Concepto de mejora') ?></th>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Analisis de Causa') ?></th>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Accion a Seguir') ?></th>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Tipo de accion') ?></th>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Responsable') ?></th>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Fecha Plan') ?></th>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Fecha de Implementacion') ?></th>
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Estado') ?></th>               
-                          <th class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Observaciones') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Participantes') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Concepto de mejora') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Analisis de Causa') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Accion a Seguir') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Tipo de accion') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Responsable') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Fecha Plan') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Fecha de Implementacion') ?></th>
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Estado') ?></th>               
+                          <th scope="col" class="text-center" style="background-color: #28559B; color: #fff"><?= Yii::t('app', 'Observaciones') ?></th>
                       </tr>
                       <tr>
                           <td class="text-center" style="background-color: #4298B5; color: #fff"><?php echo $txtNombrePartic; ?></td>

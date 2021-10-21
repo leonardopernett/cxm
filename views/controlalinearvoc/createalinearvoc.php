@@ -135,7 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
       <div class="row">
         <div class="col-md-12">
           <div class="card1 mb">
-            <label style="font-size: 20px;"><i class="fas fa-check-circle" style="font-size: 20px; color: #51EB47;"></i> Los datos han sido guardados satisfactoriamente...</label><br>
+            <label style="font-size: 20px;"><em class="fas fa-check-circle" style="font-size: 20px; color: #51EB47;"></em> Los datos han sido guardados satisfactoriamente...</label><br>
             <div style="text-align: center">
               <?= Html::a('Aceptar',  ['index'], ['class' => 'btn btn-success',
                           'style' => 'background-color: #707372',]) 
@@ -152,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-12">
       <div class="card1 mb">
       <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
-        <label><i class="fas fa-edit" style="font-size: 20px; color: #559FFF;"></i> Información de partida:</label>
+        <label><em class="fas fa-edit" style="font-size: 20px; color: #559FFF;"></em> Información de partida:</label>
           <div class="row">
             <div class="col-md-6">
               <label for="txtPcrc" style="font-size: 14px;">Programa o PCRC</label>
@@ -204,7 +204,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label><i class="fas fa-tags" style="font-size: 20px; color: #49941e;"></i> Categorías:</label>
+        <label><em class="fas fa-tags" style="font-size: 20px; color: #49941e;"></em> Categorías:</label>
         <div class="row">
           <div class="col-md-12">
             <label for="txtIndiGlo" style="font-size: 14px;">Indicadores</label>
@@ -243,15 +243,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
           <div class="col-md-12">
            <table class="table table-striped table-bordered detail-view formDinamico" id="tablacate">
+           <caption>...</caption>
               <thead>
                 <tr>
-                  <th class="text-center"><?= Yii::t('app', 'Id listado') ?></th>
-                  <th class="text-center"><?= Yii::t('app', 'Servicio') ?></th>
-                  <th class="text-center"><?= Yii::t('app', 'Nombre Sesion') ?></th>
-                  <th class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
-                  <th class="text-center"><?= Yii::t('app', 'Nombre Atributos') ?></th>
-                  <th class="text-center"><?= Yii::t('app', 'Medir Atributo') ?></th>
-                  <th class="text-center"><?= Yii::t('app', 'Conclusiones') ?></th>
+                  <th scope="col" class="text-center"><?= Yii::t('app', 'Id listado') ?></th>
+                  <th scope="col" class="text-center"><?= Yii::t('app', 'Servicio') ?></th>
+                  <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Sesion') ?></th>
+                  <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
+                  <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Atributos') ?></th>
+                  <th scope="col" class="text-center"><?= Yii::t('app', 'Medir Atributo') ?></th>
+                  <th scope="col" class="text-center"><?= Yii::t('app', 'Conclusiones') ?></th>
                 </tr>      
               </thead>
               <tbody>    
@@ -312,12 +313,12 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label><i class="fas fa-tasks" style="font-size: 20px; color: #C148D0;"></i> Plan de Acción:</label>
+        <label><em class="fas fa-tasks" style="font-size: 20px; color: #C148D0;"></em> Plan de Acción:</label>
         <div class="row">
           <div class="col-md-6">
               <div id="dtbloque2" class="col-sm-12" style="display: inline">
                 <p>
-                    <b>&nbsp;&nbsp; Se requiere realizar plan de accion?</b> <br>
+                    <strong>&nbsp;&nbsp; Se requiere realizar plan de accion?</strong> <br>
 
                     &nbsp;&nbsp;<label><input id = "requieresi" type="radio" name="plan" value="si" onclick="planaccion()"> SI </label><br>
 
@@ -395,7 +396,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-6">
       <div class="card1 mb">
-        <label><i class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></i> Acciones:</label>
+        <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Acciones:</label>
           <div class="row">
             <div class="col-md-6">
               <div class="card2 mb">  
@@ -416,7 +417,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-md-6">
       <div class="card1 mb">
-        <label><i class="fas fa-paperclip" style="font-size: 20px; color: #FFC72C;"></i> Feedback & Alertas:</label>
+        <label><em class="fas fa-paperclip" style="font-size: 20px; color: #FFC72C;"></em> Feedback & Alertas:</label>
           <div class="row">            
             <div class="col-md-6">
               <div class="card2 mb">

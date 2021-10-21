@@ -53,7 +53,7 @@ $template = '<div class="col-sm-12">'
     <div class="row">
         <div class="col-md-12">
           <div class="card1 mb">
-            <label style="font-size: 20px;"><i class="fas fa-bookmark" style="font-size: 20px; color: #559FFF;"></i> Registro de feedback</label>
+            <label style="font-size: 20px;"><em class="fas fa-bookmark" style="font-size: 20px; color: #559FFF;"></em> Registro de feedback</label>
             <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'id' => 'feedback']); ?>
             <div class="row">
                 <div class="col-md-12">

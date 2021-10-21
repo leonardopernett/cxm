@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-search" style="font-size: 20px; color: #FFC72C;"></i> Búsqueda del formulario: </label>
+                <label><em class="fas fa-search" style="font-size: 20px; color: #FFC72C;"></em> Búsqueda del formulario: </label>
 
                 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
                     <?=

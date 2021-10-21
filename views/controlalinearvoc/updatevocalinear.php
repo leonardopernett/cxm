@@ -33,7 +33,7 @@ $this->title = 'ActualizaciÃ³n del Listado Instrumento Alinear + VOC';
 </div> 
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <br>
 
@@ -43,12 +43,13 @@ if ($txtSesiones == 1) {
 <div id="dtbloque2" class="col-sm-12">
 	<br>
 	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+	<caption>Categoria</caption>
 		<tr>
-			<th class="text-center"><?= Yii::t('app', 'Id Categoria') ?></th>
-			<th class="text-center"><?= Yii::t('app', 'Sesion') ?></th>
-			<th class="text-center"><?= Yii::t('app', 'Nombre pcrc') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
-			<th class="text-center"><?= Yii::t('app', '') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Id Categoria') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Sesion') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Nombre pcrc') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', '') ?></th>
 		</tr>
 		
 			<?php
@@ -107,12 +108,13 @@ if ($txtSesiones == 2) {
 <div id="dtbloque2" class="col-sm-12">
 	<br>
 	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+	<caption>Atributo - Categoria</caption>
 		<tr>
-			<th class="text-center"><?= Yii::t('app', 'Id Atributo') ?></th>
-			<th class="text-center"><?= Yii::t('app', 'Id Categoria') ?></th>
-			<th class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Nombre Atributo') ?></th>
-			<th class="text-center"><?= Yii::t('app', '') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Id Atributo') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Id Categoria') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Atributo') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', '') ?></th>
 		</tr>
 		
 			<?php
@@ -175,7 +177,7 @@ if ($txtSesiones == 2) {
 		var varSesiones = "<?php echo $txtSesiones; ?>";
 		var varPCRC = "<?php echo $txtIdPcrc; ?>";
 
-	    var opcion = confirm("Confirmar la eliminación del item de la lista...");
+	    var opcion = confirm("Confirmar la eliminaciï¿½n del item de la lista...");
 
 	    if (opcion == true){
 			if(varSesiones == 1){
