@@ -48,10 +48,11 @@ Modal::begin([
                 <?php echo $form->field($modelCorte, 'band_repetir')->checkbox(); ?>
             </div>
             <table class="table table-striped table-bordered">
+            <caption>Cortes</caption>
                 <thead>
                     <tr>
-                        <th>Semanas</th>
-                        <th>Corte</th>
+                        <th scope="col">Semanas</th>
+                        <th scope="col">Corte</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -243,10 +244,11 @@ HTML;
                 <?php echo $form->field($modelCorte, 'band_repetir')->checkbox(); ?>
             </div>
             <table class="table table-striped table-bordered">
+            <caption>Cortes</caption>
                 <thead>
                     <tr>
-                        <th>Mes</th>
-                        <th>Corte</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Corte</th>
                     </tr>
                 </thead>
                 <tbody>
