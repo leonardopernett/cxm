@@ -222,7 +222,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		if (fecha1 == null || fecha1 == "") 
 		{
 			event.preventDefault();
-				swal.fire("��� Advertencia !!!","Las fecha inicio no puede estar vacia.","warning");
+				swal.fire("!!! Advertencia !!!","Las fecha inicio no puede estar vacia.","warning");
 			return;			
 		}
 		else
@@ -230,31 +230,31 @@ $this->params['breadcrumbs'][] = $this->title;
 			if (fecha2 == null || fecha2 == "") 
 			{
 				event.preventDefault();
-				swal.fire("��� Advertencia !!!","Las fecha fin no puede estar vacia.","warning");
+				swal.fire("!!! Advertencia !!!","Las fecha fin no puede estar vacia.","warning");
 				return;		
 			}
 		}
 
 		if (cfecha1 < figeneral) {
 				event.preventDefault();
-				swal.fire("��� Advertencia !!!","La fecha inicio corte 1 no puede ser menor a la fecha inicio de la general","warning");
+				swal.fire("!!! Advertencia !!!","La fecha inicio corte 1 no puede ser menor a la fecha inicio de la general","warning");
 				return;				
 		}else{
 			if (cfecha2 < figeneral) {
 					event.preventDefault();
-					swal.fire("��� Advertencia !!!","La fecha fin corte 1 no puede ser menor a la fecha inicio de la general","warning");
+					swal.fire("!!! Advertencia !!!","La fecha fin corte 1 no puede ser menor a la fecha inicio de la general","warning");
 					return;					
 			}
 		}
 
 		if (cfecha2 > ffgeneral) {		
 				event.preventDefault();
-				swal.fire("��� Advertencia !!!","La fecha fin corte 1 no puede ser mayor a la fecha fin de la general","warning");
+				swal.fire("!!! Advertencia !!!","La fecha fin corte 1 no puede ser mayor a la fecha fin de la general","warning");
 				return;					
 		}else{
 			if (cfecha1 > ffgeneral) {
 					event.preventDefault();
-					swal.fire("��� Advertencia !!!","La fecha inicio corte 1 no puede ser mayor a la fecha fin de la general","warning");
+					swal.fire("!!! Advertencia !!!","La fecha inicio corte 1 no puede ser mayor a la fecha fin de la general","warning");
 					return;							
 			}
 		}
