@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-filter" style="font-size: 20px; color: #827DF9;"></i> Filtros</label>
+                <label><em class="fas fa-filter" style="font-size: 20px; color: #827DF9;"></em> Filtros</label>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="txtPcrc" style="font-size: 14px;">Cliente</label>
@@ -218,7 +218,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-6">
                 <div class="card1 mb">
-                    <label><i class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></i> Acciones:</label>
+                    <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Acciones:</label>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card1 mb">  
@@ -257,7 +257,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label><i class="far fa-list-alt" style="font-size: 20px; color: #5ff21b;"></i> Listado estados abiertos:</label>
+        <label><em class="far fa-list-alt" style="font-size: 20px; color: #5ff21b;"></em> Listado estados abiertos:</label>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => [

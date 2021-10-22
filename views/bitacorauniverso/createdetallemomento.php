@@ -59,11 +59,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <hr>
 <div class="formularios-form" style="display: none" id="dtbloque3">
 	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+	<caption>Detalle momento</caption>
         <thead>
             <tr>
-                <th class="text-center">Id Det. Momento</th>
-                <th class="text-center">Momento</th>
-                <th class="text-center">Detalle momento</th>
+                <th scope="col" class="text-center">Id Det. Momento</th>
+                <th scope="col" class="text-center">Momento</th>
+                <th scope="col" class="text-center">Detalle momento</th>
             </tr>
         </thead>
         <tbody>                    

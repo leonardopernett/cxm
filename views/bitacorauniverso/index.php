@@ -110,7 +110,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-              <label><i class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></i> Acciones:</label>
+              <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Acciones:</label>
                 <div class="row">                    
                     <div class="col-md-6">
                         <label style="font-size: 15px;"></label>
@@ -154,7 +154,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="far fa-address-card" style="font-size: 20px; color: #827DF9;"></i> Registro del asesor</label>
+                <label><em class="far fa-address-card" style="font-size: 20px; color: #827DF9;"></em> Registro del asesor</label>
                 <div class="row">
                     <div class="col-md-6">
                     <label for="txtPcrc" style="font-size: 14px;">Cliente</label>
@@ -262,7 +262,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="far fa-clipboard" style="font-size: 20px; color: #e8701a;"></i> Momentos</label>
+                <label><em class="far fa-clipboard" style="font-size: 20px; color: #e8701a;"></em> Momentos</label>
                 <div class="row">
                     <div class="col-md-6">
                       <label for="txtCiudad" style="font-size: 14px;">Momento</label>
@@ -318,7 +318,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                 <div class="row">
                   <div class="col-md-6">
                       
-                      <label><i class="far fa-question-circle" style="font-size: 20px; color: #8be81a;"></i> Requiere escalamiento?</label><br>
+                      <label><em class="far fa-question-circle" style="font-size: 20px; color: #8be81a;"></em> Requiere escalamiento?</label><br>
                       <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="color" value="si" id = "requieresi" onclick="planaccion()"> Si &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                       <label><input type="radio" name="color" value="no" id = "requiereno" onclick="planaccion2()" checked> No </label>
                         <br>                          
@@ -365,7 +365,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-              <label><i class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></i> Acciones:</label>
+              <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Acciones:</label>
                 <div class="row">                    
                     <div class="col-md-6">
                         <label style="font-size: 15px;"></label>
@@ -410,7 +410,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
       <div class="col-md-12">
         <div class="card1 mb">
-          <label><i class="fas fa-pen-square" style="font-size: 20px; color: #827DF9;"></i> Registrar items:</label>
+          <label><em class="fas fa-pen-square" style="font-size: 20px; color: #827DF9;"></em> Registrar items:</label>
             <div class="row">
               <div class="col-mod-4">  
                       <?= Html::button('Agregar Momento', ['value' => url::to('momento'), 'class' => 'btn btn-success', 'id'=>'modalButton1',
@@ -460,7 +460,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-              <label><i class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></i> Información:</label>
+              <label><em class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></em> Información:</label>
               <label style="font-size: 14px;">No tiene los permisos para ingresar a esta opción... Debe diregirse al administrador de la aplicación</label>
                 </div><br>
             </div>
