@@ -132,9 +132,10 @@ $this->title = 'Métricas de Productividad/Valoración';
 
 <div class="capaCero" style="display: inline">
 	<table class="table table-striped table-bordered detail-view formDinamico" border="0">
+    <caption>Volumen</caption>
 		<thead>
             <tr>
-                <th class="text-center"><?= Yii::t('app', 'Volúmen x Cliente') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Volúmen x Cliente') ?></th>
             </tr>			
 		</thead>
 		<tbody>
