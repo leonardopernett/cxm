@@ -98,7 +98,7 @@ use yii\bootstrap\Modal;
 </div>
 
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div>
 
 <div class="CapaUno" style="display: none" id="CapaUno">
@@ -123,14 +123,15 @@ use yii\bootstrap\Modal;
 <br>
 <br>
     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+    <caption>Tablero de Control</caption>
         <thead>
             <tr>
-                <th class="text-center" colspan="10"><h4><?= Yii::t('app', 'Tablero de Control - QA -') ?></h4></th>
+                <th scope="col" class="text-center" colspan="10"><h4><?= Yii::t('app', 'Tablero de Control - QA -') ?></h4></th>
             </tr>
             <tr>
-		<th class="text-center"><?= Yii::t('app', '') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
+		<th scope="col" class="text-center"><?= Yii::t('app', '') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
                 <?php
                     $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a     where CorteMes not like '%$txtMes%' order by a.mesyear asc")->queryAll();
 
@@ -138,11 +139,11 @@ use yii\bootstrap\Modal;
                         $varMonth = $value['CorteMes'];
                         $varYear = $value['CorteYear'];
                 ?>
-                    <th class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                    <th scope="col" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
                 <?php
                     }
                 ?>
-                <th class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>
             </tr>
         </thead>    
         <tbody>
@@ -211,14 +212,15 @@ use yii\bootstrap\Modal;
   <br>
   <br>
     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+    <caption>Tablero de Control</caption>
         <thead>
             <tr>
-                <th class="text-center" colspan="10"><h4><?= Yii::t('app', 'Tablero de Control - Speech -') ?></h4></th>
+                <th scope="col" class="text-center" colspan="10"><h4><?= Yii::t('app', 'Tablero de Control - Speech -') ?></h4></th>
             </tr>
             <tr>
-		<th class="text-center"><?= Yii::t('app', '') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
+		<th scope="col" class="text-center"><?= Yii::t('app', '') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
                 <?php
                     $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a     where CorteMes not like '%$txtMes%' order by a.mesyear asc")->queryAll();
 
@@ -226,11 +228,11 @@ use yii\bootstrap\Modal;
                         $varMonth = $value['CorteMes'];
                         $varYear = $value['CorteYear'];
                 ?>
-                    <th class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                    <th scope="col" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
                 <?php
                     }
                 ?>
-                <th class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>
             </tr>
         </thead>    
         <tbody>
@@ -302,13 +304,14 @@ use yii\bootstrap\Modal;
   <br>
   <br>
     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+    <caption>Tablero de Control</caption>
         <thead>
             <tr>
-                <th class="text-center" colspan="9"><h4><?= Yii::t('app', 'Tablero de Control - General -') ?></h4></th>
+                <th scope="col" class="text-center" colspan="9"><h4><?= Yii::t('app', 'Tablero de Control - General -') ?></h4></th>
             </tr>
             <tr>
-                <th class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
                 <?php
                     $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a     where CorteMes not like '%$txtMes%' order by a.mesyear asc")->queryAll();
 
@@ -316,11 +319,11 @@ use yii\bootstrap\Modal;
                         $varMonth = $value['CorteMes'];
                         $varYear = $value['CorteYear'];
                 ?>
-                    <th class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                    <th scope="col" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
                 <?php
                     }
                 ?>
-                <th class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>
             </tr>
         </thead>    
         <tbody>

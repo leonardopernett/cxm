@@ -89,8 +89,9 @@ $this->title = 'Métricas de Productividad/Valoración';
 <div class="CapaCero" style="display: inline">
     <label><p>Volúmen de Gestión...</p></label>
     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+    <caption>Volumen</caption>
         <thead>
-            <th class="text-center"><?= Yii::t('app', 'Nivel') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Nivel') ?></th>
             <?php
                 $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a     where CorteMes not like '%$txtMes%' order by a.mesyear asc")->queryAll();
 
@@ -98,11 +99,11 @@ $this->title = 'Métricas de Productividad/Valoración';
                     $varMonth = $value['CorteMes'];
                     $varYear = $value['CorteYear'];
             ?>
-                <th class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                <th scope="col" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
             <?php
                 }
             ?>   
-            <th class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>         
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>         
         </thead>
         <tbody>
             <?php
@@ -248,8 +249,9 @@ $this->title = 'Métricas de Productividad/Valoración';
 <div class="CapaUno" style="display: inline">
     <label><p>Costo x Gestión...</p></label>
     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+    <caption>Costo</caption>
         <thead>
-            <th class="text-center"><?= Yii::t('app', 'Nivel') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Nivel') ?></th>
             <?php
                 $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a     where CorteMes not like '%$txtMes%' order by a.mesyear asc")->queryAll();
 
@@ -257,11 +259,11 @@ $this->title = 'Métricas de Productividad/Valoración';
                     $varMonth = $value['CorteMes'];
                     $varYear = $value['CorteYear'];
             ?>
-                <th class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                <th scope="col" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
             <?php
                 }
             ?>   
-            <th class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>         
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Promedio ') ?></th>         
         </thead>
         <tbody>
 	
