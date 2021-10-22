@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label><i class="fas fa-book" style="font-size: 20px; color: #827DF9;"></i> <?php echo $txtNamePcrc; ?></label>
+        <label><em class="fas fa-book" style="font-size: 20px; color: #827DF9;"></em> <?php echo $txtNamePcrc; ?></label>
         <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
           <?= $form->field($model, 'arbol_id')->textInput(['maxlength' => 10, 'id'=>"pcrcid", 'class'=>'hidden', 'value'=> $txtIdPcrc ]) ?> 
           <div class="row">
@@ -169,7 +169,7 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
     <div class="row">
       <div class="col-md-12">
         <div class="card1 mb">
-          <label><i class="fas fa-pen-square" style="font-size: 20px; color: #827DF9;"></i> Registrar items:</label>
+          <label><em class="fas fa-pen-square" style="font-size: 20px; color: #827DF9;"></em> Registrar items:</label>
             <div class="row">
               <div class="col-mod-4">
    

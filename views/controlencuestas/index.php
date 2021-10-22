@@ -84,11 +84,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Importar - SATU cliente corporativo: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Importar - SATU cliente corporativo: </label> 
                             <?= 
                                 Html::button('Importar encuesta', ['value' => url::to(['importarexcel']), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Importar'                                        
                                     ])
@@ -108,7 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Importar - Encuestas de retiros: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Importar - Encuestas de retiros: </label> 
                             <?= 
                                 Html::button('Importar encuesta', ['value' => url::to(['importarexcel2']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Importar'                                        
                                     ])
@@ -128,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Importar - Encuestas laboral: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Importar - Encuestas laboral: </label> 
                             <?= 
                                 Html::button('Importar encuesta', ['value' => url::to(['importarexcel3']), 'class' => 'btn btn-success', 'id'=>'modalButton5', 'data-toggle' => 'tooltip', 'title' => 'Importar'                                        
                                     ])
@@ -148,7 +148,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Importar - Encuestas de Héroes: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Importar - Encuestas de Héroes: </label> 
                             <?= 
                                 Html::button('Importar encuesta', ['value' => url::to(['importarexcel4']), 'class' => 'btn btn-success', 'id'=>'modalButton6', 'data-toggle' => 'tooltip', 'title' => 'Importar'                                        
                                     ])
@@ -171,7 +171,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Importar - Encuestas ACI: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Importar - Encuestas ACI: </label> 
                             <?= 
                                 Html::button('Importar encuesta', ['value' => url::to(['importarexcel5']), 'class' => 'btn btn-success', 'id'=>'modalButton7', 'data-toggle' => 'tooltip', 'title' => 'Importar'                                        
                                     ])
@@ -191,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-edit" style="font-size: 15px; color: #FFC72C;"></i> Registrar Encuestas: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 15px; color: #FFC72C;"></em> Registrar Encuestas: </label> 
                             <?= 
                                 Html::button('Registrar', ['value' => url::to(['registrarencuestas']), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Registrar'                                        
                                     ])
@@ -219,12 +219,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></i> Encuestas Cargadas: </label>
+                <label style="font-size: 20px;"><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em> Encuestas Cargadas: </label>
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Encuestas</caption>
                     <thead>
-                        <th class="text-center"><?= Yii::t('app', 'Id Encuesta') ?></th>
-                        <th class="text-center"><?= Yii::t('app', 'Encuesta') ?></th>
-                        <th class="text-center"><?= Yii::t('app', 'Fecha Actualizada') ?></th>
+                        <th scope="col" class="text-center"><?= Yii::t('app', 'Id Encuesta') ?></th>
+                        <th scope="col" class="text-center"><?= Yii::t('app', 'Encuesta') ?></th>
+                        <th scope="col" class="text-center"><?= Yii::t('app', 'Fecha Actualizada') ?></th>
                     </thead>
                     <tbody>
                         <?php

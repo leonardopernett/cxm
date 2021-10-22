@@ -27,7 +27,7 @@ use yii\bootstrap\Modal;
     ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <br>
 <div  class="col-md-12">
@@ -52,19 +52,17 @@ use yii\bootstrap\Modal;
 </div>
 <div id="dtbloque1" class="col-sm-12" style="display: none">
 	<table class="table table-striped table-bordered detail-view formDinamico">
-		<thead>
-			
-		</thead>
+  <caption>...</caption>
 		<tbody>
           <tr>
-            <td>
+            <th scope="row">
               <label for="txtPcrc">Programa o PCRC</label>
                     <input type="text" class="form-control" readonly="readonly" id="txtPcrc" value="<?php echo $txtArbol; ?>" data-toggle="tooltip" title="Programa o PCRC.">              
-            </td> 
-            <td>
+            </th> 
+            <th scope="row">
               <label for="txtValorado">Valorado</label>
               <input type="text" id="txtValorado" name="datetimes" readonly="readonly" value="<?php echo $txtNombreTecnico; ?>" class="form-control" data-toggle="tooltip" title="Valorado">
-            </td>
+            </th>
           </tr>  
           <tr>
             <td>
@@ -123,20 +121,17 @@ use yii\bootstrap\Modal;
   </div>
   <div id="dtbloque2" class="col-sm-12" style="display: none">
   	<table class="table table-striped table-bordered detail-view formDinamico">
-  		<thead>
-  			
-  		</thead>
+    <caption>...</caption>
   		<tbody>
   			<tr>
-	            <td>
+	            <th scope="row">
 	              <label for="txtResponsable">Responsabilidad</label>
 	                    <input type="text" class="form-control" id="txtResponsable" readonly="readonly" value="<?php echo $txtResponsable; ?>" data-toggle="tooltip" title="Responsabilidad">                                                 
-	            </td>
-	            <td>
+	            </th>
+	            <th scope="row">
 	              <label for="txtActividad">Actividad</label>
 	                    <input type="text" class="form-control" id="txtActividad" readonly="readonly" value="<?php echo $txtActividad; ?>" data-toggle="tooltip" title="Actividad">                                                 
-	            </td>	            
-            </tr> 
+	            </th>	            
             </tr> 
   			<tr>
 	            <td>

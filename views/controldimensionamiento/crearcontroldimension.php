@@ -97,7 +97,7 @@ $this->registerJs($js);
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-mouse-pointer" style="font-size: 15px; color: #C178G9;"></i> Seleccionar Mes </label>
+        <label style="font-size: 15px;"><em class="fas fa-mouse-pointer" style="font-size: 15px; color: #9F9AE1;"></em> Seleccionar Mes </label>
         <?= $form->field($model, 'month')->dropDownList($varmeses, ['prompt' => 'Seleccione Mes...', 'id'=>"idMeses", 'onchange' => 'validames();' ])->label('') ?>
 
         <?= Html::submitButton(Yii::t('app', 'Registrar'),
@@ -117,7 +117,7 @@ $this->registerJs($js);
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-plus-square" style="font-size: 15px; color: #C178G9;"></i> Ingresar Registros </label>
+        <label style="font-size: 15px;"><em class="fas fa-plus-square" style="font-size: 15px; color: #9F9AE1;"></em> Ingresar Registros </label>
         <div class="row">
           <div class="col-md-6">          
              
@@ -148,7 +148,7 @@ $this->registerJs($js);
             <?php
                 echo Html::tag('span', '<i class="fas fa-question-circle" style="font-size: 18px; color: #C178G9;"></i>', [
                             'data-title' => Yii::t("app", ""),
-                            'data-content' => 'Se recomienda que este valor no sea mayor al 40%, ya que afecta la eficiencia de la linea. Insertar solo números',
+                            'data-content' => 'Se recomienda que este valor no sea mayor al 40%, ya que afecta la eficiencia de la linea. Insertar solo nÃºmeros',
                             'data-toggle' => 'popover',
                             'style' => 'cursor:pointer;'
                 ]);
@@ -233,7 +233,7 @@ $this->registerJs($js);
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-calculator" style="font-size: 15px; color: #C178G9;"></i> Calcular Ausentismos </label>
+        <label style="font-size: 15px;"><em class="fas fa-calculator" style="font-size: 15px; color: #9F9AE1;"></em> Calcular Ausentismos </label>
         <div class="row">
           <div class="col-md-6">
             <label style="font-size: 13px;">Cantidad Tecnicos Incapacitados: </label>
@@ -299,14 +299,14 @@ $this->registerJs($js);
     if (varidturno < '48') {
       document.getElementById("idturno").style.backgroundColor = '#f7b9b9';
       event.preventDefault();
-      swal.fire("¡¡¡ Advertencia !!!","El turno promedio no debe ser menor a las 48 hrs. a la semana, Debe de ingresar.","warning");
+      swal.fire(" Advertencia ","El turno promedio no debe ser menor a las 48 hrs. a la semana, Debe de ingresar.","warning");
       return;
     }else
 
     if (varidcantvalor == "") {
       document.getElementById("idcantvalor").style.backgroundColor = '#f7b9b9';
       event.preventDefault();
-      swal.fire("¡¡¡ Advertencia !!!","Ingresar datos al campo valoración al mes","warning");
+      swal.fire("Advertencia ","Ingresar datos al campo valoraciÃ³n al mes","warning");
       return;
     }else{
       document.getElementById("idcantvalor").style.backgroundColor = '#fff';
@@ -314,7 +314,7 @@ $this->registerJs($js);
       if (varidtiempoadicional == "") {
         document.getElementById("idtiempoadicional").style.backgroundColor = '#f7b9b9';
         event.preventDefault();
-        swal.fire("¡¡¡ Advertencia !!!","Ingresar datos al campo tiempo adicional al muestreo","warning");
+        swal.fire("Advertencia","Ingresar datos al campo tiempo adicional al muestreo","warning");
         return;
       }else{
         document.getElementById("idtiempoadicional").style.backgroundColor = '#fff'
@@ -322,7 +322,7 @@ $this->registerJs($js);
         if (varidotrasa == "") {
           document.getElementById("idotrasa").style.backgroundColor = '#f7b9b9';
           event.preventDefault();
-          swal.fire("¡¡¡ Advertencia !!!","Ingresar datos al campo % del tiempo que el tecnico invierte en otras actividades","warning");
+          swal.fire("Advertencia","Ingresar datos al campo % del tiempo que el tecnico invierte en otras actividades","warning");
           return;
         }else{
           document.getElementById("idotrasa").style.backgroundColor = '#fff';
@@ -330,7 +330,7 @@ $this->registerJs($js);
           if (varidausentismos == "") {
             document.getElementById("idausentismos").style.backgroundColor = '#f7b9b9';
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Ingresar datos al campo ausentismos","warning");
+            swal.fire("Advertencia","Ingresar datos al campo ausentismos","warning");
             return;
           }else{
             document.getElementById("idausentismos").style.backgroundColor = '#fff';
@@ -338,7 +338,7 @@ $this->registerJs($js);
             if (varidtiempollama == "") {
               document.getElementById("idtiempollama").style.backgroundColor = '#f7b9b9';
               event.preventDefault();
-              swal.fire("¡¡¡ Advertencia !!!","Ingresar datos a la campo valoración al mes","warning");
+              swal.fire("Advertencia","Ingresar datos a la campo valoraciÃ³n al mes","warning");
               return;
             }else{
               document.getElementById("idtiempollama").style.backgroundColor = '#fff';
@@ -346,7 +346,7 @@ $this->registerJs($js);
               if (varidactuales == "") {
                 document.getElementById("idactuales").style.backgroundColor = '#f7b9b9';
                 event.preventDefault();
-                swal.fire("¡¡¡ Advertencia !!!","Ingresar datos a la campo valoración al mes","warning");
+                swal.fire("Advertencia","Ingresar datos a la campo valoraciÃ³n al mes","warning");
                 return;
               }else{
                 document.getElementById("idactuales").style.backgroundColor = '#fff';
@@ -354,7 +354,7 @@ $this->registerJs($js);
                 if (varidturno == "") {
                   document.getElementById("idturno").style.backgroundColor = '#f7b9b9';
                   event.preventDefault();
-                  swal.fire("¡¡¡ Advertencia !!!","Ingresar datos a la campo valoración al mes","warning");
+                  swal.fire("Advertencia","Ingresar datos a la campo valoraciÃ³n al mes","warning");
                   return;
                 }else{
                   document.getElementById("idturno").style.backgroundColor = '#fff';
@@ -362,7 +362,7 @@ $this->registerJs($js);
                   if (varidvacas == "") {
                     document.getElementById("idvacas").style.backgroundColor = '#f7b9b9';
                     event.preventDefault();
-                    swal.fire("¡¡¡ Advertencia !!!","Ingresar datos a la campo valoración al mes","warning");
+                    swal.fire("Advertencia","Ingresar datos a la campo valoraciÃ³n al mes","warning");
                     return;
                   }else{
                     document.getElementById("idvacas").style.backgroundColor = '#fff';
@@ -384,7 +384,7 @@ $this->registerJs($js);
     if (varidMeses < varMes) {
       varcapaUno.style.display = 'none';
       event.preventDefault();
-      swal.fire("¡¡¡ Advertencia !!!","El mes seleccionado no puede ser menor o igual al mes actual, por favor seleccionar otro mes.","warning");
+      swal.fire("Advertencia","El mes seleccionado no puede ser menor o igual al mes actual, por favor seleccionar otro mes.","warning");
       return;
     }else{
       varcapaUno.style.display = 'inline';

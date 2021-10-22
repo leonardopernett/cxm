@@ -85,11 +85,11 @@ $fechaActual = Yii::$app->db->createCommand("select distinct fechacreacion from 
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-plus-square" style="font-size: 20px; color: #2CA5FF;"></i> Agregar Dimensionamiento: </label>
+                <label style="font-size: 20px;"><em class="fas fa-plus-square" style="font-size: 20px; color: #2CA5FF;"></em> Agregar Dimensionamiento: </label>
                 
                 <div class="row">
                     <div class="col-md-6">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Seleccion de PCRC: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Seleccion de PCRC: </label><br>
                         <?=
                             $form->field($model, 'arbol_id')
                                 ->widget(Select2::classname(), [                
@@ -121,12 +121,12 @@ $fechaActual = Yii::$app->db->createCommand("select distinct fechacreacion from 
                         ?>
                     </div>
                     <div class="col-md-6">    
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Seleccion de Dimension: </label><br>                
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Seleccion de Dimension: </label><br>                
                         <?php $var = ['AGENTES' => 'AGENTES', 'ALTO VALOR' => 'ALTO VALOR', 'CALIDAD DEL ENTRENAMIENTO' => 'CALIDAD DEL ENTRENAMIENTO', 'HEROES POR EL CLIENTE' => 'HEROES POR EL CLIENTE', 'OJT' => 'OJT', 'OTROS' => 'OTROS', 'PRECISION Y APRENDIZAJE' => 'PRECISION Y APRENDIZAJE', 'PROCESO' => 'PROCESO', 'PROTECCION DE LA EXPERIENCIA' => 'PROTECCION DE LA EXPERIENCIA', 'PRUEBAS' => 'PRUEBAS']; ?>
                         <?= $form->field($model, 'dimensions')->dropDownList($var, ['prompt' => 'Seleccione...', 'id'=>"id_argumentos", 'onclick'=>'dimensiones2();'])->label('') ?>  
                     </div>
                     <div class="col-md-6">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Cantidad de valoracion: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Cantidad de valoracion: </label><br>
                         <?= $form->field($model, 'cant_valor')->textInput(['maxlength' => 200, 'type' => 'number',  'onkeypress' => 'return valida(event)', 'value' => $StrArbol])->label('') ?> 
                     
                         <?= $form->field($model, 'evaluados_id')->textInput(['maxlength' => 200, 'value'=>$txtIdusua, 'class'=>"hidden", 'label'=>""]) ?>
@@ -148,17 +148,17 @@ $fechaActual = Yii::$app->db->createCommand("select distinct fechacreacion from 
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Guardar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Guardar: </label> 
                             <?= HTML::submitButton($model->isNewRecord ? 'Guardar' : 'controlprocesos/createparameters2', ['class'=>$model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'BtnSubmitValorar']) ?>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Calcular las valoraciones: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Calcular las valoraciones: </label> 
                             <div onclick="calculate();" class="btn btn-primary" style="display:none;" method='post' id="botones1" >
                                 Calcular Valoraciones
                             </div> 
@@ -166,7 +166,7 @@ $fechaActual = Yii::$app->db->createCommand("select distinct fechacreacion from 
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label>
                             <?= Html::a('Regresar',  ['update2', 'id' => $IDvar, 'evaluados_id' => $varIdusua], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',

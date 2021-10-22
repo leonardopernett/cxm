@@ -129,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></i> Buscar técnico/lider: </label>
+                <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Buscar técnico/lider: </label>
                 <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?> 
                 <div class="row">
                     <div class="col-sm-12">
@@ -175,7 +175,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-8">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
@@ -250,7 +250,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-address-book" style="font-size: 20px; color: #B833FF;"></i> Listado del equipo: </label>
+                <label><em class="fas fa-address-book" style="font-size: 20px; color: #B833FF;"></em> Listado del equipo: </label>
                     <?= GridView::widget([
                             'dataProvider' => $dataProvider,
                             //'filterModel' => $searchModel,

@@ -57,10 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 </div>
 <div class="capaDos" style="display: none;" id="capaDos">
-	<label style="font-size: 13px;"><i class="fas fa-exclamation-circle" style="font-size: 15px; color: #FF3F33;"></i> El tecnico seleccionado, pertenece al equipo de  <label style="font-size: 13px;" id="resultadoid"></label></label>
+	<label style="font-size: 13px;"><em class="fas fa-exclamation-circle" style="font-size: 15px; color: #FF3F33;"></em> El tecnico seleccionado, pertenece al equipo de  <label style="font-size: 13px;" id="resultadoid"></label></label>
 </div><br>
 <div class="capaTres" style="display: none;" id="capaTres">
-	<label><i class="fas fa-exclamation" style="font-size: 20px; color: #FFD733;"></i> El tecnico seleccionado, ya pertenece a su equipo.</label>
+	<label><em class="fas fa-exclamation" style="font-size: 20px; color: #FFD733;"></em> El tecnico seleccionado, ya pertenece a su equipo.</label>
 </div>
 <script type="text/javascript">
 	function buscart(){

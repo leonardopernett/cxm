@@ -299,10 +299,10 @@ if ($fechaActual == null) {
                  <div class="w3-container">
                     <div class="w3-row">
                         <a href="javascript:void(0)" onclick="openCity(event, 'Emitida');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-plus-square" style="font-size: 15px; color: #559FFF;"></i><strong>Formularios de CXM</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-plus-square" style="font-size: 15px; color: #559FFF;"></em><strong>Formularios de CXM</strong></div>
                         </a>
                         <a href="javascript:void(0)" onclick="openCity(event, 'Percibida');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-plus-square" style="font-size: 15px; color: #827DF9;"></i><strong> Formularios de Valoración VOC</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-plus-square" style="font-size: 15px; color: #827DF9;"></em><strong> Formularios de Valoración VOC</strong></div>
                         </a>
                     </div>
                  </div>
@@ -310,7 +310,7 @@ if ($fechaActual == null) {
                 <div id="Emitida" class="w3-container city" style="display:inline">
                     <div class="row">
                         <div class="col-md-6">
-                            <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Seleccion de PCRC: </label><br>
+                            <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Seleccion de PCRC: </label><br>
                             <?=
                                 $form->field($model, 'arbol_id')
                                     ->widget(Select2::classname(), [                
@@ -342,12 +342,12 @@ if ($fechaActual == null) {
                             ?>
                         </div>
                         <div class="col-md-6">    
-                            <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Seleccion de Dimension: </label><br>                
+                            <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Seleccion de Dimension: </label><br>                
                             <?php $var = ['AGENTES' => 'AGENTES', 'ALTO VALOR' => 'ALTO VALOR', 'CALIDAD DEL ENTRENAMIENTO' => 'CALIDAD DEL ENTRENAMIENTO', 'HEROES POR EL CLIENTE' => 'HEROES POR EL CLIENTE', 'OJT' => 'OJT', 'OTROS' => 'OTROS', 'PRECISION Y APRENDIZAJE' => 'PRECISION Y APRENDIZAJE', 'PROCESO' => 'PROCESO', 'PROTECCION DE LA EXPERIENCIA' => 'PROTECCION DE LA EXPERIENCIA', 'PRUEBAS' => 'PRUEBAS']; ?>
                             <?= $form->field($model, 'dimensions')->dropDownList($var, ['prompt' => 'Seleccione...', 'id'=>"id_argumentos", 'onclick'=>'dimensiones2();'])->label('') ?>  
                         </div>
                         <div class="col-md-6">
-                            <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Cantidad de valoracion: </label><br>
+                            <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Cantidad de valoracion: </label><br>
                             <?= $form->field($model, 'cant_valor')->textInput(['maxlength' => 200, 'type' => 'number',  'onkeypress' => 'return valida(event)', 'value' => $StrArbol])->label('') ?> 
                         
                             <?= $form->field($model, 'evaluados_id')->textInput(['maxlength' => 200, 'value'=>$txtIdusua, 'class'=>"hidden", 'label'=>""]) ?>
@@ -358,7 +358,7 @@ if ($fechaActual == null) {
                         </div>
                         <div class="col-md-12">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Guardar: </label> 
+                                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Guardar: </label> 
                                 <?= HTML::submitButton($model->isNewRecord ? 'Guardar' : 'controlprocesos/createparameters2', ['class'=>$model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'BtnSubmitValorar']) ?>
                             </div>
                         </div>
@@ -368,7 +368,7 @@ if ($fechaActual == null) {
                 <div id="Percibida" class="w3-container city" style="display: none;">
                     <div class="row">
                         <div class="col-md-6">
-                            <label style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Seleccionar cliente: </label>
+                            <label style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Seleccionar cliente: </label>
                             <?=  $form->field($model2, 'programacategoria')->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                                 [
                                                     'prompt'=>'Seleccione el cliente...',
@@ -387,7 +387,7 @@ if ($fechaActual == null) {
                             ?>
                         </div>
                         <div class="col-md-6">
-                            <label style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Seleccionar servicio: </label>
+                            <label style="font-size: 17px;"><e class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></e> Seleccionar servicio: </label>
                             <?= $form->field($model2,'cod_pcrc')->dropDownList(
                                             [],
                                                 [
@@ -398,17 +398,17 @@ if ($fechaActual == null) {
                             ?>
                         </div>
                         <div class="col-md-6">
-                            <label style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Dimension: </label>
+                            <label style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Dimension: </label>
                             <?= $form->field($model2, 'pcrc')->textInput(['maxlength' => 200,  'value' => 'Escucha Focalizada', 'id' => 'vardimensionid', 'readonly' => 'true'])->label('') ?>
                         </div>
                         <div class="col-md-6">
-                            <label style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Ingresar cantidad: </label>
+                            <label style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Ingresar cantidad: </label>
                             <?= $form->field($model2, 'cod_pcrc')->textInput(['maxlength' => 10, 'id' => 'varcantidadid', 'type' => 'number', 'onkeypress' => 'return valida(event)'])->label('') ?>
                             <br>
                         </div>
                         <div class="col-md-12">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Guardar: </label> 
+                                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Guardar: </label> 
                                 <div onclick="speechbtn();" class="btn btn-primary" style="display:inline;" method='post' id="botones1" >
                                     Guardar
                                 </div>
@@ -425,12 +425,12 @@ if ($fechaActual == null) {
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Calcular las valoraciones: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Calcular las valoraciones: </label> 
                             <div onclick="calculate();" class="btn btn-primary" style="display:none;" method='post' id="botones1" >
                                 Calcular Valoraciones
                             </div> 
@@ -438,7 +438,7 @@ if ($fechaActual == null) {
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label>
                             <?= Html::a('Regresar',  ['update2', 'id' => $IDvar, 'evaluados_id' => $varIdusua], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',

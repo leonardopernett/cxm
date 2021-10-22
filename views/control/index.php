@@ -288,12 +288,11 @@ $this->registerJs($js);
                     </div>
                 </div>
                 <div class="row">
-                    <div class="btn-groupp col-md-12">
-                        <center>
+                    <div class="btn-groupp col-md-12 text-center">
                             <?=
                             Html::submitButton(Yii::t('app', 'Graficar')
                                     , ['class' => 'btn btn-success'])
-                            ?></center>
+                            ?>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?> 
@@ -514,16 +513,17 @@ $this->registerJs($js);
                     <br/>
                     <div class="col-md-12">
                         <table class="table table-striped table-bordered " style="margin-top: 20px;">
+                        <caption>Datos</caption>
                             <tr>
-                                <th><?= Yii::t('app', 'Arbol ID'); ?></th>
+                                <th scope="col"><?= Yii::t('app', 'Arbol ID'); ?></th>
                                 <?php if(!$data->volumenes) : ?>
-                                <th><?= Yii::t('app', 'Resultado'); ?></th>
+                                <th scope="col"><?= Yii::t('app', 'Resultado'); ?></th>
                                 <?php endif; ?>
-                                <th><?= Yii::t('app', 'Cantidad'); ?></th>                                
+                                <th scope="col"><?= Yii::t('app', 'Cantidad'); ?></th>                                
                             </tr>
                             <?php foreach ($arrTablaAgruDimen as $key => $value): ?>                                
                                 <tr>   
-                                    <th><?= $key; ?></th>   
+                                    <th scope="row"><?= $key; ?></th>   
                                     <?php  foreach ($value as $key2 => $val): ?>                                        
                                         <?php if($data->volumenes) : ?>
                                             <?php if($key2 == 0){ continue; } ?>
@@ -662,11 +662,12 @@ $this->registerJs($js);
                     <br/>
                     <div class="col-md-12" style="overflow: auto; padding-top: 20px;">
                     <table class="table table-striped table-bordered ">
+                    <caption>Datos</caption>
                         <tr>
-                            <td>&nbsp;</td> 
-                            <td>&nbsp;</td>
+                            <th>&nbsp;</th> 
+                            <th>&nbsp;</th>
                             <?php foreach ($data->dataXtabla as $valueCorte) : ?>
-                            <td><?= $valueCorte ?></td>
+                            <th><?= $valueCorte ?></th>
                             <?php endforeach; ?>                                                        
                         </tr> 
                         <?php if(!$data->volumenes) : ?>
@@ -831,8 +832,9 @@ $this->registerJs($js);
                     <br/>
                     <div class="col-md-12">
                         <table class="table table-striped table-bordered " style="margin-top: 20px;">
+                        <caption>Datos</caption>
                             <tr>
-                                <th></th>
+                                <th scope="col"></th>
                                 <?php $contResultados = 0; ?>
                                 <?php  foreach ($data->datosGrafica['titulosTablaSepaDim'] as $val): ?>
                                     <?php                                     
@@ -846,7 +848,7 @@ $this->registerJs($js);
                                         }
                                     }
                                     ?>
-                                    <th><?= $val; ?></th>
+                                    <th scope="col"><?= $val; ?></th>
                                 <?php endforeach; ?>
                             </tr>
                             <?php foreach ($data->datosGrafica['datosTablaSepaDim'] as $key => $value): ?>                                
@@ -1150,12 +1152,11 @@ $this->registerJs($js);
                     </div>
                 </div>
                 <div class="row">
-                    <div class="btn-groupp col-md-12">
-                        <center>
+                    <div class="btn-groupp col-md-12 text-center">
                             <?=
                             Html::submitButton(Yii::t('app', 'Generar Excel')
                                     , ['class' => 'btn btn-success'])
-                            ?></center>
+                            ?>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>

@@ -22,7 +22,7 @@ $this->title = 'Ver Tipo de Corte';
 ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <div class="control-procesos-index">
 	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>

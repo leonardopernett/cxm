@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Actualizar Dimensionamiento: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Actualizar Dimensionamiento: </label>
                         <?= Html::submitButton(Yii::t('app', 'Actualizar'),
                                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                     'data-toggle' => 'tooltip',
@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Regresar: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Regresar: </label>
                         <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                 'style' => 'background-color: #707372',
                                 'data-toggle' => 'tooltip',
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-9">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-plus-square" style="font-size: 15px; color: #C178G9;"></i> Ingresar Registros </label>
+                <label style="font-size: 15px;"><em class="fas fa-plus-square" style="font-size: 15px; color: #9F9AE1;"></em> Ingresar Registros </label>
                 
                 <?php
                     foreach ($varlistaresult as $key => $value) {
@@ -157,7 +157,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <label style="font-size: 13px;">Año: </label>
+                        <label style="font-size: 13px;">AÃ±o: </label>
                         <?= $form->field($model, 'year')->textInput(['maxlength' => 200, 'id'=>'id_Annio', 'readonly'=>'readonly', 'value' => $value['year']])->label('') ?>  
 
                         <label style="font-size: 13px;">Duracion llamadas muestreo (En Segundos): </label>
@@ -183,7 +183,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-calculator" style="font-size: 15px; color: #C178G9;"></i> Calcular Ausentismos </label>
+                            <label style="font-size: 15px;"><em class="fas fa-calculator" style="font-size: 15px; color: #9F9AE1;"></em> Calcular Ausentismos </label>
                             <div class="row">
                                 <div class="col-md-6">
                                   <label style="font-size: 13px;">Cantidad Tecnicos Incapacitados: </label>
@@ -249,14 +249,14 @@ $this->params['breadcrumbs'][] = $this->title;
     if (varidturno < '48') {
       document.getElementById("idturno").style.backgroundColor = '#f7b9b9';
       event.preventDefault();
-      swal.fire("¡¡¡ Advertencia !!!","El turno promedio no debe ser menor a las 48 hrs. a la semana, Debe de ingresar.","warning");
+      swal.fire("Advertencia","El turno promedio no debe ser menor a las 48 hrs. a la semana, Debe de ingresar.","warning");
       return;
     }else
 
     if (varidcantvalor == "") {
       document.getElementById("idcantvalor").style.backgroundColor = '#f7b9b9';
       event.preventDefault();
-      swal.fire("¡¡¡ Advertencia !!!","Ingresar datos al campo valoración al mes","warning");
+      swal.fire("Advertencia","Ingresar datos al campo valoraciÃ³n al mes","warning");
       return;
     }else{
       document.getElementById("idcantvalor").style.backgroundColor = '#fff';
@@ -264,7 +264,7 @@ $this->params['breadcrumbs'][] = $this->title;
       if (varidtiempoadicional == "") {
         document.getElementById("idtiempoadicional").style.backgroundColor = '#f7b9b9';
         event.preventDefault();
-        swal.fire("¡¡¡ Advertencia !!!","Ingresar datos al campo tiempo adicional al muestreo","warning");
+        swal.fire("Advertencia","Ingresar datos al campo tiempo adicional al muestreo","warning");
         return;
       }else{
         document.getElementById("idtiempoadicional").style.backgroundColor = '#fff'
@@ -272,7 +272,7 @@ $this->params['breadcrumbs'][] = $this->title;
         if (varidotrasa == "") {
           document.getElementById("idotrasa").style.backgroundColor = '#f7b9b9';
           event.preventDefault();
-          swal.fire("¡¡¡ Advertencia !!!","Ingresar datos al campo % del tiempo que el tecnico invierte en otras actividades","warning");
+          swal.fire("Advertencia","Ingresar datos al campo % del tiempo que el tecnico invierte en otras actividades","warning");
           return;
         }else{
           document.getElementById("idotrasa").style.backgroundColor = '#fff';
@@ -280,7 +280,7 @@ $this->params['breadcrumbs'][] = $this->title;
           if (varidausentismos == "") {
             document.getElementById("idausentismos").style.backgroundColor = '#f7b9b9';
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Ingresar datos al campo ausentismos","warning");
+            swal.fire("Advertencia","Ingresar datos al campo ausentismos","warning");
             return;
           }else{
             document.getElementById("idausentismos").style.backgroundColor = '#fff';
@@ -288,7 +288,7 @@ $this->params['breadcrumbs'][] = $this->title;
             if (varidtiempollama == "") {
               document.getElementById("idtiempollama").style.backgroundColor = '#f7b9b9';
               event.preventDefault();
-              swal.fire("¡¡¡ Advertencia !!!","Ingresar datos a la campo valoración al mes","warning");
+              swal.fire("Advertencia","Ingresar datos a la campo valoraciÃ³n al mes","warning");
               return;
             }else{
               document.getElementById("idtiempollama").style.backgroundColor = '#fff';
@@ -296,7 +296,7 @@ $this->params['breadcrumbs'][] = $this->title;
               if (varidactuales == "") {
                 document.getElementById("idactuales").style.backgroundColor = '#f7b9b9';
                 event.preventDefault();
-                swal.fire("¡¡¡ Advertencia !!!","Ingresar datos a la campo valoración al mes","warning");
+                swal.fire("Advertencia","Ingresar datos a la campo valoraciÃ³n al mes","warning");
                 return;
               }else{
                 document.getElementById("idactuales").style.backgroundColor = '#fff';
@@ -304,7 +304,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 if (varidturno == "") {
                   document.getElementById("idturno").style.backgroundColor = '#f7b9b9';
                   event.preventDefault();
-                  swal.fire("¡¡¡ Advertencia !!!","Ingresar datos a la campo valoración al mes","warning");
+                  swal.fire("Advertencia","Ingresar datos a la campo valoraciÃ³n al mes","warning");
                   return;
                 }else{
                   document.getElementById("idturno").style.backgroundColor = '#fff';
@@ -312,7 +312,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   if (varidvacas == "") {
                     document.getElementById("idvacas").style.backgroundColor = '#f7b9b9';
                     event.preventDefault();
-                    swal.fire("¡¡¡ Advertencia !!!","Ingresar datos a la campo valoración al mes","warning");
+                    swal.fire("Advertencia","Ingresar datos a la campo valoraciÃ³n al mes","warning");
                     return;
                   }else{
                     document.getElementById("idvacas").style.backgroundColor = '#fff';
