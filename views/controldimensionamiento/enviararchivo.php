@@ -63,7 +63,7 @@ $this->title = 'DashBoard Voz del Cliente';
 
         if (varDestino == "") {
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de ingresar un correo corporativo para enviar los datos","warning");
+            swal.fire("Advertencia","Debe de ingresar un correo corporativo para enviar los datos","warning");
             return;  
         }else{
             varIdCapaCero.style.display = 'none';

@@ -109,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     if (varidMeses == "") {
       event.preventDefault();
-      swal.fire("��� Advertencia !!!","Debe de seleccionar un mes para actualizar","warning");
+      swal.fire("Advertencia","Debe de seleccionar un mes para actualizar","warning");
       return;
     }
   };

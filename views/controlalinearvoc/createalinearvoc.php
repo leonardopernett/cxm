@@ -344,7 +344,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
               <div class="col-md-6"> 
                 <label for="txtAccion_seguir">Acción a Seguir</label>
-                    <input type="text" id="txtAccion_seguir" name="txtAccion_seguir" class="form-control" data-toggle="tooltip" title="Acci�n a Seguir">            
+                    <input type="text" id="txtAccion_seguir" name="txtAccion_seguir" class="form-control" data-toggle="tooltip" title="Acción a Seguir">            
               </div>
               <div class="col-md-6">      
                 <label for="txtTipo_accion">Tipo de acción</label>                  
@@ -588,24 +588,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
    if (varSpeech == ""){
       event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en ID Externo Llamada Speech (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en ID Externo Llamada Speech (Información de Partida).","warning");
       return;
    } else if(varFH == ""){
       event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Fecha y hora (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Fecha y hora (Información de Partida).","warning");
       return;
    } else if(varuSUAgente == ""){
     event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Usuario de Agente (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Usuario de Agente (Información de Partida).","warning");
       return;
    } else if(varDuracion == ""){
     event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Duraci�n (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Duración (Información de Partida).","warning");
       return;
     }
       else if(varExt == ""){
     event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Extensi�n (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Extensión (Información de Partida).","warning");
       return;  
 
 
@@ -713,24 +713,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
    if (varSpeech == ""){
       event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en ID Externo Llamada Speech (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en ID Externo Llamada Speech (Información de Partida).","warning");
       return;
    } else if(varFH == ""){
       event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Fecha y hora (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Fecha y hora (Información de Partida).","warning");
       return;
    } else if(varuSUAgente == ""){
     event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Usuario de Agente (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Usuario de Agente (Información de Partida).","warning");
       return;
    } else if(varDuracion == ""){
     event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Duraci�n (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Duración (Información de Partida).","warning");
       return;
     }
       else if(varExt == ""){
     event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Extensi�n (Informaci�n de Partida).","warning");
+      swal.fire("!!! Advertencia !!!","No hay datos a registrar en Extensión (Información de Partida).","warning");
       return;  
 
     }else{

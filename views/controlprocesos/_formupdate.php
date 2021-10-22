@@ -37,7 +37,7 @@ $this->title = 'Actualizar Valoracion';
 
 		<?= $form->field($model, "cant_valor")->textInput(['type' => 'number', 'maxlength' => 10, 'id'=>'cantidad_valoraciones', 'onkeypress'=>"return soloNumeros(event);", 'required'])->label('Cantidad de Valoraciones') ?> 	
 
-		<?php $var = ['Comparte varios PCRC' => 'Comparte varios PCRC', 'Incapacidad' => 'Incapacidad', 'Distribucion muestra en OJT y calidad Entto' => 'Distribucion muestra en OJT y calidad Entto', 'Varios t�cnicos con el mismo PCRC' => 'Varios tecnicos con el mismo PCRC', 'Licencia/Vacaciones' => 'Licencia/Vacaciones', 'En otras actividades' => 'En otras actividades', 'Suspension' => 'Suspension', 'Calibraciones Incognitas' => 'Calibraciones Incognitas', 'Conexion Tutor' => 'Conexion Tutor', 'Se realiza valoraci�n agente' => 'Se realiza valoracion agente', 'Servicio nuevo' => 'Servicio nuevo']; ?>
+		<?php $var = ['Comparte varios PCRC' => 'Comparte varios PCRC', 'Incapacidad' => 'Incapacidad', 'Distribucion muestra en OJT y calidad Entto' => 'Distribucion muestra en OJT y calidad Entto', 'Varios técnicos con el mismo PCRC' => 'Varios tecnicos con el mismo PCRC', 'Licencia/Vacaciones' => 'Licencia/Vacaciones', 'En otras actividades' => 'En otras actividades', 'Suspension' => 'Suspension', 'Calibraciones Incognitas' => 'Calibraciones Incognitas', 'Conexion Tutor' => 'Conexion Tutor', 'Se realiza valoración agente' => 'Se realiza valoracion agente', 'Servicio nuevo' => 'Servicio nuevo']; ?>
 		
 		<?= $form->field($model, "argumentos")->dropDownList($var, ['prompt' => 'Seleccione una opcion', 'id'=>"id_argumentos"]) ?>   				
 	</div>
@@ -60,7 +60,7 @@ $this->title = 'Actualizar Valoracion';
 ?>
 	<div class="formularios-form">
 		<div align="center">
-			<h5>Por favor seleccionar un argumento del porque se genera la actualizaci�n de la valoraci�n.</h5>
+			<h5>Por favor seleccionar un argumento del porque se genera la actualización de la valoración.</h5>
 		</div>
 		&nbsp;&nbsp;
 		<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
@@ -87,7 +87,7 @@ $this->title = 'Actualizar Valoracion';
 <br>
 	<div align="center">
 		<h6><strong><p style="color:red;"> Advertencia  </p></strong></h6>
-		<h7><strong>Solo es posible hacer la actualizacion sobre la cantidad de valoraci�n modificada si no tiene un argumento valido.</strong></h7>
+		<h7><strong>Solo es posible hacer la actualizacion sobre la cantidad de valoración modificada si no tiene un argumento valido.</strong></h7>
 	</div>
 
 <script type="text/javascript">

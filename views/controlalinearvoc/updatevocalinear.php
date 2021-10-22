@@ -177,7 +177,7 @@ if ($txtSesiones == 2) {
 		var varSesiones = "<?php echo $txtSesiones; ?>";
 		var varPCRC = "<?php echo $txtIdPcrc; ?>";
 
-	    var opcion = confirm("Confirmar la eliminaci�n del item de la lista...");
+	    var opcion = confirm("Confirmar la eliminación del item de la lista...");
 
 	    if (opcion == true){
 			if(varSesiones == 1){

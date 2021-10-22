@@ -366,7 +366,7 @@ $this->registerJs($js);
 
     if (vartxtmesesid == "") {
       event.preventDefault();
-      swal.fire("��� Advertencia !!!","Debe de seleccionar un mes para buscar","warning");
+      swal.fire("Advertencia","Debe de seleccionar un mes para buscar","warning");
       return;
     }
   };
