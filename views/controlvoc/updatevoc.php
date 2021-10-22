@@ -37,7 +37,7 @@ $this->title = 'Actualización del Listado Escucha Focalizada - VOC -';
 </div> 
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 style="text-align: center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <br>
 <div id="dtbloque1" class="col-sm-12">
@@ -59,11 +59,12 @@ $this->title = 'Actualización del Listado Escucha Focalizada - VOC -';
 <div id="dtbloque2" class="col-sm-12">
 	<br>
 	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+	<caption>Tabla datos</caption>
 		<tr>
-			<th class="text-center"><?= Yii::t('app', 'Id listado') ?></th>
-			<th class="text-center"><?= Yii::t('app', 'Listado') ?></th>
-			<th class="text-center"><?= Yii::t('app', 'Nombre Formulario') ?></th>
-			<th class="text-center"><?= Yii::t('app', '') ?></th>
+			<th id="idListado" class="text-center"><?= Yii::t('app', 'Id listado') ?></th>
+			<th id="listado" class="text-center"><?= Yii::t('app', 'Listado') ?></th>
+			<th id="nombreFormulario" class="text-center"><?= Yii::t('app', 'Nombre Formulario') ?></th>
+			<th id="" class="text-center"><?= Yii::t('app', '') ?></th>
 		</tr>
 		
 			<?php

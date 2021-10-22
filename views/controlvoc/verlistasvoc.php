@@ -27,7 +27,7 @@ use yii\bootstrap\Modal;
     ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
 </div> 
 <br>
 <div  class="col-md-12">
@@ -52,8 +52,9 @@ use yii\bootstrap\Modal;
 </div>
 <div id="dtbloque1" class="col-sm-12" style="display: none">
 	<table class="table table-striped table-bordered detail-view formDinamico">
+  <caption>Taba de datos</caption>
 		<thead>
-			
+    <th></th>
 		</thead>
 		<tbody>
           <tr>
@@ -122,8 +123,9 @@ use yii\bootstrap\Modal;
   </div>
   <div id="dtbloque2" class="col-sm-12" style="display: none">
   	<table class="table table-striped table-bordered detail-view formDinamico">
+    <caption>Tabla de datos</caption>
   		<thead>
-  			
+      <th></th>
   		</thead>
   		<tbody>
   			<tr>

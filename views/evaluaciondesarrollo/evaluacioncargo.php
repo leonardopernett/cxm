@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
          <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 16px;"><i class="fas fa-bolt" style="font-size: 20px; color: #4D83FE;"></i> Seleccionar persona </label>
+                    <label style="font-size: 16px;"><em class="fas fa-bolt" style="font-size: 20px; color: #4D83FE;"></em> Seleccionar persona </label>
                     <?= $form->field($model, "documento")->dropDownList($listData, ['prompt' => 'Seleccionar Una Persona', 'id'=>"idpares", 'onchange' => 'validarid();']) ?>
                     <div id="idmessage1" style="display: none">
                         <div class="panel panel-default">
@@ -56,11 +56,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <br>
                 <div class="card1 mb">
-                    <label style="font-size: 16px;"><i class="fas fa-exclamation" style="font-size: 20px; color: #4D83FE;"></i> Notificación </label>
+                    <label style="font-size: 16px;"><em class="fas fa-exclamation" style="font-size: 20px; color: #4D83FE;"></em> Notificación </label>
                     <label style="font-size: 14px;">Recuerda que es importante realizar las evaluaciones de todas las personas que tengas a tu cargo. Evalua solo con quien trabajas hace minimo 3 meses </label>
                     <div class="row">
                         <div class="col-md-6">
-                            <label style="font-size: 16px;"><i class="fas fa-plus-square" style="font-size: 20px; color: #4D83FE;"></i> Ingresar novedad </label>
+                            <label style="font-size: 16px;"><em class="fas fa-plus-square" style="font-size: 20px; color: #4D83FE;"></em> Ingresar novedad </label>
                         </div>
                         <div class="col-md-6" align="right">
                             <div onclick="opennovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbn1" >
@@ -99,11 +99,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <br>
                 <div class="card1 mb">
-                    <label style="font-size: 16px;"><i class="fas fa-exclamation-triangle" style="font-size: 20px; color: #FF6522;"></i> Alerta de eliminación </label>
+                    <label style="font-size: 16px;"><em class="fas fa-exclamation-triangle" style="font-size: 20px; color: #FF6522;"></em> Alerta de eliminación </label>
                     <label style="font-size: 14px;">Esta opción sólo aplica cuando la persona se ha RETIRADO de Konecta ó tiene alguna novedad que le impida realizar el proceso evaluativo (Licencia de maternidad, Incapacidad prolongada, tiempo en el rol, entre otras).</label>
                     <div class="row">
                         <div class="col-md-6">
-                            <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 20px; color: #FF6522;"></i> Eliminar persona </label>
+                            <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #FF6522;"></em> Eliminar persona </label>
                         </div>
                         <div class="col-md-6" align="right">
                             <div onclick="opennovedads();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbns1" >
