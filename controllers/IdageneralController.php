@@ -608,7 +608,6 @@ use app\models\IdaGeneral;
     }
 
     public function actionProcesarvalores(){
-
       $datapost = file_get_contents('php://input');
 
       $data_post = json_decode(json_encode($datapost));
@@ -636,10 +635,8 @@ use app\models\IdaGeneral;
         die(json_encode(array("status"=>"0","data"=>"Algunos de los campos obligatorios no se enviaron correctamente")));
       }
 
-
       if (count($varDocumentos) == count($varUsuarios)) {
-
-          $listdimensiones = array();
+        $listdimensiones = array();
           $array_dimensiones = count($varDimension);
           for ($i = 0; $i < $array_dimensiones; ++$i){
               array_push($listdimensiones, $varDimension[$i]);
@@ -752,12 +749,15 @@ use app\models\IdaGeneral;
             
 
             array_push($arraydata, array("usuarios"=>$varusuariologin,"cantidadllamadas"=>$varpromedio,"score"=>$resultadosIDA));
-          
-      }else{
-          
-      }      
-       
+
+            // var_dump("El usuario ".$varusuariologin." Tiene cantidad de llamadas: ".$varpromedio." y el score es: ".$resultadosIDA.'%');
+
+          }
+      }
     }
+      
+       
+    
 
   }
 

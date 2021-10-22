@@ -148,7 +148,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #559FFF;"></i> Descargar Información: </label>
+                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #559FFF;"></i> Descargar Informaciï¿½n: </label>
                         <?= Html::button('Descargar', ['value' => url::to('enviararchivo'), 'class' => 'btn btn-success', 'id'=>'modalButton6',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Desargar', 'style' => 'background-color: #337ab7']) 
@@ -165,6 +165,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 Modal::end(); 
                             ?>
 
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #559FFF;"></i> Procesar datos Entto: </label>
+                        <?= Html::a('Procesar',  ['procesarentto'], ['class' => 'btn btn-danger',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Procesar']) 
+                        ?>
                     </div>
                 </div>
             </div>
@@ -241,12 +253,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
         if (varidarbols == "") {
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de seleccionar un servicio","warning");
+            swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de seleccionar un servicio","warning");
             return;
         }else{
             if (vartxtidtipo == "") {
                 event.preventDefault();
-                swal.fire("¡¡¡ Advertencia !!!","Debe de seleccionar un tipo de proceso","warning");
+                swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de seleccionar un tipo de proceso","warning");
                 return;
             }
         }
