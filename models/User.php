@@ -461,7 +461,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
         $ldapconn = ldap_connect(\Yii::$app->params["LDAP_SERVER1"]);
 
         /* BUSQUEDA DE USUARIO */
-        $ldapbind = @ldap_bind($ldapconn, $this->username . \Yii::$app->params["LDAP_accsufix"], utf8_decode($password));
+        $ldapbind = ldap_bind($ldapconn, $this->username . \Yii::$app->params["LDAP_accsufix"], utf8_decode($password));
 
         if (!$ldapbind) {
 

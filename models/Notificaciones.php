@@ -9,7 +9,6 @@ use yii\db\Expression;
 class notificaciones extends \yii\db\ActiveRecord
 {
 
-	//public $usuario_red;
 
     public $Desempeno;
     public $namelider;
@@ -20,18 +19,18 @@ class notificaciones extends \yii\db\ActiveRecord
         return 'tbl_notificaciones';
     }
 
-    function validarExistencia($mes, $ano, $usuario_red)
+    public function validarExistencia($mes, $ano, $usuario_red)
     {
     	return $this->find()->where(['asesor'=>$usuario_red, "ano"=>$ano, "mes"=>$mes])->one();
     }
 
-    function liderEquipo($user_id){
+    public function liderEquipo($user_id){
     	$sql = 'SELECT id_lider_equipo FROM tbl_base_satisfaccion WHERE agente = "' . $user_id . '" LIMIT 1';
             $categorias = \Yii::$app->db->createCommand($sql)->queryAll();
             return $categorias;
     }
 
-    function all($fecha1 = NULL, $fecha2 = NULL, $asesor = NULL, $tipo = NULL, $lider = NULL, $identificacion = NULL){
+    public function all($fecha1 = NULL, $fecha2 = NULL, $asesor = NULL, $tipo = NULL, $lider = NULL, $identificacion = NULL){
 
         $query = notificaciones::find();
         $dataProvider = new ActiveDataProvider([
@@ -80,10 +79,6 @@ IF(b.desempeno = "4", CONCAT(DATE_FORMAT(CONCAT(a.ano,  "-", a.mes, "-", "00"), 
             $nuevafecha4 = strtotime ( '-4 month' , strtotime ( $fecha ) ) ;
             $nuevafecha4 = date ( 'm' , $nuevafecha4 );
             
-            //$separar = explode("-", $nuevafecha);
-
-            //print_r($nuevafecha); die;
-            //echo date("m"); die;
 
             $query->andFilterWhere(['or',
                 ['b.mes'=> $nuevafecha1],
@@ -108,14 +103,10 @@ IF(b.desempeno = "4", CONCAT(DATE_FORMAT(CONCAT(a.ano,  "-", a.mes, "-", "00"), 
 
         $query->groupBY('a.id');
 
-        //$query->andWhere('tmpeje.usua_id = '.Yii::$app->user->identity->id);
-        //$query->orderBy("tmpeje.created DESC");
-        //echo "<pre>";
-        //print_r($dataProvider); die;
         return $dataProvider;
     }
 
-    function prueba($id){
+    public function prueba($id){
         $query = Notificaciones::find();
 
         $dataProvider = new ActiveDataProvider([
@@ -131,14 +122,10 @@ IF(b.desempeno = "4", CONCAT(DATE_FORMAT(CONCAT(a.ano,  "-", a.mes, "-", "00"), 
         return $dataProvider;
     }
 
-    function coordinador($lideres, $fecha1 = NULL, $fecha2 = NULL, $asesor = NULL){
+    public function coordinador($lideres, $fecha1 = NULL, $fecha2 = NULL, $asesor = NULL){
 
-        //print_r($asesor);
-        // $sql = 'SELECT * FROM tbl_notificaciones WHERE lider IN (' . $lideres . ')';
+
         $sql = Notificaciones::find();
-        // echo "<pre>";
-        //          print_r($lideres); die;
-        // $categorias = \Yii::$app->db->createCommand($sql)->queryAll();
         $categorias = new ActiveDataProvider([
             'query' => $sql,
             ]);
@@ -176,7 +163,6 @@ IF(b.desempeno = "4", CONCAT(DATE_FORMAT(CONCAT(a.ano,  "-", a.mes, "-", "00"), 
         $sql->andwhere(['IN', 'lider', $lideres])->all();
 
         $sql->groupBY('b.usuario_red');
-        //print_r($categorias); die;
         return $categorias;
     }
 

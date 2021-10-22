@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "tbl_base_satisfaccion".

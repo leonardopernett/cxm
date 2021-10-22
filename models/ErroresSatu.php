@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\Url;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "tbl_errores_satu".

@@ -7,6 +7,7 @@ use DateTime;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "tbl_ejecucionformularios".

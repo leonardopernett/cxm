@@ -6,6 +6,7 @@ use Yii;
 use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "tbl_tmpreportes".
@@ -290,7 +291,7 @@ class Tmpreportes extends \yii\db\ActiveRecord {
             ON b.`seccion_id` = s.`id` INNER JOIN `tbl_bloquedetalles` bd 
             ON bd.`bloque_id` = b.`id` WHERE a.id =' . $id;
             return \Yii::$app->db->createCommand($sql)->queryAll();
-        } catch (Exception $e) {
+        } catch (Exception $exc) {
             \Yii::error($exc->getMessage(), 'exception');
         }
     }

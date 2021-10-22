@@ -6,6 +6,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\data\SqlDataProvider;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "tbl_ejecucionbloquedetalles".

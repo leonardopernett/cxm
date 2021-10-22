@@ -12,7 +12,7 @@ class permanencia extends \yii\db\ActiveRecord
         return 'tbl_solicitudes_permanencia';
     }
 
-    function validarExistencia($mes, $ano, $usuario_red)
+    public function validarExistencia($mes, $ano, $usuario_red)
     {
     	return $this->find()->where(['usuario_red'=>$usuario_red, "ano"=>$ano, "mes"=>$mes])->one();
     }
