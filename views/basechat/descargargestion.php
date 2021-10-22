@@ -39,7 +39,7 @@ $this->title = 'Gestión Satisfacción Chat';
 	  <br>
 		<div class="col-md-12">
             	                   
-                   <label style="font-size: 15px;"><i class="fas fa-at" style="font-size: 15px; color: #15aabf;"></i> Ingresar Correo corporativo </label>
+                   <label style="font-size: 15px;"><em class="fas fa-at" style="font-size: 15px; color: #15aabf;"></em> Ingresar Correo corporativo </label>
                     <input type="text" style="display: none" class="form-control" id="id_pcrc">   
                     <input type="email" id="id_destino" name="remitentes" class="form-control" placeholder="Destinatario" multiple required>
                 </div>

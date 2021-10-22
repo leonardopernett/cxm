@@ -110,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></i> Importar archivos</label>
+                    <label><em class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></em> Importar archivos</label>
                     <div class="row">                        
                         <div class="col-md-6">
                             <?= $form->field($model, "file[]")->fileInput(['multiple' => false]) ?>
@@ -142,12 +142,13 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></i> Procesando importación de archivos</label>
+                <label><em class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></em> Procesando importación de archivos</label>
                 <div class="col-md-12">
                     <table>
+                    <caption>Guardando...</caption>
                         <tr>
-                            <td class="text-center"><div class="loader"> </div></td>
-                            <td class="text-center"><label><?= Yii::t('app', ' Guardando datos del archivo...') ?></label></td>
+                            <th class="text-center"><div class="loader"> </div></th>
+                            <th class="text-center"><label><?= Yii::t('app', ' Guardando datos del archivo...') ?></label></th>
                         </tr>
                     </table>                                       
                 </div>

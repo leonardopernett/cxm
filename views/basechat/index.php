@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-id-card" style="font-size: 20px; color: #827DF9;"></i> Acciones de búsqueda</label>
+                    <label><em class="fas fa-id-card" style="font-size: 20px; color: #827DF9;"></em> Acciones de búsqueda</label>
                     <div class="row">
                         <div class="col-md-4">
                             <label style="font-size: 15px;">Seleccionar rango de fecha de respuesta: </label>
@@ -203,7 +203,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="row">
                         <div class="col-md-3">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #827DF9;"></i> Buscar acciones: </label> 
+                                <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #827DF9;"></em> Buscar acciones: </label> 
                                 <?= Html::submitButton(Yii::t('app', 'Buscar'),
                                             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                                 'data-toggle' => 'tooltip',
@@ -214,7 +214,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-3">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></i> Importar archivo: </label> 
+                                <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></em> Importar archivo: </label> 
                                 
                                 <?= Html::button('Importar', ['value' => url::to(['elegirimportar']), 'class' => 'btn btn-success', 'id'=>'modalButton5', 'data-toggle' => 'tooltip', 'title' => 'Importar Archivo', 'style' => 'background-color: #337ab7']) 
                                 ?> 
@@ -234,7 +234,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-3">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></i> Buscar General: </label> 
+                                <label style="font-size: 15px;"><em class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></em> Buscar General: </label> 
                                 <?= Html::a('Buscar',  ['index'], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #707372',
                                                     'data-toggle' => 'tooltip',
@@ -244,7 +244,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-3">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #827DF9;"></i> Descargar gestión: </label>                                 
+                                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #827DF9;"></em> Descargar gestión: </label>                                 
                                 <?= Html::button('Descargar', ['value' => url::to(['descargargestion']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
                                 ?> 
 
@@ -271,7 +271,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-list" style="font-size: 20px; color: #2CA53F;"></i> Resultados de la búsqueda</label>
+                    <label><em class="fas fa-list" style="font-size: 20px; color: #2CA53F;"></em> Resultados de la búsqueda</label>
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'columns' => [
@@ -398,7 +398,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-cogs" style="font-size: 20px; color: #827DF9;"></i> Parametrización</label>
+                    <label><em class="fas fa-cogs" style="font-size: 20px; color: #827DF9;"></em> Parametrización</label>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">

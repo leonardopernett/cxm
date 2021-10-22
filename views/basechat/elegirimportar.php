@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12" >
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></i> Importar base con imputabilidad: </label> 
+                <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></em> Importar base con imputabilidad: </label> 
                 <?= Html::a('Importar',  ['importarexcel'], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #337ab7',
                                                     'data-toggle' => 'tooltip',
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php if($sesiones == '0') { ?>
         <div class="col-md-6">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></i> Importar base imputabilidad: </label> 
+                <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></em> Importar base imputabilidad: </label> 
                 <?= Html::a('Importar',  ['importarexceltwo'], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #337ab7',
                                                     'data-toggle' => 'tooltip',
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12" >
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></i> Importar base: </label> 
+                <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></em> Importar base: </label> 
                 <?= Html::a('Importar',  ['importarexcelcol'], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #337ab7',
                                                     'data-toggle' => 'tooltip',

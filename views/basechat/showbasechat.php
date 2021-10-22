@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             <div class="col-md-6">
                 <div class="card1 mb">
-                    <label><i class="fas fa-edit" style="font-size: 20px; color: #559FFF;"></i> Información general</label>
+                    <label><em class="fas fa-edit" style="font-size: 20px; color: #559FFF;"></em> Información general</label>
                     <div class="row">
                         <div class="col-md-12">
                             <label for="txtticket" style="font-size: 14px;">Número del ticket...</label>
@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-md-6">
                 <div class="card1 mb">
-                    <label><i class="fas fa-bookmark" style="font-size: 20px; color: #559FFF;"></i> Preguntas generales</label>
+                    <label><em class="fas fa-bookmark" style="font-size: 20px; color: #559FFF;"></em> Preguntas generales</label>
                     <div class="row">
                         <div class="col-md-12">
                             <label for="txtpregunta1" style="font-size: 14px;">¿Que tan probable es que recomiendas Tigo a tus familiares y amigos?</label>
@@ -198,7 +198,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-list" style="font-size: 20px; color: #58f13c;"></i> Detalle de responsabilidad</label>
+                    <label><em class="fas fa-list" style="font-size: 20px; color: #58f13c;"></em> Detalle de responsabilidad</label>
                     <div class="row">
                     <?php 
                         $varlistcategorias1 = Yii::$app->db->createCommand("select * from tbl_basechat_categorias where anulado = 0 and pcrc = $varpcrc")->queryAll();
@@ -229,7 +229,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-list" style="font-size: 20px; color: #58f13c;"></i> Complemento de responsabilidad</label>
+                    <label><em class="fas fa-list" style="font-size: 20px; color: #58f13c;"></em> Complemento de responsabilidad</label>
                     <div class="row">
                         <div class="col-md-6">
                             <label id="idvarsolicitud" style="font-size: 14px;">Solicitud...</label>
@@ -261,11 +261,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 17px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></i> Guardar Información: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar Información: </label> 
                                 <div onclick="generated();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                   Guardar Informacion
                                 </div>
@@ -273,7 +273,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                                 <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #707372',
                                                 'data-toggle' => 'tooltip',
