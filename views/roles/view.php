@@ -104,6 +104,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'per_directivo',
                 'value' => $model->getStringBoolean($model->per_directivo)
+            ],                        
+            [
+                'attribute' => 'per_asesormas',
+                'value' => $model->getStringBoolean($model->per_asesormas)
             ],
         ],
     ])
