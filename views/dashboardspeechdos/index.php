@@ -341,7 +341,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 <script type="text/javascript">
     function soloadmin(){
       event.preventDefault();
-      swal.fire("¡¡¡ Advertencia !!!","Acción no permitida, acceso para usuarios especificos.","warning");
+      swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Acciï¿½n no permitida, acceso para usuarios especificos.","warning");
       return;
     };
 

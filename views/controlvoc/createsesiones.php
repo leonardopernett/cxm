@@ -43,10 +43,11 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <br>
             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+			<caption>Tabla datos</caption>
                 <thead>
                     <tr>
-                        <th class="text-center">Id</th>
-                        <th class="text-center">Nombre del bloque o sesion</th>
+                        <th id="id" class="text-center">Id</th>
+                        <th id="nombreBloqueoSesion" class="text-center">Nombre del bloque o sesion</th>
                     </tr>
                 </thead>
                 <tbody>                    

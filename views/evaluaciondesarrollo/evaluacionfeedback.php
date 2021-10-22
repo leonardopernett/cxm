@@ -210,12 +210,13 @@ $txtNotasFinal = 0;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-spinner" style="font-size: 20px; color: #2CA5FF;"></i> Procesando datos</label>
+                <label><em class="fas fa-spinner" style="font-size: 20px; color: #2CA5FF;"></em> Procesando datos</label>
                 <div class="col-md-12">
                     <table>
+                    <caption>Tabla datos</caption>
                         <tr>
-                            <td class="text-center"><div class="loader"> </div></td>
-                            <td class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluaci锟絥 realizada') ?></label></td>
+                            <th id="loader" class="text-center"><div class="loader"> </div></td>
+                            <th id="guardarDatos" class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluaci锟絥 realizada') ?></label></td>
                         </tr>
                     </table>                                       
                 </div>
@@ -232,19 +233,19 @@ if($vardocumentosijefe){ ?>
         <div class="row">
             <div class="col-md-4">
                 <div class="card1 mb">
-                    <label><i class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></i> Usuario:</label>
+                    <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Usuario:</label>
                     <label style="font-size: 20px;"><?php echo $varnombre; ?></label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card1 mb">
-                    <label><i class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></i> Cargo:</label>
+                    <label><em class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></em> Cargo:</label>
                     <label style="font-size: 20px;"><?php echo $varcargo; ?></label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card1 mb">
-                    <label><i class="fas fa-info-circle" style="font-size: 20px; color: #2CA5FF;"></i> Gesti贸n:</label>
+                    <label><em class="fas fa-info-circle" style="font-size: 20px; color: #2CA5FF;"></em> Gesti贸n:</label>
                     <label style="font-size: 20px;">Reporte de Feedback</label>
                 </div>
             </div>            
@@ -256,7 +257,7 @@ if($vardocumentosijefe){ ?>
             <div class="row">
                 <div class="col-md-6">
                     <div class="card3 mb">
-                        <label><i class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></i> Notificaciones:</label>
+                        <label><em class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></em> Notificaciones:</label>
                             <div class="col-md-12">
                                <?php 
                                 if ($documento != 0) {?>
@@ -282,7 +283,7 @@ if($vardocumentosijefe){ ?>
                 </div>
                 <div class="col-md-6">
                     <div class="card3 mb">
-                        <label><i class="fas fa-search" style="font-size: 20px; color: #827DF9;"></i> Busqueda:</label>
+                        <label><em class="fas fa-search" style="font-size: 20px; color: #827DF9;"></em> Busqueda:</label>
                         
                             <div class="col-md-12">
                                 <label for="txtFechar" style="font-size: 18px;">Persona a cargo:</label>                                    
@@ -363,7 +364,7 @@ if($vardocumentosijefe){ ?>
             $totalcomp = 0;
                               $varArrayPromedio = array();
                               
-                            //se calcula los % de las competencias mediante los pesos que est醤 en los requerimientos
+                            //se calcula los % de las competencias mediante los pesos que est锟絥 en los requerimientos
                                 $valortotal1Auto = 0;
                                 $valortotal2Jefe = 0;
                                 $valortotal3Cargo = 0;
@@ -535,19 +536,19 @@ if($vardocumentosijefe){ ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><i class="far fa-file-alt" style="font-size: 18px; color: #C148D0;"></i> Resultados: </label>                        
+                        <label><em class="far fa-file-alt" style="font-size: 18px; color: #C148D0;"></em> Resultados: </label>                        
                         <div class="row"> 
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;"><i class="far fa-id-badge" style="font-size: 20px; color: #C148D0;"></i> Nombre: </label>
+                                    <label style="font-size: 17px;"><em class="far fa-id-badge" style="font-size: 20px; color: #C148D0;"></em> Nombre: </label>
                                     <label style="font-size: 20px;">&nbsp;&nbsp;&nbsp; <?php echo $varnombrec; ?> </label><br>
-                                    <label style="font-size: 17px;"><i class="fas fa-male" style="font-size: 20px; color: #C148D0;"></i> Rol: </label>
+                                    <label style="font-size: 17px;"><em class="fas fa-male" style="font-size: 20px; color: #C148D0;"></em> Rol: </label>
                                     <label style="font-size: 20px;">&nbsp;&nbsp;&nbsp; <?php echo $varrol; ?> </label>                                                                         
                                 </div>
                             </div>   
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;"><i class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></i> Calificaci贸n Final </label>
+                                    <label style="font-size: 17px;"><em class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></em> Calificaci贸n Final </label>
                                     <table style="width:100%">
                                         <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
                                     </table> 
@@ -555,10 +556,10 @@ if($vardocumentosijefe){ ?>
                             </div>                            
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;" ><i class="far fa-comment-alt" style="font-size: 18px; color: #C148D0;"></i> Observaciones </label>
+                                    <label style="font-size: 17px;" ><em class="far fa-comment-alt" style="font-size: 18px; color: #C148D0;"></em> Observaciones </label>
                                     <textarea type="text" class="form-control" readonly="readonly" id="txtobserva" rows="3" value="<?php echo $varcomentarios2; ?>" data-toggle="tooltip" title="Observaciones"><?php echo $varcomentarios2; ?></textarea>
                                                                                                    
-                                    <label style="font-size: 17px;"><i class="fas fa-check" style="font-size: 18px; color: #C148D0;"></i> Tipo Coaching </label>                            
+                                    <label style="font-size: 17px;"><em class="fas fa-check" style="font-size: 18px; color: #C148D0;"></em> Tipo Coaching </label>                            
                                     <label style="font-size: 20px; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $tipocoaching; ?> </label>
                                 </div>                            
                             </div>  
@@ -593,7 +594,7 @@ if($vardocumentosijefe){ ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><i class="fas fa-cubes" style="font-size: 20px; <?php echo $varcolor; ?>"></i> <?php echo $varresulta.$value['namebloque'].': '; ?></label>
+                        <label><em class="fas fa-cubes" style="font-size: 20px; <?php echo $varcolor; ?>"></em> <?php echo $varresulta.$value['namebloque'].': '; ?></label>
                         
                         <div class="row">                    
                             <?php 
@@ -601,7 +602,7 @@ if($vardocumentosijefe){ ?>
                               $totalcomp = 0;
                               $varArrayPromedio = array();
                               
-                            //se calcula los % de las competencias mediante los pesos que est醤 en los requerimientos
+                            //se calcula los % de las competencias mediante los pesos que est锟絥 en los requerimientos
                                 $valortotal1Auto = 0;
                                 $valortotal2Jefe = 0;
                                 $valortotal3Cargo = 0;
@@ -732,7 +733,7 @@ if($vardocumentosijefe){ ?>
                                         <div class="card1 mb">  
                                             <div class="row">                                    
                                                 <div class="col-md-6">
-                                                    <label style="font-size: 16px;"><i class="fas fa-bookmark" style="font-size: 15px; <?php echo $varcolor; ?>"></i> <?php echo $nombrecompetencias.'.'; ?></label>   
+                                                    <label style="font-size: 16px;"><em class="fas fa-bookmark" style="font-size: 15px; <?php echo $varcolor; ?>"></em> <?php echo $nombrecompetencias.'.'; ?></label>   
                                                 </div>
                                                 <div class="col-md-6">
                                                    <label id="<?php echo 'idtext'.$varconteocompetencia.$varconteobloque; ?>" style="font-size: 15px; <?php echo $varcolor2; ?>"> <?php echo $txtnotafinal1.'% '; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>                                                   
@@ -778,7 +779,7 @@ if($vardocumentosijefe){ ?>
                 <div class="col-md-12">
                     <div class="card1 mb">
                         <div class="col-md-12">
-                            <label style="font-size: 17px;"><i class="fas fa-exclamation-circle" style="font-size: 17px; color: #8B70FA;"></i> Informaci贸n Importante 70-20-10 </label>
+                            <label style="font-size: 17px;"><em class="fas fa-exclamation-circle" style="font-size: 17px; color: #8B70FA;"></em> Informaci贸n Importante 70-20-10 </label>
                             
                             <div onclick="openobserva2();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idmensaje12" >
                                 <span class="fas fa-info-circle" style="font-size: 20px; color: #f5900c;" ></span>
@@ -805,7 +806,7 @@ if($vardocumentosijefe){ ?>
                 <div class="col-md-12">
                     <div class="card1 mb">
                         <div class="col-md-12">
-                            <label style="font-size: 17px;"><i class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></i> Descripci贸n del feedback </label>
+                            <label style="font-size: 17px;"><em class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></em> Descripci贸n del feedback </label>
                             
                             
                         </div>
@@ -823,11 +824,11 @@ if($vardocumentosijefe){ ?>
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 17px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></i> Guardar feedback: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar feedback: </label> 
                                 <div onclick="guardaenvia();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                   Guardar y Enviar
                                 </div>
@@ -835,7 +836,7 @@ if($vardocumentosijefe){ ?>
                         </div>
                         <div class="col-md-4" style="display: none">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Biblioteca de Conocimiento: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Biblioteca de Conocimiento: </label> 
                                                             
                                 <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" class="btn btn-success">Ir a Paco (Jefes - Personas)</a>                            
                             </div>
@@ -857,7 +858,7 @@ if($vardocumentosijefe){ ?>
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 15px;"><i class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></i> Informaci贸n General</label>
+                    <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></em> Informaci贸n General</label>
                     <br>
                     <label style="font-size: 15px;">Si tienes alguna novedad o dificultad que requiera otro tipo de gesti贸n, escribe tu caso al correo maria.vera@grupokonecta.com</label>                        
                 </div>

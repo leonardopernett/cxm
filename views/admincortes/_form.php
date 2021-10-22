@@ -217,13 +217,13 @@ $this->title = 'Agregar Corte General';
 		var bfecha1 = new Date(document.getElementById("tipocortes-fechainiciotc").value);	
 		console.log(bfecha1);
 
-		var cuentaFinde = 0; //Número de Domingos
+		var cuentaFinde = 0; //Nï¿½mero de Domingos
    	 	var array = new Array(contardias1);
 
     	if (checke != true) {
 	     	for (var i=0; i < contardias1; i++) 
 		    {
-		        //0 => Domingo - 6 => Sábado
+		        //0 => Domingo - 6 => Sï¿½bado
 		        if (bfecha1.getDay() == 6 || bfecha1.getDay() == 5) {
 		            cuentaFinde++;
 		        }
@@ -232,7 +232,7 @@ $this->title = 'Agregar Corte General';
     	}else{
 	     	for (var i=0; i < contardias1; i++) 
 		    {
-		        //0 => Domingo - 6 => Sábado
+		        //0 => Domingo - 6 => Sï¿½bado
 		        if (bfecha1.getDay() == 6) {
 		            cuentaFinde++;
 		        }

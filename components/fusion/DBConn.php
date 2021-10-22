@@ -7,7 +7,7 @@
 
 class conexiondb {
 
-    function connectToDB() {
+   public function connectToDB() {
         // These four parameters must be changed dependent on your MySQL settings
         $hostdb = 'HostURL';   // MySQl host
         $userdb = 'username';    // MySQL username

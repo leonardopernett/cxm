@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: 'Nunito',sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -129,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-object-group" style="font-size: 20px; color: #827DF9;"></i> Monitoreo de categorización general:</label>
+                <label><em class="fas fa-object-group" style="font-size: 20px; color: #827DF9;"></em> Monitoreo de categorización general:</label>
                 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
                 <div class="col-md-12">
                     <?= $form->field($model2, 'mesyear')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'clienteID'])->label('Seleccionar Corte') ?>
@@ -172,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></i> Procesos de categorización:</label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Procesos de categorización:</label>
                 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
                 <div class="col-md-12">
                     <?= $form->field($model2, 'mesyear')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'corteId'])->label('Seleccionar Corte') ?>

@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\db\Query;
 
-$this->title = 'Evaluación de Desarrollo';
+$this->title = 'Evaluaciï¿½n de Desarrollo';
 
     
 
@@ -36,7 +36,7 @@ $this->title = 'Evaluación de Desarrollo';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 18px;"><i class="fas fa-at" style="font-size: 25px; color: #827DF9;"></i> Ingresar el correo corporativo </label>                  
+                <label style="font-size: 18px;"><em class="fas fa-at" style="font-size: 25px; color: #827DF9;"></em> Ingresar el correo corporativo </label>                  
 
                 <?= $form->field($model, 'comentarios')->textInput(['maxlength' => 200, 'id'=>'id_destino', 'placeholder' => 'Destinatario'])->label('') ?>  
                 <br>
@@ -62,7 +62,7 @@ $this->title = 'Evaluación de Desarrollo';
 
         if (varDestino == "") {
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un correo corporativo para enviar los datos","warning");
+            swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de ingresar un correo corporativo para enviar los datos","warning");
             return;  
         }else{
             varIdCapaCero.style.display = 'none';

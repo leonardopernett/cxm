@@ -34,10 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="formularios-form">
 	<div class="form-group">
 		<table style="width:100%">
+		<caption>Tabla cortes</caption>
 			<tr>
-				<td>
+				<th>
 					<label>Tipo de corte: </label> 
-				</td>
+				</th>
 				<td>
 					<label>Dias del corte: </label>
 				</td>
@@ -114,18 +115,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="formularios-form">
 	<table align="center">
+	<caption>tabla</caption>
 		<tr>
+			<th width="70">
+				<em class='fas fa-check-circle' style='font-size:48px'></em>
+			</th>
 			<td width="70">
-				<i class='fas fa-check-circle' style='font-size:48px'></i>
+				<em class='fas fa-check-circle' style='font-size:48px'></em>
 			</td>
 			<td width="70">
-				<i class='fas fa-check-circle' style='font-size:48px'></i>
+				<em class='fas fa-check-circle' style='font-size:48px'></em>
 			</td>
 			<td width="70">
-				<i class='fas fa-check-circle' style='font-size:48px'></i>
-			</td>
-			<td width="70">
-				<i class='fas fa-check-circle' style='font-size:48px'></i>
+				<em class='fas fa-check-circle' style='font-size:48px'></em>
 			</td>
 		</tr>	
 		<tr>
@@ -220,7 +222,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		if (fecha1 == null || fecha1 == "") 
 		{
 			event.preventDefault();
-				swal.fire("¡¡¡ Advertencia !!!","Las fecha inicio no puede estar vacia.","warning");
+				swal.fire("!!! Advertencia !!!","Las fecha inicio no puede estar vacia.","warning");
 			return;			
 		}
 		else
@@ -228,31 +230,31 @@ $this->params['breadcrumbs'][] = $this->title;
 			if (fecha2 == null || fecha2 == "") 
 			{
 				event.preventDefault();
-				swal.fire("¡¡¡ Advertencia !!!","Las fecha fin no puede estar vacia.","warning");
+				swal.fire("!!! Advertencia !!!","Las fecha fin no puede estar vacia.","warning");
 				return;		
 			}
 		}
 
 		if (cfecha1 < figeneral) {
 				event.preventDefault();
-				swal.fire("¡¡¡ Advertencia !!!","La fecha inicio corte 1 no puede ser menor a la fecha inicio de la general","warning");
+				swal.fire("!!! Advertencia !!!","La fecha inicio corte 1 no puede ser menor a la fecha inicio de la general","warning");
 				return;				
 		}else{
 			if (cfecha2 < figeneral) {
 					event.preventDefault();
-					swal.fire("¡¡¡ Advertencia !!!","La fecha fin corte 1 no puede ser menor a la fecha inicio de la general","warning");
+					swal.fire("!!! Advertencia !!!","La fecha fin corte 1 no puede ser menor a la fecha inicio de la general","warning");
 					return;					
 			}
 		}
 
 		if (cfecha2 > ffgeneral) {		
 				event.preventDefault();
-				swal.fire("¡¡¡ Advertencia !!!","La fecha fin corte 1 no puede ser mayor a la fecha fin de la general","warning");
+				swal.fire("!!! Advertencia !!!","La fecha fin corte 1 no puede ser mayor a la fecha fin de la general","warning");
 				return;					
 		}else{
 			if (cfecha1 > ffgeneral) {
 					event.preventDefault();
-					swal.fire("¡¡¡ Advertencia !!!","La fecha inicio corte 1 no puede ser mayor a la fecha fin de la general","warning");
+					swal.fire("!!! Advertencia !!!","La fecha inicio corte 1 no puede ser mayor a la fecha fin de la general","warning");
 					return;							
 			}
 		}
@@ -274,13 +276,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		var bfecha1 = new Date(document.getElementById("tiposdecortes-fechainiciotcs").value);	
 		console.log(bfecha1.getDay());
 
-		var cuentaFinde = 0; //Número de Domingos
+		var cuentaFinde = 0; //Nï¿½mero de Domingos
     	var array = new Array(contardias);
 
     	if (checke != 1) {
 	     	for (var i=0; i < contardias; i++) 
 		    {
-		        //0 => Domingo - 6 => Sábado
+		        //0 => Domingo - 6 => Sï¿½bado
 		        if (bfecha1.getDay() == 6 || bfecha1.getDay() == 5) {
 		            cuentaFinde++;
 		        }
@@ -289,7 +291,7 @@ $this->params['breadcrumbs'][] = $this->title;
     	}else{
 	     	for (var i=0; i < contardias; i++) 
 		    {
-		        //0 => Domingo - 6 => Sábado
+		        //0 => Domingo - 6 => Sï¿½bado
 		        if (bfecha1.getDay() == 6) {
 		            cuentaFinde++;
 		        }

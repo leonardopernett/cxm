@@ -54,8 +54,9 @@ $selected = null;
         </div>
         <div id="divTablaPreguntas">
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
+            <caption>Tabla preguntas</caption>
                 <tr>
-                    <td>
+                    <th>
                         <?php
                         if (!empty($model->buzon)) {
                             $url_buzon = explode("/web/", $model->buzon);                            
@@ -66,7 +67,7 @@ $selected = null;
                                     . Yii::t("app", "No se encontró buzón"), $model->buzon);
                         }
                         ?>
-                    </td>
+                    </th>
                 </tr>
                 <tr>
                     <td>
@@ -100,53 +101,54 @@ $selected = null;
         <div class="form-group row">
             <div class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view">
-                    <tbody
+                <caption>Tabla guardar</caption>
+                    <tbody>
                         <tr>
                             <th><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $model->ani ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Identificación"); ?></th>
+                            <th id="identificacion"><?php echo Yii::t("app", "Identificación"); ?></th>
                             <td><?php echo $model->identificacion ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Nombre"); ?></th>
+                            <th id="nombre"><?php echo Yii::t("app", "Nombre"); ?></th>
                             <td><?php echo $model->nombre ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Ext"); ?></th>
+                            <th id="ext"><?php echo Yii::t("app", "Ext"); ?></th>
                             <td><?php echo $model->ext ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipo Servicio"); ?></th>
+                            <th id="tipoServicio"><?php echo Yii::t("app", "Tipo Servicio"); ?></th>
                             <td><?php echo $model->tipo_servicio ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipo encuesta"); ?></th>
+                            <th id="tipoEncuesta"><?php echo Yii::t("app", "Tipo encuesta"); ?></th>
                             <td><?php echo $model->tipo_encuesta ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Lider Equipo"); ?></th>
+                            <th id="liderEquipo"><?php echo Yii::t("app", "Lider Equipo"); ?></th>
                             <td><?php echo $model->lider_equipo ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Programa/PCRC"); ?></th>
+                            <th id="programaPcrc"><?php echo Yii::t("app", "Programa/PCRC"); ?></th>
                             <td><?php echo $model->pcrc0->name ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Cliente"); ?></th>
+                            <th id="cliente"><?php echo Yii::t("app", "Cliente"); ?></th>
                             <td><?php echo $model->cliente0->name ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "RN"); ?></th>
+                            <th id="rn"><?php echo Yii::t("app", "RN"); ?></th>
                             <td><?php echo $model->rn ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Agente"); ?></th>
+                            <th id="agente"><?php echo Yii::t("app", "Agente"); ?></th>
                             <td><?php echo $model->agente ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipología"); ?></th>
+                            <th id="tipologia"><?php echo Yii::t("app", "Tipología"); ?></th>
                             <td><?php
                                 echo Html::dropDownList("categoria"
                                         , $model->tipologia
@@ -155,47 +157,47 @@ $selected = null;
                                 ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Connid"); ?></th>
+                            <th id="connid"><?php echo Yii::t("app", "Connid"); ?></th>
                             <td><?php echo $model->connid; ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->preguntas['0']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta1"><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->preguntas['0']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $model->pregunta1 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->preguntas['1']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta2"><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->preguntas['1']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $model->pregunta2 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->preguntas['2']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta3"><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->preguntas['2']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $model->pregunta3 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->preguntas['3']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta4"><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->preguntas['3']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $model->pregunta4 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->preguntas['4']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta5"><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->preguntas['4']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $model->pregunta5 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $data->preguntas['5']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta6"><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $data->preguntas['5']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $model->pregunta6 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $data->preguntas['6']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta7"><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $data->preguntas['6']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $model->pregunta7 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $data->preguntas['7']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta8"><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $data->preguntas['7']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $model->pregunta8 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $data->preguntas['8']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta9"><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $data->preguntas['8']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $model->pregunta9 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['9']['nombre']) != 'NO APLICA') ? $data->preguntas['9']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta10"><?php echo (strtoupper($data->preguntas['9']['nombre']) != 'NO APLICA') ? $data->preguntas['9']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['9']['nombre']) != 'NO APLICA') ? $model->pregunta10 : 'NO APLICA' ?></td>
                         </tr>
                     </tbody>
@@ -295,6 +297,7 @@ $selected = null;
                                         <div class="form-group">
                                             <?php if (isset($detalle->tipificaciones)): ?>
                                                 <fieldset id="tipificacion_<?php echo $detalle->id ?>" style="display: none;">
+                                                <legend>Tipificaciones</legend>
                                                     <?php foreach ($detalle->tipificaciones as $tipificacion): ?>
                                                         <?php
                                                         $checked = '';
@@ -357,8 +360,9 @@ $selected = null;
             </div>
             <div id="divTablaPreguntas">
                 <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
+                <caption>Tabla preguntas</caption>
                     <tr>
-                        <th>Estado</th>
+                        <th id="estado">Estado</th>
                         <td><?php
                             echo Html::dropDownList("estado"
                                     , $model->estado
@@ -410,8 +414,9 @@ $selected = null;
         </div>
         <div id="divTablaPreguntas">
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
+            <caption>Tabla preguntas</caption>
                 <tr>
-                    <td>
+                    <th>
                         <?php
                         if (!empty($model->buzon)) {
                             echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
@@ -421,7 +426,7 @@ $selected = null;
                                     . Yii::t("app", "No se encontró buzón"), $model->buzon);
                         }
                         ?>
-                    </td>
+                    </th>
                 </tr>
                 <tr>
                     <td>
@@ -445,53 +450,54 @@ $selected = null;
         <div class="form-group row">
             <div class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view">
-                    <tbody
+                <caption>Tabla exportes</caption>
+                    <tbody>
                         <tr>
                             <th><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $model->ani ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Identificación"); ?></th>
+                            <th id="identificacion"><?php echo Yii::t("app", "Identificación"); ?></th>
                             <td><?php echo $model->identificacion ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Nombre"); ?></th>
+                            <th id="nombre"><?php echo Yii::t("app", "Nombre"); ?></th>
                             <td><?php echo $model->nombre ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Ext"); ?></th>
+                            <th id="ext"><?php echo Yii::t("app", "Ext"); ?></th>
                             <td><?php echo $model->ext ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipo Servicio"); ?></th>
+                            <th id="tipoServicio"><?php echo Yii::t("app", "Tipo Servicio"); ?></th>
                             <td><?php echo $model->tipo_servicio ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipo encuesta"); ?></th>
+                            <th id="tipoEncuesta"><?php echo Yii::t("app", "Tipo encuesta"); ?></th>
                             <td><?php echo $model->tipo_encuesta ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Lider Equipo"); ?></th>
+                            <th id="liderEquipo"><?php echo Yii::t("app", "Lider Equipo"); ?></th>
                             <td><?php echo $model->lider_equipo ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Programa/PCRC"); ?></th>
+                            <th id="programaPcrc"><?php echo Yii::t("app", "Programa/PCRC"); ?></th>
                             <td><?php echo $model->pcrc0->name ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Cliente"); ?></th>
+                            <th id="cliente"><?php echo Yii::t("app", "Cliente"); ?></th>
                             <td><?php echo $model->cliente0->name ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "RN"); ?></th>
+                            <th id="rn"><?php echo Yii::t("app", "RN"); ?></th>
                             <td><?php echo $model->rn ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Agente"); ?></th>
+                            <th id="agente"><?php echo Yii::t("app", "Agente"); ?></th>
                             <td><?php echo $model->agente ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo Yii::t("app", "Tipología"); ?></th>
+                            <th id="tipologia"><?php echo Yii::t("app", "Tipología"); ?></th>
                             <td><?php
                                 echo Html::dropDownList("categoria"
                                         , $model->tipologia
@@ -500,39 +506,39 @@ $selected = null;
                                 ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->preguntas['0']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta1"><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $data->preguntas['0']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['0']['nombre']) != 'NO APLICA') ? $model->pregunta1 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->preguntas['1']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta2"><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $data->preguntas['1']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['1']['nombre']) != 'NO APLICA') ? $model->pregunta2 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->preguntas['2']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta3"><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $data->preguntas['2']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['2']['nombre']) != 'NO APLICA') ? $model->pregunta3 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->preguntas['3']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta4"><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $data->preguntas['3']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['3']['nombre']) != 'NO APLICA') ? $model->pregunta4 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->preguntas['4']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta5"><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $data->preguntas['4']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['4']['nombre']) != 'NO APLICA') ? $model->pregunta5 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $data->preguntas['5']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta6"><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $data->preguntas['5']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['5']['nombre']) != 'NO APLICA') ? $model->pregunta6 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $data->preguntas['6']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta7"><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $data->preguntas['6']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['6']['nombre']) != 'NO APLICA') ? $model->pregunta7 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $data->preguntas['7']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta8"><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $data->preguntas['7']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['7']['nombre']) != 'NO APLICA') ? $model->pregunta8 : 'NO APLICA' ?></td>
                         </tr>
                         <tr>
-                            <th><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $data->preguntas['8']['enunciado_pre'] : 'NO APLICA' ?></th>
+                            <th id="pregunta9"><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $data->preguntas['8']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['8']['nombre']) != 'NO APLICA') ? $model->pregunta9 : 'NO APLICA' ?></td>
                         </tr>
                     </tbody>

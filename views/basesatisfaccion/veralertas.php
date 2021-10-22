@@ -37,15 +37,16 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 	<a class="btn btn-default soloCancelar" href="/qa_managementv2/web/index.php/basesatisfaccion/alertasvaloracion"> Regresar </a>
 	<br>
   	<table class="table table-striped">
+	  <caption>Tabla alertas</caption>
   		<thead>
   			<tr>
-  				<th>Fecha de Envio</th>
-  				<th>Programa</th>
-  				<th>Valorador</th>
-  				<th>Tipo de Alerta</th>
-  				<th>Destinatarios</th>
-  				<th>Asunto</th>
-  				<th>Comentario</th>
+  				<th id="FechaEnvio">Fecha de Envio</th>
+  				<th id="Programa">Programa</th>
+  				<th id="valorador">Valorador</th>
+  				<th id="tipoAlerta">Tipo de Alerta</th>
+  				<th id="destinatarios">Destinatarios</th>
+  				<th id="asunto">Asunto</th>
+  				<th id="comentario">Comentario</th>
   			</tr>
   		</thead>
   		<tbody>
@@ -60,7 +61,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   			</tr>
   		</tbody>
   	</table>
-  	<center><img class="pruebaaaaaaa" src="../../../alertas/<?php echo $model['Adjunto'] ?>" ></center>
+  	<center><img class="pruebaaaaaaa" src="../../../alertas/<?php echo $model['Adjunto'] ?>" alt="Image-view" ></center>
   </div>
 </div>
 
