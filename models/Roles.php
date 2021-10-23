@@ -39,7 +39,7 @@ class Roles extends \yii\db\ActiveRecord {
             [['per_cuadrodemando', 'per_estadisticaspersonas',
             'per_hacermonitoreo', 'per_reportes', 'per_modificarmonitoreo',
             'per_adminsistema', 'per_adminprocesos',
-            'per_editarequiposvalorados', 'per_inboxaleatorio', 'per_desempeno', 'per_abogado', 'per_jefeop', 'per_tecdesempeno', 'per_alertas', 'per_evaluacion','per_externo','per_directivo'], 'integer'],
+            'per_editarequiposvalorados', 'per_inboxaleatorio', 'per_desempeno', 'per_abogado', 'per_jefeop', 'per_tecdesempeno', 'per_alertas', 'per_evaluacion','per_externo','per_directivo','per_asesormas'], 'integer'],
             [['role_nombre', 'role_descripcion'], 'string', 'max' => 50],
             [['role_nombre', 'role_descripcion'], 'required']
         ];
@@ -65,11 +65,12 @@ class Roles extends \yii\db\ActiveRecord {
             'per_desempeno' => Yii::t('app', 'Administrar desempeno'),
             'per_abogado' => Yii::t('app', 'Administrador Abogado'),
             'per_jefeop' => Yii::t('app', 'Jefe Operaciones'),
-            'per_tecdesempeno' => Yii::t('app', 'Tecnico Desempeño'),
+            'per_tecdesempeno' => Yii::t('app', 'Tecnico Desempeno'),
             'per_alertas' => Yii::t('app', 'Alertas Tecnico CX'),
             'per_evaluacion' => Yii::t('app', 'Evaluacion administrativos'),
             'per_externo' => Yii::t('app', 'Tecnico CX Externo'),
             'per_directivo' => Yii::t('app', 'Rol Directivo'),
+            'per_asesormas' => Yii::t('app', 'Rol Asesor'),
             
         ];
     }

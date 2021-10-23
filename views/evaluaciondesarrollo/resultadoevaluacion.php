@@ -220,7 +220,7 @@ $titulos = array();
 </div>
 <br>
 <?php
-if($txtvalidadocumento > 0) { ?>
+if($sessiones != 0) { ?>
 <div id="idCapaUno" style="display: inline"> 
     
     <div id="capaDos" style="display: inline">

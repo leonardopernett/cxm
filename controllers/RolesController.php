@@ -161,11 +161,12 @@ class RolesController extends Controller {
                     $arrDetalleForm['per_externo'] = $model->per_externo;
                     $arrDetalleForm['per_ba'] = $model->per_ba;
                     $arrDetalleForm['per_directivo'] = $model->per_directivo;
+                    $arrDetalleForm['per_asesormas'] = $model->per_asesor;
                     $roles = Yii::$app->request->post('selection');
                     for ($index = 0; $index < count($roles); $index++) {
                         Roles::updateAll($arrDetalleForm, ['role_id' => $roles[$index]]);
                     }
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'Proceso realizado con éxito'));
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'Proceso realizado con exito'));
                 }
                 return $this->redirect('index');
             }

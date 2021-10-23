@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
     , 'header' => "Advertencia"
     , 'size' => \yii\bootstrap\Modal::SIZE_SMALL
 ]);
-echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta acción");
+echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta accion");
 \yii\bootstrap\Modal::end();
 ?>
 <div class="roles-index">
@@ -114,6 +114,8 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta acción");
                 <?= $form->field($model, 'per_ba')->checkbox() ?>
 
                 <?= $form->field($model, 'per_directivo')->checkbox() ?>
+                
+                <?= $form->field($model, 'per_asesormas')->checkbox() ?>
 
             </div>
         </div>
@@ -224,6 +226,9 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta acción");
                 bandera++;
             }
             if (!($('#roles-per_directivo').is(':checked'))) {
+                bandera++;
+            }
+            if (!($('#roles-per_asesormas').is(':checked'))) {
                 bandera++;
             }
             if (bandera == 9) {
