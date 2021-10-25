@@ -19,10 +19,11 @@ $sesiones =Yii::$app->user->identity->id;
 		<div class="col-md-12">
 			<div class="card1 mb">
 				<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+				<caption>...</caption>
 					<tr>
-						<td><label style="font-size: 15px;"><?php echo "Usuario red"; ?></label></td>
-						<td><label style="font-size: 15px;"><?php echo "Fecha y Hora real"; ?></label></td>
-						<td><label style="font-size: 15px;"><?php echo "ID llamada"; ?></label></td>
+						<th scope="col"><label style="font-size: 15px;"><?php echo "Usuario red"; ?></label></th>
+						<th scope="col"><label style="font-size: 15px;"><?php echo "Fecha y Hora real"; ?></label></th>
+						<th scope="col"><label style="font-size: 15px;"><?php echo "ID llamada"; ?></label></th>
 					</tr>
 					<tr>
 						<td><label style="font-size: 15px;"><?php echo $txtusuarios; ?></label></td>
@@ -40,10 +41,11 @@ $sesiones =Yii::$app->user->identity->id;
 		<div class="col-md-12">
 			<div class="card1 mb">
 				<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+				<caption>...</caption>
 					<tr>
-						<td><label style="font-size: 15px;"><?php echo "Resultado IDA"; ?></label></td>
-						<td><label style="font-size: 15px;"><?php echo "Calidad y Consistencia"; ?></label></td>
-						<td><label style="font-size: 15px;"><?php echo "Score Valoracion"; ?></label></td>
+						<th scope="col"><label style="font-size: 15px;"><?php echo "Resultado IDA"; ?></label></th>
+						<th scope="col"><label style="font-size: 15px;"><?php echo "Calidad y Consistencia"; ?></label></th>
+						<th scope="col"><label style="font-size: 15px;"><?php echo "Score Valoracion"; ?></label></th>
 					</tr>
 					<tr>
 						<td><label style="font-size: 15px;"><?php echo $resultadosIDA; ?></label></td>

@@ -20,20 +20,21 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 	<div class="row">
 		<div class="col-md-8">
 			<div class="card1 mb">
-				<label style="font-size: 18px;"><i class="fas fa-phone-square" style="font-size: 25px; color: #827DF9;"></i> Datos de la llamada</label>
+				<label style="font-size: 18px;"><em class="fas fa-phone-square" style="font-size: 25px; color: #827DF9;"></em> Datos de la llamada</label>
 				<div class="row">
 					<div class="col-md-6">
 						<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+						<caption>Datos Llamada</caption>
 							<tr>
-								<td><label style="font-size: 15px;"><?php echo "Usuario red:"; ?></label></td>
+								<th scope="row"><label style="font-size: 15px;"><?php echo "Usuario red:"; ?></label></th>
 								<td><label style="font-size: 15px;"><?php echo $varidlogin; ?></label></td>
 							</tr>
 							<tr>
-								<td><label style="font-size: 15px;"><?php echo "Redbox:"; ?></label></td>
+								<th scope="row"><label style="font-size: 15px;"><?php echo "Redbox:"; ?></label></th>
 								<td><label style="font-size: 15px;"><?php echo $varidredbox; ?></label></td>
 							</tr>
 							<tr>
-								<td><label style="font-size: 15px;"><?php echo "Grabadora:"; ?></label></td>
+								<th scope="row"><label style="font-size: 15px;"><?php echo "Grabadora:"; ?></label></th>
 								<td><label style="font-size: 15px;"><?php echo $varidgrabadora; ?></label></td>
 							</tr>
 						</table>
@@ -41,7 +42,7 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 					<div class="col-md-6">						
 						<div class="row">
 							<div class="col-md-12" align="center">
-	  							<div onclick="generated();" class="btn btn-primary" style="display:inline;background-color: #c5cbd0;color: black;" method='post' id="botones2" ><i class="fas fa-play-circle" style="font-size: 17px; color: #ff3838;"></i>
+	  							<div onclick="generated();" class="btn btn-primary" style="display:inline;background-color: #c5cbd0;color: black;" method='post' id="botones2" ><em class="fas fa-play-circle" style="font-size: 17px; color: #ff3838;"></em>
 				                  Copiar Url Llamada
 				                </div> 
 							</div>
@@ -60,12 +61,12 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card1 mb">
-						<label style="font-size: 18px;"><i class="fas fa-key" style="font-size: 25px; color: #827DF9;"></i> Instructivo de uso</label>
+						<label style="font-size: 18px;"><em class="fas fa-key" style="font-size: 25px; color: #827DF9;"></em> Instructivo de uso</label>
 						<div class="row">
 							<div class="col-md-12" align="center">
-								<i class="fas fa-download" style="font-size: 60px; color: #ceabab; align-self: center;"></i>
+								<em class="fas fa-download" style="font-size: 60px; color: #ceabab; align-self: center;"></em>
 							
-								<a style="font-size: 13px;" rel="stylesheet" type="text/css" href="/qa_managementv2/web/downloadfiles/Manual Configuración Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
+								<a style="font-size: 13px;" rel="stylesheet" type="text/css" href="/qa_managementv2/web/downloadfiles/Manual ConfiguraciÃ³n Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
 							</div>
 						</div>
 					</div>
@@ -83,13 +84,13 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 			<div class="row">
 				<div class="col-md-8">
 					<div class="card1 mb">
-						<label style="font-size: 18px;"><i class="fas fa-file-alt" style="font-size: 25px; color: #827DF9;"></i> Transcrición</label>
+						<label style="font-size: 18px;"><em class="fas fa-file-alt" style="font-size: 25px; color: #827DF9;"></em> Transcriciï¿½n</label>
 						<label style="font-size: 15px;"><?php echo $vartexto; ?></label>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="card1 mb">
-						<label style="font-size: 18px;"><i class="fas fa-smile" style="font-size: 25px; color: #827DF9;"></i> Valencia emocional</label>
+						<label style="font-size: 18px;"><em class="fas fa-smile" style="font-size: 25px; color: #827DF9;"></em> Valencia emocional</label>
 						<label style="font-size: 15px;"><?php echo $varvalencia; ?></label>
 					</div>
 				</div>

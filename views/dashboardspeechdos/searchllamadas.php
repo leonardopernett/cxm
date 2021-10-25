@@ -164,7 +164,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
     <div class="row">
         <div class="col-md-12">
           <div class="card1 mb">
-            <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i></label>
+            <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em></label>
             <div class="row">
               <div class="col-md-3">
                 <label><?= Yii::t('app', 'Indicadores') ?></label>
@@ -247,7 +247,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
             <div class="row">
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #827DF9;"></i> Buscar llamadas: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #827DF9;"></em> Buscar llamadas: </label> 
                         <?= Html::submitButton(Yii::t('app', 'Buscar'),
                             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                 'data-toggle' => 'tooltip',
@@ -258,7 +258,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 </div>
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></i> Buscar general: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></em> Buscar general: </label> 
                         <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos], ['class' => 'btn btn-success',
                             'style' => 'background-color: #337ab7',
                             'data-toggle' => 'tooltip',
@@ -268,7 +268,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 </div>
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-backward" style="font-size: 15px; color: #827DF9;"></i> Regresar: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-backward" style="font-size: 15px; color: #827DF9;"></em> Regresar: </label> 
                         <?= Html::a('Regresar',  ['indexvoice','arbol_idV'=>$txtvarprograma,'codpcrc'=>$txtvarcodigopcrc,'parametros_idV'=>$txtvarextension,'codparametrizar'=>$txtvarcodigos,'dateini'=>$txtvarfechainireal,'datefin'=>$txtvarfechafinreal], ['class' => 'btn btn-success',
                             'style' => 'background-color: #707372',
                             'data-toggle' => 'tooltip',
@@ -280,7 +280,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 <?php if ($txttxtvarcantllamadasb != 0) {  ?>
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #827DF9;"></i> Descargar gestiones: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #827DF9;"></em> Descargar gestiones: </label> 
                         <?= Html::button('Descargar', ['value' => url::to(['descargarcalls','varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$varcategoriass, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'consinmotivos'=>$varidloginid]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
                         ?> 
 
@@ -308,31 +308,31 @@ $this->title = 'Dashboard Escuchar + 2.0';
     <div class="row">
         <div class="col-md-2">
           <div class="card mb">
-            <label><i class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></i> Rango de Fechas:</label>
+            <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></em> Rango de Fechas:</label>
             <label style="font-size: 14px; text-align: center;"><?php echo $txttxtvarfechainireal.' - '.$txttxtvarfechafinreal; ?></label>
           </div>
         </div>
         <div class="col-md-2">
           <div class="card mb">
-            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Servicio:</label>
+            <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> Servicio:</label>
             <label style="font-size: 15px; text-align: center;"><?php echo $txtservicios; ?></label>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card mb">
-            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Programa Pcrc:</label>
+            <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> Programa Pcrc:</label>
             <label style="font-size: 15px; text-align: center;"><?php echo $txtvarcodigopcrc.' - '.$txtnombrepcrc; ?></label>
           </div>
         </div>        
         <div class="col-md-2">
           <div class="card mb">
-            <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Llamadas general:</label>
+            <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Llamadas general:</label>
             <label  style="font-size: 15px; text-align: center;"><?php echo $txttxtvarcantllamadas; ?></label>
           </div>
         </div>
         <div class="col-md-2">
           <div class="card mb">
-            <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Llamadas buscadas:</label>
+            <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Llamadas buscadas:</label>
             <label  style="font-size: 15px; text-align: center;"><?php echo $txttxtvarcantllamadasb; ?></label>
           </div>
         </div>
@@ -343,7 +343,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label><i class="fas fa-list" style="font-size: 20px; color: #00968F;"></i> Resultados:</label>
+        <label><em class="fas fa-list" style="font-size: 20px; color: #00968F;"></em> Resultados:</label>
         <br>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -439,7 +439,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                             }
                                                         
 
-                                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-calculator" style="font-size: 17px; color: #C178G9; display: inline;"></i>'),
+                                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-calculator" style="font-size: 17px; color: #9F9AE1; display: inline;"></i>'),
                                                             'javascript:void(0)',
                                                             [
                                                                 'title' => Yii::t('app', 'Resultados VOC'),

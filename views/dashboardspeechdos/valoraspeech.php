@@ -152,13 +152,13 @@ $this->title = 'Dashboard Escuchar + 2.0';
     <div class="row">
         <div class="col-md-6">
           <div class="card mb">
-            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Servicio:</label>
+            <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> Servicio:</label>
             <label style="font-size: 15px; text-align: center;"><?php echo $txtvarservisioname; ?></label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="card mb">
-            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Programa Pcrc:</label>
+            <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> Programa Pcrc:</label>
             <label style="font-size: 15px; text-align: center;"><?php echo $txtvarcodpcrc; ?></label>
           </div>
         </div>        
@@ -170,7 +170,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-bookmark" style="font-size: 20px; color: #559FFF;"></i> Selección de datos:</label>
+                <label><em class="fas fa-bookmark" style="font-size: 20px; color: #559FFF;"></em> SelecciÃ³n de datos:</label>
                 <div class="row">
                     <div class="col-md-6">
                         <label><?= Yii::t('app', '* Programa/PCRC') ?></label>
@@ -195,7 +195,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         ?>
                     </div>
                     <div class="col-md-6">
-                        <label><?= Yii::t('app', '* Dimensión') ?></label>
+                        <label><?= Yii::t('app', '* DimensiÃ³n') ?></label>
                         <?=
                             $form->field($modelD, 'dimension_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($modelD->getDimensionsList(), ['id'=>'idvardimension', 'prompt' => 'Seleccione ...'])->label('');
                         ?>
@@ -212,7 +212,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                             <div class="col-md-12">
                                 <div class="card1 mb">                                                                      
                                     <?=
-                                        Html::submitButton(Yii::t('app', 'Realizar Valoración'), ['onclick' => 'verificarvar();', 'class' => 'btn btn-success'])
+                                        Html::submitButton(Yii::t('app', 'Realizar ValoraciÃ³n'), ['onclick' => 'verificarvar();', 'class' => 'btn btn-success'])
                                     ?>   
                                 </div>
                             </div>

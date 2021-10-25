@@ -198,7 +198,7 @@ $this->title = 'DashBoard Voz del Cliente';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 16px;"><i class="far fa-chart-bar" style="font-size: 20px; color: #4D83FE;"></i> Reporte... </label>
+                <label style="font-size: 16px;"><em class="far fa-chart-bar" style="font-size: 20px; color: #4D83FE;"></em> Reporte... </label>
                
                 <?php
               if ($vartotalreg != 0) {
