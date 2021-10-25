@@ -54,7 +54,7 @@ use yii\bootstrap\Modal;
 	<table class="table table-striped table-bordered detail-view formDinamico">
   <caption>Taba de datos</caption>
 		<thead>
-    <th></th>
+    <th scope="col"></th>
 		</thead>
 		<tbody>
           <tr>
@@ -125,7 +125,7 @@ use yii\bootstrap\Modal;
   	<table class="table table-striped table-bordered detail-view formDinamico">
     <caption>Tabla de datos</caption>
   		<thead>
-      <th></th>
+      <th scope="col"></th>
   		</thead>
   		<tbody>
   			<tr>

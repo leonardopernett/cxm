@@ -127,12 +127,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-spinner" style="font-size: 20px; color: #2CA5FF;"></i> Procesando datos</label>
+                <label><em class="fas fa-spinner" style="font-size: 20px; color: #2CA5FF;"></em> Procesando datos</label>
                 <div class="col-md-12">
                     <table>
+                    <caption>Tabla datos</caption>
                         <tr>
-                            <td class="text-center"><div class="loader"> </div></td>
-                            <td class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluación realizada') ?></label></td>
+                            <th id="loader" class="text-center"><div class="loader"> </div></td>
+                            <th id="guardarDatos" class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluación realizada') ?></label></td>
                         </tr>
                     </table>                                       
                 </div>
@@ -145,19 +146,19 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-4">
                 <div class="card1 mb">
-                    <label><i class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></i> Usuario Par:</label>
+                    <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Usuario Par:</label>
                     <label><?php echo $varnombrepar; ?></label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card1 mb">
-                    <label><i class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></i> Cargo:</label>
+                    <label><em class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></em> Cargo:</label>
                     <label><?php echo $varcargo; ?></label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card1 mb">
-                    <label><i class="fas fa-list" style="font-size: 20px; color: #2CA5FF;"></i> Tipo evaluación:</label>
+                    <label><em class="fas fa-list" style="font-size: 20px; color: #2CA5FF;"></em> Tipo evaluación:</label>
                     <label><?php echo $vartipoeva; ?></label>
                 </div>
             </div>
@@ -168,7 +169,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></i> Notificaciones:</label>
+                    <label><em class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></em> Notificaciones:</label>
                     
                     <div class="row">
                         <div class="col-md-6">
@@ -211,7 +212,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><i class="fas fa-cubes" style="font-size: 20px; <?php echo $varcolor; ?>"></i> <?php echo $value['namebloque'].': '; ?></label>
+                        <label><em class="fas fa-cubes" style="font-size: 20px; <?php echo $varcolor; ?>"></em> <?php echo $value['namebloque'].': '; ?></label>
                         <?= $form->field($model, 'valor')->textInput(['maxlength' => 250,  'id'=>'Idbloque'.$varconteobloque, 'class' => 'hidden', 'value' => $value['idevaluacionbloques']]) ?>
                         
                         <div class="row">                    
@@ -237,7 +238,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <br>
                             <div class="col-md-12">
                                 <div class="card1 mb">
-                                    <label style="font-size: 16px;"><i class="fas fa-bookmark" style="font-size: 17px; <?php echo $varcolor; ?>"></i> <?php echo $value['namecompetencia'].''; ?></label>
+                                    <label style="font-size: 16px;"><em class="fas fa-bookmark" style="font-size: 17px; <?php echo $varcolor; ?>"></em> <?php echo $value['namecompetencia'].''; ?></label>
                                     <?= $form->field($model, 'valor')->textInput(['maxlength' => 250,  'id'=>'IdCompetencia'.$varconteocompetencia.$varconteobloque, 'class' => 'hidden', 'value' => $value['idevaluacioncompetencia']]) ?>   
                                     <?php 
                                         foreach ($varpregunta as $key => $value) {   
@@ -272,7 +273,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 17px;"><i class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></i> Ingresa aquí las sugerencias y felicitaciones que consideras pueden potenciar las competencias de la persona que estás evaluando </label>
+                    <label style="font-size: 17px;"><em class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></em> Ingresa aquí las sugerencias y felicitaciones que consideras pueden potenciar las competencias de la persona que estás evaluando </label>
                     <?= $form->field($model, 'namerespuesta')->textInput(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>
                 </div>
             </div>
@@ -283,11 +284,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 17px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></i> Guardar y Enviar: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar y Enviar: </label> 
                                 <div onclick="generated();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                   Guardar y Enviar
                                 </div>
@@ -295,7 +296,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                                 <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #707372',
                                                 'data-toggle' => 'tooltip',
@@ -305,7 +306,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-eye" style="font-size: 17px; color: #FFC72C;"></i> Crear Novedad: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-eye" style="font-size: 17px; color: #FFC72C;"></em> Crear Novedad: </label> 
                                 <?= Html::button('Crear Novedad', ['value' => url::to(['evaluaciondesarrollo/novedadpares','idvardocumentpar' => $vardocument2]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Crear Novedad', 'style' => 'background-color: #4298b4']) 
                                 ?> 
 

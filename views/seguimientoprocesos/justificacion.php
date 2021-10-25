@@ -32,14 +32,15 @@ $this->title = 'Justificar Rendimiento';
 ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
 </div> 
 <br>
 <div class="control-procesos-index">
 
     <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+	<caption>Tabla datos</caption>
         <tr>
-            <th><p>Valorador: </p><?php echo $nameVar; ?></th>
+            <th scope="col"><p>Valorador: </p><?php echo $nameVar; ?></th>
         </tr>
     </table>    
     <hr>
@@ -51,7 +52,7 @@ $this->title = 'Justificar Rendimiento';
 
 		<?php $var = ['Incapacidad' => 'Incapacidad', 'Capacidad Operativa' => 'Capacidad Operativa', 'Licencia/Vacaciones' => 'Licencia/Vacaciones', 'Reuniones' => 'Reuniones', 'Otras' => 'Otras (Relaciones detalle)']; ?>
 		
-		<?= $form->field($model, "justificacion")->dropDownList($var, ['prompt' => 'Seleccione una opción', 'id'=>"id_argumentos"])->label('Justificacion') ?> 
+		<?= $form->field($model, "justificacion")->dropDownList($var, ['prompt' => 'Seleccione una opciï¿½n', 'id'=>"id_argumentos"])->label('Justificacion') ?> 
 
 		<?= $form->field($model, 'correo')->textInput(['maxlength' => 200, 'id'=>'txtcorreoid'])->label('Correo')?>
 
@@ -88,19 +89,19 @@ $this->title = 'Justificar Rendimiento';
 
 		if (varcortes == "" || varcortes == null) {
 			event.preventDefault();
-			swal.fire("¡¡¡ Advertencia !!!","Debe de seleccionar el tipo de corte.","warning");
+			swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de seleccionar el tipo de corte.","warning");
 			return;	
 		}
 
 		if (varjustificacion == "" || varjustificacion == null) {
 			event.preventDefault();
-			swal.fire("¡¡¡ Advertencia !!!","Debe de seleccionar una justificacion.","warning");
+			swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de seleccionar una justificacion.","warning");
 			return;				
 		}
 
 		if (varcorreo == "" || varcorreo == null) {
 			event.preventDefault();
-			swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar el correo electronico","warning");
+			swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de ingresar el correo electronico","warning");
 			return;							
 		}
 	}

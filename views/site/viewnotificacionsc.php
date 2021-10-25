@@ -30,10 +30,11 @@ Modal::begin([
     <div class="row">
         <div class="col-lg-10 col-sm-offset-1" style="height: 300px; overflow: auto">
             <table class="table table-striped table-bordered">
+            <caption>Tabla datos</caption>
                 <thead>                    
                     <tr>
-                        <th><?= Yii::t('app', 'Fecha') ?></th>
-                        <th><?= Yii::t('app', 'Argumento') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Fecha') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Argumento') ?></th>
                     </tr>
                 </thead>
                 <tbody>

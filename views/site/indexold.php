@@ -19,11 +19,12 @@ $this->title = 'QA Management';
 
             <div class="info-usuario">
                 <table>
+                <caption>Tabla datos</caption>
                     <tr>
-                        <td><?php echo Html::img(Url::to("@web/images/ico-user.png"), ["alt" => "Noticias", "style" => "align: left"]); ?></td>
-                        <td>
+                        <th scope="col"><?php echo Html::img(Url::to("@web/images/ico-user.png"), ["alt" => "Noticias", "style" => "align: left"]); ?></td>
+                        <th scope="col">
                             <span class="bienvenido">
-                                <?php echo Yii::t('app', 'Bienvenido'); ?>                                
+                                                         
                             </span>
                             <br />
                             <span class="inicio-noticias">                                

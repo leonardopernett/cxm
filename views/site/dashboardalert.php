@@ -46,15 +46,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-12">
             <h4><?php //echo Yii::t("app", "Feedback express"); ?></h4>
             <table class="table table-striped table-bordered">
+            <caption>Tabla datos</caption>
                 <thead>                    
                     <tr>
-                        <th><?= Yii::t('app', 'Acciones') ?></th>
-                        <th><?= Yii::t('app', 'Fecha') ?></th>
-                        <th><?= Yii::t('app', 'Tipo de notificación') ?></th>
-                        <th><?= Yii::t('app', 'Id Solicitante') ?></th>
-                        <th><?= Yii::t('app', 'Lider') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Acciones') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Fecha') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Tipo de notificación') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Id Solicitante') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Lider') ?></th>
                         <!--<th><?php //Yii::t('app', 'Formulario') ?></th>-->
-                        <th><?= Yii::t('app', 'Id Evaluador') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Id Evaluador') ?></th>
                     </tr>
                 </thead>
                 <tbody>

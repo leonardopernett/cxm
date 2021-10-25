@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
       <table class="table table-striped table-bordered detail-view formDinamico">
       <caption>Tabla datos</caption>
         <thead>
-        <th></th>
+        <th scope="col"></th>
         </thead>
         <tbody>
           <tr>
@@ -154,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <table class="table table-striped table-bordered detail-view formDinamico">
     <caption>Tabla</caption>
       <thead>
-        <th></th>
+        <th scope="col"></th>
       </thead>
       <tbody>
         <tr>

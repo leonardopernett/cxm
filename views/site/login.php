@@ -70,7 +70,7 @@ $this->title = 'CX-Management';
     <div class="row">
       <div class="col-md-4 login-sec input-lg">
           <div >
-                  <img src="../../images/cx.png" class="brand_logo_login">
+                  <img src="../../images/cx.png" class="brand_logo_login" alt="logo_login">
 		  
           </div>
           
@@ -120,12 +120,12 @@ $this->title = 'CX-Management';
                 </div>
                 <?php ActiveForm::end(); ?>               
                 
-                <div class="copy-tex"><i class="nana"></i></div> 
+                <div class="copy-tex"><em class="nana"></em></div> 
                 <br>           
                 <div>
 		    <br>
 	            <br>                          
-                    <img src="../../images/knew.png" class="logok">
+                    <img src="../../images/knew.png" class="logok" alt="logo">
                 </div>
                 
                 </div>

@@ -2296,7 +2296,7 @@ $banderaSaltoComentario = true;
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
             <caption>Buzón</caption>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php
                         if (!empty($data->basesatisfaccion->buzon)) {
                             echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '

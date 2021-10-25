@@ -56,7 +56,7 @@ $selected = null;
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
             <caption>Tabla preguntas</caption>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php
                         if (!empty($model->buzon)) {
                             $url_buzon = explode("/web/", $model->buzon);                            
@@ -416,7 +416,7 @@ $selected = null;
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
             <caption>Tabla preguntas</caption>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php
                         if (!empty($model->buzon)) {
                             echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '

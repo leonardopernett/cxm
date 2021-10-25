@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<table style="width:100%">
 		<caption>Tabla cortes4</caption>
 			<tr>
-				<th>
+				<th scope="col">
 					<label>Tipo de corte: </label> 
 				</th>
 				<td>
@@ -117,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<table align="center">
 	<caption>Tabla cortes4</caption>
 		<tr>
-			<td width="70">
+			<td scope="col" width="70">
 				<em class='fas fa-check-circle' style='font-size:48px;color:green'></em>
 			</td>
 			<td width="70">

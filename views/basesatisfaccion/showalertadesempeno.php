@@ -204,7 +204,7 @@ if ($data->ppregunta8 != "") {
                     <caption>Tabla datos generales</caption>
                     <tbody>
                         <tr>
-                            <th colspan="3">
+                            <th scope="col" colspan="3">
                                 <div class="alert alert-success">
                                     Respuesta Guardada Satisfactoriamente.
                                 </div>
@@ -236,7 +236,7 @@ if ($data->ppregunta8 != "") {
                         <caption>Tabla datos generales</caption>
                         <tbody>
                             <tr>
-                                <th>
+                                <th scope="col">
                                     <strong><?= $preguntas->pregunta1 ?> :</strong>
                                 </th>
                                 <td>
@@ -319,7 +319,7 @@ if ($data->ppregunta8 != "") {
                             <?php else : ?>
 
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <?php if ($lider == "si" or isset($jefeop) or $data->respuesta_asesor != "") : ?>
                                             <?= $form->field($data, 'respuesta_asesor')->textArea(['rows' => 6, 'maxlength' => 200, 'disabled' => true])->label('Compromisos de Gestion del Asesor:') ?>
                                         <?php else : ?>
@@ -421,7 +421,7 @@ if ($data->ppregunta8 != "") {
                     <caption>Tabla datos generales</caption>
                     <tbody>
                         <tr>
-                            <th>
+                            <th scope="col"> 
                                 <?= $form->field($data, 'apregunta1')->textInput(['maxlength' => 200, 'disabled' => true])->label($pregunta1) ?>
                             </th>
                         </tr>
@@ -456,8 +456,8 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                                     <caption>Tabla cumplimiento</caption>
                                     <tr>
-                                        <th id="cumplimientoMeta">Cumplimiento de la Meta</th>
-                                        <th id="cantidad">Cantidad</th>
+                                        <th scope="col">Cumplimiento de la Meta</th>
+                                        <th scope="col">Cantidad</th>
                                     </tr>
                                     <tr>
                                         <td>Total RAC que cumplen Meta</td>
@@ -491,12 +491,12 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                                     <caption>Tabla Comparativo</caption>
                                     <tr>
-                                        <th id="comparativoCumplimiento">Comparativo del Cumplimiento</th>
-                                        <th id="meta">Meta</th>
-                                        <th id="empleado">Empleado</th>
-                                        <th id="grupo">Grupo</th>
-                                        <th id="difempleadoVsmeta">Dif Empleado vs. Meta</th>
-                                        <th id="difempleadoVsgrupo">Dif Empleado vs. Grupo</th>
+                                        <th scope="col">Comparativo del Cumplimiento</th>
+                                        <th scope="col">Meta</th>
+                                        <th scope="col">Empleado</th>
+                                        <th scope="col">Grupo</th>
+                                        <th scope="col">Dif Empleado vs. Meta</th>
+                                        <th scope="col">Dif Empleado vs. Grupo</th>
                                     </tr>
                                     <tr>
                                         <td>Cumplimiento Promedio</td>
@@ -535,12 +535,12 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                                     <caption>Tabla cumplimiento</caption>
                                     <tr>
-                                        <th id="cumplimientoMeta">Cumplimiento de la Meta</th>
-                                        <th id="cantidad">Cantidad</th>
+                                        <th scope="col">Cumplimiento de la Meta</th>
+                                        <th scope="col">Cantidad</th>
                                     </tr>
                                     <tr>
-                                        <td id="totalRacCumplen">Total RAC que cumplen Meta</td>
-                                        <td id="racMeta"><?= $form->field($data, 'rac_meta', ['enableLabel' => false])->textInput(['maxlength' => 200, 'disabled' => true]) ?></td>
+                                        <td scope="col">Total RAC que cumplen Meta</td>
+                                        <td scope="col"><?= $form->field($data, 'rac_meta', ['enableLabel' => false])->textInput(['maxlength' => 200, 'disabled' => true]) ?></td>
                                     </tr>
                                     <tr>
                                         <td>Total RAC en el mismo PCRC</td>
@@ -556,12 +556,12 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                                     <caption>Tabla Cumplimiento</caption>
                                     <tr>
-                                        <th id="comparativoCumplimiento">Comparativo del Cumplimiento</th>
-                                        <th id="meta">Meta</th>
-                                        <th id="empleado">Empleado</th>
-                                        <th id="grupo">Grupo</th>
-                                        <th id="difempleadoVsmeta">Dif Empleado vs. Meta</th>
-                                        <th id="difempleadoVsgrupo">Dif Empleado vs. Grupo</th>
+                                        <th scope="col">Comparativo del Cumplimiento</th>
+                                        <th scope="col">Meta</th>
+                                        <th scope="col">Empleado</th>
+                                        <th scope="col">Grupo</th>
+                                        <th scope="col">Dif Empleado vs. Meta</th>
+                                        <th scope="col">Dif Empleado vs. Grupo</th>
                                     </tr>
                                     <tr>
                                         <td>Cumplimiento Promedio</td>
@@ -608,7 +608,7 @@ if ($data->ppregunta8 != "") {
                     <caption>Tabla datos Generales</caption>
                     <tbody>
                         <tr>
-                            <th>
+                            <th scope="col">
                                 <?php if ($data->apregunta1 != "") : ?>
                                     <?= $form->field($data, 'apregunta1')->textInput(['maxlength' => 200, 'disabled' => true])->label($data->ppregunta1) ?>
                                 <?php else : ?>
@@ -669,8 +669,8 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                                     <caption>Tabla</caption>
                                     <tr>
-                                        <th id="cumplimientoMeta">Cumplimiento de la Meta</th>
-                                        <th id="cantidad">Cantidad</th>
+                                        <th scope="col">Cumplimiento de la Meta</th>
+                                        <th scope="col">Cantidad</th>
                                     </tr>
                                     <tr>
                                         <td>Total RAC que cumplen Meta</td>
@@ -690,12 +690,12 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                                     <caption>Tabla</caption>
                                     <tr>
-                                        <th id="comparativoCumplimiento">Comparativo del Cumplimiento</th>
-                                        <th id="meta">Meta</th>
-                                        <th id="empleado">Empleado</th>
-                                        <th id="grupo">Grupo</th>
-                                        <th id="difempleadoVsmeta">Dif Empleado vs. Meta</th>
-                                        <th id="difempleadoVsgrupo">Dif Empleado vs. Grupo</th>
+                                        <th scope="col">Comparativo del Cumplimiento</th>
+                                        <th scope="col">Meta</th>
+                                        <th scope="col">Empleado</th>
+                                        <th scope="col">Grupo</th>
+                                        <th scope="col">Dif Empleado vs. Meta</th>
+                                        <th scope="col">Dif Empleado vs. Grupo</th>
                                     </tr>
                                     <tr>
                                         <td>Cumplimiento Promedio</td>
@@ -713,8 +713,8 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                                     <caption>Tabla cumplimiento</caption>
                                     <tr>
-                                        <th id="cumplimientoMeta">Cumplimiento de la Meta</th>
-                                        <th id="cantidad">Cantidad</th>
+                                        <th scope="col">Cumplimiento de la Meta</th>
+                                        <th scope="col">Cantidad</th>
                                     </tr>
                                     <tr>
                                         <td>Total RAC que cumplen Meta</td>
@@ -733,12 +733,12 @@ if ($data->ppregunta8 != "") {
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                                     <tr>
-                                        <th id="comparativoCumplimiento">Comparativo del Cumplimiento</th>
-                                        <th id="meta">Meta</th>
-                                        <th id="empleado">Empleado</th>
-                                        <th id="grupo">Grupo</th>
-                                        <th id="difempleadoVsmeta">Dif Empleado vs. Meta</th>
-                                        <th id="difempleadoVsgrupo">Dif Empleado vs. Grupo</th>
+                                        <th scope="col">Comparativo del Cumplimiento</th>
+                                        <th scope="col">Meta</th>
+                                        <th scope="col">Empleado</th>
+                                        <th scope="col">Grupo</th>
+                                        <th scope="col">Dif Empleado vs. Meta</th>
+                                        <th scope="col">Dif Empleado vs. Grupo</th>
                                     </tr>
                                     <tr>
                                         <td>Cumplimiento Promedio</td>
@@ -796,7 +796,7 @@ if ($data->ppregunta8 != "") {
                 <caption>Tabla datos generales</caption>
                     <tbody>
                         <tr>
-                            <th>
+                            <th scope="col">
                                 <?= $form->field($data, 'apregunta1')->textInput(['maxlength' => 200, 'disabled' => true])->label($preguntas->pregunta1) ?>
                             </th>
                         </tr>
@@ -830,8 +830,8 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                                 <caption>Tabla cumplimiento</caption>
                                     <tr>
-                                        <th id="cumplimientoMeta">Cumplimiento de la Meta</th>
-                                        <th id="cantidad">Cantidad</th>
+                                        <th scope="col">Cumplimiento de la Meta</th>
+                                        <th scope="col">Cantidad</th>
                                     </tr>
                                     <tr>
                                         <td>Total RAC que cumplen Meta</td>
@@ -850,12 +850,12 @@ if ($data->ppregunta8 != "") {
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                                 <tr>
-                                        <th id="comparativoCumplimiento">Comparativo del Cumplimiento</th>
-                                        <th id="meta">Meta</th>
-                                        <th id="empleado">Empleado</th>
-                                        <th id="grupo">Grupo</th>
-                                        <th id="difempleadoVsmeta">Dif Empleado vs. Meta</th>
-                                        <th id="difempleadoVsgrupo">Dif Empleado vs. Grupo</th>
+                                        <th scope="col">Comparativo del Cumplimiento</th>
+                                        <th scope="col">Meta</th>
+                                        <th scope="col">Empleado</th>
+                                        <th scope="col">Grupo</th>
+                                        <th scope="col">Dif Empleado vs. Meta</th>
+                                        <th scope="col">Dif Empleado vs. Grupo</th>
                                     </tr>
                                     <tr>
                                         <td>Cumplimiento Promedio</td>
@@ -873,8 +873,8 @@ if ($data->ppregunta8 != "") {
                                 <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                                 <caption>tabla cumplimiento</caption>
                                     <tr>
-                                        <th id="cumplimientoMeta">Cumplimiento de la Meta</th>
-                                        <th id="cantidad">Cantidad</th>
+                                        <th scope="col">Cumplimiento de la Meta</th>
+                                        <th scope="col">Cantidad</th>
                                     </tr>
                                     <tr>
                                         <td>Total RAC que cumplen Meta</td>
@@ -893,12 +893,12 @@ if ($data->ppregunta8 != "") {
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                                 <tr>
-                                        <th id="comparativoCumplimiento">Comparativo del Cumplimiento</th>
-                                        <th id="meta">Meta</th>
-                                        <th id="empleado">Empleado</th>
-                                        <th id="grupo">Grupo</th>
-                                        <th id="difempleadoVsmeta">Dif Empleado vs. Meta</th>
-                                        <th id="difempleadoVsgrupo">Dif Empleado vs. Grupo</th>
+                                        <th scope="col">Comparativo del Cumplimiento</th>
+                                        <th scope="col">Meta</th>
+                                        <th scope="col">Empleado</th>
+                                        <th scope="col">Grupo</th>
+                                        <th scope="col">Dif Empleado vs. Meta</th>
+                                        <th scope="col">Dif Empleado vs. Grupo</th>
                                     </tr>
                                     <tr>
                                         <td>Cumplimiento Promedio</td>
@@ -959,7 +959,7 @@ if ($data->ppregunta8 != "") {
         <table style="width:200%" class="table table-striped table-bordered detail-view formDinamico">
         <caption>Tabla</caption>
             <tr>
-                <th>
+                <th scope="col">
                     <h5 align="justify">"Lo anterior, con fundamento en lo dispuesto en el artículo 62 numeral 9 del Código Sustantivo del Trabajo, el Decreto Reglamentario 1373 de 1966 y el contrato laboral.
 
                         Por lo tanto, le solicitamos dar respuesta a los planteamientos anteriormente enunciados, en un plazo máximo de ocho (8) días, contados a partir de la fecha de recibo del presente. "</h5>

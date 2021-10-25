@@ -91,7 +91,7 @@ $detalles_ids = array();
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
             <caption>Tabla preguntas</caption>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php
                         if (!empty($data->basesatisfaccion->buzon)) {
                             $url_buzon = explode("/web/", $data->basesatisfaccion->buzon);
@@ -1342,7 +1342,7 @@ $detalles_ids = array();
             <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
             <caption>tabla preguntas</caption>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php
                         if (!empty($data->basesatisfaccion->buzon)) {
                             echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
