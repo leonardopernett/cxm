@@ -597,22 +597,22 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                     <div class="col-md-12">
                         <div class="card1 mb">
                             <div class="datakonecta">
-                                <i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i><strong> Métricas de valoración (Automáticas y Manuales):</strong>
+                                <em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em><strong> Métricas de valoración (Automáticas y Manuales):</strong>
                             </div>
 
                             <div class="w3-container">
                               <div class="w3-row">
                                 <a href="javascript:void(0)" onclick="openCity(event, 'General');">
-                                  <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-chart-bar" style="font-size: 25px; color: #559FFF;"></i><strong> Métrica General</strong></div>
+                                  <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #559FFF;"></em><strong> Métrica General</strong></div>
                                 </a>
                                 <a href="javascript:void(0)" onclick="openCity(event, 'Konecta');">
-                                  <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-chart-bar" style="font-size: 25px; color: #827DF9;"></i><strong> Métrica Konecta</strong></div>
+                                  <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #827DF9;"></em><strong> Métrica Konecta</strong></div>
                                 </a>
                                 <a href="javascript:void(0)" onclick="openCity(event, 'Bogota');">
-                                  <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-chart-bar" style="font-size: 25px; color: #C148D0;"></i><strong> Métrica Bogotá</strong></div>
+                                  <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #C148D0;"></em><strong> Métrica Bogotá</strong></div>
                                 </a>
                                 <a href="javascript:void(0)" onclick="openCity(event, 'Medellin');">
-                                  <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-chart-bar" style="font-size: 25px; color: #FFC72C;"></i><strong> Métrica Medellín</strong></div>
+                                  <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #FFC72C;"></em><strong> Métrica Medellín</strong></div>
                                 </a>
                               </div>
 
@@ -622,8 +622,9 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                     <div class="col-md-6">
                                         <div class="card2 mb">
                                                     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+                                                    <caption>Métricas</caption>
                                                                 <thead>
-                                                                    <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
+                                                                    <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                                     <?php
 
                                                                         $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
@@ -634,7 +635,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                             $txtTMes = $varMonth.'- '.$varYear;
                                                                             $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                                     ?>
-                                                                        <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
+                                                                        <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                                     <?php
                                                                         }
                                                                     ?>           
@@ -743,8 +744,9 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                     <div class="col-md-6">
                                                 <div class="card2 mb">
                                                     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+                                                    <caption>Métricas</caption>
                                                             <thead>
-                                                                <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
+                                                                <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                                     <?php
 
                                                                         $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
@@ -755,7 +757,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                             $txtTMes = $varMonth.'- '.$varYear;
                                                                             $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                                     ?>
-                                                                        <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
+                                                                        <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                                     <?php
                                                                         }
                                                                     ?> 
@@ -865,8 +867,9 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                     <div class="col-md-6">
                                                 <div class="card2 mb">
                                                     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+                                                    <caption>Métricas</caption>
                                                             <thead>
-                                                                <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
+                                                                <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                                     <?php
 
                                                                         $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
@@ -877,7 +880,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                             $txtTMes = $varMonth.'- '.$varYear;
                                                                             $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                                     ?>
-                                                                        <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
+                                                                        <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                                     <?php
                                                                         }
                                                                     ?> 
@@ -987,8 +990,9 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                     <div class="col-md-6">
                                                 <div class="card2 mb">
                                                     <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+                                                    <caption>Métricas</caption>
                                                         <thead>
-                                                            <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
+                                                            <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                                 <?php
 
                                                                     $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
@@ -999,7 +1003,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                             $txtTMes = $varMonth.'- '.$varYear;
                                                                             $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                                 ?>
-                                                                    <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
+                                                                    <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                                 <?php
                                                                     }
                                                                 ?> 
@@ -1119,15 +1123,16 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                     <div class="col-md-12">
                         <div class="card1 mb">
                             <div class="datakonecta">
-                                <i class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></i><strong> Métricas de encuestas:</strong> 
+                                <em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><strong> Métricas de encuestas:</strong> 
                             </div>
                             <div class="datakonecta">                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="card1 mb">
                                             <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+                                            <caption>Métricas</caption>
                                                 <thead>
-                                                    <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
+                                                    <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                     <?php
                                                         $varLastDate0 = new DateTime($varLastDate);
                                                         $varLastDate0->modify('last day of this month');
@@ -1143,7 +1148,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             $txtTMes = $varMonth.'- '.$varYear;
                                                             $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                     ?>
-                                                        <th class="text-center" style="font-size: 15px;  background-color: #EEEEEE"><?php echo $varTMes; ?></th>
+                                                        <th scope="col" class="text-center" style="font-size: 15px;  background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                     <?php
                                                         }
                                                     ?>           
@@ -1229,7 +1234,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                     <div class="col-md-12">
                         <div class="card1 mb">
                             <div class="datakonecta">
-                                <i class="fas fa-search" style="font-size: 20px; color: #C148D0;"></i><strong> Búsqueda por servicio:</strong> 
+                                <em class="fas fa-search" style="font-size: 20px; color: #C148D0;"></em><strong> Búsqueda por servicio:</strong> 
                                 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
                                 <div class="row">
                                     <div class="col-mod-6">
@@ -1266,13 +1271,13 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-wrench" style="font-size: 20px; color: #15aabf;"></i> Configuraciones Generales: </label>
+                <label><em class="fas fa-wrench" style="font-size: 20px; color: #15aabf;"></em> Configuraciones Generales: </label>
                 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
                 <div class="row">
                                     
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></i> Parametrizar Gerentes: </label>                           
+                            <label style="font-size: 15px;"><em class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></em> Parametrizar Gerentes: </label>                           
 
                                 <?= Html::button('Parametrizar Gerentes', ['value' => url::to('parametrizargerentes'), 'class' => 'btn btn-success', 'id'=>'modalButton5', 'data-toggle' => 'tooltip', 'title' => 'Parametrizar Gerentes', 'style' => 'background-color: #337ab7']) 
                                 ?>
@@ -1292,7 +1297,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></i> Parametrizar Encuestas: </label>                           
+                            <label style="font-size: 15px;"><em class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></em> Parametrizar Encuestas: </label>                           
 
                                 <?= Html::a('Parametrizar Encuestas',  ['parametrizarencuestas'], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #4298b4',
@@ -1304,7 +1309,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                     </div>                    
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></i> Parametrizar Satu/Insatu Valoracion: </label>                           
+                            <label style="font-size: 15px;"><em class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></em> Parametrizar Satu/Insatu Valoracion: </label>                           
 
                                 <?= Html::a('Parametrizar SATU-INSATU Valoracion',  ['parametrizarindicadores'], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #4298b4',
@@ -1316,7 +1321,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                     </div>                  
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></i> Parametrizar Rta/NoRta Valoracion: </label>                           
+                            <label style="font-size: 15px;"><em class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></em> Parametrizar Rta/NoRta Valoracion: </label>                           
 
                                 <?= Html::a('Parametrizar RTA-NO RTA Valoracion',  ['parametrizarindicadores2'], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #4298b4',
@@ -1331,7 +1336,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></i> Parametrizar Satu/Insatu Encuestas: </label>                           
+                            <label style="font-size: 15px;"><em class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></em> Parametrizar Satu/Insatu Encuestas: </label>                           
 
                                 <?= Html::a('Parametrizar SATU-INSATU Encuestas',  ['parametrizarindicadores3'], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #4298b4',
@@ -1343,7 +1348,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></i> Parametrizar Rta/NoRta Encuestas: </label>                           
+                            <label style="font-size: 15px;"><em class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></em> Parametrizar Rta/NoRta Encuestas: </label>                           
 
                                 <?= Html::a('Parametrizar RTA-NO RTA Encuestas',  ['parametrizarindicadores4'], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #4298b4',
