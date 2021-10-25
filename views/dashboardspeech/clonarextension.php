@@ -94,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card1 mb">
-				<label><i class="fas fa-key" style="font-size: 20px; color: #559FFF;"></i> Proceso de clonación de extensiones speech</label>
+				<label><em class="fas fa-key" style="font-size: 20px; color: #559FFF;"></em> Proceso de clonación de extensiones speech</label>
 				<div class="row">
 					<div class="col-md-6">
 						<label> * Seleccionar servicio:</label>

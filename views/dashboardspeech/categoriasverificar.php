@@ -49,27 +49,27 @@ $this->title = 'Visualización por Categorias -- QA & Speech --';
   ?>
 <br>
     <div class="page-header" >
-        <h3><center><?= Html::encode($this->title) ?></center></h3>
+        <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
     </div> 
 <br>
 <div>
 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
         <thead>
             <tr>
-                <th class="text-center"><?= Yii::t('app', 'Programa Cliente') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Regla de Negocio') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Extensión') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Usuario Red') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Otros') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'PCRC') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Centro de Costos') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Id Categoria') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Tipo Categoria') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Tipo Parametro') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Tipo Indicador') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Presentacion Smart') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Presentacion Dashboard') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Programa Cliente') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Regla de Negocio') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Extensión') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Usuario Red') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Otros') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'PCRC') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Centro de Costos') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Id Categoria') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre Categoria') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Tipo Categoria') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Tipo Parametro') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Tipo Indicador') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Presentacion Smart') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Presentacion Dashboard') ?></th>
             </tr>
         </thead>
         <tbody>

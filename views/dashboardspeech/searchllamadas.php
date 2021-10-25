@@ -164,7 +164,7 @@ $this->title = 'Dashboard Voz del Cliente';
     <div class="row">
         <div class="col-md-12">
           <div class="card1 mb">
-            <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i> </label>
+            <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> </label>
             <div class="row">
               <div class="col-md-3">
                 <label><?= Yii::t('app', 'Indicadores') ?></label>
@@ -247,7 +247,7 @@ $this->title = 'Dashboard Voz del Cliente';
             <div class="row">
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #827DF9;"></i> Buscar llamadas: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #827DF9;"></em> Buscar llamadas: </label> 
                         <?= Html::submitButton(Yii::t('app', 'Buscar'),
                             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                 'data-toggle' => 'tooltip',
@@ -258,7 +258,7 @@ $this->title = 'Dashboard Voz del Cliente';
                 </div>
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></i> Buscar general: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></em> Buscar general: </label> 
                         <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos], ['class' => 'btn btn-success',
                             'style' => 'background-color: #337ab7',
                             'data-toggle' => 'tooltip',
@@ -268,7 +268,7 @@ $this->title = 'Dashboard Voz del Cliente';
                 </div>
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-backward" style="font-size: 15px; color: #827DF9;"></i> Regresar: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-backward" style="font-size: 15px; color: #827DF9;"></em> Regresar: </label> 
                         <?= Html::a('Regresar',  ['indexvoice','arbol_idV'=>$txtvarprograma,'codpcrc'=>$txtvarcodigopcrc,'parametros_idV'=>$txtvarextension,'codparametrizar'=>$txtvarcodigos,'dateini'=>$txtvarfechainireal,'datefin'=>$txtvarfechafinreal], ['class' => 'btn btn-success',
                             'style' => 'background-color: #707372',
                             'data-toggle' => 'tooltip',
@@ -279,7 +279,7 @@ $this->title = 'Dashboard Voz del Cliente';
                 <?php if ($txttxtvarcantllamadasb != 0) {  ?>
                 <div class="col-md-3">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #827DF9;"></i> Descargar gesti&oacute;n: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #827DF9;"></em> Descargar gesti&oacute;n: </label> 
                         <?= Html::button('Descargar', ['value' => url::to(['descargarcalls','varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$varcategoriass, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'consinmotivos'=>$varidloginid]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
                         ?> 
 
@@ -306,31 +306,31 @@ $this->title = 'Dashboard Voz del Cliente';
     <div class="row">
         <div class="col-md-2">
           <div class="card mb">
-            <label><i class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></i> Rango de Fechas:</label>
+            <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></em> Rango de Fechas:</label>
             <label style="font-size: 14px; text-align: center;"><?php echo $txttxtvarfechainireal.' - '.$txttxtvarfechafinreal; ?></label>
           </div>
         </div>
         <div class="col-md-2">
           <div class="card mb">
-            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Servicio:</label>
+            <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> Servicio:</label>
             <label style="font-size: 15px; text-align: center;"><?php echo $txtservicios; ?></label>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card mb">
-            <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Programa Pcrc:</label>
+            <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> Programa Pcrc:</label>
             <label style="font-size: 15px; text-align: center;"><?php echo $txtvarcodigopcrc.' - '.$txtnombrepcrc; ?></label>
           </div>
         </div>        
         <div class="col-md-2">
           <div class="card mb">
-            <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Llamadas general:</label>
+            <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Llamadas general:</label>
             <label  style="font-size: 15px; text-align: center;"><?php echo $txttxtvarcantllamadas; ?></label>
           </div>
         </div>
         <div class="col-md-2">
           <div class="card mb">
-            <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Llamadas buscadas:</label>
+            <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Llamadas buscadas:</label>
             <label  style="font-size: 15px; text-align: center;"><?php echo $txttxtvarcantllamadasb; ?></label>
           </div>
         </div>
@@ -341,7 +341,7 @@ $this->title = 'Dashboard Voz del Cliente';
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label><i class="fas fa-list" style="font-size: 20px; color: #00968F;"></i> Resultados:</label>
+        <label><em class="fas fa-list" style="font-size: 20px; color: #00968F;"></em> Resultados:</label>
         <br>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -437,7 +437,7 @@ $this->title = 'Dashboard Voz del Cliente';
                                             }
                                                         
 
-                                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-calculator" style="font-size: 17px; color: #C178G9; display: inline;"></i>'),
+                                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-calculator" style="font-size: 17px; color: #9F9AE1; display: inline;"></i>'),
                                                             'javascript:void(0)',
                                                             [
                                                                 'title' => Yii::t('app', 'Resultados VOC'),
@@ -565,7 +565,7 @@ $this->title = 'Dashboard Voz del Cliente';
                                                         if (strlen($idloginid) > 7) {
                                                         return Html::a(
                                                             '<i id="idimage" class="fas fa-edit" style="font-size: 17px; color: #4c6ef5; display: inline;"></i>', 
-                                                            Url::to(['valoraspeech', 'idspeechcalls' => $model->iddashboardspeechcalls, 'varcodpcrc'=>$varcomprobacion, 'varservisioname' => $varnombreservicio]), ['title' => Yii::t('yii', 'Valoración VOC'), 'data-pjax' => 0, 'target' => "_blank"]
+                                                            Url::to(['valoraspeech', 'idspeechcalls' => $model->iddashboardspeechcalls, 'varcodpcrc'=>$varcomprobacion, 'varservisioname' => $varnombreservicio]), ['title' => Yii::t('yii', 'ValoraciÃ³n VOC'), 'data-pjax' => 0, 'target' => "_blank"]
                                                         );
                                                         }
                                                     }
@@ -575,7 +575,7 @@ $this->title = 'Dashboard Voz del Cliente';
                                                     // }else{
                                                     //     return Html::a('<span class="fas fa-eye" style="font-size: 20px; color: #4ad427;" ></span>'
                                                     //                     , Url::to(['showbasechatview',
-                                                    //                         'basechatid' => $model->idbasechat_tigob]), ['title' => Yii::t('yii', 'ver Gestión')]);
+                                                    //                         'basechatid' => $model->idbasechat_tigob]), ['title' => Yii::t('yii', 'ver GestiÃ³n')]);
                                                     // }
                                                 // },
                                         }else{
@@ -618,7 +618,7 @@ $this->title = 'Dashboard Voz del Cliente';
 
         if (varidcontact == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debes seleccionar si contiene o no contiene parametrización","warning");
+            swal.fire("!!! Advertencia !!!","Debes seleccionar si contiene o no contiene parametrizaciÃ³n","warning");
             return;
         }else{
             if (varidindicador == "" && varidmotivos == "") {

@@ -32,7 +32,7 @@ if ($txtservicio != null) {
 ?>
 <br>
     <div class="page-header" >
-        <h3><center><?= Html::encode($this->title) ?></center></h3>
+        <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
     </div> 
 <br>
 <div class="capacero" id="capaceroid" style="display: none;">
@@ -98,13 +98,14 @@ if ($txtservicio != null) {
     <div class="row">
     	<div class="col-md-12">
             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+            <caption>Categorias</caption>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan="2" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Categorias cargadas') ?></label></th>
+                        <th scope="col" class="text-center" colspan="2" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Categorias cargadas') ?></label></th>
                     </tr>
                     <tr>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Bolsita') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad categorias') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Bolsita') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad categorias') ?></label></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,14 +130,15 @@ if ($txtservicio != null) {
     <div class="row">
         <div class="col-md-12">
             <table id="tblData2" class="table table-striped table-bordered tblResDetFreed">
+            <caption>Llamadas</caption>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas cargadas') ?></label></th>
+                        <th scope="col" class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas cargadas') ?></label></th>
                     </tr>
                     <tr>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Bolsita') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad llamadas') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ultima fecha cargada') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Bolsita') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad llamadas') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ultima fecha cargada') ?></label></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -158,28 +160,29 @@ if ($txtservicio != null) {
     <div class="row">
         <div class="col-md-12">
             <table id="tblData3" class="table table-striped table-bordered tblResDetFreed">
+            <caption>Procesamiento</caption>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan="17" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesamiento IDA CX_Entto') ?></label></th>
+                        <th scope="col" class="text-center" colspan="17" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesamiento IDA CX_Entto') ?></label></th>
                     </tr>
                     <tr>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Login Id') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Corte de llamada') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Demora en contestar') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Demora > 10 seg') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Demora 5 - 10 seg') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Reiteratividad de los silencios') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Seguridad') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Cédula') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Correo electrónico') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Nombre completo') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Teléfonos') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Silencios') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Silencios >90 seg') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Silencios 60 - 90 seg') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Vocabulario inadecuado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'IDA') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'CantidadLlamadas') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Login Id') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Corte de llamada') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Demora en contestar') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Demora > 10 seg') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Demora 5 - 10 seg') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Reiteratividad de los silencios') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Seguridad') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Cédula') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Correo electrónico') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Nombre completo') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Teléfonos') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Silencios') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Silencios >90 seg') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Silencios 60 - 90 seg') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Vocabulario inadecuado') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'IDA') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'CantidadLlamadas') ?></label></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -220,27 +223,28 @@ if ($txtservicio != null) {
     <div class="row">
         <div class="col-md-12">
             <table id="tblData4" class="table table-striped table-bordered tblResDetFreed">
+            <caption>Procesamiento</caption>
                 <thead>
                     <tr>
-                        <th class="text-center" colspan="16" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesamiento IDA CX_Directv') ?></label></th>
+                        <th scope="col" class="text-center" colspan="16" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesamiento IDA CX_Directv') ?></label></th>
                     </tr>
                     <tr>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Login Id') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Corte de llamada') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Demora en Contestar') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Reiteratividad de los silencios') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Seguridad') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Cédula') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Correo electrónico') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Nombre completo') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Teléfonos') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Tiempos de Espera') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'TE o SIL De 60 a 90 Segundos') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'TE o SIL De 30 a 60 Segundos') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'TE o SIL De 90 a 120 Segundos') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Vocabulario inadecuado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'IDA') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'CantidadLlamadas') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Login Id') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Corte de llamada') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Demora en Contestar') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Reiteratividad de los silencios') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Seguridad') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Cédula') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Correo electrónico') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Nombre completo') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Teléfonos') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Tiempos de Espera') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'TE o SIL De 60 a 90 Segundos') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'TE o SIL De 30 a 60 Segundos') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'TE o SIL De 90 a 120 Segundos') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Evita Vocabulario inadecuado') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'IDA') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'CantidadLlamadas') ?></label></th>
                     </tr>
                 </thead>
                 <tbody>

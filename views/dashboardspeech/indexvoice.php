@@ -377,12 +377,12 @@ $this->title = 'Dashboard Voz del Cliente';
                       $varSelect1 = Yii::$app->db->createCommand("select distinct id_dp_clientes from tbl_speech_parametrizar where anulado = 0 and cod_pcrc in ('$txtCodPcrcok')")->queryScalar();
                       $varSelect2 = $varSelect.'_'.$varSelect1;                
                 ?>
-                  <img src="<?= Url::to("@web/images/servicios/$varSelect2.png"); ?>">
+                  <img src="<?= Url::to("@web/images/servicios/$varSelect2.png"); ?>" alt="<?= $varSelect2 ?>">
                 <?php
                   }else{
 
                 ?>
-                  <img src="<?= Url::to("@web/images/servicios/$varSelect.png"); ?>">
+                  <img src="<?= Url::to("@web/images/servicios/$varSelect.png"); ?>" alt="<?= $varSelect ?>">
                 <?php 
                   } 
                 ?>
@@ -390,19 +390,19 @@ $this->title = 'Dashboard Voz del Cliente';
           </div>
           <div class="col-md-3">
               <div class="card mb">              
-                <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i> Cliente/Servicio:</label>
+                <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> Cliente/Servicio:</label>
                 <label><?php echo $varServicio; ?></label>
                 <hr>  
-                <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i> Pcrc Seleccionado:</label>
+                <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> Pcrc Seleccionado:</label>
                 <label><?php echo $txtCodPcrcokc1.' - '.$txtnombrepcrc; ?></label>
               </div>
           </div>
           <div class="col-md-3">
               <div class="card mb">
-                <label><i class="fas fa-calendar-alt" style="font-size: 20px; color: #C148D0;"></i> Rango de Fechas:</label>
+                <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #C148D0;"></em> Rango de Fechas:</label>
                 <label><?php echo $txtFechaIni.' - '.$txtFechaFin; ?></label>
                 <hr>  
-                <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Parametros Seleccionados:</label>
+                <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> Parametros Seleccionados:</label>
                 <?php
                   $txtnombreParametro = null;
                   $txtnombrePrograma = null;
@@ -429,7 +429,7 @@ $this->title = 'Dashboard Voz del Cliente';
           </div>
           <div class="col-md-3">
               <div class="card mb">
-                <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Cantidad de Llamadas:</label>
+                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Cantidad de Llamadas:</label>
                 <label  style="font-size: 90px; text-align: center;"><?php echo $txtTotalLlamadas; ?></label>
               </div>
           </div>
@@ -446,6 +446,7 @@ $this->title = 'Dashboard Voz del Cliente';
           <div class="col-md-12">
             <div class="card1 mb">
               <table style="width:100%">
+              <caption>...</caption>
                 <tr>
                  <?php
                     foreach ($varListIndicadores as $key => $value) {
@@ -453,14 +454,14 @@ $this->title = 'Dashboard Voz del Cliente';
                       $definicion = $value['definicion'];
 
                   ?>
-                    <td class="text-center" width="100"><b><?php 
+                    <th scope="col" class="text-center" width="100"><strong><?php 
                         echo Html::tag('span', $txtIndicadores, [
                             'data-title' => $definicion,
                             'data-toggle' => 'tooltip',
                             'style' => 'cursor:pointer;'
                         ]);
-                      ?></b>
-                      </td>
+                      ?></strong>
+                      </th>
                   <?php
                     }
                   ?>
@@ -1302,12 +1303,13 @@ $this->title = 'Dashboard Voz del Cliente';
                 <div class="card2 mb"> 
                                                   
                      <table id="myTable0"  class="table table-striped table-bordered detail-view formDinamico">
+                     <caption>...</caption>
                           <thead>
                             <tr>
-                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(4, 'str')"><?= Yii::t('app', 'Indicadores ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(0, 'str')"><?= Yii::t('app', 'Agente ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>                  
-                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'Canal ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'Marca ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(4, 'str')"><?= Yii::t('app', 'Indicadores ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(0, 'str')"><?= Yii::t('app', 'Agente ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>                  
+                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'Canal ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'Marca ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1401,11 +1403,12 @@ $this->title = 'Dashboard Voz del Cliente';
                     <div class="col-md-6">
                       <div class="card2 mb">
                         <table id="myTable0"  class="table table-striped table-bordered detail-view formDinamico">
+                        <caption>...</caption>
                           <thead>
                             <tr>
-                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(4, 'str')"><?= Yii::t('app', 'Código Pcrc ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(0, 'str')"><?= Yii::t('app', 'Variables ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>                  
-                              <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'cantidad Llamadas ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(4, 'str')"><?= Yii::t('app', 'Código Pcrc ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(0, 'str')"><?= Yii::t('app', 'Variables ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>                  
+                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'cantidad Llamadas ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1516,7 +1519,7 @@ $this->title = 'Dashboard Voz del Cliente';
                     <?php 
                       }
                     ?>
-                      <label style="font-size: 15px;"><i class="fas fa-comment-dots" style="font-size: 20px; color: #00968F;"></i>  Hallazgo: </label>
+                      <label style="font-size: 15px;"><em class="fas fa-comment-dots" style="font-size: 20px; color: #00968F;"></em>  Hallazgo: </label>
                       <label style="font-size: 15px;"><?php echo $varhallazgo ?></label>
                       </div>
                     </div>
@@ -1580,11 +1583,12 @@ $this->title = 'Dashboard Voz del Cliente';
                 <div class="col-md-6">
                   <div class="card2 mb">
                     <table id="myTable"  class="table table-striped table-bordered detail-view formDinamico">
+                    <caption>...</caption>
                         <thead>
                           <tr>
-                            <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable(0, 'str')"><?= Yii::t('app', 'Motivos de Llamada') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                            <th class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(1, 'int')"><?= Yii::t('app', '% de Llamadas') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                            <th class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(4, 'int')"><?= Yii::t('app', ' '.$varName2.' Por Motivo Llamada') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                            <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable(0, 'str')"><?= Yii::t('app', 'Motivos de Llamada') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                            <th scope="col" class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(1, 'int')"><?= Yii::t('app', '% de Llamadas') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                            <th scope="col" class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(4, 'int')"><?= Yii::t('app', ' '.$varName2.' Por Motivo Llamada') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
                             
                           </tr>           
                         </thead>
@@ -1672,12 +1676,12 @@ $this->title = 'Dashboard Voz del Cliente';
             <div class="row">
               <div class="col-md-6">
                 <div class="card2 mb">
-                  <label style="font-size: 15px;"><i class="fas fa-percent" style="font-size: 15px; color: #827DF9;"></i> Porcentaje de Indicadores: <?php echo $txtRtaProcentajeindicador.' %'; ?></label>
+                  <label style="font-size: 15px;"><em class="fas fa-percent" style="font-size: 15px; color: #827DF9;"></em> Porcentaje de Indicadores: <?php echo $txtRtaProcentajeindicador.' %'; ?></label>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="card2 mb">
-                  <label style="font-size: 15px;"><i class="fas fa-percent" style="font-size: 15px; color: #827DF9;"></i> Porcentaje de Motivos Contacto: <?php echo $txtRtaProcentajeMotivos.' %'; ?></label>
+                  <label style="font-size: 15px;"><em class="fas fa-percent" style="font-size: 15px; color: #827DF9;"></em> Porcentaje de Motivos Contacto: <?php echo $txtRtaProcentajeMotivos.' %'; ?></label>
                 </div>
               </div>
             </div>
@@ -1771,11 +1775,11 @@ $this->title = 'Dashboard Voz del Cliente';
 <div class="col-md-12">
 <hr>
   <div class="card1 mb">
-    <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+    <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
     <div class="row">
       <div class="col-md-3">
         <div class="card1 mb">
-          <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar dashboard: </label>
+          <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar dashboard: </label>
           <?= Html::button('Exportar', ['value' => url::to(['categoriasvoice', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codigoPCRC' => $txtCodPcrcok, 'codparametrizar' => $txtCodParametrizar, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
                         'data-toggle' => 'tooltip',
                         'title' => 'Exportar', 'style' => 'background-color: #337ab7']) ?> 
@@ -1795,7 +1799,7 @@ $this->title = 'Dashboard Voz del Cliente';
       </div>
       <div class="col-md-3">
         <div class="card1 mb">
-          <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar general: </label>
+          <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar general: </label>
           <?= Html::button('Exportar', ['value' => url::to(['categoriasgeneral', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codparametrizar' => $txtCodParametrizar, 'codigoPCRC' => $txtCodPcrcok, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton2',
                         'data-toggle' => 'tooltip',
                         'title' => 'Exportar', 'style' => 'background-color: #337ab7']) ?> 
@@ -1815,7 +1819,7 @@ $this->title = 'Dashboard Voz del Cliente';
       </div>
       <div class="col-md-3">
         <div class="card1 mb">
-          <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Regresar: </label> 
+          <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Regresar: </label> 
           <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
                         'data-toggle' => 'tooltip',
@@ -1826,7 +1830,7 @@ $this->title = 'Dashboard Voz del Cliente';
       <?php // if ($sessiones != '0') {  ?>
         <div class="col-md-3">
           <div class="card1 mb">
-            <label style="font-size: 15px;"><i class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></i> Buscar llamadas: </label>
+            <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Buscar llamadas: </label>
             <?= Html::a('Llamadas',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
                           'style' => 'background-color: #337ab7', 'target' => "_blank",
                           'data-toggle' => 'tooltip',
@@ -1842,7 +1846,7 @@ $this->title = 'Dashboard Voz del Cliente';
     <div class="row">
       <div class="col-md-3">
         <div class="card1 mb">
-            <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Guardar valores: </label>
+            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Guardar valores: </label>
             <div onclick="saveindicadores();" class="btn btn-primary" style="display:inline; height: 34px;" method='post' id="botones2" >
                 Guardar
             </div>

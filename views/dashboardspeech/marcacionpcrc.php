@@ -43,7 +43,7 @@ $this->title = 'Listado de Servicios y PCRC';
 ?>
 <br>
     <div class="page-header" >
-        <h3><center><?= Html::encode($this->title) ?></center></h3>
+        <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
     </div> 
 <br>
 <style>
@@ -86,18 +86,18 @@ $this->title = 'Listado de Servicios y PCRC';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">                    
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar a Excel: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar a Excel: </label> 
                             <a id="dlink" style="display:none;"></a>
                             <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Exportar a Excel</button>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Regresar: </label> 
                             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -115,14 +115,15 @@ $this->title = 'Listado de Servicios y PCRC';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-columns" style="font-size: 20px; color: #2CA5FF;"></i> Lista general: </label>
+                <label><em class="fas fa-columns" style="font-size: 20px; color: #2CA5FF;"></em> Lista general: </label>
                 <div class="row">
                     <div class="col-md-12">
                         <table id="tblData" class="table table-striped table-bordered detail-view formDinamico" border="0">
+                        <caption>Lista</caption>
                             <thead>
-                                <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?= Yii::t('app', 'Servicios') ?></th>
-                                <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?= Yii::t('app', 'Pcrc') ?></th>
-                                <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?= Yii::t('app', 'Parametros') ?></th>
+                                <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?= Yii::t('app', 'Servicios') ?></th>
+                                <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?= Yii::t('app', 'Pcrc') ?></th>
+                                <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?= Yii::t('app', 'Parametros') ?></th>
                                 <?php
 
                                     $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 4) a   order by a.mesyear asc")->queryAll();
@@ -133,7 +134,7 @@ $this->title = 'Listado de Servicios y PCRC';
                                         $txtTMes = $varMonth.'- '.$varYear;
                                         $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                 ?>
-                                    <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
+                                    <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                 <?php
                                     }
                                 ?>

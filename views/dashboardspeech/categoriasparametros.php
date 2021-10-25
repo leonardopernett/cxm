@@ -52,12 +52,12 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
         <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
                 <tr>
-                    <th class="text-center"><?= Yii::t('app', 'Id Parametro') ?></th>
-                    <th class="text-center"><?= Yii::t('app', 'Codigo pcrc') ?></th>
-                    <th class="text-center"><?= Yii::t('app', 'Nombre pcrc') ?></th>
-                    <th class="text-center"><?= Yii::t('app', 'Parametros') ?></th>
-                    <th class="text-center"><?= Yii::t('app', 'Seleccion parametro') ?></th>
-                    <th class="text-center"><?= Yii::t('app', 'Nuevo parametro') ?></th>
+                    <th scope="col" class="text-center"><?= Yii::t('app', 'Id Parametro') ?></th>
+                    <th scope="col" class="text-center"><?= Yii::t('app', 'Codigo pcrc') ?></th>
+                    <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre pcrc') ?></th>
+                    <th scope="col" class="text-center"><?= Yii::t('app', 'Parametros') ?></th>
+                    <th scope="col" class="text-center"><?= Yii::t('app', 'Seleccion parametro') ?></th>
+                    <th scope="col" class="text-center"><?= Yii::t('app', 'Nuevo parametro') ?></th>
                 <?php
                     $varlist = Yii::$app->db->createCommand("select tbl_speech_parametrizar.idspeechparametrizar, tbl_speech_parametrizar.cod_pcrc, tbl_speech_categorias.pcrc, tbl_speech_parametrizar.rn, tbl_speech_parametrizar.ext, tbl_speech_parametrizar.usuared, tbl_speech_parametrizar.comentarios from tbl_speech_parametrizar inner join tbl_speech_categorias on tbl_speech_parametrizar.cod_pcrc = tbl_speech_categorias.cod_pcrc where tbl_speech_parametrizar.anulado = 0 and tbl_speech_categorias.anulado = 0 and tbl_speech_parametrizar.id_dp_clientes = $txtServid group by tbl_speech_parametrizar.rn, tbl_speech_parametrizar.ext, tbl_speech_parametrizar.usuared order by     tbl_speech_categorias.pcrc desc")->queryAll(); 
 
