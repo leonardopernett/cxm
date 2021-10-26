@@ -35,7 +35,7 @@ $this->title = 'DashBoard Voz del Cliente';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 18px;"><i class="fas fa-at" style="font-size: 25px; color: #827DF9;"></i> Ingresar el correo corporativo </label>                  
+                <label style="font-size: 18px;"><em class="fas fa-at" style="font-size: 25px; color: #827DF9;"></em> Ingresar el correo corporativo </label>                  
                 <?= $form->field($model, 'tipoproceso')->textInput(['maxlength' => 200, 'id'=>'id_destino', 'placeholder' => 'Destinatario'])->label('') ?>  
                 <br>
                 <?= Html::submitButton(Yii::t('app', 'Enviar archivo'),
@@ -60,7 +60,7 @@ $this->title = 'DashBoard Voz del Cliente';
 
         if (varDestino == "") {
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un correo corporativo para enviar los datos","warning");
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un correo corporativo para enviar los datos","warning");
             return;  
         }else{
             varIdCapaCero.style.display = 'none';

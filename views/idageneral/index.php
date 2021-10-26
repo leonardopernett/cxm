@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-clock" style="font-size: 15px; color: #559FFF;"></i> Generar acciones: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-clock" style="font-size: 15px; color: #559FFF;"></em> Generar acciones: </label>
                         <!-- La fecha se inhabilita para hacer el proceso solo con el tipo, ya que en la tabla del ida de Experience esta la fecha -->
                         <!-- <?=
                             $form->field($model, 'fechacreacion', [
@@ -148,7 +148,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #559FFF;"></i> Descargar Informaci�n: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #559FFF;"></em> Descargar Información: </label>
                         <?= Html::button('Descargar', ['value' => url::to('enviararchivo'), 'class' => 'btn btn-success', 'id'=>'modalButton6',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Desargar', 'style' => 'background-color: #337ab7']) 
@@ -172,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #559FFF;"></i> Procesar datos Entto: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #559FFF;"></em> Procesar datos Entto: </label>
                         <?= Html::a('Procesar',  ['procesarentto'], ['class' => 'btn btn-danger',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Procesar']) 
@@ -184,16 +184,17 @@ $this->params['breadcrumbs'][] = $this->title;
         
         <div class="col-md-9">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #559FFF;"></i> Resultados: </label>
+                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #559FFF;"></em> Resultados: </label>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card1 mb">
                             <label style="font-size: 15px;">Calidad de Entrenamiento </label>
                             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                            <caption>Calidad de entrenamiento</caption>
                                 <thead>
-                                    <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Servicio"; ?></label></th>
-                                    <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad asesores"; ?></label></th>
-                                    <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Ultima fecha registro"; ?></label></th>
+                                    <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Servicio"; ?></label></th>
+                                    <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad asesores"; ?></label></th>
+                                    <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Ultima fecha registro"; ?></label></th>
                                 </thead>
                            
                                 <tbody>
@@ -216,10 +217,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="card1 mb">
                             <label style="font-size: 15px;">OJT </label>
                             <table id="tblData2" class="table table-striped table-bordered tblResDetFreed">
+                            <caption>OJT</caption>
                                 <thead>
-                                    <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Servicio"; ?></label></th>
-                                    <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad asesores"; ?></label></th>
-                                    <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Ultima fecha registro"; ?></label></th>
+                                    <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Servicio"; ?></label></th>
+                                    <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad asesores"; ?></label></th>
+                                    <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Ultima fecha registro"; ?></label></th>
                                 </thead>
                                 <tbody>
                                 <?php
@@ -253,12 +255,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
         if (varidarbols == "") {
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de seleccionar un servicio","warning");
+            swal.fire("!!! Advertencia !!!","Debe de seleccionar un servicio","warning");
             return;
         }else{
             if (vartxtidtipo == "") {
                 event.preventDefault();
-                swal.fire("��� Advertencia !!!","Debe de seleccionar un tipo de proceso","warning");
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar un tipo de proceso","warning");
                 return;
             }
         }
