@@ -171,48 +171,49 @@ $contadorSecciones = 0;
                 <div id="datosGenerales" class="col-sm-12" style="display: none">
 
                     <table class="table table-striped table-bordered detail-view formDinamico">
+                    <caption>Datos Generales</caption>
                         <tbody>
                             <tr>
-                                <th><?php echo Yii::t("app", "Evaluado ID"); ?></th>
+                                <th scope="row"><?php echo Yii::t("app", "Evaluado ID"); ?></th>
                                 <td><?php echo $data->evaluado ?></td>
                             </tr>
                             <tr>
-                                <th><?php echo Yii::t("app", "Instrumento para la Valoracion"); ?></th>
+                                <th scope="row"><?php echo Yii::t("app", "Instrumento para la Valoracion"); ?></th>
                                 <td><?php echo $data->ruta_arbol ?></td>
                             </tr>
                                 <?php if(isset($data->fecha_inicial)){ ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Fecha Inicio Valoracion"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Fecha Inicio Valoracion"); ?></th>
                                     <td><?php echo $data->fecha_inicial ?></td>
                                 </tr>
                                 <?php } ?>
                                 <?php if(isset($data->fecha_final)){ ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Fecha Fin Valoracion"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Fecha Fin Valoracion"); ?></th>
                                     <td><?php echo $data->fecha_final ?></td>
                                 </tr>
                                 <?php } ?>
                                 <?php if(isset($data->minutes)){ ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Tiempo de Valoracion"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Tiempo de Valoracion"); ?></th>
                                     <td><?php echo $data->minutes ?></td>
                                 </tr>
                                 <?php } ?>
                                 <?php if(isset($data->cant_modificaciones)){ ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Cantidad de Modificacion"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Cantidad de Modificacion"); ?></th>
                                     <td><?php echo $data->cant_modificaciones ?></td>
                                 </tr>
                                 <?php } ?>
                                 <?php if (isset($data->tiempo_modificaciones)) { ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Tiempo total Modificaciones"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Tiempo total Modificaciones"); ?></th>
                                     <td><?php echo $data->tiempo_modificaciones ?></td>
                                 </tr>
                                 <?php } ?>
 
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Cliente"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Cliente"); ?></th>
                                     <td> 
                                         <?php if ($data->preview) : 
                                                $data->IdclienteSel='';?>
@@ -269,7 +270,7 @@ $contadorSecciones = 0;
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Centro de Costo"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Centro de Costo"); ?></th>
                                     <td>
                                      <?php if ($data->preview) : 
                                         $data->codpcrc='';?>
@@ -326,7 +327,7 @@ $contadorSecciones = 0;
                             <tr>
                                 
                             <tr>
-                                <th><?php echo Yii::t("app", "Dimension"); ?></th>
+                                <th scope="row"><?php echo Yii::t("app", "Dimension"); ?></th>
                                 <td><?php //echo $data->dimension->name                       ?>
                                     <?php if ($data->preview) : ?>
                                         <?=
@@ -346,7 +347,7 @@ $contadorSecciones = 0;
                                 </td>
                             </tr>
                             <tr>
-                                <th><?php echo Yii::t("app", "Fuente"); ?></th>
+                                <th scope="row"><?php echo Yii::t("app", "Fuente"); ?></th>
                                 <td>
                                     <?php if ($data->preview) : ?>
                                         <?=
@@ -375,7 +376,7 @@ $contadorSecciones = 0;
                                 </td>
                             </tr>
                             <tr>
-                                <th><?php echo Yii::t("app", "Interaccion"); ?></th>
+                                <th scope="row"><?php echo Yii::t("app", "Interaccion"); ?></th>
                                 <td>
                                     <?php if ($data->preview) : ?>
                                         <?=
@@ -398,7 +399,7 @@ $contadorSecciones = 0;
                             if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1):
                                 ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
                                     <td>
                                         <?php
                                         if (!empty($data->tmp_formulario->url_llamada)) {
@@ -432,7 +433,7 @@ $contadorSecciones = 0;
                             if (isset($data->formulario->subi_calculo)):
                                 ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "subi_calculo"); ?></th>
+                                    <th scope="row"><?php echo Yii::t("app", "subi_calculo"); ?></th>
                                     <td>
                                         <?php echo implode(',', $data->indices_calcular) ?>
                                     </td>
@@ -441,7 +442,7 @@ $contadorSecciones = 0;
                                 if (count($data->indices_calcular) < 5 && !$data->preview):
                                     ?>
                                     <tr>
-                                        <th><?php echo Yii::t("app", "agregar subi"); ?></th>
+                                        <th scope="row"><?php echo Yii::t("app", "agregar subi"); ?></th>
                                         <td>
                                             <?php
                                             $max = 5 - count($data->indices_calcular);
@@ -488,12 +489,12 @@ $contadorSecciones = 0;
                                     <?php foreach ($data->indices_calcular as $key => $value): ?>
                                         <?php if ($value == 13): ?>
                                             <tr>
-                                                <th><?php echo $value ?></th>
+                                                <th scope="row"><?php echo $value ?></th>
                                                 <td><?php echo ($data->tmp_formulario->attributes['score'] * 100) . '%' ?></td>
                                             </tr>
                                         <?php else: ?>  
                                             <tr>
-                                                <th><?php echo $value ?></th>
+                                                <th scope="row"><?php echo $value ?></th>
                                                 <?php if ($data->tmp_formulario->attributes['i' . $key . '_nmcalculo'] != ''): ?>
                                                     <td><?php echo ($data->tmp_formulario->attributes['i' . $key . '_nmcalculo'] * 100) . '%' ?></td>
                                                 <?php else: ?> 
@@ -773,6 +774,10 @@ $contadorSecciones = 0;
                     <?php if ($detalle->isPits == 1): ?>
                         <div class="form-group col-sm-12">
                             <table <?php echo "id='tablapits" . $detalle->seccion_id . "'" ?> class="table table-striped table-bordered detail-view">
+                            <caption>...</caption>
+                                <thead>
+                                    <th scope="col"></th>
+                                </thead>
                                 <tbody>
                                 </tbody>
                             </table>
@@ -1134,11 +1139,12 @@ $contadorSecciones = 0;
                  <?php if ($data->fill_values): ?>
                 <?php echo Yii::t("app", "Tablero de Experiencias"); ?><br /><br />
                 <table class="table table-striped table-bordered">
+                <caption>Tablero</caption>
                     <thead>
                         <tr>
-                            <th>Enfoque</th>
-                            <th>Problema</th>  
-                            <th>Comentarios</th>
+                            <th scope="col">Enfoque</th>
+                            <th scope="col">Problema</th>  
+                            <th scope="col">Comentarios</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1185,10 +1191,11 @@ $contadorSecciones = 0;
                  <?php if ($data->fill_values): ?>
                 <?php echo Yii::t("app", "Tiposllamadas"); ?><br /><br />
                 <table class="table table-striped table-bordered">
+                <caption>Tipos</caption>
                     <thead>
                         <tr>
-                            <th>Tipo de Llamada</th>
-                            <th>Llamada</th>
+                            <th scope="col">Tipo de Llamada</th>
+                            <th scope="col">Llamada</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1230,9 +1237,10 @@ $contadorSecciones = 0;
             <?php if ($data->fill_values): ?>
                 <?php echo Yii::t("app", "Agregar feedback"); ?> <br /><br />
                 <table class="table table-striped table-bordered">
+                <caption>Feedback</caption>
                     <thead>
                         <tr>
-                            <th>Comentario Feedback</th>
+                            <th scope="col">Comentario Feedback</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1534,7 +1542,7 @@ function cargarlista(){
             }
         });
 
-        /* BOTÓN GUARDAR Y ENVIAR */
+        /* BOTï¿½N GUARDAR Y ENVIAR */
         $(".soloFinalizar").click(function () {
             $("#submitcorrecto").val("SI");
             $(this).attr("disabled", "disabled");
@@ -1557,7 +1565,7 @@ function cargarlista(){
             }
         });
 
-        /* BOTÓN GUARDAR Y ENVIAR */
+        /* BOTï¿½N GUARDAR Y ENVIAR */
         $(".soloCalcular").click(function () {
             $("#submitcorrecto").val("SI");
             $(this).attr("disabled", "disabled");
@@ -1590,7 +1598,7 @@ function cargarlista(){
             }
         });
 
-        /* BOTÓN GUARDAR VALORACIÓN SIN ENVIAR */
+        /* BOTï¿½N GUARDAR VALORACIï¿½N SIN ENVIAR */
         $(".soloGuardar").click(function () {
             $("#submitcorrecto").val("SI");
             $(this).attr("disabled", "disabled");
@@ -1602,7 +1610,7 @@ function cargarlista(){
             guardarFormulario.submit();
         });
 
-        /* BOTÓN PARA BORRAR EL FORMULARIO */
+        /* BOTï¿½N PARA BORRAR EL FORMULARIO */
         $(".soloCancelar").click(function () {
             $("#submitcorrecto").val("SI");
             $(this).attr("disabled", "disabled");
@@ -1699,7 +1707,7 @@ function cargarlista(){
                     } else {
                         $("#calificacion_" + val).removeClass('field-error');
                         var id_calificacion = $("#calificacion_" + val).val();
-                        //Si se seleccionó calificacion y tiene la marca de desplega tipificaciones
+                        //Si se seleccionï¿½ calificacion y tiene la marca de desplega tipificaciones
                         // , se debe seleccionar tipificacion.
                         if (valCalificacionesDespliegaTipificaciones[id_calificacion] == 1) {
                             var AnyChecked = false;
