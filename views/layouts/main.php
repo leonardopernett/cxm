@@ -33,9 +33,8 @@ AppAsset::register($this);
                 font-family: "Nunito";
                 font-weight: bold;
                 font-size: 150%;
-                color: #FFFFFF;
-                margin-top: 0;
-                margin-bottom: 1rem;
+                margin: 0 5px;
+                margin-top: 8px;
                 margin-right: -90px;
             }
             .dropdown {
