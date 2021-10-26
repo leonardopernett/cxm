@@ -174,7 +174,7 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 <div class="page-header">
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <br>
 <div id="dtbloque1" class="col-sm-12" style="display: inline">
@@ -182,7 +182,7 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-calendar-alt" style="font-size: 20px; color: #C148D0;"></i> Métricas de valoraciones en detalle por dia:</label>
+                    <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #C148D0;"></em> Métricas de valoraciones en detalle por dia:</label>
                     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
                         <div class="col-md-6">
                             <?=  $form->field($model, 'idservicio', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->distinct()->where("id in (98, 2, 1)")->andwhere("activo = 0")->orderBy(['id'=> SORT_ASC])->all(), 'id', 'name'),
