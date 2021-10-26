@@ -33,13 +33,10 @@ AppAsset::register($this);
                 font-family: "Nunito";
                 font-weight: bold;
                 font-size: 150%;
-                font-color: #FFFFFF;
+                color: #FFFFFF;
                 margin-top: 0;
                 margin-bottom: 1rem;
-                margin: 0 5px;
-                margin-top: 8px;
                 margin-right: -90px;
-                font-color: #FFFFFF;
             }
             .dropdown {
                 font-family: "Nunito";                
@@ -670,16 +667,16 @@ AppAsset::register($this);
                             
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank"><img src="<?= Url::to("@web/images/link80.png"); ?>" style="height: 106px; width: 215px;"></a>
+                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank"><img src="<?= Url::to("@web/images/link80.png"); ?>" style="height: 106px; width: 215px;" alt="Card image cap"></a>
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://amigo.grupokonecta.local/AmigoV1/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link3.png"); ?>"></a>
+                            <a class="direccionar" href="https://amigo.grupokonecta.local/AmigoV1/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link3.png"); ?>" alt="Card image cap"></a>
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://galeria.allus.com.co/galeriaexperiencias/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link2.png"); ?>" ></a>
+                            <a class="direccionar" href="https://galeria.allus.com.co/galeriaexperiencias/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link2.png"); ?>" alt="Card image cap"></a>
                         </div>   
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://konectados/" target="_blank"><img src="<?= Url::to("@web/images/link8.png"); ?>" style="width: 200px; height: 106px;"></a>
+                            <a class="direccionar" href="https://konectados/" target="_blank"><img src="<?= Url::to("@web/images/link8.png"); ?>" style="width: 200px; height: 106px;" alt="Card image cap"></a>
                         </div>                     
                     </div>                
                     <br>
