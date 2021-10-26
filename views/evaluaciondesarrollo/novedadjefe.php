@@ -40,14 +40,14 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card1 mb">
-				<label style="font-size: 16px;"><i class="fas fa-bolt" style="font-size: 20px; color: #FFC72C;"></i> Tipo de novedad:</label>
+				<label style="font-size: 16px;"><em class="fas fa-bolt" style="font-size: 20px; color: #FFC72C;"></em> Tipo de novedad:</label>
 				<?= $form->field($model, "asunto")->dropDownList($varTipos, ['prompt' => 'Seleccionar Novedad', 'id'=>"idAsuntoN", 'onchange' => 'varhabiita();']) ?>
 				<div id="idcambiod" style="display: none;">
-					<label style="font-size: 16px;"><i class="fas fa-pencil-ruler" style="font-size: 20px; color: #FFC72C;"></i> Elegir jefe:</label>
+					<label style="font-size: 16px;"><em class="fas fa-pencil-ruler" style="font-size: 20px; color: #FFC72C;"></em> Elegir jefe:</label>
 					<?= $form->field($model, "cambios")->dropDownList($listData, ['prompt' => 'Seleccionar Jefe', 'id'=>"idcambiosN"]) ?>
 				</div>				
 				<?= $form->field($model, 'documento')->textInput(['maxlength' => 250,  'id'=>'iddocumentoN', 'class' => 'hidden', 'value' => $vardocument]) ?>
-                <label style="font-size: 16px;"><i class="fas fa-edit" style="font-size: 20px; color: #FFC72C;"></i> Comentarios:</label>
+                <label style="font-size: 16px;"><em class="fas fa-edit" style="font-size: 20px; color: #FFC72C;"></em> Comentarios:</label>
                 <?= $form->field($model, 'comentarios')->textInput(['maxlength' => 250,  'id'=>'IdcomentariosN']) ?>
 			</div>
 		</div>

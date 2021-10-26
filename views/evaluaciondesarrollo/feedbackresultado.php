@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -129,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-table" style="font-size: 20px; color: #D8E1D9;"></i> Evaluaciones: </label> 
+                    <label><em class="fas fa-table" style="font-size: 20px; color: #D8E1D9;"></em> Evaluaciones: </label> 
                     <br>
                     <div class="row">
                         <div class="col-md-12" align="center">                            
@@ -152,12 +152,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="far fa-file-alt" style="font-size: 20px; color: #1483d9;"></i> Feedback y resultados: </label>
+                    <label><em class="far fa-file-alt" style="font-size: 20px; color: #1483d9;"></em> Feedback y resultados: </label>
                     <div class="row">
                         <div class="col-md-3">
                             <div class="card2 mb">
-                                <label style="font-size: 15px;"><i class="far fa-comment-alt" style="font-size: 15px; color: #205d8c;"></i> Generar Feedback: </label>
-                                <i class="fas fa-pencil-alt" style="font-size: 45px; color: #1da3e0; align-self: center;"></i>
+                                <label style="font-size: 15px;"><em class="far fa-comment-alt" style="font-size: 15px; color: #205d8c;"></em> Generar Feedback: </label>
+                                <em class="fas fa-pencil-alt" style="font-size: 45px; color: #1da3e0; align-self: center;"></em>
                                 <br>
                                 <?= Html::a('Generar Feedback',  ['evaluacionfeedback','model'=>$modelo,'documento'=>$documento1], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #337ab7',
@@ -169,8 +169,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-3">
                             <div class="card2 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-chart-pie" style="font-size: 15px; color: #205d8c;"></i> Resultados: </label>
-                                <i class="fas fa-chart-bar" style="font-size: 45px; color: #1da3e0; align-self: center;"></i>
+                                <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #205d8c;"></em> Resultados: </label>
+                                <em class="fas fa-chart-bar" style="font-size: 45px; color: #1da3e0; align-self: center;"></em>
                                 <br>
                                 <?= Html::a('Resultados',  ['resultadoevaluacion','model'=>$modelo,'documento'=>$documento2], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #337ab7',

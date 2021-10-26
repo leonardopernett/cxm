@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -116,7 +116,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
 		<?php if($sessiones == "3205" || $sessiones == "2911" || $sessiones == "2953" ){ ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Subir información: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Subir información: </label>
                             <?= Html::a('Actualiza Usuarios',  ['usuarios_evalua'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #337ab7',
                                             'data-toggle' => 'tooltip',
@@ -128,7 +128,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
 		<?php } ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></i> Parametrizar datos: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></em> Parametrizar datos: </label>
                             <?= Html::a('Parametrizar',  ['parametrizardatos'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
                                         'data-toggle' => 'tooltip',
@@ -138,7 +138,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-check-circle" style="font-size: 15px; color: #FFC72C;"></i> Importar Usuarios: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-check-circle" style="font-size: 15px; color: #FFC72C;"></em> Importar Usuarios: </label> 
                             <?= Html::button('Importar Usuarios', ['value' => url::to('importarusuarioseval'), 'class' => 'btn btn-success', 'id'=>'modalButton6',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Importar Usuarios', 'style' => 'background-color: #337ab7']) 
@@ -169,13 +169,13 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-wrench" style="font-size: 20px; color: #15aabf;"></i> Configuraciones Generales: </label>
+                <label><em class="fas fa-wrench" style="font-size: 20px; color: #15aabf;"></em> Configuraciones Generales: </label>
                 <div class="row">
                 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
                 	<?= $form->field($model, 'fechacreacion')->textInput(['maxlength' => 250, 'class'=>'hidden', 'id'=>'IdFechaN', 'value'=> date("Y-m-d")]) ?>
                 	<div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></i> Generar BD: </label>                           
+                            <label style="font-size: 15px;"><em class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></em> Generar BD: </label>                           
 
 	                            <?= Html::submitButton(Yii::t('app', 'Generar'),
 						                ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',                
@@ -188,7 +188,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                 	</div>
                 	<div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></i> Actualizar BD: </label>                           
+                            <label style="font-size: 15px;"><em class="fas fa-wrench" style="font-size: 15px; color: #15aabf;"></em> Actualizar BD: </label>                           
 
 	                            <?= Html::a('Actualizar',  ['actualizarbdparams'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',

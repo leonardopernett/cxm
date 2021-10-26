@@ -25,18 +25,19 @@ use yii\bootstrap\Modal;
     	<div class="col-md-12">
     		<br>
     		<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+            <caption>Tabla datos</caption>
     			<thead>
     				<tr>
-    					<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de evaluación de desarrollo') ?></label></th>
+    					<th scope="col" colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de evaluación de desarrollo') ?></label></th>
     				</tr>
     				<tr>
-    					<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Jefe') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Jefe') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Evaluado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Evaluado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota Final') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo de Feedback') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado') ?></label></th>
+    					<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Jefe') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Jefe') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cédula Evaluado') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Evaluado') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota Final') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo de Feedback') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado') ?></label></th>
     				</tr>
     			</thead>
     			<tbody>
@@ -69,7 +70,7 @@ use yii\bootstrap\Modal;
                         $bloque3 = 0;        
                         $varcomentarios2 = '';
                         $can = 0;
-                         //para el c�lculo de nota y tipo feedback
+                         //para el c�lculo de nota y tipo feedback
                          $documento = $value2['documento'];
 
                          //Validar si se le puede hacer feedback

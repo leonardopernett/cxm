@@ -16,8 +16,8 @@ use yii\bootstrap\modal;
 <div class="evaluados-form">
 
     <div class="col-md-offset-2 col-sm-8 panel panel-default">
-      <div class="panel-body"><center>
-        <p><b>Nota: </b> Antes de crear un nuevo valorado, revisar que este no se encuentre creado previamente. </p><p><b>El nombre del nuevo valorado se debe ingresar con la estructura: APELLIDOS NOMBRES</b></p></center>
+      <div class="panel-body" style="text-align: center;">
+        <p><strong>Nota: </strong> Antes de crear un nuevo valorado, revisar que este no se encuentre creado previamente. </p><p><strong>El nombre del nuevo valorado se debe ingresar con la estructura: APELLIDOS NOMBRES</strong></p>
       </div>
     </div>
 

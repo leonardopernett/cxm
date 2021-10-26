@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -109,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -158,7 +158,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-3">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-eye" style="font-size: 15px; color: #FFC72C;"></i> Gestionar novedades: </label>
+                <label style="font-size: 15px;"><em class="fas fa-eye" style="font-size: 15px; color: #FFC72C;"></em> Gestionar novedades: </label>
                     <?= Html::button('Verificar', ['value' => url::to(['evaluaciondesarrollo/novedadgeneral']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Verficar', 'style' => 'background-color: #337ab7']) 
                     ?> 
 
@@ -177,7 +177,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-3">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-eye" style="font-size: 15px; color: #FFC72C;"></i> Gestionar eliminación: </label>
+                <label style="font-size: 15px;"><em class="fas fa-eye" style="font-size: 15px; color: #FFC72C;"></em> Gestionar eliminación: </label>
                     <?= Html::a('Verificar',  ['eliminarnovedades'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
                                         'data-toggle' => 'tooltip',
@@ -187,7 +187,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-3">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-exclamation-triangle" style="font-size: 15px; color: #FF6522;"></i> Eliminar novedades de usuarios: </label>
+                <label style="font-size: 15px;"><em class="fas fa-exclamation-triangle" style="font-size: 15px; color: #FF6522;"></em> Eliminar novedades de usuarios: </label>
                     <?= Html::a('Eliminar',  ['eliminarusuarios'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
                                         'data-toggle' => 'tooltip',
@@ -197,7 +197,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-3">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-key" style="font-size: 15px; color: #ffd43b;"></i> Habilitar pares: </label>
+                <label style="font-size: 15px;"><em class="fas fa-key" style="font-size: 15px; color: #ffd43b;"></em> Habilitar pares: </label>
                     <?= Html::a('Habilitar',  ['habilitarpares'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
                                         'data-toggle' => 'tooltip',
@@ -212,7 +212,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-6">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-chart-bar" style="font-size: 15px; color: #fd7e14;"></i> Grafica general: </label>
+                <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 15px; color: #fd7e14;"></em> Grafica general: </label>
                     <div id="conatinergeneric" class="highcharts-container" style="height: 360px;"></div>
             </div>
         </div>
@@ -220,13 +220,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-6">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></i> Grafica autoevaluación: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></em> Grafica autoevaluación: </label>
                         <div id="containerA" class="highcharts-container" style="height: 150px;"></div> 
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-chart-pie" style="font-size: 15px; color: #827DF9;"></i> Grafica evaluación Jefe: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #827DF9;"></em> Grafica evaluación Jefe: </label>
                         <div id="containerJ" class="highcharts-container" style="height: 150px;"></div> 
                     </div>
                 </div>
@@ -235,13 +235,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-6">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-chart-pie" style="font-size: 15px; color: #C148D0;"></i> Grafica evaluación Par: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #C148D0;"></em> Grafica evaluación Par: </label>
                         <div id="containerP" class="highcharts-container" style="height: 150px;"></div> 
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-chart-pie" style="font-size: 15px; color: #FFC72C;"></i> Grafica evaluación a cargo: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #FFC72C;"></em> Grafica evaluación a cargo: </label>
                         <div id="containerC" class="highcharts-container" style="height: 150px;"></div> 
                     </div>
                 </div>
@@ -249,7 +249,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-<hr>
+<hrem
 <div class="CapaTres" style="display: inline;">
     <div class="row">
         <div class="col-md-12">
@@ -269,19 +269,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="panel-body" style="background-color: #f0f8ff;">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label><i class="fas fa-square" style="font-size: 20px; color: #59DE49;"></i></i> Novedades aprobadas</label>
+                                        <label><em class="fas fa-square" style="font-size: 20px; color: #59DE49;"></em></em> Novedades aprobadas</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <label><i class="fas fa-square" style="font-size: 20px; color: #fd7e14;"></i></i> Novedades no aprobadas </label>
+                                        <label><em class="fas fa-square" style="font-size: 20px; color: #fd7e14;"></em></em> Novedades no aprobadas </label>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label><i class="fas fa-square" style="font-size: 20px; color: #FFC251;"></i></i> Novedades en espera</label>
+                                        <label><em class="fas fa-square" style="font-size: 20px; color: #FFC251;"></em></em> Novedades en espera</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <label><i class="fas fa-square" style="font-size: 20px; color: #FFFFFF;"></i></i> Sin novedades</label>
+                                        <label><em class="fas fa-square" style="font-size: 20px; color: #FFFFFF;"></em></em> Sin novedades</label>
                                     </div>
                                 </div>  
                             </div>

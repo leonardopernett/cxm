@@ -25,12 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></i> Ver comportamientos creados:</label>
+                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></em> Ver comportamientos creados:</label>
             	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+					<caption>Tabla datos</caption>
             		<thead>    			
-            			<th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comportamiento"; ?></label></th>
-            			<th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Competencia"; ?></label></th>
-            			<th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Evaluación"; ?></label></th>  			
+            			<th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comportamiento"; ?></label></th>
+            			<th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Competencia"; ?></label></th>
+            			<th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Evaluación"; ?></label></th>  			
             		</thead>
             		<tbody>
             			<?php
