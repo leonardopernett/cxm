@@ -120,7 +120,7 @@ $varDatalista = $datalista;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-search" style="font-size: 20px; color: #559FFF;"></i> Filtro general:</label>
+                    <label><em class="fas fa-search" style="font-size: 20px; color: #559FFF;"></em> Filtro general:</label>
                     <div class="row">
                         <div class="col-md-6">
                             <label style="font-size: 15px;">Seleccionar cliente: </label>
@@ -314,7 +314,7 @@ $varDatalista = $datalista;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-list-alt" style="font-size: 20px; color: #B833FF;"></i> Listado general:</label>
+                    <label><em class="fas fa-list-alt" style="font-size: 20px; color: #B833FF;"></em> Listado general:</label>
                      <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'columns' => [

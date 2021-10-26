@@ -19,33 +19,34 @@ $txttitulo = "-----";
 </div>
 <div class="capaUno" style="display: none;">
 	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+	<caption>Exportar</caption>
 		<thead>			
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Cliente') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Formulario VOC') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Nombre valorador') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Nombre valorado') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Id Speech') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Fecha/Hora') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Usuario') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Extensión') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Duración') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Dimensión') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', '-----') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Indicador') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Variable') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Atributo de calidad') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Motivos de contacto') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Detalles motivo contacto') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Punto de dolor') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Llamada categorizada') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Procentaje de indicador') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Agente (Detalle de Responsabilidad)') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Marca (Detalle de Responsabilidad)') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Canal (Detalle de Responsabilidad)') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Mapa de interesados 1') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Mapa de interesados 2') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Mapa de interesados 3') ?></th>
-			<th class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Detalle cualitativo') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Cliente') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Formulario VOC') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Nombre valorador') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Nombre valorado') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Id Speech') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Fecha/Hora') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Usuario') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Extensión') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Duración') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Dimensión') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', '-----') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Indicador') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Variable') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Atributo de calidad') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Motivos de contacto') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Detalles motivo contacto') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Punto de dolor') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Llamada categorizada') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Procentaje de indicador') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Agente (Detalle de Responsabilidad)') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Marca (Detalle de Responsabilidad)') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Canal (Detalle de Responsabilidad)') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Mapa de interesados 1') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Mapa de interesados 2') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Mapa de interesados 3') ?></th>
+			<th scope="col" class="text-center" style="background-color: #4A7EC0; color: #fff"><?= Yii::t('app', 'Detalle cualitativo') ?></th>
 		</thead>
 		<tbody>
 			<tr>
