@@ -1542,7 +1542,7 @@ function cargarlista(){
             }
         });
 
-        /* BOT�N GUARDAR Y ENVIAR */
+        /* BOTÓN GUARDAR Y ENVIAR */
         $(".soloFinalizar").click(function () {
             $("#submitcorrecto").val("SI");
             $(this).attr("disabled", "disabled");
@@ -1565,7 +1565,7 @@ function cargarlista(){
             }
         });
 
-        /* BOT�N GUARDAR Y ENVIAR */
+        /* BOTÓN GUARDAR Y ENVIAR */
         $(".soloCalcular").click(function () {
             $("#submitcorrecto").val("SI");
             $(this).attr("disabled", "disabled");
@@ -1598,7 +1598,7 @@ function cargarlista(){
             }
         });
 
-        /* BOT�N GUARDAR VALORACI�N SIN ENVIAR */
+        /* BOTÓN GUARDAR VALORACIÓN SIN ENVIAR */
         $(".soloGuardar").click(function () {
             $("#submitcorrecto").val("SI");
             $(this).attr("disabled", "disabled");
@@ -1610,7 +1610,7 @@ function cargarlista(){
             guardarFormulario.submit();
         });
 
-        /* BOT�N PARA BORRAR EL FORMULARIO */
+        /* BOTÓN PARA BORRAR EL FORMULARIO */
         $(".soloCancelar").click(function () {
             $("#submitcorrecto").val("SI");
             $(this).attr("disabled", "disabled");
@@ -1707,7 +1707,7 @@ function cargarlista(){
                     } else {
                         $("#calificacion_" + val).removeClass('field-error');
                         var id_calificacion = $("#calificacion_" + val).val();
-                        //Si se seleccion� calificacion y tiene la marca de desplega tipificaciones
+                        //Si se seleccionó calificacion y tiene la marca de desplega tipificaciones
                         // , se debe seleccionar tipificacion.
                         if (valCalificacionesDespliegaTipificaciones[id_calificacion] == 1) {
                             var AnyChecked = false;
