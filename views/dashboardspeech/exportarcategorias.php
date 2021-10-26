@@ -39,7 +39,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
         <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
             <?= $form->field($model2, 'file')->fileInput() ?>
             <br>
-            <button class="form-control", style="width:25%; background: #4298B4;" id="buttonID" ><font color="white">Importar</font></button>
+            <button class="form-control" style="width:25%; background: #4298B4; color: #FFFFFF" id="buttonID" >Importar</button>
         <?php ActiveForm::end() ?>
         <br>
     </div>

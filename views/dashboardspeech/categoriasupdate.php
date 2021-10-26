@@ -84,7 +84,7 @@ $this->title = 'Actualizar Categorias -- QA & Speech --';
                         'title' => 'Regresar']) 
   ?>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <br>
 <div class="CapaCero" style="display: inline">

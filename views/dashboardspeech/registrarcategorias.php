@@ -44,7 +44,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
   ?>
 <br>
     <div class="page-header" >
-        <h3><center><?= Html::encode($this->title) ?></center></h3>
+        <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
     </div> 
 <br>
 <div class="formularios-form" >

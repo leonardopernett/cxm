@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card1 mb">
-				<label style="font-size: 15px;"><i class="fas fa-file" style="font-size: 15px; color: #827DF9;"></i> Descargar archivo: </label> 
+				<label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #827DF9;"></em> Descargar archivo: </label> 
 				<a id="dlink" style="display:none;"></a>
             	<button  class="btn btn-info" style="background-color: #4298B4" id="btn">Exportar</button>
 			</div>
@@ -40,28 +40,29 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="row">
 		<div class="col-md-12">
 			<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+			<caption>Llamadas</caption>
 				<thead>
 					<tr>
-						<th colspan="10" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Speech & llamadas Redbox') ?></label></th>
+						<th scope="col" colspan="10" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Speech & llamadas Redbox') ?></label></th>
 					</tr>
 					<tr>
-						<th colspan="3" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Pcrc seleccionado') ?></label></th>
-						<th colspan="3" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Rango de fechas') ?></label></th>
-						<th colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas general') ?></label></th>
-						<th colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas buscadas') ?></label></th>
+						<th scope="col" colspan="3" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Pcrc seleccionado') ?></label></th>
+						<th scope="col" colspan="3" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Rango de fechas') ?></label></th>
+						<th scope="col" colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas general') ?></label></th>
+						<th scope="col" colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas buscadas') ?></label></th>
 					</tr>
 					<tr>
-						<th colspan="3" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $txtvarcodigopcrc.' - '.$txtnombrepcrc) ?></label></th>
-						<th colspan="3" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $txtvarfechainireal.' - '.$txtvarfechafinreal) ?></label></th>
-						<th colspan="2" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $txtvarcantllamadas) ?></label></th>
-						<th colspan="2" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $txttotalllamadasd) ?></label></th>
+						<th scope="col" colspan="3" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $txtvarcodigopcrc.' - '.$txtnombrepcrc) ?></label></th>
+						<th scope="col" colspan="3" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $txtvarfechainireal.' - '.$txtvarfechafinreal) ?></label></th>
+						<th scope="col" colspan="2" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $txtvarcantllamadas) ?></label></th>
+						<th scope="col" colspan="2" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $txttotalllamadasd) ?></label></th>
 					</tr>					
 					<tr>
-						<th colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID de las llamadas') ?></label></th>
-						<th colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha y hora real') ?></label></th>
-						<th colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Servicio') ?></label></th>
-						<th colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
-						<th colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id redbox') ?></label></th>
+						<th scope="col" colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID de las llamadas') ?></label></th>
+						<th scope="col" colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha y hora real') ?></label></th>
+						<th scope="col" colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Servicio') ?></label></th>
+						<th scope="col" colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
+						<th scope="col" colspan="2" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id redbox') ?></label></th>
 					</tr>
 				</thead>
 				<tbody>

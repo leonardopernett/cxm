@@ -58,13 +58,14 @@ $this->title = 'Visualización de Categorias -- QA & Speech --';
 <div class="col-sm-12" id="idCapa0" style="display: inline">
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+    <caption>Categoria</caption>
         <tr>
-            <th class="text-center"><?= Yii::t('app', 'Id Categoria') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Codigo pcrc') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Programa') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Categoria Id') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Nombre indicador') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Definicion') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Id Categoria') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Codigo pcrc') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Programa') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Categoria Id') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Nombre indicador') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Definicion') ?></th>
         </tr>
         <?php
         //$varListVar = Yii::$app->db->createCommand("select idspeechcategoria, cod_pcrc, programacategoria, idcategoria, nombre, dashboard from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtCodPcrc') and idcategorias= 1")->queryAll(); 

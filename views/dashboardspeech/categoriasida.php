@@ -15,7 +15,7 @@ use app\models\Dashboardcategorias;
 $this->title = 'Dashboard -- VOC --';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->title = 'Parametrización de Categorias -- QA & Speech --';
+$this->title = 'ParametrizaciÃ³n de Categorias -- QA & Speech --';
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';
@@ -89,11 +89,11 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-            <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+            <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                             <div onclick="regresar();" class="btn btn-primary" style="display:inline; background-color: #707372;" method='post' id="botones2" >
                                 Regresar
                             </div> 
@@ -101,7 +101,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                     </div>
                     <div class="col-md-6">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Actualizar Proceso: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Actualizar Proceso: </label> 
                             <div onclick="general();" class="btn btn-primary" style="display:inline;" method='post' id="botones1" >
                                 Actualizar
                             </div>
@@ -120,6 +120,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                 <div class="col-sm-12" id="idCapa0" style="display: inline">
                     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
                     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Categorias</caption>
                         <tr>
                             <th scope="text-center"><?= Yii::t('app', 'Codigo pcrc') ?></th>
                             <th scope="text-center"><?= Yii::t('app', 'Programa') ?></th>
@@ -159,10 +160,10 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                                     
                                     if ($varvertical != null) {
                                         if ($varvertical == 1) {
-                                            $varnomresp = 'Insatisfacción Verbalizada';
+                                            $varnomresp = 'InsatisfacciÃ³n Verbalizada';
                                         }else{
                                             if ($varvertical == 2) {
-                                                $varnomresp = 'Solución';
+                                                $varnomresp = 'SoluciÃ³n';
                                             }else{
                                                 if ($varvertical == 3) {
                                                     $varnomresp = 'Valores Corporativos';

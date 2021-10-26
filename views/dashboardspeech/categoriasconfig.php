@@ -136,11 +136,11 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Regresar: </label> 
                             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                 'style' => 'background-color: #707372',
                                 'data-toggle' => 'tooltip',
@@ -150,7 +150,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                     </div>
                     <div class="col-md-4">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Registrar Categorias: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Registrar Categorias: </label>
                             <?= Html::a('Registrar',  ['registrarcategorias'], ['class' => 'btn btn-success',
                                 'style' => 'background-color: #337ab7',
                                 'data-toggle' => 'tooltip',
@@ -160,7 +160,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                     </div>
                     <div class="col-md-4">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-pencil-alt" style="font-size: 15px; color: #FFC72C;"></i> Parametrizar Categorias: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 15px; color: #FFC72C;"></em> Parametrizar Categorias: </label>
                             <?= Html::button('Parametrizar', ['value' => url::to(['parametrizarcategorias']), 'class' => 'btn btn-success', 'id'=>'modalButton5',
                                                 'data-toggle' => 'tooltip',
                                                 'title' => 'Parametrizar Categorias', 'style' => 'background-color: ##4298B4']) ?> 
@@ -188,7 +188,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-list" style="font-size: 20px; color: #2CA53F;"></i> Listado configuracion de categorias: </label>
+                <label><em class="fas fa-list" style="font-size: 20px; color: #2CA53F;"></em> Listado configuracion de categorias: </label>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
 
@@ -250,7 +250,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-lock" style="font-size: 20px; color: #ff2c2c;"></i> Administrativo: </label>
+                <label><em class="fas fa-lock" style="font-size: 20px; color: #ff2c2c;"></em> Administrativo: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
