@@ -128,7 +128,7 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label><i class="fas fa-edit" style="font-size: 20px; color: #559FFF;"></i> Información general:</label>
+        <label><em class="fas fa-edit" style="font-size: 20px; color: #559FFF;"></em> Información general:</label>
           <div class="row">
             <div class="col-md-6">
               <label for="txtPcrc" style="font-size: 14px;">Programa o PCRC</label>
@@ -180,7 +180,7 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-            <label><i class="fas fa-headphones" style="font-size: 20px; color: #C148D0;"></i> Escucha focalizada:</label>
+            <label><em class="fas fa-headphones" style="font-size: 20px; color: #C148D0;"></em> Escucha focalizada:</label>
                 <div class="row">
                     <div class="col-md-6">
                     <label for="txtIndiGlo" style="font-size: 14px;">Indicadores</label>
@@ -362,7 +362,7 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
   <div class="row">
     <div class="col-md-6">
       <div class="card1 mb">
-        <label><i class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></i> Acciones:</label>
+        <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Acciones:</label>
           <div class="row">
             <div class="col-md-6">
               <div class="card2 mb">  
@@ -383,7 +383,7 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
     </div>
     <div class="col-md-6">
       <div class="card1 mb">
-        <label><i class="fas fa-paperclip" style="font-size: 20px; color: #FFC72C;"></i> Feedback & Alertas:</label>
+        <label><em class="fas fa-paperclip" style="font-size: 20px; color: #FFC72C;"></em> Feedback & Alertas:</label>
           <div class="row">            
             <div class="col-md-6">
               <div class="card2 mb">

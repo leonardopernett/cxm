@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-id-card" style="font-size: 20px; color: #827DF9;"></i> </label>
+                <label><em class="fas fa-id-card" style="font-size: 20px; color: #827DF9;"></em> </label>
                 <div class="row">
                     <div class="col-md-6">
                         <label style="font-size: 15px;">Seleccionar cliente: </label>
@@ -203,11 +203,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-object-group" style="font-size: 20px; color: #FFC72C;"></i> </label>
+                <label><em class="fas fa-object-group" style="font-size: 20px; color: #FFC72C;"></em> </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb"> 
-                            <label style="font-size: 15px;"><i class="fas fa-plus-square" style="font-size: 15px; color: #FFC72C;"></i> Guardar Acciones: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-plus-square" style="font-size: 15px; color: #FFC72C;"></em> Guardar Acciones: </label> 
                             <?= 
                                 Html::button('Agregar', ['value' => url::to(['crearacciones']), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar'                                        
                                     ])
@@ -227,7 +227,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb"> 
-                            <label style="font-size: 15px;"><i class="fas fa-pen-square" style="font-size: 15px; color: #FFC72C;"></i> Modificar Acciones: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-pen-square" style="font-size: 15px; color: #FFC72C;"></em> Modificar Acciones: </label> 
                             <div onclick="savedetalles();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                 Modificar
                             </div> 

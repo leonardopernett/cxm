@@ -94,46 +94,46 @@ use yii\bootstrap\Modal;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-paperclip" style="font-size: 20px; color: #2CA5FF;"></i> Información general: </label>
+                <label><em class="fas fa-paperclip" style="font-size: 20px; color: #2CA5FF;"></em> Información general: </label>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Cliente: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Cliente: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtNombreArbol; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Formulario VOC: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Formulario VOC: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtServicio; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Nombre del agente: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Nombre del agente: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtNombreValorado; ?></label>
                     </div>
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Id externo speech: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Id externo speech: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtSpeech; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Fecha y hora: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Fecha y hora: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtFechaHor; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Usuario: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Usuario: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtUsers; ?></label>
                     </div>
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Extensión: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Extensión: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtextension; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Duración: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Duración: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtDuraciones.' Segundos'; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></i> Dimensión: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #2CA5FF;"></em> Dimensión: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtDimensiones; ?></label>
                     </div>
                 </div>
@@ -146,42 +146,42 @@ use yii\bootstrap\Modal;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-headphones" style="font-size: 20px; color: #C148D0;"></i> Escucha focalizada:</label>
+                <label><em class="fas fa-headphones" style="font-size: 20px; color: #C148D0;"></em> Escucha focalizada:</label>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Indicador: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Indicador: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtIndicador; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Variable: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Variable: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtVariable; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Atributo de calidad: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Atributo de calidad: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtatributos; ?></label>
                     </div>
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Motivos de contacto: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Motivos de contacto: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtMotivos; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Detalles motivo contacto: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Detalles motivo contacto: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtDetalles; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Puntos de dolor: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Puntos de dolor: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtPuntodDolor; ?></label>
                     </div>
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Llamada categorizada: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Llamada categorizada: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtCategoria; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> % de indicador afectado: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> % de indicador afectado: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtPorcentaje.'%'; ?></label>
                     </div>
                     <div class="col-md-4">
@@ -189,35 +189,35 @@ use yii\bootstrap\Modal;
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Agente (Detalle de Responsabilidad): </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Agente (Detalle de Responsabilidad): </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtAgente; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Marca (Detalle de Responsabilidad): </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Marca (Detalle de Responsabilidad): </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtMarca; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Canal (Detalle de Responsabilidad): </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Canal (Detalle de Responsabilidad): </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtCanal; ?></label>
                     </div>
                 </div><br>
                 <div class="row">
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Mapa de interesados 1: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Mapa de interesados 1: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtMapa1; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Mapa de interesados 2: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Mapa de interesados 2: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtMapa2; ?></label>
                     </div>
                     <div class="col-md-4">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Mapa de interesados 3: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Mapa de interesados 3: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtMapa3; ?></label>
                     </div>
                 </div><br>
                 <div class="row">
                     <div class="col-md-12">
-                        <label  style="font-size: 17px;"><i class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></i> Detalle cualitativo: </label><br>
+                        <label  style="font-size: 17px;"><em class="fas fa-asterisk" style="font-size: 10px; color: #C148D0;"></em> Detalle cualitativo: </label><br>
                         <label  style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $txtDetalleCuali; ?></label>
                     </div>
                 </div>
@@ -230,11 +230,11 @@ use yii\bootstrap\Modal;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-plus-square" style="font-size: 15px; color: #FFC72C;"></i> Descargar Archivo: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-plus-square" style="font-size: 15px; color: #FFC72C;"></em> Descargar Archivo: </label> 
                             <?= 
                                 Html::button('Descargar', ['value' => url::to(['downloadparameters','idform'=>$id
                                     ]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar'                                        
@@ -255,7 +255,7 @@ use yii\bootstrap\Modal;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                             <?= Html::a('Regresar',  ['reportformvoc'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #707372',
                                             'data-toggle' => 'tooltip',
