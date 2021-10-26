@@ -205,11 +205,12 @@ $titulos = array();
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-spinner" style="font-size: 20px; color: #2CA5FF;"></i> Procesando datos</label>
+                <label><em class="fas fa-spinner" style="font-size: 20px; color: #2CA5FF;"></em> Procesando datos</label>
                 <div class="col-md-12">
                     <table>
+                        <caption>Tabla datos</caption>
                         <tr>
-                            <td class="text-center"><div class="loader"> </div></td>
+                            <th scope="col" class="text-center"><div class="loader"> </div></th>
                             <td class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluaci�n realizada') ?></label></td>
                         </tr>
                     </table>                                       
@@ -228,7 +229,7 @@ if($sessiones != 0) { ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><i class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></i> Notificaciones:</label>
+                        <label><em class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></em> Notificaciones:</label>
                             <div class="col-md-12">
                                 <div class="panel panel-default">
                                     <div class="panel-body" style="background-color: #f0f8ff;">Hola <?php echo $last_word; ?>, Aquí encuentras los resultados consolidados de tu evaluación.
@@ -426,30 +427,31 @@ if($sessiones != 0) { ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><i class="far fa-file-alt" style="font-size: 18px; color: #C148D0;"></i> Resultados: </label>                        
+                        <label><em class="far fa-file-alt" style="font-size: 18px; color: #C148D0;"></em> Resultados: </label>                        
                         <div class="row"> 
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;"><i class="far fa-id-badge" style="font-size: 20px; color: #C148D0;"></i> Nombre: </label>
+                                    <label style="font-size: 17px;"><em class="far fa-id-badge" style="font-size: 20px; color: #C148D0;"></em> Nombre: </label>
                                     <label style="font-size: 20px;">&nbsp;&nbsp;&nbsp; <?php echo $varnombrec; ?> </label><br>
-                                    <label style="font-size: 17px;"><i class="fas fa-male" style="font-size: 20px; color: #C148D0;"></i> Rol: </label>
+                                    <label style="font-size: 17px;"><em class="fas fa-male" style="font-size: 20px; color: #C148D0;"></em> Rol: </label>
                                     <label style="font-size: 20px;">&nbsp;&nbsp;&nbsp; <?php echo $varrol; ?> </label>                                                                         
                                 </div>
                             </div>   
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;"><i class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></i> Calificación Final </label>
+                                    <label style="font-size: 17px;"><em class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></em> Calificación Final </label>
                                     <table style="width:100%">
-                                        <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
+                                    <caption>Tabla datos</caption>
+                                        <th scope="col" class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></th> 
                                     </table> 
                                 </div>
                             </div>                            
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;" ><i class="far fa-comment-alt" style="font-size: 18px; color: #C148D0;"></i> Observaciones </label>
+                                    <label style="font-size: 17px;" ><em class="far fa-comment-alt" style="font-size: 18px; color: #C148D0;"></em> Observaciones </label>
                                     <textarea type="text" class="form-control" readonly="readonly" id="txtobserva" value="<?php echo $varcomentarios; ?>" data-toggle="tooltip" title="Observaciones"><?php echo $varcomentarios; ?></textarea>
                                     <br>                                                               
-                                    <label style="font-size: 17px;"><i class="fas fa-check" style="font-size: 18px; color: #C148D0;"></i> Tipo Coaching </label>                            
+                                    <label style="font-size: 17px;"><em class="fas fa-check" style="font-size: 18px; color: #C148D0;"><em> Tipo Coaching </label>                            
                                     <label style="font-size: 20px; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $tipocoaching; ?> </label>
                                 </div>                            
                             </div>  
@@ -483,7 +485,7 @@ if($sessiones != 0) { ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><i class="fas fa-cubes" style="font-size: 20px; <?php echo $varcolor; ?>"></i> <?php echo $varresulta.$value['namebloque'].': '; ?></label>
+                        <label><em class="fas fa-cubes" style="font-size: 20px; <?php echo $varcolor; ?>"></em> <?php echo $varresulta.$value['namebloque'].': '; ?></label>
                         
                         <div class="row">                    
                             <?php 
@@ -515,7 +517,7 @@ if($sessiones != 0) { ?>
                                         <div class="card1 mb">  
                                             <div class="row">                                    
                                                 <div class="col-md-6">
-                                                    <label style="font-size: 16px;"><i class="fas fa-bookmark" style="font-size: 15px; <?php echo $varcolor; ?>"></i> <?php echo $value['namecompetencia'].'.'; ?></label>   
+                                                    <label style="font-size: 16px;"><em class="fas fa-bookmark" style="font-size: 15px; <?php echo $varcolor; ?>"></em> <?php echo $value['namecompetencia'].'.'; ?></label>   
                                                 </div>
                                                 <div class="col-md-6">
                                                    <label id="<?php echo 'idtext'.$varconteocompetencia.$varconteobloque; ?>" style="font-size: 15px; <?php echo $varcolor2; ?>"> <?php echo $value['%Competencia'].'% '; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>                                                   
@@ -574,7 +576,7 @@ if($sessiones != 0) { ?>
                 <div class="col-md-12">
                     <div class="card1 mb">
                         <div class="col-md-12">
-                            <label style="font-size: 17px;"><i class="fas fa-exclamation-circle" style="font-size: 17px; color: #8B70FA;"></i> Metodología 70-20-10 </label>
+                            <label style="font-size: 17px;"><em class="fas fa-exclamation-circle" style="font-size: 17px; color: #8B70FA;"></em> Metodología 70-20-10 </label>
                             
                             <div onclick="openobserva2();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idmensaje12" >
                                 <span class="fas fa-info-circle" style="font-size: 20px; color: #f5900c;" ></span>
@@ -601,7 +603,7 @@ if($sessiones != 0) { ?>
                 <div class="col-md-12">
                     <div class="card1 mb">
                         <div class="col-md-12">
-                            <label style="font-size: 17px;"><i class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></i> Descripción del feedback realizado por el jefe </label>
+                            <label style="font-size: 17px;"><em class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></em> Descripción del feedback realizado por el jefe </label>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-body" style="background-color: #f0f8ff;"> <?php echo $varobservacion; ?>
@@ -618,11 +620,11 @@ if($sessiones != 0) { ?>
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 17px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Biblioteca de Conocimiento: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Biblioteca de Conocimiento: </label> 
                                                             
                                 <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" class="btn btn-success">Ir a Paco (Jefes - Personas)</a>                            
                             </div>
@@ -646,7 +648,7 @@ if($sessiones != 0) { ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-              <label><i class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></i> Información:</label>
+              <label><em class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></em> Información:</label>
               <label style="font-size: 14px;">No se ha completado el proceso de resultados de las evaluaciones</label>
                 </div><br>
             </div>

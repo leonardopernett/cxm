@@ -182,7 +182,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #C178G9;"></i> Buscar Resultado Por Usuario: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #C178G9;"></em> Buscar Resultado Por Usuario: </label>
                         <?= $form->field($model, 'idevaluador')->textInput(['maxlength' => 300, 'id'=>'txtidusuario', 'placeholder'=>'Documento de Identidad'])?>
                         <br>
                         <?= Html::submitButton(Yii::t('app', 'Buscar'),
@@ -198,7 +198,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #559FFF;"></i> Descargar Informaci&oacute;n Opci&oacute;n 1: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #559FFF;"></em> Descargar Informaci&oacute;n Opci&oacute;n 1: </label>
                         <?= Html::button('Descargar', ['value' => url::to('enviararchivouno'), 'class' => 'btn btn-success', 'id'=>'modalButton5',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Desargar', 'style' => 'background-color: #337ab7']) 
@@ -222,7 +222,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #559FFF;"></i> Descargar Informaci&oacute;n Opci&oacute;n 2: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #559FFF;"></em> Descargar Informaci&oacute;n Opci&oacute;n 2: </label>
                         <?= Html::button('Descargar', ['value' => url::to('enviararchivodos'), 'class' => 'btn btn-success', 'id'=>'modalButton6',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Desargar', 'style' => 'background-color: #337ab7']) 
@@ -246,7 +246,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-table" style="font-size: 15px; color: #fd14f6;"></i> Descargar Datos de la Tabla: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-table" style="font-size: 15px; color: #fd14f6;"></em> Descargar Datos de la Tabla: </label>
                         <a id="dlink" style="display:none;"></a>
                         <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Descargar</button>
                         <br>
@@ -262,7 +262,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #981F40;"></i> Descargar General opci&oacute;n 1: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #981F40;"></em> Descargar General opci&oacute;n 1: </label>
                         <?= Html::button('Descargar', ['value' => url::to('enviargeneral'), 'class' => 'btn btn-danger', 'id'=>'modalButton1',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Desargar']) 
@@ -286,7 +286,7 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #981F40;"></i> Descargar General opci&oacute;n 2: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #981F40;"></em> Descargar General opci&oacute;n 2: </label>
                         <?= Html::button('Descargar', ['value' => url::to('enviargeneraldos'), 'class' => 'btn btn-danger', 'id'=>'modalButton2',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Desargar']) 
@@ -315,22 +315,23 @@ $this->registerJs($js);
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">                        
-                        <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #fd7e14;"></i> Lista de Resultados: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #fd7e14;"></em> Lista de Resultados: </label>
 
                         <?php if ($varlistrtadesarrollo != null) {  ?>
 
                             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                            <caption>Tabla datos</caption>
                             
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="5" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Usuario: '.$varnombrec.' -  Rol: '.$varrol; ?></label></th>
+                                        <th scope="col" class="text-center" colspan="5" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Usuario: '.$varnombrec.' -  Rol: '.$varrol; ?></label></th>
                                     </tr>
                                     <tr>
-                                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Auto Evaluaci&oacute;n'; ?></label></th>
-                                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Evaluaci&oacute;n Jefe'; ?></label></th>
-                                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Evaluaci&oacute;n Pares'; ?></label></th>
-                                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Evaluaci&oacute;n A Cargo'; ?></label></th>
-                                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Nota Final'; ?></label></th>
+                                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Auto Evaluaci&oacute;n'; ?></label></th>
+                                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Evaluaci&oacute;n Jefe'; ?></label></th>
+                                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Evaluaci&oacute;n Pares'; ?></label></th>
+                                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Evaluaci&oacute;n A Cargo'; ?></label></th>
+                                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?php echo 'Nota Final'; ?></label></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -573,7 +574,7 @@ $this->registerJs($js);
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></i> Informacion General</label>
+                <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></em> Informacion General</label>
                 <br>
                 <label style="font-size: 15px;">No tienes permisos para ver este modulo, solo los administradores del proceso tienen el permiso.</label>   
             </div>
@@ -589,7 +590,7 @@ $this->registerJs($js);
 
         if (vartxtidusuario == "") {
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar el numero de documento para realizazr la busqueda.","warning");
+            swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de ingresar el numero de documento para realizazr la busqueda.","warning");
             return; 
         }   
     };

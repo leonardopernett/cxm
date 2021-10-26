@@ -25,18 +25,19 @@ use yii\bootstrap\Modal;
     	<div class="col-md-12">
     		<br>
     		<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+            <caption>Tabla datos</caption>
     			<thead>
     				<tr>
-    					<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de evaluación de desarrollo') ?></label></th>
+    					<th scope="col" colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de evaluación de desarrollo') ?></label></th>
     				</tr>
     				<tr>
-    					<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cedula evaluado') ?></label></th>
+    					<th scope="col"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cedula evaluado') ?></label></th>
 			<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre evaluado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedback') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota final %') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cedula evaluador') ?></label></th>
-			<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre evaluador') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'fecha') ?></label></th>   					
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedback') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota final %') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cedula evaluador') ?></label></th>
+			<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre evaluador') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'fecha') ?></label></th>   					
     				</tr>
     			</thead>
     			<tbody>

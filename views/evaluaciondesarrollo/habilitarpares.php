@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -106,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="row">
 		<div class="col-md-4">
 			<div class="card2 mb">
-				<label style="font-size: 15px;"><i class="fas fa-user-circle" style="font-size: 15px; color: #827DF9;"></i> Buscar usuario: </label>
+				<label style="font-size: 15px;"><em class="fas fa-user-circle" style="font-size: 15px; color: #827DF9;"></em> Buscar usuario: </label>
 				<?= $form->field($model, 'documento')->textInput(['maxlength' => 250,  'id'=>'IdcambiosNcargo', 'placeholder' => 'Digite documento de la persona']) ?>
 				<?= Html::submitButton(Yii::t('app', 'Buscar'),
                                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',                
@@ -119,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		</div>
 		<div class="col-md-4">
 			<div class="card2 mb">
-				<label style="font-size: 15px;"><i class="fas fa-key" style="font-size: 15px; color: #C148D0;"></i> Habilitar evaluación: </label><br>
+				<label style="font-size: 15px;"><em class="fas fa-key" style="font-size: 15px; color: #C148D0;"></em> Habilitar evaluación: </label><br>
 				<label style="font-size: 15px;"><?php echo $varname; ?></label>
 				<div onclick="habilitarc();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="idtbnsavec" >
                 	Habilitar
@@ -128,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		</div>		
 		<div class="col-md-4">
 			<div class="card2 mb">
-                <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Cancelar y regresar: </label> <br><br>
+                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Cancelar y regresar: </label> <br><br>
                 <?= Html::a('Regresar',  ['evaluaciondesarrollo/gestionnovedades'], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #707372',
                                                 'data-toggle' => 'tooltip',

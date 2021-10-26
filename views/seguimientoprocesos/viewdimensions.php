@@ -12,7 +12,7 @@ use app\models\Tipocortes;
 use yii\helpers\ArrayHelper;
 
 $this->title = 'Detalle Dimensiones';
-$this->params['breadcrumbs'][] = ['label' => 'Seguimiento del técnico', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Seguimiento del tï¿½cnico', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
@@ -26,11 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
 </div> 
     <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+	<caption>Tabla datos</caption>
         <tr>
-            <th><p>Dimension: </p><?php echo $varNomDimens; ?></th>
+            <th scope="col"><p>Dimension: </p><?php echo $varNomDimens; ?></th>
         </tr>
     </table>    
     <hr>

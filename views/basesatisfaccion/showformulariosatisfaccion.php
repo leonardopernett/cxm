@@ -212,7 +212,7 @@ $banderaSaltoComentario = true;
                     <td>
                         <div class="row">
                             <div class="col-md-12">
-                                <b><em class="fas fa-smile" style="font-size: 25px; color: #002855;"></em> <?= Yii::t('app', 'Valencia emocional: ') ?></b> <?php echo $varvalencia ?>
+                                <strong><em class="fas fa-smile" style="font-size: 25px; color: #002855;"></em> <?= Yii::t('app', 'Valencia emocional: ') ?></strong> <?php echo $varvalencia ?>
                             </div>
                         </div>
                     </td>
@@ -224,7 +224,7 @@ $banderaSaltoComentario = true;
                         <td>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <b><em class="fas fa-file" style="font-size: 25px; color: #002855;"></em> <?= Yii::t('app', 'Ingresar nueva valencia emocional: ') ?></b>
+                                    <strong><em class="fas fa-file" style="font-size: 25px; color: #002855;"></em> <?= Yii::t('app', 'Ingresar nueva valencia emocional: ') ?></strong>
                                 </div>
                                 <div class="col-md-4">
                                     <select id="idselectvalencias" name="nuevavalencia" class="js-example-basic-single form-control">

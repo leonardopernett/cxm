@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -122,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -194,7 +194,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             <div class="col-md-3">
                 <div class="card2 mb">
-                    <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i></i> Tipo de evaluación:</label>
+                    <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em></em> Tipo de evaluación:</label>
                     <label style="font-size: 16px;"><?php echo $varnombretipo; ?></label>
                     <br>
                     <br>
@@ -217,13 +217,13 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-md-6">
                 <div class="card2 mb">
-                    <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i></i> Novedades aprobadas y sin aprobar de evaluación <?php echo $varnombretipo; ?>:</label>
+                    <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em></em> Novedades aprobadas y sin aprobar de evaluación <?php echo $varnombretipo; ?>:</label>
                     <div class="row">
                         <div class="col-md-5">
                             <br>
-                            <label><i class="fas fa-square" style="font-size: 20px; color: #59DE49;"></i></i> Novedades aprobadas</label>
-                            <label><i class="fas fa-square" style="font-size: 20px; color: #f7b9b9;"></i></i> Novedades no aprobadas</label>
-                            <label><i class="fas fa-square" style="font-size: 20px; color: #FFC251;"></i></i> Novedades en espera</label>
+                            <label><em class="fas fa-square" style="font-size: 20px; color: #59DE49;"></em></em> Novedades aprobadas</label>
+                            <label><em class="fas fa-square" style="font-size: 20px; color: #f7b9b9;"></em></em Novedades no aprobadas</label>
+                            <label><em class="fas fa-square" style="font-size: 20px; color: #FFC251;"></em></em> Novedades en espera</label>
                         </div>
                         <div class="col-md-7">
                             <div id="containerG" class="highcharts-container" style="height: 120px;"></div>      
@@ -234,7 +234,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>            
             <div class="col-md-3">
                 <div class="card2 mb">
-                    <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Cantidad de novedades de evaluación <?php echo $varnombretipo; ?>:</label>
+                    <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Cantidad de novedades de evaluación <?php echo $varnombretipo; ?>:</label>
                     <label  style="font-size: 70px; text-align: center;"><?php echo $vartotal; ?></label>
                 </div>
             </div>
@@ -248,17 +248,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-list" style="font-size: 20px; color: #00968F;"></i> Listado de novedades</label>
+                    <label><em class="fas fa-list" style="font-size: 20px; color: #00968F;"></em> Listado de novedades</label>
                     <br>
                     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Tabla datos</caption>
                         <thead>
-                            <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Id"; ?></label></th>
-                            <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Solicitante Novedad"; ?></label></th>
-                            <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asunto"; ?></label></th>
-                            <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Descripción"; ?></label></th>
-                            <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Estado"; ?></label></th>
-                            <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Aprobar"; ?></label></th>
-                            <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "No Aprobar"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Id"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Solicitante Novedad"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asunto"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Descripción"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Estado"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Aprobar"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "No Aprobar"; ?></label></th>
                         </thead>
                         <tbody>
 
@@ -344,10 +345,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 17px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                                 <?= Html::a('Regresar',  ['evaluaciondesarrollo/gestionnovedades'], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #707372',
                                                 'data-toggle' => 'tooltip',

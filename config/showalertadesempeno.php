@@ -153,23 +153,23 @@ $this->title = 'Alertas';
                     <caption>Tabla no usada</caption>
                         <tbody>
                             <tr>
-                                <th colspan="3"><div class="alert alert-success">   
+                                <th scope="col"><div class="alert alert-success">   
                                     Respuesta Guardada Satisfactoriamente.
                                     </div>
                                 </th>
                             </tr>
                             <tr>
-                                <th>
+                                <th scope="col">
                                     <p><strong> Compromisos de Gestion del Asesor:</strong> <?=$data->respuesta_asesor?> </p>   
                                 </th>
                             </tr>                     
                             <tr>
-                                <th>
+                                <th scope="col">
                                     <p><strong>Feedback Lider:</strong> <?=$data->respuesta_lider?> </p>   
                                 </th>
                             </tr>
                             <tr>
-                                <th>
+                                <th scope="col">
                                     <p><strong>Opinion Lider:</strong> <?=$data->puntovista_lider?> </p>   
                                 </th>
                             </tr>
@@ -184,42 +184,42 @@ $this->title = 'Alertas';
                         <caption>Tabla no usada</caption>
                             <tbody>
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <strong>Pregunta 1:</strong> <?=$data->apregunta1?>
                                     </th>
                                 </trstrong
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <strong>Pregunta 2:</strong> <?=$data->apregunta2?>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <strong>Pregunta 3:</strong> <?=$data->apregunta3?>            
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <strong>Pregunta 4:</strong> <?=$data->apregunta4?>            
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <strong>Pregunta 5:</strong> <?=$data->apregunta5?>            
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <strong>Pregunta 6:</strong> <?=$data->apregunta6?>            
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <strong>Pregunta 5:</strong> <?=$data->apregunta7?>            
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <strong>Pregunta 6:</strong> <?=$data->apregunta8?>            
                                     </th>
                                 </tr>
@@ -239,7 +239,7 @@ $this->title = 'Alertas';
                             <?php if($data->notificacion == "3"): ?>
 
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <?php if($lider == "si" OR isset($jefeop) OR $data->respuesta_asesor != ""): ?>
                                             <?= $form->field($data, 'respuesta_asesor')->textArea(['rows' => 6, 'disabled' => true])->label('Compromisos de Gestion del Asesor:') ?>
                                         <?php else: ?>
@@ -252,7 +252,7 @@ $this->title = 'Alertas';
                                     </th>
                                 </tr>                     
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <?php if($data->respuesta_lider == "" AND $_GET['lider'] == "si"): ?>
 
                                             <?= $form->field($data, 'respuesta_lider')->textArea(['rows' => 6])->label('Feedback Lider:') ?>
@@ -271,14 +271,14 @@ $this->title = 'Alertas';
 
                                 <?php if($_GET['lider'] == "si" AND $data->puntovista_lider == "" ): ?>
                                     <tr>
-                                        <th>    
+                                        <th scope="col">    
                                             <?= $form->field($data, 'puntovista_lider')->textArea(['rows' => 6])->label('Punto de vista Lider:') ?>
                                         </th>
                                     </tr>
                                 <?php elseif($lider=="abo" OR ($data->puntovista_lider != "" AND isset($jefeop))): ?> 
 
                                     <tr>
-                                        <th>
+                                        <th scope="col">
                                             <?= $form->field($data, 'puntovista_lider')->textArea(['rows' => 6, 'disabled' => true])->label('Punto de vista Lider:') ?>
                                         </th>
                                     </tr>
@@ -292,7 +292,7 @@ $this->title = 'Alertas';
 
 
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <?php if($lider =="abo" OR $data->respuesta_asesor != "" OR ($data->respuesta_lider == "" AND $lider == "si")): ?>
                                             <?= $form->field($data, 'respuesta_asesor')->textArea(['rows' => 6, 'disabled' => true])->label('Compromisos de Gestion del Asesor:') ?>
                                         <?php else: ?>
@@ -301,7 +301,7 @@ $this->title = 'Alertas';
                                     </th>
                                 </tr>                     
                                 <tr>
-                                    <th>
+                                    <th scope="col">
                                         <?php if($lider == "si" AND $data->respuesta_asesor != "" AND $data->respuesta_lider == ""): ?>
                                             <?= $form->field($data, 'respuesta_lider')->textArea(['rows' => 6])->label('Feedback Lider:') ?>
                                         <?php else: ?>
@@ -338,32 +338,32 @@ $this->title = 'Alertas';
         <caption>Tabla no usada</caption>
             <tbody>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?= $form->field($data, 'apregunta1')->textInput(['maxlength' => 100, 'disabled' => true])->label('1. ¿Conoce Usted el Esquema de Seguimiento de sus resultados, definido por la compañía en relación al cumplimiento de las metas semanales?. Por favor, sírvase explicar.') ?>
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?= $form->field($data, 'apregunta2')->textInput(['maxlength' => 100, 'disabled' => true])->label('2. ¿Sabía Usted cuál era la meta mínima (o meta programada) fijada para el Mes?') ?>
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?= $form->field($data, 'apregunta3')->textInput(['maxlength' => 100, 'disabled' => true])->label('3. ¿Sabe usted que sus resultados de el mes están por debajo de la meta mínima (o meta programada) establecida para su línea ?') ?>
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?= $form->field($data, 'apregunta4')->textInput(['maxlength' => 100, 'disabled' => true])->label('4. Sírvase explicar ¿por qué Usted la semana anterior incumplió con la meta mínima (o meta programada) exigida?') ?>
                     </tdh
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?= $form->field($data, 'apregunta5')->textInput(['maxlength' => 100, 'disabled' => true])->label('5. Si se le ha recalcado en varias oportunidades la importancia de mejorar su rendimiento por medio de llamados de atención, ¿por qué no ha dado los resultados esperados por la compañía?') ?>
                     </tdh
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?= $form->field($data, 'apregunta6')->textInput(['maxlength' => 100, 'disabled' => true])->label('6. Conforme al cuadro comparativo que a continuación se anexa, sírvase explicar por qué sus compañeros de trabajo en igualdad de condiciones que Usted, sí cumplen con la meta mínima (o meta programada) exigida?') ?>
                     </th>
                 </tr>
@@ -373,8 +373,8 @@ $this->title = 'Alertas';
                         <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
                             <tr>
-                                <th id="CumplimientoMeta">Cumplimiento de la Meta</th>
-                                <th id="Cantidad">Cantidad</th>
+                                <th scope="col">Cumplimiento de la Meta</th>
+                                <th scope="col">Cantidad</th>
                             </tr>
                             <tr>
                                 <td>Total RAC que cumplen  Meta</td>
@@ -408,12 +408,12 @@ $this->title = 'Alertas';
                         <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
                             <tr>
-                                <th id="comparativo">Comparativo del Cumplimiento</th>
-                                <th id="meta">Meta</th>
-                                <th id="empleado">Empleado</th>
-                                <th id="grupo">Grupo</th>
-                                <th id="EmpleadovsMeta">Dif Empleado vs. Meta</th>
-                                <th id="EmpleadovsGrupo">Dif Empleado vs. Grupo</th>
+                                <th scope="col">Comparativo del Cumplimiento</th>
+                                <th scope="col">Meta</th>
+                                <th scope="col">Empleado</th>
+                                <th scope="col">Grupo</th>
+                                <th scope="col">Dif Empleado vs. Meta</th>
+                                <th scope="col">Dif Empleado vs. Grupo</th>
                             </tr>
                             <tr>
                                 <td>Cumplimiento Promedio</td>
@@ -452,8 +452,8 @@ $this->title = 'Alertas';
                         <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
                             <tr>
-                                <th id="CumplimientoMeta">Cumplimiento de la Meta</th>
-                                <th id="Cantidad">Cantidad</th>
+                                <th scope="col">Cumplimiento de la Meta</th>
+                                <th scope="col"">Cantidad</th>
                             </tr>
                             <tr>
                                 <td>Total RAC que cumplen  Meta</td>
@@ -473,12 +473,12 @@ $this->title = 'Alertas';
                         <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
                         <tr>
-                                <th id="comparativo">Comparativo del Cumplimiento</th>
-                                <th id="meta">Meta</th>
-                                <th id="empleado">Empleado</th>
-                                <th id="grupo">Grupo</th>
-                                <th id="EmpleadovsMeta">Dif Empleado vs. Meta</th>
-                                <th id="EmpleadovsGrupo">Dif Empleado vs. Grupo</th>
+                                <th scope="col">Comparativo del Cumplimiento</th>
+                                <th scope="col">Meta</th>
+                                <th scope="col">Empleado</th>
+                                <th scope="col">Grupo</th>
+                                <th scope="col">Dif Empleado vs. Meta</th>
+                                <th scope="col">Dif Empleado vs. Grupo</th>
                             </tr>
                             <tr>
                                 <td>Cumplimiento Promedio</td>
@@ -526,7 +526,7 @@ $this->title = 'Alertas';
         
             <tbody>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php if($data->apregunta1 != ""): ?>
                             <?= $form->field($data, 'apregunta1')->textInput(['maxlength' => 100, 'disabled' => true])->label('1. ¿Conoce Usted el Esquema de Seguimiento de sus resultados, definido por la compañía en relación al cumplimiento de las metas semanales?. Por favor, sírvase explicar.') ?>
                         <?php else: ?>
@@ -535,7 +535,7 @@ $this->title = 'Alertas';
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php if($data->apregunta2 != ""): ?>
                             <?= $form->field($data, 'apregunta2')->textInput(['maxlength' => 100, 'disabled' => true])->label('2. ¿Sabía Usted cuál era la meta mínima (o meta programada) fijada para el Mes?') ?>
                         <?php else: ?>
@@ -544,7 +544,7 @@ $this->title = 'Alertas';
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php if($data->apregunta3 != ""): ?>
                             <?= $form->field($data, 'apregunta3')->textInput(['maxlength' => 100, 'disabled' => true])->label('3. ¿Sabe usted que sus resultados de el mes están por debajo de la meta mínima (o meta programada) establecida para su línea ?') ?>
                         <?php else: ?>
@@ -554,7 +554,7 @@ $this->title = 'Alertas';
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php if($data->apregunta4 != ""): ?>
                             <?= $form->field($data, 'apregunta4')->textInput(['maxlength' => 100, 'disabled' => true])->label('4. Sírvase explicar ¿por qué Usted la semana anterior incumplió con la meta mínima (o meta programada) exigida?') ?>
                         <?php else: ?>
@@ -563,7 +563,7 @@ $this->title = 'Alertas';
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php if($data->apregunta5 != ""): ?>
                             <?= $form->field($data, 'apregunta5')->textInput(['maxlength' => 100, 'disabled' => true])->label('5. Si se le ha recalcado en varias oportunidades la importancia de mejorar su rendimiento por medio de llamados de atención, ¿por qué no ha dado los resultados esperados por la compañía?') ?>
                         <?php else: ?>
@@ -573,7 +573,7 @@ $this->title = 'Alertas';
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                         <?php if($data->apregunta6 != ""): ?>
                             <?= $form->field($data, 'apregunta6')->textInput(['maxlength' => 100, 'disabled' => true])->label('6. Conforme al cuadro comparativo que a continuación se anexa, sírvase explicar por qué sus compañeros de trabajo en igualdad de condiciones que Usted, sí cumplen con la meta mínima (o meta programada) exigida?') ?>
                         <?php else: ?>
@@ -587,8 +587,8 @@ $this->title = 'Alertas';
                         <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
                         <tr>
-                                <th id="CumplimientoMeta">Cumplimiento de la Meta</th>
-                                <th id="Cantidad">Cantidad</th>
+                                <th scope="col">Cumplimiento de la Meta</th>
+                                <th scope="col">Cantidad</th>
                             </tr>
                             <tr>
                                 <td>Total RAC que cumplen  Meta</td>
@@ -608,12 +608,12 @@ $this->title = 'Alertas';
                         <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
                         <tr>
-                                <th id="comparativo">Comparativo del Cumplimiento</th>
-                                <th id="meta">Meta</th>
-                                <th id="empleado">Empleado</th>
-                                <th id="grupo">Grupo</th>
-                                <th id="EmpleadovsMeta">Dif Empleado vs. Meta</th>
-                                <th id="EmpleadovsGrupo">Dif Empleado vs. Grupo</th>
+                                <th scope="col">Comparativo del Cumplimiento</th>
+                                <th scope="col">Meta</th>
+                                <th scope="col">Empleado</th>
+                                <th scope="col">Grupo</th>
+                                <th scope="col">Dif Empleado vs. Meta</th>
+                                <th scope="col">Dif Empleado vs. Grupo</th>
                             </tr>
                             <tr>
                                 <td>Cumplimiento Promedio</td>
@@ -631,8 +631,8 @@ $this->title = 'Alertas';
                             <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                             <caption>Tabla no usada</caption>
                             <tr>
-                                <th id="CumplimientoMeta">Cumplimiento de la Meta</th>
-                                <th id="Cantidad">Cantidad</th>
+                                <th scope="col">Cumplimiento de la Meta</th>
+                                <th scope="col">Cantidad</th>
                             </tr>
                                 <tr>
                                     <td>Total RAC que cumplen  Meta</td>
@@ -651,12 +651,12 @@ $this->title = 'Alertas';
                         <tr>
                             <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                             <tr>
-                                <th id="comparativo">Comparativo del Cumplimiento</th>
-                                <th id="meta">Meta</th>
-                                <th id="empleado">Empleado</th>
-                                <th id="grupo">Grupo</th>
-                                <th id="EmpleadovsMeta">Dif Empleado vs. Meta</th>
-                                <th id="EmpleadovsGrupo">Dif Empleado vs. Grupo</th>
+                                <th scope="col">Comparativo del Cumplimiento</th>
+                                <th scope="col">Meta</th>
+                                <th scope="col">Empleado</th>
+                                <th scope="col">Grupo</th>
+                                <th scope="col">Dif Empleado vs. Meta</th>
+                                <th scope="col">Dif Empleado vs. Grupo</th>
                             </tr>
                                 <tr>
                                     <td>Cumplimiento Promedio</td>
@@ -715,32 +715,32 @@ $this->title = 'Alertas';
 
             <tbody>
                 <tr>
-                    <th>
+                    <th scope="col">
                             <?= $form->field($data, 'apregunta1')->textInput(['maxlength' => 100, 'disabled' => true])->label('1. ¿Conoce Usted el Esquema de Seguimiento de sus resultados, definido por la compañía en relación al cumplimiento de las metas semanales?. Por favor, sírvase explicar.') ?>
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                             <?= $form->field($data, 'apregunta2')->textInput(['maxlength' => 100, 'disabled' => true])->label('2. ¿Sabía Usted cuál era la meta mínima (o meta programada) fijada para el Mes?') ?>
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                             <?= $form->field($data, 'apregunta3')->textInput(['maxlength' => 100, 'disabled' => true])->label('3. ¿Sabe usted que sus resultados de el mes están por debajo de la meta mínima (o meta programada) establecida para su línea ?') ?>
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                             <?= $form->field($data, 'apregunta4')->textInput(['maxlength' => 100, 'disabled' => true])->label('4. Sírvase explicar ¿por qué Usted la semana anterior incumplió con la meta mínima (o meta programada) exigida?') ?>
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                             <?= $form->field($data, 'apregunta5')->textInput(['maxlength' => 100, 'disabled' => true])->label('5. Si se le ha recalcado en varias oportunidades la importancia de mejorar su rendimiento por medio de llamados de atención, ¿por qué no ha dado los resultados esperados por la compañía?') ?>
                     </th>
                 </tr>
                 <tr>
-                    <th>
+                    <th scope="col">
                             <?= $form->field($data, 'apregunta6')->textInput(['maxlength' => 100, 'disabled' => true])->label('6. Conforme al cuadro comparativo que a continuación se anexa, sírvase explicar por qué sus compañeros de trabajo en igualdad de condiciones que Usted, sí cumplen con la meta mínima (o meta programada) exigida?') ?>
                     </th>
                 </tr>
@@ -749,8 +749,8 @@ $this->title = 'Alertas';
                         <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
                         <tr>
-                                <th id="CumplimientoMeta">Cumplimiento de la Meta</th>
-                                <th id="Cantidad">Cantidad</th>
+                                <th scope="col">Cumplimiento de la Meta</th>
+                                <th scope="col">Cantidad</th>
                             </tr>
                             <tr>
                                 <td>Total RAC que cumplen  Meta</td>
@@ -770,12 +770,12 @@ $this->title = 'Alertas';
                         <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
                         <tr>
-                                <th id="comparativo">Comparativo del Cumplimiento</th>
-                                <th id="meta">Meta</th>
-                                <th id="empleado">Empleado</th>
-                                <th id="grupo">Grupo</th>
-                                <th id="EmpleadovsMeta">Dif Empleado vs. Meta</th>
-                                <th id="EmpleadovsGrupo">Dif Empleado vs. Grupo</th>
+                                <th scope="col">Comparativo del Cumplimiento</th>
+                                <th scope="col">Meta</th>
+                                <th scope="col">Empleado</th>
+                                <th scope="col">Grupo</th>
+                                <th scope="col">Dif Empleado vs. Meta</th>
+                                <th scope="col">Dif Empleado vs. Grupo</th>
                             </tr>
                             <tr>
                                 <td>Cumplimiento Promedio</td>
@@ -793,8 +793,8 @@ $this->title = 'Alertas';
                             <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                             <caption>Tabla no usada</caption>
                             <tr>
-                                <th id="CumplimientoMeta">Cumplimiento de la Meta</th>
-                                <th id="Cantidad">Cantidad</th>
+                                <th scope="col">Cumplimiento de la Meta</th>
+                                <th scope="col">Cantidad</th>
                             </tr>
                                 <tr>
                                     <td>Total RAC que cumplen  Meta</td>
@@ -814,12 +814,12 @@ $this->title = 'Alertas';
                             <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
                             <caption>Tabla no usada</caption>
                             <tr>
-                                <th id="comparativo">Comparativo del Cumplimiento</th>
-                                <th id="meta">Meta</th>
-                                <th id="empleado">Empleado</th>
-                                <th id="grupo">Grupo</th>
-                                <th id="EmpleadovsMeta">Dif Empleado vs. Meta</th>
-                                <th id="EmpleadovsGrupo">Dif Empleado vs. Grupo</th>
+                                <th scope="col">Comparativo del Cumplimiento</th>
+                                <th scope="col">Meta</th>
+                                <th scope="col">Empleado</th>
+                                <th scope="col">Grupo</th>
+                                <th scope="col">Dif Empleado vs. Meta</th>
+                                <th scope="col">Dif Empleado vs. Grupo</th>
                             </tr>
                                 <tr>
                                     <td>Cumplimiento Promedio</td>
@@ -912,7 +912,7 @@ $this->title = 'Alertas';
                 <table style="width:100%" class="table table-striped table-bordered detail-view formDinamico">
                 <caption>Tabla no usada</caption>
                     <tr>
-                        <th>
+                        <th scope="col">
                             <h5 align="justify">"Lo anterior, con fundamento en lo dispuesto en el artículo 62 numeral 9 del Código Sustantivo del Trabajo, el Decreto Reglamentario 1373 de 1966 y el contrato laboral.
 
                                 Por lo tanto, le solicitamos dar respuesta a los planteamientos anteriormente enunciados, en un plazo máximo de ocho (8) días, contados a partir de la fecha de recibo del presente. "</h5>                            

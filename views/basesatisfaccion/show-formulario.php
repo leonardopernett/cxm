@@ -578,7 +578,7 @@ $contadorSecciones = 0;
                 <table <?php echo "id='tablapits" . $detalle->seccion_id . "'" ?> class="table table-striped table-bordered detail-view">
                 <caption>Tabla pits</caption>
                     <tbody>
-                    <th>
+                    <th scope="col">
                     </th>
                     </tbody>
                 </table>

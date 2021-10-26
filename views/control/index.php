@@ -664,10 +664,10 @@ $this->registerJs($js);
                     <table class="table table-striped table-bordered ">
                     <caption>Datos</caption>
                         <tr>
-                            <th>&nbsp;</th> 
-                            <th>&nbsp;</th>
+                            <th scope="col">&nbsp;</th> 
+                            <th scope="col">&nbsp;</th>
                             <?php foreach ($data->dataXtabla as $valueCorte) : ?>
-                            <th><?= $valueCorte ?></th>
+                            <th scope="col"><?= $valueCorte ?></th>
                             <?php endforeach; ?>                                                        
                         </tr> 
                         <?php if(!$data->volumenes) : ?>

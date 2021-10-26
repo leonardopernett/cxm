@@ -172,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #559FFF;"></i> Procesar datos Entto: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #559FFF;"></em> Procesar datos Entto: </label>
                         <?= Html::a('Procesar',  ['procesarentto'], ['class' => 'btn btn-danger',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Procesar']) 

@@ -16,28 +16,29 @@ use yii\bootstrap\ActiveForm;
                 <h4><?= Yii::t('app', 'Información de la valoración') ?></h4>
                 <br />
                 <table class="table table-striped table-bordered detail-view">
+                <caption>Tabla datos</caption>
                     <tr>
-                        <th><?php echo Yii::t("app", "Fecha"); ?></th>
+                        <th scope="col"><?php echo Yii::t("app", "Fecha"); ?></th>
                         <td><?= $formulario->created; ?></td>
                     </tr>
                     <tr>
-                        <th><?php echo Yii::t("app", "Instrumento para la Valoracion"); ?></th>
+                        <th scope="col"><?php echo Yii::t("app", "Instrumento para la Valoracion"); ?></th>
                         <td><?= $formulario->dsruta_arbol; ?></td>
                     </tr>
                     <tr>
-                        <th><?php echo Yii::t("app", "Dimension"); ?></th>
+                        <th scope="col"><?php echo Yii::t("app", "Dimension"); ?></th>
                         <td><?= $dimension; ?></td>
                     </tr>
                     <tr>
-                        <th><?php echo Yii::t("app", "Evaluador"); ?></th>
+                        <th scope="col"><?php echo Yii::t("app", "Evaluador"); ?></th>
                         <td><?= $nmEvaluador; ?></td>
                     </tr>
                     <tr>
-                        <th><?php echo Yii::t("app", "Lider"); ?></th>
+                        <th scope="col"><?php echo Yii::t("app", "Lider"); ?></th>
                         <td><?= $nmLider; ?></td>
                     </tr>
                     <tr>
-                        <th><?php echo Yii::t("app", "Evaluado ID"); ?></th>
+                        <th scope="col"><?php echo Yii::t("app", "Evaluado ID"); ?></th>
                         <td><?= $modelEvaluado->name; ?></td>
                     </tr>    
                     <tr>
@@ -56,12 +57,13 @@ use yii\bootstrap\ActiveForm;
                 <br />
                 <h4><?= Yii::t('app', 'Seguimiento de la solicitud') ?></h4>
                 <br />
-                <table class="table table-striped table-bordered">                    
+                <table class="table table-striped table-bordered">   
+                <caption>Tabla datos</caption>                 
                     <tbody>
                         <?php foreach ($modelCaso as $argumento): ?>
                             <tr>
-                                <td><?php echo $argumento->s_fecha ?></td>
-                                <td><?php echo $argumento->argumento ?></td>
+                                <th scope="col"><?php echo $argumento->s_fecha ?></td>
+                                <th scope="col"><?php echo $argumento->argumento ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

@@ -147,8 +147,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <table>
                     <caption>Guardando...</caption>
                         <tr>
-                            <th class="text-center"><div class="loader"> </div></th>
-                            <th class="text-center"><label><?= Yii::t('app', ' Guardando datos del archivo...') ?></label></th>
+                            <th scope="col" class="text-center"><div class="loader"> </div></th>
+                            <th scope="col" class="text-center"><label><?= Yii::t('app', ' Guardando datos del archivo...') ?></label></th>
                         </tr>
                     </table>                                       
                 </div>

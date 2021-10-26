@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -157,7 +157,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Subir información: </label>
+                            <label style="font-size: 15px;">emi class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Subir información: </label>
                             <?= Html::a('Actualiza Usuarios',  ['usuarios_evalua'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #337ab7',
                                             'data-toggle' => 'tooltip',
@@ -168,7 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></i> Parametrizar datos: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></em> Parametrizar datos: </label>
                             <?= Html::a('Parametrizar',  ['parametrizardatos'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
                                         'data-toggle' => 'tooltip',
@@ -178,7 +178,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-check-circle" style="font-size: 15px; color: #FFC72C;"></i> Importar Usuarios: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-check-circle" style="font-size: 15px; color: #FFC72C;"></em> Importar Usuarios: </label> 
                             <?= Html::button('Importar Usuarios', ['value' => url::to('importarusuarioseval'), 'class' => 'btn btn-success', 'id'=>'modalButton6',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Importar Usuarios', 'style' => 'background-color: #337ab7']) 
@@ -198,7 +198,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-eye" style="font-size: 15px; color: #FFC72C;"></i> Verificar Novedades: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-eye" style="font-size: 15px; color: #FFC72C;"></em> Verificar Novedades: </label>
                             <?= Html::button('Verificar', ['value' => url::to(['evaluaciondesarrollo/novedadgeneral']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Verficar', 'style' => 'background-color: #337ab7']) 
                             ?> 
 
@@ -232,7 +232,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-exclamation" style="font-size: 20px; color: #ff2c2c;"></i> Notificación: </label>
+                    <label><em class="fas fa-exclamation" style="font-size: 20px; color: #ff2c2c;"></em> Notificación: </label>
                     <br>
                     <label>CXM informa que actualmente su usuario no se encuentra registrado en la base de datos para realizar la evaluación de desarrollo. Por tanto lo invitamos a comunicarse al área de Desarrollo Humano al correo "maria.vera@grupokonecta.com" para verificar el proceso, gracias.</label> 
                 </div>
@@ -266,11 +266,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <label style="font-size: 23px; text-align: center;"> Autoevaluación </label>
                                 <?php if ($varauto == 0) { ?>
                                     <?php if ($varnovedadesa == 1) { ?>
-                                        <i class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></em>
                                         <br>
                                         <label style="font-size: 15px; text-align: center;"> Novedad en espera de ser aprobado </label>
                                     <?php }else{?>
-                                        <i class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                         <br>
                                         <?= Html::a('Realizar evaluación',  ['evaluacionauto'], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #337ab7',
@@ -279,7 +279,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ?>  
                                     <?php } ?>
                                 <?php }else{ ?>
-                                    <i class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></i>
+                                    <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
                                     <br>
                                     <label style="font-size: 15px; text-align: center;"> Completado </label>
                                 <?php } ?>
@@ -291,11 +291,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php if ($varjefe == 0) { ?>
                                     <?php if ($vardocument != "3353483") { ?>
                                     <?php if ($varnovedadesj == 1) { ?>
-                                        <i class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></em>
                                         <br>
                                         <label style="font-size: 15px; text-align: center;"> Novedad en espera de ser aprobado </label>
                                     <?php }else{?>
-                                        <i class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                         <br>
                                         <?= Html::a('Realizar evaluación',  ['evaluacionjefe'], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #337ab7',
@@ -304,12 +304,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ?>   
                                     <?php } ?>
                                     <?php }else{ ?>
-                                        <i class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></em>
                                             <br>
                                         <label style="font-size: 15px; text-align: center;"> Sin jefe a evaluar </label>
                                     <?php    } ?>
                                 <?php }else{ ?>
-                                    <i class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></i>
+                                    <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
                                     <br>
                                     <label style="font-size: 15px; text-align: center;"> Completado </label>
                                 <?php } ?>
@@ -322,11 +322,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php if ($varidconteo > 1 ) { ?>
                                         <?php if ($vardocument != "3353483") { ?>
                                         <?php if ($varnovedadesg == 1) { ?>
-                                            <i class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></i>
+                                            <em class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></em>
                                             <br>
                                             <label style="font-size: 15px; text-align: center;"> Pares no evaluados </label>
                                         <?php }else{ ?>
-                                            <i class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></i>
+                                            <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                             <br>                                    
                                             <?= Html::button('Realizar evaluación', ['value' => url::to(['evaluaciondesarrollo/evaluacionpar']), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Evaluación Personas', 'style' => 'background-color: #337ab7']) 
                                             ?> 
@@ -345,18 +345,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?php } ?>
 
                                         <?php }else{ ?>
-                                            <i class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></i>
+                                            <em class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></em>
                                             <br>
                                             <label style="font-size: 15px; text-align: center;"> Sin pares a evaluar </label>
                                         <?php } ?>
 
                                     <?php }else{ ?>                                        
-                                            <i class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></i>
+                                            <em class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></em>
                                             <br>
                                             <label style="font-size: 15px; text-align: center;"> Sin pares a evaluar </label>                                                                            
                                     <?php } ?>                                    
                                 <?php }else{ ?>
-                                    <i class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></i>
+                                    <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
                                     <br>
                                     <div class="row">
                                         <div class="col-md-6" align="right" >
@@ -387,7 +387,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <label style="font-size: 23px; text-align: center;"> Evaluación a Cargo </label>
                                 <?php if ($varcargo == 0) { ?>
                                     <?php if ($varidconteocargo >= 1) { ?>
-                                        <i class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                         <br> 
                                         <?= Html::button('Realizar evaluación', ['value' => url::to(['evaluaciondesarrollo/evaluacioncargo']), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Evaluación a Cargo', 'style' => 'background-color: #337ab7']) 
                                             ?> 
@@ -404,13 +404,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 Modal::end(); 
                                             ?>
                                     <?php }else{ ?>
-                                        <i class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></em>
                                         <br>
                                         <label style="font-size: 15px; text-align: center;"> Sin personas a cargo </label>
                                     <?php } ?>
                                 <?php }else{ ?>
                                     <?php if ($varresulcargo == 100) { ?>  
-                                        <i class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
                                         <br>                                                                              
                                              
                                         <div class="row">    
@@ -436,7 +436,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div>
 
                                     <?php }else{ ?>
-                                        <i class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></i>
+                                        <em class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></em>
                                         <br>  
                                         <div class="row">
                                         
@@ -554,7 +554,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <div class="col-md-4">
                                 <div class="card1 mb">
-                                    <label style="font-size: 16px;"><i class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></i> Guardar novedad: </label> 
+                                    <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar novedad: </label> 
                                     <div onclick="savegeneral();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                       Guardar
                                     </div>
@@ -572,7 +572,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 15px;"><i class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></i> Información General</label>
+                    <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></em> Información General</label>
                     <br>
                     <label style="font-size: 15px;">Si tienes alguna novedad o dificultad que requiera otro tipo de gestión, escribe tu caso al correo maria.vera@grupokonecta.com</label>                        
                 </div>

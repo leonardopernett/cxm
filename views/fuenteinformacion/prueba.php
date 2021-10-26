@@ -3,10 +3,12 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Exception;
 use DateTime;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
+
 
 /**
  * This is the model class for table "tbl_ejecucionformularios".
@@ -2107,7 +2109,9 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
                 $arrayIdsusuarios[]=$value['evaluadores_id'];
             }
             $idsUsuarios = implode(',', $arrayIdsusuarios);
+            $wherePersonas="";
             if($segundoCalifPer){
+                
                 $wherePersonas .= " AND sc.id_responsable IN (" . $idsUsuarios . ") ";
             }else{
                 $wherePersonas .= " AND e.usua_id IN (" . $idsUsuarios . ") ";

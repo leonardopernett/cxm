@@ -26,7 +26,7 @@ $this->title = 'Gestion Preguntas';
 			<caption>Tabla datos generales</caption>
     			<tbody>
     				<tr>
-    					<th colspan="2"><div class="alert alert-success">   
+    					<th scope="col" colspan="2"><div class="alert alert-success">   
     						<center>Respuesta Guardada Satisfactoriamente.</center>
     					</div>
     				</th>
@@ -88,7 +88,7 @@ $this->title = 'Gestion Preguntas';
                             </label>
                         </div></div>
 	    			<tr>
-	    				<th>
+	    				<th scope="col">
 	    					<p><?= $form->field($model, 'pregunta1')->textInput(['maxlength' => 200])->label('Pregunta 1:') ?> </p>   
 	    				</th>
 	    				<td>

@@ -139,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -159,7 +159,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -179,7 +179,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -198,7 +198,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -250,21 +250,21 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
             <div class="row">                
                 <div class="col-md-4">
                     <div class="card4 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></i> Grafica cumplimiento Global: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></em> Grafica cumplimiento Global: </label>
                         <div id="conatinerglobal" class="highcharts-container" style="height: 150px;">
                         </div> 
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card4 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></i> Grafica cumplimiento Auto Evaluados: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></em> Grafica cumplimiento Auto Evaluados: </label>
                         <div id="conatinerauto" class="highcharts-container" style="height: 150px;">
                         </div> 
                     </div>
                 </div>
                 <div class="col-md-4" style="height: 150px;">
                     <div class="card4 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFAE58;"></i> Descargas: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFAE58;"></em> Descargas: </label>
                         
                         <?= Html::button('Exportar', ['value' => url::to('exportarlist'), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
@@ -322,7 +322,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
  <br>
     <div class="col-md-12">
          <div class="card4 mb">
-             <label style="font-size: 15px;"><i class="fas fa-chart-pie" style="font-size: 15px; color: #827DF9;"></i> Grafica Cumplimiento Dirección: </label>
+             <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #827DF9;"></em> Grafica Cumplimiento Dirección: </label>
              <div id="continerareaglobal" class="highcharts-container" style="height: 360px;">
              </div> 
          </div>
@@ -374,11 +374,12 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                                 <div class="col-md-6">
                                     <div class="card3 mb">
                                         <table id="myTable"  class="table table-striped table-bordered detail-view formDinamico">
+                                            <caption>Tabla datos</caption>
                                             <thead>
                                             <tr>
-                                                <th class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable(0, 'str')"><?= Yii::t('app', 'Nombre Competencia') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                                                <th class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(1, 'int')"><?= Yii::t('app', '% Competencia') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                                                <th class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(4, 'int')"><?= Yii::t('app', 'Opción') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                                                <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable(0, 'str')"><?= Yii::t('app', 'Nombre Competencia') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                                                <th scope="col" class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(1, 'int')"><?= Yii::t('app', '% Competencia') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                                                <th scope="col" class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(4, 'int')"><?= Yii::t('app', 'Opción') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
                                                 
                                             </tr>           
                                             </thead>
@@ -424,7 +425,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-              <label><i class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></i> Información:</label>
+              <label><em class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></em> Información:</label>
               <label style="font-size: 14px;">No tiene los permisos para ingresar a esta opción.</label>
                 </div><br>
             </div>

@@ -305,9 +305,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+    <caption>Tabla datos</caption>
         <thead>
             <tr>
-                <th class="text-center" colspan="4"><?= Yii::t('app', 'PCRC') ?></th>
+                <th id="pcrc" class="text-center" colspan="4"><?= Yii::t('app', 'PCRC') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -315,10 +316,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td class="text-center" colspan="4"><?= $txtNameArbol; ?></td>
             </tr>
             <tr>
-                <th class="text-center" ><?= Yii::t('app', 'PCRC') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Identificacion') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Valorador') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Realizadas') ?></th>  
+                <th id="pcrc" class="text-center" ><?= Yii::t('app', 'PCRC') ?></th>
+                <th id="identificacion" class="text-center" ><?= Yii::t('app', 'Identificacion') ?></th>
+                <th id="valorador" class="text-center" ><?= Yii::t('app', 'Valorador') ?></th>
+                <th id="realizadas" class="text-center" ><?= Yii::t('app', 'Realizadas') ?></th>  
             </tr>
             <?php 
                 foreach ($query as $key => $value) {

@@ -25,18 +25,19 @@ use yii\bootstrap\Modal;
     	<div class="col-md-12">
     		<br>
     		<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Tabla datos</caption>
     			<thead>
     				<tr>
-    					<th colspan="6" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Formato para distribuciÃ³n de personal') ?></label></th>
+    					<th scope="col" colspan="6" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Formato para distribuciÃ³n de personal') ?></label></th>
     				</tr>
     				<tr>
-    					<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Identificacion Valorado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Valorado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Centro de costos') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Usuario red valorado') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Identificacion Lider') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Usario de red Lider') ?></label></th>   					
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Lider') ?></label></th>
+    					<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Identificacion Valorado') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Valorado') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Centro de costos') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Usuario red valorado') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Identificacion Lider') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Usario de red Lider') ?></label></th>   					
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Lider') ?></label></th>
     				</tr>
     			</thead>
     			<tbody>

@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -309,10 +309,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 17px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Regresar: </label> 
+                        <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Regresar: </label> 
                                 <?= Html::a('Regresar',  ['paramsevaluacion'], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #707372',
                                                 'data-toggle' => 'tooltip',
@@ -334,28 +334,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="w3-container">
                     <div class="w3-row">
                         <a href="javascript:void(0)" onclick="openCity(event, 'Params1');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-tag" style="font-size: 20px; color: #49de70;"></i><strong> Niveles</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-tag" style="font-size: 20px; color: #49de70;"></em><strong> Niveles</strong></div>
                         </a>
                         <a href="javascript:void(0)" onclick="openCity(event, 'Params2');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-list" style="font-size: 20px; color: #559FFF;"></i><strong> Evaluaciones</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em><strong> Evaluaciones</strong></div>
                         </a>                              
                         <a href="javascript:void(0)" onclick="openCity(event, 'Params3');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-certificate" style="font-size: 20px; color: #FFC72C;"></i><strong> Competencias</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-certificate" style="font-size: 20px; color: #FFC72C;"></em><strong> Competencias</strong></div>
                         </a>                 
                         <a href="javascript:void(0)" onclick="openCity(event, 'Params4');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-sitemap" style="font-size: 15px; color: #827DF9;"></i><strong> Comportamiento</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-sitemap" style="font-size: 15px; color: #827DF9;"></em><strong> Comportamiento</strong></div>
                         </a>
                         <a href="javascript:void(0)" onclick="openCity(event, 'Params5');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-comment-alt" style="font-size: 20px; color: #30C5C8;"></i><strong> Respuestas</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-comment-alt" style="font-size: 20px; color: #30C5C8;"></em><strong> Respuestas</strong></div>
                         </a>
                         <a href="javascript:void(0)" onclick="openCity(event, 'Params6');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-th-large" style="font-size: 20px; color: #258a40;"></i><strong> Bloques</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-th-large" style="font-size: 20px; color: #258a40;"></em><strong> Bloques</strong></div>
                         </a>
 			            <a href="javascript:void(0)" onclick="openCity(event, 'Params7');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="far fa-comments" style="font-size: 20px; color: #bf0678;"></i><strong><SPAN title="Agregar Mensajes FeedBack"> Mensajes</SPAN></strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="far fa-comments" style="font-size: 20px; color: #bf0678;"></em><strong><SPAN title="Agregar Mensajes FeedBack"> Mensajes</SPAN></strong></div>
                         </a>
                         <a href="javascript:void(0)" onclick="openCity(event, 'Params8');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="far fa-comment-alt" style="font-size: 20px; color: #21ccbb;"></i><strong> Mens. Result.</strong></div>                        </a>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="far fa-comment-alt" style="font-size: 20px; color: #21ccbb;"></em><strong> Mens. Result.</strong></div>                        </a>
                     </div>
                     <br>    
                     
@@ -410,7 +410,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-6">
                                     <div class="card1 mb">
                                         <?php if($sessiones == '2953' || $sessiones == '0' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229') { ?>
-                                            <label style="font-size: 15px;"> Ingresar Nombre Evaluaci�n: </label>
+                                            <label style="font-size: 15px;"> Ingresar Nombre Evaluacion: </label>
                                             <?= $form->field($model2, 'nombreeval')->textInput(['maxlength' => 250, 'id'=>'IdEvaluacion']) ?>
                                             <br>
                                             <div class="row">
@@ -425,9 +425,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <br>
                                         <?php } ?>
                                         <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                                            <caption>Tabla datos</caption>
                                             <thead>             
-                                                <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Id"; ?></label></th>
-                                                <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Nombre Evaluaci�n"; ?></label></th>     
+                                                <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Id"; ?></label></th>
+                                                <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Nombre Evaluaci�n"; ?></label></th>     
                                             </thead>
                                             <tbody>
                                                 <?php
@@ -449,7 +450,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-6">
                                     <div class="card1 mb">
                                         <?php if($sessiones == '2953' || $sessiones == '0' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229') { ?>
-                                            <label style="font-size: 15px;"> Ingresar Tipo Evaluaci�n: </label>
+                                            <label style="font-size: 15px;"> Ingresar Tipo Evaluacion: </label>
                                             <?= $form->field($model3, 'tipoevaluacion')->textInput(['maxlength' => 250,  'id'=>'IdTipoEvaluacion']) ?>
                                             <br>
                                             <div class="row">
@@ -966,7 +967,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         console.log(numRta2);
                         if (numRta2 > 0) {
                             event.preventDefault();
-                            swal.fire("!!! Advertencia !!!","Los datos ya estan en base de datos. Por favor ingrese nueva informaci�n","warning");
+                            swal.fire("!!! Advertencia !!!","Los datos ya estan en base de datos. Por favor ingrese nueva informacion","warning");
                             return; 
                         }else{
                             location.reload();
@@ -1005,7 +1006,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         if (varIdTipoEvaluacion == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","No ha ingresado el tipo de evaluaci�n","warning");
+            swal.fire("!!! Advertencia !!!","No ha ingresado el tipo de evaluacion","warning");
             return; 
         }else{
             $.ajax({
