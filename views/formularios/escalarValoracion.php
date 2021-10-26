@@ -148,13 +148,11 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             $form->field($model, 'descripcion')
             ->textarea()
     ?>
-    <a href="#" data-toggle="tooltip" data-placement="top" style="display: none" title="<?php echo Yii::t('app', 'label send form')?>">
-    <font color="black">
+    <a href="#" data-toggle="tooltip" data-placement="top" style="display: none; color: #000" title="<?php echo Yii::t('app', 'label send form')?>">
     <?=
             $form->field($model, 'enviar_form')
             ->checkbox();
     ?>
-    </font>
     </a>
     <?= Html::input("hidden", "RegistroEjec[ejec_form_id]", $modelTmpeje->id); ?>
 
