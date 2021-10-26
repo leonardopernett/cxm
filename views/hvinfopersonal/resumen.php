@@ -24,9 +24,7 @@ use yii\widgets\ActiveForm;
                     border-radius: 5px;    
                     font-family: "Nunito";
                     font-size: 150%;    
-                    text-align: left;    
-                    margin:0 auto;
-                   
+                    text-align: left;
             }
 
             .card3 {
@@ -46,9 +44,7 @@ use yii\widgets\ActiveForm;
                     border-radius: 5px;    
                     font-family: "Nunito";
                     font-size: 150%;    
-                    text-align: left;    
-                    margin:0 auto;
-                   
+                    text-align: left;
             }
 
 
@@ -62,15 +58,13 @@ use yii\widgets\ActiveForm;
                     display: flex;
                     justify-content: center;
                     flex-direction: column;
-                    
                     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     border-radius: 5px;    
                     font-family: "Nunito";
                     font-size: 150%;    
-                    text-align: left;    
-                    margin:0 auto;
+                    text-align: left;
             }
 
 
@@ -317,7 +311,7 @@ use yii\widgets\ActiveForm;
                         <div class="col-md-3">
                             <div class="card2">
                             <div class="details">
-                                    <i class="fa fa-angle-double-right"></i>
+                                    <em class="fa fa-angle-double-right"></em>
                                     <h5>Total Clientes</h5>
                                 </div>
                                 <p id="cliente">
@@ -333,7 +327,7 @@ use yii\widgets\ActiveForm;
                         <div class="col-md-3">
                             <div class="card2">
                                 <div class="details">
-                                    <i class="fa fa-angle-double-right"></i>
+                                    <em class="fa fa-angle-double-right"></em>
                                     <h5>Total Decisores</h5>
                                 </div>
                                 <p  id="decisor">
@@ -349,7 +343,7 @@ use yii\widgets\ActiveForm;
                         <div class="col-md-3">
                             <div class="card2">
                             <div class="details">
-                                    <i class="fa fa-angle-double-right"></i>
+                                    <em class="fa fa-angle-double-right"></em>
                                     <h5>Total Estrat&eacute;gicos</h5>
                                 </div>
                                 <p  id="estrategico">
@@ -365,7 +359,7 @@ use yii\widgets\ActiveForm;
                         <div class="col-md-3">
                             <div class="card2">
                             <div class="details">
-                                    <i class="fa fa-angle-double-right"></i>
+                                    <em class="fa fa-angle-double-right"></em>
                                     <h5>Total Operativos</h5>
                                 </div>
                                 <p id="operativo">
@@ -391,7 +385,7 @@ use yii\widgets\ActiveForm;
                         <div class="col-md-3">
                             <div class="card2">
                             <div class="details">
-                                    <i class="fa fa-angle-double-right"></i>
+                                    <em class="fa fa-angle-double-right"></em>
                                     <h5>Total Clientes</h5>
                                 </div>
                                 <p id="clienteAdmin">
@@ -407,7 +401,7 @@ use yii\widgets\ActiveForm;
                         <div class="col-md-3">
                             <div class="card2">
                                 <div class="details">
-                                    <i class="fa fa-angle-double-right"></i>
+                                    <em class="fa fa-angle-double-right"></em>
                                     <h5>Total Decisores</h5>
                                 </div>
                                 <p id="decisorAdmin">
@@ -423,7 +417,7 @@ use yii\widgets\ActiveForm;
                         <div class="col-md-3">
                             <div class="card2">
                             <div class="details">
-                                    <i class="fa fa-angle-double-right"></i>
+                                    <em class="fa fa-angle-double-right"></em>
                                     <h5>Total Estrat&eacute;gicos</h5>
                                 </div>
                                 <p id="estrategicoAdmin">
@@ -439,7 +433,7 @@ use yii\widgets\ActiveForm;
                         <div class="col-md-3">
                             <div class="card2">
                             <div class="details">
-                                    <i class="fa fa-angle-double-right"></i>
+                                    <em class="fa fa-angle-double-right"></em>
                                     <h5>Total Operativos</h5>
                                 </div>
                                 <p id="operativoAdmin">
@@ -481,14 +475,13 @@ use yii\widgets\ActiveForm;
   <div class="col-md-6">
     <?php if($roles == 270 || $roles == 309 ): ?>
             <div class="card1">
-             <!-- <canvas id="myChartDiscAdmin" class="myChart"></canvas>  -->
-
                <table class="table table-bordered">
+               <caption>...</caption>
                   <thead>
                       <tr>
-                        <th>Tipo Cliente / Nivel Cliente</th>
-                        <th>Estrat&eacute;gicos</th>
-                        <th>Operativo</th>
+                        <th scope="col">Tipo Cliente / Nivel Cliente</th>
+                        <th scope="col">Estrat&eacute;gicos</th>
+                        <th scope="col">Operativo</th>
                       </tr>
                       <tbody>
                             <tr>
@@ -549,14 +542,13 @@ use yii\widgets\ActiveForm;
 
     <?php if($roles != 270 && $roles != 309  ): ?>
         <div class="card1">
-             <!-- <canvas id="myChartDiscAdmin" class="myChart"></canvas>  -->
-
                <table class="table table-bordered">
+               <caption>...</caption>
                   <thead>
                       <tr>
-                        <th>Tipo Cliente / Nivel Cliente</th>
-                        <th>Estrat&eacute;gicos</th>
-                        <th>Operativo</th>
+                        <th scope="col">Tipo Cliente / Nivel Cliente</th>
+                        <th scope="col">Estrat&eacute;gicos</th>
+                        <th scope="col">Operativo</th>
                       </tr>
                       <tbody>
                             <tr>

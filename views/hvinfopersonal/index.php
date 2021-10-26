@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
       .fs {
         display:flex;
-        jusntify-content:space-between;
+        justify-content:space-between;
         width:100%;
         align-items:center;
       }
@@ -257,7 +257,7 @@ use yii\widgets\ActiveForm;
 <?php if( (int)$roles==301 || (int)$roles==299 || (int)$roles==270 || (int)$roles==305 || (int)$roles==309 || (int)$roles==304): ?>
       <div class="col-md-3">
           <div class="card1 mb icono" style="cursor:pointer">
-           <i class="fa fa-plus" style="display:block"></i>
+           <em class="fa fa-plus" style="display:block"></em>
             <?= Html::a('Informaci&oacute;n Personal', ['hvinfopersonal/crear','id'=>Yii::$app->user->identity->id],['class'=>'btn btn-success', 'style'=>'font-size:15px;font-weight:bold'])  ?>
           </div>
       </div>
@@ -267,7 +267,7 @@ use yii\widgets\ActiveForm;
        <?php if( (int)$roles==301 || (int)$roles==299 || (int)$roles==270 || (int)$roles==305): ?>
           <div class="col-md-3">
               <div class="card1 mb icono" style="cursor:pointer">
-              <i class="fa fa-upload" style="display:block"></i>
+              <em class="fa fa-upload" style="display:block"></em>
                 <a href="" class="btn btn-success" style="font-size:15px;font-weight:bold" data-toggle="modal" data-target="#exampleModal3">Carga Masiva</a>
               </div>
           </div> 
@@ -276,8 +276,8 @@ use yii\widgets\ActiveForm;
   <?php if((int)$roles==270 ): ?>
         <div class="col-md-3">
             <div class="card1 mb  icono" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal2">
-              <i class="fa fa-list" style="display:block"></i>
-              <a  class="btn btn-success" style="font-size:17px" ><b>Listas</b></a>
+              <em class="fa fa-list" style="display:block"></em>
+              <a  class="btn btn-success" style="font-size:17px" ><strong>Listas</strong></a>
             </div>
         </div> 
       </div>
@@ -301,51 +301,47 @@ use yii\widgets\ActiveForm;
       <div class="col-md-12">
           <div class="card1">
           <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
+          <caption>...</caption>
               <thead>
                 <tr>
-                <th>Detalles</th>
-                  <th>Director</th>
-                  <th>Gerente</th>
-                  <th>Cliente</th>
+                <th scope="col">Detalles</th>
+                  <th scope="col">Director</th>
+                  <th scope="col">Gerente</th>
+                  <th scope="col">Cliente</th>
                 
-                  <th>Programa</th>
-                  <th>Tipo</th>
-                  <th>Nivel</th>
-                  <th>Contacto</th>
-                  <th>Cargo</th>
+                  <th scope="col">Programa</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Nivel</th>
+                  <th scope="col">Contacto</th>
+                  <th scope="col">Cargo</th>
                 
-                  <th>Estado</th>
-                  <th>Pais</th>
-                  <th class="hide">Nombre</th>
-                  <th class="hide">Identificacion</th>
-                  <th class="hide">Direccion Oficina</th>
-                  <th class="hide">Direccion Casa</th>
-                  <th class="hide">Email</th>
-                  <th class="hide">Movil</th>
-                  <th class="hide">Contacto oficina</th>
-                  <th class="hide">Pais</th>
-                  <th class="hide">Cuidad</th>
-                  <th class="hide">Modalidad de Trabajo</th>
-                  <th class="hide">Autoriza el Tratamiento de datos Personales</th>
-                  <th class="hide">Es susceptible de encuestar</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Pais</th>
+                  <th scope="col" class="hide">Nombre</th>
+                  <th scope="col" class="hide">Identificacion</th>
+                  <th scope="col" class="hide">Direccion Oficina</th>
+                  <th scope="col" class="hide">Direccion Casa</th>
+                  <th scope="col" class="hide">Email</th>
+                  <th scope="col" class="hide">Movil</th>
+                  <th scope="col" class="hide">Contacto oficina</th>
+                  <th scope="col" class="hide">Pais</th>
+                  <th scope="col" class="hide">Cuidad</th>
+                  <th scope="col" class="hide">Modalidad de Trabajo</th>
+                  <th scope="col" class="hide">Autoriza el Tratamiento de datos Personales</th>
+                  <th scope="col" class="hide">Es susceptible de encuestar</th>
 
-                  <th class="hide">Area de Trabajo</th>
-                  <th class="hide">Antiguedad</th>
+                  <th scope="col" class="hide">Area de Trabajo</th>
+                  <th scope="col" class="hide">Antiguedad</th>
                 
-                  <th class="hide">Fecha de inicio como contacto</th>
-                  <th class="hide">afinidad</th>
-                  <th class="hide">nombre del jefe</th>
-                  <th class="hide">cargojefe</th>
-                  <th class="hide">rol anterior</th>
-                  <th class="hide">estado civil</th>
-                  <th class="hide">dominancia</th>  
-                  <th class="hide">Numero de hijos</th>
-                  <th class="hide">Estilo social</th>    
-<!--                   <th class="hide">Nombre evento</th>    
-                  <th class="hide">Tipo de evento</th>    
-                  <th class="hide">Ciudad evento</th>    
-                  <th class="hide">fecha de evento</th>     -->
-
+                  <th scope="col" class="hide">Fecha de inicio como contacto</th>
+                  <th scope="col" class="hide">afinidad</th>
+                  <th scope="col" class="hide">nombre del jefe</th>
+                  <th scope="col" class="hide">cargojefe</th>
+                  <th scope="col" class="hide">rol anterior</th>
+                  <th scope="col" class="hide">estado civil</th>
+                  <th scope="col" class="hide">dominancia</th>  
+                  <th scope="col" class="hide">Numero de hijos</th>
+                  <th scope="col" class="hide">Estilo social</th>
                 </tr>
               </thead>
               <tbody>
@@ -356,12 +352,12 @@ use yii\widgets\ActiveForm;
                             <td style="text-align:center">
 
                               <a href="<?php echo Url::to(['/hvinfopersonal/detalle', 'id'=> $hv['idhvinforpersonal'] ] ) ?>">
-                                  <i class="fa fa-search"></i> 
+                                  <em class="fa fa-search"></em> 
                               </a>
                               
                              
                               <a href="<?php echo Url::to(['/hvinfopersonal/delete','id'=>$hv['idhvinforpersonal'] ] )  ?>" class="text-danger">
-                                 <i class="fa fa-trash"></i> 
+                                 <em class="fa fa-trash"></em> 
                               </a>
 
                               </td>
@@ -386,7 +382,7 @@ use yii\widgets\ActiveForm;
                             
                         
                            
-                                <td class="<?= $hv['estado'] == 'Activo' ? 'text-success' : 'text-danger' ?>"><b><?= $hv['estado'] ?></b></td>
+                                <td class="<?= $hv['estado'] == 'Activo' ? 'text-success' : 'text-danger' ?>"><strong><?= $hv['estado'] ?></strong></td>
                                 <td><?=  strtoupper($hv['hvpais'])  ?></td>
                                 <td class="hide"><?= strtoupper($hv['hvnombre']) ?></td>
                                 <td class="hide"><?= strtoupper($hv['hvidentificacion']) ?></td>
@@ -428,7 +424,7 @@ use yii\widgets\ActiveForm;
                             <tr>
                                 <td style="text-align:center">
                                   <a href="<?php echo Url::to(['/hvinfopersonal/detalle', 'id'=> $unico['idhvinforpersonal'] ] ) ?>">
-                                      <i class="fa fa-search"></i> 
+                                      <em class="fa fa-search"></em> 
                                   </a>
                                 </td>
                                 <td><?= strtoupper($unico['hvnombre'])  ?></td>
@@ -443,7 +439,7 @@ use yii\widgets\ActiveForm;
                                 <td>
                                     <?php  echo strtoupper($hv['pcrc']);?>                              
                                 </td>
-                                <td class="<?= $unico['estado'] == 'Activo' ? 'text-success' : 'text-danger' ?>"><b><?= $unico['estado'] ?></b></td>
+                                <td class="<?= $unico['estado'] == 'Activo' ? 'text-success' : 'text-danger' ?>"><strong><?= $unico['estado'] ?></strong></td>
                                 <td><?= strtoupper($unico['hvpais'])  ?></td>
 
                                   <td class="hide"><?= strtoupper($unico['hvnombre']) ?></td>
@@ -682,17 +678,17 @@ use yii\widgets\ActiveForm;
             <?php $form = ActiveForm::begin(['action'=>['hvinfopersonal/export'], 'method'=>'POST', 'options'=>['enctype'=>'multipart/form-data']]) ?>
                 <div class="input-area">
                       <div class="input-text" id="text">Seleccione o arrastre el archivo</div>
-                      <i class="fa fa-upload"></i>
+                      <em class="fa fa-upload"></em>
                       <?= $form->field($modelos, 'file')->fileInput(["class"=>"input-file" ,'id'=>'file']) ?>
                   </div> 
 
 
                   <div class="button">
-                      <button  class="btn btn-success">Agregar <i class="fa fa-plus" style="padding-top:5px"></i> </button>
+                      <button  class="btn btn-success">Agregar <em class="fa fa-plus" style="padding-top:5px"></em> </button>
                   </div>
             <?php ActiveForm::end() ?>
 
-      <a href="../../archivos/ClienteCXM.xlsx" download>Descargar Plantilla de ejemplo</a><i class="fa fa-upload"></i>
+      <a href="../../archivos/ClienteCXM.xlsx" download>Descargar Plantilla de ejemplo</a><em class="fa fa-upload"></em>
       </div>
       
     </div>
@@ -714,7 +710,7 @@ use yii\widgets\ActiveForm;
                  <label for="">Correo Destinatario</label>
                  <input type="text" class="form-control" name="email" placeholder="Example@correo.com" required>
               </div>
-              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <i class="fa fa-paper-plane"></i> </button>
+              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em> </button>
             <?php  Activeform::end() ?>
           <?php endif  ?>
 
@@ -724,7 +720,7 @@ use yii\widgets\ActiveForm;
                  <label for="">Correo Destinatario</label>
                  <input type="text" class="form-control" name="email" placeholder="correo destinatario" required>
               </div>
-              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <i class="fa fa-paper-plane"></i></button>
+              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em></button>
             <?php  Activeform::end() ?>
           <?php endif  ?>
               
@@ -747,7 +743,7 @@ use yii\widgets\ActiveForm;
                  <label for="">Correo Destinatario</label>
                  <input type="text" class="form-control" name="email" placeholder="Example@correo.com" required>
               </div>
-              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <i class="fa fa-paper-plane"></i> </button>
+              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em> </button>
             <?php  Activeform::end() ?>
           <?php endif  ?>
 
@@ -757,7 +753,7 @@ use yii\widgets\ActiveForm;
                  <label for="">Correo Destinatario</label>
                  <input type="text" class="form-control" name="email" placeholder="correo destinatario" required>
               </div>
-              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <i class="fa fa-paper-plane"></i></button>
+              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em></button>
             <?php  Activeform::end() ?>
           <?php endif  ?>
               
