@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -133,7 +133,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
@@ -151,7 +151,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
 			</div>    
                      <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Procesar nuevos de la distribución: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Procesar nuevos de la distribución: </label>
                             <?= Html::a('Nuevos distribución',  ['nuevosdistribucion'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #f28e41',
                                             'data-toggle' => 'tooltip',
@@ -166,7 +166,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Proceso de actualización de equipos: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Proceso de actualización de equipos: </label>
                             <?= Html::a('Actualizar equipos',  ['actualizacionequipos'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #f28e41',
                                             'data-toggle' => 'tooltip',
@@ -183,7 +183,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
 		    
 	             <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Pcrc: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar Pcrc: </label>
                             <?= Html::button('Exportar', ['value' => url::to('exportarpcrc'), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
@@ -205,7 +205,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                 <div class="row">
                 <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar valorado sin usuario de red: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar valorado sin usuario de red: </label>
                             <?= Html::button('Exportar', ['value' => url::to('exportarsinusuariored'), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
@@ -224,7 +224,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar lider sin usuario de red: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar lider sin usuario de red: </label>
                             <?= Html::button('Exportar', ['value' => url::to('exportarsinusuarioredlider'), 'class' => 'btn btn-success', 'id'=>'modalButton5', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
@@ -243,7 +243,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                     </div>
 	             <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Lider: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar Lider: </label>
                             <?= Html::button('Exportar', ['value' => url::to('exportarlider'), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
@@ -262,7 +262,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                     </div>
 	             <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Actualización de equipos a pcrc: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Actualización de equipos a pcrc: </label>
                             <?= Html::a('Actualizar equipos pcrc',  ['actualizacionequipospcrc'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #337ab7',
                                             'data-toggle' => 'tooltip',
@@ -280,7 +280,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
             <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar lista de equipos actualizados: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar lista de equipos actualizados: </label>
                             <?= Html::button('Exportar', ['value' => url::to('exportarequiposactual'), 'class' => 'btn btn-success', 'id'=>'modalButton6', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
@@ -299,7 +299,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                     </div>
 		    <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar valorados de CXM no encontrados: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar valorados de CXM no encontrados: </label>
                             <?= Html::button('Exportar', ['value' => url::to('exportarvaloradonocxm'), 'class' => 'btn btn-success', 'id'=>'modalButton7', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
@@ -318,7 +318,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                     </div>
 		    <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Formato actualiza manualmente valorado:</label>
+                            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Formato actualiza manualmente valorado:</label>
                             <?= Html::button('Exportar formato', ['value' => url::to('exportarformatovalorado'), 'class' => 'btn btn-success', 'id'=>'modalButton8', 'data-toggle' => 'tooltip', 'title' => 'Descargar Formato', 'style' => 'background-color: #337ab7'])
                                ?>
                                <?php
@@ -337,7 +337,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                     </div>
 		    <div class="col-md-3">
                         <div class="card1 mb">
-		            <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Importar formato de valorados: </label> 
+		            <label style="font-size: 13px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Importar formato de valorados: </label> 
                             <?= Html::button('Importar Valorados', ['value' => url::to('nuevosformatodistribucion'), 'class' => 'btn btn-success', 'id'=>'modalButton9',
                                 'data-toggle' => 'tooltip',
                                 'data' => [
@@ -375,14 +375,15 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                             <div class="card1 mb">
                                 <div class="col-md-12">
                                     <table class="table table-striped table-bordered detail-view formDinamico" id="tablacate">
+                                        <caption>Tabla datos</caption>
                                         <thead>
                                             <tr>
-                                            <th class="text-center"><?= Yii::t('app', 'Fecha de Ejecución') ?></th>
-                                            <th class="text-center"><?= Yii::t('app', 'Valores encontrados en Jarvis') ?></th>
-                                            <th class="text-center"><?= Yii::t('app', 'Valores de Jarvis encontados en CXM') ?></th>
-                                            <th class="text-center"><?= Yii::t('app', 'Valores de CXM no encontrados en Jarvis') ?></th>
-                                            <th class="text-center"><?= Yii::t('app', 'Valores Actualizados') ?></th>
-                                            <th class="text-center"><?= Yii::t('app', 'Valores no actualizados') ?></th>
+                                            <th scope="col" class="text-center"><?= Yii::t('app', 'Fecha de Ejecución') ?></th>
+                                            <th scope="col" class="text-center"><?= Yii::t('app', 'Valores encontrados en Jarvis') ?></th>
+                                            <th scope="col" class="text-center"><?= Yii::t('app', 'Valores de Jarvis encontados en CXM') ?></th>
+                                            <th scope="col" class="text-center"><?= Yii::t('app', 'Valores de CXM no encontrados en Jarvis') ?></th>
+                                            <th scope="col" class="text-center"><?= Yii::t('app', 'Valores Actualizados') ?></th>
+                                            <th scope="col" class="text-center"><?= Yii::t('app', 'Valores no actualizados') ?></th>
                                             </tr>      
                                         </thead>
                                         <tbody>    
@@ -413,7 +414,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-              <label><i class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></i> Información:</label>
+              <label><em class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></em> Información:</label>
               <label style="font-size: 14px;">No tiene los permisos para ingresar a esta opción.</label>
                 </div><br>
             </div>

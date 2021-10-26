@@ -25,13 +25,14 @@ use yii\bootstrap\Modal;
     	<div class="col-md-12">
     		<br>
     		<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Tabla datos</caption>
     			<thead>
     				<tr>
-    					<th colspan="3" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de distribuciÃ³n de personal') ?></label></th>
+    					<th scope="col" colspan="3" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de distribuciÃ³n de personal') ?></label></th>
     				</tr>
     				<tr>
-    					<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id Pcrc') ?></label></th>
-                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Pcrc') ?></label></th>   					
+    					<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id Pcrc') ?></label></th>
+                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Pcrc') ?></label></th>   					
     				</tr>
     			</thead>
     			<tbody>

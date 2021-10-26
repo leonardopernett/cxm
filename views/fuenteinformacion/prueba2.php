@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use DateTime;
+use yii\base\Exception;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
