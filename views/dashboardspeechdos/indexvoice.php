@@ -408,11 +408,11 @@ $varColorM = null;
               $varSelect1 = Yii::$app->db->createCommand("select distinct id_dp_clientes from tbl_speech_parametrizar where anulado = 0 and cod_pcrc in ('$txtCodPcrcok')")->queryScalar();
               $varSelect2 = $varSelect.'_'.$varSelect1;                
         ?>
-          <img src="<?= Url::to("@web/images/servicios/$varSelect2.png"); ?>">
+          <img src="<?= Url::to("@web/images/servicios/$varSelect2.png"); ?>" alt="<?=$varSelect2?>">
         <?php
           }else{
         ?>
-          <img src="<?= Url::to("@web/images/servicios/$varSelect.png"); ?>">
+          <img src="<?= Url::to("@web/images/servicios/$varSelect.png"); ?>" alt="<?=$varSelect?>">
         <?php 
           } 
         ?>
@@ -421,20 +421,20 @@ $varColorM = null;
 
     <div class="col-md-3">
       <div class="card mb">
-        <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i> Cliente/Servicio:</label>
+        <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> Cliente/Servicio:</label>
         <label><?php echo $varServicio; ?></label>
         <hr>  
-        <label><i class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></i> Pcrc Seleccionado:</label>
+        <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> Pcrc Seleccionado:</label>
         <label><?php echo $txtCodPcrcokc1.' - '.$txtnombrepcrc; ?></label>
       </div>
     </div>
 
     <div class="col-md-3">
       <div class="card mb">
-        <label><i class="fas fa-calendar-alt" style="font-size: 20px; color: #C148D0;"></i> Rango de Fechas:</label>
+        <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #C148D0;"></em> Rango de Fechas:</label>
         <label><?php echo $txtFechaIni.' - '.$txtFechaFin; ?></label>
         <hr>  
-        <label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i> Par&aacute;metros Seleccionados:</label>
+        <label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> Par&aacute;metros Seleccionados:</label>
         <?php
           $txtnombreParametro = null;
           $txtnombrePrograma = null;
@@ -462,7 +462,7 @@ $varColorM = null;
 
     <div class="col-md-3">
       <div class="card mb">
-        <label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Cantidad de Llamadas:</label>
+        <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Cantidad de Llamadas:</label>
         <label  style="font-size: 90px; text-align: center;"><?php echo $txtTotalLlamadas; ?></label>
       </div>
     </div>
@@ -486,12 +486,13 @@ $varColorM = null;
 
           <div class="col-md-6">            
               <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+              <caption>Resultados</caption>
                 <thead>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo 'Indicadores'; ?></label></th>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo 'Total'; ?></label></th>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo 'Agente'; ?></label></th>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo 'Canal'; ?></label></th>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo 'Marca'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Indicadores'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Total'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Agente'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Canal'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Marca'; ?></label></th>
                 </thead> 
                 <tbody>
                   <?php
@@ -1231,19 +1232,20 @@ $varColorM = null;
         <div class="row">
           <div class="col-md-12">
             <table style="width:100%">
+            <caption>...</caption>
               <tr>
-                <td class="text-center" width="100">
+                <th scope="col" class="text-center" width="100">
                     <label style="font-size: 15px;"><?php echo "Agente"; ?></label>
-                </td>
-                <td class="text-center" width="100">
+                </th>
+                <th scope="col" class="text-center" width="100">
                     <label style="font-size: 15px;"><?php echo "Canal"; ?></label>
-                </td>
-                <td class="text-center" width="100">
+                </th>
+                <th scope="col" class="text-center" width="100">
                     <label style="font-size: 15px;"><?php echo "Marca"; ?></label>
-                </td>
-                <td class="text-center" width="100">
+                </th>
+                <th scope="col" class="text-center" width="100">
                     <label style="font-size: 15px;"><?php echo "Calidad: General Konecta"; ?></label>
-                </td>
+                </th>
               </tr>
               <?php
 
@@ -1413,12 +1415,13 @@ $varColorM = null;
           <div class="row">
             <div class="col-md-6">
               <table id="myTable0"  class="table table-striped table-bordered detail-view formDinamico">
+              <caption>Resultados</caption>
                 <thead>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo 'Responsable'; ?></label></th>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo 'C&oacute;digo Pcrc'; ?></label></th>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo 'Variables'; ?></label></th>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo ' Llamadas'; ?></label></th>
-                  <th class="text-center"><label style="font-size: 15px;"><?php echo ' % de Participaci&oacute;n'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Responsable'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'C&oacute;digo Pcrc'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Variables'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo ' Llamadas'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo ' % de Participaci&oacute;n'; ?></label></th>
                 </thead>
                 <tbody>
                   <?php 
@@ -1651,7 +1654,7 @@ $varColorM = null;
           <div class="row">
             <div class="col-md-12">
               <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-comment" style="font-size: 20px; color: #00968F;"></i>  Hallazgo: </label>
+                <label style="font-size: 15px;"><em class="fas fa-comment" style="font-size: 20px; color: #00968F;"></em>  Hallazgo: </label>
                 <?php
                   $varhallazgo =  array();
                   foreach ($varListIndicadoresH as $key => $value) {
@@ -1729,18 +1732,19 @@ $varColorM = null;
 
             <div class="col-md-6">
               <table id="myTable"  class="table table-striped table-bordered detail-view formDinamico">
+              <caption>...</caption>
                 <thead>
                   <tr>
-                    <th class="text-center"><label style="font-size: 15px;"><?= Yii::t('app', '') ?></th>
-                    <th class="text-center" colspan="2"><label style="font-size: 13px;"><?= Yii::t('app', 'Por Motivos') ?></th>
-                    <th class="text-center" colspan="2"><label style="font-size: 13px;"><?= Yii::t('app', 'Por Variable '.$varName2) ?></th>
+                    <th scope="col" class="text-center"><label style="font-size: 15px;"><?= Yii::t('app', '') ?></th>
+                    <th scope="col" class="text-center" colspan="2"><label style="font-size: 13px;"><?= Yii::t('app', 'Por Motivos') ?></th>
+                    <th scope="col" class="text-center" colspan="2"><label style="font-size: 13px;"><?= Yii::t('app', 'Por Variable '.$varName2) ?></th>
                   </tr>
                   <tr>
-                    <th class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Motivos de Llamada') ?></label></th>
-                    <th class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', '% de Llamadas') ?></label></th>
-                    <th class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad de Llamadas') ?></label></th>
-                    <th class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', '% de llamadas') ?></label></th>
-                    <th class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad de llamadas') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Motivos de Llamada') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', '% de Llamadas') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad de Llamadas') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', '% de llamadas') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad de llamadas') ?></label></th>
                   </tr>           
                 </thead>
                 <tbody>
@@ -1905,7 +1909,7 @@ $varColorM = null;
   <div class="row">
     <div class="col-md-3">
       <div  class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Regresar: </label> 
+        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Regresar: </label> 
         <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
                         'data-toggle' => 'tooltip',
@@ -1916,7 +1920,7 @@ $varColorM = null;
 
     <div class="col-md-2">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Reporte: </label>
+        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar Reporte: </label>
         <?= Html::button('Exportar', ['value' => url::to(['categoriasvoice', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codigoPCRC' => $txtCodPcrcok, 'codparametrizar' => $txtCodParametrizar, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
                         'data-toggle' => 'tooltip',
                         'title' => 'Exportar', 'style' => 'background-color: #337ab7']) ?> 
@@ -1937,7 +1941,7 @@ $varColorM = null;
 
     <div class="col-md-2">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Base: </label>
+        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar Base: </label>
         <?= Html::button('Exportar', ['value' => url::to(['categoriasgeneral', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codparametrizar' => $txtCodParametrizar, 'codigoPCRC' => $txtCodPcrcok, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton2',
                         'data-toggle' => 'tooltip',
                         'title' => 'Exportar', 'style' => 'background-color: #337ab7']) 
@@ -1960,7 +1964,7 @@ $varColorM = null;
     
     <div class="col-md-2">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></i> Escucha Focalizada: </label>
+        <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Escucha Focalizada: </label>
         <?= Html::a('Llamadas',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
                           'style' => 'background-color: #337ab7', 'target' => "_blank",
                           'data-toggle' => 'tooltip',
@@ -1971,7 +1975,7 @@ $varColorM = null;
 
     <div class="col-md-3">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-user" style="font-size: 15px; color: #FFC72C;"></i> Top IDA: </label>
+        <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #FFC72C;"></em> Top IDA: </label>
         <?= Html::button('Verificar', ['value' => url::to(['totalizaragentes', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codparametrizar' => $txtCodParametrizar, 'codigoPCRC' => $txtCodPcrcok, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton3',
                                 'data-toggle' => 'tooltip',
                                 'onclick' => 'enviodatosr()', 
