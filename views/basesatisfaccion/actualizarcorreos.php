@@ -19,7 +19,7 @@ $fechaActual = date('Y-m-d');
 
 ?>
 <div class="page-header" >
-    <h3><center>Actualizar Correos</center></h3>
+    <h3 class="text-center">Actualizar Correos</h3>
 </div> 
 <div class="control-procesos-index">
 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>

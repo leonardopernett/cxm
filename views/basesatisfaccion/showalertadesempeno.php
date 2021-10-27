@@ -253,7 +253,7 @@ if ($data->ppregunta8 != "") {
                             </tr>
                             <tr>
                                 <td>
-                                    <b><?= $preguntas->pregunta3 ?></strong>
+                                    <strong><?= $preguntas->pregunta3 ?></strong>
                                 </td>
                                 <td>
                                     <?= $data->apregunta3 ?>
@@ -732,6 +732,7 @@ if ($data->ppregunta8 != "") {
                             </tr>
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
+                                <caption>Cumplimiento</caption>
                                     <tr>
                                         <th scope="col">Comparativo del Cumplimiento</th>
                                         <th scope="col">Meta</th>
@@ -849,6 +850,7 @@ if ($data->ppregunta8 != "") {
                             </tr>
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
+                                <caption>Cumplimiento</caption>
                                 <tr>
                                         <th scope="col">Comparativo del Cumplimiento</th>
                                         <th scope="col">Meta</th>
@@ -892,6 +894,7 @@ if ($data->ppregunta8 != "") {
                             </tr>
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
+                                <caption>Cumplimiento</caption>
                                 <tr>
                                         <th scope="col">Comparativo del Cumplimiento</th>
                                         <th scope="col">Meta</th>

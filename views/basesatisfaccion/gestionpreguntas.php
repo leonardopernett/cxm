@@ -26,8 +26,8 @@ $this->title = 'Gestion Preguntas';
 			<caption>Tabla datos generales</caption>
     			<tbody>
     				<tr>
-    					<th scope="col" colspan="2"><div class="alert alert-success">   
-    						<center>Respuesta Guardada Satisfactoriamente.</center>
+    					<th scope="col" colspan="2"><div class="alert alert-success text-center">   
+    						Respuesta Guardada Satisfactoriamente.
     					</div>
     				</th>
 	    			</tr>

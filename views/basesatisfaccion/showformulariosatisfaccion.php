@@ -203,7 +203,7 @@ $banderaSaltoComentario = true;
                     <td>
                         <div class="row">
                             <div class="col-md-12">
-                                <b><em class="fas fa-envelope" style="font-size: 25px; color: #002855;"></em> <?= Yii::t('app', 'Transcripción: ') ?></b> <?php echo $vartexto ?>
+                                <strong><em class="fas fa-envelope" style="font-size: 25px; color: #002855;"></em> <?= Yii::t('app', 'Transcripción: ') ?></strong> <?php echo $vartexto ?>
                             </div>
                         </div>
                     </td>
@@ -1368,9 +1368,10 @@ $banderaSaltoComentario = true;
 
                 <table class="table table-striped table-bordered detail-view formDinamico">
                     <caption>Tabla partida</caption>
-                    <tbody <tr>
-                        <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
-                        <td><?php echo $data->basesatisfaccion->ani ?></td>
+                    <tbody> 
+                        <tr>
+                            <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
+                            <td><?php echo $data->basesatisfaccion->ani ?></td>
                         </tr>
                         <tr>
                             <th scope="col"><?php echo Yii::t("app", "Identificación"); ?></th>
@@ -1381,7 +1382,7 @@ $banderaSaltoComentario = true;
                             <td><?php echo $data->basesatisfaccion->nombre ?></td>
                         </tr>
                         <tr>
-                            <th iscope="col"><?php echo Yii::t("app", "Ext"); ?></th>
+                            <th scope="col"><?php echo Yii::t("app", "Ext"); ?></th>
                             <td><?php echo $data->basesatisfaccion->ext ?></td>
                         </tr>
                         <tr>

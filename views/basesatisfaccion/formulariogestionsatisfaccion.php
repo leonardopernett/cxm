@@ -104,7 +104,7 @@ $selected = null;
                 <caption>Tabla guardar</caption>
                     <tbody>
                         <tr>
-                            <th><?php echo Yii::t("app", "ANI"); ?></th>
+                            <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $model->ani ?></td>
                         </tr>
                         <tr>
@@ -453,7 +453,7 @@ $selected = null;
                 <caption>Tabla exportes</caption>
                     <tbody>
                         <tr>
-                            <th><?php echo Yii::t("app", "ANI"); ?></th>
+                            <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $model->ani ?></td>
                         </tr>
                         <tr>

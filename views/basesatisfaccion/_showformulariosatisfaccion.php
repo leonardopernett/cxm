@@ -151,10 +151,10 @@ $detalles_ids = array();
             <div class="form-group row">
                 <div class="col-sm-12">
                     <table class="table table-striped table-bordered detail-view">
-                    <caption>Tabla Satisfacion</caption>
+                    <caption>Tabla Satisfacción</caption>
                         <tbody>
                             <tr>
-                                <th><?php echo Yii::t("app", "ANI"); ?></th>
+                                <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
                                 <td><?php echo $data->basesatisfaccion->ani ?></td>
                             </tr>
                             <tr>
@@ -1376,10 +1376,10 @@ $detalles_ids = array();
         <div class="form-group row">
             <div class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view">
-                <caption>Tabla Satisfacion</caption>
+                <caption>Tabla Satisfacción</caption>
                     <tbody>
                         <tr>
-                            <th><?php echo Yii::t("app", "ANI"); ?></th>
+                            <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $data->basesatisfaccion->ani ?></td>
                         </tr>
                         <tr>
