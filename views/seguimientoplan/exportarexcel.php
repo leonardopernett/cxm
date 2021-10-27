@@ -64,27 +64,28 @@ use yii\helpers\ArrayHelper;
 <br>
 <div style="display: none;">
 	<table id="tblDatas" class="table table-striped table-bordered tblResDetFreed">
+	<caption>...</caption>
 		<thead>
 			<tr>
-				<th class="text-center" colspan="17" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Seguimiento Equipo de Trabajo - CXM -') ?></label></th>
+				<th scope="col" class="text-center" colspan="17" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Seguimiento Equipo de Trabajo - CXM -') ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="7" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Tecnico/Lider') ?></label></th>
-				<th class="text-center" colspan="5" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Rol') ?></label></th>
-				<th class="text-center" colspan="5" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Corte seleccionado') ?></label></th>
+				<th scope="col" class="text-center" colspan="7" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Tecnico/Lider') ?></label></th>
+				<th scope="col" class="text-center" colspan="5" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Rol') ?></label></th>
+				<th scope="col" class="text-center" colspan="5" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Corte seleccionado') ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="7" ><label style="font-size: 13px;"><?php echo $varNombre; ?></label></th>
-				<th class="text-center" colspan="5"><label style="font-size: 13px;"><?php echo $varRol; ?></label></th>
-				<th class="text-center" colspan="5"><label style="font-size: 13px;"><?php echo $varRango; ?></label></th>
+				<th scope="col" class="text-center" colspan="7" ><label style="font-size: 13px;"><?php echo $varNombre; ?></label></th>
+				<th scope="col" class="text-center" colspan="5"><label style="font-size: 13px;"><?php echo $varRol; ?></label></th>
+				<th scope="col" class="text-center" colspan="5"><label style="font-size: 13px;"><?php echo $varRango; ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="17" style="background-color: #D3D3D3;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', '') ?></label></th>
+				<th scope="col" class="text-center" colspan="17" style="background-color: #D3D3D3;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', '') ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="7" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Programa/PCRC') ?></label></th>
-				<th class="text-center" colspan="5" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Dimensiones') ?></label></th>
-				<th class="text-center" colspan="5" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+				<th scope="col" class="text-center" colspan="7" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Programa/PCRC') ?></label></th>
+				<th scope="col" class="text-center" colspan="5" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Dimensiones') ?></label></th>
+				<th scope="col" class="text-center" colspan="5" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
 			</tr>
 			<?php 
                 foreach ($varlistado as $key => $value) {    
@@ -92,44 +93,44 @@ use yii\helpers\ArrayHelper;
                 	$varNombreArbol = Yii::$app->db->createCommand("select name from tbl_arbols where id = $varArbol")->queryScalar();
             ?>
                 <tr>
-                	<th class="text-center" colspan="7" ><label style="font-size: 13px;"><?php echo $varNombreArbol; ?></label></th>
-                	<th class="text-center" colspan="5"><label style="font-size: 13px;"><?php echo $value['dimensions']; ?></label></th>
-                	<th class="text-center" colspan="5"><label style="font-size: 13px;"><?php echo $value['cant_valor']; ?></label></th>
+                	<th scope="col" class="text-center" colspan="7" ><label style="font-size: 13px;"><?php echo $varNombreArbol; ?></label></th>
+                	<th scope="col" class="text-center" colspan="5"><label style="font-size: 13px;"><?php echo $value['dimensions']; ?></label></th>
+                	<th scope="col" class="text-center" colspan="5"><label style="font-size: 13px;"><?php echo $value['cant_valor']; ?></label></th>
                 </tr>
             <?php 
                	}
             ?>
             <tr>
-				<th class="text-center" colspan="17" style="background-color: #D3D3D3;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', '') ?></label></th>
+				<th scope="col" class="text-center" colspan="17" style="background-color: #D3D3D3;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', '') ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="17" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?php echo $varFechas; ?></label></th>
+				<th scope="col" class="text-center" colspan="17" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?php echo $varFechas; ?></label></th>
 			</tr>
 			<tr>
-		        <th class="text-center" style="background-color: #337ab7;">  </th>          
-				<th class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD; font-size: 13px;"><?php echo $varCorte1; ?></label></th>
-				<th class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD; font-size: 13px;"><?php echo $varCorte2; ?></label></th>
-				<th class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD; font-size: 13px;"><?php echo $varCorte3; ?></label></th>
-				<th class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD; font-size: 13px;"><?php echo $varCorte4; ?></label></th>
+		        <th scope="col" class="text-center" style="background-color: #337ab7;">  </th>          
+				<th scope="col" class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD; font-size: 13px;"><?php echo $varCorte1; ?></label></th>
+				<th scope="col" class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD; font-size: 13px;"><?php echo $varCorte2; ?></label></th>
+				<th scope="col" class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD; font-size: 13px;"><?php echo $varCorte3; ?></label></th>
+				<th scope="col" class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD; font-size: 13px;"><?php echo $varCorte4; ?></label></th>
 		    </tr>
 		    <tr>
-		        <th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', '-- PCRC --') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Meta') ?></label></th>
-				 <th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
-				 <th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Meta') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Meta') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Meta') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-				<th style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+		        <th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', '-- PCRC --') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Meta') ?></label></th>
+				 <th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
+				 <th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Meta') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Meta') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Meta') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+				<th scope="col" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 12px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
 		    </tr>
 		    <?php 		              
 
@@ -247,59 +248,59 @@ use yii\helpers\ArrayHelper;
 										$txtcant = $txtcant + 1;  						                
 			?>
 				<tr>
-	      			<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varNombreArbol; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varrtaMeta; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $query1; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varescalado; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varContar1; ?> %</label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varrtaMeta; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $query2; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varescalado; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varContar2; ?> %</label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varrtaMeta; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $query3; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varescalado; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varContar3; ?> %</label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varrtaMeta; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $query4; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varescalado; ?></label></th>
-					<th class="text-center"  ><label style="font-size: 12px;"><?php echo  $varContar4; ?> %</label></th>
+	      			<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varNombreArbol; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varrtaMeta; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $query1; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varescalado; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varContar1; ?> %</label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varrtaMeta; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $query2; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varescalado; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varContar2; ?> %</label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varrtaMeta; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $query3; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varescalado; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varContar3; ?> %</label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varrtaMeta; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $query4; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varescalado; ?></label></th>
+					<th scope="col" class="text-center"  ><label style="font-size: 12px;"><?php echo  $varContar4; ?> %</label></th>
 				</tr>
 		    <?php 
 		        }
 		    ?>
 		    <tr>
-				<th class="text-center" colspan="17" style="background-color: #D3D3D3;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', '') ?></label></th>
+				<th scope="col" class="text-center" colspan="17" style="background-color: #D3D3D3;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', '') ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="17" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Datos de las valoraciones realizadas') ?></label></th>
+				<th scope="col" class="text-center" colspan="17" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Datos de las valoraciones realizadas') ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="10" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Fechas de valoracione realizadas') ?></label></th>
-				<th class="text-center" colspan="7" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Cantidad de valoraciones realizadas') ?></label></th>
+				<th scope="col" class="text-center" colspan="10" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Fechas de valoracione realizadas') ?></label></th>
+				<th scope="col" class="text-center" colspan="7" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Cantidad de valoraciones realizadas') ?></label></th>
 			</tr>
 			<?php
 				foreach ($varListdias as $key => $value) {					
 			?>
 				<tr>
-	      			<th class="text-center" colspan="10" ><label style="font-size: 12px;"><?php echo  $value['fecha']; ?></label></th>
-	      			<th class="text-center" colspan="7" ><label style="font-size: 12px;"><?php echo  $value['total']; ?></label></th>
+	      			<th scope="col" class="text-center" colspan="10" ><label style="font-size: 12px;"><?php echo  $value['fecha']; ?></label></th>
+	      			<th scope="col" class="text-center" colspan="7" ><label style="font-size: 12px;"><?php echo  $value['total']; ?></label></th>
 	      		</tr>
 			<?php
 				}
 			?>
 			<tr>
-				<th class="text-center" colspan="17" style="background-color: #D3D3D3;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', '') ?></label></th>
+				<th scope="col" class="text-center" colspan="17" style="background-color: #D3D3D3;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', '') ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="17" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Escalamientos') ?></label></th>
+				<th scope="col" class="text-center" colspan="17" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 15px;"><?= Yii::t('app', 'Escalamientos') ?></label></th>
 			</tr>
 			<tr>
-				<th class="text-center" colspan="3" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Corte"; ?></label></th>
-    			<th class="text-center" colspan="3" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
-    			<th class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Justificacion"; ?></label></th>
-    			<th class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Comentarios"; ?></label></th>
-    			<th class="text-center" colspan="3" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Estado"; ?></label></th> 
+				<th scope="col" class="text-center" colspan="3" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Corte"; ?></label></th>
+    			<th scope="col" class="text-center" colspan="3" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
+    			<th scope="col" class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Justificacion"; ?></label></th>
+    			<th scope="col" class="text-center" colspan="4" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Comentarios"; ?></label></th>
+    			<th scope="col" class="text-center" colspan="3" style="background-color: #337ab7;"><label style="color: #FDFDFD;font-size: 13px;"><?php echo "Estado"; ?></label></th> 
 			</tr>
     		<?php
     			foreach ($varListEscalamientos as $key => $value) {
@@ -320,11 +321,11 @@ use yii\helpers\ArrayHelper;
     					}
     		?>
     			<tr>
-	      			<th class="text-center" colspan="3" ><label style="font-size: 12px;"><?php echo  $varRango; ?></label></th>
-	      			<th class="text-center" colspan="3" ><label style="font-size: 12px;"><?php echo  $vanameidtcs; ?></label></th>
-	      			<th class="text-center" colspan="4" ><label style="font-size: 12px;"><?php echo  $value['justificacion']; ?></label></th>
-	      			<th class="text-center" colspan="4" ><label style="font-size: 12px;"><?php echo  $value['comentarios']; ?></label></th>
-	      			<th class="text-center" colspan="3" ><label style="font-size: 12px;"><?php echo  $txtestado; ?></label></th>
+	      			<th scope="col" class="text-center" colspan="3" ><label style="font-size: 12px;"><?php echo  $varRango; ?></label></th>
+	      			<th scope="col" class="text-center" colspan="3" ><label style="font-size: 12px;"><?php echo  $vanameidtcs; ?></label></th>
+	      			<th scope="col" class="text-center" colspan="4" ><label style="font-size: 12px;"><?php echo  $value['justificacion']; ?></label></th>
+	      			<th scope="col" class="text-center" colspan="4" ><label style="font-size: 12px;"><?php echo  $value['comentarios']; ?></label></th>
+	      			<th scope="col" class="text-center" colspan="3" ><label style="font-size: 12px;"><?php echo  $txtestado; ?></label></th>
 	      		</tr>
     		<?php
     			}
