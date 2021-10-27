@@ -50,7 +50,7 @@ $roles = $command->queryScalar();
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -96,17 +96,18 @@ $roles = $command->queryScalar();
     <div class="row">
         <div class="col-md-8">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #fd7e14;"></i> Lista de Responsabilidades: </label>
+                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #fd7e14;"></em> Lista de Responsabilidades: </label>
                 
                 <?php if (count($varListresponsabilidad ) != null) { ?>
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Tabla datos</caption>
                     <thead>
                         <tr>
-                            <th colspan="2" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo $varnombrepcrc; ?></label></th>
+                            <th scope="col" colspan="2" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo $varnombrepcrc; ?></label></th>
                         </tr>
                         <tr>    
-                            <th style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo "Proceso"; ?></label></th>
-                            <th style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo "Responsabilidad"; ?></label></th>
+                            <th scope="col" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo "Proceso"; ?></label></th>
+                            <th scope="col" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo "Responsabilidad"; ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,7 +133,7 @@ $roles = $command->queryScalar();
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-hashtag" style="font-size: 15px; color: #559FFF;"></i> Cantidad de Responsabilidades: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #559FFF;"></em> Cantidad de Responsabilidades: </label>
                         <label  style="font-size: 70px; text-align: center;"><?php echo $txtConteo; ?></label>
                     </div>
                 </div>
@@ -141,7 +142,7 @@ $roles = $command->queryScalar();
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-sticky-note" style="font-size: 15px; color: #C148D0;"></i> Buscar Pcrc/Programa... </label>
+                        <label style="font-size: 15px;"><em class="fas fa-sticky-note" style="font-size: 15px; color: #C148D0;"></em> Buscar Pcrc/Programa... </label>
                         <?=
                             $form->field($model, 'procesos', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                         ->widget(Select2::classname(), [
@@ -174,7 +175,7 @@ $roles = $command->queryScalar();
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-info" style="font-size: 15px; color: #C148D0;"></i> Acciones... </label>
+                        <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 15px; color: #C148D0;"></em> Acciones... </label>
                         
                         <div class="row">
                             <div class="col-md-12">
@@ -216,7 +217,7 @@ $roles = $command->queryScalar();
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #C148D0;"></i> Cancelar y regresar... </label>
+                        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #C148D0;"></em> Cancelar y regresar... </label>
                         <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -237,7 +238,7 @@ $roles = $command->queryScalar();
 
         if (varidvararbol == "") {
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
+            swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
             return;
         }
     };
@@ -248,7 +249,7 @@ $roles = $command->queryScalar();
 
         if (varidvararbol == "") {
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
+            swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
             return;
         }else{
             $.ajax({
@@ -263,7 +264,7 @@ $roles = $command->queryScalar();
 
 					if (numRta == 0) {
 						event.preventDefault();
-			            swal.fire("¡¡¡ Advertencia !!!","El Pcrc no quedo registrado en el sistema","warning");
+			            swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","El Pcrc no quedo registrado en el sistema","warning");
 			            return;
 					}else{
 						window.location.href='index';						

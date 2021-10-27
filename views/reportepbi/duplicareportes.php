@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="formularios-form" style="display: inline" id="dtbloque1">
 	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>		
 
-	<b>Nombre del Reporte </b><?= Html::input('text','text','', $options=['class'=>'form-control', 'maxlength'=>80, 'id'=>'nombrerep']) ?>
+	<strong>Nombre del Reporte </strong><?= Html::input('text','text','', $options=['class'=>'form-control', 'maxlength'=>80, 'id'=>'nombrerep']) ?>
    
 	<?php ActiveForm::end(); ?>
   <br>

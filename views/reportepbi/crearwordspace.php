@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="formularios-form" style="display: inline">
 	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
          
-        <b>Area de trabajo </b><?= Html::input('text','text','', $options=['class'=>'form-control', 'maxlength'=>100, 'id'=>'nombrearea']) ?>
+        <strong>Area de trabajo </strong><?= Html::input('text','text','', $options=['class'=>'form-control', 'maxlength'=>100, 'id'=>'nombrearea']) ?>
 			
 	<br>
     <br>			

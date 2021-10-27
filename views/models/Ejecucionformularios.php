@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Exepcion;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
@@ -1991,6 +1992,7 @@ FORCE INDEX(created_idx)
                 $arrayIdsusuarios[]=$value['evaluadores_id'];
             }
             $idsUsuarios = implode(',', $arrayIdsusuarios);
+            $wherePersonas="";
             if($segundoCalifPer){
                 $wherePersonas .= " AND sc.id_responsable IN (" . $idsUsuarios . ") ";
             }else{

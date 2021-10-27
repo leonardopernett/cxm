@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-star" style="font-size: 40px; color: #ffc034;"></i> Es importante indicar que las acciones que se representan en el actual modulo solo es permitido para usuarios que tengan rol administrativo. </label>
+                <label style="font-size: 15px;"><em class="fas fa-star" style="font-size: 40px; color: #ffc034;"></em> Es importante indicar que las acciones que se representan en el actual modulo solo es permitido para usuarios que tengan rol administrativo. </label>
             </div>
         </div>
     </div>
@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-address-card" style="font-size: 15px; color: #ffc034;"></i> Permisos Feedback</label>
+                        <label style="font-size: 15px;"><em class="fas fa-address-card" style="font-size: 15px; color: #ffc034;"></em> Permisos Feedback</label>
                         <?= Html::a('Aceptar',  ['permisosfeedback/index'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Permisos Feedback']) 
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #ffc034;"></i> Categorias Feedback</label>
+                        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #ffc034;"></em> Categorias Feedback</label>
                         <?= Html::a('Aceptar',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Categorias Feedback']) 
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-clone" style="font-size: 15px; color: #ffc034;"></i> Responsabilidades</label>
+                        <label style="font-size: 15px;"><em class="fas fa-clone" style="font-size: 15px; color: #ffc034;"></em> Responsabilidades</label>
                         <?= Html::a('Aceptar',  ['viewresponsability'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Permisos Feedback']) 
@@ -142,7 +142,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-info" style="font-size: 40px; color: #ffc034;"></i> Para acceder al modulo contactar al administrador de la herramienta para asignar permisos a su usuario. </label>
+                <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 40px; color: #ffc034;"></em> Para acceder al modulo contactar al administrador de la herramienta para asignar permisos a su usuario. </label>
             </div>
         </div>
     </div>

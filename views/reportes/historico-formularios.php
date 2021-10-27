@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <head>
+    <title>Reporte Historico Formularios</title>
 <meta charset="UTF-8"/>
 </head>
 <?php
@@ -744,10 +745,10 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             'header' => 'ValoraciÃ³n Adicional y/o Escalada',
             'value' => function($data) {
                 if ($data['escalado']=='1') {
-                    return 'Valoración Escalada';
+                    return 'Valoraciï¿½n Escalada';
                 } else {
                     if ($data['escalado']!='') {
-                        return 'Valoración Adicional, Id valoración principal:'.$data['ejec_principal'];
+                        return 'Valoraciï¿½n Adicional, Id valoraciï¿½n principal:'.$data['ejec_principal'];
                     }                    
                 }
                 return 'N/A';
