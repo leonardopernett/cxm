@@ -34,12 +34,14 @@ $this->title = 'Vista Valorador';
 <div class="control-procesos-index">
 <br>
     <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+	<caption>Detalle</caption>
         <tr style="font-size:16px;">
-            <th class="text-center" ><strong>-- Detalle del Equipo - Mes Actual --</strong></th>
+            <th scope="col" class="text-center" ><strong>-- Detalle del Equipo - Mes Actual --</strong></th>
         </tr>
     </table>  
 <br>
   <table id="tblData" class="table table-striped table-hover table-bordered">  	
+  <caption>Detalle</caption>
   	<?php
   		$month = date('m');
         $year = date('Y');
@@ -99,12 +101,12 @@ $this->title = 'Vista Valorador';
   	?>
   		<thead>
 	  		<tr>
-	  			<th class="text-center" style="font-size:12px;" colspan="3"><?php echo $value['usua_nombre'];?></th>
+	  			<th scope="col" class="text-center" style="font-size:12px;" colspan="3"><?php echo $value['usua_nombre'];?></th>
 	  		</tr>
 	  		<tr>
-		<th class="text-center"><?= Yii::t('app', 'Ver Historico Formulario') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Fechas') ?></th>
-                <th class="text-center"><?= Yii::t('app', 'Cantidad Realizadas') ?></th>
+				<th scope="col" class="text-center"><?= Yii::t('app', 'Ver Historico Formulario') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Fechas') ?></th>
+                <th scope="col" class="text-center"><?= Yii::t('app', 'Cantidad Realizadas') ?></th>
             </tr>
 	  	</thead>
 	  	<tbody>
@@ -113,7 +115,7 @@ $this->title = 'Vista Valorador';
 	  			foreach ($listado2 as $key => $value2) {
 	  		?>
 		  		<tr>
-					<td><a href="../reportes/historicoformularios" target="_blank"><img src="../../../web/images/ico-view.png" style="cursor:hand"></a></td>		
+					<td><a href="../reportes/historicoformularios" target="_blank"><img src="../../../web/images/ico-view.png" style="cursor:hand" alt="image"></a></td>		
 		  			<td class="text-center"><?php echo $varIdArbol = $value2['fecha'];?></td>
 		  			<td class="text-center"><?php echo $varIdArbol = $value2['total'];?></td>
 		  		</tr>
@@ -121,12 +123,12 @@ $this->title = 'Vista Valorador';
 		  		}
 		  	?>
 	  		<tr>
-				<td class="text-center"><b></b></td>
-	  			<td class="text-center"><b>Total Realizadas</b></td>
-	  			<td class="text-center" ><b><?=  $query3; ?></b></td>	  			
+				<td class="text-center"><strong></strong></td>
+	  			<td class="text-center"><strong>Total Realizadas</strong></td>
+	  			<td class="text-center" ><strong><?=  $query3; ?></strong></td>	  			
 	  		</tr>
 			<tr>
-				<td class="text-center" colspan="3"><b></b></td>
+				<td class="text-center" colspan="3"><strong></strong></td>
 			</tr>
 	  	</tbody>
 	<?php

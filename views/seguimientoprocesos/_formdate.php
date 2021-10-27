@@ -216,12 +216,13 @@ $sessiones1 = Yii::$app->user->identity->id;
     <hr>
     <br>
     <table class="table table-striped table-hover table-bordered">
+    <caption>Total</caption>
         <thead>
             <tr>
-                <th class="text-center" style="font-size:12px;">Total Resultados...</th>
-                <th class="text-center" style="font-size:12px;">Total Meta:</th>
-                <th class="text-center" style="font-size:12px;">Total Realizadas:</th>
-                <th class="text-center" style="font-size:12px;">Total % Cumplimiento: </th>
+                <th scope="col" class="text-center" style="font-size:12px;">Total Resultados...</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Total Meta:</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Total Realizadas:</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Total % Cumplimiento: </th>
             </tr>
         </thead>
 
