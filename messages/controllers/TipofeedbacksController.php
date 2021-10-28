@@ -8,6 +8,7 @@ use app\models\TipofeedbacksSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * TipofeedbacksController implements the CRUD actions for Tipofeedbacks model.
@@ -112,7 +113,6 @@ class TipofeedbacksController extends Controller {
                             'model' => $model,
                 ]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['categoriafeedbacks/index']);
         }
@@ -139,7 +139,6 @@ class TipofeedbacksController extends Controller {
                             'model' => $model,
                 ]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['categoriafeedbacks/index']);
         }
