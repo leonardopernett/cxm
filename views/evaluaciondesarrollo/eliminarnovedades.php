@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -125,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			</div>
 			<div class="col-md-6">
 				<div class="card2 mb">
-					<label><i class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></i></i> Resultados de novedades en proceso de eliminar:</label>					
+					<label><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em></em> Resultados de novedades en proceso de eliminar:</label>					
 					<div class="row">
 						<div class="col-md-4">
 							<label><em class="fas fa-square" style="font-size: 20px; color: #59DE49;"></em></em> Eliminadas</label>
@@ -140,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			</div>
 			<div class="col-md-3">
 				<div class="card2 mb">
-					<label><i class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></i> Cantidad de novedades para eliminar:</label>
+					<label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Cantidad de novedades para eliminar:</label>
                     <label  style="font-size: 70px; text-align: center;"><?php echo $vartotal; ?></label>
 				</div>
 			</div>
@@ -151,7 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label><i class="fas fa-list" style="font-size: 20px; color: #00968F;"></i> Listado de novedades a eliminar</label>
+                    <label><em class="fas fa-list" style="font-size: 20px; color: #00968F;"></em> Listado de novedades a eliminar</label>
                     <br>
                     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
                     <caption>Tabla datos</caption>

@@ -195,8 +195,8 @@ $banderaSaltoComentario = true;
                             });'); ?>
                         </div>
                         <div id="datosPartida" class="col-sm-12" style="display: none">
-                        <caption>Formulario</caption>
                             <table class="table table-striped table-bordered detail-view formDinamico">
+                            <caption>Formulario</caption>
                                 <tbody>
                                     <tr>
                                         <th scope="row"><?php echo Yii::t("app", "Numero del ticket"); ?></th>
@@ -1071,6 +1071,7 @@ $banderaSaltoComentario = true;
                             <table <?php echo "id='tablapits" . $detalle->seccion_id . "'" ?> class="table table-striped table-bordered detail-view">
                             <caption>Table</caption>
                                 <tbody>
+                                <th scope="col"></th>
                                 </tbody>
                             </table>
                         </div>

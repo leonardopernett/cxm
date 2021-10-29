@@ -111,7 +111,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
 		<?php if($sessiones == "3205" || $sessiones == "2911" || $sessiones == "2953" ){ ?>
                     <div class="col-md-3">
