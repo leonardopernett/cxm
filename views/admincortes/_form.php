@@ -30,7 +30,7 @@ $this->title = 'Agregar Corte General';
 ?>
 <br>
 <div class="page-header" >
-    <h3 style="color:#100048;"><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center" style="color:#100048;"><?= Html::encode($this->title) ?></h3>
 </div>
 
 <div class="formularios-form">

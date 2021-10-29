@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 <br>
 <div class="page-header" >
-    <h3 style="color:#100048;"><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center" style="color:#100048;"><?= Html::encode($this->title) ?></h3>
 </div>
 <div class="formularios-form">
 	<div class="form-group">
