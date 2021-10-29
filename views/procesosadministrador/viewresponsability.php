@@ -238,7 +238,7 @@ $roles = $command->queryScalar();
 
         if (varidvararbol == "") {
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
             return;
         }
     };
@@ -249,7 +249,7 @@ $roles = $command->queryScalar();
 
         if (varidvararbol == "") {
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
             return;
         }else{
             $.ajax({
@@ -264,7 +264,7 @@ $roles = $command->queryScalar();
 
 					if (numRta == 0) {
 						event.preventDefault();
-			            swal.fire("��� Advertencia !!!","El Pcrc no quedo registrado en el sistema","warning");
+			            swal.fire("!!! Advertencia !!!","El Pcrc no quedo registrado en el sistema","warning");
 			            return;
 					}else{
 						window.location.href='index';						

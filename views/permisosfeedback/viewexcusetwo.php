@@ -67,7 +67,7 @@ $sesiones =Yii::$app->user->identity->id;
 
 		if (vartxtusuarioid == "") {
 			event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de ingresar un usuario de red","warning");
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un usuario de red","warning");
             return;
 		}else{
 			$.ajax({
@@ -81,12 +81,12 @@ $sesiones =Yii::$app->user->identity->id;
 
 					if (numRta == 1) {
 						event.preventDefault();
-			            swal.fire("��� Advertencia !!!","El usuario de red ya tiene el permiso registrado","warning");
+			            swal.fire("!!! Advertencia !!!","El usuario de red ya tiene el permiso registrado","warning");
 			            return;
 					}else{
 						if (numRta == 2) {
 							event.preventDefault();
-				            swal.fire("��� Advertencia !!!","Problemas con el usuario de red, por favor validarlo","warning");
+				            swal.fire("!!! Advertencia !!!","Problemas con el usuario de red, por favor validarlo","warning");
 				            return;
 						}else{
 							window.location.href='index';

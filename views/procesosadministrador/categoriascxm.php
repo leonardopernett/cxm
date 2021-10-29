@@ -167,7 +167,7 @@ $roles = $command->queryScalar();
 
         if (varidtxtcategoria == "") {
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de ingresar una categoria","warning");
+            swal.fire("!!! Advertencia !!!","Debe de ingresar una categoria","warning");
             return;
         }
     };
@@ -178,12 +178,12 @@ $roles = $command->queryScalar();
 
         if (varcategoriafeedbacksid == "") {
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de seleccionar una categoria","warning");
+            swal.fire("!!! Advertencia !!!","Debe de seleccionar una categoria","warning");
             return;
         }else{
             if (varidtxtcategoriahijo == "") {
                 event.preventDefault();
-                swal.fire("��� Advertencia !!!","Debe de ingresar una categoria hijo","warning");
+                swal.fire("!!! Advertencia !!!","Debe de ingresar una categoria hijo","warning");
                 return;
             }
         }
