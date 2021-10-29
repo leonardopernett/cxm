@@ -250,7 +250,6 @@ class Bloques extends \yii\db\ActiveRecord {
                 ->all();
 
         $array = array();
-        $objeto = new \stdClass();
         foreach ($form as $value) {
             $objeto = new \stdClass();
             foreach ($value as $k => $v) {

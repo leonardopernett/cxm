@@ -88,7 +88,6 @@ class ControlSeguimientoProcesos extends Seguimientoprocesos
                     # code...
                     break;
             }
-//var_dump($txtMes); 
 
 
         $rol =  new Query;

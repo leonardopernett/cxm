@@ -75,13 +75,6 @@ class ErroresSatuSearch extends ErroresSatu {
         $query->andFilterWhere(['like', 'datos', $this->datos])
                 ->andFilterWhere(['like', 'error', $this->error]);
 
-
-        /* if ($this->fecha_satu != '') {
-          $dates = explode(' - ', $this->fecha_satu);
-          $this->startDateSatu = $dates[0] . ' 00:00:01';
-          $this->endDateSatu = $dates[1] . ' 23:59:59';
-          $query->andWhere("fecha_satu BETWEEN '$this->startDateSatu' AND '$this->endDateSatu'");
-          } */
         return $dataProvider;
     }
 
@@ -116,13 +109,6 @@ class ErroresSatuSearch extends ErroresSatu {
                 ->andFilterWhere(['like', 'error', $this->error]);
 
 
-
-        /* if ($this->fecha_satu != '') {
-          $dates = explode(' - ', $this->fecha_satu);
-          $this->startDateSatu = $dates[0] . ' 00:00:01';
-          $this->endDateSatu = $dates[1] . ' 23:59:59';
-          $query->andWhere("fecha_satu BETWEEN '$this->startDateSatu' AND '$this->endDateSatu'");
-          } */
         $dataProvider = $query->all();
 
         return $dataProvider;

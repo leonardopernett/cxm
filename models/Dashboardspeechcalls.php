@@ -80,8 +80,6 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         $txtllamadas = $paramscalls;
         $txtlideres = $varlider;
         $txtasesores = $varasesor;
-        // $txtresultadoasesor = null;
-        // $txtarrayasesores = null;
 
         if ($txtasesores == "") {
             $txtresultadoasesor = Yii::$app->db->createCommand("select distinct e.dsusuario_red from tbl_evaluados e     inner join tbl_equipos_evaluados ee on e.id = ee.evaluado_id where ee.equipo_id in ('$txtlideres') and e.dsusuario_red not like '%usar%'")->queryAll();
@@ -255,7 +253,6 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         $idspeech = $opcion;
         $data = null;
 
-        // $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$idspeech')")->queryScalar();
 
 	$concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$idspeech')")->queryScalar();
 
@@ -264,15 +261,12 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
 
         if ($txttempejecucion == 0 && $txtejecucion == 0) {
-            // var_dump("aqui 1");
             $data = "Abierto";
         }else{
             if ($txttempejecucion == 1 && $txtejecucion == 0) {
-                // var_dump("aqui 2");
                 $data = "En Proceso";
             }else{
                 if ($txttempejecucion == 0 && $txtejecucion == 1) {
-                    // var_dump("aqui 3");
                     $data = "Cerrado";
                 }
             }

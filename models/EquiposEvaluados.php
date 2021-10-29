@@ -111,14 +111,6 @@ class EquiposEvaluados extends \yii\db\ActiveRecord {
             return $users;
         }
         return null;
-        /*return EquiposEvaluados::find()
-                        ->select("*")
-                        ->from("tbl_equipos_evaluados")
-                        ->innerJoinWith('equipo', 'equipo_id = tbl_equipos_evaluados.equipo_id')
-                        ->innerJoinWith('evaluado', 'evaluado_id = tbl_equipos_evaluados.evaluado_id')
-                        ->where(['equipo_id' => $idequipo])
-                        ->asArray()
-                        ->all();*/
     }
 
 

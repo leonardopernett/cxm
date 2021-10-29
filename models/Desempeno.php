@@ -8,9 +8,6 @@ use yii\data\ActiveDataProvider;
 class desempeno extends \yii\db\ActiveRecord
 {
 
-	//public $usuario_red;
-
-
 	public static function tableName() {
         return 'tbl_desempeno';
     }
@@ -28,7 +25,6 @@ class desempeno extends \yii\db\ActiveRecord
                 
        	$unosep = explode("-", $uno);
 
-       	$ano1 = $unosep[0];
        	$mes1 = $unosep[1];
 
        	$dos = strtotime ( '-3 month' , strtotime ( $fecha ) ) ;
@@ -36,7 +32,6 @@ class desempeno extends \yii\db\ActiveRecord
                 
        	$dossep = explode("-", $dos);
 
-       	$ano2 = $dossep[0];
        	$mes2 = $dossep[1];
 
        	$tres = strtotime ( '-2 month' , strtotime ( $fecha ) ) ;
@@ -44,7 +39,6 @@ class desempeno extends \yii\db\ActiveRecord
                 
        	$tressep = explode("-", $tres);
 
-       	$ano3 = $tressep[0];
        	$mes3 = $tressep[1];
 
        	$cuatro = strtotime ( '-1 month' , strtotime ( $fecha ) ) ;
@@ -52,10 +46,8 @@ class desempeno extends \yii\db\ActiveRecord
                 
        	$cuatrosep = explode("-", $cuatro);
 
-       	$ano4 = $cuatrosep[0];
        	$mes4 = $cuatrosep[1];
 
-        //print_r("mes 1: " . $mes1 . "mes 2: " . $mes2 . "mes 3: " . $mes3 . "mes 4: " . $mes4); die;
 
     	$sql = "SELECT usuario_red, GROUP_CONCAT(
 IF(desempeno = '1', CONCAT(DATE_FORMAT(CONCAT(ano,  '-', mes, '-', '00'), '%M-%Y'), ': Deficiente'),''), 
