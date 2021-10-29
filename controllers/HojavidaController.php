@@ -60,12 +60,118 @@ use app\models\HvPais;
       return $this->render('index');
     }
 
-    public function actionResumen(){
-      $id = Yii::$app->user->identity->id;
+    public function actionResumen($id){
+      $sessiones = Yii::$app->user->identity->id;
+
+      $rol =  new Query;
+      $rol     ->select(['tbl_roles.role_id'])
+                  ->from('tbl_roles')
+                  ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                              'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+                  ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                              'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
+                  ->where('tbl_usuarios.usua_id = '.$sessiones.'');                    
+      $command = $rol->createCommand();
+      $roles = $command->queryScalar();
+    
+
+       $clients = Yii::$app->db->createCommand('SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+       WHERE i.usua_id=:id')->bindParam(':id', $id)->queryAll();
+
+      $decisor = Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+      WHERE i.usua_id=:id  AND i.tipo='Decisor' ")->bindParam(':id', $id)->queryAll();
+
+      $estrategico = Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+      WHERE i.usua_id=:id  AND i.nivel='Estrategico' ")->bindParam(':id', $id)->queryAll();
 
 
-      return $this->render('resumen');
+      $operativo = Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+      WHERE i.usua_id=:id  AND i.nivel='Operativo' ")->bindParam(':id', $id)->queryAll();
+
+
+
+      $clientsAdmin = Yii::$app->db->createCommand('SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i')->queryAll();
+
+      $clientsAdmins = Yii::$app->db->createCommand('SELECT * FROM tbl_hv_infopersonal')->queryAll();
+
+      $decisorAdmin = Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+      WHERE  i.tipo='Decisor' ")->bindParam(':id', $id)->queryAll();
+
+      $estrategicoAdmin = Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+      WHERE  i.nivel='Estrategico' ")->bindParam(':id', $id)->queryAll();
+
+
+      $operativoAdmin = Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+      WHERE  i.nivel='Operativo' ")->bindParam(':id', $id)->queryAll();
+
+
+
+        $decisorEstrategico =Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.tipo='Decisor' AND i.nivel='estrategico' ")->queryAll();
+
+        $decisorOperativo=Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.tipo='Decisor' AND i.nivel='operativo' ")->queryAll();
+
+
+        $nodecisorEstrategico =Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.tipo='No Decisor' AND i.nivel='estrategico' ")->queryAll();
+
+
+        $nodecisorOperativo = Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.tipo='No Decisor' AND i.nivel='operativo' ")->queryAll();
+
+
+        $clienteInteresAdmin =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.afinidad='de interes' ")->queryAll();
+
+
+        $clienteInteres =  Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.afinidad='de interes' AND i.usua_id=:id ")->bindParam(':id', $id)->queryAll();
+
+
+        $decisorEstrategicoU =Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.tipo='Decisor' AND i.nivel='estrategico' AND i.usua_id=:id  ")->bindParam(':id', $id)->queryAll();
+
+        $decisorOperativoU=Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.tipo='Decisor' AND i.nivel='operativo' AND i.usua_id=:id  ")->bindParam(':id', $id)->queryAll();
+
+
+        $nodecisorEstrategicoU =Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.tipo='No Decisor' AND i.nivel='estrategico' AND i.usua_id=:id ")->bindParam(':id', $id)->queryAll();
+
+
+        $nodecisorOperativoU = Yii::$app->db->createCommand("SELECT COUNT(i.idhvinforpersonal) AS total FROM tbl_hv_infopersonal i
+        WHERE  i.tipo='No Decisor' AND i.nivel='operativo' AND i.usua_id=:id  ")->bindParam(':id', $id)->queryAll();
+
+
+
+       return $this->render('resumen',[
+          'clients'=>$clients,
+          'decisor'=>$decisor,
+          'estrategico'=>$estrategico,
+          'operativo' =>$operativo,
+          'clientsAdmin'=>$clientsAdmin,
+          'decisorAdmin'=>$decisorAdmin,
+          'estrategicoAdmin'=>$estrategicoAdmin,
+          'operativoAdmin' =>$operativoAdmin,
+          'id'=>$id,
+          'roles' =>$roles,
+          'clientsAdmins'=>$clientsAdmins,
+
+          'decisorEstrategico'=>$decisorEstrategico,
+          'decisorOperativo'=>$decisorOperativo,
+          'nodecisorEstrategico'=>$nodecisorEstrategico,
+          'nodecisorOperativo'=>$nodecisorOperativo,
+
+          'decisorEstrategicoU'=>$decisorEstrategicoU,
+          'decisorOperativoU'=>$decisorOperativoU,
+          'nodecisorEstrategicoU'=>$nodecisorEstrategicoU,
+          'nodecisorOperativoU'=>$nodecisorOperativoU,
+          'clienteInteresAdmin'=>$clienteInteresAdmin,
+          'clienteInteres'=>$clienteInteres
+        ]);
     }
+
 
     public function actionEventos(){
       $model = new HojavidaEventos();
@@ -114,6 +220,28 @@ use app\models\HvPais;
       ]);
     }
 
+    public function actionCrearmodalidad(){
+      $modalidad = Yii::$app->db->createCommand('select * from tbl_hv_modalidad_trabajo')->queryAll();
+      return $this->render('modalidad',[ "modalidad"=> $modalidad ]);
+    }
+
+    public function actionGuardarmodalidad(){
+       Yii::$app->db->createCommand()->insert('tbl_hv_modalidad_trabajo',[
+           "modalidad"=>Yii::$app->request->post('modalidad'),
+           "usua_id"  =>Yii::$app->user->identity->id
+       ])->execute();
+       Yii::$app->session->setFlash('info','MODALIDAD CREADA EXITOSAMENTE');
+       return $this->redirect(["crearmodalidad"]);
+    }
+
+
+    public function actionEliminarmodalidad($id){
+      Yii::$app->db->createCommand('DELETE FROM tbl_hv_modalidad_trabajo WHERE hv_idmodalidad=:id')->bindParam(':id',$id)->execute();
+      Yii::$app->session->setFlash('info','MODALIDAD ELIMINADA CORRECTAMENTE');
+      return $this->redirect(["crearmodalidad"]);
+    }
+
+   
 
   }
 

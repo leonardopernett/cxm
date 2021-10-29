@@ -74,6 +74,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<!-- toastr -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+ 
+
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -92,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
        <div class="col-md-4">
            <div class="card1 mb">
                <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 15px; color: #559FFF;"></em> Resumen General </label>
-               <?= Html::a('Aceptar',  ['resumen'], ['class' => 'btn btn-primary',                                        
+               <?= Html::a('Aceptar',  ['resumen','id'=>Yii::$app->user->identity->id], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Regumen General']) 
                 ?>
@@ -166,10 +173,11 @@ $this->params['breadcrumbs'][] = $this->title;
                        <div class="col-md-2">
                            <div class="card1 mb">
                                 <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Modalidad Trabajo: </label>
-                                <?= Html::a('Crear',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
+                                <?= Html::a('Crear',  ['crearmodalidad'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Modalidad Trabajo']) 
                                 ?>
+                             
                            </div>
                        </div>
 
