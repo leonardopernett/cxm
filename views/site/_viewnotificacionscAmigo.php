@@ -42,7 +42,7 @@ use yii\bootstrap\ActiveForm;
                         <td><?= $modelEvaluado->name; ?></td>
                     </tr>    
                     <tr>
-                        <th><?php echo Yii::t("app", "Valoración"); ?></th>
+                        <th scope="col"><?php echo Yii::t("app", "Valoración"); ?></th>
                         <td>
                             <?=
                             \yii\helpers\Html::a(\yii\helpers\Html::img("@web/images/ico-view.png") .
