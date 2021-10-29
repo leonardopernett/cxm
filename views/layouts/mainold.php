@@ -28,15 +28,6 @@ AppAsset::register($this);
 
         <?php $this->beginBody() ?>
         <header>
-            <!--<div class="container-fluid cabezote">
-                <div class="container">
-                    <?php
-                    /*echo Html::img(Url::to("@web/images/cabezote-qamanagementv2.jpg")
-                            , ["class" => "img-responsive",
-                        "alt" => "cabezote QA"]);*/
-                    ?>
-                </div>
-            </div>-->
             <div class="container-fluid menu-top">
                 <?php
                 NavBar::begin([
