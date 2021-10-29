@@ -75,8 +75,8 @@ $varMesCorte = $txtcorte;
   ?>
 
   <div align="center">
-    <h6><b><p style="color:red;">!!! Advertencia !!! </p></b></h6>
-    <h7><b>Si no se visualiza la grafica, por favor habilitar los scribpts en la pagina actual.</b></h7>
+    <h6><strong><p style="color:red;">!!! Advertencia !!! </p></strong></h6>
+    <h7><strong>Si no se visualiza la grafica, por favor habilitar los scribpts en la pagina actual.</strong></h7>
   </div>
 
   <?php $form->end() ?>

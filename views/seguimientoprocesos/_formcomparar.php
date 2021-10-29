@@ -13,7 +13,7 @@ use \app\models\ControlProcesos;
 use \app\models\ControlParams;
 use kartik\export\ExportMenu;
 
-$this->params['breadcrumbs'][] = ['label' => 'Seguimiento del técnico', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Seguimiento del tÃ©cnico', 'url' => ['index']];
 $this->title = 'Comparar Equipo';
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -34,13 +34,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
 
     <table class="table table-striped table-hover table-bordered">
+    <caption>...</caption>
         <thead>
             <tr>
-                <th class="text-center" style="font-size:12px;">Valorador</th>
-                <th class="text-center" style="font-size:12px;">PCRC o Servicio</th>
-                <th class="text-center" style="font-size:12px;">Dimensiones</th>
-                <th class="text-center" style="font-size:12px;">Cantidad de Valoracion</th>
-                <th class="text-center" style="font-size:12px;">Tipo de Corte</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Valorador</th>
+                <th scope="col" class="text-center" style="font-size:12px;">PCRC o Servicio</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Dimensiones</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Cantidad de Valoracion</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Tipo de Corte</th>
             </tr>
         </thead>
 
