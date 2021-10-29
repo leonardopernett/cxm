@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -53,7 +52,7 @@ $fechaActual = date('Y-m-d');
                     );
         ?>
         &nbsp;&nbsp;
-        <div align="center">
+        <div style="text-align: center;">
 	        <?= Html::submitButton(Yii::t('app', 'Buscar'),
 	                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',                
 	                    'data-toggle' => 'tooltip',
@@ -69,7 +68,7 @@ $fechaActual = date('Y-m-d');
 
 	</div>
 	<br>
-	<div class="row" align="center">
+	<div class="row" style="text-align: center;">
         <div onclick="generated();" class="btn btn-primary" style="display:inline;" method='post' id="botones2">
             Actualizar
         </div>  

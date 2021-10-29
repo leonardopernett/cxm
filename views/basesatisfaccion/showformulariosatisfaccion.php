@@ -1,10 +1,6 @@
 <?php
-//print_r($data->tmp_formulario->hora_inicial); die;
 include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
 
-//echo "<pre>";
-//print_r($data);
-// echo "</pre>";
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\select2\Select2;
@@ -34,7 +30,6 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js");
 ?>
 
 <?php
@@ -113,16 +108,6 @@ $banderaSaltoComentario = true;
                                 if (!empty($data->basesatisfaccion->buzon)) {
                                     if ($data->basesatisfaccion->aliados == 'CLARO') {
                                         $url_buzon = $data->basesatisfaccion->buzon;
-                                        // $file = 'file.txt';
-                                        // $data = 'this is your string to write';
-                                        // file_put_contents($file, $data);
-                                        // $temp = tmpfile();
-                                        // fwrite($temp, "escribiendo en el archivo temporal");
-                                        // fseek($temp, 0);
-                                        // echo fread($temp, 1024);
-                                        // fclose($temp); // esto elimina el archivo
-                                        // echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                        // . Yii::t("app", "Grabación buzón"), $url_buzon, ['target' => "_blank"]);
                                         echo Html::label("Identificador buzon");
                                         echo " ";
                                         echo Html::input("text", "idbuzon", $data->basesatisfaccion->buzon, array('readonly' => true, 'style' => 'width:600px'));
@@ -179,7 +164,6 @@ $banderaSaltoComentario = true;
                                         $varParte5 = substr($varGeneral, -12);
 
                                         $varConnidGenesysCloud = $varParte1 . "-" . $varParte2 . "-" . $varParte3 . "-" . $varParte4 . "-" . $varParte5;
-                                        //$varUrlGenesysCloud = "https://apps.mypurecloud.com/directory/#/engage/admin/interactions/";
                                         $varUrlGenesysCloud = "https://apps.usw2.pure.cloud/directory/#/engage/admin/interactions/";
 
                                         if ($varGC = "G") {
@@ -277,15 +261,7 @@ $banderaSaltoComentario = true;
             <?= Html::input("hidden", "basesatisfaccion_id", $data->basesatisfaccion->id); ?>
 
             <?= Html::input("hidden", "arbol_id", $data->tmp_formulario->arbol_id); ?>
-            <?php //if ($banderaDim) : 
-            ?>
             <?= Html::input("hidden", "dimension_id", $data->tmp_formulario->dimension_id); ?>
-            <?php //else: 
-            ?>
-            <?php //echo Html::input("hidden", "dimension", $data->tmp_formulario->dimension_id, ['id' => 'dimension']); 
-            ?>
-            <?php //endif; 
-            ?>
             <?= Html::input("hidden", "ruta_arbol", $data->ruta_arbol); ?>
             <?= Html::input("hidden", "form_equipo_id", (isset($data->equipo_id)) ? $data->equipo_id : ''); ?>
             <?= Html::input("hidden", "form_lider_id", (isset($data->usua_id_lider)) ? $data->usua_id_lider : ''); ?>
@@ -437,19 +413,6 @@ $banderaSaltoComentario = true;
                                         <th scope="col" ><?php echo (strtoupper($data->preguntas['9']['nombre']) != 'NO APLICA') ? $data->preguntas['9']['enunciado_pre'] : 'NO APLICA' ?></th>
                                         <td><?php echo (strtoupper($data->preguntas['9']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta10 : 'NO APLICA' ?></td>
                                     </tr>
-                                    <!--<tr>
-                                        <th><?php //echo Yii::t("app", "Dimension");        
-                                            ?></th>
-                                        <td><?php
-                                            /*                                     * echo Html::dropDownList("dimension"
-                                      , $data->tmp_formulario->dimension_id
-                                      , $data->dimension
-                                      , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => true, "readonly" => true]); */
-                                            ?>
-                                        </td>
-                                    </tr>-->
-                                    <?php //endif;    
-                                    ?>
                                     <tr>
                                         <th scope="col"><?php echo Yii::t("app", "Interaccion"); ?></th>
                                         <td>
@@ -613,7 +576,6 @@ $banderaSaltoComentario = true;
                             </div>
             </div>
             <?php
-                            //$cont++;
                             $prev_bloque_descripcion = $prev_seccion = $prev_bloque = '';
                             $prev_id_bloque = 0;
                             echo $varFin
@@ -716,21 +678,6 @@ $banderaSaltoComentario = true;
                             );
                             ?></td>
                     </tr>
-                    <?php //else:   
-                    ?>
-                    <!--<tr>
-                                    <th><?php //echo Yii::t("app", "Dimension");        
-                                        ?></th>
-                                    <td><?php
-                                        /*                                 * echo Html::dropDownList("dimension"
-                                  , $data->tmp_formulario->dimension_id
-                                  , $data->dimension
-                                  , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => true, "readonly" => true]); */
-                                        ?>
-                                    </td>
-                                </tr>-->
-                    <?php //endif;   
-                    ?>
                     <tr>
                         <th scope="col"><?php echo Yii::t("app", "Fuente"); ?></th>
                         <td>
@@ -816,7 +763,6 @@ $banderaSaltoComentario = true;
                                 <td>
                                     <?php
                                     $max = 5 - count($data->indices_calcular);
-                                    //echo $max;
                                     echo Select2::widget([
                                         'language' => 'es',
                                         'name' => 'subi_calculo',
@@ -1079,8 +1025,6 @@ $banderaSaltoComentario = true;
                                                                                     ?>>
     <div class="col-md-10">
         <label class="labelseccion">
-            <?php //echo $detalle->seccion  
-            ?>
             <?php
                         echo Html::tag('span', $detalle->seccion, [
                             'data-title' => $detalle->sdescripcion,
@@ -1118,8 +1062,6 @@ $banderaSaltoComentario = true;
                             'data-toggle' => 'tooltip',
                             'style' => 'cursor:pointer;'
                         ]);
-            ?>
-            <?php //echo $detalle->bloque 
             ?>
         </label>
         <?php
@@ -1161,8 +1103,6 @@ $banderaSaltoComentario = true;
                         'data-toggle' => 'tooltip',
                         'style' => 'cursor:pointer;'
                     ]);
-            ?>
-            <?php //echo $detalle->pregunta; 
             ?>
         </label>
         <?php
@@ -1456,19 +1396,6 @@ $banderaSaltoComentario = true;
                             <th scope="col"><?php echo (strtoupper($data->preguntas['9']['nombre']) != 'NO APLICA') ? $data->preguntas['9']['enunciado_pre'] : 'NO APLICA' ?></th>
                             <td><?php echo (strtoupper($data->preguntas['9']['nombre']) != 'NO APLICA') ? $data->basesatisfaccion->pregunta10 : 'NO APLICA' ?></td>
                         </tr>
-                        <!--<tr>
-                                                                        <th><?php //echo Yii::t("app", "Dimension");        
-                                                                            ?></th>
-                                                                        <td><?php
-                                                                            /*                                     * echo Html::dropDownList("dimension"
-                                      , $data->tmp_formulario->dimension_id
-                                      , $data->dimension
-                                      , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => true, "readonly" => true]); */
-                                                                            ?>
-                                                                        </td>
-                                                                    </tr>-->
-                        <?php //endif;    
-                        ?>
                         <tr>
                             <th scope="col"><?php echo Yii::t("app", "Interaccion"); ?></th>
                             <td>
@@ -1630,7 +1557,6 @@ $banderaSaltoComentario = true;
                 </div>
 </div>
 <?php
-                            //$cont++;
                             $prev_bloque_descripcion = $prev_seccion = $prev_bloque = '';
                             $prev_id_bloque = 0;
                             echo $varFin
@@ -1679,7 +1605,8 @@ $banderaSaltoComentario = true;
 
     <table class="table table-striped table-bordered detail-view formDinamico">
         <caption>Tabla datos generales</caption>
-        <tbody <tr>
+        <tbody>
+            <tr>
             <th scope="col"><?php echo Yii::t("app", "Lider Equipo"); ?></th>
             <td><?php echo $data->basesatisfaccion->lider_equipo ?></td>
             </tr>
@@ -1733,21 +1660,6 @@ $banderaSaltoComentario = true;
                         );
                     ?></td>
             </tr>
-            <?php //else:   
-            ?>
-            <!--<tr>
-                                                                    <th><?php //echo Yii::t("app", "Dimension");        
-                                                                        ?></th>
-                                                                    <td><?php
-                                                                        /*                                 * echo Html::dropDownList("dimension"
-                                  , $data->tmp_formulario->dimension_id
-                                  , $data->dimension
-                                  , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => true, "readonly" => true]); */
-                                                                        ?>
-                                                                    </td>
-                                                                </tr>-->
-            <?php //endif;   
-            ?>
             <tr>
                 <th scope="col"><?php echo Yii::t("app", "Fuente"); ?></th>
                 <td>
@@ -1833,11 +1745,9 @@ $banderaSaltoComentario = true;
                         <td>
                             <?php
                                 $max = 5 - count($data->indices_calcular);
-                                //echo $max;
                                 echo Select2::widget([
                                     'language' => 'es',
                                     'name' => 'subi_calculo',
-                                    //'value' =>  $data->tmp_formulario->attributes['subi_calculo'],
                                     'options' => [
                                         'placeholder' => Yii::t('app', 'Select ...'),
                                         'id' => 'subi_calculo'
@@ -1997,7 +1907,6 @@ $banderaSaltoComentario = true;
                     <tr>
                         <th scope="col">Buzon de usuario</th>
                         <td><?php
-                            // $varnotaanterior = Yii::$app->db->createCommand("select distinct nota_anterior from tbl_base_Avon where id = $varBase and arbol_id = $varPcrc")->queryScalar();
                             echo $data->basesatisfaccion->comentario;
                             ?>
                         </td>
@@ -2119,8 +2028,6 @@ $banderaSaltoComentario = true;
                                                                                             ?>>
             <div class="col-md-10">
                 <label class="labelseccion">
-                    <?php //echo $detalle->seccion  
-                    ?>
                     <?php
                         echo Html::tag('span', $detalle->seccion, [
                             'data-title' => $detalle->sdescripcion,
@@ -2158,8 +2065,6 @@ $banderaSaltoComentario = true;
                             'data-toggle' => 'tooltip',
                             'style' => 'cursor:pointer;'
                         ]);
-                    ?>
-                    <?php //echo $detalle->bloque 
                     ?>
                 </label>
                 <?php
@@ -2200,8 +2105,6 @@ $banderaSaltoComentario = true;
                         'data-toggle' => 'tooltip',
                         'style' => 'cursor:pointer;'
                     ]);
-                    ?>
-                    <?php //echo $detalle->pregunta; 
                     ?>
                 </label>
                 <?php
@@ -2537,14 +2440,6 @@ $banderaSaltoComentario = true;
     }
 ?>
         </div>
-        <!--<div class="row seccion" <?php
-                                        /* if ($data->info_adicional['problemas'] == 0 &&
-      $data->info_adicional['tipo_llamada'] == 0)
-      echo "style='display: none'"; */
-                                        ?>>
-    <?php //echo Yii::t("app", "Informacion adicional");   
-    ?>
-    </div>-->
         <?php
         if (($contadorSecciones % $cantDivs) == 0) {
             echo $varRow;
@@ -2635,15 +2530,6 @@ $banderaSaltoComentario = true;
                                 ]
                             );
                             ?>
-                            <?php
-                            /* echo Html::dropDownList("canal"
-                          , $data->basesatisfaccion->canal
-                          , $data->responsabilidad['CANAL']
-                          , ["id" => "canal",
-                          "class" => "form-control",
-                          'prompt' => 'Seleccione ...',
-                          "disabled" => ($data->preview) ? true : false]); */
-                            ?>
                         </div>
                     </div>
                 </div>
@@ -2654,15 +2540,6 @@ $banderaSaltoComentario = true;
                             <?php echo Yii::t("app", "Marca"); ?>
                         </label>
                         <div class="col-sm-9">
-                            <?php
-                            /* echo Html::dropDownList("marca"
-                          , $data->basesatisfaccion->marca
-                          , $data->responsabilidad['MARCA']
-                          , ["id" => "marca",
-                          "class" => "form-control",
-                          'prompt' => 'Seleccione ...',
-                          "disabled" => ($data->preview) ? true : false]); */
-                            ?>
                             <?php
                             echo Html::checkboxList(
                                 'marca[]',
@@ -2683,15 +2560,6 @@ $banderaSaltoComentario = true;
                             <?php echo Yii::t("app", "Equivocacion"); ?>
                         </label>
                         <div class="col-sm-9">
-                            <?php
-                            /* echo Html::dropDownList("equivocacion"
-                          , $data->basesatisfaccion->equivocacion
-                          , $data->responsabilidad['EQUIVOCACION']
-                          , ["id" => "equivocacion",
-                          "class" => "form-control",
-                          'prompt' => 'Seleccione ...',
-                          "disabled" => ($data->preview) ? true : false]); */
-                            ?>
                             <?php
                             echo Html::checkboxList(
                                 'equivocacion[]',

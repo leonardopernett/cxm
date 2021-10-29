@@ -1,17 +1,9 @@
 <?php
-//include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
 
-//echo "<pre>";
-//print_r($detallesseccion_id);
-//echo "</pre>";
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
-
-
-//print_r($prueba); die;
-
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Alertas Valorador CX';
@@ -44,8 +36,6 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -56,7 +46,7 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
     <?php }elseif ($listo == 2) { ?>
         <div class="col-md-offset-2 col-sm-8 alert alert-danger">Ocurrio un Error al Guardar la Alerta, Recuerda que el archivo debe ser .pdf - .jpg o .png</div>
     <?php } ?>
-        <div id="datosGenerales" class="col-md-offset-2 col-sm-8" style="">
+        <div id="datosGenerales" class="col-md-offset-2 col-sm-8">
             <table class="table table-striped table-bordered detail-view formDinamico">
             <caption>Tabla alerta</caption>
                 <thead style="display: none">
