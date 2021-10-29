@@ -26,7 +26,6 @@ $this->registerJs($js);
 
 $this->title = Yii::t('app', 'valoracion escaladas');
 
-//$this->params['breadcrumbs'][] = $this->title;
 $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         . ' {input}{error}{hint}</div>';
         
@@ -44,10 +43,6 @@ if (!isset($aleatorio) || !$aleatorio) {
         echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
     }
     ?>
-
-    <!--<div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
 
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
@@ -89,7 +84,6 @@ if (!isset($aleatorio) || !$aleatorio) {
             <?=
                     $form->field($model, 'asesor', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -208,13 +202,13 @@ if (!isset($aleatorio) || !$aleatorio) {
                     'delete' => function ($url, $model) {
 
                         if ($url == "asda") {
-
+                            //code...
                         }
                     },
                     'view' => function ($url, $model) {
 
                         if ($url == "asda") {
-
+                            //code...
                         }
                     },
                 ],
