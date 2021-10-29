@@ -32,7 +32,7 @@ use yii\bootstrap\Modal;
     				</tr>
     				<tr>
     					<th scope="col"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cedula evaluado') ?></label></th>
-			<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre evaluado') ?></label></th>
+			<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre evaluado') ?></label></th>
                         <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedback') ?></label></th>
                         <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nota final %') ?></label></th>
                         <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cedula evaluador') ?></label></th>
