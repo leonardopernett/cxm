@@ -24,17 +24,6 @@ AppAsset::register($this);
     <body>
 
         <?php $this->beginBody() ?>
-        <!--<header>
-            <div class="container-fluid cabezote">
-                <div class="container">
-                    <?php
-                    /*echo Html::img(Url::to("@web/images/cabezote-qamanagementv2.jpg")
-                            , ["class" => "img-responsive",
-                        "alt" => "cabezote QA"]);*/
-                    ?>
-                </div>
-            </div>
-        </header>-->
         <div class="wrap">
             <div class="container contenido">
                 <?=

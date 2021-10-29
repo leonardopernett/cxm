@@ -2145,6 +2145,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
         $fechaIni = $fechas[0] . " 00:00:00";
         $fechaFin = $fechas[1] . " 23:59:59";
         $baseConsulta = $metrica;
+        $wherePersonas="";
         $groupBy = ($banderaGrafica) ? 'je.arbol_id' : 'je.dimension_id';
         $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio,arbol_id, je.id, dimension_id, COUNT(je.id) total,je.*")
                 ->from('`tbl_ejecucionformularios` je')

@@ -51,6 +51,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
     <div class="col-sm-12" id="idCapa0" style="display: inline">
         <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+            <caption>Tabla datos</caption>
                 <tr>
                     <th scope="col" class="text-center"><?= Yii::t('app', 'Id Parametro') ?></th>
                     <th scope="col" class="text-center"><?= Yii::t('app', 'Codigo pcrc') ?></th>

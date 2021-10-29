@@ -24,7 +24,7 @@ $this->title = 'Ver la Valoración';
 ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
 </div> 
 <div class="control-procesos-index">
 	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
@@ -104,11 +104,12 @@ $this->title = 'Ver la Valoración';
     ?>
 
     <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+        <caption>Tabla datos</caption>
     	<thead>
-            <th class="text-center" ><?= Yii::t('app', 'Corte 1') ?></th>
-            <th class="text-center" ><?= Yii::t('app', 'Corte 2') ?></th>
-            <th class="text-center" ><?= Yii::t('app', 'Corte 3') ?></th>
-            <th class="text-center" ><?= Yii::t('app', 'Corte 4') ?></th>    		
+            <th scope="col" class="text-center" ><?= Yii::t('app', 'Corte 1') ?></th>
+            <th scope="col" class="text-center" ><?= Yii::t('app', 'Corte 2') ?></th>
+            <th scope="col" class="text-center" ><?= Yii::t('app', 'Corte 3') ?></th>
+            <th scope="col" class="text-center" ><?= Yii::t('app', 'Corte 4') ?></th>    		
     	</thead>   
     	<tbody>
     		<td class="text-center" ><?php echo $txtcorte1; ?></td>
@@ -120,12 +121,13 @@ $this->title = 'Ver la Valoración';
 </div>
 <div style="display: none">
     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+        <caption>Tabla datos</caption>
         <thead>
             <tr>
-                <th class="text-center" ><?= Yii::t('app', 'Valorado') ?></th>
-                <th class="text-center" ><?= Yii::t('app', '% de Dedicacion Valorador') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Total Valoraciones') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Tipo de Corte') ?></th>  
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Valorado') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', '% de Dedicacion Valorador') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Total Valoraciones') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Tipo de Corte') ?></th>  
             </tr>
         </thead>
         <tbody>
@@ -136,10 +138,10 @@ $this->title = 'Ver la Valoración';
                 <td class="text-center" ><?php echo $varNametc; ?></td>
             </tr>
             <tr>
-                <th class="text-center" ><?= Yii::t('app', 'PCRC') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Dimensiones') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Cantidad de Valoraciones') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Justificacion') ?></th>  
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'PCRC') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Dimensiones') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Cantidad de Valoraciones') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Justificacion') ?></th>  
             </tr>
             <?php
                 $dataList = $dataProvider->getModels();

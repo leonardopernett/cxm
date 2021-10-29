@@ -36,7 +36,6 @@ if (!isset($aleatorio) || !$aleatorio) {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -45,8 +44,6 @@ if (!isset($aleatorio) || !$aleatorio) {
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -58,10 +55,6 @@ if (!isset($aleatorio) || !$aleatorio) {
         echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
     }
     ?>
-
-<!--    <div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
 
     <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],'layout' => 'horizontal']); ?>
 
@@ -258,12 +251,8 @@ if (!isset($aleatorio) || !$aleatorio) {
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            //'identificacion',
             [
                 'attribute' => 'fecha',
                 'filter' => false,
@@ -352,7 +341,6 @@ if (!isset($aleatorio) || !$aleatorio) {
                                         'template' => '{vergestion} {gestion} {block}{delete}',
                                         'buttons' => [
                                             'vergestion' => function ($url, $model) use ($aleatorio) {
-                                                //if ($model->estado == 'Cerrado') {
                                                     $a = "";
                                                     if (Yii::$app->user->identity->isAdminSistema() && $model->estado == 'Cerrado') {
                                                         $a = Html::a('<span class="glyphicon glyphicon-pencil"></span>'
@@ -363,8 +351,6 @@ if (!isset($aleatorio) || !$aleatorio) {
                                                                     , ['basesatisfaccion/showformulariogestion',
                                                                 'basesatisfaccion_id' => $model->id, 'preview' => 1, 'fill_values' => true, 'banderaescalado' => false, 'aleatorio'=> $aleatorio], ['title' => Yii::t('yii', 'ver formulario')]);
 
-
-                                                //}
                                             },
                                                     'gestion' => function ($url, $model) use ($aleatorio) {
                                                 if (($model->usado == 'NO' || $model->responsable == Yii::$app->user->identity->username) && $model->estado != 'Cerrado') {

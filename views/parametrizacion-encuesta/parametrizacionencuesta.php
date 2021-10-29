@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
     \yii\bootstrap\Modal::end();
     ?>
 
-    <div class="row seccion"><center> <?php echo Yii::t("app", "Módulo Parametrización de Encuestas") ?></center></div>
+    <div class="row seccion text-center"> <?php echo Yii::t("app", "Módulo Parametrización de Encuestas") ?></div>
     <?php echo Html::beginForm(Url::to(['guardarparametrizacion']), "post", ["class" => "form-horizontal", "id" => "guardarFormulario"]); ?>
     <?php echo Html::input("hidden", "id", $model->id); ?>
     <div class="form-group">
@@ -85,17 +85,18 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ])
     ?> 
-    <div class="row seccion"><center><?php echo Yii::t("app", "Creación de Preguntas") ?></center></div>
+    <div class="row seccion text-center"><?php echo Yii::t("app", "Creación de Preguntas") ?></div>
     <div id="divTablaPreguntas">
         <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
+        <caption>Creación Preguntas</caption>
             <tr>
-                <th></th>
-                <th>Categorías</th>
-                <th>Nombre de la Pregunta</th> 
+                <th scope="col"></th>
+                <th scope="col">Categorías</th>
+                <th scope="col">Nombre de la Pregunta</th> 
                 <!--<th>Tipo de recomendación</th> -->
             </tr>
             <tr>
-                <th>Pregunta 1</th>
+                <th scope="row">Pregunta 1</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p1"
                             , (isset($modelPregunta[0])) ? $modelPregunta[0]->categoria : $modelPreguntaBase->categoria
@@ -124,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td> -->
             </tr>
             <tr>
-                <th>Pregunta 2</th>
+                <th scope="row">Pregunta 2</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p2"
                             , (isset($modelPregunta[1])) ? $modelPregunta[1]->categoria : $modelPreguntaBase->categoria
@@ -153,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td>-->
             </tr>
             <tr>
-                <th>Pregunta 3</th>
+                <th scope="row">Pregunta 3</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p3"
                             , (isset($modelPregunta[2])) ? $modelPregunta[2]->categoria : $modelPreguntaBase->categoria
@@ -182,7 +183,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td>-->
             </tr>
             <tr>
-                <th>Pregunta 4</th>
+                <th scope="row">Pregunta 4</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p4"
                             , (isset($modelPregunta[3])) ? $modelPregunta[3]->categoria : $modelPreguntaBase->categoria
@@ -211,7 +212,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td>-->
             </tr>
             <tr>
-                <th>Pregunta 5</th>
+                <th scope="row">Pregunta 5</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p5"
                             , (isset($modelPregunta[4])) ? $modelPregunta[4]->categoria : $modelPreguntaBase->categoria
@@ -232,7 +233,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td>
             </tr>
             <tr>
-                <th>Pregunta 6</th>
+                <th scope="row">Pregunta 6</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p6"
                             , (isset($modelPregunta[5])) ? $modelPregunta[5]->categoria : $modelPreguntaBase->categoria
@@ -261,7 +262,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td>-->
             </tr>
             <tr>
-                <th>Pregunta 7</th>
+                <th scope="row">Pregunta 7</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p7"
                             , (isset($modelPregunta[6])) ? $modelPregunta[6]->categoria : $modelPreguntaBase->categoria
@@ -290,7 +291,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td>-->
             </tr>
             <tr>
-                <th>Pregunta 8</th>
+                <th scope="row">Pregunta 8</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p8"
                             , (isset($modelPregunta[7])) ? $modelPregunta[7]->categoria : $modelPreguntaBase->categoria
@@ -319,7 +320,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td>-->
             </tr>
             <tr>
-                <th>Pregunta 9</th>
+                <th scope="row">Pregunta 9</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p9"
                             , (isset($modelPregunta[8])) ? $modelPregunta[8]->categoria : $modelPreguntaBase->categoria
@@ -348,7 +349,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </td>-->
             </tr>
             <tr>
-                <th>Pregunta 10</th>
+                <th scope="row">Pregunta 10</th>
                 <td><?php
                     echo Html::dropDownList("categoria_p10"
                             , (isset($modelPregunta[9])) ? $modelPregunta[9]->categoria : $modelPreguntaBase->categoria
@@ -379,8 +380,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </table>
     </div>
     <?php echo Html::endForm(); ?>
-    <div class="row seccion">
-        <center><?php echo Yii::t("app", "Tipología de Gestión") ?></center>
+    <div class="row seccion text-center">
+        <?php echo Yii::t("app", "Tipología de Gestión") ?>
     </div>
     <div class="form-group">
         <div class="col-sm-12 well">

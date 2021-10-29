@@ -28,15 +28,16 @@ $varListEscalamientos = Yii::$app->db->createCommand("select * from tbl_plan_esc
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></i> Ver escalamientos:</label>
+                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></em> Ver escalamientos:</label>
             	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+				<caption>Escalamientos</caption>
             		<thead>    			
-            			<th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Corte"; ?></label></th>
-            			<th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
-            			<th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Justificación"; ?></label></th>
-            			<th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comentarios"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th>
-            			<th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Estado"; ?></label></th>    			
+            			<th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Corte"; ?></label></th>
+            			<th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
+            			<th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Justificación"; ?></label></th>
+            			<th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comentarios"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th>
+            			<th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Estado"; ?></label></th>    			
             		</thead>
             		<tbody>
             			<?php

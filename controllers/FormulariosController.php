@@ -207,7 +207,7 @@ class FormulariosController extends Controller {
             }
 
             /**
-             * Action para iniciar una interacción manual
+             * Action para iniciar una interacciï¿½n manual
              * 
              * @return mixed
              * @author Felipe Echeverri <felipe.echeverri@ingeneo.com.co>
@@ -249,7 +249,7 @@ class FormulariosController extends Controller {
             }
 
             /**
-             * Action para guardar el paso 2 de la creación del formulario
+             * Action para guardar el paso 2 de la creaciï¿½n del formulario
              * 
              * @param int $preview
              * @return mixed
@@ -473,7 +473,7 @@ class FormulariosController extends Controller {
                 $data->formulario_id = $formulario_id;
 
                 /* OBTIENE EL LISTADO DETALLADO DE TABLERO DE EXPERIENCIAS Y LLAMADA
-                  EN MODO VISUALIZACIÓN FORMULARIO. */
+                  EN MODO VISUALIZACIï¿½N FORMULARIO. */
                 $data->tablaproblemas = \app\models\Ejecuciontableroexperiencias::
                                 find()
                                 ->where(["ejecucionformulario_id" => $TmpForm->ejecucionformulario_id])->all();
@@ -687,7 +687,7 @@ class FormulariosController extends Controller {
                 if (!isset($modelRegistro)) {
                     $modelRegistro = new \app\models\RegistroEjec();
                     $modelRegistro->ejec_form_id = $tmp_id;
-                    $modelRegistro->descripcion = 'Primera valoración';
+                    $modelRegistro->descripcion = 'Primera valoraciï¿½n';
                 }
                 //$modelRegistro = new \app\models\RegistroEjec();
                 $modelRegistro->dimension_id = $_POST['dimension_id'];
@@ -846,7 +846,7 @@ class FormulariosController extends Controller {
                 if (!isset($modelRegistro)) {
                     $modelRegistro = new \app\models\RegistroEjec();
                     $modelRegistro->ejec_form_id = $tmp_id;
-                    $modelRegistro->descripcion = 'Primera valoración';
+                    $modelRegistro->descripcion = 'Primera valoraciï¿½n';
                 }
                 //$modelRegistro = new \app\models\RegistroEjec();
                 $modelRegistro->dimension_id = $_POST['dimension_id'];
@@ -1073,7 +1073,7 @@ class FormulariosController extends Controller {
                 $modelEvaluado = \app\models\Evaluados::findOne(["id" => $tmp_ejecucion->evaluado_id]);
                 $ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
                 $params = [];
-                $params['titulo'] = 'Te han realizado una valoración';
+                $params['titulo'] = 'Te han realizado una valoraciï¿½n';
                 $params['pcrc'] = '';
                 $params['descripcion'] = '';
                 $params['notificacion'] = 'SI';
@@ -1089,7 +1089,7 @@ class FormulariosController extends Controller {
                 //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
                 //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                 //if (!$webservicesresponse && $tmp_ejecucion == '') {
-                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));
+                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexiï¿½n con la plataforma Amigo'));
                 //}
 
                 //Proceso para guardar clientes y centro de costos
@@ -1328,7 +1328,7 @@ class FormulariosController extends Controller {
                 $data->formulario_id = $tmp_id;
 
                 /* OBTIENE EL LISTADO DETALLADO DE TABLERO DE EXPERIENCIAS Y LLAMADA
-                  EN MODO VISUALIZACIÓN FORMULARIO. */
+                  EN MODO VISUALIZACIï¿½N FORMULARIO. */
                 $data->tablaproblemas = \app\models\Ejecuciontableroexperiencias::
                                 find()
                                 ->where(["ejecucionformulario_id" => $TmpForm->ejecucionformulario_id])->all();
@@ -2100,7 +2100,7 @@ class FormulariosController extends Controller {
                                     "showInteraccion" => base64_encode($showInteraccion),
                                     "showBtnIteraccion" => base64_encode($showBtnIteraccion)]);
                     } else {
-                        Yii::$app->session->setFlash('danger', 'Los campos Valorado, Programa/PCRC y Dimensión son obligatorios');
+                        Yii::$app->session->setFlash('danger', 'Los campos Valorado, Programa/PCRC y Dimensiï¿½n son obligatorios');
                         return $this->redirect('interaccionmanual');
                     }
                 }
@@ -2110,10 +2110,11 @@ class FormulariosController extends Controller {
                 $tmp_id = \Yii::$app->request->get('tmp_form');
                 $escaladobase = \Yii::$app->request->get('banderaescalado');
                 $escaladoform = \Yii::$app->request->get('escalado');
-                
+                $tmpeje = new \app\models\Tmpejecucionformularios();
                 $model = new \app\models\RegistroEjec();
                 $model_tmp_ejec = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                 $model->scenario = 'escalar';
+                $idTmp = $tmpeje->id;
                 
                 if (Yii::$app->getRequest()->isAjax) {
                     $model->valorado_id = $model_tmp_ejec->evaluado_id;
@@ -2138,7 +2139,7 @@ class FormulariosController extends Controller {
                         $sneditable = 1;
                         if ($enviar_new_form == 0) {
                             //print_r('4'); die;
-                            $tmpeje = new \app\models\Tmpejecucionformularios();
+                            
                             $tmpeje->dimension_id = $dimension_id;
                             $tmpeje->arbol_id = $arbol_id;
                             $tmpeje->usua_id = $usua_id;
@@ -2179,7 +2180,7 @@ class FormulariosController extends Controller {
                             $model_tmp_ejec->save();
                             $idTmp = $tmpeje->id;
                             $preview = 0;
-                            Yii::$app->session->setFlash('danger', 'Se creó y  escaló la valoración con éxito');
+                            Yii::$app->session->setFlash('danger', 'Se creo y  escalo la valoracion con exito');
                             if ($tmpeje->basesatisfaccion_id != "") {
                                 //print_r('9'); die;
                                 return $this->redirect([
@@ -2247,7 +2248,7 @@ class FormulariosController extends Controller {
 
                             
                             //$preview = 0;
-                            Yii::$app->session->setFlash('danger', 'Se ha escalado la valoración con éxito');
+                            Yii::$app->session->setFlash('danger', 'Se ha escalado la valoraciï¿½n con ï¿½xito');
                             return $this->redirect(["indexescaladosenviados"]);
                         }
                     } else {
@@ -2286,7 +2287,7 @@ class FormulariosController extends Controller {
                             $model2->valorador_inicial_id = Yii::$app->user->identity->id;
                             $model2->save();
                         }
-
+                        
                         if ($tmpeje->basesatisfaccion_id != "") {
                             //print_r('18'); die;
                             return $this->redirect([
@@ -2311,7 +2312,7 @@ class FormulariosController extends Controller {
             }
 
             /**
-             * Acción para cerrar una gestión sin necesidad de diligenciarla
+             * Acciï¿½n para cerrar una gestiï¿½n sin necesidad de diligenciarla
              * 
              * @param int $id datos de la baseinicial
              * 

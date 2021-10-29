@@ -8,6 +8,7 @@ use app\models\TipificaciondetallesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * TipificaciondetallesController implements the CRUD actions for Tipificaciondetalles model.
@@ -105,7 +106,6 @@ class TipificaciondetallesController extends Controller {
             } else {
                 return $this->renderPartial('create', ['model' => $model]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['tipificaciones/index']);
         }       
@@ -126,7 +126,6 @@ class TipificaciondetallesController extends Controller {
             } else {
                 return $this->renderPartial('update', ['model' => $model]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['tipificaciones/index']);
         }

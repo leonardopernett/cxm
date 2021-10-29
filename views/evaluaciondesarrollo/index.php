@@ -153,7 +153,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
@@ -475,7 +475,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="col-md-12" align="center">                            
                                         <div class="panel panel-default">
                                             <div class="panel-body" style="background-color: #dfffdc;">
-                                                <label style="font-size: 20px;"><i class="fas fa-check-circle" style="font-size: 25px; color: #64ea57;"></i> ¡Gracias! Has finalizado todas las evaluaciones pendientes.</label>
+                                                <label style="font-size: 20px;"><em class="fas fa-check-circle" style="font-size: 25px; color: #64ea57;"></em> ¡Gracias! Has finalizado todas las evaluaciones pendientes.</label>
                                                 <br>
                                                 <label style="font-size: 13px;"> Nota: Si deseas evaluar más pares puedes hacerlo mientras estén habilitados.</label>
                                             </div>
@@ -498,7 +498,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card1 mb">
                     <div class="row">
                         <div class="col-md-6">
-                            <label style="font-size: 15px;"><i class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></i> Eliminar evaluación</label>
+                            <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></em> Eliminar evaluación</label>
                         </div>
                         <div class="col-md-6" align="right">
                             <div onclick="opennovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbn1" >

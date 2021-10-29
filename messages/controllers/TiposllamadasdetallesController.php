@@ -8,6 +8,7 @@ use app\models\TiposllamadasdetallesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * TiposllamadasdetallesController implements the CRUD actions for Tiposllamadasdetalles model.
@@ -105,7 +106,6 @@ class TiposllamadasdetallesController extends Controller {
             } else {
                 return $this->renderPartial('create', ['model' => $model]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['tiposllamadas/index']);
         }
@@ -126,7 +126,6 @@ class TiposllamadasdetallesController extends Controller {
             } else {
                 return $this->renderPartial('update', ['model' => $model]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['tiposllamadas/index']);
         }

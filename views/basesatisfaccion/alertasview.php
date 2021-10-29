@@ -35,7 +35,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -46,17 +45,11 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
 </header>
 <br><br>
-
-<!--<div class="page-header">
-    <h3><?php //$this->title ?></h3>
-</div>-->
 
 <div class="equipos-evaluados-form">    
 

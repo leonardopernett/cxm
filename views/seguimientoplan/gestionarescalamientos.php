@@ -94,19 +94,20 @@ $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></i> Lista de escalamientos corte actual:</label>
+                <label><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em> Lista de escalamientos corte actual:</label>
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Lista</caption>
                     <thead>
-                            <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Rol"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Técnico/Lider"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Corte"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Justificación"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Justificaciones"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comentarios"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Aprobar"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "No Aprobar"; ?></label></th>                    
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Rol"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Técnico/Lider"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Corte"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Justificación"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Justificaciones"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comentarios"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Aprobar"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "No Aprobar"; ?></label></th>                    
                     </thead>
                     <tbody>
                         <?php
@@ -183,11 +184,11 @@ $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -197,7 +198,7 @@ $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Descargar Escalamientos: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Descargar Escalamientos: </label> 
                             <a id="dlink" style="display:none;"></a>
                             <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Descargar</button>
                         </div>
@@ -217,17 +218,18 @@ $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 <div id="capaDos" style="display: none">   
     <div class="row">
                 <table id="tblDatas" class="table table-striped table-bordered tblResDetFreed">
+                <caption>...</caption>
                     <thead>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Responsable"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tecnico/Lider"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Rol"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Corte"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Justificacion"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Justificaciones"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comentarios"; ?></label></th>  
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th> 
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Estado"; ?></label></th>                
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Responsable"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tecnico/Lider"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Rol"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Corte"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Justificacion"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Justificaciones"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comentarios"; ?></label></th>  
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th> 
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Estado"; ?></label></th>                
                     </thead>
                     <tbody>
                         <?php

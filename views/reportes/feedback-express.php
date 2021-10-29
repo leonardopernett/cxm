@@ -268,15 +268,16 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         </div>
         <div style="max-height: 300px; overflow: auto">
             <table class="table table-striped table-bordered tblResDetFeed">
+                <caption>Tabla datos</caption>
                 <thead>
                     <tr>
-                        <th><?= Yii::t('app', 'Cliente') ?></th>
-                        <th><?= Yii::t('app', 'Programa') ?></th>
-                        <th><?= Yii::t('app', 'Cantidad feedback recibidos') ?></th>
-                        <th><?= Yii::t('app', 'Cantidad de feedback Gestionados') ?></th>
-                        <th><?= Yii::t('app', 'porcentaje De Gestion') ?></th>
-                        <th><?= Yii::t('app', 'Cantidad de Asesores') ?></th>
-                        <th><?= Yii::t('app', 'Tiempo promedio de Gestion') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Cliente') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Programa') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Cantidad feedback recibidos') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Cantidad de feedback Gestionados') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'porcentaje De Gestion') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Cantidad de Asesores') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Tiempo promedio de Gestion') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -304,16 +305,17 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         </div>
         <div style="max-height: 300px; overflow: auto">
             <table class="table table-striped table-bordered tblResDetFeed">
+                <caption>Tabla datos</caption>
                 <thead>
                     <tr>
-                        <th><?= Yii::t('app', 'Lider de Equipo') ?></th>
-                        <th><?= Yii::t('app', 'Cliente') ?></th>
-                        <th><?= Yii::t('app', 'Programa') ?></th>
-                        <th><?= Yii::t('app', 'Cantidad feedback recibidos') ?></th>
-                        <th><?= Yii::t('app', 'Cantidad de feedback Gestionados') ?></th>
-                        <th><?= Yii::t('app', 'porcentaje De Gestion') ?></th>
-                        <th><?= Yii::t('app', 'Cantidad de Asesores') ?></th>
-                        <th><?= Yii::t('app', 'Tiempo promedio de Gestion') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Lider de Equipo') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Cliente') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Programa') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Cantidad feedback recibidos') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Cantidad de feedback Gestionados') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'porcentaje De Gestion') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Cantidad de Asesores') ?></th>
+                        <th scope="col"><?= Yii::t('app', 'Tiempo promedio de Gestion') ?></th>
                     </tr>
                 </thead>
                 <tbody>

@@ -550,7 +550,8 @@ if($vardocumentosijefe){ ?>
                                 <div class="card2 mb">
                                     <label style="font-size: 17px;"><em class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></em> Calificación Final </label>
                                     <table style="width:100%">
-                                        <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
+                                    <caption>Tabla datos</caption>
+                                        <th scope="col" class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
                                     </table> 
                                 </div>
                             </div>                            
@@ -872,7 +873,7 @@ if($vardocumentosijefe){ ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-              <label><i class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></i> Información:</label>
+              <label><em class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></em> Información:</label>
               <label style="font-size: 14px;">No tiene personal a cargo para realizar este proceso</label>
                 </div><br>
             </div>

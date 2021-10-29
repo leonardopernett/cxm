@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
+use yii\base\Exception;
 
 /**
  * TmptableroexperienciasController implements the CRUD actions for Tmptableroexperiencias model.
@@ -85,7 +86,6 @@ class TmptableroexperienciasController extends Controller {
                                 'model' => $model,
                                 'arbol_id' => $arbol_id,
                     ]);
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tmptableroexperiencias/index']);
                 }
@@ -118,7 +118,6 @@ class TmptableroexperienciasController extends Controller {
                                     'problema_id' => $problema_id[0]["tableroproblema_id"],
                         ]);
                     }
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tmptableroexperiencias/index']);
                 }
@@ -145,7 +144,6 @@ class TmptableroexperienciasController extends Controller {
                                     'arbol_id' => $arbol_id,
                         ]);
                     }
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tmptableroexperiencias/index']);
                 }
@@ -187,8 +185,6 @@ class TmptableroexperienciasController extends Controller {
                                 'dataProvider' => $dataProvider,
                                 'arbol_id' => $arbol_id
                     ]);
-
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tmptableroexperiencias/index']);
                 }

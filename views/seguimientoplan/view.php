@@ -331,19 +331,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></i> Rol del usuario:</label>
+                <label><em class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></em> Rol del usuario:</label>
                 <label><?php echo $varRol; ?></label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></i> Técnico/Lider:</label>
+                <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Técnico/Lider:</label>
                 <label><?php echo $varNombre; ?></label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-calendar-alt" style="font-size: 20px; color: #2CA5FF;"></i> Corte seleccionado:</label>
+                <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #2CA5FF;"></em> Corte seleccionado:</label>
                 <label><?php echo $varRango; ?></label>
             </div>
         </div>
@@ -354,12 +354,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
     	<div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-object-ungroup" style="font-size: 20px; color: #FF3F33;"></i> Planes de valoración: </label>
+                <label><em class="fas fa-object-ungroup" style="font-size: 20px; color: #FF3F33;"></em> Planes de valoración: </label>
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Planes</caption>
                 	<thead>
-                		<th class="text-center"><?= Yii::t('app', 'Formulario de valoración') ?></th>
-                		<th class="text-center"><?= Yii::t('app', 'Dimensiones') ?></th>
-                		<th class="text-center"><?= Yii::t('app', 'Meta') ?></th>
+                		<th scope="col" class="text-center"><?= Yii::t('app', 'Formulario de valoración') ?></th>
+                		<th scope="col" class="text-center"><?= Yii::t('app', 'Dimensiones') ?></th>
+                		<th scope="col" class="text-center"><?= Yii::t('app', 'Meta') ?></th>
                 	</thead>
                 	<tbody>
                 		<?php 
@@ -380,10 +381,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php if ($varTotalspeech != null) { ?>
                     <br>
                     <table id="tblDatas2" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Planes</caption>
                         <thead>
-                            <th class="text-center"><?= Yii::t('app', 'Formulario de valoración VOC') ?></th>
-                            <th class="text-center"><?= Yii::t('app', 'Dimensiones') ?></th>
-                            <th class="text-center"><?= Yii::t('app', 'Meta') ?></th>
+                            <th scope="col" class="text-center"><?= Yii::t('app', 'Formulario de valoración VOC') ?></th>
+                            <th scope="col" class="text-center"><?= Yii::t('app', 'Dimensiones') ?></th>
+                            <th scope="col" class="text-center"><?= Yii::t('app', 'Meta') ?></th>
                         </thead>
                         <tbody>
                             <?php 
@@ -414,10 +416,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="w3-container">
                 	<div class="w3-row">
                         <a href="javascript:void(0)" onclick="openCity(event, 'Emitida');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-list" style="font-size: 25px; color: #559FFF;"></i><strong> Listado de valoraciones</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-list" style="font-size: 25px; color: #559FFF;"></em><strong> Listado de valoraciones</strong></div>
                         </a>
                         <a href="javascript:void(0)" onclick="openCity(event, 'Percibida');">
-                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><i class="fas fa-chart-bar" style="font-size: 25px; color: #827DF9;"></i><strong> Gráfica de valoraciones</strong></div>
+                            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #827DF9;"></em><strong> Gráfica de valoraciones</strong></div>
                         </a>
                     </div>
 
@@ -425,30 +427,31 @@ $this->params['breadcrumbs'][] = $this->title;
                     	<br>
                         <?php if($vargrupo == '4') { ?>
 						<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                        <caption>Lista</caption>
 		                	<thead>
 		                		<tr>
-		                			<th class="text-center" colspan="13" style="background-color: #C6C6C6;"><?php echo $varFechas; ?></th>
+		                			<th scope="col" class="text-center" colspan="13" style="background-color: #C6C6C6;"><?php echo $varFechas; ?></th>
 		                		</tr>
 		                		<tr>
-		                			<th class="text-center" style="background-color: #C6C6C6;">  </th>          
-					                <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte1; ?></label></th>
-					                <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte2; ?></label></th>
-					                <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte3; ?></label></th>
+		                			<th scope="col" class="text-center" style="background-color: #C6C6C6;">  </th>          
+					                <th scope="col" class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte1; ?></label></th>
+					                <th scope="col" class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte2; ?></label></th>
+					                <th scope="col" class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte3; ?></label></th>
 		                		</tr>
 		                		<tr>
-		                			<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '-- Formularios --') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-					                <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+		                			<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '-- Formularios --') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+					                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
 		                		</tr>
 		                	</thead>
 		                	<tbody>
@@ -581,35 +584,36 @@ $this->params['breadcrumbs'][] = $this->title;
 		                </table>   
                         <?php }else{ ?>
                         <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                        <caption>Lista</caption>
                             <thead>
                                 <tr>
-                                    <th class="text-center" colspan="17" style="background-color: #C6C6C6;"><?php echo $varFechas; ?></th>
+                                    <th scope="col" class="text-center" colspan="17" style="background-color: #C6C6C6;"><?php echo $varFechas; ?></th>
                                 </tr>
                                 <tr>
-                                    <th class="text-center" style="background-color: #C6C6C6;">  </th>          
-                                    <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte1; ?></label></th>
-                                    <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte2; ?></label></th>
-                                    <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte3; ?></label></th>
-                                    <th class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte4; ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;">  </th>          
+                                    <th scope="col" class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte1; ?></label></th>
+                                    <th scope="col" class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte2; ?></label></th>
+                                    <th scope="col" class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte3; ?></label></th>
+                                    <th scope="col" class="text-center" colspan="4" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte4; ?></label></th>
                                 </tr>
                                 <tr>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '-- Formularios --') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
-                                    <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '-- Formularios --') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestión') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -795,27 +799,28 @@ $this->params['breadcrumbs'][] = $this->title;
                         <br>
                             <?php if($vargrupo == '4') { ?>
                             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                            <caption>lista</caption>
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="10" style="background-color: #C6C6C6;"><?php echo $varFechas; ?></th>
+                                        <th scope="col" class="text-center" colspan="10" style="background-color: #C6C6C6;"><?php echo $varFechas; ?></th>
                                     </tr>
                                     <tr>
-                                        <th class="text-center" style="background-color: #C6C6C6;">  </th>          
-                                        <th class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte1; ?></label></th>
-                                        <th class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte2; ?></label></th>
-                                        <th class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte3; ?></label></th>
+                                        <th scope="col" class="text-center" style="background-color: #C6C6C6;">  </th>          
+                                        <th scope="col" class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte1; ?></label></th>
+                                        <th scope="col" class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte2; ?></label></th>
+                                        <th scope="col" class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte3; ?></label></th>
                                     </tr>
                                     <tr>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '-- Formularios VOC --') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '-- Formularios VOC --') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -873,31 +878,32 @@ $this->params['breadcrumbs'][] = $this->title;
                             </table>  
                             <?php }else{ ?>
                             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                            <caption>Lista</caption>
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="13" style="background-color: #C6C6C6;"><?php echo $varFechas; ?></th>
+                                        <th scope="col" class="text-center" colspan="13" style="background-color: #C6C6C6;"><?php echo $varFechas; ?></th>
                                     </tr>
                                     <tr>
-                                        <th class="text-center" style="background-color: #C6C6C6;">  </th>          
-                                        <th class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte1; ?></label></th>
-                                        <th class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte2; ?></label></th>
-                                        <th class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte3; ?></label></th>
-                                        <th class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte4; ?></label></th>
+                                        <th scope="col" class="text-center" style="background-color: #C6C6C6;">  </th>          
+                                        <th scope="col" class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte1; ?></label></th>
+                                        <th scope="col" class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte2; ?></label></th>
+                                        <th scope="col" class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte3; ?></label></th>
+                                        <th scope="col" class="text-center" colspan="3" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo $varCorte4; ?></label></th>
                                     </tr>
                                     <tr>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '-- Formularios VOC --') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
-                                        <th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '-- Formularios VOC --') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hechas') ?></label></th>
+                                        <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento') ?></label></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -981,11 +987,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
     	<div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                 	<div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -995,7 +1001,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-plus-circle" style="font-size: 15px; color: #FFC72C;"></i> Generar justificación: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-plus-circle" style="font-size: 15px; color: #FFC72C;"></em> Generar justificación: </label> 
                             <?= Html::a('Aceptar',  ['escalamientos','varid'=>$varId,'evaluados_id' => $varEvaluado], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #337ab7',
                                     'data-toggle' => 'tooltip',
@@ -1005,7 +1011,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-eye" style="font-size: 15px; color: #FFC72C;"></i> Ver Escalamientos (Gestión): </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-eye" style="font-size: 15px; color: #FFC72C;"></em> Ver Escalamientos (Gestión): </label> 
                             <?= 
                                 Html::button('Aceptar', ['value' => url::to(['viewgestion','varid'=>$varId,'evaluados_id'=>$varEvaluado]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Ver Escalamientos'                                        
                                     ])
@@ -1025,7 +1031,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Descargar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Descargar: </label> 
                             <?= 
                                 Html::button('Aceptar', ['value' => url::to(['exportarexcel','varid'=>$varId,'evaluados_id'=>$varEvaluado]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Descargar Archivo'                                        
                                     ])

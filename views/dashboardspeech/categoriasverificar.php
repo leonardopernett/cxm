@@ -54,6 +54,7 @@ $this->title = 'Visualización por Categorias -- QA & Speech --';
 <br>
 <div>
 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+<caption>tabla datos</caption>
         <thead>
             <tr>
                 <th scope="col" class="text-center"><?= Yii::t('app', 'Programa Cliente') ?></th>

@@ -21,7 +21,7 @@ $rtaCantd = $nameVal;
 ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <div class="control-procesos-index">
 	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
@@ -213,13 +213,13 @@ $rtaCantd = $nameVal;
 		var meses = document.getElementById("tipocortes-fechainiciotc").value.split("-")[1];	
 		var bfecha1 = new Date(document.getElementById("tipocortes-fechainiciotc").value);	
 
-		var cuentaFinde = 0; //Número de Domingos
+		var cuentaFinde = 0; //NÃºmero de Domingos
     	var array = new Array(contardias1);
 
     	if (varincluir != true) {
 	     	for (var i=0; i < contardias1; i++) 
 		    {
-		        //0 => Domingo - 6 => Sábado
+		        //0 => Domingo - 6 => SÃ¡bado
 		        if (bfecha1.getDay() == 6 || bfecha1.getDay() == 5) {
 		            cuentaFinde++;
 		        }
@@ -228,7 +228,7 @@ $rtaCantd = $nameVal;
     	}else{
 	     	for (var i=0; i < contardias1; i++) 
 		    {
-		        //0 => Domingo - 6 => Sábado
+		        //0 => Domingo - 6 => SÃ¡bado
 		        if (bfecha1.getDay() == 6) {
 		            cuentaFinde++;
 		        }

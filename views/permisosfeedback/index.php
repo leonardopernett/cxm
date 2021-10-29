@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -103,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-9">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-chart-bar" style="font-size: 15px; color: #fd7e14;"></i> Grafica general: </label>
+                <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 15px; color: #fd7e14;"></em> Grafica general: </label>
                     <div id="conatinergeneric" class="highcharts-container" style="height: 360px;"></div>
             </div>
         </div>
@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-hashtag" style="font-size: 15px; color: #559FFF;"></i> Cantidad de permisos: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #559FFF;"></em> Cantidad de permisos: </label>
                         <label  style="font-size: 70px; text-align: center;"><?php echo $txtConteo; ?></label>
                     </div>
                 </div>
@@ -120,7 +120,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #C148D0;"></i> Procesos en Permisos: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #C148D0;"></em> Procesos en Permisos: </label>
                         <?=  Html::a(Yii::t('app', 'Asignar Permiso'),
                                                 'javascript:void(0)',
                                                 [
@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #C178G9;"></i> Buscar Permisos: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #C178;"></em> Buscar Permisos: </label>
                         <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
                             <div class="row">
                                 <div class="col-md-8">
@@ -191,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
             varcapaDos.style.display = 'none';
             varcapaTres.style.display = 'inline';
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un usuario de red","warning");
+            swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de ingresar un usuario de red","warning");
             return;
             
         }else{
