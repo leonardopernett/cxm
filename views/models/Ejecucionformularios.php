@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Exepcion;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
@@ -1958,6 +1959,7 @@ FORCE INDEX(created_idx)
         $fechaFin = $fechas[1] . " 23:59:59";
         $baseConsulta = $metrica;
         $groupBy = ($banderaGrafica) ? 'je.arbol_id' : 'je.dimension_id';
+        $wherePersonas="";
         $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio,arbol_id, je.id, dimension_id, COUNT(je.id) total,je.*")
                 ->from('`tbl_ejecucionformularios` je')
                 ->where("je.dimension_id IN (" . $dimension_id . ") AND je.created BETWEEN '" . $fechaIni . "' AND '" . $fechaFin . "' AND je.arbol_id IN (" . $arbol_id . ")");
@@ -1991,6 +1993,7 @@ FORCE INDEX(created_idx)
                 $arrayIdsusuarios[]=$value['evaluadores_id'];
             }
             $idsUsuarios = implode(',', $arrayIdsusuarios);
+            
             if($segundoCalifPer){
                 $wherePersonas .= " AND sc.id_responsable IN (" . $idsUsuarios . ") ";
             }else{

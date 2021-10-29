@@ -33,11 +33,11 @@ $rutaframe = "https://app.powerbi.com/reportEmbed?reportId=c9266a88-857e-4383-8e
   ?>
 <br>
     <div class="page-header" >
-        <h3><center><?= Html::encode($this->title) ?></center></h3>
+        <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
     </div> 
 <br>
 <div style="position: relative; height: 0; overflow: hidden; padding-bottom: 56.2%; margin-bottom: 20px; " >
-    <iframe  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src='<?php echo $rutaframe; ?>'
+    <iframe title="new-page"  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src='<?php echo $rutaframe; ?>'
             allowfullscreen="" frameborder="0"></iframe>
 </div>
    

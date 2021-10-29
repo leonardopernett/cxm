@@ -33,7 +33,7 @@ $template = '<div class="col-md-12">'
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -44,7 +44,7 @@ $template = '<div class="col-md-12">'
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card1 mb">
-				<label style="font-size: 15px;"><i class="fas fa-sticky-note" style="font-size: 15px; color: #C148D0;"></i> Buscar Pcrc/Programa... </label>
+				<label style="font-size: 15px;"><em class="fas fa-sticky-note" style="font-size: 15px; color: #C148D0;"></em> Buscar Pcrc/Programa... </label>
 				<?=
                     $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                 ->widget(Select2::classname(), [

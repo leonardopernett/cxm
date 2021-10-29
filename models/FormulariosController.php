@@ -692,7 +692,7 @@ class FormulariosController extends Controller {
              */
             public function actionGuardaryenviarformulario() {
 
-
+                
                 $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
                 $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
                 $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];

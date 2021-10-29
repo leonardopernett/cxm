@@ -27,8 +27,8 @@ $areatrabajopbi = "'".$areatrabajo."'";
     ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
-    <h3><center><?= $nombrerepor ?></center></h3>
+    <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
+    <h3 style="text-align: center;"><?= $nombrerepor ?></h3>
 </div>
 
 <br>
@@ -79,12 +79,13 @@ $areatrabajopbi = "'".$areatrabajo."'";
 <div id="dtbloque2" class="col-sm-12">
 	<br>
 	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+        <caption>Tabla datos</caption>
 		<tr>
-			<th class="text-center"><?= Yii::t('app', 'Nombre') ?></th>
-			<th class="text-center"><?= Yii::t('app', 'cédula') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Usuario Red') ?></th>
-            <th class="text-center"><?= Yii::t('app', 'Usuario Id') ?></th>
-			<th class="text-center"><?= Yii::t('app', '') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Nombre') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'cédula') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Usuario Red') ?></th>
+            <th scope="col" class="text-center"><?= Yii::t('app', 'Usuario Id') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', '') ?></th>
 		</tr>
 		
 			<?php

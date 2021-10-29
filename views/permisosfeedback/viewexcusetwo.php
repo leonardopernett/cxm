@@ -30,7 +30,7 @@ $sesiones =Yii::$app->user->identity->id;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -51,7 +51,7 @@ $sesiones =Yii::$app->user->identity->id;
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card1 mb">
-				<label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #C148D0;"></i> Acciones a registrar... </label>
+				<label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #C148D0;"></em> Acciones a registrar... </label>
 				<?= $form->field($model, 'idusuarios')->textInput(['maxlength' => 300, 'id'=>'txtusuarioid', 'placeholder'=>'Agregar usuario de red'])?>
 				<div onclick="validarvalor();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="ButtonSearch" >
                     Guardar Informacion
@@ -67,7 +67,7 @@ $sesiones =Yii::$app->user->identity->id;
 
 		if (vartxtusuarioid == "") {
 			event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un usuario de red","warning");
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un usuario de red","warning");
             return;
 		}else{
 			$.ajax({
@@ -81,12 +81,12 @@ $sesiones =Yii::$app->user->identity->id;
 
 					if (numRta == 1) {
 						event.preventDefault();
-			            swal.fire("¡¡¡ Advertencia !!!","El usuario de red ya tiene el permiso registrado","warning");
+			            swal.fire("!!! Advertencia !!!","El usuario de red ya tiene el permiso registrado","warning");
 			            return;
 					}else{
 						if (numRta == 2) {
 							event.preventDefault();
-				            swal.fire("¡¡¡ Advertencia !!!","Problemas con el usuario de red, por favor validarlo","warning");
+				            swal.fire("!!! Advertencia !!!","Problemas con el usuario de red, por favor validarlo","warning");
 				            return;
 						}else{
 							window.location.href='index';

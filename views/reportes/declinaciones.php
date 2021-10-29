@@ -69,7 +69,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                     ?>
             </div>
             <div class="icon">
-                <i class="ion ion-calendar"></i>
+                <em class="ion ion-calendar"></em>
             </div>                
         </div>
     </div><!-- ./col -->
@@ -90,7 +90,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 <?php endif; ?>          
             </div>
             <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <em class="ion ion-stats-bars"></em>
             </div>                
         </div>
     </div><!-- ./col -->
@@ -111,7 +111,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 <?php endif; ?>
             </div>
             <div class="icon">
-                <i class="ion ion-ios-people"></i>
+                <em class="ion ion-ios-people"></em>
             </div>                
         </div>
     </div><!-- ./col --> 

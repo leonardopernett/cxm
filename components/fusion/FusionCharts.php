@@ -44,7 +44,7 @@ public function datePart($mask, $dateTimeStr) {
             default: return (trim($month . "/" . $day . "/" . $year));
         }
         
-        return (trim($month . "/" . $day . "/" . $year));
+        
     }
     return $dataStr;
 }
@@ -136,7 +136,7 @@ HTMLCHART;
 }
 
 // boolToNum function converts boolean values to numeric (1/0)
-function boolToNum($bVal) {
+public function boolToNum($bVal) {
     return (($bVal == true) ? 1 : 0);
 }
 }
