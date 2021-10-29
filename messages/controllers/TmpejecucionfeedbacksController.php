@@ -8,6 +8,7 @@ use app\models\TmpejecucionfeedbacksSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * TmpejecucionfeedbacksController implements the CRUD actions for Tmpejecucionfeedbacks model.
@@ -126,7 +127,6 @@ class TmpejecucionfeedbacksController extends Controller {
                                     'model' => $model,
                         ]);
                     }
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tmpejecucionfeedbacks/index']);
                 }
@@ -151,7 +151,6 @@ class TmpejecucionfeedbacksController extends Controller {
                                     'model' => $model,
                         ]);
                     }
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tmpejecucionfeedbacks/index']);
                 }
@@ -194,12 +193,6 @@ class TmpejecucionfeedbacksController extends Controller {
                                 'searchModel' => $searchModel,
                                 'dataProvider' => $dataProvider,
                     ]);
-                    /*                     * Yii::$app->request->url = \yii\helpers\Url::to(['index'
-                      , 'tmp_formulario_id' => $model->tmpejecucionformulario_id
-                      , 'usua_id_lider' => $model->usua_id_lider
-                      , 'evaluado_id' => $model->evaluado_id]);
-                      $this->run('index'); */
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tmpejecucionfeedbacks/index']);
                 }

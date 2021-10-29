@@ -116,7 +116,6 @@ class CalificaciondetallesController extends Controller {
             } else {
                 return $this->renderPartial('create', ['model' => $model]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['calificacions/index']);
         }
@@ -137,7 +136,6 @@ class CalificaciondetallesController extends Controller {
             } else {
                 return $this->renderPartial('update', ['model' => $model]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['calificacions/index']);
         }

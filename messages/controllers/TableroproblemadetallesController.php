@@ -114,7 +114,6 @@ class TableroproblemadetallesController extends Controller {
                                     'model' => $model,
                         ]);
                     }
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tableroproblema/index']);
                 }
@@ -141,7 +140,6 @@ class TableroproblemadetallesController extends Controller {
                                     'model' => $model,
                         ]);
                     }
-                    Yii::$app->end();
                 } else {
                     return $this->redirect(['tableroproblema/index']);
                 }

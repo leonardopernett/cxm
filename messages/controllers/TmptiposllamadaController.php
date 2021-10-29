@@ -8,6 +8,7 @@ use app\models\TmptiposllamadaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
 
 /**
  * TmptiposllamadaController implements the CRUD actions for Tmptiposllamada model.
@@ -108,7 +109,6 @@ class TmptiposllamadaController extends Controller {
                             'model' => $model,
                 ]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['tmptiposllamada/index']);
         }
@@ -133,7 +133,6 @@ class TmptiposllamadaController extends Controller {
                             'model' => $model,
                 ]);
             }
-            Yii::$app->end();
         } else {
             return $this->redirect(['tmptiposllamada/index']);
         }
