@@ -99,15 +99,8 @@ $this->title = 'DashBoard Voz del Cliente';
         varIdCapaCero.style.display = 'none';
         varIdCapaUno.style.display = 'inline';
 
-        var varWord1 = "allus";
-        var varWord2 = "multienlace";
-        var varWord3 = "grupokonecta";
-
-        var nvarWord1 = varDestino.indexOf(varWord1);
-        var nvarWord2 = varDestino.indexOf(varWord2);
-        var nvarWord3 = varDestino.indexOf(varWord3);
-
-        if (nvarWord3 <= 0) {
+        varrevision = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+        if (!varrevision.exec(varDestino)) {
             event.preventDefault();
                 swal.fire("!!! Advertencia !!!","Error con el correo, por favor ingrese correo corporativo.","warning");
                 varIdCapaCero.style.display = 'inline';
@@ -118,7 +111,7 @@ $this->title = 'DashBoard Voz del Cliente';
 
         if (varDestino == null || varDestino == "") {
             event.preventDefault();
-            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
+            swal.fire("ï¿½ï¿½ï¿½ Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
             return;           
         }else{
             $.ajax({
