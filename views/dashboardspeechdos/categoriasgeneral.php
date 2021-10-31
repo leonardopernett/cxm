@@ -98,7 +98,7 @@ $this->title = 'DashBoard Voz del Cliente';
 
         if (varDestino == null || varDestino == "") {
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
+            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
             return;           
         }else{
             $.ajax({
