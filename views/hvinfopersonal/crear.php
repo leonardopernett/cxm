@@ -384,10 +384,10 @@ use yii\helpers\Url;
                          <option value="">Seleccione</option>
                          <option value="0-3 meses">0-3 meses</option>
                          <option value="4-6 meses">4-6 meses</option>
-                         <option value="7 meses - 1 aï¿½o">7 meses - 1 a&ntilde;o</option>
-                         <option value="1 aï¿½os - 3 aï¿½os">1 a&ntilde;os - 3 a&ntilde;os</option>
-                         <option value="4 aï¿½os - 6 aï¿½os">4 a&ntilde;os - 6 a&ntilde;os</option>
-                         <option value="mayor a 6 aï¿½os">mayor a 6 a&ntilde;os</option>
+                         <option value="7 meses - 1 año">7 meses - 1 a&ntilde;o</option>
+                         <option value="1 años - 3 años">1 a&ntilde;os - 3 a&ntilde;os</option>
+                         <option value="4 años - 6 años">4 a&ntilde;os - 6 a&ntilde;os</option>
+                         <option value="mayor a 6 años">mayor a 6 a&ntilde;os</option>
                    </select>
                </div>
 
@@ -572,7 +572,7 @@ use yii\helpers\Url;
     <div class="modal-content">
       
       <div class="modal-body">
-        <h2 class="modal-title" id="exampleModalCenterTitle">ï¿½Es un decisor del contrato?</h2>
+        <h2 class="modal-title" id="exampleModalCenterTitle">¿Es un decisor del contrato?</h2>
          <p><b>Decisor:</b>  Es aquel contacto de 'nivel superior o muy superior' que puede tomar decisiones en referencia a la relaci&oacute;n comercial con Konecta, es altamente influyente en las decisiones del cliente corporativo y su percepci&oacute;n afecta de manera cr&iacute;tica la Imagen corporativa de Konecta.
                 Este contacto es un 'alto influenciador' para el mantenimiento de los contratos con Konecta Colombia.
                 cumplimiento de Objetivos a nivel Regional. </p>
@@ -591,7 +591,7 @@ use yii\helpers\Url;
       
       <div class="modal-body">
         <h2 class="modal-title" id="exampleModalCenterTitle"></h2>
-         <p><b>Estrat&eacute;gicos:</b> Es aquel contacto de 'nivel superior' que aunque quiz&aacute;s no posee mucho conocimiento de los resultados Operativos, con este contacto se definen las estrategias de desarrollo del canal administrado por Konecta, se definen aspectos de la operaciï¿½n que impactan la rentabilidad de la cuenta. Este contacto es un alto influenciador para el mantenimiento y permanencia de los negocios con Konecta. </p>
+         <p><b>Estrat&eacute;gicos:</b> Es aquel contacto de 'nivel superior' que aunque quiz&aacute;s no posee mucho conocimiento de los resultados Operativos, con este contacto se definen las estrategias de desarrollo del canal administrado por Konecta, se definen aspectos de la operación que impactan la rentabilidad de la cuenta. Este contacto es un alto influenciador para el mantenimiento y permanencia de los negocios con Konecta. </p>
          <p><b>Operativos:</b> Es aquel contacto de 'nivel intermedio o bajo', que esta al frente de los resultados /m&eacute;tricas de las Operaciones, es quien realiza los escalamientos de resultados a sus superiores y con estos los contactos estrat&eacute;gicos podr&iacute;an tomar decisiones o fijar posiciones con Konecta. A pesar de ser influenciadores de los negocios, no necesariamente &eacute;stos se definen por su autonom&iacute;a.</p>
         </div>
       <div class="modal-footer">
