@@ -72,7 +72,6 @@ use app\models\SpeechParametrizar;
     }
 
     public function actionListarpcrc(){            
-        $txtAnulado = 0; 
         $txtId = Yii::$app->request->post('id');           
 
         if ($txtId) {
@@ -156,14 +155,12 @@ use app\models\SpeechParametrizar;
             }
     
             public function actionListarmomentos(){            
-                $txtAnulado = 0; 
                 $txtId = Yii::$app->request->post('id');           
         
                 if ($txtId) {
                        $txtControl = \app\models\Controldetallemomento::find()->distinct()
                                ->where(['id_momento' => $txtId])
                                ->count();            
-                       // var_dump($txtControl);
                        if ($txtControl > 0) {
                                $varListamomento = \app\models\Controldetallemomento::find()
                                 ->select(['id_detalle_momento','detalle_momento'])->distinct()
@@ -258,14 +255,8 @@ use app\models\SpeechParametrizar;
                         $model2 = new Controlbitacorauniv(); 
                         $model3 = new SpeechParametrizar(); 
 
-                        $txtIdBlo = null;
                         $formData = Yii::$app->request->post();
-                        $arbolid1 = 0;
-                        $fechacreacion1 = 0;
-                        $valorador_id1 = 0;
-                        $tecnico_id1 = 0;
                         
-                        //var_dump($formData);
                         $dataProvider = $model->buscarbitacorauni($formData);
                          
                                   
@@ -319,7 +310,6 @@ use app\models\SpeechParametrizar;
                             $command = $txtQuery2->createCommand();
                             $dataProvider = $command->queryAll();
 
-                            //$varValorador = Yii::$app->db->createCommand("select valorador_id from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
                             return $this->render('editarbitacora', ['dataprovider' => $dataProvider]);
                             
                         }
