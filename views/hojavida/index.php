@@ -72,6 +72,35 @@ $this->params['breadcrumbs'][] = $this->title;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 
+    .button {
+        margin-top:10px;
+        text-align:center;
+    }
+
+    .input-area{
+        width:350px;
+        height:100px;
+        border:2px #000 dotted;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        position:relative;
+        text-align:center;
+        margin:0 auto;
+    }
+    .file {
+        opacity:0;
+        width:100%;
+        height:100%;
+        position:absolute;
+        cursor:pointer;
+    }
+    .input-text{
+        font-size:15px;
+        padding-left:10px;
+        text-align:center;
+    }
+
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -119,10 +148,7 @@ $this->params['breadcrumbs'][] = $this->title;
        <div class="col-md-4">
            <div class="card1 mb">
                <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #559FFF;"></em> Carga Masiva </label>
-               <?= Html::a('Aceptar',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
-                                        'data-toggle' => 'tooltip',
-                                        'title' => 'Carga Masiva']) 
-                ?>
+                <a href="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal3">Carga Masiva</a>
            </div>
        </div>
 
@@ -133,7 +159,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
        <div class="col-md-12">
            <div class="card1 mb">
-               <label style="font-size: 15px;"><i class="fas fa-address-book" style="font-size: 15px; color: #B833FF;"></i> Listado </label>
+               <label style="font-size: 15px;"><em class="fas fa-address-book" style="font-size: 15px; color: #B833FF;"></em> Listado </label>
            </div>
        </div>
    </div>
@@ -146,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                   <label style="font-size: 15px;"><i class="fas fa-cogs" style="font-size: 15px; color: #FFC72C;"></i> Acciones Administrativas: </label>
+                   <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 15px; color: #FFC72C;"></em> Acciones Administrativas: </label>
 
                    <div class="row">
 
@@ -219,6 +245,40 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <hr>  
+
+    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Agregar Carga Masiva</h3>
+
+      </div>
+      <div class="modal-body body">
+          
+            <?php $form = ActiveForm::begin(['action'=>['hvinfopersonal/export'], 'method'=>'POST', 'options'=>['enctype'=>'multipart/form-data']]) ?>
+                <div class="input-area">
+                      <div class="input-text" id="text">Seleccione o arrastre el archivo</div>
+                      <input type="file" id="file" class="file form-control">
+                  </div> 
+                  <div class="button">
+                      <button  class="btn btn-success">Agregar <em class="fa fa-plus" style="padding-top:5px"></em> </button>
+                  </div>
+            <?php ActiveForm::end() ?>
+
+      <!-- <a href="../../archivos/ClienteCXM.xlsx" download>Descargar Plantilla de ejemplo</a><i class="fa fa-upload"></i> -->
+      </div>
+      
+    </div>
+  </div>
+</div>
 <?php
     }
 ?>
+
+<script>
+   const text = document.getElementById('text')
+
+   document.getElementById('file').addEventListener('change',(e)=>{
+        text.innerText= e.target.files[0].name
+   })
+</script>
