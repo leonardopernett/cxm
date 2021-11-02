@@ -31,7 +31,6 @@ $this->registerJs($js);
 
 $this->title = 'Evaluacion de desarrollo';
 $this->params['breadcrumbs'][] = $this->title;
-//$documento = $documento;
 $titulos = array();
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';
@@ -40,18 +39,17 @@ $titulos = array();
 
     $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
     
-    //$vardocument = 1152214703;
     $documento = $vardocument;
-    
 
     $varnombre = Yii::$app->db->createCommand("select nombre_completo from  tbl_usuarios_evalua where documento in ('$documento')")->queryScalar();
     $varcargo = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua where documento in ('$vardocument')")->queryScalar();
     $vartipoeva = Yii::$app->db->createCommand("select tipoevaluacion from tbl_evaluacion_tipoeval where idevaluaciontipo = 1 and anulado = 0")->queryScalar();
     $varobservacion = Yii::$app->db->createCommand("select observacion_feedback from  tbl_evaluacion_resulta_feedback where documento in ('$documento')")->queryScalar();
-    $txtvalidadocumento = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_resulta_feedback WHERE documento = $vardocument")->queryScalar();
+    
     $last_word_start = strrpos($varnombre, ' ') + 1;
     $last_word = substr($varnombre, $last_word_start);
-
+ 
+    
     $catidad = count(explode(" ", $varnombre));
     $posicion_espacio=strrpos($varnombre, " ");
     $longitud=strlen($varnombre);
@@ -153,7 +151,7 @@ $titulos = array();
     .masthead {
         height: 25vh;
         min-height: 100px;
-        background-image: url('../../images/Banner_Ev_Desarrollo.png');
+        background-image: url('../../images/ADMINISTRADOR-GENERAL.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -188,7 +186,7 @@ $titulos = array();
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -205,13 +203,12 @@ $titulos = array();
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><em class="fas fa-spinner" style="font-size: 20px; color: #2CA5FF;"></em> Procesando datos</label>
+                <label><i class="fas fa-spinner" style="font-size: 20px; color: #2CA5FF;"></i> Procesando datos...</label>
                 <div class="col-md-12">
                     <table>
-                        <caption>Tabla datos</caption>
                         <tr>
-                            <th scope="col" class="text-center"><div class="loader"> </div></th>
-                            <td class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluaci�n realizada') ?></label></td>
+                            <td class="text-center"><div class="loader"> </div></td>
+                            <td class="text-center"><label><?= Yii::t('app', ' Guardando datos de la evaluación realizada...') ?></label></td>
                         </tr>
                     </table>                                       
                 </div>
@@ -220,8 +217,6 @@ $titulos = array();
     </div>
 </div>
 <br>
-<?php
-if($sessiones != 0) { ?>
 <div id="idCapaUno" style="display: inline"> 
     
     <div id="capaDos" style="display: inline">
@@ -229,10 +224,10 @@ if($sessiones != 0) { ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><em class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></em> Notificaciones:</label>
+                        <label><i class="fas fa-exclamation" style="font-size: 20px; color: #827DF9;"></i> Notificaciones:</label>
                             <div class="col-md-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-body" style="background-color: #f0f8ff;">Hola <?php echo $last_word; ?>, Aquí encuentras los resultados consolidados de tu evaluación.
+                                    <div class="panel-body" style="background-color: #f0f8ff;">Hola <?php echo $last_word; ?>, AquÃ­ encuentras los resultados consolidados de tu evaluaciÃ³n.
                                     </div>
                                 </div>
                             </div>  
@@ -275,7 +270,7 @@ if($sessiones != 0) { ?>
                                 INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel WHERE es.documentoevaluado = $documento GROUP BY es.idevaluacioncompetencia LIMIT 1")->queryScalar();
         $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $documento GROUP BY es.idevaluacioncompetencia LIMIT 1")->queryScalar();
        
-//para c�lculo de tipo de coaching
+//para cálculo de tipo de coaching
       /*  $listacompetenciat2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
                                                     FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
                                                     ec.namecompetencia, en.nivel, eb.idevaluacionbloques, eb.namebloque
@@ -427,31 +422,30 @@ if($sessiones != 0) { ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><em class="far fa-file-alt" style="font-size: 18px; color: #C148D0;"></em> Resultados: </label>                        
+                        <label><i class="fas fa-clipboard-list" style="font-size: 18px; color: #C148D0;"></i> Resultados: </label>                        
                         <div class="row"> 
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;"><em class="far fa-id-badge" style="font-size: 20px; color: #C148D0;"></em> Nombre: </label>
+                                    <label style="font-size: 17px;"><i class="far fa-id-badge" style="font-size: 20px; color: #C148D0;"></i> Nombre: </label>
                                     <label style="font-size: 20px;">&nbsp;&nbsp;&nbsp; <?php echo $varnombrec; ?> </label><br>
-                                    <label style="font-size: 17px;"><em class="fas fa-male" style="font-size: 20px; color: #C148D0;"></em> Rol: </label>
+                                    <label style="font-size: 17px;"><i class="fas fa-screwdriver" style="font-size: 20px; color: #C148D0;"></i> Rol: </label>
                                     <label style="font-size: 20px;">&nbsp;&nbsp;&nbsp; <?php echo $varrol; ?> </label>                                                                         
                                 </div>
                             </div>   
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;"><em class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></em> Calificación Final </label>
+                                    <label style="font-size: 17px;"><i class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></i> CalificaciÃ³n Final </label>
                                     <table style="width:100%">
-                                    <caption>Tabla datos</caption>
-                                        <th scope="col" class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></th> 
+                                        <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
                                     </table> 
                                 </div>
                             </div>                            
                             <div class="col-md-4">
                                 <div class="card2 mb">
-                                    <label style="font-size: 17px;" ><em class="far fa-comment-alt" style="font-size: 18px; color: #C148D0;"></em> Observaciones </label>
-                                    <textarea type="text" class="form-control" readonly="readonly" id="txtobserva" value="<?php echo $varcomentarios; ?>" data-toggle="tooltip" title="Observaciones"><?php echo $varcomentarios; ?></textarea>
+                                    <label style="font-size: 17px;" ><i class="far fa-comment-alt" style="font-size: 18px; color: #C148D0;"></i> Observaciones </label>
+                                    <input type="text" class="form-control" readonly="readonly" id="txtobserva" value="<?php echo $varcomentarios; ?>" data-toggle="tooltip" title="Observaciones">
                                     <br>                                                               
-                                    <label style="font-size: 17px;"><em class="fas fa-check" style="font-size: 18px; color: #C148D0;"><em> Tipo Coaching </label>                            
+                                    <label style="font-size: 17px;"><i class="fas fa-check" style="font-size: 18px; color: #C148D0;"></i> Tipo Coaching </label>                            
                                     <label style="font-size: 20px; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $tipocoaching; ?> </label>
                                 </div>                            
                             </div>  
@@ -485,7 +479,7 @@ if($sessiones != 0) { ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label><em class="fas fa-cubes" style="font-size: 20px; <?php echo $varcolor; ?>"></em> <?php echo $varresulta.$value['namebloque'].': '; ?></label>
+                        <label><i class="fas fa-cubes" style="font-size: 20px; <?php echo $varcolor; ?>"></i> <?php echo $varresulta.$value['namebloque'].': '; ?></label>
                         
                         <div class="row">                    
                             <?php 
@@ -517,11 +511,11 @@ if($sessiones != 0) { ?>
                                         <div class="card1 mb">  
                                             <div class="row">                                    
                                                 <div class="col-md-6">
-                                                    <label style="font-size: 16px;"><em class="fas fa-bookmark" style="font-size: 15px; <?php echo $varcolor; ?>"></em> <?php echo $value['namecompetencia'].'.'; ?></label>   
+                                                    <label style="font-size: 16px;"><i class="fas fa-bookmark" style="font-size: 15px; <?php echo $varcolor; ?>"></i> <?php echo $value['namecompetencia'].'.'; ?></label>   
                                                 </div>
                                                 <div class="col-md-6">
                                                    <label id="<?php echo 'idtext'.$varconteocompetencia.$varconteobloque; ?>" style="font-size: 15px; <?php echo $varcolor2; ?>"> <?php echo $value['%Competencia'].'% '; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>                                                   
-                                                   <?php if($value['%Competencia'] < 85 && $value['idevaluacionbloques'] == 1){?>
+                                                   <?php if($value['%Competencia'] < 85){?>
                                                         <div onclick="openmensaje(<?php echo $varconteocompetencia.$varconteobloque; ?>);" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="<?php echo 'idtbn1'.$varconteocompetencia.$varconteobloque; ?>" >
                                                             <span class="fas fa-caret-down" style="font-size: 30px; color: #f7b9b9;" ></span>
                                                         </div>
@@ -530,7 +524,7 @@ if($sessiones != 0) { ?>
                                                         </div>
                                                    <?php } ?>
                                                 
-                                                   <?php if($value['%Competencia'] >= 85 && $value['idevaluacionbloques'] == 1){?>
+                                                   <?php if($value['%Competencia'] >= 85){?>
                                                         <div onclick="openmensaje85(<?php echo $varconteocompetencia.$varconteobloque.'85'; ?>);" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="<?php echo 'idtbn1'.$varconteocompetencia.$varconteobloque.'85'; ?>" >
                                                             <span class="fas fa-caret-down" style="font-size: 30px; color: #63e665;" ></span>
                                                         </div>
@@ -571,39 +565,13 @@ if($sessiones != 0) { ?>
         </div> 
     <?php } ?>
     <hr>
-    <div id="capaSiete" style="display: inline"> 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card1 mb">
-                        <div class="col-md-12">
-                            <label style="font-size: 17px;"><em class="fas fa-exclamation-circle" style="font-size: 17px; color: #8B70FA;"></em> Metodología 70-20-10 </label>
-                            
-                            <div onclick="openobserva2();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idmensaje12" >
-                                <span class="fas fa-info-circle" style="font-size: 20px; color: #f5900c;" ></span>
-                            </div>
-                            <div onclick="closeobserva2();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idmensaje22" >
-                                <span class="fas fa-info-circle" style="font-size: 20px; color: #28c916;" ></span>
-                            </div>                            
-                        </div>
-                        <div class="col-md-12">
-                            <div id="idpanelobserva2" style="display: none">
-                                <div class="panel panel-default">
-                                    <div class="panel-body" style="background-color: #f0f8ff; font-size: 16px;"> Identificamos el alto potencial que aportas a la compañia,  así como las oportunidades de desarrollo en las que te podremos acompañar, a través de un plan de desarrollo 70-20-10: 70% Autodesarrollo y autogestión 20% Mentoring y acompañamiento de tu jefe inmediato 10% Formación especifica proporcIonada por la compañia para tu rol Te sugerimos iniciar por las 3 competencias más lejos del umbral esperado y que sean estrategicas para tu proceso
-                                    </div>
-                                </div>
-                            </div>                
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>     
-    <hr>   
+       
         <div id="capaCinco" style="display: inline"> 
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
                         <div class="col-md-12">
-                            <label style="font-size: 17px;"><em class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></em> Descripción del feedback realizado por el jefe </label>
+                            <label style="font-size: 17px;"><i class="fas fa-comments" style="font-size: 17px; color: #8B70FA;"></i> DescripciÃ³n del feedback realizado por el jefe... </label>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-body" style="background-color: #f0f8ff;"> <?php echo $varobservacion; ?>
@@ -614,19 +582,24 @@ if($sessiones != 0) { ?>
             </div>
         </div>
     <hr>
-      
+    <?php 
+   // }    
+    ?>    
     
     <div id="capaSeis" style="display: inline"> 
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
-                    <div class="row">
+                    <label style="font-size: 17px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                    <div class="row">                        
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Biblioteca de Conocimiento: </label> 
-                                                            
-                                <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" class="btn btn-success">Ir a Paco (Jefes - Personas)</a>                            
+                                <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Regresar: </label> 
+                                <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                                'style' => 'background-color: #707372',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Regresar']) 
+                                ?>                            
                             </div>
                         </div>
                         
@@ -637,26 +610,7 @@ if($sessiones != 0) { ?>
     </div>
     <hr>
 </div>
-    <?php 
-   // }    
-    ?>    
-    
-    
-</div>
-<?php } else { ?>
-  <div class="Seis">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card1 mb">
-              <label><em class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></em> Información:</label>
-              <label style="font-size: 14px;">No se ha completado el proceso de resultados de las evaluaciones</label>
-                </div><br>
-            </div>
-        </div>  
-    </div>
-  </div><br>
 
-  <?php } ?>
 
 
 <script type="text/javascript">
@@ -711,8 +665,8 @@ var vardocumento = '<?php echo $documento; ?>';
                     if (numRta == 0) {
                                 jQuery(function(){
                                     swal.fire({type: "warning",
-                                        title: "!!! Información !!!",
-                                        text: "No ha completado el mínimo del proceso de evaluación"
+                                        title: "!!! InformaciÃ³n !!!",
+                                        text: "No ha completado el mÃ­nimo del proceso de evaluaciÃ³n..."
                                     }).then(function() {
                                         return;
                                     });
@@ -810,8 +764,8 @@ var vardocumento = '<?php echo $documento; ?>';
             },
             success : function(response){
                 numRta2 =   JSON.parse(response);
-
-                window.open('../evaluaciondesarrollo/index','_self');
+                // window.open('https://qa.grupokonecta.local/qa_managementv2/web/index.php/evaluaciondesarrollo/index','_self');
+                window.open('https://172.20.100.50/qa/web/index.php/evaluaciondesarrollo/index','_self');
             }
         });
     };
@@ -825,7 +779,7 @@ var vardocumento = '<?php echo $documento; ?>';
         var vardocumentoblanco = 0;
         if(!varobservafeedback){
           event.preventDefault();
-          swal.fire("!!! Advertencia !!!","No hay datos a registrar en descripción del feedback.","warning");
+          swal.fire("!!! Advertencia !!!","No hay datos a registrar en descripciÃ³n del feedback.","warning");
           document.getElementById("Idcomentarios").style.border = '1px solid #ff2e2e';
           return;
       } else {
@@ -853,11 +807,11 @@ var vardocumento = '<?php echo $documento; ?>';
                        });
                     }else if (numRta == 2) {
                         event.preventDefault();
-                            swal.fire("!!! Advertencia !!!","No se pudo guardar la información, esta persona ya tiene datos guardados","warning");
+                            swal.fire("!!! Advertencia !!!","No se pudo guardar la informaciÃ³n, esta persona ya tiene datos guardados","warning");
                         return;
                     } else if (numRta == 0) {
                         event.preventDefault();
-                            swal.fire("!!! Advertencia !!!","No es posible realizar dicha acción.","warning");
+                            swal.fire("!!! Advertencia !!!","No es posible realizar dicha acciÃ³n.","warning");
                         return;
                     }
                 }
