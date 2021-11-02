@@ -258,13 +258,13 @@ class ArbolesController extends Controller {
                 if (!empty($permRolId) && is_numeric($permRolId)) {
                     $modelPermisos = \app\models\PermisosGruposArbols::findOne($permRolId);
 
-                    if (isset($_POST['sncrear_formulario'])) {
+                    if (isset(Yii::$app->request->post('sncrear_formulario'))) {
                         $crearForm = Yii::$app->request->post('sncrear_formulario');
                         $modelPermisos->sncrear_formulario = Html::encode($crearForm);
                         $modelPermisos->save();
                     }
 
-                    if (isset($_POST['snver_grafica'])) {
+                    if (isset(Yii::$app->request->post('snver_grafica'))) {
                         $crearForm = Yii::$app->request->post('snver_grafica');
                         $modelPermisos->snver_grafica = Html::encode($crearForm);
                         $modelPermisos->save();

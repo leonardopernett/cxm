@@ -49,9 +49,6 @@ class AlertasController extends Controller
                             $modelup->comentario = Yii::$app->request->post('comentario');
 
                             $listo = 1;
-
-                            //$this->enviarcorreoalertas($modelup->fecha, $modelup->pcrc, $modelup->valorador, $modelup->tipo_alerta, $modelup->archivo_adjunto, $modelup->remitentes, $modelup->asunto, $modelup->comentario);
-
                             $modelup->save();
                             return $this->render('alertas', [
                             'searchModel' => $searchModel,
@@ -124,15 +121,6 @@ class AlertasController extends Controller
              */
 
             public function actionAlertasvaloracion() {
-
-
-                if(Yii::$app->request->get('prueba') == "exportar"){
-                    
-                }else{
-                    
-                }
-
-                
                 $model = new Alertas();
 
                 $dataProvider = $model->searchTodos();
