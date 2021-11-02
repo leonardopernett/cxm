@@ -258,7 +258,7 @@ class ControlProcesos extends \yii\db\ActiveRecord
                     break;
             }   
  
-        $txtMes = 'Septiembre';
+        $txtMes = 'Octubre';
         $txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$variableid.' and tipo_corte like "%'.$txtMes.'%" and anulado ='.$varCero.'')->queryScalar();
         $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'  and anulado = 0")->queryScalar();
         $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'  and anulado = 0")->queryScalar();    
