@@ -81,19 +81,19 @@ a:hover,  a:focus{
 }
 table.table tbody tr td a,
 table.table thead tr th a{
-    color: #002855 !important;
+    color: #002855;
 }
 table.table tbody tr td,
 table.table tbody tr td a,
 table.table thead tr th a{    
-    font-size: 10px !important;
+    font-size: 10px ;
 }
 table.tblResDetFeed tbody tr td,
 table.tblResDetFeed thead tr th,
 table.tblResDetFeed tbody tr td a,
 table.tblResDetFeed thead tr th a{    
-    font-size: 10px !important;
-    padding: 5px !important;
+    font-size: 10px;
+    padding: 5px ;
     text-align: center;
     vertical-align: middle;
 }
@@ -474,12 +474,12 @@ a.openVistas:hover{
     font-size: 0.9em;
 }
 .labelseccion{
-    //margin-top: -10px;
+    margin-top: -10px;
     font-size: 0.9em;
     text-transform: uppercase;
 }
 .labelbloque{
-    //margin-top: -10px;
+    margin-top: -10px;
     font-size: 0.7em;
     text-transform: uppercase;
     font-weight: normal; 
@@ -504,7 +504,7 @@ table.formDinamico thead tr th a{
     font-weight: normal;
 }
 .badge{
-    //padding: 0 10px;
+    padding: 0 10px;
     margin-left: 5px;
     background-color: #EE2D4E;
 }
