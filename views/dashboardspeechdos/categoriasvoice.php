@@ -99,7 +99,7 @@ $this->title = 'DashBoard Voz del Cliente';
         varIdCapaCero.style.display = 'none';
         varIdCapaUno.style.display = 'inline';
 
-        varrevision = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+        varrevision = /@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
         if (!varrevision.exec(varDestino)) {
             event.preventDefault();
                 swal.fire("!!! Advertencia !!!","Error con el correo, por favor ingrese correo corporativo.","warning");
@@ -111,7 +111,7 @@ $this->title = 'DashBoard Voz del Cliente';
 
         if (varDestino == null || varDestino == "") {
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
+            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
             return;           
         }else{
             $.ajax({
