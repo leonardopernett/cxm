@@ -34,11 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
     $year = date('Y');
     $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
-    //Proceso por el momento en comentario$varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-    //Proceso por el momento en comentario $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+    $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+    $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
-    $varfechainicio = '2021-10-01';
-    $varfechafin = '2021-11-05';
 
     $sessiones = Yii::$app->user->identity->id;
     $sumatoria1 = null;
