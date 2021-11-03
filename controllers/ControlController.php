@@ -72,10 +72,7 @@ class ControlController extends \yii\web\Controller {
                     $model = new \app\models\FiltrosControl();
                 }
                 $data = new \stdClass();
-                $datos = [];
-                $fechas = [];
                 $data->showGraf = false;
-                $alerta = false;
 
                 //VISTA Y CONTROLADOR PARA GUARDAR FILTROS
                 $controlador = Yii::$app->controller->id;
@@ -111,7 +108,6 @@ class ControlController extends \yii\web\Controller {
                         $model->metrica = $dataFiltos->metrica;
                         $model->corte = $dataFiltos->corte;
                         $model->tipo_grafica = $dataFiltos->tipo_grafica;
-                        $arbIds = $dataFiltos->arbol_ids;
                         $arrArbolesUnica = explode(',', $dataFiltos->arbol_ids);
                     } else {
                         $model->tipo_grafica = '';
@@ -121,14 +117,12 @@ class ControlController extends \yii\web\Controller {
                         $model->metrica = '';
                     }
                     if (isset($modelBusqueda)) {
-                        //$model = $modelBusqueda;
                         $model->arbolDetallada = $modelBusqueda->ids_arboles;
                         $model->fechaDetallada = $modelBusqueda->rango_fecha;
                         $model->metricaDetallada = $modelBusqueda->ids_metricas;
                         $model->dimensionDetallada = $modelBusqueda->ids_dimensiones;
                         $model->corteDetallada = $modelBusqueda->corte_id;
                         $model->guardar_filtro = $modelBusqueda->guardar_filtro;
-                        //$arrArboles = explode(',', $modelBusqueda->arbolDetallada);
                     }
                 }
                 if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -721,9 +715,7 @@ class ControlController extends \yii\web\Controller {
                                 $idMetrica = $metrica[$i];
                             }                            
                     
-                            //$dataTable['total'][] = $ejecucionformulario->getDatabytabletotal($dimension, $rangofecha, $validarMetrica, $arbol);
                             if ($control == "proceso") {
-                                //$dataTable ['datos'][$corte['fechaI'] . " - " . $corte['fechaF']][$validarMetrica][] = $ejecucionformulario->getDatabytable($dimension, $corte, $validarMetrica, $arbol, $model);
                                 if (empty($viewdetalladaproceso)) {
                                     $dataTable['datos'][$corte['fechaI'] . " - " . $corte['fechaF']][$validarMetrica][] = $ejecucionformulario->getDatabytable($dimension, $corte, $validarMetrica, $arbol, $model);
                                 } else {
@@ -1096,7 +1088,6 @@ class ControlController extends \yii\web\Controller {
                                     if ($corteActual[1] < $fechas[1]) {
                                         $bandera = 1;
                                         $msg = 'Existen días sin seleccionar, ¿Desea continuar?';
-                                        //break;
                                     }
                                 }
                             }
@@ -1201,9 +1192,6 @@ class ControlController extends \yii\web\Controller {
                                                                 100, 2) . '%';
                                                     $arrayTabla[$dimensiones[$index]['id']][$key][$keyM][$value['arbol_id']][$value['usua_usuario']][] = $value['total'];
                                                 }
-                                                /*$arrayTabla[$dimensiones[$index]['id']][$key][$keyM][$value['arbol_id']][$value['usua_usuario']][] = round($value['promedio'] *
-                                                                100, 2) . '%';
-                                                $arrayTabla[$dimensiones[$index]['id']][$key][$keyM][$value['arbol_id']][$value['usua_usuario']][] = $value['total'];*/
                                                 if (!in_array($keyM, $arrayMetrica)) {
                                                     $arrayMetrica[] = $keyM;
                                                 }
@@ -1308,7 +1296,6 @@ class ControlController extends \yii\web\Controller {
                 $objPHPexcel->setActiveSheetIndex(0);
                 $column = 'A';
                 $row = 1;
-                $saltoTabla = 0;
                 $banderaValorado = false;
                 try {
                     if ($control == "proceso") {
@@ -1320,9 +1307,6 @@ class ControlController extends \yii\web\Controller {
                                 $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $value['name']);
                                 $objPHPexcel->getActiveSheet()->getStyle($column . '' . $row)->applyFromArray($styleArray);
                                 $column++;
-                                /* $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, "Valorador");
-                                  $objPHPexcel->getActiveSheet()->getStyle($column . '' . $row)->applyFromArray($styleArray);
-                                  $column++; */
                                 $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, "Métrica");
                                 $objPHPexcel->getActiveSheet()->getStyle($column . '' . $row)->applyFromArray($styleArray);
                                 $column++;
@@ -1332,7 +1316,6 @@ class ControlController extends \yii\web\Controller {
                                 $inicioRow = $row;
                                 $row++;
                                 $row = $inicioRow;
-                                $inicioColumn = $column;
                                 /* Se imprimen titulos  de los cortes */
                                 foreach ($arrayCortes as $corte) {
                                     if (isset($tablaExcel[$value['id']])) {
@@ -1366,8 +1349,6 @@ class ControlController extends \yii\web\Controller {
                                                 foreach ($metrica as $keyValorador => $valueValorador) {
                                                     if (!in_array('dato' . '-' . $keyMetrica . '-' . $keyValorador, $arrayLabelMetrica)) {
                                                         $arrayLabelMetrica[] = 'dato' . '-' . $keyMetrica . '-' . $keyValorador;
-                                                        //$arrayLabelMetrica[] = 'total' . '-' . $keyMetrica . '-' . $keyValorador;
-                                                        //$ultimoDatos = $keyMetrica . '-' . $keyValorador;
                                                     }
                                                 }
                                             }
@@ -1379,21 +1360,11 @@ class ControlController extends \yii\web\Controller {
                                   arbol-metrica */
                                 foreach ($arrayLabelMetrica as $label) {
                                     $datoLabel = explode('-', $label);
-                                    //if (isset($tablaExcel[$value['id']])) {
-                                    // if (array_key_exists($corte, $tablaExcel[$value['id']]) && $corte != 'total') {
-                                    // foreach ($tablaExcel[$value['id']][$corte] as $keyMetrica => $metrica) {
-                                    //foreach ($metrica as $keyValorador => $valueValorador) {
                                     $arr_arboles = \app\models\Arboles::find()->where("id IN(" . $datoLabel['2'] . ")")->orderBy("id ASC")->one();
-                                    //foreach ($valueValorador as $keyDato => $valueDato) {
                                     $column = "B";
 
                                     if (!array_key_exists($datoLabel['0'].'-'.$datoLabel['1'] . '-' . $datoLabel['2'], $arrayValorador)) {
                                         $arrayValorador[$datoLabel['0'].'-'.$datoLabel['1'] . '-' . $datoLabel['2']] = $row;
-                                        //$row+=1;
-                                        //$arrayValorador['total' . '-' . $datoLabel['1'] . '-' . $datoLabel['2']] = $row;
-                                        //$valorUltimoDato = $row;
-                                        /* $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $keyDato);
-                                          $column++; */
                                         $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, Yii::t('app', $datoLabel['1']));
                                         $column++;
                                         $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, Yii::t('app', $arr_arboles->name));
@@ -1402,14 +1373,6 @@ class ControlController extends \yii\web\Controller {
                                     }
                                 }
    
-                                /* if ($value['id']==2) {
-                                  echo "<pre>";
-                                  print_r($arrayValorador);
-                                  echo "</pre>";
-                                  echo "<pre>";
-                                  print_r($ultimoDatos);
-                                  echo "</pre>";   die;
-                                  } */
                                 /* Se imprimen los valores para cada combinacion arbol-metrica */
                                 $column = "D";
                                 $rowinicioCantidad = 0; // variable para manejar el indece donde se pondra el total
@@ -1418,25 +1381,21 @@ class ControlController extends \yii\web\Controller {
                                         if (array_key_exists($corte, $tablaExcel[$value['id']]) && $corte != 'total') {
                                             foreach ($tablaExcel[$value['id']][$corte] as $keyMetrica => $metrica) {
                                                 foreach ($metrica as $keyValorador => $valueValorador) {
-                                                    //foreach ($valueValorador as $keyDato => $valueDato) {
                                                     if (array_key_exists('dato'.'-'.$keyMetrica . '-' . $keyValorador, $arrayValorador)) {
                                                         $row = $arrayValorador['dato'.'-'.$keyMetrica . '-' . $keyValorador];
                                                         $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $valueValorador['prom']);
                                                     }
-                                                    //}
                                                 }
                                             }
                                         } else {
                                             if ($corte == 'total') {
                                                 foreach ($tablaExcel[$value['id']][$corte] as $keyMetrica => $metrica) {
                                                     foreach ($metrica as $keyValorador => $valueValorador) {
-                                                        //foreach ($valueValorador as $keyDato => $valueDato) {
                                                         if (array_key_exists('dato' . '-' . $keyMetrica . '-' . $keyValorador, $arrayValorador)) {
                                                             $row = $arrayValorador['dato'. '-' . $keyMetrica . '-' . $keyValorador];
                                                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $valueValorador['prom']);
                                                             $row = ($rowinicioCantidad > $row) ? $rowinicioCantidad : $row;
                                                         }
-                                                        //}
                                                     }
                                                 }
                                             }
@@ -1444,10 +1403,6 @@ class ControlController extends \yii\web\Controller {
                                     }
                                     $column++;
                                 }
-                                /* if ($value['id']==2) {
-                                  echo "<pre>";
-                                  print_r($row);
-                                  echo "</pre>";die;} */
                                 /* Se copia estructtura anterior para montar el total por cada usuario (valoraciones) */
                                 
                                 /* Se imprimen titulos de arbol y cantidad y se guarda array con posicion de cada arbl-cantidad */
@@ -1461,15 +1416,11 @@ class ControlController extends \yii\web\Controller {
                                             foreach ($tablaExcel[$value['id']][$corte] as $keyMetrica => $metrica) {
                                                 foreach ($metrica as $keyValorador => $valueValorador) {
                                                     $arr_arboles = \app\models\Arboles::find()->where("id IN(" . $keyValorador . ")")->orderBy("id ASC")->one();
-                                                    //foreach ($valueValorador as $keyDato => $valueDato) {
                                                     $column = "B";
                                                     if ($banderaValorado == false) {
                                                         $banderaValorado = true;
                                                         $arrayValorador[$keyValorador] = (!array_key_exists($keyValorador, $arrayValorador)) ? $row : $arrayValorador[$keyValorador];
                                                         $arrayValorador['total' . '-' . $keyValorador] = (!array_key_exists('total' . '-' . $keyValorador, $arrayValorador)) ? $row : $arrayValorador['total' . '-' . $keyValorador];
-                                                        //$valorUltimoDato = $row;
-                                                        /* $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $keyDato);
-                                                          $column++; */
                                                         $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, Yii::t('app', "Cantidad"));
                                                         $column++;
                                                         $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, Yii::t('app', $arr_arboles->name));
@@ -1479,9 +1430,6 @@ class ControlController extends \yii\web\Controller {
                                                         if (!array_key_exists($keyValorador, $arrayValorador)) {
                                                             $arrayValorador[$keyValorador] = (!array_key_exists($keyValorador, $arrayValorador)) ? $row : $arrayValorador[$keyValorador];
                                                             $arrayValorador['total' . '-' . $keyValorador] = (!array_key_exists('total' . '-' . $keyValorador, $arrayValorador)) ? $row : $arrayValorador['total' . '-' . $keyValorador];
-                                                            //$valorUltimoDato = $row;
-                                                            /* $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $keyDato);
-                                                              $column++; */
                                                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, "Cantidad");
                                                             $column++;
                                                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, Yii::t('app', $arr_arboles->name));
@@ -1489,7 +1437,6 @@ class ControlController extends \yii\web\Controller {
                                                             $ultimoDatos = $keyValorador;
                                                         }
                                                     }
-                                                    //}
                                                 }
                                             }
                                         }
@@ -1497,8 +1444,6 @@ class ControlController extends \yii\web\Controller {
                                         if ($banderaValorado == false) {
                                             $banderaValorado = true;
                                             $arrayValorador['1'] = $row;
-                                            /* $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
-                                              $column++; */
                                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
                                             $column++;
                                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
@@ -1507,8 +1452,6 @@ class ControlController extends \yii\web\Controller {
                                         } else {
                                             if (!array_key_exists('1', $arrayValorador)) {
                                                 $arrayValorador['1'] = $row;
-                                                /* $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
-                                                  $column++; */
                                                 $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
                                                 $column++;
                                                 $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
@@ -1526,24 +1469,20 @@ class ControlController extends \yii\web\Controller {
                                         if (array_key_exists($corte, $tablaExcel[$value['id']]) && $corte != 'total') {
                                             foreach ($tablaExcel[$value['id']][$corte] as $keyMetrica => $metrica) {
                                                 foreach ($metrica as $keyValorador => $valueValorador) {
-                                                    //foreach ($valueValorador as $keyDato => $valueDato) {
                                                     if (array_key_exists($keyValorador, $arrayValorador)) {
                                                         $row = $arrayValorador[$keyValorador];
                                                         $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $valueValorador['cant']);
                                                     }
-                                                    //}
                                                 }
                                             }
                                         } else {
                                             if ($corte == 'total') {
                                                 foreach ($tablaExcel[$value['id']][$corte] as $keyMetrica => $metrica) {
                                                     foreach ($metrica as $keyValorador => $valueValorador) {
-                                                        //foreach ($valueValorador as $keyDato => $valueDato) {
                                                         if (array_key_exists('total' . '-' . $keyValorador, $arrayValorador)) {
                                                             $row = $arrayValorador['total' . '-' . $keyValorador];
                                                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $valueValorador['cant']);
                                                         }
-                                                        //}
                                                     }
                                                 }
                                             }
@@ -1614,9 +1553,6 @@ class ControlController extends \yii\web\Controller {
                                                     foreach ($valueValorador as $keyDato => $valueDato) {
                                                         if (!in_array('datos' . '-' . $keyMetrica . '-' . $keyValorador . '-' . $keyDato, $arrayValorador)) {
                                                             $arrayLabelMetrica[] = 'datos' . '-' . $keyMetrica . '-' . $keyValorador . '-' . $keyDato;
-                                                            //$arrayLabelMetrica[] = 'total' . '-' . $keyMetrica . '-' . $keyValorador . '-' . $keyDato;
-                                                            //$valorUltimoDato = $row;
-                                                            //$ultimoDatos = $keyMetrica . '-' . $keyDato . '-' . $keyValorador;
                                                         }
                                                     }
                                                 }
@@ -1629,17 +1565,10 @@ class ControlController extends \yii\web\Controller {
                                 /* Se imprimen valores de cada valorador-arbol-metrica y se guarda array de posicion de cada combinacion valorador-arbol-metrica */
                                 foreach ($arrayLabelMetrica as $label) {
                                     $datoLabel = explode('-', $label);
-                                    //if (isset($tablaExcel[$value['id']])) {
-                                    // if (array_key_exists($corte, $tablaExcel[$value['id']]) && $corte != 'total') {
-                                    // foreach ($tablaExcel[$value['id']][$corte] as $keyMetrica => $metrica) {
-                                    //foreach ($metrica as $keyValorador => $valueValorador) {
                                     $arr_arboles = \app\models\Arboles::find()->where("id IN(" . $datoLabel['2'] . ")")->orderBy("id ASC")->one();
-                                    //foreach ($valueValorador as $keyDato => $valueDato) {
                                     $column = "B";
                                     if (!array_key_exists($datoLabel['0'] . '-' .$datoLabel['1'] . '-' . $datoLabel['3'] . '-' . $datoLabel['2'], $arrayValorador)) {
                                         $arrayValorador[$datoLabel['0'] . '-' .$datoLabel['1'] . '-' . $datoLabel['3'] . '-' . $datoLabel['2']] = $row;
-                                        //$arrayValorador['total' . '-' . $datoLabel['3'] . '-' . $datoLabel['2'] . '-' . $datoLabel['1']] = $row;
-                                        //$valorUltimoDato = $row;
                                         $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $datoLabel['3']);
                                         $column++;
                                         $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, Yii::t('app', $datoLabel['1']));
@@ -1648,42 +1577,7 @@ class ControlController extends \yii\web\Controller {
                                         $row+=1;
                                         $ultimoDatos = $datoLabel['0'] . '-' .$datoLabel['1'] . '-' . $datoLabel['3'] . '-' . $datoLabel['2'];
                                     }
-                                    //}
-                                    //}
-                                    //}
-                                    //}
-                                    //}
-                                    /* else {
-                                      if ($banderaValorado == false) {
-                                      $banderaValorado = true;
-                                      $arrayValorador['1'] = $row;
-                                      $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
-                                      $column++;
-                                      $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
-                                      $column++;
-                                      $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
-                                      $row+=1;
-                                      $ultimoDatos = '1';
-                                      } else {
-                                      if (!array_key_exists('1', $arrayValorador)) {
-                                      $arrayValorador['1'] = $row;
-                                      $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
-                                      $column++;
-                                      $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
-                                      $column++;
-                                      $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, '-');
-                                      $row+=1;
-                                      $ultimoDatos = '1';
-                                      }
-                                      }
-                                      } */
                                 }
-
-                                /* if ($value['id']==1) {
-                                  echo "<pre>";
-                                  print_r($arrayValorador);
-                                  echo "</pre>";   die;
-                                  } */
 
                                 $column = "E";
                                 $rowinicioCantidad = 0; // variable para manejar el indece donde se pondra el total
@@ -1719,10 +1613,6 @@ class ControlController extends \yii\web\Controller {
                                     }
                                     $column++;
                                 }
-                                /* if ($value['id']==2) {
-                                  echo "<pre>";
-                                  print_r($row);
-                                  echo "</pre>";die;} */
                                 /* Se copia estructtura anterior para montar el total por cada usuario (valoraciones) */
                                 $row = $arrayValorador[$ultimoDatos];
                                 $row++;
@@ -1741,7 +1631,6 @@ class ControlController extends \yii\web\Controller {
                                                             $banderaValorado = true;
                                                             $arrayValorador[$keyDato . '-' . $keyValorador] = $row;
                                                             $arrayValorador['total' . '-' . $keyDato . '-' . $keyValorador] = (!array_key_exists('total' . '-' . $keyDato . '-' . $keyValorador, $arrayValorador)) ? $row : $arrayValorador['total' . '-' . $keyDato . '-' . $keyValorador];
-                                                            //$valorUltimoDato = $row;
                                                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $keyDato);
                                                             $column++;
                                                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, Yii::t('app', "Cantidad"));
@@ -1753,7 +1642,6 @@ class ControlController extends \yii\web\Controller {
                                                             if (!array_key_exists($keyDato . '-' . $keyValorador, $arrayValorador)) {
                                                                 $arrayValorador[$keyDato . '-' . $keyValorador] = $row;
                                                                 $arrayValorador['total' . '-' . $keyDato . '-' . $keyValorador] = (!array_key_exists('total' . '-' . $keyDato . '-' . $keyValorador, $arrayValorador)) ? $row : $arrayValorador['total' . '-' . $keyDato . '-' . $keyValorador];
-                                                                //$valorUltimoDato = $row;
                                                                 $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $keyDato);
                                                                 $column++;
                                                                 $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, "Cantidad");
@@ -1914,7 +1802,6 @@ class ControlController extends \yii\web\Controller {
             }
 
             public function repetirCorte($datos, $modelCorte, $rangofecha) {
-                $arrayFecha = explode(' - ', $rangofecha);
                 $arrayCortes = [];
                 $index = 0;
                 if ($modelCorte->tipo_corte == 1) {
@@ -2004,7 +1891,6 @@ class ControlController extends \yii\web\Controller {
             public function construirArbolgrupos($arraArboles) {
                 $arrayArboles = [];
                 $consultaArboles = \app\models\Arboles::find()->where('id IN (' . $arraArboles . ')')->orderBy('dsorden ASC')->asArray()->all();
-                //$countHojas = 0;
                 foreach ($consultaArboles as $key => $value) {
                     $arraArboles .=',' . $value['arbol_id'];
                 }
@@ -2055,11 +1941,8 @@ class ControlController extends \yii\web\Controller {
                     $model = new \app\models\FiltrosControl();
                 }
                 $data = new \stdClass();
-                $datos = [];
-                $fechas = [];
                 $data->showGraf = false;
                 $banderaValidacion = true;
-                $alerta = false;
 
                 //VISTA Y CONTROLADOR PARA GUARDAR FILTROS
                 $controlador = Yii::$app->controller->id;
@@ -2114,7 +1997,6 @@ class ControlController extends \yii\web\Controller {
                         $model->rol = $dataFiltos->rol;
                         $model->valorador = $dataFiltos->valorador;
                         $model->equiposvalorador = $dataFiltos->equiposvalorador;
-                        $arbIds = $dataFiltos->arbol_ids;
                         $arrArbolesUnica = explode(',', $dataFiltos->arbol_ids);
                     } else {
                         $model->tipo_grafica = '';
@@ -2234,7 +2116,6 @@ class ControlController extends \yii\web\Controller {
                                 \app\models\Metrica::find()->limit(10)->asArray()->all()
                                 , 'id', 'detexto');
                 $data->metrica[] = 'Score';
-                //$data->metrica[29] = 'Tiempo Promedio de valoracion';
                 $data->metrica[30] = 'Cantidad de Segundos Calificadores';
                 return $this->render('indexPersona', ['data' => $data, 'model' => $model, 'tipo_grafica' => $tipo_grafica]);
             }
@@ -2571,7 +2452,6 @@ class ControlController extends \yii\web\Controller {
                 }
                 //Guardamos en la variable para el eje X -------------------------------        
                 if (count($cortes) > 0) {
-                    //var_dump($cortes);exit;
                     foreach ($cortes as $key => $value) {
                         $ejeX[] = 'C' . ($key + 1);
                         $ejeXtabla[] = Html::tag('span', "C" . ($key + 1), [
@@ -2584,8 +2464,6 @@ class ControlController extends \yii\web\Controller {
                 }
 
                 //Traemos datos para eje Y ---------------------------------------------
-                $ejecucionformulario = new \app\models\Ejecucionformularios();
-                $menorarboles = 100;
                 if ($agrupar == 1) {
                     //Agrupacion de arboles --------------------------------------------
                     //DATOS DE ROL
@@ -2609,10 +2487,6 @@ class ControlController extends \yii\web\Controller {
                             $arrayIdsusuarios[] = $value['evaluadores_id'];
                         }
                         $idsUsuarios = implode(',', $arrayIdsusuarios);
-                        /* $sql->andWhere("je.usua_id IN (" . $idsUsuarios . ")");
-                          $joinPersonas .= ' INNER JOIN rel_grupos_usuarios rr on rr.usuario_id = e.usua_id ';
-                          $selectPersonas .= ',rr.*'; */
-                        //$wherePersonas .= " AND e.usua_id IN (" . $idsUsuarios . ") ";
                         if($segundoCalifPer){
                             $wherePersonas .= " AND sc.id_responsable IN (" . $idsUsuarios . ") ";
                         }else{
@@ -2765,10 +2639,6 @@ class ControlController extends \yii\web\Controller {
                             $arrayIdsusuarios[] = $value['evaluadores_id'];
                         }
                         $idsUsuarios = implode(',', $arrayIdsusuarios);
-                        /* $sql->andWhere("je.usua_id IN (" . $idsUsuarios . ")");
-                          $joinPersonas .= ' INNER JOIN rel_grupos_usuarios rr on rr.usuario_id = e.usua_id ';
-                          $selectPersonas .= ',rr.*'; */
-                        //$wherePersonas .= " AND e.usua_id IN (" . $idsUsuarios . ") ";
                         if($segundoCalifPer){
                             $wherePersonas .= " AND sc.id_responsable IN (" . $idsUsuarios . ") ";
                         }else{
@@ -2942,20 +2812,14 @@ class ControlController extends \yii\web\Controller {
              */
             private function getDataGraphSepaDimen($model, $agrupar, $idsArboles) {
 
-                $cortes = [];
-                $tipoCorte = $model->corte;
                 $rangofecha = $model->fecha;
                 $fecha = explode(' - ', $rangofecha);
                 $fechaInicio = $fecha[0];
                 $fechaFin = $fecha[1];
                 $metrica = $model->metrica;
                 $dimension = $model->dimension;
-                $id_usuario = Yii::$app->user->identity->id;
                 $data = new \stdClass();
                 $showGraf = false;
-                $ejeX = [];
-                $resultProm = [];
-                $resultCant = [];
 
 
                 //ELIMINO LOS ARBOLES QUE NO SEAN PAPA
@@ -3085,9 +2949,6 @@ class ControlController extends \yii\web\Controller {
                             $arrayIdsusuarios[] = $value['evaluadores_id'];
                         }
                         $idsUsuarios = implode(',', $arrayIdsusuarios);
-                        /* $sql->andWhere("je.usua_id IN (" . $idsUsuarios . ")");
-                          $joinPersonas .= ' INNER JOIN rel_grupos_usuarios rr on rr.usuario_id = e.usua_id ';
-                          $selectPersonas .= ',rr.*'; */
                         if($segundoCalifPer){
                             $wherePersonas .= " AND sc.id_responsable IN (" . $idsUsuarios . ") ";
                         }else{
@@ -3184,7 +3045,6 @@ class ControlController extends \yii\web\Controller {
                     $datos = [];
                     if (count($resultData) > 0) {
 
-                        $dataTabla = [];
 
                         //DATOS DE LA GRAFICA 
                         $arrayLabelsx = [
@@ -3212,8 +3072,7 @@ class ControlController extends \yii\web\Controller {
                             }
                             //GRAFICA NUEVA CANTIDAD
                             $arbolesEjeX[] = "AGRUPACIÓN DE ARBOLES";
-                            ;
-                            if (!key_exists($value['dimension_id'], $arrNuevaGraficaCant)) {
+                            if (!array_key_exists($value['dimension_id'], $arrNuevaGraficaCant)) {
                                 $cantTemp[$value['arbol_id']]['nombre'] = "AGRUPACIÓN DE ARBOLES";
                                 $arrNuevaGraficaCant[$value['dimension_id']]['name'] = $value['dimension'];
                                 $arrNuevaGraficaCant[$value['dimension_id']]['data'][] = (int) $value['cantidad'];
@@ -3225,7 +3084,7 @@ class ControlController extends \yii\web\Controller {
                             //FIN GRAFICA NUEVA CANTIDAD
                             //GRAFICA NUEVA PROMEDIO                                   
                             $arrayTempProm[] = [$value['arbol'] . " - " . $value['dimension'], (float) $promedio];
-                            if (!key_exists($value['dimension_id'], $arrNuevaGraficaProm)) {
+                            if (!array_key_exists($value['dimension_id'], $arrNuevaGraficaProm)) {
                                 $promTemp[$value['arbol_id']]['nombre'] = "AGRUPACIÓN DE ARBOLES";
                                 $arrNuevaGraficaProm[$value['dimension_id']]['name'] = $value['dimension'];
                                 $arrNuevaGraficaProm[$value['dimension_id']]['data'][] = (float) $promedio;
@@ -3295,15 +3154,11 @@ class ControlController extends \yii\web\Controller {
                             $arrayIdsusuarios[] = $value['evaluadores_id'];
                         }
                         $idsUsuarios = implode(',', $arrayIdsusuarios);
-                        /* $sql->andWhere("je.usua_id IN (" . $idsUsuarios . ")");
-                          $joinPersonas .= ' INNER JOIN rel_grupos_usuarios rr on rr.usuario_id = e.usua_id ';
-                          $selectPersonas .= ',rr.*'; */
                         if($segundoCalifPer){
                             $wherePersonas .= " AND sc.id_responsable IN (" . $idsUsuarios . ") ";
                         }else{
                             $wherePersonas .= " AND e.usua_id IN (" . $idsUsuarios . ") ";
                         }
-                        //$wherePersonas .= " AND e.usua_id IN (" . $idsUsuarios . ") ";
                     }
                     //DATOS DE VOLUMENES
                     $joinVolumen = $whereVolumen = "";
@@ -3425,28 +3280,12 @@ class ControlController extends \yii\web\Controller {
                             }
                             //GRAFICA NUEVA CANTIDAD
                             $arbolesEjeX[] = $value['arbol'];
-                            /* if (!key_exists($value['dimension_id'], $arrNuevaGraficaCant)) {
-                              $cantTemp[$value['arbol_id']]['nombre'] = $value['arbol'];
-                              $arrNuevaGraficaCant[$value['dimension_id']]['name'] = $value['dimension'];
-                              $arrNuevaGraficaCant[$value['dimension_id']]['data'][] = (int) $value['cantidad'];
-                              } else {
-                              $cantTemp[$value['arbol_id']]['nombre'] = $value['arbol'];
-                              array_push($arrNuevaGraficaCant[$value['dimension_id']]['data'], (int) $value['cantidad']);
-                              } */
                             $cantTemp[$value['arbol_id']]['nombre'] = $value['arbol'];
                             $arrNuevaGraficaCant[$value['dimension_id']]['data'][$value['arbol_id']] = (int) $value['cantidad'];
                             $arrayTempCant[] = [$value['arbol'] . " - " . $value['dimension'], (int) $value['cantidad']];
                             //FIN GRAFICA NUEVA CANTIDAD
                             //GRAFICA NUEVA PROMEDIO                                   
                             $arrayTempProm[] = [$value['arbol'] . " - " . $value['dimension'], (float) $promedio];
-                            /* if (!key_exists($value['dimension_id'], $arrNuevaGraficaProm)) {
-                              $promTemp[$value['arbol_id']]['nombre'] = $value['arbol'];
-                              $arrNuevaGraficaProm[$value['dimension_id']]['name'] = $value['dimension'];
-                              $arrNuevaGraficaProm[$value['dimension_id']]['data'][] = (float) $promedio;
-                              } else {
-                              $promTemp[$value['arbol_id']]['nombre'] = $value['arbol'];
-                              array_push($arrNuevaGraficaProm[$value['dimension_id']]['data'], (float) $promedio);
-                              } */
                             $promTemp[$value['arbol_id']]['nombre'] = $value['arbol'];
                             $arrNuevaGraficaProm[$value['dimension_id']]['data'][$value['arbol_id']] = (float) $promedio;
                             //FIN GRAFICA NUEVA PROMEDIO

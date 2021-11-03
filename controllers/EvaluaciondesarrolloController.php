@@ -247,7 +247,6 @@ use app\models\EvaluacionDesarrollo;
       $sessiones = Yii::$app->user->identity->id;
       $txtanulado = 0;
       $txtfechacreacion = date("Y-m-d");
-      //$txtfechamodificiacion = date("Y-m-d");
 
       Yii::$app->db->createCommand("truncate table tbl_usuarios_evalua")->execute();
 
@@ -668,9 +667,7 @@ use app\models\EvaluacionDesarrollo;
 
     public function actionImportarusuarioseval(){
       $model = new UploadForm2();
-      $txtanulado = 0;
       $txtfechacreacion = date("Y-m-d");
-      $sessiones = Yii::$app->user->identity->id;
 
         if (Yii::$app->request->isPost) {
             $model->file = UploadedFile::getInstance($model, 'file');
@@ -1101,9 +1098,6 @@ use app\models\EvaluacionDesarrollo;
     }
 
     public function actionIngresarnovedadpares(){
-      // $txtvaridpares = Yii::$app->request->get("txtvaridpares");
-      // $txtvardocumento = Yii::$app->request->get("txtvardocumento");
-      // $txtnovedades = "Novedades de pares";
       $txtvaridasuntosNcargo = Yii::$app->request->get("txtvaridasuntosNcargo");
       $txtvarIdcomentariosNovedad = Yii::$app->request->get("txtvarIdcomentariosNovedad");
       $txtvardocumento = Yii::$app->request->get("txtvardocumento");
@@ -1318,8 +1312,6 @@ use app\models\EvaluacionDesarrollo;
     $vardocumento2 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
     
     $vardocumentojefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua WHERE documento = $txtvardocumento")->queryScalar();
-    
- 	// $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documento = $txtvardocumento AND idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
 
     $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento AND idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
 
@@ -1333,19 +1325,11 @@ use app\models\EvaluacionDesarrollo;
     }
     $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua WHERE documento_jefe = $vardocumentojefe")->queryScalar();
    
-    // if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
     if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
       $txtRta = 1;
     } else{
       $txtRta = 0;
     }
-    /*if($vardocumentojefe > 1 && $vardocumento3 = 0){
-      $txtRta = 1;
-    } else if($vardocumentojefe > 1 && $vardocumento3){
-        $txtRta = 1;
-      } else {
-        $txtRta = 0;
-      }*/
     
     die(json_encode($txtRta));
   }
@@ -1357,7 +1341,6 @@ use app\models\EvaluacionDesarrollo;
     $txtvardocumentojefe = Yii::$app->request->get("vardocumentojefe");
     $txtvartipocoaching = Yii::$app->request->get("vartipocoaching");
     $txtvalidadocumento = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_resulta_feedback WHERE documento = $txtvardocumento")->queryScalar();
-    //$txtEmail = Yii::$app->db->createCommand("select email_corporativo from tbl_usuarios_evalua WHERE documento = $txtvardocumento")->queryScalar();
     $txtrta = 0;
     if($txtvalidadocumento == 0) {
         $txtEmail = "anmorenoa@grupokonecta.com";
@@ -1375,13 +1358,10 @@ use app\models\EvaluacionDesarrollo;
         $varlistbloques = Yii::$app->db->createCommand("select * from tbl_evaluacion_bloques where anulado = 0")->queryAll();
 
         $varconteobloque = null;
-        $varArraySumaB = array();
         foreach ($varlistbloques as $key => $value) {          
           $varidbloque = $value['idevaluacionbloques'];
           $varconteobloque = $varconteobloque + 1;
 
-          $totalcomp = 0;
-          $varArrayPromedio = array();
 
           $valortotal1Auto = 0;
           $valortotal2Jefe = 0;
@@ -1402,11 +1382,9 @@ use app\models\EvaluacionDesarrollo;
           $varconteocompetencia = 0;
           foreach ($listadocompetencias as $key => $value) {
             $nombrecompetencias = $value['namecompetencia'];
-            $varidevaluacionbloques = $value['idevaluacionbloques'];
             $varidcompetencia = $value['idevaluacioncompetencia'];                                        
             
             $varconteocompetencia = $varconteocompetencia + 1;
-            $varcolor2 = null;
 
             $listacompetencia1 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
                                                         FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
@@ -1424,7 +1402,6 @@ use app\models\EvaluacionDesarrollo;
 
             foreach ($listacompetencia1 as $key => $value1) {
               $valortotal1Auto = $value1['%Competencia'];
-              $varmensaje = $value1['mensaje'];
             }
 
             $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
@@ -1769,7 +1746,6 @@ use app\models\EvaluacionDesarrollo;
     }
 
     public function actionListarcedulas(){            
-            $txtAnulado = 0; 
             $txtId = Yii::$app->request->get('id'); 
             
             $sessiones = Yii::$app->user->identity->id;
@@ -1777,28 +1753,10 @@ use app\models\EvaluacionDesarrollo;
 
             if ($txtId) {
                 $txtControl = Yii::$app->db->createCommand("select count(1) from tbl_usuarios_evalua ue inner join tbl_evaluacion_solucionado es on ue.documento = es.documentoevaluado where es.documento = $vardocument and es.anulado = 0 and es.idevaluaciontipo = $txtId group by ue.documento")->queryScalar();
-                          // \app\models\EvaluacionSolucionado::find()->distinct()
-                          // ->select("tbl_usuarios_evalua.nombre_completo, tbl_usuarios_evalua.documento")
-                          // ->join('LEFT OUTER JOIN','tbl_evaluacion_solucionado eu',
-                          //     'eu.documentoevaluado  = tbl_usuarios_evalua.documento')
-                          // ->where("eu.anulado = 0")
-                          // ->andwhere("eu.idevaluaciontipo = $txtId")
-                          // ->andwhere("eu.documento = '$vardocument'")
-                          // ->count();
 
                 if ($txtControl > 0) {
                   $varListaPcrc = Yii::$app->db->createCommand("select ue.nombre_completo, ue.documento from tbl_usuarios_evalua ue inner join tbl_evaluacion_solucionado es on ue.documento = es.documentoevaluado where es.documento = $vardocument and es.anulado = 0 and es.idevaluaciontipo = $txtId group by ue.documento")->queryAll();
-                          // \app\models\EvaluacionSolucionado::find()->distinct()
-                          // ->select("tbl_usuarios_evalua.nombre_completo as nombre_completo, tbl_usuarios_evalua.documento as documento")
-                          // ->join('LEFT OUTER JOIN','tbl_evaluacion_solucionado',
-                          //     'tbl_usuarios_evalua.documento = tbl_evaluacion_solucionado.documentoevaluado')
-                          // ->where("tbl_evaluacion_solucionado.anulado = 0")
-                          // ->andwhere("tbl_evaluacion_solucionado.idevaluaciontipo = $txtId")
-                          // ->andwhere("tbl_evaluacion_solucionado.documento = '$vardocument'")
-                          // ->orderBy(['tbl_usuarios_evalua.nombre_completo' => SORT_DESC])
-                          // ->all();  
            
-                    $valor = 0;
                     
                     foreach ($varListaPcrc as $key => $value) {
                         echo "<option value='" . $value['documento']. "'>" . $value['nombre_completo'] . "</option>";
@@ -1848,7 +1806,6 @@ use app\models\EvaluacionDesarrollo;
           Yii::$app->db->createCommand("update tbl_evaluacion_eliminarusuarios set aprobado = 1 where ideliminarusuarios = $varidnov and anulado = 0")->execute();
 
           $varlistusuario = Yii::$app->db->createCommand("select distinct * from tbl_usuarios_evalua u where u.documento = '$varevaluados' and u.anulado = 0")->queryAll();
-          // var_dump($varlistusuario);
 
           foreach ($varlistusuario as $key => $value) {
               Yii::$app->db->createCommand()->insert('tbl_usuarios_evalua_copy',[
@@ -1913,7 +1870,6 @@ use app\models\EvaluacionDesarrollo;
 
       public function actionExportarlista2(){
         $varCorreo = Yii::$app->request->get("var_Destino");
-        $sessiones = Yii::$app->user->identity->id;
 
         $varlistusuarios = Yii::$app->db->createCommand("select ec.cedulaevaluador 'idevaluador', ue.nombre_completo 'evaluador', ec.cedulaevaluado 'idevaluado', (select distinct eu.nombre_completo from tbl_usuarios_evalua eu where eu.documento = ec.cedulaevaluado) 'nombre_evaluado',  et.tipoevaluacion 'tipo_evaluacion', if (ec.idresultado = 1, 'Realizado', 'Sin realizar') 'Resultado',  ec.directorarea 'Director', ec.clientearea 'Area' from tbl_usuarios_evalua ue inner join tbl_evaluacion_cumplimiento ec on ue.documento = ec.cedulaevaluador inner join tbl_evaluacion_tipoeval et on   ec.idtipoevalua = et.idevaluaciontipo where ec.anulado = 0 group by ec.cedulaevaluador, ec.cedulaevaluado")->queryAll();
 
@@ -1929,11 +1885,6 @@ use app\models\EvaluacionDesarrollo;
 
         $phpExc->getActiveSheet()->setShowGridlines(False);
 
-        $styleArray = array(
-                'alignment' => array(
-                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                ),
-            );
 
         $styleArraySize = array(
                 'font' => array(
@@ -1959,13 +1910,6 @@ use app\models\EvaluacionDesarrollo;
                 )
             );
 
-        $styleArraySubTitle = array(              
-                'fill' => array( 
-                        'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                        'color' => array('rgb' => '4298B5'),
-                )
-            );
-
         $styleArraySubTitle2 = array(              
                 'fill' => array( 
                     'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -1984,27 +1928,6 @@ use app\models\EvaluacionDesarrollo;
                         'style' => \PHPExcel_Style_Border::BORDER_THIN,
                         'color' => array('rgb' => 'DDDDDD')
                     )
-                )
-            );
-
-        $styleColorLess = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => '92DD5B'),
-                )
-            );
-
-        $styleColorMiddle = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => 'E3AD48'),
-                )
-            );
-
-        $styleColorhigh = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => 'DD6D5B'),
                 )
             );
 
@@ -2051,13 +1974,13 @@ use app\models\EvaluacionDesarrollo;
         $phpExc->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
         $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArray);            
         $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);;
+        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);
 
         $phpExc->getActiveSheet()->SetCellValue('G2','DIRECTOR');
         $phpExc->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
         $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArray);            
         $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);;
+        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);
 
         $phpExc->getActiveSheet()->SetCellValue('H2','CLIENTE');
         $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
@@ -2138,7 +2061,7 @@ use app\models\EvaluacionDesarrollo;
         $form = Yii::$app->request->post();
         if($model->load($form)){
           $vardocumento = $model->idevaluador;
-          $varlistrtadesarrollo = Yii::$app->db->createCommand("SELECT COUNT(*) FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento'")->queryScalar();;
+          $varlistrtadesarrollo = Yii::$app->db->createCommand("SELECT COUNT(*) FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento'")->queryScalar();
 
           $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
           $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
@@ -2176,10 +2099,7 @@ use app\models\EvaluacionDesarrollo;
 
             foreach ($listadocompetencias as $key => $value) {
               $nombrecompetencias = $value['namecompetencia'];
-              $varidevaluacionbloques = $value['idevaluacionbloques'];
-              $varidcompetencia = $value['idevaluacioncompetencia'];                                        
               $varconteocompetencia = $varconteocompetencia + 1;
-              $varcolor2 = null;
 
               $listacompetencia1 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
                                                         FORMAT((sum(er.valor)*100)/(count(es.idevaluacioncompetencia)*5),2) AS '%Competencia', es.idevaluacioncompetencia,
@@ -2197,7 +2117,6 @@ use app\models\EvaluacionDesarrollo;
 
               foreach ($listacompetencia1 as $key => $value1) {
                 $valortotal1Auto = $value1['%Competencia'];
-                $varmensaje = $value1['mensaje'];
               }
 
               $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
@@ -2343,16 +2262,6 @@ use app\models\EvaluacionDesarrollo;
                   ),
                 );
 
-          $styleArraySize = array(
-                  'font' => array(
-                          'bold' => true,
-                          'size'  => 15,
-                  ),
-                  'alignment' => array(
-                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                  ), 
-                );
-
           $styleColor = array( 
                   'fill' => array( 
                       'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -2395,13 +2304,6 @@ use app\models\EvaluacionDesarrollo;
                   )
                 );
 
-          $styleArraySubTitle2 = array(              
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'C6C6C6'),
-                  )
-                );  
-
           // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
           $styleArrayBody = array(
                   'font' => array(
@@ -2413,27 +2315,6 @@ use app\models\EvaluacionDesarrollo;
                           'style' => \PHPExcel_Style_Border::BORDER_THIN,
                           'color' => array('rgb' => 'DDDDDD')
                       )
-                  )
-                );
-
-          $styleColorLess = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '92DD5B'),
-                  )
-                );
-
-          $styleColorMiddle = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'CED9D5'),
-                  )
-                );
-
-          $styleColorhigh = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '22CCC4'),
                   )
                 );
 
@@ -2771,15 +2652,6 @@ use app\models\EvaluacionDesarrollo;
                   ),
                 );
 
-          $styleArraySize = array(
-                  'font' => array(
-                          'bold' => true,
-                          'size'  => 15,
-                  ),
-                  'alignment' => array(
-                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                  ), 
-                );
 
           $styleColor = array( 
                   'fill' => array( 
@@ -2823,13 +2695,6 @@ use app\models\EvaluacionDesarrollo;
                   )
                 );
 
-          $styleArraySubTitle2 = array(              
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'C6C6C6'),
-                  )
-                );  
-
           // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
           $styleArrayBody = array(
                   'font' => array(
@@ -2841,27 +2706,6 @@ use app\models\EvaluacionDesarrollo;
                           'style' => \PHPExcel_Style_Border::BORDER_THIN,
                           'color' => array('rgb' => 'DDDDDD')
                       )
-                  )
-                );
-
-          $styleColorLess = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '92DD5B'),
-                  )
-                );
-
-          $styleColorMiddle = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'CED9D5'),
-                  )
-                );
-
-          $styleColorhigh = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '22CCC4'),
                   )
                 );
 
@@ -3218,15 +3062,6 @@ use app\models\EvaluacionDesarrollo;
                   ),
                 );
 
-          $styleArraySize = array(
-                  'font' => array(
-                          'bold' => true,
-                          'size'  => 15,
-                  ),
-                  'alignment' => array(
-                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                  ), 
-                );
 
           $styleColor = array( 
                   'fill' => array( 
@@ -3270,12 +3105,6 @@ use app\models\EvaluacionDesarrollo;
                   )
                 );
 
-          $styleArraySubTitle2 = array(              
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'C6C6C6'),
-                  )
-                );  
 
           // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
           $styleArrayBody = array(
@@ -3291,26 +3120,6 @@ use app\models\EvaluacionDesarrollo;
                   )
                 );
 
-          $styleColorLess = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '92DD5B'),
-                  )
-                );
-
-          $styleColorMiddle = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'CED9D5'),
-                  )
-                );
-
-          $styleColorhigh = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '22CCC4'),
-                  )
-                );
 
           $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
 
@@ -3457,10 +3266,7 @@ use app\models\EvaluacionDesarrollo;
               
               foreach ($listadocompetencias as $key => $value) {
                 $nombrecompetencias = $value['namecompetencia'];
-                $varidevaluacionbloques = $value['idevaluacionbloques'];
-                $varidcompetencia = $value['idevaluacioncompetencia'];                                        
                 $varconteocompetencia = $varconteocompetencia + 1;
-                $varcolor2 = null;
 
                 if ($varidbloque == '3') {
                   $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Bloque Desempeno');
@@ -3506,7 +3312,6 @@ use app\models\EvaluacionDesarrollo;
 
                 foreach ($listacompetencia1 as $key => $value1) {
                   $valortotal1Auto = $value1['%Competencia'];
-                  $varmensaje = $value1['mensaje'];
                 }
 
                 $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
@@ -3638,15 +3443,12 @@ use app\models\EvaluacionDesarrollo;
 
               if ($varidbloque == 1) {
                 $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
-                $rtapornetaje = (40 / 100);
               }
               if ($varidbloque == 3) {
                 $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
-                $rtapornetaje = (40 / 100);
               }
               if ($varidbloque == 2) {
                 $varrtafinal = round(($txtrtafinal * (20 / 100)),2);
-                $rtapornetaje = (20 / 100);
               }
 
               if ($varidbloque == '3') {
@@ -3775,15 +3577,6 @@ use app\models\EvaluacionDesarrollo;
                   ),
                 );
 
-          $styleArraySize = array(
-                  'font' => array(
-                          'bold' => true,
-                          'size'  => 15,
-                  ),
-                  'alignment' => array(
-                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                  ), 
-                );
 
           $styleColor = array( 
                   'fill' => array( 
@@ -3827,13 +3620,6 @@ use app\models\EvaluacionDesarrollo;
                   )
                 );
 
-          $styleArraySubTitle2 = array(              
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'C6C6C6'),
-                  )
-                );  
-
           // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
           $styleArrayBody = array(
                   'font' => array(
@@ -3845,27 +3631,6 @@ use app\models\EvaluacionDesarrollo;
                           'style' => \PHPExcel_Style_Border::BORDER_THIN,
                           'color' => array('rgb' => 'DDDDDD')
                       )
-                  )
-                );
-
-          $styleColorLess = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '92DD5B'),
-                  )
-                );
-
-          $styleColorMiddle = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'CED9D5'),
-                  )
-                );
-
-          $styleColorhigh = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '22CCC4'),
                   )
                 );
 
@@ -4015,10 +3780,7 @@ use app\models\EvaluacionDesarrollo;
               
               foreach ($listadocompetencias as $key => $value) {
                 $nombrecompetencias = $value['namecompetencia'];
-                $varidevaluacionbloques = $value['idevaluacionbloques'];
-                $varidcompetencia = $value['idevaluacioncompetencia'];                                        
                 $varconteocompetencia = $varconteocompetencia + 1;
-                $varcolor2 = null;
 
                 if ($varidbloque == '3') {
                   $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Bloque Desempeno');
@@ -4064,7 +3826,6 @@ use app\models\EvaluacionDesarrollo;
 
                 foreach ($listacompetencia1 as $key => $value1) {
                   $valortotal1Auto = $value1['%Competencia'];
-                  $varmensaje = $value1['mensaje'];
                 }
 
                 $listacompetencia2 = Yii::$app->db->createCommand("select ue.nombre_completo nombre, es.documentoevaluado documento, sum(er.valor), 
@@ -4196,15 +3957,12 @@ use app\models\EvaluacionDesarrollo;
 
               if ($varidbloque == 1) {
                 $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
-                $rtapornetaje = (40 / 100);
               }
               if ($varidbloque == 3) {
                 $varrtafinal = round(($txtrtafinal * (40 / 100)),2);
-                $rtapornetaje = (40 / 100);
               }
               if ($varidbloque == 2) {
                 $varrtafinal = round(($txtrtafinal * (20 / 100)),2);
-                $rtapornetaje = (20 / 100);
               }
 
               if ($varidbloque == '3') {

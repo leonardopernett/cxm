@@ -58,21 +58,19 @@ class FuenteinformacionController extends Controller {
 
             public function actionUsuarios_valorado(){
                 $sessiones = Yii::$app->user->identity->id;
-                //$sessiones = Yii::$app->request->get("txtvarsessiones");
                 $txtanulado = 0;
                 $txtfechacreacion = date("Y-m-d");
-                //$txtfechamodificiacion = date("Y-m-d");
      
                 Yii::$app->db->createCommand("truncate table tbl_tmpvaloradosdistribucion")->execute();
      
                 $query = Yii::$app->get('dbjarvis')->createCommand("select `dg5`.`documento` AS `docJefe`, `dg5`.`nombre_completo` AS `jefe`, `e1`.usuario_red AS usuario_red_jefe,
-                                    IFNULL(dp.documento, 'Sin informaci髇' COLLATE utf8_unicode_ci) AS documento, `dg`.`nombre_completo` AS `nombreEmpleado`, 
+                                    IFNULL(dp.documento, 'Sin informaci贸n' COLLATE utf8_unicode_ci) AS documento, `dg`.`nombre_completo` AS `nombreEmpleado`, 
                                     `e`.usuario_red,
                                     IF(dp.cargos_encargo = 0, CONCAT_WS(' ', `po1`.`posicion`, fu1.funcion), CONCAT_WS(' ', `po2`.`posicion`, fu2.funcion)) AS cargo,  
-                                    IF(dp.cod_pcrc != 0, `cl1`.`id_dp_clientes`, IF(dp.id_dp_centros_costos != 0, `cl2`.`id_dp_clientes`, IF(dp.id_dp_centros_costos_adm != 0, `dp`.`id_dp_centros_costos_adm`, 'Sin informaci髇' COLLATE utf8_unicode_ci))) AS codClienteArea, 
-                                    IF(dp.cod_pcrc != 0, `cl1`.`cliente`, IF(dp.id_dp_centros_costos != 0, `cl2`.`cliente`, IF(dp.id_dp_centros_costos_adm != 0, `ar`.`area_general`, 'Sin informaci髇' COLLATE utf8_unicode_ci))) AS clienteArea,				    
-                                    IF(dp.cod_pcrc != 0, `pc`.`cod_pcrc`, IF(dp.id_dp_centros_costos_adm != 0, `ad`.`id_dp_centros_costos_adm`, 'Sin informaci髇')) AS codCecoPcrc, 
-                                    `pc`.`ciudad` AS `ciudadPcrc`, IFNULL(IF(dg.fecha_alta = '1900-01-01', 'Sin informaci髇', dg.fecha_alta), 'Sin informaci髇' COLLATE utf8_unicode_ci) AS fechaAlta, `es`.`tipo_estado` AS `estado`, `ua1`.email_corporativo AS `correo_corp`
+                                    IF(dp.cod_pcrc != 0, `cl1`.`id_dp_clientes`, IF(dp.id_dp_centros_costos != 0, `cl2`.`id_dp_clientes`, IF(dp.id_dp_centros_costos_adm != 0, `dp`.`id_dp_centros_costos_adm`, 'Sin informaci贸n' COLLATE utf8_unicode_ci))) AS codClienteArea, 
+                                    IF(dp.cod_pcrc != 0, `cl1`.`cliente`, IF(dp.id_dp_centros_costos != 0, `cl2`.`cliente`, IF(dp.id_dp_centros_costos_adm != 0, `ar`.`area_general`, 'Sin informaci贸n' COLLATE utf8_unicode_ci))) AS clienteArea,				    
+                                    IF(dp.cod_pcrc != 0, `pc`.`cod_pcrc`, IF(dp.id_dp_centros_costos_adm != 0, `ad`.`id_dp_centros_costos_adm`, 'Sin informaci贸n')) AS codCecoPcrc, 
+                                    `pc`.`ciudad` AS `ciudadPcrc`, IFNULL(IF(dg.fecha_alta = '1900-01-01', 'Sin informaci贸n', dg.fecha_alta), 'Sin informaci贸n' COLLATE utf8_unicode_ci) AS fechaAlta, `es`.`tipo_estado` AS `estado`, `ua1`.email_corporativo AS `correo_corp`
                                     FROM `dp_distribucion_personal` AS `dp`
                                     LEFT JOIN `dp_datos_generales` AS `dg` ON `dg`.`documento` = `dp`.`documento`
                                     LEFT JOIN `dp_solicitudes_administrativas` AS `da` ON `da`.`id_dp_solicitudes_administrativas` = `dg`.`id_dp_solicitudes` AND `dg`.`id_tipo_solicitud` = '1'
@@ -156,7 +154,6 @@ class FuenteinformacionController extends Controller {
                                                     ORDER BY lista.documentojefe desc")->queryAll();
                 
                 foreach ($varlistalidernocx as $key => $value) {
-                    //$vardocumentojefe = $value['documentojefe'];
                     Yii::$app->db->createCommand()->insert('tbl_tmpdistribucionlidernuevo',[
                         
                         'documentojefe' => $value['documentojefe'],
@@ -177,7 +174,7 @@ class FuenteinformacionController extends Controller {
                 foreach ($varlistalidernuevo as $key => $value) {
                     $varemail = $value['usuario_redjefe'].'@grupokonecta.com';
                     $varbuscar = $value['nombrepcrc'];
-                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajer韆') {
+                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajer铆a') {
                     
                         Yii::$app->db->createCommand()->insert('tbl_usuarios',[
                             'usua_usuario' => $value['usuario_redjefe'],
@@ -194,10 +191,9 @@ class FuenteinformacionController extends Controller {
 
 
                 foreach ($varlistalidernuevo as $key => $value) {
-                    //$vardocumentojefe = $value['documentojefe'];
                     $varbuscar = $value['nombrepcrc'];
 		    $vardocumento1 = $value['documentojefe'];
-                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajer韆') {
+                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajer铆a') {
                         
                         if ($varbuscar == 'Suramericana') {
                             $varbuscar = 'Sura';
@@ -219,8 +215,6 @@ class FuenteinformacionController extends Controller {
                         } 
 
 
-                        //$varbuscar = 'l韉er'.$value['documentojefe'];
-                        //$vardocumento1 = $value['documentojefe'];
                         $vargrupo_id = Yii::$app->db->createCommand("SELECT grupos_id from tbl_grupos_usuarios g WHERE g.grupo_descripcion LIKE '%$varbuscar%'")->queryScalar();
 
                         $varidusua = Yii::$app->db->createCommand("select max(usua_id) from tbl_usuarios where usua_identificacion = $vardocumento1")->queryScalar();
@@ -240,11 +234,10 @@ class FuenteinformacionController extends Controller {
                 $varverde = 1;
                 $varamarillo = 1;
                 foreach ($varlistalidernuevo as $key => $value) {
-                    //$vardocumentojefe = $value['documentojefe'];
                     $varbuscar = $value['nombrepcrc'];
                     $varnombre = $value['nombrejefe'];
                     $vardocumento1 = $value['documentojefe'];
-                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajer韆') {
+                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajer铆a') {
                         
                         $varnombreequipo = $varnombre.'_'.$varbuscar;
                         $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_identificacion = $vardocumento1")->queryScalar();
@@ -268,11 +261,10 @@ class FuenteinformacionController extends Controller {
                 $varverde = 1;
                 $varamarillo = 1;
                 foreach ($varlistalidernuevo as $key => $value) {
-                    //$vardocumentojefe = $value['documentojefe'];
                     $varbuscar = $value['nombrepcrc'];
                     $varnombre = $value['nombrejefe'];
                     $varusua_id = $value['usua_id'];
-                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajer韆') {
+                    if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajer铆a') {
                         
                         $varnombreequipo = $varnombre.'_'.$varbuscar;
                         $varidusua = Yii::$app->db->createCommand("SELECT * FROM tbl_equipos e where e.usua_id =  $varusua_id")->queryScalar();
@@ -296,11 +288,10 @@ class FuenteinformacionController extends Controller {
                                                         (SELECT t.documento, t.nombreempleado, t.usuario_red, t.idpcrc, t.nombrepcrc
                                                         FROM tbl_tmpvaloradosdistribucion t
                                                         WHERE t.cargo = 'Representante De Servicio' AND t.usuario_red IS NOT NULL AND 
-                                                        t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajer韆')) lista
+                                                        t.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajer铆a')) lista
                                                         WHERE lista.documento NOT IN (SELECT e.identificacion FROM tbl_evaluados e)")->queryAll();
                 
                 foreach ($varlistaevaluadonuevo as $key => $value) {
-                    //$vardocumentojefe = $value['documentojefe'];               
                      
                         Yii::$app->db->createCommand()->insert('tbl_evaluados',[
                             'name' => $value['nombreempleado'],
@@ -356,7 +347,7 @@ class FuenteinformacionController extends Controller {
                 $varlistaequipos = Yii::$app->db->createCommand("SELECT  v.documentojefe, v.nombrejefe, v.usuario_redjefe, v.nombrepcrc 
                                                         from tbl_tmpvaloradosdistribucion v
                                                         WHERE v.cargo = 'Representante De Servicio' AND v.usuario_red IS NOT NULL AND 
-                                                        v.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajer韆')
+                                                        v.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajer铆a')
                                                         GROUP BY v.documentojefe, v.nombrepcrc")->queryAll();
                 
                 foreach ($varlistaequipos as $key => $value) {
@@ -391,7 +382,7 @@ class FuenteinformacionController extends Controller {
                 $varlistaequipos = Yii::$app->db->createCommand("SELECT  v.documentojefe, v.nombrejefe, v.usuario_redjefe, v.nombrepcrc 
                                                         from tbl_tmpvaloradosdistribucion v
                                                         WHERE v.cargo = 'Representante De Servicio' AND v.usuario_red IS NOT NULL AND 
-                                                        v.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajer韆')
+                                                        v.nombrepcrc NOT IN ('Vodafone Ono Sau','Enel Chile','Konecta BTO','Centro de mensajer铆a')
                                                         GROUP BY v.documentojefe")->queryAll();
                 
                 foreach ($varlistaequipos as $key => $value) {
@@ -442,7 +433,6 @@ class FuenteinformacionController extends Controller {
 
       public function actionExportarlista2(){
                 $varCorreo = Yii::$app->request->get("var_Destino");
-                $sessiones = Yii::$app->user->identity->id;
         
                 $varlistaequiposactual = Yii::$app->db->createCommand("SELECT e.name, u.usua_identificacion, ep.identificacion FROM tbl_equipos e 
                                                         INNER JOIN tbl_equipos_evaluados ee ON
@@ -456,8 +446,8 @@ class FuenteinformacionController extends Controller {
                 $phpExc->getProperties()
                         ->setCreator("Konecta")
                         ->setLastModifiedBy("Konecta")
-                        ->setTitle("Lista de equipos - Fuentes de Informaci髇")
-                        ->setSubject("Fuentes de Informaci髇")
+                        ->setTitle("Lista de equipos - Fuentes de Informaci贸n")
+                        ->setSubject("Fuentes de Informaci贸n")
                         ->setDescription("Este archivo contiene el listado de los equipos registrados")
                         ->setKeywords("Lista de equipos");
                 $phpExc->setActiveSheetIndex(0);
@@ -470,15 +460,6 @@ class FuenteinformacionController extends Controller {
                         ),
                     );
         
-                $styleArraySize = array(
-                        'font' => array(
-                                'bold' => true,
-                                'size'  => 15,
-                        ),
-                        'alignment' => array(
-                                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                        ), 
-                    );
         
                 $styleColor = array( 
                         'fill' => array( 
@@ -494,12 +475,6 @@ class FuenteinformacionController extends Controller {
                         )
                     );
         
-                $styleArraySubTitle = array(              
-                        'fill' => array( 
-                                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                                'color' => array('rgb' => '4298B5'),
-                        )
-                    );
         
                 $styleArraySubTitle2 = array(              
                         'fill' => array( 
@@ -522,26 +497,6 @@ class FuenteinformacionController extends Controller {
                         )
                     );
         
-                $styleColorLess = array( 
-                        'fill' => array( 
-                            'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                            'color' => array('rgb' => '92DD5B'),
-                        )
-                    );
-        
-                $styleColorMiddle = array( 
-                        'fill' => array( 
-                            'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                            'color' => array('rgb' => 'E3AD48'),
-                        )
-                    );
-        
-                $styleColorhigh = array( 
-                        'fill' => array( 
-                            'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                            'color' => array('rgb' => 'DD6D5B'),
-                        )
-                    );
         
                 $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
         
@@ -613,7 +568,6 @@ class FuenteinformacionController extends Controller {
 	public function actionExportarvaloradonocxm(){
                 
                 // listados de valorados que o estas en jarvis
-                $varestatus = 1;
                 $varlistavaloradosjarvis = Yii::$app->db->createCommand("SELECT e.name, e.dsusuario_red, e.identificacion FROM tbl_tmpvaloradosdistribucion  t   
                                                         inner JOIN  tbl_evaluados e ON 
                                                         t.usuario_red = e.dsusuario_red")->queryAll();
@@ -625,7 +579,6 @@ class FuenteinformacionController extends Controller {
 
               public function actionExportarlistanoactualcxm(){
                 $varCorreo = Yii::$app->request->get("var_Destino");
-                $sessiones = Yii::$app->user->identity->id;
                 $varestatus = 1;
                 $varlistavaloradosjarvis = Yii::$app->db->createCommand("SELECT e.name, e.dsusuario_red, e.identificacion FROM tbl_tmpvaloradosdistribucion  t   
                                                         inner JOIN  tbl_evaluados e ON 
@@ -644,8 +597,8 @@ class FuenteinformacionController extends Controller {
                 $phpExc->getProperties()
                         ->setCreator("Konecta")
                         ->setLastModifiedBy("Konecta")
-                        ->setTitle("Lista de valorados - Fuentes de Informaci髇")
-                        ->setSubject("Fuentes de Informaci髇")
+                        ->setTitle("Lista de valorados - Fuentes de Informaci贸n")
+                        ->setSubject("Fuentes de Informaci贸n")
                         ->setDescription("Este archivo contiene el listado de Valorados de CXM no encontrados en Jarvis ")
                         ->setKeywords("Lista de Valorados");
                 $phpExc->setActiveSheetIndex(0);
@@ -656,16 +609,6 @@ class FuenteinformacionController extends Controller {
                         'alignment' => array(
                             'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
                         ),
-                    );
-        
-                $styleArraySize = array(
-                        'font' => array(
-                                'bold' => true,
-                                'size'  => 15,
-                        ),
-                        'alignment' => array(
-                                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                        ), 
                     );
         
                 $styleColor = array( 
@@ -682,12 +625,6 @@ class FuenteinformacionController extends Controller {
                         )
                     );
         
-                $styleArraySubTitle = array(              
-                        'fill' => array( 
-                                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                                'color' => array('rgb' => '4298B5'),
-                        )
-                    );
         
                 $styleArraySubTitle2 = array(              
                         'fill' => array( 
@@ -710,26 +647,6 @@ class FuenteinformacionController extends Controller {
                         )
                     );
         
-                $styleColorLess = array( 
-                        'fill' => array( 
-                            'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                            'color' => array('rgb' => '92DD5B'),
-                        )
-                    );
-        
-                $styleColorMiddle = array( 
-                        'fill' => array( 
-                            'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                            'color' => array('rgb' => 'E3AD48'),
-                        )
-                    );
-        
-                $styleColorhigh = array( 
-                        'fill' => array( 
-                            'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                            'color' => array('rgb' => 'DD6D5B'),
-                        )
-                    );
         
                 $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
         
@@ -808,7 +725,6 @@ class FuenteinformacionController extends Controller {
 
 	      public function actionNuevosformatodistribucion(){
                 $model = new UploadForm2();
-                $txtanulado = 0;
                 $txtfechacreacion = date("Y-m-d");
                 $sessiones = Yii::$app->user->identity->id;
             

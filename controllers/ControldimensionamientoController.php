@@ -358,16 +358,6 @@ use app\models\Controldimensionamiento;
                   ),
               	);
 
-          		$styleArraySize = array(
-                  'font' => array(
-                          'bold' => true,
-                          'size'  => 15,
-                  ),
-                  'alignment' => array(
-                          'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                  ), 
-              	);
-
           		$styleColor = array( 
                   'fill' => array( 
                       'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -389,12 +379,6 @@ use app\models\Controldimensionamiento;
                   )
               	);
 
-          		$styleArraySubTitle2 = array(              
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'C6C6C6'),
-                  )
-              	);  
 
           		// ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
           		$styleArrayBody = array(
@@ -407,27 +391,6 @@ use app\models\Controldimensionamiento;
                           'style' => \PHPExcel_Style_Border::BORDER_THIN,
                           'color' => array('rgb' => 'DDDDDD')
                       )
-                  )
-              	);
-
-          		$styleColorLess = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '92DD5B'),
-                  )
-              	);
-
-          		$styleColorMiddle = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => 'CED9D5'),
-                  )
-              	);
-
-          		$styleColorhigh = array( 
-                  'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '22CCC4'),
                   )
               	);
 
