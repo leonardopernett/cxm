@@ -202,11 +202,11 @@ class TmptiposllamadaController extends Controller {
         
         $out = [];
         $html = "";
-        if(isset($_POST["tiposllamadas_id"]) 
-                && !empty($_POST["tiposllamadas_id"]) 
-                && is_numeric($_POST["tiposllamadas_id"])){
+        if(isset(Yii::$app->request->post("tiposllamadas_id")) 
+                && !empty(Yii::$app->request->post("tiposllamadas_id")) 
+                && is_numeric(Yii::$app->request->post("tiposllamadas_id"))){
             
-            $out = \app\models\Tiposllamadasdetalles::getAllLlamdasDetByLlamaID($_POST["tiposllamadas_id"]);
+            $out = \app\models\Tiposllamadasdetalles::getAllLlamdasDetByLlamaID(Yii::$app->request->post("tiposllamadas_id"));
             if(count($out)>0){
                 foreach ($out as $value) {
                     $html .= "<option value='" . $value['id'] . "'>" 

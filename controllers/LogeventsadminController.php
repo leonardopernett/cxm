@@ -32,15 +32,12 @@ class LogeventsadminController extends Controller {
      */
     public function actionIndex() {
         $searchModel = new LogeventsadminSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if (Yii::$app->request->post()) {
             Yii::$app->session['rptFilterLogeventsadmin'] = Yii::$app->request->post();
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->session['rptFilterLogeventsadmin']);
-            //$models = $dataProvider->getModels();
-            //$banderaReporte = $searchModel->generarReporteLogAdmin($models);
         }
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -166,7 +163,6 @@ class LogeventsadminController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->session['rptFilterLogeventsadmin']);
-            //$models = $dataProvider->getModels();
         }
         Yii::$app->session->setFlash('success', Yii::t('app', 'Eliminación exitosa'));
         return $this->render('index', [

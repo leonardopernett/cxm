@@ -141,12 +141,9 @@ use yii\db\Query;
 		}
 
 		public function actionNodesvincular(){
-			(int)$txtidCoordi = Yii::$app->request->post("txtNamesC");
-			(int)$txtidEvalua = Yii::$app->request->post("txtNamceT");
 			(int)$txtDesvin = Yii::$app->request->post("txtDesvin");
 			$txtiddesvin = (int)$txtDesvin;
 			$txtEmail = Yii::$app->request->post("txtEmail");
-			$varResultados = null;
 			$varResultados1 = 1;
 
 			$txtmotivo = Yii::$app->db->createCommand("select motivo from tbl_control_desvincular where iddesvincular = $txtiddesvin")->queryScalar(); 

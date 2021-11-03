@@ -121,13 +121,12 @@ class SiteController extends Controller {
 
         $controlador = Yii::$app->controller->id;
         $vista = Yii::$app->controller->action->id;
-        if (empty($_POST)) {
+        if (empty(Yii::$app->request->post())) {
 
             $filtrosForm = \app\models\FiltrosFormularios::findOne(['vista' => $controlador . '/' . $vista, 'usua_id' => Yii::$app->user->identity->id]);
             if (!empty($filtrosForm)) {
                 $dataFiltos = json_decode($filtrosForm->parametros);
                 $filtros->fecha = $fecha = date('Y-m-01') . ' - ' . date('Y-m-d');
-                //$filtros->fecha = $fecha = $dataFiltos->fecha;
                 $filtros->dimension = $dataFiltos->dimension;
                 $filtros->metrica = $dataFiltos->metrica;
                 $arbIds = $dataFiltos->arbol_ids;
@@ -147,20 +146,20 @@ class SiteController extends Controller {
                 $filtros->metrica = '';
             }
         } else {
-            if (isset($_POST["arbol_ids"]) && count($_POST["arbol_ids"]) > 0) {
-                $filtros->fecha = $fecha = $_POST['selMesDesde'];
-                $filtros->dimension = $_POST["selDimension"];
-                $filtros->metrica = $_POST["selMetrica"];
+            if (isset(Yii::$app->request->post("arbol_ids")) && count(Yii::$app->request->post("arbol_ids")) > 0) {
+                $filtros->fecha = $fecha = Yii::$app->request->post('selMesDesde');
+                $filtros->dimension = Yii::$app->request->post("selDimension");
+                $filtros->metrica = Yii::$app->request->post("selMetrica");
                 $fecha = explode(' - ', $fecha);
                 $fechaInicio = $fecha[0];
                 $fechaFin = $fecha[1];
 
                 //Guardar filtros --------------------------------------------------                    
                 $filtrosDatos = new \stdClass();
-                $filtrosDatos->fecha = $_POST["selMesDesde"];
-                $filtrosDatos->dimension = $_POST["selDimension"];
-                $filtrosDatos->metrica = $_POST["selMetrica"];
-                $filtrosDatos->arbol_ids = $_POST["arbol_ids"];
+                $filtrosDatos->fecha = Yii::$app->request->post("selMesDesde");
+                $filtrosDatos->dimension = Yii::$app->request->post("selDimension");
+                $filtrosDatos->metrica = Yii::$app->request->post("selMetrica");
+                $filtrosDatos->arbol_ids = Yii::$app->request->post("arbol_ids");
                 $arbIds = $filtrosDatos->arbol_ids;
 
                 $filtrosForm = \app\models\FiltrosFormularios::findOne(['vista' => $controlador . '/' . $vista, 'usua_id' => Yii::$app->user->identity->id]);
@@ -174,15 +173,15 @@ class SiteController extends Controller {
                 $filtrosForm->save();
 
                 $data->graph = $this->actionGetGraph(
-                        $_POST["arbol_ids"]
-                        , $_POST["selDimension"]
-                        , $_POST["selMetrica"]
-                        , $fechaInicio
-                        , $fechaFin
+                        Yii::$app->request->post("arbol_ids"), 
+                        Yii::$app->request->post("selDimension"), 
+                        Yii::$app->request->post("selMetrica"), 
+                        $fechaInicio, 
+                        $fechaFin
                 );
             } else {
-                $filtros->dimension = $_POST["selDimension"];
-                $filtros->metrica = $_POST["selMetrica"];
+                $filtros->dimension = Yii::$app->request->post("selDimension");
+                $filtros->metrica = Yii::$app->request->post("selMetrica");
                 $msg = \Yii::t('app', 'Seleccione un arbol');
                 Yii::$app->session->setFlash('danger', $msg);
             }
@@ -204,7 +203,6 @@ class SiteController extends Controller {
 
     public function actionGetgraph($arrIds, $dimension_id, $metrica, $fechaInicio, $fechaFin) {
 
-        $showGraf = (count($arrIds) > 0) ? true : false;
 
         //Tomamos el numero de dias --------------------------------------------
         $step = '+1 day';
@@ -420,7 +418,6 @@ class SiteController extends Controller {
                 $model->s_fecha = date('Y-m-d H:i:s');
                 $model->estado_sc = $datos['estado_sc'];
                 $model->argumento = "<b>" . Yii::$app->user->identity->fullName . '</b>: ' . $datos['argumentoLider'];
-                //$model->argumento = $datos['argumentoLider'];
                 $model->id_caso = $id_caso;
                 $model->save();
                 $modelEdit->gestionado = "SI";
@@ -483,17 +480,14 @@ class SiteController extends Controller {
                         $model->id_responsable = $formulario->usua_id_lider;
                         $model->argumento = "<b>" . $evaluado->name . '</b>: ' . $datos['argumentoAsesor'];
                     }
-                    //$model->argumento = $datos['argumentoAsesor'];
                     $model->s_fecha = date('Y-m-d H:i:s');
                     //ID DE CASO, UN NUMERO UNICO E IRREPETIBLE PUEDE SER LA FECHA
                     $model->id_caso = date('YmdHis');
-                    //$model->argumento = $evaluado->dsusuario_red . ' => ' . $model->argumento;
                     $model->save();
                     if($esLider == '1'){
                         $this->llamarwsLiderAmigo($model, false);
                         return $this->redirect(['reportes/historicoformularios']);
                     }
-                    //$this->llamarwsLiderAmigo($model, true);
                     return ($historico == 0) ? ($this->redirect(['reportes/historicoformulariosamigo',
                                 "evaluado_usuared" => base64_encode($evaluado->dsusuario_red)])) : true;
                 } else {
@@ -517,11 +511,9 @@ class SiteController extends Controller {
                     $model->estado_sc = $datos['estado_sc'];
                     $model->b_segundo_envio = 1;
                     $model->b_editar = 0;
-                    //var_dump($model->argumento);exit;
                     if (count($liderEvaluador) > 0) {
                         $model->id_responsable = $liderEvaluador[0]['resp'];
                         $model->save();
-                        //$this->llamarwsLiderAmigo($model, true);
                     } else {
                         $msg = \Yii::t('app', 'No se encuentra el lider del evaluador asociado');
                         Yii::$app->session->setFlash('danger', $msg);
@@ -629,7 +621,6 @@ class SiteController extends Controller {
 
         $modelLider = \app\models\Usuarios::findOne(["usua_id" => $notificacion->id_responsable]);
         $modelEvaluado = \app\models\Evaluados::findOne(["id" => $notificacion->id_solicitante]);
-        //$ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
         $params = [];
         $params['titulo'] = ($bandera_envio) ?
                 'Te han remitido una solicitud de segundo calificador' :
