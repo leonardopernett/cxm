@@ -121,7 +121,7 @@ class SiteController extends Controller {
 
         $controlador = Yii::$app->controller->id;
         $vista = Yii::$app->controller->action->id;
-        if (empty(Yii::$app->request->post())) {
+        if (empty($_POST)) {
 
             $filtrosForm = \app\models\FiltrosFormularios::findOne(['vista' => $controlador . '/' . $vista, 'usua_id' => Yii::$app->user->identity->id]);
             if (!empty($filtrosForm)) {
@@ -146,7 +146,7 @@ class SiteController extends Controller {
                 $filtros->metrica = '';
             }
         } else {
-            if (isset(Yii::$app->request->post("arbol_ids")) && count(Yii::$app->request->post("arbol_ids")) > 0) {
+            if (isset($_POST["arbol_ids"]) && count($_POST["arbol_ids"]) > 0) {
                 $filtros->fecha = $fecha = Yii::$app->request->post('selMesDesde');
                 $filtros->dimension = Yii::$app->request->post("selDimension");
                 $filtros->metrica = Yii::$app->request->post("selMetrica");

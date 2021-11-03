@@ -224,7 +224,7 @@ class TmpejecucionfeedbacksController extends Controller {
 
                 $out = [];
                 $html = "";
-                if (isset(Yii::$app->request->post("cat_id")) && !empty(Yii::$app->request->post("cat_id")) && is_numeric(Yii::$app->request->post("cat_id"))) {
+                if (isset($_POST["cat_id"]) && !empty($_POST["cat_id"]) && is_numeric($_POST["cat_id"])) {
                     $out = \app\models\Tipofeedbacks::getTipofeedbacksListByID(Yii::$app->request->post("cat_id"));
                     if (count($out)) {
                         foreach ($out as $value) {

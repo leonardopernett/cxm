@@ -111,7 +111,7 @@ class FeedbackController extends \yii\web\Controller {
                 }
 
                 $out = [];
-                if (isset(Yii::$app->request->post('depdrop_parents'))) {
+                if (isset($_POST['depdrop_parents'])) {
                     $parents = Yii::$app->request->post('depdrop_parents');
                     if ($parents != null && $parents[0] != "") {
                         $cat_id = $parents[0];

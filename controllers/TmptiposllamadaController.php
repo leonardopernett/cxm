@@ -202,9 +202,9 @@ class TmptiposllamadaController extends Controller {
         
         $out = [];
         $html = "";
-        if(isset(Yii::$app->request->post("tiposllamadas_id")) 
-                && !empty(Yii::$app->request->post("tiposllamadas_id")) 
-                && is_numeric(Yii::$app->request->post("tiposllamadas_id"))){
+        if(isset($_POST["tiposllamadas_id"]) 
+                && !empty($_POST["tiposllamadas_id"]) 
+                && is_numeric($_POST["tiposllamadas_id"])){
             
             $out = \app\models\Tiposllamadasdetalles::getAllLlamdasDetByLlamaID(Yii::$app->request->post("tiposllamadas_id"));
             if(count($out)>0){
