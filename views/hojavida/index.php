@@ -73,6 +73,18 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
+<!-- datatable -->
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
@@ -102,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
        <div class="col-md-4">
            <div class="card1 mb">
                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #559FFF;"></em> Informaci&oacute;n Personal </label>
-               <?= Html::a('Aceptar',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
+               <?= Html::a('Aceptar',  ['informacionpersonal'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Informacion personal']) 
                 ?>
@@ -127,6 +139,114 @@ $this->params['breadcrumbs'][] = $this->title;
        <div class="col-md-12">
            <div class="card1 mb">
                <label style="font-size: 15px;"><i class="fas fa-address-book" style="font-size: 15px; color: #B833FF;"></i> Listado </label>
+
+               <div class="row">
+                 <div class="col-md-6">
+                    <a href=""  class="btn btn-success" data-toggle="modal" data-target="#exampleModal4">
+                       Exportar Usuarios <i class="fa fa-file-archive" aria-hidden="true"></i>
+                    </a>
+
+                    <a href=""  class="btn btn-success" data-toggle="modal" data-target="#exampleModal5">
+                       Exportar Eventos <i class="fa fa-file-archive" aria-hidden="true"></i>
+                    </a>
+                 </div>
+               </div>
+               <br>
+               <div class="row">
+                 <div class="col-md-12">
+                   <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
+                    <caption>.</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Director') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gerente') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cliente') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Programa') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nivel') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Contacto') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cargo') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'pais') ?></label></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php 
+                        foreach ($dataProviderhv as $key => $value) {
+                          $varIdHv = $value['idHojaVida']; 
+                          $varCliente = $value['cliente'];
+                          $varTipo = $value['tipo'];
+                          $varNivel = $value['nivel'];
+                          $varNombre = $value['nombre_full'];
+                          $varRol = $value['rol'];
+                          $varPais = $value['pais'];
+                          $varEstado = $value['estado'];
+                          
+                          $paramspcrc = [':codpcrc' => $varIdHv ];
+                          $varVerifica = Yii::$app->db->createCommand('
+                            SELECT GROUP_CONCAT(cc.cod_pcrc," - ",cc.pcrc SEPARATOR "; ") AS Programa
+                              FROM tbl_hojavida_datapcrc dc 
+                              INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
+                                dc.cod_pcrc = cc.cod_pcrc
+                              WHERE dc.hv_idpersonal = :codpcrc')->bindValues($paramspcrc)->queryScalar(); 
+
+                          $varlistdirector = Yii::$app->db->createCommand('
+                            SELECT  cc.director_programa  AS Programa
+                              FROM tbl_hojavida_datadirector dc 
+                                INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
+                                  dc.ccdirector = cc.documento_director
+                                WHERE dc.hv_idpersonal = :codpcrc GROUP BY cc.director_programa')->bindValues($paramspcrc)->queryAll();
+                          $vararraydirector = array();
+                          foreach ($varlistdirector as $key => $value) {
+                            array_push($vararraydirector, $value['Programa']);
+                          }
+                          $varDirectores = implode("; ", $vararraydirector);
+
+                          $varlistgerente = Yii::$app->db->createCommand('
+                            SELECT  cc.gerente_cuenta  AS Programagerente
+                              FROM tbl_hojavida_datagerente dc 
+                                INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
+                                  cc.documento_gerente = dc.ccgerente
+                                WHERE dc.hv_idpersonal = :codpcrc GROUP BY cc.director_programa')->bindValues($paramspcrc)->queryAll();
+                          $vararraygerente = array();
+                          foreach ($varlistgerente as $key => $value) {
+                            array_push($vararraygerente, $value['Programagerente']);
+                          }
+                          $varGerentes = implode("; ", $vararraygerente);
+
+                          $varPrograma = Yii::$app->db->createCommand('
+                            SELECT GROUP_CONCAT(cc.cod_pcrc," - ",cc.pcrc SEPARATOR "; ") AS Programa
+                              FROM tbl_hojavida_datacuenta dc 
+                                INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
+                                  dc.cod_pcrc = cc.cod_pcrc
+                                WHERE dc.hv_idpersonal = :codpcrc')->bindValues($paramspcrc)->queryScalar();
+                      ?>
+                        <tr>
+                          <td class="text-center">
+                            <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #B833FF;"></em>',  ['viewinfo','idinfo' => $varIdHv], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Ver datos']) ?>
+
+                            <?= Html::a('<em class="fas fa-trash" style="font-size: 12px; color: #FC4343;"></em>',  ['deleteinfo','idinfo' => $varIdHv], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar datos']) ?>
+                          </td>
+                          <td><label style="font-size: 12px;"><?php echo  $varDirectores; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varGerentes; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varCliente; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varPrograma; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varTipo; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varNivel; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varNombre; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varRol; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varPais; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varEstado; ?></label></td>
+                        </tr>
+                      <?php
+                        }
+                      ?>
+                    </tbody>
+                   </table>
+                 </div>
+               </div>
+
            </div>
        </div>
    </div>
@@ -186,7 +306,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        <div class="col-md-2">
                            <div class="card1 mb">
                                 <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Permisos: </label>
-                                <?= Html::a('Crear',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
+                                <?= Html::a('Crear',  ['permisoshv'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Modalidad Trabajo']) 
                                 ?>
@@ -195,14 +315,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                        <div class="col-md-2">
                            <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Permisos: </label>
-                                <?= Html::a('Crear',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
+                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Complementos: </label>
+                                <?= Html::a('Crear',  ['complementoshv'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Modalidad Trabajo']) 
                                 ?>
                            </div>
                        </div>
-
 
                    </div>
 
@@ -214,3 +333,26 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
     }
 ?>
+<script type="text/javascript">
+  $(document).ready( function () {
+    $('#myTable').DataTable({
+      responsive: true,
+      fixedColumns: true,
+      select: true,
+      "language": {
+        "lengthMenu": "Display _MENU_ records per page",
+        "zeroRecords": "No se encontraron datos ",
+        "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+        "infoEmpty": "No hay datos aun",
+        "infoFiltered": "(Filtrado un _MAX_ total)",
+        "search": "Buscar:",
+        "paginate": {
+          "first":      "Primero",
+          "last":       "Ultimo",
+          "next":       "Siguiente",
+          "previous":   "Anterior"
+        }
+      } 
+    });
+  });
+</script>
