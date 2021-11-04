@@ -790,10 +790,10 @@ use yii\base\Exception;
             public function actionConsultarcalificacionsubi() {
 
                 $arrCalificaciones = !Yii::$app->request->post('calificaciones') ? array() : Yii::$app->request->post('calificaciones');
-                $arrTipificaciones = !isset(Yii::$app->request->post('tipificaciones')) ? array() : Yii::$app->request->post('tipificaciones');
-                $arrSubtipificaciones = !isset(Yii::$app->request->post('subtipificaciones')) ? array() : Yii::$app->request->post('subtipificaciones');
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
                 $arrComentariosSecciones = !Yii::$app->request->post('comentarioSeccion') ? array() : Yii::$app->request->post('comentarioSeccion');
-                $arrCheckPits = !isset(Yii::$app->request->post('checkPits')) ? array() : Yii::$app->request->post('checkPits');
+                $arrCheckPits = !isset($_POST['checkPits']) ? array() : Yii::$app->request->post('checkPits');
                 $arrayForm = Yii::$app->request->post();
                 $arrFormulario = [];
                 /* Variables para conteo de bloques */
@@ -954,10 +954,10 @@ use yii\base\Exception;
                     $modelBase->tipologia = Yii::$app->request->post('categoria');
                     $modelBase->estado = "Cerrado";
                     $modelBase->usado = "NO";
-                    $modelBase->responsabilidad = (isset(Yii::$app->request->post('responsabilidad'))) ? Yii::$app->request->post('responsabilidad') : "";
-                    $modelBase->canal = (isset(Yii::$app->request->post('canal'))) ? implode(", ", Yii::$app->request->post('canal')) : "";
-                    $modelBase->marca = (isset(Yii::$app->request->post('marca'))) ? implode(", ", Yii::$app->request->post('marca')) : "";
-                    $modelBase->equivocacion = (isset(Yii::$app->request->post('equivocacion'))) ? implode(", ", Yii::$app->request->post('equivocacion')) : "";
+                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? Yii::$app->request->post('responsabilidad') : "";
+                    $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", Yii::$app->request->post('canal')) : "";
+                    $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", Yii::$app->request->post('marca')) : "";
+                    $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", Yii::$app->request->post('equivocacion')) : "";
                     $modelBase->save();
 
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Indices calculados'));
@@ -994,10 +994,10 @@ use yii\base\Exception;
             public function actionGuardaryenviarformulariogestion() {
 
                 $arrCalificaciones = !Yii::$app->request->post('calificaciones') ? array() : Yii::$app->request->post('calificaciones');
-                $arrTipificaciones = !isset(Yii::$app->request->post('tipificaciones')) ? array() : Yii::$app->request->post('tipificaciones');
-                $arrSubtipificaciones = !isset(Yii::$app->request->post('subtipificaciones')) ? array() : Yii::$app->request->post('subtipificaciones');
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
                 $arrComentariosSecciones = !Yii::$app->request->post('comentarioSeccion') ? array() : Yii::$app->request->post('comentarioSeccion');
-                $arrCheckPits = !isset(Yii::$app->request->post('checkPits')) ? array() : Yii::$app->request->post('checkPits');
+                $arrCheckPits = !isset($_POST['checkPits']) ? array() : Yii::$app->request->post('checkPits');
                 $arrayForm = Yii::$app->request->post();
                 $arrFormulario = [];
                 /* Variables para conteo de bloques */
@@ -1013,7 +1013,7 @@ use yii\base\Exception;
                 $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
                 $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
                 $arrFormulario["sn_mostrarcalculo"] = 1;
-                $view = (isset(Yii::$app->request->post('view')))?Yii::$app->request->post('view'):null;
+                $view = (isset($_POST['view']))?Yii::$app->request->post('view'):null;
                 $modelBase = BasechatTigo::find()->where(['basesatisfaccion_id' => $basesatisfaccion_id])->one();
 
                 $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
@@ -1196,10 +1196,10 @@ use yii\base\Exception;
                     $modelBase->comentario = $arrFormulario["dscomentario"];
                     $modelBase->tipologia = Yii::$app->request->post('categoria');
                     $modelBase->usado = "NO";
-                    $modelBase->responsabilidad = (isset(Yii::$app->request->post('responsabilidad'))) ? Yii::$app->request->post('responsabilidad') : "";
-                    $modelBase->canal = (isset(Yii::$app->request->post('canal'))) ? implode(", ", Yii::$app->request->post('canal')) : "";
-                    $modelBase->marca = (isset(Yii::$app->request->post('marca'))) ? implode(", ", Yii::$app->request->post('marca')) : "";
-                    $modelBase->equivocacion = (isset(Yii::$app->request->post('equivocacion'))) ? implode(", ", Yii::$app->request->post('equivocacion')) : "";
+                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? Yii::$app->request->post('responsabilidad') : "";
+                    $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", Yii::$app->request->post('canal')) : "";
+                    $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", Yii::$app->request->post('marca')) : "";
+                    $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", Yii::$app->request->post('equivocacion')) : "";
                     $modelBase->save();
 
 
