@@ -9,9 +9,6 @@ class conexiondb {
 
    public function connectToDB() {
         // These four parameters must be changed dependent on your MySQL settings
-        $hostdb = 'HostURL';   // MySQl host
-        $userdb = 'username';    // MySQL username
-        $passdb = 'password';    // MySQL password
         $namedb = 'factorydb'; // MySQL database name
         //$link = mysql_connect ("localhost:3306", "username", "password");
         //$link = mysql_connect ($hostdb, $userdb, $passdb);

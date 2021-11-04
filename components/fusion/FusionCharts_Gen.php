@@ -856,9 +856,7 @@ class FusionCharts {
         //Instantiate the Chart	
         $strHTML .= "\tvar chart_$chartId = new FusionCharts(\"$chartSWF\", \"$chartId\", \"$chartWidth\", \"$chartHeight\", \"$ndebugMode\", \"$nregisterWithJS\", \"" . $this->JSC["bgcolor"] . "\",\"" . $this->JSC["scalemode"] . "\",\"" . $this->JSC["lang"] . "\"); \n";
 
-        //if($nsetTransparent=="true"){
         $strHTML .= "\tchart_$chartId.setTransparent(\"$nsetTransparent\");\n";
-        //}
 
         $strHTML .= $tempData . "\n";
         //Finally, render the chart.
@@ -1078,7 +1076,6 @@ class FusionCharts {
     public function setSSMSDataArray($value = "", $setParam = "", $vlineParam = "") {
         $strSetXML = "";
         $strParam = "";
-        $color = 0;
         if ($vlineParam == "") {
             if ($setParam != "") {
                 $strParam = $this->ConvertParamToXMLAttribute($setParam);
