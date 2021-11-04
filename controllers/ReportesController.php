@@ -84,7 +84,7 @@ class ReportesController extends \yii\web\Controller {
                         $export = false;
                     }
 
-                    Yii::$app->request->post('exportextractar') = 1;
+                    $_POST['exportextractar'] = 1;
                 }
 
                 return $this->render('extractar-formulario', [
@@ -873,7 +873,7 @@ class ReportesController extends \yii\web\Controller {
                     $model->startDate = $dates[0];
                     $model->endDate = $dates[1];
                     $export = $model->extractConsTransSatisfaccion();
-                    Yii::$app->request->post('exporthistorico') = 1;
+                    $_POST['exporthistorico'] = 1;
                 }
 
                 return $this->render('reportehistoricobasesatisfaccion', [
