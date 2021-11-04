@@ -1,17 +1,11 @@
 <?php
-//include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
 
-//echo "<pre>";
-//print_r($detallesseccion_id);
-//echo "</pre>";
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 
 $dos = '$model->apregunta1 != "" AND $model->apregunta2 != "" AND $model->apregunta3 != "" AND $model->apregunta4 != "" AND $model->apregunta5 != "" AND $model->apregunta6 != "" AND $model->apregunta6 != "" AND $model->apregunta6 != "" AND $model->rac_meta != "" AND $model->rac_pcrc != "" AND $model->rac_cumple != "" AND $model->meta != "" AND $model->empleado != "" AND $model->grupo != "" AND $model->dif_empleado_meta != "" AND $model->dif_empleado_grupo != ""';
-
-//print_r($prueba); die;
 
 use yii\bootstrap\ActiveForm;
 
@@ -253,11 +247,12 @@ $this->title = 'Alertas';
                                 </tr>                     
                                 <tr>
                                     <th scope="col">
-                                        <?php if($data->respuesta_lider == "" AND $_GET['lider'] == "si"): ?>
+                                        <?php if($data->respuesta_lider == ""AND Yii::$app->request->get('lider') == "si"): ?>
 
                                             <?= $form->field($data, 'respuesta_lider')->textArea(['rows' => 6])->label('Feedback Lider:') ?>
 
-                                        <?php elseif($data->respuesta_lider != "" OR isset($jefeop) OR $_GET['lider'] == "no"): ?>
+                                        <?php else:($data->respuesta_lider != "" OR isset($jefeop) OR $Nombre == "no"); ?>
+                                            $this->params()->fromPost('name')
 
                                             <?= $form->field($data, 'respuesta_lider')->textArea(['rows' => 6, 'disabled' => true])->label('Feedback Lider:') ?>
 
@@ -269,7 +264,7 @@ $this->title = 'Alertas';
 
 
 
-                                <?php if($_GET['lider'] == "si" AND $data->puntovista_lider == "" ): ?>
+                                <?php if(Yii::$app->request->get('lider') == "si" AND $data->puntovista_lider == "" ): ?>
                                     <tr>
                                         <th scope="col">    
                                             <?= $form->field($data, 'puntovista_lider')->textArea(['rows' => 6])->label('Punto de vista Lider:') ?>
@@ -332,7 +327,7 @@ $this->title = 'Alertas';
 
 <?php if ($data->notificacion == 3): ?>
 
-    <?php if ($_GET['lider'] == "si" OR isset($jefeop) ){ ?> 
+    <?php if (Yii::$app->request->get('lider') == "si" OR isset($jefeop) ){ ?> 
     <div id="datosGenerales" class="col-sm-12" style="display: inline;">
         <table class="table table-striped table-bordered detail-view formDinamico">
         <caption>Tabla no usada</caption>
@@ -368,7 +363,7 @@ $this->title = 'Alertas';
                     </th>
                 </tr>
 
-                <?php if ($_GET['lider'] == "si"){ ?> 
+                <?php if (Yii::$app->request->get('lider') == "si"){ ?> 
                     <tr>
                         <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla no usada</caption>
@@ -919,7 +914,7 @@ $this->title = 'Alertas';
                             </td>
                         </th>
                         <tr>
-                            <?php if($_GET['lider'] == "abo"): ?>
+                            <?php if(Yii::$app->request->get('lider') == "abo"): ?>
 
 
                                 

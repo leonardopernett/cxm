@@ -71,7 +71,6 @@ class ControlController extends \yii\web\Controller {
                 $datos = [];
                 $fechas = [];
                 $data->showGraf = false;
-                $alerta = false;
                 if (Yii::$app->request->post()) {
                     $form = Yii::$app->request->post('form');
                     $model->scenario = ($form == "0") ? 'filtroProceso' : 'filtroProcesoDetallado';
@@ -88,7 +87,6 @@ class ControlController extends \yii\web\Controller {
                 if ($model->load(Yii::$app->request->post()) && $model->validate()) {
                     /* Inicio construccion de graficas */
                     if ($form == "0") {
-                        //$idsArboles = Yii::$app->request->post('arbol_ids');
                         /* if (count($idsArboles) == 0) {
                           $msg = \Yii::t('app', 'Seleccione un arbol');
                           Yii::$app->session->setFlash('danger', $msg);
@@ -122,8 +120,6 @@ class ControlController extends \yii\web\Controller {
                                     $menorarboles = ($promedio < $menorarboles) ? $promedio : $menorarboles;
                                     $datos['arbol'][] = ['name' => $arbolPadre->name, 'data' => [(double) round($promedio, 2)]];
                                     $datos['count'][] = ['name' => $arbolPadre->name, 'data' => [(int) $consulta[0]['total']]];
-                                    //$arrNombres['arbol'][] = $arbolPadre->dsname_full;
-                                    //}
                                 }
                             }
                         } else {
@@ -135,7 +131,6 @@ class ControlController extends \yii\web\Controller {
                                     $menorarboles = ($promedio < $menorarboles) ? $promedio : $menorarboles;
                                     $datos['arbol'][] = ['name' => $arbolPadre->name, 'data' => [(double) round($promedio, 2)]];
                                     $datos['count'][] = ['name' => $arbolPadre->name, 'data' => [(int) $value['total']]];
-                                    //$arrNombres['arbol'][] = $arbolPadre->dsname_full;
                                 }
                             }
                         }
@@ -190,9 +185,9 @@ class ControlController extends \yii\web\Controller {
                             $msg = \Yii::t('app', 'No se encontraron datos para los filtros ingresados');
                             Yii::$app->session->setFlash('danger', $msg);
                         }
-                        //}
+                        
                     } else {
-                        //$idsArboles = Yii::$app->request->post('arbol_idsDetallada');
+                        
                         /* if (count($idsArboles) == 0) {
                           $msg = \Yii::t('app', 'Seleccione un arbol');
                           Yii::$app->session->setFlash('danger', $msg);
@@ -223,7 +218,7 @@ class ControlController extends \yii\web\Controller {
                             $msg = \Yii::t('app', 'No se encontraron datos para los filtros ingresados');
                             Yii::$app->session->setFlash('danger', $msg);
                         }
-                        //}
+                        
                     }
                 }
                 $data->arboles[] = $this->getRecursivearbolscopia('tbl_arbols', 'id', 'name', 'arbol_id', 0, '-', 'arbol_ids', $arrArboles);
@@ -474,7 +469,6 @@ class ControlController extends \yii\web\Controller {
                 $rangofecha = Yii::$app->request->get('rangofecha');
                 if (Yii::$app->getRequest()->isAjax) {
                     $modelSegmento->scenario = (Yii::$app->request->post('Tipo_corte') == 1) ? 'corteSemana' : 'corteMes';
-                    //$rangofecha = Yii::$app->request->get('rangofecha');
                     if (Yii::$app->request->post()) {
                         $rangofecha = Yii::$app->request->post('rangofecha');
                         if (($modelSegmento->load(Yii::$app->request->post())) &&
@@ -653,7 +647,6 @@ class ControlController extends \yii\web\Controller {
                     foreach ($cortes as $corte) {
                         for ($i = 0; $i < count($metrica); $i++) {
                             $validarMetrica = $this->validarMetrica($metrica[$i]);
-                            //$dataTable['total'][] = $ejecucionformulario->getDatabytabletotal($dimension, $rangofecha, $validarMetrica, $arbol);
                             if ($control == "proceso") {
                                 $dataTable ['datos'][$corte['fechaI'] . " - " . $corte['fechaF']][$validarMetrica][] = $ejecucionformulario->getDatabytable($dimension, $corte, $validarMetrica, $arbol, $model);
                             } else {
@@ -669,7 +662,6 @@ class ControlController extends \yii\web\Controller {
                         } else {
                             $dataTable['total'][] = $ejecucionformulario->getDatabytabletotalpersona($dimension, $rangofecha, $validarMetrica, $arbol, $model);
                         }
-                        //$dataTable ['datos'][$corte['fechaI'] . " - " . $corte['fechaF']][$validarMetrica][] = $ejecucionformulario->getDatabytable($dimension, $corte, $validarMetrica, $arbol);
                     }
                 }
                 $dataTable['cortes'] = $cortes;
@@ -925,6 +917,9 @@ class ControlController extends \yii\web\Controller {
                     case 11:
                         $baseConsulta = 'score';
                         break;
+                    default:
+                    //fin
+                    break;
                 }
                 return $baseConsulta;
             }
@@ -1032,7 +1027,7 @@ class ControlController extends \yii\web\Controller {
                                     }
                                 }
                             }
-                            foreach ($arrayTotal as $keyTotalMetrica => $totalMetrica) {
+                            foreach ($arrayTotal as $totalMetrica) {
                                 if (count($totalMetrica[$index]) > 0) {
                                     if ($totalMetrica[$index]['dimension_id'] == $dimensiones[$index]['id']) {
                                         $arrayTabla[$dimensiones[$index]['id']]['Total'][] = round($totalMetrica[$index]['promedio'] * 100, 2) . '%';
@@ -1057,15 +1052,6 @@ class ControlController extends \yii\web\Controller {
                                     }
                                 }
                             }
-                            /* foreach ($arrayTotal as $keyTotalMetrica => $totalMetrica) {
-                              if (count($totalMetrica[$index]) > 0) {
-                              if ($totalMetrica[$index]['dimension_id'] == $dimensiones[$index]['id']) {
-                              $arrayTabla[$dimensiones[$index]['id']]['Total'][] = round($totalMetrica[$index]['promedio'] * 100, 4) . '%';
-                              }
-                              } else {
-                              $arrayTabla[$dimensiones[$index]['id']]['Total'][] = '-';
-                              }
-                              } */
                         }
                     }
                     return $arrayTabla;
@@ -1129,7 +1115,7 @@ class ControlController extends \yii\web\Controller {
                 $banderaValorado = false;
                 try {
                     if ($control == "proceso") {
-                        foreach ($dimensiones as $key => $value) {
+                        foreach ($dimensiones as $value) {
                             $column = 'A';
                             $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $value['name']);
                             $objPHPexcel->getActiveSheet()->getStyle($column . '' . $row)->applyFromArray($styleArray);
@@ -1178,7 +1164,6 @@ class ControlController extends \yii\web\Controller {
                             $inicioRow = $row;
                             $row++;
                             $row = $inicioRow;
-                            $inicioColumn = $column;
                             foreach ($arrayCortes as $corte) {
                                 if (array_key_exists($corte, $tablaExcel[$value['id']])) {
                                     if ($tipo_corte == 3) {
@@ -1197,7 +1182,7 @@ class ControlController extends \yii\web\Controller {
                                 if (array_key_exists($corte, $tablaExcel[$value['id']])) {
                                     foreach ($tablaExcel[$value['id']][$corte] as $keyMetrica => $metrica) {
                                         foreach ($metrica as $keyValorador => $valueValorador) {
-                                            foreach ($valueValorador as $keyDato => $valueDato) {
+                                            foreach ($valueValorador as  $valueDato) {
                                                 $column = "B";
                                                 if ($banderaValorado == false) {
                                                     $banderaValorado = true;
@@ -1217,11 +1202,6 @@ class ControlController extends \yii\web\Controller {
                                                         $ultimoDatos = $keyMetrica . '-' . $keyValorador;
                                                     }
                                                 }
-                                                /* $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $keyMetrica);
-                                                  $column++;
-                                                  $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $valueValorador[0]);
-                                                  $column++;
-                                                  $row++; */
                                             }
                                         }
                                     }
@@ -1237,11 +1217,6 @@ class ControlController extends \yii\web\Controller {
                                                     $row = $arrayValorador[$keyMetrica . '-' . $keyValorador];
                                                     $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $valueDato);
                                                 }
-                                                /* $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $keyMetrica);
-                                                  $column++;
-                                                  $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $valueValorador[0]);
-                                                  $column++;
-                                                  $row++; */
                                             }
                                         }
                                     }
@@ -1315,7 +1290,7 @@ class ControlController extends \yii\web\Controller {
             }
 
             public function repetirCorte($datos, $modelCorte, $rangofecha) {
-                $arrayFecha = explode(' - ', $rangofecha);
+                //$arrayFecha = explode(' - ', $rangofecha);
                 $arrayCortes = [];
                 $index = 0;
                 if ($modelCorte->tipo_corte == 1) {
@@ -1333,7 +1308,6 @@ class ControlController extends \yii\web\Controller {
                     }
                     $datos[$key] = implode(' - ', $tempSemana);
                 }
-                //$temporal = null;
                 do {
                     $tempCorte = new \app\models\CorteFecha();
                     $tempCorte->tipo_corte = $modelCorte->tipo_corte;
@@ -1405,8 +1379,7 @@ class ControlController extends \yii\web\Controller {
             public function construirArbolgrupos($arraArboles) {
                 $arrayArboles = [];
                 $consultaArboles = \app\models\Arboles::find()->where('id IN (' . $arraArboles . ')')->orderBy('dsorden ASC')->asArray()->all();
-                //$countHojas = 0;
-                foreach ($consultaArboles as $key => $value) {
+                foreach ($consultaArboles as $value) {
                     $arraArboles .=',' . $value['arbol_id'];
                 }
                 $consultaArboles = \app\models\Arboles::find()->where('id IN (' . $arraArboles . ')')->orderBy('dsorden ASC')->asArray()->all();
@@ -1458,7 +1431,7 @@ class ControlController extends \yii\web\Controller {
                 $fechas = [];
                 $data->showGraf = false;
                 $banderaValidacion = true;
-                $alerta = false;
+                
 
                 if (Yii::$app->request->post()) {
                     $form = Yii::$app->request->post('form');
@@ -1492,7 +1465,6 @@ class ControlController extends \yii\web\Controller {
                     /* Inicio construccion de graficas */
                     if ($banderaValidacion) {
                         if ($form == "0") {
-                            //$idsArboles = Yii::$app->request->post('arbol_ids');
                             /* if (count($idsArboles) == 0) {
                               $msg = \Yii::t('app', 'Seleccione un arbol');
                               Yii::$app->session->setFlash('danger', $msg);
@@ -1525,8 +1497,6 @@ class ControlController extends \yii\web\Controller {
                                         $menorarboles = ($promedio < $menorarboles) ? $promedio : $menorarboles;
                                         $datos['arbol'][] = ['name' => $arbolPadre->name, 'data' => [(double) round($promedio, 2)]];
                                         $datos['count'][] = ['name' => $arbolPadre->name, 'data' => [(int) $consulta[0]['total']]];
-                                        //$arrNombres['arbol'][] = $arbolPadre->dsname_full;
-                                        //}
                                     }
                                 }
                             } else {
@@ -1538,7 +1508,6 @@ class ControlController extends \yii\web\Controller {
                                         $menorarboles = ($promedio < $menorarboles) ? $promedio : $menorarboles;
                                         $datos['arbol'][] = ['name' => $arbolPadre->name, 'data' => [(double) round($promedio, 2)]];
                                         $datos['count'][] = ['name' => $arbolPadre->name, 'data' => [(int) $value['total']]];
-                                        //$arrNombres['arbol'][] = $arbolPadre->dsname_full;
                                     }
                                 }
                             }
@@ -1560,7 +1529,6 @@ class ControlController extends \yii\web\Controller {
                                         $promedio = ($value['promedio'] * 100);
                                         $menordimensiones = ($promedio < $menordimensiones) ? $promedio : $menordimensiones;
                                         $datos['dimension'][] = ['name' => $arbolPadre->name, 'data' => [(double) round($promedio, 2)]];
-                                        //$arrNombres['dimension'][] = $arbolPadre->dsname_full;
                                     }
                                     $arrayTemp = [];
                                     foreach ($datos['dimension'] as $valueDimension) {
@@ -1592,9 +1560,9 @@ class ControlController extends \yii\web\Controller {
                                 $msg = \Yii::t('app', 'No se encontraron datos para los filtros ingresados');
                                 Yii::$app->session->setFlash('danger', $msg);
                             }
-                            //}
+                           
                         } else {
-                            //$idsArboles = Yii::$app->request->post('arbol_idsDetallada');
+                            
                             /* if (count($idsArboles) == 0) {
                               $msg = \Yii::t('app', 'Seleccione un arbol');
                               Yii::$app->session->setFlash('danger', $msg);
@@ -1631,7 +1599,6 @@ class ControlController extends \yii\web\Controller {
                                 $msg = \Yii::t('app', 'No se encontraron datos para los filtros ingresados');
                                 Yii::$app->session->setFlash('danger', $msg);
                             }
-                            //}
                         }
                     }
                 }
