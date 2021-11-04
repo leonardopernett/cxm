@@ -631,6 +631,17 @@ use app\models\IdaGeneral;
       }
 
       $varpcrc = $data_post["pcrc"];   
+
+      $paramspcrc = [':cod_pcrc' => $varpcrc];
+      $varExistPcrc = Yii::$app->db->createCommand('
+        SELECT COUNT(cod_pcrc)  FROM tbl_speech_categorias 
+          WHERE cod_pcrc IN (:cod_pcrc)
+            ')->bindValues($paramspcrc)->queryScalar();
+      
+      if ($varExistPcrc == 0) {
+        die(json_encode(array("status"=>"0","data"=>"Pcrc ingresado no esta parametrizado en CXM")));
+      }
+
       $varDimension = $data_post["dimension"];
       $varFechaInicio = $data_post["fechaInicio"];
       $varFechaFin = $data_post["fechaFin"];
