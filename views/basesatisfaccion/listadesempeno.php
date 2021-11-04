@@ -16,7 +16,6 @@ use yii\data\ActiveDataProvider;
 
 $this->title = Yii::t('app', 'valoracion escaladas');
 
-//$this->params['breadcrumbs'][] = $this->title;
 $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         . ' {input}{error}{hint}</div>';
         
@@ -33,10 +32,6 @@ if (!isset($aleatorio) || !$aleatorio) {
         echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
     }
     ?>
-
-    <!--<div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
 
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
@@ -164,15 +159,14 @@ if (!isset($aleatorio) || !$aleatorio) {
                         ]);
                     },
                     'delete' => function ($url, $model) {
-
                         if (in_array(Yii::$app->user->identity->id, Yii::$app->params["idUsersDelete"])) {
-
+                            //code...
                         }
                     },
                     'view' => function ($url, $model) {
 
                         if (in_array(Yii::$app->user->identity->id, Yii::$app->params["idUsersDelete"])) {
-
+                            //code...
                         }
                     },
                 ],

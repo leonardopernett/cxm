@@ -20,7 +20,6 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js");
 $selected = null;
 ?>
 <?php echo Html::tag('div', '', ['id' => 'ajax_div_feedbacks']); ?>
@@ -104,7 +103,7 @@ $selected = null;
                 <caption>Tabla guardar</caption>
                     <tbody>
                         <tr>
-                            <th><?php echo Yii::t("app", "ANI"); ?></th>
+                            <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $model->ani ?></td>
                         </tr>
                         <tr>
@@ -302,7 +301,6 @@ $selected = null;
                                                         <?php
                                                         $checked = '';
                                                         foreach ($data->respuestasTipificacion as $key => $value) {
-                                                            //var_dump($tipificacion['id'].' '.$value->tipificacion_id);
                                                             if (($tipificacion['id'] == $value->tipificacion_id)) {
                                                                 $checked = 'checked="checked"';
                                                                 break;
@@ -322,8 +320,7 @@ $selected = null;
                                                                 data-preview="1"
                                                                 data-bandera="<?php echo ($data->bandera == 1) ? "1" : "0"; ?>"
                                                                 />&nbsp;<?php echo $tipificacion['name'] ?>
-                                                        <div style="" 
-                                                             id="div_subtipificaciones_<?php echo $detalle->id . $tipificacion['id'] ?>">
+                                                        <div id="div_subtipificaciones_<?php echo $detalle->id . $tipificacion['id'] ?>">
                                                         </div>
 
                                                     <?php endforeach; ?>
@@ -453,7 +450,7 @@ $selected = null;
                 <caption>Tabla exportes</caption>
                     <tbody>
                         <tr>
-                            <th><?php echo Yii::t("app", "ANI"); ?></th>
+                            <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $model->ani ?></td>
                         </tr>
                         <tr>

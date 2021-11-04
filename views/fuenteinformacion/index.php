@@ -137,7 +137,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 13px;"><i class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></i> Subir información: </label>
+                            <label style="font-size: 13px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Subir información: </label>
                             <?= Html::a('Actualiza Valorados',  ['usuarios_valorado'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #f28e41',
                                             'data-toggle' => 'tooltip',
@@ -369,7 +369,7 @@ if($sessiones == "3205" || $sessiones == "3229" || $sessiones == "2953"){ ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-file-alt" style="font-size: 20px; color: #559FFF;"></i> Actualización DP: </label>
+                <label><em class="fas fa-file-alt" style="font-size: 20px; color: #559FFF;"></em> Actualización DP: </label>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card1 mb">

@@ -184,12 +184,12 @@ class ControlprocesosController extends \yii\web\Controller {
 							die(json_encode($arbol_id));
 						}
 						else
-							if ($arregloText == "122214-2 BANCAEMPRESAS CLIC TO CALL" || $arregloText == "122417 BACK OFFICE PREFERENCIAL" || $arregloText == "122223 ALQUILER DE INFRAEST. GERENCIA PREFERENCIAL" || $arregloText == "122223 ALQUILER DE INFRAESTRUCTURA FÍSICA Y TÉCNICA/ECA INMOBILIARIA" || $arregloText == "122214-2 BANCAEMPRESAS WEB CALLBACK" || $arregloText == "122223 ALQUILER DE INFRAEST. FÍSICA Y TÉCNICA PREFERENCIAL DIGITAL" || $arregloText == "122237 ALQUILER DE INFRAEST. FÍSICA Y TÉCNICA / CUOTA DE MANEJO" || $arregloText == "181211-1 VALORES ECA" || $arregloText == "181215 CONFIRMACION DE TRANSACCIONES VALORES" || $arregloText == "181211-4 VALORES SERVICIOS VIRTUALES" || $arregloText == "232411 BACK OFFICE SUFI" || $arregloText == "181411 CUV CENTRO UNICO DE VINCULACIÓN" || $arregloText == "111313 RENTING BKO" || $arregloText == "124213 Negocios Fiduciarios" || $arregloText == "232211 SUFI LEVANTAMIENTO DE PRENDA" || $arregloText == "122238 BANCOLOMBIA LINEA ECA" || $arregloText == "232411 SUFI BKO DOCUMENTAL" || $arregloText == "181211 Valores ECA BKO" || $arregloText == "232211 SUFI VENTAS") {
+							if ($arregloText == "122214-2 BANCAEMPRESAS CLIC TO CALL" || $arregloText == "122417 BACK OFFICE PREFERENCIAL" || $arregloText == "122223 ALQUILER DE INFRAEST. GERENCIA PREFERENCIAL" || $arregloText == "122223 ALQUILER DE INFRAESTRUCTURA Fï¿½SICA Y Tï¿½CNICA/ECA INMOBILIARIA" || $arregloText == "122214-2 BANCAEMPRESAS WEB CALLBACK" || $arregloText == "122223 ALQUILER DE INFRAEST. Fï¿½SICA Y Tï¿½CNICA PREFERENCIAL DIGITAL" || $arregloText == "122237 ALQUILER DE INFRAEST. Fï¿½SICA Y Tï¿½CNICA / CUOTA DE MANEJO" || $arregloText == "181211-1 VALORES ECA" || $arregloText == "181215 CONFIRMACION DE TRANSACCIONES VALORES" || $arregloText == "181211-4 VALORES SERVICIOS VIRTUALES" || $arregloText == "232411 BACK OFFICE SUFI" || $arregloText == "181411 CUV CENTRO UNICO DE VINCULACIï¿½N" || $arregloText == "111313 RENTING BKO" || $arregloText == "124213 Negocios Fiduciarios" || $arregloText == "232211 SUFI LEVANTAMIENTO DE PRENDA" || $arregloText == "122238 BANCOLOMBIA LINEA ECA" || $arregloText == "232411 SUFI BKO DOCUMENTAL" || $arregloText == "181211 Valores ECA BKO" || $arregloText == "232211 SUFI VENTAS") {
 								$arbol_id = 30;
 								die(json_encode($arbol_id));
 							}
 							else
-								if ($arregloText == "122419 - GESTOR DE SOLUCIONES" || $arregloText == "122230 CLIENTE PREFERENCIAL CHAT" || $arregloText == "111214 ALQUILER DE INFRAESTRUCTURA FÍSICA Y TÉCNICA/LOCALIZA" || $arregloText == "111311 RENTING SAC IE") {
+								if ($arregloText == "122419 - GESTOR DE SOLUCIONES" || $arregloText == "122230 CLIENTE PREFERENCIAL CHAT" || $arregloText == "111214 ALQUILER DE INFRAESTRUCTURA Fï¿½SICA Y Tï¿½CNICA/LOCALIZA" || $arregloText == "111311 RENTING SAC IE") {
 									$arbol_id = 50;
 									die(json_encode($arbol_id));
 								}
@@ -199,12 +199,12 @@ class ControlprocesosController extends \yii\web\Controller {
 										die(json_encode($arbol_id));
 									}
 									else
-										if ($arregloText == "122231 LES BÁSICO SALIDA") {
+										if ($arregloText == "122231 LES Bï¿½SICO SALIDA") {
 											$arbol_id = 70;
 											die(json_encode($arbol_id));
 										}
 										else
-											if ($arregloText == "122213 CENTRO DE CONSERVACIÓN/TMK" || $arregloText == "122230 CLIENTE PREFERENCIAL DIGITAL") {
+											if ($arregloText == "122213 CENTRO DE CONSERVACIï¿½N/TMK" || $arregloText == "122230 CLIENTE PREFERENCIAL DIGITAL") {
 												$arbol_id = 100;
 												die(json_encode($arbol_id));
 											}
@@ -219,17 +219,17 @@ class ControlprocesosController extends \yii\web\Controller {
 														die(json_encode($arbol_id));
 													}
 													else
-														if ($arregloText == "122223 ALQUILER DE INFRAESTRUCTURA FÍSICA Y TÉCNICA/LES FRAUDES" || $arregloText == "181216 ALQUILER DE INFRAESTRUCTURA FÍSICA Y TÉCNICA/MESA VIRTUAL ASESORÍA") {
+														if ($arregloText == "122223 ALQUILER DE INFRAESTRUCTURA Fï¿½SICA Y Tï¿½CNICA/LES FRAUDES" || $arregloText == "181216 ALQUILER DE INFRAESTRUCTURA Fï¿½SICA Y Tï¿½CNICA/MESA VIRTUAL ASESORï¿½A") {
 															$arbol_id = 150;
 															die(json_encode($arbol_id));
 														}
 														else
-															if ($arregloText == "122225 CENTRALIZACIÓN DE LLAMADAS") {
+															if ($arregloText == "122225 CENTRALIZACIï¿½N DE LLAMADAS") {
 																$arbol_id = 157;
 																die(json_encode($arbol_id));
 															}
 															else
-																if ($arregloText == "122231 LES BÁSICO") {
+																if ($arregloText == "122231 LES Bï¿½SICO") {
 																	$arbol_id = 170;
 																	die(json_encode($arbol_id));
 																}
@@ -259,7 +259,7 @@ class ControlprocesosController extends \yii\web\Controller {
 																						die(json_encode($arbol_id));
 																					}
 																					else
-																						if ($arregloText == "122213 CENTRO DE CONSERVACIÓN") {
+																						if ($arregloText == "122213 CENTRO DE CONSERVACIï¿½N") {
 																							$arbol_id = 400;
 																							die(json_encode($arbol_id));
 																						}
@@ -269,7 +269,7 @@ class ControlprocesosController extends \yii\web\Controller {
 																								die(json_encode($arbol_id));
 																							}
 																							else
-																								if ($arregloText == "122237 LÍNEA ESPECIALIZADA DE QyR") {
+																								if ($arregloText == "122237 Lï¿½NEA ESPECIALIZADA DE QyR") {
 																									$arbol_id = 480;
 																									die(json_encode($arbol_id));
 																								}
@@ -882,9 +882,7 @@ class ControlprocesosController extends \yii\web\Controller {
 				return $this->redirect(['index']);
 			}
 
-			return $this->render('update3', [
-				'model' => $model,
-				]);
+			
 		}
 
 		/**
@@ -1111,7 +1109,7 @@ class ControlprocesosController extends \yii\web\Controller {
                             ])->execute(); 
 
          		$message = "<html><body>";
-                $message .= "<h3>Existe nueva petición para desvincular el técnico de  equipo. Por favor verificar en QA, módulo -Peticiones Desvinculación Equipos-.</h3>";
+                $message .= "<h3>Existe nueva peticiï¿½n para desvincular el tï¿½cnico de  equipo. Por favor verificar en QA, mï¿½dulo -Peticiones Desvinculaciï¿½n Equipos-.</h3>";
                 $message .= "</body></html>";
 
 

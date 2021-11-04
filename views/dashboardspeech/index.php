@@ -94,11 +94,12 @@ $this->title = 'Dashboard Voz del Cliente';
 <br>
 <div class="formularios-form" id="idCapa" align="center" style="display: none">
   <table align="center" width="700" >
+  <caption>Tabla datos</caption>
     <thead>
       <tr>
-        <th class="text-center"><div class="loader"></div></th>
-        <th><?= Yii::t('app', '') ?></th>
-        <th class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion de los filtros para el Dashboard Speech...') ?></h4></th>
+        <th scope="col" class="text-center"><div class="loader"></div></th>
+        <th scope="col" ><?= Yii::t('app', '') ?></th>
+        <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion de los filtros para el Dashboard Speech...') ?></h4></th>
       </tr>            
     </thead>
   </table>
@@ -252,8 +253,8 @@ $this->title = 'Dashboard Voz del Cliente';
   if ($txtvarNew == 1) {
 ?>
     <div class="col-md-offset-2 col-sm-8 panel panel-warning">
-      <div class="panel-body"><center>
-        <p><b>Importante: </b> No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta. </p></center>
+      <div style="text-align: center;" class="panel-body">
+        <p><strong>Importante: </b> No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta. </strong>
         <div class="row" align="center">
         <?= Html::a('Nueva consulta',  ['index'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',

@@ -692,7 +692,7 @@ class FormulariosController extends Controller {
              */
             public function actionGuardaryenviarformulario() {
 
-
+                
                 $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
                 $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
                 $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
@@ -725,9 +725,9 @@ class FormulariosController extends Controller {
                   $arrFormulario["subi_calculo"] .= ','.$formulario->subi_calculo;
                   } */
                 /* EDITO EL TMP FORMULARIO */
-                /*$model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
+                $model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
                 $model->usua_id_actual = Yii::$app->user->identity->id;
-                $model->save();*/
+                $model->save();
                 //TO-DO  : COMENTAR LINEA EN CASO DE NO NECESITAR LO DE ADICIONAR Y ESCALAR
                 /* Guardo en la tabla tbl_registro_ejec para tener un seguimiento 
                  * de los diversos involucrados en la valoracion en el tiempo */

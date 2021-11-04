@@ -777,7 +777,7 @@ $contadorSecciones = 0;
                             <caption>...</caption>
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -24,7 +24,6 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js");
 ?>
 
 <?php
@@ -151,10 +150,10 @@ $detalles_ids = array();
             <div class="form-group row">
                 <div class="col-sm-12">
                     <table class="table table-striped table-bordered detail-view">
-                    <caption>Tabla Satisfacion</caption>
+                    <caption>Tabla Satisfacción</caption>
                         <tbody>
                             <tr>
-                                <th><?php echo Yii::t("app", "ANI"); ?></th>
+                                <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
                                 <td><?php echo $data->basesatisfaccion->ani ?></td>
                             </tr>
                             <tr>
@@ -258,7 +257,6 @@ $detalles_ids = array();
                                 <th id="instrumentoV"><?php echo Yii::t("app", "Instrumento para la Valoracion"); ?></th>
                                 <td><?php echo $data->ruta_arbol ?></td>
                             </tr>
-    <?php //if ($banderaDim) : ?>
                                 <tr>
                                     <th id="dimension"><?php echo Yii::t("app", "Dimension"); ?></th>
                                     <td><?php
@@ -268,18 +266,6 @@ $detalles_ids = array();
                                                 , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => ($data->preview) ? true : false]);
                                         ?></td>
                                 </tr>
-    <?php //else: ?>
-                                <!--<tr>
-                                    <th><?php //echo Yii::t("app", "Dimension"); ?></th>
-                                    <td><?php
-                                        /**echo Html::dropDownList("dimension"
-                                                , $data->tmp_formulario->dimension_id
-                                                , $data->dimension
-                                                , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => true, "readonly" => true]);*/
-                                        ?>
-                                    </td>
-                                </tr>-->
-    <?php //endif; ?>
                             <tr>
                                 <th id="fuente"><?php echo Yii::t("app", "Fuente"); ?></th>
                                 <td>
@@ -636,14 +622,6 @@ $detalles_ids = array();
                 </div>        
     <?php endif; ?>
 
-            <!--<div class="row seccion" <?php
-            /* if ($data->info_adicional['problemas'] == 0 &&
-              $data->info_adicional['tipo_llamada'] == 0)
-              echo "style='display: none'"; */
-            ?>>
-    <?php //echo Yii::t("app", "Informacion adicional");   ?>
-            </div>-->
-
     <?php if (!empty($data->responsabilidad)) : ?>
                 <!-- SECCION PROTECCIÓN DE LA EXPERIENCIA -->
                 <div class="row seccion">
@@ -702,16 +680,7 @@ $detalles_ids = array();
                                 , 'separator' => '<br />'
                                     ]
                             );
-                            ?>
-                            <?php
-                            /* echo Html::dropDownList("canal"
-                              , $data->basesatisfaccion->canal
-                              , $data->responsabilidad['CANAL']
-                              , ["id" => "canal",
-                              "class" => "form-control",
-                              'prompt' => 'Seleccione ...',
-                              "disabled" => ($data->preview) ? true : false]); */
-                            ?>                      
+                            ?>                   
                         </div>
                     </div>
                 </div>
@@ -722,15 +691,6 @@ $detalles_ids = array();
         <?php echo Yii::t("app", "Marca"); ?>                          
                         </label>
                         <div class="col-sm-9">
-                            <?php
-                            /* echo Html::dropDownList("marca"
-                              , $data->basesatisfaccion->marca
-                              , $data->responsabilidad['MARCA']
-                              , ["id" => "marca",
-                              "class" => "form-control",
-                              'prompt' => 'Seleccione ...',
-                              "disabled" => ($data->preview) ? true : false]); */
-                            ?>
                             <?php
                             echo Html::checkboxList(
                                     'marca[]'
@@ -753,15 +713,6 @@ $detalles_ids = array();
         <?php echo Yii::t("app", "Equivocacion"); ?>                        
                         </label>
                         <div class="col-sm-9">
-                            <?php
-                            /* echo Html::dropDownList("equivocacion"
-                              , $data->basesatisfaccion->equivocacion
-                              , $data->responsabilidad['EQUIVOCACION']
-                              , ["id" => "equivocacion",
-                              "class" => "form-control",
-                              'prompt' => 'Seleccione ...',
-                              "disabled" => ($data->preview) ? true : false]); */
-                            ?> 
                             <?php
                             echo Html::checkboxList(
                                     'equivocacion[]'
@@ -1376,10 +1327,10 @@ $detalles_ids = array();
         <div class="form-group row">
             <div class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view">
-                <caption>Tabla Satisfacion</caption>
+                <caption>Tabla Satisfacción</caption>
                     <tbody>
                         <tr>
-                            <th><?php echo Yii::t("app", "ANI"); ?></th>
+                            <th scope="col"><?php echo Yii::t("app", "ANI"); ?></th>
                             <td><?php echo $data->basesatisfaccion->ani ?></td>
                         </tr>
                         <tr>

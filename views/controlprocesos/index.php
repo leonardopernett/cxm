@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -206,7 +206,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
 
-                    <?php   // if($sessiones == 2953) { ?>
+                    <?php   if($sessiones == 2953) { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;">remover técnico/lider: </label>
@@ -225,10 +225,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             ?> 
                         </div>
                     </div>
-                    <?php   // } ?>
+                    <?php   } ?>
 		
                     <?php if($txtConteo == "0") { ?>
-                    <?php  //   if($sessiones == 2953) { ?>
+                    <?php     if($sessiones != 0) { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"> clonar plan: </label>                            
@@ -237,7 +237,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>                            
                         </div>
                     </div>
-                    <?php  //   } ?>
+                    <?php     } ?>
                     <?php } ?>
 		
                 </div>
@@ -340,7 +340,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 # code...
                                                                 break;
                                                         } 
-                                  if ($model->tipo_corte == "Corte ".$txtMes." - General Konecta" || $model->tipo_corte == "Corte ".$txtMes." - Grupo Bancolombia" || $model->tipo_corte == "Corte ".$txtMes." - Directv" || $model->tipo_corte == "Corte ".$txtMes." - Nutresa") {                          
+                                    if ($model->tipo_corte == "Corte ".$txtMes." - General Konecta" || $model->tipo_corte == "Corte ".$txtMes." - Grupo Bancolombia" || $model->tipo_corte == "Corte ".$txtMes." - Directv" || $model->tipo_corte == "Corte ".$txtMes." - Nutresa") {                          
                                             //return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['create'=>Yii::t('app','create'),]);
                                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>',['update2', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                                                 'class' => '',
@@ -348,7 +348,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'method' => 'post',
                                                 ],
                                             ]);
-                                  }
+                                    }
                                 
                                  },
                                          'delete' => function($url, $model){

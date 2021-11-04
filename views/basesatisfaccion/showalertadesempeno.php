@@ -1,17 +1,8 @@
 <?php
-//include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
-
-//echo "<pre>";
-//print_r($detallesseccion_id);
-//echo "</pre>";
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
-
-
-//print_r($prueba); die;
-
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Alertas';
@@ -87,7 +78,7 @@ if ($data->ppregunta8 != "") {
                                 $("#datosPartida").toggle("slow");
                             });'); ?>
         </div>
-        <div id="datosPartida" class="col-sm-12" style="">
+        <div id="datosPartida" class="col-sm-12">
             <table class="table table-striped table-bordered detail-view formDinamico">
                 <caption>Tabla datos partida</caption>
                 <tbody>
@@ -199,7 +190,7 @@ if ($data->ppregunta8 != "") {
         <?php if (Yii::$app->session->hasFlash('enviado')) : ?>
 
 
-            <div id="datosGenerales" class="col-sm-6" style="">
+            <div id="datosGenerales" class="col-sm-6">
                 <table class="table table-striped table-bordered detail-view formDinamico">
                     <caption>Tabla datos generales</caption>
                     <tbody>
@@ -231,7 +222,7 @@ if ($data->ppregunta8 != "") {
             </div>
 
             <?php if ($data->notificacion == 3) : ?>
-                <div id="datosGenerales" class="col-sm-12" style="">
+                <div id="datosGenerales" class="col-sm-12">
                     <table class="table table-striped table-bordered detail-view formDinamico">
                         <caption>Tabla datos generales</caption>
                         <tbody>
@@ -253,7 +244,7 @@ if ($data->ppregunta8 != "") {
                             </tr>
                             <tr>
                                 <td>
-                                    <b><?= $preguntas->pregunta3 ?></strong>
+                                    <strong><?= $preguntas->pregunta3 ?></strong>
                                 </td>
                                 <td>
                                     <?= $data->apregunta3 ?>
@@ -306,7 +297,7 @@ if ($data->ppregunta8 != "") {
 
         <?php else : ?>
 
-            <div id="datosGenerales" class="col-sm-12" style="">
+            <div id="datosGenerales" class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view formDinamico">
                     <caption>Tabla datos generales</caption>
                     <tbody>
@@ -416,7 +407,7 @@ if ($data->ppregunta8 != "") {
     <?php if ($data->notificacion == 3) : ?>
 
         <?php if ($_GET['lider'] == "si" or isset($jefeop)) { ?>
-            <div id="datosGenerales" class="col-sm-12" style="">
+            <div id="datosGenerales" class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view formDinamico">
                     <caption>Tabla datos generales</caption>
                     <tbody>
@@ -539,8 +530,8 @@ if ($data->ppregunta8 != "") {
                                         <th scope="col">Cantidad</th>
                                     </tr>
                                     <tr>
-                                        <td scope="col">Total RAC que cumplen Meta</td>
-                                        <td scope="col"><?= $form->field($data, 'rac_meta', ['enableLabel' => false])->textInput(['maxlength' => 200, 'disabled' => true]) ?></td>
+                                        <td>Total RAC que cumplen Meta</td>
+                                        <td><?= $form->field($data, 'rac_meta', ['enableLabel' => false])->textInput(['maxlength' => 200, 'disabled' => true]) ?></td>
                                     </tr>
                                     <tr>
                                         <td>Total RAC en el mismo PCRC</td>
@@ -732,6 +723,7 @@ if ($data->ppregunta8 != "") {
                             </tr>
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
+                                <caption>Cumplimiento</caption>
                                     <tr>
                                         <th scope="col">Comparativo del Cumplimiento</th>
                                         <th scope="col">Meta</th>
@@ -780,18 +772,7 @@ if ($data->ppregunta8 != "") {
 
 
         <?php } else { ?>
-
-
-
-
-
-
-
-
-
-
-
-            <div id="datosGenerales" class="col-sm-12" style="">
+            <div id="datosGenerales" class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view formDinamico">
                 <caption>Tabla datos generales</caption>
                     <tbody>
@@ -849,6 +830,7 @@ if ($data->ppregunta8 != "") {
                             </tr>
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
+                                <caption>Cumplimiento</caption>
                                 <tr>
                                         <th scope="col">Comparativo del Cumplimiento</th>
                                         <th scope="col">Meta</th>
@@ -892,6 +874,7 @@ if ($data->ppregunta8 != "") {
                             </tr>
                             <tr>
                                 <table style="width:80%" class="table table-striped table-bordered detail-view formDinamico">
+                                <caption>Cumplimiento</caption>
                                 <tr>
                                         <th scope="col">Comparativo del Cumplimiento</th>
                                         <th scope="col">Meta</th>
@@ -938,7 +921,7 @@ if ($data->ppregunta8 != "") {
 
                 <?php if ($data->respuesta_asesor != "") { ?>
 
-                    <td align="center"><?= Html::submitButton('1Enviar y Guardar', ['id' => 'boton', 'class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
+                    <td style="text-align: center;"><?= Html::submitButton('1Enviar y Guardar', ['id' => 'boton', 'class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
 
                 <?php } ?>
 
@@ -946,7 +929,7 @@ if ($data->ppregunta8 != "") {
 
                     if ($data->respuesta_asesor == "") { ?>
 
-                    <td align="center"><?= Html::submitButton('2Enviar y Guardar', ['id' => 'boton', 'class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
+                    <td style="text-align: center;"><?= Html::submitButton('2Enviar y Guardar', ['id' => 'boton', 'class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
             <?php }
                 } ?>
 
@@ -960,7 +943,7 @@ if ($data->ppregunta8 != "") {
         <caption>Tabla</caption>
             <tr>
                 <th scope="col">
-                    <h5 align="justify">"Lo anterior, con fundamento en lo dispuesto en el artículo 62 numeral 9 del Código Sustantivo del Trabajo, el Decreto Reglamentario 1373 de 1966 y el contrato laboral.
+                    <h5 style="text-align: center;">"Lo anterior, con fundamento en lo dispuesto en el artículo 62 numeral 9 del Código Sustantivo del Trabajo, el Decreto Reglamentario 1373 de 1966 y el contrato laboral.
 
                         Por lo tanto, le solicitamos dar respuesta a los planteamientos anteriormente enunciados, en un plazo máximo de ocho (8) días, contados a partir de la fecha de recibo del presente. "</h5>
                 </th>
@@ -972,7 +955,7 @@ if ($data->ppregunta8 != "") {
 
                 <?php if ($data->respuesta_lider == "" or $data->puntovista_lider == "" or $data->rac_meta  == "" or $data->rac_pcrc  == "" or $data->rac_cumple  == "" or $data->meta  == "" or $data->empleado  == "" or $data->grupo  == "" or $data->dif_empleado_meta  == "" or $data->dif_empleado_grupo == "") { ?>
 
-                    <td align="center"><?= Html::submitButton('3Enviar y Guardar', ['id' => 'boton', 'class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
+                    <td style="text-align: center;"><?= Html::submitButton('3Enviar y Guardar', ['id' => 'boton', 'class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
 
                 <?php } ?>
                 <?php } else {
@@ -980,7 +963,7 @@ if ($data->ppregunta8 != "") {
                     if ($data->respuesta_lider != "" and $data->respuesta_asesor == "") {
                 ?>
 
-                    <td align="center"><?= Html::submitButton('4Enviar y Guardar', ['id' => 'boton', 'class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
+                    <td style="text-align: center;"><?= Html::submitButton('4Enviar y Guardar', ['id' => 'boton', 'class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
             <?php }
                 } ?>
 
@@ -1153,12 +1136,6 @@ if ($data->ppregunta8 != "") {
 </head>
 
 <body>
-
-    <!-- <h2>Modal Example</h2> -->
-
-    <!-- Trigger/Open The Modal -->
-    <!-- <button id="myBtn">Opsen Modal</button> -->
-
     <!-- The Modal -->
     <div id="myModal" class="modal">
 

@@ -129,8 +129,8 @@ class ControlProcesos extends \yii\db\ActiveRecord
     }
 
     public function getRealizadas($opcion) {
-        $variableid = $opcion;
-	    $varCero = 0;
+        $variableid = $opcion; 
+	$varCero = 0;
 
             $varMes = date("n");
             $txtMes = null;

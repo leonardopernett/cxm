@@ -37,8 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
     $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
     $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
-    // $varfechainicio = '2021-09-01';
-    // $varfechafin = '2021-10-05';
 
     $sessiones = Yii::$app->user->identity->id;
     $sumatoria1 = null;
@@ -211,7 +209,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></i> Buscar técnico/lider: </label>
+                <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Buscar técnico/lider: </label>
                 <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?> 
                 <div class="row">
                     <div class="col-sm-12">
@@ -262,12 +260,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-8">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                 <?php if($roles == "270" || $roles == "309" || $roles == "274" || $roles == "276") {?>
                     <div class="col-md-4">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-chart-line" style="font-size: 15px; color: #FFC72C;"></i> Gráfica del equipo: </label>                    
+                            <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 15px; color: #FFC72C;"></em> Gráfica del equipo: </label>                    
                             <?= 
                                 Html::button('Aceptar', ['value' => url::to(['graficasequipo']), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Ver Grafica', 'style' => 'background-color: #337ab7'                                        
                                     ])
@@ -287,7 +285,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-4">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-history" style="font-size: 15px; color: #FFC72C;"></i> Verificar histórico: </label>
+                            <label style="font-size: 15px;"><em class="fas fa-history" style="font-size: 15px; color: #FFC72C;"></em> Verificar histórico: </label>
                             <?= Html::a('Aceptar',  ['viewhistorico'], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #337ab7',
                                     'data-toggle' => 'tooltip',
@@ -298,7 +296,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php if ($roles == "270" || $roles == "309" || $roles == "274" || $roles == "276") { ?>
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-search" style="font-size: 15px; color: #FFC72C;"></i> Escalamientos: </label>
+                                <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #FFC72C;"></em> Escalamientos: </label>
                                 <?= Html::a('Aceptar',  ['gestionarescalamientos'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
                                         'data-toggle' => 'tooltip',
@@ -310,7 +308,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php }else{ ?>
                     <div class="col-md-12">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-hand-paper" style="font-size: 15px; color: #FFC72C;"></i> Estas acciones solo son vistas al igual que operativas por coordinadores CX, coordinadores OP y administradores del sistema... </label>                                
+                            <label style="font-size: 15px;"><em class="fas fa-hand-paper" style="font-size: 15px; color: #FFC72C;"></em> Estas acciones solo son vistas al igual que operativas por coordinadores CX, coordinadores OP y administradores del sistema... </label>                                
                         </div>
                     </div>
                 <?php } ?>
@@ -324,19 +322,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-hashtag" style="font-size: 20px; color: #C148D0;"></i> Total meta del equipo:</label>
+                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #C148D0;"></em> Total meta del equipo:</label>
                 <label  style="font-size: 50px; text-align: center;"><?php echo $sumaMetas; ?></label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-hashtag" style="font-size: 20px; color: #C148D0;"></i> Total realizadas del equipo:</label>
+                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #C148D0;"></em> Total realizadas del equipo:</label>
                 <label  style="font-size: 50px; text-align: center;"><?php echo $sumaRealizadas; ?></label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-hashtag" style="font-size: 20px; color: #C148D0;"></i> Total % de cumplimiento del equipo:</label>
+                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #C148D0;"></em> Total % de cumplimiento del equipo:</label>
                 <label  style="font-size: 50px; text-align: center;"><?php echo $sumaCumplimiento.'%'; ?></label>
             </div>
         </div>
@@ -347,7 +345,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-list" style="font-size: 20px; color: #2CA53F;"></i> Listado del equipo: </label>
+                <label><em class="fas fa-list" style="font-size: 20px; color: #2CA53F;"></em> Listado del equipo: </label>
                     <?= GridView::widget([
                             'dataProvider' => $dataProvider,        
                             //'filterModel' => $searchModel,
@@ -422,7 +420,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-4">
             <div class="card2 mb">
-                <label style="font-size: 16px;"><i class="fas fa-exclamation-triangle" style="font-size: 15px; color: #ff2c2c;"></i> Fechas de vencimiento para escalar y/o aprobar las justificaciones de cada corte: </label> 
+                <label style="font-size: 16px;"><em class="fas fa-exclamation-triangle" style="font-size: 15px; color: #ff2c2c;"></em> Fechas de vencimiento para escalar y/o aprobar las justificaciones de cada corte: </label> 
                 <br> 
                 <?php
                     if ($roles == "274" || $roles == "276") {
@@ -487,7 +485,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-info-circle" style="font-size: 15px; color: #ff2c2c;"></i> Plazos para escalar novedades del plan a cierre de mes: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 15px; color: #ff2c2c;"></em> Plazos para escalar novedades del plan a cierre de mes: </label>
 
                         <?php if ($roles == "274" || $roles == "276") { 
                             $vardatenext = Yii::$app->db->createCommand("select distinct DATE_ADD(t.fechafintc, INTERVAL 1 DAY) 'fechaplazo' from tbl_tipocortes t inner join tbl_control_procesos cp on t.idtc = cp.idtc where cp.anulado = 0 and cp.responsable = $sessiones and cp.fechacreacion between '$varfechainicio' and '$varfechafin'")->queryScalar();
@@ -509,7 +507,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><i class="fas fa-info-circle" style="font-size: 15px; color: #ff2c2c;"></i> Plazo para reportar novedades del informe a cierre de mes: </label>
+                        <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 15px; color: #ff2c2c;"></em> Plazo para reportar novedades del informe a cierre de mes: </label>
                         <?php if ($roles == "274" || $roles == "276") { 
 
                             $vardateextendido = Yii::$app->db->createCommand("select distinct DATE_ADD(t.fechafintc, INTERVAL 6 DAY) 'fechaplazo' from tbl_tipocortes t inner join tbl_control_procesos cp on t.idtc = cp.idtc where cp.anulado = 0 and cp.responsable = $sessiones and cp.fechacreacion between '$varfechainicio' and '$varfechafin'")->queryScalar();
@@ -562,7 +560,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 16px;"><i class="fas fa-exclamation-triangle" style="font-size: 15px; color: #ff2c2c;"></i> Fechas de vencimiento para escalar y/o aprobar las justificaciones de cada corte: </label>
+                <label style="font-size: 16px;"><em class="fas fa-exclamation-triangle" style="font-size: 15px; color: #ff2c2c;"></em> Fechas de vencimiento para escalar y/o aprobar las justificaciones de cada corte: </label>
                 <div class="row">
                     <?php 
                         $varlistadocortes = Yii::$app->db->createCommand("select t.idtc, t.tipocortetc, t.cantdiastc, g.nomgrupocorte from tbl_grupo_cortes g  inner join tbl_tipocortes t on g.idgrupocorte = t.idgrupocorte where t.anulado = 0")->queryAll();
@@ -572,7 +570,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ?>
                         <div class="col-md-3">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-calendar" style="font-size: 15px; color: #ff2c2c;"> </i><?php echo ' '.$value['tipocortetc'].': '?></label> 
+                                <label style="font-size: 16px;"><em class="fas fa-calendar" style="font-size: 15px; color: #ff2c2c;"> </em><?php echo ' '.$value['tipocortetc'].': '?></label> 
                                 <?php
                                     $varlistcortesAdmin = Yii::$app->db->createCommand("select tc.cortetcs, tc.fechainiciotcs, tc.fechafintcs from tbl_tipos_cortes tc  where            tc.idtc = $vartxtidtc group by tc.cortetcs")->queryAll();
 
@@ -611,11 +609,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-lock" style="font-size: 20px; color: #ff2c2c;"></i> Administrativo: </label>
+                <label><em class="fas fa-lock" style="font-size: 20px; color: #ff2c2c;"></em> Administrativo: </label>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-user" style="font-size: 15px; color: #ff2c2c;"></i> Asignar permisos: </label>                            
+                            <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #ff2c2c;"></em> Asignar permisos: </label>                            
                                 <?= Html::button('Aceptar', ['value' => url::to('asignarpermisos'), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Permisos', 'style' => 'background-color: #337ab7']) 
                                 ?> 
                                 <?php
@@ -633,7 +631,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-2">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-users" style="font-size: 15px; color: #ff2c2c;"></i> Verificar Equipo: </label>                            
+                            <label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 15px; color: #ff2c2c;"></em> Verificar Equipo: </label>                            
                                 <?= Html::a('Aceptar',  ['viewequipo'], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #337ab7',
                                     'data-toggle' => 'tooltip',
@@ -643,7 +641,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-2">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-unlock" style="font-size: 15px; color: #ff2c2c;"></i> Administrativo </label>                            
+                            <label style="font-size: 15px;"><em class="fas fa-unlock" style="font-size: 15px; color: #ff2c2c;"></em> Administrativo </label>                            
                                 <?= Html::a('Aceptar',  ['administrar'], ['class' => 'btn btn-success',
                                     'style' => 'background-color: #337ab7',
                                     'data-toggle' => 'tooltip',
@@ -654,7 +652,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php if($sessiones == '2953' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229'  || $sessiones == '57' || $sessiones == '565' || $sessiones = '4457') {?>
                         <div class="col-md-2">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #ff2c2c;"></i> Descargar plan: </label>                            
+                                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #ff2c2c;"></em> Descargar plan: </label>                            
                                 <?= Html::button('Mes Pasado', ['value' => url::to('excelplanpast'), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
                                 ?> 
                                 <?php
@@ -672,7 +670,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-2">
                             <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #ff2c2c;"></i> Descargar plan: </label>  
+                                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #ff2c2c;"></em> Descargar plan: </label>  
                                 <?= Html::button('Mes Actual', ['value' => url::to('excelplanx'), 'class' => 'btn btn-success', 'id'=>'modalButton5', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
                                 ?> 
                                 <?php

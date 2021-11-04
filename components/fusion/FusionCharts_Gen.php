@@ -150,7 +150,7 @@ class FusionCharts {
 
         # Setting ChartID, Defult is Charts Name
         if ($chartID == "") {
-            $chartCounter = @$_SESSION['chartcount'];
+            $chartCounter = $_SESSION['chartcount'];
             if ($chartCounter <= 0 || $chartCounter == NULL) {
                 $chartCounter = 1;
             }
@@ -255,7 +255,8 @@ class FusionCharts {
     # Special Character
 
     public function encodeXMLChars($option = true) {
-        $this->$encodeChars = $option;
+        
+        $this->encodeChars = $option;
     }
 
     # Setting Parameter Delimiter, Defult Parameter Separator is ";"
@@ -596,15 +597,15 @@ class FusionCharts {
 
                 # covert to set element and save to $partXML
                 if ($db_field_CategoryNames == "") {
-                    $data = @$row[$db_field_ChartData];
+                    $data = $row[$db_field_ChartData];
                     if ($strParam != "")
                         $this->addChartData($this->encodeSpecialChars($data), $strParam);
                     else
                         $this->addChartData($this->encodeSpecialChars($data));
                 }
                 else {
-                    $data = @$row[$db_field_ChartData];
-                    $label = @$row[$db_field_CategoryNames];
+                    $data = $row[$db_field_ChartData];
+                    $label = $row[$db_field_CategoryNames];
                     $this->addChartData($this->encodeSpecialChars($data), "name=" . $this->encodeSpecialChars($label) . ";" . $strParam, "");
                 }
             }
@@ -626,15 +627,15 @@ class FusionCharts {
 
                 # covert to set element and save to $partXML
                 if ($db_field_CategoryNames == "") {
-                    $data = @$row[$db_field_ChartData];
+                    $data = $row[$db_field_ChartData];
                     if ($strParam != "")
                         $this->addChartData($this->encodeSpecialChars($data), $strParam);
                     else
                         $this->addChartData($this->encodeSpecialChars($data));
                 }
                 else {
-                    $data = @$row[$db_field_ChartData];
-                    $label = @$row[$db_field_CategoryNames];
+                    $data = $row[$db_field_ChartData];
+                    $label = $row[$db_field_CategoryNames];
                     $this->addChartData($this->encodeSpecialChars($data), "name=" . $this->encodeSpecialChars($label) . ";" . $strParam, "");
                 }
             }

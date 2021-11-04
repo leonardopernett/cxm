@@ -104,19 +104,19 @@ $sessiones1 = Yii::$app->user->identity->id;
     <div class="row">
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></i> Rol del usuario:</label>
+                <label><em class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></em> Rol del usuario:</label>
                 <label><?php echo $varRol; ?></label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></i> Técnico/Lider:</label>
+                <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Técnico/Lider:</label>
                 <label><?php echo $varNombre; ?></label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card1 mb">
-                <label><i class="fas fa-calendar-alt" style="font-size: 20px; color: #2CA5FF;"></i> Corte seleccionado:</label>
+                <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #2CA5FF;"></em> Corte seleccionado:</label>
                 <label><?php echo $varRango; ?></label>
             </div>
         </div>
@@ -128,7 +128,7 @@ $sessiones1 = Yii::$app->user->identity->id;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-plus-square" style="font-size: 20px; color: #3055FF;"></i> Justificación o Escalamientos: </label>
+                <label><em class="fas fa-plus-square" style="font-size: 20px; color: #3055FF;"></em> Justificación o Escalamientos: </label>
                 <div class="row">
                     <div class="col-md-4">
                         <label for="txtIndiGlo" style="font-size: 14px;">Tipo de corte</label>
@@ -237,11 +237,11 @@ $sessiones1 = Yii::$app->user->identity->id;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 17px;"><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></i> Guardar Justificación: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar Justificación: </label> 
                                 <div onclick="validarvalor();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="ButtonSearch" >
                                   Guardar Información
                                 </div>                        
@@ -249,7 +249,7 @@ $sessiones1 = Yii::$app->user->identity->id;
                         </div>  
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><i class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                                 <?= Html::a('Regresar',  ['view','id'=>$varids,'evaluados_id'=>$varidevaluados], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',

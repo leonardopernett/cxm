@@ -1,17 +1,8 @@
 <?php
-//include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
-
-//echo "<pre>";
-//print_r($detallesseccion_id);
-//echo "</pre>";
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
-
-
-//print_r($prueba); die;
-
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Gestion Preguntas';
@@ -21,13 +12,13 @@ $this->title = 'Gestion Preguntas';
 
     <?php if (Yii::$app->session->hasFlash('enviado')): ?>
 		
-		<div id="datosGenerales" class="col-md-offset-1 col-sm-10" style="">
+		<div id="datosGenerales" class="col-md-offset-1 col-sm-10">
     		<table class="table table-striped table-bordered detail-view formDinamico">
 			<caption>Tabla datos generales</caption>
     			<tbody>
     				<tr>
-    					<th scope="col" colspan="2"><div class="alert alert-success">   
-    						<center>Respuesta Guardada Satisfactoriamente.</center>
+    					<th scope="col" colspan="2"><div class="alert alert-success text-center">   
+    						Respuesta Guardada Satisfactoriamente.
     					</div>
     				</th>
 	    			</tr>
@@ -76,7 +67,7 @@ $this->title = 'Gestion Preguntas';
 	    </div>
 
     <?php else: ?> 
-    	<div id="datosGenerales" class="col-md-offset-1 col-sm-10" style="">
+    	<div id="datosGenerales" class="col-md-offset-1 col-sm-10">
     		<table class="table table-striped table-bordered detail-view formDinamico">
 			<caption>Tabla datos generales</caption>
     		<?php $form = ActiveForm::begin(); ?>  
@@ -127,7 +118,7 @@ $this->title = 'Gestion Preguntas';
 	    			</tr>
 	    			<tr>
 	    			</tr>
-	    			<td  colspan="2" align="center"><?= Html::submitButton('Actualizar', ['id' => 'boton','class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
+	    			<td  colspan="2" style="text-align: center;"><?= Html::submitButton('Actualizar', ['id' => 'boton','class' => 'btn btn-primary', 'name' => 'contact-button']) ?></td>
 	    		</tbody>
 			<?php ActiveForm::end(); ?>
 	    	</table>

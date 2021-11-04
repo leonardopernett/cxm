@@ -103,7 +103,7 @@ if ($varusuar != null) {
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">            	
-            	<label><i class="fas fa-id-card" style="font-size: 20px; color: #ff2c2c;"></i> </label>
+            	<label><em class="fas fa-id-card" style="font-size: 20px; color: #ff2c2c;"></em> </label>
             	<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
             		<div class="row">
                     	<div class="col-md-6">
@@ -191,7 +191,7 @@ if ($varusuar != null) {
 	                    </div>
 	                    <div class="col-md-6">
                             <div class="card1 mb">
-	                    		<label style="font-size: 17px;"><i class="fas fa-hand-paper" style="font-size: 20px; color: #ff2c2c;"></i> Importante indicar que solo se realiza la consulta sobre datos del mes actual. </label>
+	                    		<label style="font-size: 17px;"><em class="fas fa-hand-paper" style="font-size: 20px; color: #ff2c2c;"></em> Importante indicar que solo se realiza la consulta sobre datos del mes actual. </label>
 	                    	</div>
 	                    </div>
 	                </div>
@@ -205,18 +205,19 @@ if ($varusuar != null) {
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">            	
-            	<label><i class="fas fa-list" style="font-size: 20px; color: #ff2c2c;"></i> </label>
+            	<label><em class="fas fa-list" style="font-size: 20px; color: #ff2c2c;"></em> </label>
             	<?php if($varcordi != null) { ?>
             		<br>
             		<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Equipo</caption>
             			<thead>
             				<tr>
-            					<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  'Coordinador: '.$varNamecoordi; ?></label></th>
+            					<th scope="col" colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  'Coordinador: '.$varNamecoordi; ?></label></th>
             				</tr>
             				<tr>
-	            				<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tecnico/Lider') ?></label></th>
-	            				<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-	            				<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo corte') ?></label></th>
+	            				<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tecnico/Lider') ?></label></th>
+	            				<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+	            				<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo corte') ?></label></th>
             				</tr>
             			</thead>
             			<tbody>
@@ -237,13 +238,14 @@ if ($varusuar != null) {
             	<?php if($varusuar != null) { ?>
             		<br>
             		<table id="tblData2" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Corte</caption>
             			<thead>
             				<tr>
-            					<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  'Tecnico/Lider: '.$varNameusua; ?></label></th>
+            					<th scope="col" colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  'Tecnico/Lider: '.$varNameusua; ?></label></th>
             				</tr>
             				<tr>
-	            				<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Coordinador A Cargo') ?></label></th>
-	            				<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Corte') ?></label></th>
+	            				<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Coordinador A Cargo') ?></label></th>
+	            				<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Corte') ?></label></th>
 	            			</tr>
             			</thead>
             			<tbody>

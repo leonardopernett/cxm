@@ -29,15 +29,15 @@ $datacolab = (array)json_decode($dataper);
     ?>
 <br>
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
-    <h3><center><?= $nombrerepor ?></center></h3>
+    <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
+    <h3 style="text-align: center;"><?= $nombrerepor ?></h3>
 </div>
 
 <br>
 	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <div class="row">
         <div class="col-md-offset-2 col-sm-8">
-        <b>Correo Usuario </b><?= Html::input('email','email','', $options=['class'=>'form-control', 'maxlength'=>100, 'id'=>'nombrecorreo']) ?>
+        <strong>Correo Usuario </strong><?= Html::input('email','email','', $options=['class'=>'form-control', 'maxlength'=>100, 'id'=>'nombrecorreo']) ?>
         </div>
     </div>        
         
@@ -54,10 +54,11 @@ $datacolab = (array)json_decode($dataper);
 <div id="dtbloque2" class="col-sm-12">
 	<br>
 	<table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+        <caption>Tabla datos</caption>
 		<tr>
-			<th class="text-center"><?= Yii::t('app', 'Nombre') ?></th>
-			<th class="text-center"><?= Yii::t('app', 'Correo') ?></th>
-			<th class="text-center"><?= Yii::t('app', '') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Nombre') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', 'Correo') ?></th>
+			<th scope="col" class="text-center"><?= Yii::t('app', '') ?></th>
 		</tr>
 		<?php
 				//foreach ($datacolab as $key => $value) {
@@ -131,7 +132,7 @@ $datacolab = (array)json_decode($dataper);
 		var varnombrerep = "<?php echo $nombrerepor; ?>";
         var varreporteid = "<?php echo $idreporte; ?>";
 
-	    var opcion = confirm("Confirmar la eliminación del item de la lista...");
+	    var opcion = confirm("Confirmar la eliminaciï¿½n del item de la lista...");
 
 	    if (opcion == true){
 		 $.ajax({

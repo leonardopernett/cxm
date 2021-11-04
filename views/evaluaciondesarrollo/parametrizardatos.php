@@ -465,9 +465,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <br>
                                         <?php } ?>
                                         <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                                        <caption>Tabla datos</caption>
                                             <thead>             
-                                                <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Id"; ?></label></th>
-                                                <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Evaluaci�n"; ?></label></th>       
+                                                <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Id"; ?></label></th>
+                                                <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Evaluaci�n"; ?></label></th>       
                                             </thead>
                                             <tbody>
                                                 <?php

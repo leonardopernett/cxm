@@ -61,7 +61,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   			</tr>
   		</tbody>
   	</table>
-  	<center><img class="pruebaaaaaaa" src="../../../alertas/<?php echo $model['Adjunto'] ?>" alt="Image-view" ></center>
+  	<img class="pruebaaaaaaa" src="../../../alertas/<?php echo $model['Adjunto'] ?>" alt="Image-view" >
   </div>
 </div>
 

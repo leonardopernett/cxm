@@ -94,17 +94,18 @@ $sesiones =Yii::$app->user->identity->id;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></i> Información de la justificación...</label>
+                <label><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em> Información de la justificación...</label>
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Información</caption>
                     <thead>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Rol"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tecnico/Lider"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Corte"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Justificacion"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Justificaciones"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comentarios"; ?></label></th>
-                        <th class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Rol"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tecnico/Lider"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Corte"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Tipo Corte"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Justificacion"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Justificaciones"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Comentarios"; ?></label></th>
+                        <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th>
                     </thead>
                     <tbody>
                         <?php
@@ -154,7 +155,7 @@ $sesiones =Yii::$app->user->identity->id;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></i> Comentario por el que no aprueba la justificación...</label>
+                <label><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em> Comentario por el que no aprueba la justificación...</label>
                 <?= $form->field($model, 'negargestion')->textInput(['maxlength' => 250,  'id'=>'idnegargestion']) ?>
                 <br>
                 <?= Html::submitButton('Guardar (No Aprobar)', ['class' => 'btn btn-primary'] ) ?>
@@ -168,7 +169,7 @@ $sesiones =Yii::$app->user->identity->id;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-exclamation" style="font-size: 20px; color: #ff532c;"></i> Es importante indicar que no necesariamente hay que colocar un comentario al la no aprobación de la justificación. Solo debe dar clic en guardar.</label>
+                <label><em class="fas fa-exclamation" style="font-size: 20px; color: #ff532c;"></em> Es importante indicar que no necesariamente hay que colocar un comentario al la no aprobación de la justificación. Solo debe dar clic en guardar.</label>
             </div>
         </div>
     </div>

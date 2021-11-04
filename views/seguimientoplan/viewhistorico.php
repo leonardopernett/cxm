@@ -129,16 +129,16 @@ if ($varidtc != null) {
     <div class="row">
         <div class="col-md-6">
             <div class="card1 mb">
-                <label><i class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></i> Rol del usuario:</label>
+                <label><em class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></em> Rol del usuario:</label>
                 <label><?php echo $varRol; ?></label>
                 <br>
-                <label><i class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></i> Usuario:</label>
+                <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Usuario:</label>
                 <label><?php echo $varNombre; ?></label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="card1 mb">
-                <label><i class="fas fa-search" style="font-size: 20px; color: #2CA5FF;"></i> Corte a seleccionar:</label>
+                <label><em class="fas fa-search" style="font-size: 20px; color: #2CA5FF;"></em> Corte a seleccionar:</label>
                 <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
         			<?= $form->field($model, 'idtc')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'idtcs']) ?> 
         			<br>
@@ -159,20 +159,21 @@ if ($varidtc != null) {
     <div class="row">
         <div class="col-md-12">
         	<div class="card1 mb">
-                <label><i class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></i> Lista de valoraciones:</label>
+                <label><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em> Lista de valoraciones:</label>
                 <?php if ($varidtc != null) { ?>
                 <br>
 	                <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Lista Valoraciones</caption>
 	                	<thead>	  
 	                		<tr>
-	                			<th colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  $txtnombrecorte; ?></label></th>
+	                			<th scope="col" colspan="5" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  $txtnombrecorte; ?></label></th>
 	                		</tr>              		
 	                		<tr>
-		                		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Rol') ?></label></th>
-		                		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tecnico/Lider') ?></label></th>
-		                		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
-		                		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
-		                		<th style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '% de cumplimiento') ?></label></th>
+		                		<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Rol') ?></label></th>
+		                		<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tecnico/Lider') ?></label></th>
+		                		<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Meta') ?></label></th>
+		                		<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Realizadas') ?></label></th>
+		                		<th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '% de cumplimiento') ?></label></th>
 	                		<tr>
 	                	</thead>
 	                	<tbody>
@@ -216,11 +217,11 @@ if ($varidtc != null) {
     <div class="row">
     	<div class="col-md-12">
             <div class="card1 mb">
-                <label><i class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></i> Acciones: </label>
+                <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
                 	<div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
                             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -230,7 +231,7 @@ if ($varidtc != null) {
                     </div>
                     <div class="col-md-3">
                         <div class="card1 mb">
-                            <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Archivo: </label> 
+                            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar Archivo: </label> 
                             <a id="dlink" style="display:none;"></a>
     						<button  class="btn btn-info" style="background-color: #4298B4" id="btn">Exportar</button>
                         </div>

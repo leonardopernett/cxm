@@ -257,12 +257,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form->end() ?>
     <br>
     <table class="table table-striped table-hover table-bordered">
+    <caption>Total</caption>
         <thead>
             <tr>
-                <th class="text-center" style="font-size:12px;">Total Resultados...</th>
-                <th class="text-center" style="font-size:12px;">Total Meta:</th>
-                <th class="text-center" style="font-size:12px;">Total Realizadas:</th>
-                <th class="text-center" style="font-size:12px;">Total % Cumplimiento: </th>
+                <th scope="col" class="text-center" style="font-size:12px;">Total Resultados...</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Total Meta:</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Total Realizadas:</th>
+                <th scope="col" class="text-center" style="font-size:12px;">Total % Cumplimiento: </th>
             </tr>
         </thead>
 
@@ -384,14 +385,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
     <table id="tblData2" class="table table-striped table-bordered tblResDetFreed">
+    <caption>...</caption>
         <thead>
             <tr>
-                <th class="text-center" ><?= Yii::t('app', 'ArbolPadre') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'PCRC') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Roles') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Identificacion') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Valorador') ?></th>
-                <th class="text-center" ><?= Yii::t('app', 'Realizadas') ?></th>  
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'ArbolPadre') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'PCRC') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Roles') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Identificacion') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Valorador') ?></th>
+                <th scope="col" class="text-center" ><?= Yii::t('app', 'Realizadas') ?></th>  
             </tr>
         </thead>
         <tbody>
