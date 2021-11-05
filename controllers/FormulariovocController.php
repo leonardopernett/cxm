@@ -74,7 +74,6 @@ use app\models\FormvocBloque1;
         }
 
         public function actionListarpcrcindex(){            
-            $txtAnulado = 0; 
             $txtId = Yii::$app->request->post('id');                       
 
             if ($txtId) {
@@ -103,7 +102,6 @@ use app\models\FormvocBloque1;
                             ->andwhere("tbl_speech_categorias.anulado = 0")                             
                             ->orderBy(['tbl_procesos_volumendirector.cod_pcrc' => SORT_DESC])
                             ->all();            
-                    $valor = 0;
                     
                     foreach ($varListaPcrc as $key => $value) {
                         echo "<option value='" . $value->cod_pcrc. "'>" . $value->cod_pcrc." - ".$value->pcrc . "</option>";
@@ -118,7 +116,6 @@ use app\models\FormvocBloque1;
         }
 
         public function actionListarvariables(){
-            $txtAnulado = 0; 
             $txtId = Yii::$app->request->post('id');
 
             if ($txtId) {
@@ -127,9 +124,7 @@ use app\models\FormvocBloque1;
                 $txtControl = Yii::$app->db->createCommand("select count(idcategoria) from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and tipoindicador in ('$txtNombre') and cod_pcrc in ('$txtCodpcrc')")->queryScalar();                
 
                 if ($txtControl > 0) {
-                    // echo "<option>'".$txtCodpcrc."'</option>";
                     $varListaPcrc =  Yii::$app->db->createCommand("select idspeechcategoria, nombre from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and tipoindicador in ('$txtNombre') and cod_pcrc in ('$txtCodpcrc')")->queryAll();
-                    $valor = 0;
                     
                     foreach ($varListaPcrc as $key => $value) {
                         echo "<option value='" . $value['idspeechcategoria']. "'>" . $value['nombre'] . "</option>";
@@ -195,7 +190,6 @@ use app\models\FormvocBloque1;
             $txtCXM = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios where anulado = 0 and id_dp_clientes = $txtPcrc")->queryScalar();
             $txtcodpcrc = Yii::$app->request->get("txtcodpcrc");
             $txtNompcrc = Yii::$app->db->createCommand("select distinct pcrc from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtcodpcrc')")->queryScalar();
-            $txtValorado = Yii::$app->request->get("txtValorado");
             $txtIDExtSp = Yii::$app->request->get("txtIDExtSp");
             $txtFechaHora = Yii::$app->request->get("txtFechaHora");
             $txtUsuAge = Yii::$app->request->get("txtUsuAge");
@@ -207,7 +201,6 @@ use app\models\FormvocBloque1;
             $txtvFechacreacion = date("Y-m-d");
             $txtanulado = 0;
             $txtVRta = null;
-            $txtVRta2 = null;
             $txthola = 0;
 
             $txtVRta = Yii::$app->db->createCommand("select count(idpcrccxm) from tbl_formvoc_bloque1 where anulado = 0 and idpcrccxm =  $txtCXM and idpcrcspeech = $txtPcrc and cod_pcrc in ('$txtcodpcrc') and idvalorado = $txtValoraddo and fechahora in ('$txtFechaHora') and fechacreacion = '$txtvFechacreacion'")->queryScalar();
@@ -236,7 +229,6 @@ use app\models\FormvocBloque1;
         }
 
         public function actionCreatefocalizadapart2(){
-            $txtvaloradorID = Yii::$app->user->identity->id;
 
             $txtPcrc = Yii::$app->request->get("txtPcrc");
             $txtCXM = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios where anulado = 0 and id_dp_clientes = $txtPcrc")->queryScalar();
@@ -264,8 +256,6 @@ use app\models\FormvocBloque1;
 
             $txtvFechacreacion = date("Y-m-d");
             $txtanulado = 0;
-            $txtVRta = null;
-            $txtVRta2 = null;
             $txthola = 0;
 
              $txtvIdBloque = Yii::$app->db->createCommand("select idformvocbloque1 from tbl_formvoc_bloque1 where anulado = 0 and idpcrccxm =  $txtCXM and idpcrcspeech = $txtPcrc and cod_pcrc in ('$txtcodpcrc') and idvalorado = $txtValoraddo and fechahora in ('$txtFechaHora') and fechacreacion = '$txtvFechacreacion'")->queryScalar();
@@ -299,8 +289,6 @@ use app\models\FormvocBloque1;
 
         public function actionReportformvoc(){
             $model = new FormvocBloque1();
-
-            // var_dump(Yii::$app->request->post());
 
             $dataProvider = $model->buscarformvoc(Yii::$app->request->post());  
 
@@ -452,7 +440,6 @@ use app\models\FormvocBloque1;
 
     public function actionDownloadlist(array $datos){
             $txtidbloque = $datos;
-            //$dataProvider = $datos;
             return $this->renderAjax('downloadlist',[
                 'txtidbloque' => $txtidbloque,
                 ]);

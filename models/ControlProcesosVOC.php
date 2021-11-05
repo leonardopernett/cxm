@@ -46,10 +46,7 @@ class ControlProcesosVOC extends ControlvocBloque1
     public function buscarVoc($params)
     {
         $sessiones = Yii::$app->user->identity->id;  
-        //$sessiones = 2953;
         $varAnulado = 0;
-        $varMed = 2;
-        $varBog = 98;
         $varK = 1;
  	$varDimension = '"Escucha Focalizada VOC"';
 
@@ -66,7 +63,6 @@ class ControlProcesosVOC extends ControlvocBloque1
   
      if ($roles == "270"){ 
         $query = ControlvocBloque1::find()->distinct()
-            //$query->select('*');
             ->from('tbl_controlvoc_bloque1 cvb')            
             ->join('LEFT JOIN', 'tbl_arbols a', 'cvb.arbol_id = a.id')
             ->join('LEFT JOIN', 'tbl_usuarios u', 'cvb.valorador_id = u.usua_id')
@@ -82,7 +78,6 @@ class ControlProcesosVOC extends ControlvocBloque1
      else{
 
         $query = ControlvocBloque1::find()->distinct()
-            //$query->select('*');
             ->from('tbl_controlvoc_bloque1 cvb')            
             ->join('LEFT JOIN', 'tbl_arbols a', 'cvb.arbol_id = a.id')
             ->join('LEFT JOIN', 'tbl_usuarios u', 'cvb.valorador_id = u.usua_id')

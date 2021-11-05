@@ -14,14 +14,6 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Programa/PCRC');
 $this->params['breadcrumbs'][] = $this->title;
 
-/*$this->registerJs(
-   "$(function(){
-       $('#modal-rolesArboles').on('hidden.bs.modal', function (e) {
-           location.reload();
-        });    
-})"
-);*/
-
 ?>
 
 <?php
@@ -45,8 +37,7 @@ Modal::begin([
         'id'=>'grid-rolesArboles',
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],             
+        'columns' => [     
             [
                 'attribute' => 'rolName',
                 'enableSorting' => true,
@@ -55,53 +46,7 @@ Modal::begin([
             [
                 'attribute' => 'rolDescripcion',
                 'value' => 'role.grupo_descripcion'
-            ],            
-            /*[
-                'attribute' => 'sncrear_formulario',
-                'enableSorting' => false,
-                'filter' => false,
-                'format'=>'raw',
-                'value' => function($model){
-                    return Html::checkbox('',
-                                        $model->sncrear_formulario,
-                                    [
-                                    'data-pjax' => 'w0',
-                                    'onchange' => "    
-                                        isChecked = $(this).is(':checked') ? 1:0;
-                                    $.ajax({
-                                        type     :'POST',
-                                        cache    : false,
-                                        data     : {id: "
-                                        .$model->id.", sncrear_formulario: isChecked},
-                                        url  : '" . Url::to(['arboles/roles', 'arbol_id'=>$model->arbol_id]) . "',                                        
-                                   });
-                                   return false;",
-                        ]);
-                }
-            ],            
-            [
-                'attribute' => 'snver_grafica',
-                'enableSorting' => false,
-                'filter' => false,
-                'format'=>'raw',
-                'value' => function($model){
-                    return Html::checkbox('',
-                                        $model->snver_grafica,
-                                    [
-                                    'data-pjax' => 'w0',
-                                    'onchange' => "
-                                    isChecked = $(this).is(':checked') ? 1:0;                                    
-                                    $.ajax({
-                                        type     :'POST',
-                                        cache    : false,
-                                        data     : {id: "
-                                        .$model->id.", snver_grafica: isChecked},
-                                        url  : '" . Url::to(['arboles/roles', 'arbol_id'=>$model->arbol_id]) . "',                                        
-                                   });
-                                   return false;",
-                        ]);
-                }
-            ], */           
+            ],
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{delete}',
                 'buttons' => [

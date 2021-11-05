@@ -237,8 +237,6 @@ class Ejecucionfeedbacks extends \yii\db\ActiveRecord {
             }else{
                 $query->andWhere('e.arbol_id IN (' . $this->arbol_id . ')');
             } 
-
-            // $query->andWhere('e.arbol_id IN (' . $this->arbol_id . ')');
         }
         if ($this->dimension_id != '') {
             $query->andWhere('e.dimension_id IN (' . $this->dimension_id . ')');
@@ -447,8 +445,6 @@ class Ejecucionfeedbacks extends \yii\db\ActiveRecord {
                 $where2 .= " AND e.arbol_id IN (" . $this->arbol_id . ")";
             } 
 
-            // $where1 .= " AND esub.arbol_id IN (" . $this->arbol_id . ")";
-            // $where2 .= " AND e.arbol_id IN (" . $this->arbol_id . ")";
         }
         if (!empty($this->dimension_id)) {
             $where1 .= " AND esub.dimension_id IN (" . $this->dimension_id . ")";
@@ -543,9 +539,6 @@ class Ejecucionfeedbacks extends \yii\db\ActiveRecord {
                 $where1 .= " AND esub.arbol_id IN (" . $this->arbol_id . ")";
                 $where2 .= " AND e.arbol_id IN (" . $this->arbol_id . ")";
             } 
-
-            // $where1 .= " AND esub.arbol_id IN (" . $this->arbol_id . ")";
-            // $where2 .= " AND e.arbol_id IN (" . $this->arbol_id . ")";
         }
         if (!empty($this->dimension_id)) {
             $where1 .= " AND esub.dimension_id IN (" . $this->dimension_id . ")";

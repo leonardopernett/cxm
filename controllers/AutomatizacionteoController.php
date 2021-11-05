@@ -58,7 +58,7 @@ class AutomatizacionteoController extends Controller {
                 }
                 $element = utf8_decode($element);
                 $element = strtolower(trim($element));
-                $element = str_replace("ñ",'n', $element);
+                $element = str_replace("ï¿½",'n', $element);
                 return $element;
             }
 
@@ -117,7 +117,6 @@ class AutomatizacionteoController extends Controller {
                         $cliente = isset($lider['Cliente']) ? $lider['Cliente'] : "";
                         $nameTeam = $allNameTeo."_".$cliente;
                         $identifyUser = isset($lider['dmeNumeroDocumentoSup6']) ? $lider['dmeNumeroDocumentoSup6'] : 0;
-                        $arrayParameter = ['nameTeam' => $nameTeam, 'indentify' => $identifyUser];
                         if($EquipoQaUsuario == null)
                         {
                             $filtered_array = null;
@@ -262,7 +261,6 @@ class AutomatizacionteoController extends Controller {
                         $cliente = isset($lider['Cliente']) ? $lider['Cliente'] : "";
                         $nameTeam = $allNameTeo."_".$cliente;
                         $identifyUser = isset($lider['dmeNumeroDocumentoSup6']) ? $lider['dmeNumeroDocumentoSup6'] : 0;
-                        $arrayParameter = ['nameTeam' => $nameTeam, 'indentify' => $identifyUser];
                         if($EquipoQaUsuario == null)
                         {
                             $filtered_array = null;
@@ -362,13 +360,8 @@ class AutomatizacionteoController extends Controller {
                         {
                             foreach ($evaluadosTeo as $key => $evaluadoTeo) 
                             {
-                                //if(!preg_match('/[0-9]+/', $evaluadoTeo))
-                                //{
                                    $Evaluado = new Evaluados();
                                    $Evaluado = $Evaluado->getEvaluadoByNetUser($evaluadoTeo);
-                                //}else{
-                                //   $Evaluado = null;
-                                //}
                                 if(isset($Evaluado[0]) && Count($Evaluado) == 1)
                                 {
                                     if(!isset($evaluadosQA)){
@@ -419,7 +412,7 @@ class AutomatizacionteoController extends Controller {
                         ->setLastModifiedBy("Konecta")
                         ->setTitle("Equipos de Evaluados QA")
                         ->setSubject("Equipos")
-                        ->setDescription("Documento generado para informar sobre el resultado de la actualización de equipos en QA acordes a la distribucion de personal de Teo")
+                        ->setDescription("Documento generado para informar sobre el resultado de la actualizaciÃ³n de equipos en QA acordes a la distribucion de personal de Teo")
                         ->setKeywords("Equipos QA");
                 $phpExc->setActiveSheetIndex(0);
                 
@@ -429,7 +422,6 @@ class AutomatizacionteoController extends Controller {
                     $phpExc->getActiveSheet()->setCellValue('A'.$numCell, 'EQUIPO');
                     $phpExc->getActiveSheet()->setCellValue('B'.$numCell, 'ESTADO EQUIPO');
                     $phpExc->getActiveSheet()->setCellValue('C'.$numCell, 'IDENTIFICACION LIDER');
-                    //$phpExc->getActiveSheet()->setCellValue('D'.$numCell, 'AGENTE');
                     $phpExc->getActiveSheet()->setCellValue('D'.$numCell, 'IDENTIFICACION AGENTE');
                     $phpExc->getActiveSheet()->setCellValue('E'.$numCell, 'ESTADO AGENTE');
                     $numCell = $numCell++ + 1;   
@@ -447,7 +439,6 @@ class AutomatizacionteoController extends Controller {
                                 $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $nombreEquipo);
                                 $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $valueEquipo['estado']);
                                 $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $valueEquipo['identificacion']);      
-                                //$phpExc->getActiveSheet()->setCellValue('D'.$numCell, $valueAgente['name']);
                                 $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $valueAgente['identificacion']);
                                 $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $valueAgente['estado']);
                                 $numCell++;
@@ -495,7 +486,6 @@ class AutomatizacionteoController extends Controller {
                 {
                       $message .= "UPDATE tbl_equipos SET name = \"".$evaluadoTeo['name']."\" , usua_id = ".$evaluadoTeo['usua_id']." WHERE id = ".$evaluadoTeo["id"].";<br>";
        
-                      //$string .= "UPDATE tbl_equipos SET name = ".$evaluadoTeo['name']." , usua_id = ".$evaluadoTeo['usua_id']." WHERE id = ".$evaluadoTeo["id"].";";
                 }
                 foreach ($EquiposEvaluados as $equipoEvaluado) 
                 {

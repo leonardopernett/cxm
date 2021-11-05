@@ -49,8 +49,6 @@ class ControlTipoCortes extends Tiposdecortes
 		    ->orderBy([
                               'idtc' => SORT_DESC
                             ]);
-        // $query = Tiposdecortes::find()
-        //             ->joinWith('tiposcortes');                  
         
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

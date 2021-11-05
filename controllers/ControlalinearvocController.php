@@ -151,7 +151,6 @@ use app\models\ControlProcesosReportAlinearVOC;
         }
         public function actionCrearfeedback(){
             $txtTipoC = Yii::$app->request->post("txtTipoF");
-            $txtCatego = Yii::$app->request->post("txtCatego");
             $txtEval = Yii::$app->request->post("txtEval");
             $txtComentario = Yii::$app->request->post("txtComent");
 
@@ -298,18 +297,11 @@ use app\models\ControlProcesosReportAlinearVOC;
 
         public function actionCreatemediratributoalinearvoc(){
 
-            /*$txtvacuerdo = Yii::$app->request->post("txtvacuerdo");
-            $txtvmedir = Yii::$app->request->post("txtvmedir");
-            $txtvatributo = Yii::$app->request->post("txtvatributo");
-            $txtidvalorado = Yii::$app->request->post("txtvidvalorado");
-            $txtfechai = Yii::$app->request->post("txtvfechai");
-            $txtanulado = Yii::$app->request->post("txtvanulado");*/
 
            $arraydatos = (array)json_decode(Yii::$app->request->post("data"));
 
            foreach ($arraydatos as $key => $value) {
-                $value = (array)$value;
-                // die( json_encode( $value["varAcuerdo"] ) );                
+                $value = (array)$value;              
         $txtvacuerdo = $value['varAcuerdo'];
                 $txtvmedir = $value['varMedir'];         
                 $txtvatributo = $value['varIdatrubuti'];
@@ -351,7 +343,6 @@ use app\models\ControlProcesosReportAlinearVOC;
             $txtvanular1 = Yii::$app->request->post("txtvanular");
             $txtRta = 1;
 
-           //die(json_encode($txtvsesion1));
 
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_listadohijo',[
                                 'idsessionvoc' => $txtvsesion1,
@@ -410,8 +401,6 @@ use app\models\ControlProcesosReportAlinearVOC;
             $txtvFechacreacion = date("Y-m-d");
             $txtanulado = 0;
 
-            $txtVRta = null;
-            $idval = null;
 
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_bloque1',[
                                 'valorador_id' => $txtvaloradorID,
@@ -433,7 +422,6 @@ use app\models\ControlProcesosReportAlinearVOC;
             
 
             $txtvIdBloque = Yii::$app->db->createCommand("select max(idbloque1) from tbl_controlvoc_bloque1 where valorador_id = '$txtvaloradorID' and arbol_id = '$txtvArbol' and tecnico_id = '$txtvValorado' and anulado = 0")->queryScalar();
-            // die( json_encode($txtvIdBloque) );             
                 Yii::$app->db->createCommand()->update('tbl_medir_alinear',[
                                'idbloque1' => $txtvIdBloque,
                             ],"id_idvalorado = '$txtvValorado' and fechacreacion = '$txtvFechacreacion' and idbloque1 is null and anulado = 0")->execute();
@@ -473,12 +461,7 @@ use app\models\ControlProcesosReportAlinearVOC;
 
         public function actionReportealinearvoc(){
             $model = new ControlProcesosReportAlinearVOC();
-            $txtIdBlo = null;
             $formData = Yii::$app->request->post();
-            $arbolid1 = 0;
-            $fechacreacion1 = 0;
-            $valorador_id1 = 0;
-            $tecnico_id1 = 0;
             $txtValorador = null;
             $txtArbol_id = null;
             $txtFechacreacion = null;
@@ -501,8 +484,6 @@ use app\models\ControlProcesosReportAlinearVOC;
             $arrayUsu[] = $txtFechacreacion;
             $arrayUsu[] = $txtTecnico;
             $arrayPara[] = 0;
-            $varcontar = 0;
-            $txtIdBloques1 = $dataProvider->getModels();
             
             return $this->render('reportealinearvoc',[
                 'model' => $model,
@@ -639,14 +620,7 @@ use app\models\ControlProcesosReportAlinearVOC;
             $txtIdVoc = $id;
             $txtSesion2 = null;
             $txtResponsable = null;
-            $txtActividad = null;
-            $txtFechaActual = null;
-            $txtFechaInicio = null;
-            $txtFechaFin = null;
-            $txtRecursos = null;
-            $txtSeguimiento = null;
             $txtEstado = null;
-            $txtAlertas = null;
             $txtObservacion = null;
             $varArbol = null;
             $txtNombrePartic = null;
@@ -670,8 +644,7 @@ use app\models\ControlProcesosReportAlinearVOC;
             $txtPlanAccion = Yii::$app->db->createCommand("select * from tbl_control_alinear_bloque3 where idbloque1 = '$txtIdVoc'")->queryAll();
  //Incluir en la base de datos el id de la sesion en tbl_control_alinear_bloque3 y pasarlo a verlistaalinearvoc para mostrar los atributs de esa sesion           
 
-            foreach ($txtPlanAccion as $key => $value) {
-                $arrayPlanAccion = $value['responsable'];            
+            foreach ($txtPlanAccion as $key => $value) {         
                 $txtConcepto_mejora = $value['concepto_mejora'];
                 $txtAnalisis_causa = $value['analisis_causa'];
                 $txtAccion_seguir = $value['accion_seguir'];
@@ -803,7 +776,6 @@ use app\models\ControlProcesosReportAlinearVOC;
         }
 
 	public function actionUpdatevoc($txtPcrc){
-           // $model = new ControlvocListadopadre();
            if($txtPcrc){
             $vartxtPcrc = $txtPcrc;
             $varSession = null;
@@ -820,9 +792,7 @@ use app\models\ControlProcesosReportAlinearVOC;
         }
 
 	 public function actionActualiza(){
-            // $model = new ControlvocListadopadre();
             
-             $vartxtPcrc = Yii::$app->request->post("var_Pcrc");
              $varSession = Yii::$app->request->post("var_Sesiones");           
              
              die( json_encode($varSession));
@@ -840,7 +810,6 @@ use app\models\ControlProcesosReportAlinearVOC;
 
 	public function actionEliminaralinearvoccat(){
             $varIdList = Yii::$app->request->post("var_Idlist");
-            $varPCRC = Yii::$app->request->post("var_Pcrc");
             $valor = 1;
             Yii::$app->db->createCommand()->update('tbl_categorias_alinear',[
                 'anulado' => $valor,
@@ -851,7 +820,6 @@ use app\models\ControlProcesosReportAlinearVOC;
         }
         public function actionEliminaralinearvocatri(){
             $varIdList = Yii::$app->request->post("var_Idlist");
-            $varPCRC = Yii::$app->request->post("var_Pcrc");
             $valor = 1;
             Yii::$app->db->createCommand()->update('tbl_atributos_alinear',[
                 'anulado' => $valor,
@@ -861,7 +829,6 @@ use app\models\ControlProcesosReportAlinearVOC;
             die(json_encode($rta));
         }
 	public function actionEditaralinearvoccat($var_idcat,$var_nombresesion){
-            $model = new Controlalinearcategorialista();
             $txtNombresesion = $var_nombresesion;
             $txtIdcat = $var_idcat;
 
@@ -889,7 +856,6 @@ use app\models\ControlProcesosReportAlinearVOC;
         } 
 
 	public function actionEditaralinearvocatri($var_idatri,$var_nombrecateg,$var_idcateg){
-            $model = new Controlalinearatributolista();
             $txtNombrecate = $var_nombrecateg;
             $txtIdatri = $var_idatri;
             $txtIdcate = $var_idcateg;

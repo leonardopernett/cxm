@@ -598,7 +598,6 @@ use app\models\Controlvolumenxvalorador;
                 }
 
             }       return $this->redirect(['index']);
-            //return $this->render('index');
         }
 
         public function actionParametrizardatos4(){
@@ -713,7 +712,6 @@ use app\models\Controlvolumenxvalorador;
 
             foreach ($query as $key => $value) {
                 $txtArbolId = $value['arbol_id'];
-                $txtCliente = $value['clientecategoria'];
 
                 if ($txtArbolId == '118' || $txtArbolId == '17') {
                     $querys1 =  new Query;
@@ -727,25 +725,14 @@ use app\models\Controlvolumenxvalorador;
                     $query1 = $command1->queryAll(); 
 
                     foreach ($query1 as $key => $value) {
-                        //$varIdCorte = $value['idtc'];
-                        //$varDateBegin = $value['fechainiciotc'];
-                        //$varDateLast = $value['fechafintc'];
-                        //$varMesYear = $value['mesyear'];
                         $varIdCorte = $value['idtc'];
-                        //$varDateBegin1 = $value['fechainiciotc'];
-                        //$varDateBegin = $varDateBegin1.' 05:00:00';
-                        //$varDateLast1 = $value['fechafintc'];
-                        //$varFechas = date('Y-m-d',strtotime($varDateLast1."+ 1 days"));
-                        //$varDateLast = $varFechas.' 05:00:00';
                         $varMesYear = $value['mesyear'];
 
                         $varDateBegin1 = $varMesYear;
                         $varDateBegin = $varDateBegin1.' 05:00:00';
-                        //var_dump($varDateBegin);
 
                         $varDateLast1 = date('Y-m-d',strtotime($varMesYear."+ 1 month"));
                         $varDateLast = $varDateLast1.' 05:00:00';
-                        //var_dump($varDateLast);
 
                         $txtListService = Yii::$app->db->createCommand("select * from tbl_dashboardservicios where arbol_id = '$txtArbolId' and anulado = 0")->queryAll();
 
@@ -810,25 +797,14 @@ use app\models\Controlvolumenxvalorador;
                         $query2 = $command2->queryAll();  
 
                         foreach ($query2 as $key => $value) {
-                            //$varIdCorte = $value['idtc'];
-                            //$varDateBegin = $value['fechainiciotc'];
-                            //$varDateLast = $value['fechafintc'];
-                            //$varMesYear = $value['mesyear'];
                             $varIdCorte = $value['idtc'];
-                            // $varDateBegin1 = $value['fechainiciotc'];
-                            // $varDateBegin = $varDateBegin1.' 05:00:00';
-                            // $varDateLast1 = $value['fechafintc'];
-                            // $varFechas = date('Y-m-d',strtotime($varDateLast1."+ 1 days"));
-                            // $varDateLast = $varFechas.' 05:00:00';
                             $varMesYear = $value['mesyear'];
 
                             $varDateBegin1 = $varMesYear;
                             $varDateBegin = $varDateBegin1.' 05:00:00';
-                            //var_dump($varDateBegin);
 
                             $varDateLast1 = date('Y-m-d',strtotime($varMesYear."+ 1 month"));
                             $varDateLast = $varDateLast1.' 05:00:00';
-                            //var_dump($varDateLast);
 
                             $txtListService = Yii::$app->db->createCommand("select * from tbl_dashboardservicios where arbol_id = '$txtArbolId' and anulado = 0")->queryAll();
 
@@ -892,25 +868,14 @@ use app\models\Controlvolumenxvalorador;
                         $query3 = $command3->queryAll();  
 
                         foreach ($query3 as $key => $value) {
-                            //$varIdCorte = $value['idtc'];
-                            //$varDateBegin = $value['fechainiciotc'];
-                            //$varDateLast = $value['fechafintc'];
-                            //$varMesYear = $value['mesyear'];
                             $varIdCorte = $value['idtc'];
-                            // $varDateBegin1 = $value['fechainiciotc'];
-                            // $varDateBegin = $varDateBegin1.' 05:00:00';
-                            // $varDateLast1 = $value['fechafintc'];
-                            // $varFechas = date('Y-m-d',strtotime($varDateLast1."+ 1 days"));
-                            // $varDateLast = $varFechas.' 05:00:00';
                             $varMesYear = $value['mesyear'];
 
                             $varDateBegin1 = $varMesYear;
                             $varDateBegin = $varDateBegin1.' 05:00:00';
-                            //var_dump($varDateBegin);
 
                             $varDateLast1 = date('Y-m-d',strtotime($varMesYear."+ 1 month"));
                             $varDateLast = $varDateLast1.' 05:00:00';
-                            //var_dump($varDateLast);
 
                             $txtListService = Yii::$app->db->createCommand("select * from tbl_dashboardservicios where arbol_id = '$txtArbolId' and anulado = 0")->queryAll();
 
@@ -987,7 +952,6 @@ use app\models\Controlvolumenxvalorador;
 
         public function actionVerclienteqa($idservicio){       
             $txtIdSevicio = $idservicio;
-            // var_dump($txtIdSevicio);
 
             $varServicio = Yii::$app->db->createCommand("select name from tbl_arbols where id = '$txtIdSevicio' and activo = 0")->queryScalar();
 
@@ -1003,7 +967,6 @@ use app\models\Controlvolumenxvalorador;
 
         public function actionVerclientesp($idservicio){      
             $txtIdSevicio = $idservicio;
-            // var_dump($txtIdSevicio);
 
             $varServicio = Yii::$app->db->createCommand("select name from tbl_arbols where id = '$txtIdSevicio' and activo = 0")->queryScalar();
 
@@ -1106,8 +1069,6 @@ use app\models\Controlvolumenxvalorador;
 
                     foreach ($query as $key => $value) {
                         $varIdCorte = $value['idtc'];
-                        $varDateBegin = $value['fechainiciotc'];
-                        $varDateLast = $value['fechafintc'];
                         $varMesYear = $value['mesyear'];
 
                         $varNDias = date('t',strtotime($varMesYear));
@@ -1127,7 +1088,6 @@ use app\models\Controlvolumenxvalorador;
                             }                         
 
                             $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
-                            // var_dump($varFecha);
 
                             $querys =  new Query;
                             $querys     ->select(['tbl_ejecucionformularios.created','tbl_usuarios.usua_id'])->distinct()
@@ -1420,8 +1380,6 @@ use app\models\Controlvolumenxvalorador;
                             }                         
 
                             $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
-                            // var_dump($varFecha);
-
                             $querys = new Query;
                             $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varFecha 00:00:00' and '$varFecha 23:59:59' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
                                         ->from('tbl_arbols')
@@ -1485,7 +1443,6 @@ use app\models\Controlvolumenxvalorador;
                                 }                         
 
                                 $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
-                                // var_dump($varFecha);
 
                                 $querys = new Query;
                                 $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varFecha 00:00:00' and '$varFecha 23:59:59' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
@@ -1548,8 +1505,6 @@ use app\models\Controlvolumenxvalorador;
                                 }                         
 
                                 $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
-                                // var_dump($varFecha);
-
                                 $querys = new Query;
                                 $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varFecha 00:00:00' and '$varFecha 23:59:59' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
                                             ->from('tbl_arbols')
@@ -1680,8 +1635,6 @@ use app\models\Controlvolumenxvalorador;
                                 if ($varListData != null) {
                                     $varArrayProgram = array();
                                     $varArrayparams = array();
-                                    $txtArbol = null;
-                                    $txtSpeech = null;
                                     $varArbol = null;
                                     $varSpeech = null;
                                     foreach ($varListData as $key => $value) {
@@ -1892,7 +1845,6 @@ use app\models\Controlvolumenxvalorador;
                 }
             }
         }
-        //return $this->redirect(['index']);
 
     }
         

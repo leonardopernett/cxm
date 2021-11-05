@@ -242,7 +242,6 @@ use PHPExcel_IOFactory;
             and cp2.fechacreacion between '$varfechainicio' and '$varfechafin'  and cp1.fechacreacion between '$varfechainicio' and '$varfechafin'  group by  cp1.evaluados_id")->queryAll();
 
 
-            // $varlistaPlanx = Yii::$app->db->createCommand("select (select usua_identificacion from tbl_usuarios where usua_id = cp1.responsable) 'IdResponsable', (select usua_nombre from tbl_usuarios where usua_id = cp1.responsable) 'Repsonsable', (select usua_identificacion from tbl_usuarios where usua_id = cp1.evaluados_id) 'IdTecnico/Lider', (select usua_nombre from tbl_usuarios where usua_id = cp1.evaluados_id) 'Tecnico/Lider', rr.role_nombre 'Rol', sum(cp2.cant_valor) 'Meta', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on ef.usua_id = u.usua_id where ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 1'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 4'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas', cp1.tipo_corte 'TipoCorte', cp1.idtc 'idcorte', cp1.evaluados_id 'idevaluado', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on         ef.usua_id = u.usua_id where ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 1'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 1'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas_Corte1', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on ef.usua_id = u.usua_id where ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 2'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 2'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas_Corte2', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on ef.usua_id = u.usua_id where ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 3'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 3'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas_Corte3', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on ef.usua_id = u.usua_id where     ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 4'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 4'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas_Corte4' from  tbl_control_procesos cp1 inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id inner join tbl_usuarios u on cp1.evaluados_id = u.usua_id inner join rel_usuarios_roles r on u.usua_id = r.rel_usua_id inner join tbl_roles rr on r.rel_role_id = rr.role_id inner join rel_grupos_usuarios gu on cp2.evaluados_id = gu.usuario_id inner join tbl_grupos_usuarios g on gu.grupo_id = g.grupos_id where cp1.anulado = 0 and cp1.anulado = 0 and cp2.fechacreacion between '$varfechainicio' and '$varfechafin' and cp1.fechacreacion between '$varfechainicio' and '$varfechafin' group by  cp1.evaluados_id")->queryAll();
             
             return $this->renderAjax('excelplanx',[
                 'varlistaPlanx' => $varlistaPlanx,
@@ -263,7 +262,6 @@ use PHPExcel_IOFactory;
             and cp2.fechacreacion between '$varfechainicio' and '$varfechafin'  and cp1.fechacreacion between '$varfechainicio' and '$varfechafin'  group by  cp1.evaluados_id")->queryAll();
 
 
-            // $varlistaPlany = Yii::$app->db->createCommand("select (select usua_identificacion from tbl_usuarios where usua_id = cp1.responsable) 'IdResponsable', (select usua_nombre from tbl_usuarios where usua_id = cp1.responsable) 'Repsonsable', (select usua_identificacion from tbl_usuarios where usua_id = cp1.evaluados_id) 'IdTecnico/Lider', (select usua_nombre from tbl_usuarios where usua_id = cp1.evaluados_id) 'Tecnico/Lider', rr.role_nombre 'Rol', sum(cp2.cant_valor) 'Meta', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on ef.usua_id = u.usua_id where ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 1'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 4'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas', cp1.tipo_corte 'TipoCorte', cp1.idtc 'idcorte', cp1.evaluados_id 'idevaluado', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on         ef.usua_id = u.usua_id where ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 1'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 1'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas_Corte1', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on ef.usua_id = u.usua_id where ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 2'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 2'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas_Corte2', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on ef.usua_id = u.usua_id where ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 3'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 3'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas_Corte3', (select  distinct count(ef.created) from tbl_ejecucionformularios ef inner join tbl_usuarios u on ef.usua_id = u.usua_id where     ef.created between concat((select fechainiciotcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 4'),' 00:00:00') and concat((select fechafintcs from tbl_tipos_cortes where  idtc = cp1.idtc and cortetcs like 'Corte 4'), ' 23:59:59') and u.usua_id = cp1.evaluados_id ) 'Realizadas_Corte4' from  tbl_control_procesos cp1 inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id inner join tbl_usuarios u on cp1.evaluados_id = u.usua_id inner join rel_usuarios_roles r on u.usua_id = r.rel_usua_id inner join tbl_roles rr on r.rel_role_id = rr.role_id inner join rel_grupos_usuarios gu on cp2.evaluados_id = gu.usuario_id inner join tbl_grupos_usuarios g on gu.grupo_id = g.grupos_id where cp1.anulado = 0 and cp1.anulado = 0 and cp2.fechacreacion between '$varfechainicio' and '$varfechafin' and cp1.fechacreacion between '$varfechainicio' and '$varfechafin' group by  cp1.evaluados_id")->queryAll();
 
             return $this->renderAjax('excelplanpast',[
                 'varlistaPlany' => $varlistaPlany,
@@ -319,7 +317,6 @@ use PHPExcel_IOFactory;
                 $varcantidadarbol2 = round($varcantidadarbol / 4);
             }
             
-            // var_dump($varcantidadarbol);
             
             if ($varcantidadarbol2 > $txtvartxtcantidad) {
                 $varvalida = Yii::$app->db->createCommand("select sum(cantidadjustificar) from tbl_plan_escalamientos where tecnicolider = $txtvaridusua and arbol_id = $txtvaridarbols and idtcs = $txtvaridtcs and anulado = 0")->queryScalar();
@@ -343,7 +340,6 @@ use PHPExcel_IOFactory;
             $txtvarid_argumentos = Yii::$app->request->get("txtvarid_argumentos");
             $txtvartxtcantidad = Yii::$app->request->get("txtvartxtcantidad");
             $txtvartxtcorreoid = Yii::$app->request->get("txtvartxtcorreoid");
-            $txtvaridtcgeneral = Yii::$app->request->get("txtvaridtcgeneral");
             $txtvaridusua = Yii::$app->request->get("txtvaridusua");
             $txtvarselect2chosen1 = Yii::$app->request->get("txtvarselect2chosen1");
             $txtvartxtcomentariosid = Yii::$app->request->get("txtvartxtcomentariosid");
@@ -365,97 +361,6 @@ use PHPExcel_IOFactory;
                     ])->execute(); 
 
 
-                // $phpExc = new \PHPExcel();
-                // $phpExc->getProperties()
-                //             ->setCreator("Konecta")
-                //             ->setLastModifiedBy("Konecta")
-                //             ->setTitle("Justificacion de Rendimiento - Valoraciones QA")
-                //             ->setSubject("Justificacion de Rendimiento - Valoraciones QA")
-                //             ->setDescription("Este archivo genera la justificacion del rednimiento de las valoraciones de un tecnico/lider.")
-                //             ->setKeywords("Justificacion de Rendimiento - Valoraciones QA");
-                // $phpExc->setActiveSheetIndex(0);
-
-                // $phpExc->getActiveSheet()->setShowGridlines(False);
-
-                // $styleArray = array(
-                //     'alignment' => array(
-                //         'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                //     ),
-                // );
-
-                // $styleArraySize = array(
-                //     'font' => array(
-                //             'bold' => true,
-                //             'size'  => 15,
-                //     ),
-                //     'alignment' => array(
-                //             'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                //     ), 
-                // );
-
-                // $styleColor = array( 
-                //     'fill' => array( 
-                //         'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                //         'color' => array('rgb' => '28559B'),
-                //     )
-                // );
-
-                // $styleArrayTitle = array(
-                //     'font' => array(
-                //       'bold' => false,
-                //       'color' => array('rgb' => 'FFFFFF')
-                //     )
-                // );
-
-                // $styleArraySubTitle = array(              
-                //     'fill' => array( 
-                //             'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                //             'color' => array('rgb' => '4298B5'),
-                //     )
-                // );
-
-                // $styleArrayBody = array(
-                //     'font' => array(
-                //         'bold' => false,
-                //         'color' => array('rgb' => '2F4F4F')
-                //     ),
-                //     'borders' => array(
-                //         'allborders' => array(
-                //             'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                //             'color' => array('rgb' => 'DDDDDD')
-                //         )
-                //     )
-                // );
-
-                // $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
-                // $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
-                // $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
-                // $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
-                // $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
-                // $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
-                // $phpExc->setActiveSheetIndex(0)->mergeCells('A1:C1');
-
-                //  $hoy = getdate();
-                // $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday'];
-              
-                // $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
-                        
-                // $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
-                // $tmpFile.= ".xls";
-
-                // $objWriter->save($tmpFile);
-
-                // $message = "<html><body>";
-                // $message .= "<h3>Se ha realizado el envio correcto de las justificaciones.</h3>";
-                // $message .= "</body></html>";
-
-                // Yii::$app->mailer->compose()
-                //                 ->setTo($txtcorreo)
-                //                 ->setFrom(Yii::$app->params['email_satu_from'])
-                //                 ->setSubject("Envio Proceso de Escalamientos plan de valoracion")
-                //                 ->attach($tmpFile)
-                //                 ->setHtmlBody($message)
-                //                 ->send();           
             $txtrta2 = 1;
 
             die(json_encode($txtrta2));

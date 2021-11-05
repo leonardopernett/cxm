@@ -72,13 +72,6 @@ class TmpejecucionfeedbacksController extends Controller {
                 } else {
                     return $this->redirect(['tmpejecucionfeedbacks/index']);
                 }
-                /* $searchModel = new TmpejecucionfeedbacksSearch();
-                  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-                  return $this->render('index', [
-                  'searchModel' => $searchModel,
-                  'dataProvider' => $dataProvider,
-                  ]); */
             }
 
             /**
@@ -95,9 +88,6 @@ class TmpejecucionfeedbacksController extends Controller {
                 } else {
                     return $this->redirect(['tmpejecucionfeedbacks/index']);
                 }
-                /* return $this->render('view', [
-                  'model' => $this->findModel($id),
-                  ]); */
             }
 
             /**
@@ -235,7 +225,7 @@ class TmpejecucionfeedbacksController extends Controller {
                 $out = [];
                 $html = "";
                 if (isset($_POST["cat_id"]) && !empty($_POST["cat_id"]) && is_numeric($_POST["cat_id"])) {
-                    $out = \app\models\Tipofeedbacks::getTipofeedbacksListByID($_POST["cat_id"]);
+                    $out = \app\models\Tipofeedbacks::getTipofeedbacksListByID(Yii::$app->request->post("cat_id"));
                     if (count($out)) {
                         foreach ($out as $value) {
                             $html .= "<option value='" . $value['id'] . "'>"

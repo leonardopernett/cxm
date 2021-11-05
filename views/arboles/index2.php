@@ -15,10 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="arboles-index">
 
-<!--    <div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
-
     <?php
     foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
         echo '<div class="alert alert-' . $key . '">' . $message . '</div>';

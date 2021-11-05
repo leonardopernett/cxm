@@ -33,7 +33,6 @@ class GruposusuariosController extends Controller {
         $searchModel = new GruposusuariosSearch();
         $isAjax = false;
         $model = new \app\models\GruposUsuarios();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         if (Yii::$app->getRequest()->isAjax) {
             $isAjax = true;
             $usuario = Yii::$app->request->get('usuario_id');
@@ -68,7 +67,6 @@ class GruposusuariosController extends Controller {
 		$paginacion = 0;
         if (Yii::$app->request->post()) {
             Yii::$app->session['rptFilterGruposUsuarios'] = Yii::$app->request->post();
-            //$dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $paginacion = Yii::$app->request->get();
         }
@@ -190,13 +188,11 @@ class GruposusuariosController extends Controller {
     public function actionDelete($id) {
         $searchModel = new GruposusuariosSearch();
         $isAjax = false;
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         if (Yii::$app->getRequest()->isAjax) {
             $usuario = Yii::$app->request->get('usuario_id');
             $model = $this->findModel($id);
             $modelRelacion = \app\models\RelGruposUsuarios::find()->where(['grupo_id' => $model->grupos_id, 'usuario_id' => $usuario])->one();
             $modelRelacion->delete();
-            //$model->delete();
             $isAjax = true;
             $dataProvider = $searchModel->searchAjax($usuario);
             $model = new \app\models\GruposUsuarios();
@@ -278,13 +274,11 @@ class GruposusuariosController extends Controller {
             }
             
             public function actionPermisosmasivos() {
-                $model = new Gruposusuarios();
                 $arrDetalleForm = [];
                 if (Yii::$app->request->post()) {    
                     $arrDetalleForm['per_realizar_valoracion'] = 1;
                     $grupos = Yii::$app->request->post('selection');
                     for ($index = 0; $index < count($grupos); $index++) {
-                        //Gruposusuarios::updateAll($arrDetalleForm, ['grupos_id' => $grupos[$index]]);
                         $model = Gruposusuarios::findOne(['grupos_id'=>$grupos[$index]]);
                         if ($model->per_realizar_valoracion == 0) {
                             $model->per_realizar_valoracion = 1;
@@ -293,7 +287,7 @@ class GruposusuariosController extends Controller {
                         }
                         $model->save();
                     }
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'Proceso realizado con éxito'));
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'Proceso realizado con Ã©xito'));
                 }
                 return $this->redirect('index');
             }

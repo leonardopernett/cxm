@@ -57,7 +57,6 @@ class DeclinacionesUsuariosSearch extends DeclinacionesUsuarios {
             'du.dimension_id' => $this->dimension_id,
                 //'evaluado_id' => $this->evaluado_id,
         ]);
-        //$query->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  du.usua_id');
         $sql = 'SELECT tgu.*,pga.*,rgu.* FROM tbl_grupos_usuarios tgu '
                 . 'INNER JOIN rel_grupos_usuarios rgu ON rgu.grupo_id = tgu.grupos_id '
                 . 'INNER JOIN tbl_permisos_grupos_arbols pga ON tgu.grupos_id = pga.grupousuario_id '

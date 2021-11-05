@@ -439,7 +439,6 @@ use app\models\ControlVolumenxencuestasdq;
                             if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01') {
                                 $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
-                                // $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 2681 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
                                 $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
@@ -463,9 +462,6 @@ use app\models\ControlVolumenxencuestasdq;
                                     }
                                 }
 
-                                //$varService = Yii::$app->db->createCommand("select count(*) from tbl_voz_categorias where arbol_id = '$varIdServicios' and idtc = '$varIdCorte' and anuladovc = 0")->queryScalar();
-
-                                //if ($varService == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_voz_categorias',[
                                             'cantcategorias' => $txtRtaSatisfaccion,
                                             'nombrecategoria' => $varNombreCateg,
@@ -479,7 +475,6 @@ use app\models\ControlVolumenxencuestasdq;
                                             'year' => $varFechas,
                                             'idciudad' => $txtvarCity,
                                         ])->execute();
-                                //}                              
                             }
                         }
                     }
@@ -526,7 +521,6 @@ use app\models\ControlVolumenxencuestasdq;
                                 if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
                                     $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
-                                    // $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 2681 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
                                     $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
@@ -550,9 +544,6 @@ use app\models\ControlVolumenxencuestasdq;
                                         }
                                     }
 
-                                    //$varService = Yii::$app->db->createCommand("select count(*) from tbl_voz_categorias where arbol_id = '$varIdServicios' and idtc = '$varIdCorte' and anuladovc = 0")->queryScalar();
-
-                                    //if ($varService == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_voz_categorias',[
                                             'cantcategorias' => $txtRtaSatisfaccion,
                                             'nombrecategoria' => $varNombreCateg,
@@ -566,7 +557,6 @@ use app\models\ControlVolumenxencuestasdq;
                                             'year' => $varFechas,
                                             'idciudad' => $txtvarCity,
                                         ])->execute();
-                                    //}
                                 }
                             }
                         }
@@ -612,8 +602,6 @@ use app\models\ControlVolumenxencuestasdq;
                                 if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
                                     $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
-                                    // $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 2681 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
-
                                     $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1114 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
                                     $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and clientecategoria like '$varClienteCate' and anulado = 0")->queryScalar();
@@ -636,9 +624,6 @@ use app\models\ControlVolumenxencuestasdq;
                                         }
                                     }
 
-                                    //$varService = Yii::$app->db->createCommand("select count(*) from tbl_voz_categorias where arbol_id = '$varIdServicios' and idtc = '$varIdCorte' and anuladovc = 0")->queryScalar();
-
-                                    //if ($varService == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_voz_categorias',[
                                             'cantcategorias' => $txtRtaSatisfaccion,
                                             'nombrecategoria' => $varNombreCateg,
@@ -652,7 +637,6 @@ use app\models\ControlVolumenxencuestasdq;
                                             'year' => $varFechas,
                                             'idciudad' => $txtvarCity,
                                         ])->execute();
-                                    //}
                                 }  
                             }
                         }
@@ -758,7 +742,6 @@ use app\models\ControlVolumenxencuestasdq;
                             if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
                                 $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
-                                // $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 2681 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
                                 $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
@@ -781,10 +764,6 @@ use app\models\ControlVolumenxencuestasdq;
                                         }
                                     }
                                 }
-
-                                //$varService = Yii::$app->db->createCommand("select count(*) from tbl_voz_categorias where arbol_id = '$varIdServicios' and idtc = '$varIdCorte' and anuladovc = 0")->queryScalar();
-
-                                //if ($varService == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_voz_categorias',[
                                             'cantcategorias' => $txtRtaSatisfaccion,
                                             'nombrecategoria' => $varNombreCateg,
@@ -798,7 +777,6 @@ use app\models\ControlVolumenxencuestasdq;
                                             'year' => $varFechas,
                                             'idciudad' => $txtvarCity,
                                         ])->execute();
-                                //}
 
                             }                                
 
@@ -847,8 +825,6 @@ use app\models\ControlVolumenxencuestasdq;
                                 if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
                                     $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
-                                    // $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 2681 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
-
                                     $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
                                     $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and clientecategoria like '$varClienteCate' and anulado = 0")->queryScalar();
@@ -871,9 +847,6 @@ use app\models\ControlVolumenxencuestasdq;
                                         }
                                     }
 
-                                    //$varService = Yii::$app->db->createCommand("select count(*) from tbl_voz_categorias where arbol_id = '$varIdServicios' and idtc = '$varIdCorte' and anuladovc = 0")->queryScalar();
-
-                                    //if ($varService == 0) {
                                         Yii::$app->db->createCommand()->insert('tbl_voz_categorias',[
                                                 'cantcategorias' => $txtRtaSatisfaccion,
                                                 'nombrecategoria' => $varNombreCateg,
@@ -887,7 +860,6 @@ use app\models\ControlVolumenxencuestasdq;
                                                 'year' => $varFechas,
                                                 'idciudad' => $txtvarCity,
                                             ])->execute();
-                                    //}
 
                                 }
 
@@ -935,7 +907,6 @@ use app\models\ControlVolumenxencuestasdq;
                                 if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
                                     $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
-                                    // $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 2681 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
                                     $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1114 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
 
@@ -944,7 +915,7 @@ use app\models\ControlVolumenxencuestasdq;
                                     if ($varNameCiudad == "BOGOTÁ") {
                                         $txtvarCity = 1;
                                         if ($txtContarCategorias != 0 && $txtContarGeneral != 0) {
-                                            $txtRtaSatisfaccion = (round(($txtContarCategorias / $txtContarGeneral) * 100,1));;
+                                            $txtRtaSatisfaccion = (round(($txtContarCategorias / $txtContarGeneral) * 100,1));
                                         }else{
                                             $txtRtaSatisfaccion = 0;
                                         }
@@ -959,9 +930,6 @@ use app\models\ControlVolumenxencuestasdq;
                                         }
                                     }
 
-                                    //$varService = Yii::$app->db->createCommand("select count(*) from tbl_voz_categorias where arbol_id = '$varIdServicios' and idtc = '$varIdCorte' and anuladovc = 0")->queryScalar();
-
-                                    //if ($varService == 0) {
                                         Yii::$app->db->createCommand()->insert('tbl_voz_categorias',[
                                                 'cantcategorias' => $txtRtaSatisfaccion,
                                                 'nombrecategoria' => $varNombreCateg,
@@ -975,7 +943,6 @@ use app\models\ControlVolumenxencuestasdq;
                                                 'year' => $varFechas,
                                                 'idciudad' => $txtvarCity,
                                             ])->execute();
-                                    //}
 
                                 }
                             }
@@ -1679,8 +1646,6 @@ use app\models\ControlVolumenxencuestasdq;
         }
 
         public function actionExportar(){
-            $FechaActual = date("Y-m-d");
-            $MesAnterior = date("m") - 1;
 
             $varMes = date("n");
             $txtMes = null;
@@ -1731,8 +1696,6 @@ use app\models\ControlVolumenxencuestasdq;
 
             $varPcrc = Yii::$app->request->post("var_Pcrc");
             $varCorreo = Yii::$app->request->post("var_Destino");
-
-            $sessiones = Yii::$app->user->identity->id;
 
             $phpExc = new \PHPExcel();
 
@@ -1821,7 +1784,6 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->SetCellValue('A2','Informe DashBoard Escuchar +');
             $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySize);
             $phpExc->setActiveSheetIndex(0)->mergeCells('A2:H2');
-            //$phpExc->getActiveSheet()->getStyle('A1:G1')->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
 
             $phpExc->getActiveSheet()->SetCellValue('A3','METRICAS GENERALES');
             $phpExc->setActiveSheetIndex(0)->mergeCells('A3:H3');
@@ -1864,12 +1826,7 @@ use app\models\ControlVolumenxencuestasdq;
 
             $varListMonth2 = Yii::$app->db->createCommand("select distinct mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7")->queryAll();  
             
-            $varFisrtDate = date($varListMonth2[0]["mesyear"]);
-            $varLastDate = date($varListMonth2[2]["mesyear"]);
-            $txtTotalAVG = null;
-            $txtTotalAVG = null;   
 
-            $lastColumn = 'A';
             foreach ($txtCiudades as $key => $value) {
                 $txtNameCity = $value['name'];
                 $varIdPcrc = $value['id'];
@@ -1973,7 +1930,6 @@ use app\models\ControlVolumenxencuestasdq;
 
             $txtCiudadesE = Yii::$app->db->createCommand(" select id, name, arbol_id from tbl_arbols where id in (98, 2, 1)")->queryAll();            
 
-            $lastColumn = 'A';
             foreach ($txtCiudadesE as $key => $value) {
                 $txtNameCityE = $value['name'];
                 $varIdPcrcE = $value['id'];

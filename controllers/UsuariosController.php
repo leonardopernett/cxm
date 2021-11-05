@@ -51,7 +51,6 @@ class UsuariosController extends Controller {
              */
             public function actionIndex() {
                 $searchModel = new UsuariosSearch();
-                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                 $isAjax = false;
                 if (Yii::$app->getRequest()->isAjax) {
                     $grupo_id = Yii::$app->request->get('grupo_id');
@@ -61,9 +60,7 @@ class UsuariosController extends Controller {
                         Yii::$app->session['rptFilterUsuarios']['grupo'] = Yii::$app->request->get('grupo_id');
                         $dataProvider = $searchModel->searchAjax(Yii::$app->session['rptFilterUsuarios']);
                     } else {
-                        //Yii::$app->session['rptFilterUsuarios']['grupo'] = Yii::$app->request->get('grupo_id');                       
                         $dataProvider = $searchModel->searchAjax($grupo_id);
-                        //$models = $dataProvider->getModels();
                     }
                     return $this->renderAjax('index', [
                                 'searchModel' => $searchModel,
@@ -77,15 +74,7 @@ class UsuariosController extends Controller {
                     $dataProvider = $searchModel->search(Yii::$app->request->post());
                 } else {
                     $paginacion = Yii::$app->request->get(); 
-                    //if (count($paginacion) == 0) {
-                        //$paginacion = Yii::$app->session['rptFilterUsuarios'];
-                       // if (count($paginacion) > 0) {
-                         //   Yii::$app->session['rptFilterUsuarios'] = $paginacion;
-                       // }
-                    //}
-                    //Yii::$app->session['rptFilterUsuarios'] = (count($paginacion) == 0) ? Yii::$app->session['rptFilterUsuarios'] : $paginacion;
                     $dataProvider = $searchModel->search(Yii::$app->session['rptFilterUsuarios'],$paginacion);
-                    //$models = $dataProvider->getModels();
                 }
                 return $this->render('index', [
                             'searchModel' => $searchModel,
@@ -105,8 +94,6 @@ class UsuariosController extends Controller {
                 if (Yii::$app->getRequest()->isAjax) {
                     $isAjax = true;
                     $grupo_id = Yii::$app->request->get('grupo_id');
-                    //$preguntaid = $model->fk_pregunta;
-                    //$dataProvider = $searchModel->searchOpcionespregunta($preguntaid);
                     return $this->renderPartial('view', [
                                 'model' => $this->findModel($id),
                                 'isAjax' => $isAjax,
@@ -243,7 +230,6 @@ class UsuariosController extends Controller {
                                 } else {
                                     $grupos->grupo_id = $model->grupo;
                                 }
-                                //$grupos->grupo_id = $model->grupo;
                                 $grupos->save();
                                 $roles->save();
                                 return $this->redirect(['view', 'id' => $model->usua_id]);
@@ -273,7 +259,6 @@ class UsuariosController extends Controller {
                             } else {
                                 $grupos->grupo_id = $model->grupo;
                             }
-                            //$grupos->grupo_id = $model->grupo;
                             $grupos->save();
                             $roles->save();
                             return $this->redirect(['view', 'id' => $model->usua_id]);
@@ -294,33 +279,6 @@ class UsuariosController extends Controller {
                                 'query' => $query,
                     ]);
                 }
-
-                // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                //     if (!isset($roles)) {
-                //         $roles = new \app\models\RelUsuariosRoles();
-                //         $roles->rel_role_id = $model->rol;
-                //         $roles->rel_usua_id = $model->usua_id;
-                //     } else {
-                //         $roles->rel_role_id = $model->rol;
-                //     }
-                //     if (!isset($grupos)) {
-                //         $grupos = new \app\models\RelGruposUsuarios();
-                //         $grupos->grupo_id = $model->grupo;
-                //         $grupos->usuario_id= $model->usua_id;
-                //     } else {
-                //         $grupos->grupo_id = $model->grupo;
-                //     }
-                //     //$grupos->grupo_id = $model->grupo;
-                //     $grupos->save();
-                //     $roles->save();
-                //     return $this->redirect(['view', 'id' => $model->usua_id]);
-                // } else {
-                //     $model->grupo = (isset($grupos->grupo_id))?$grupos->grupo_id:'';
-                //     return $this->render('update', [
-                //                 'model' => $model,
-                //                 'isAjax' => $isAjax,
-                //     ]);
-                // }
             }
 
             /**
@@ -341,7 +299,6 @@ class UsuariosController extends Controller {
                     $model = $this->findModel($usuario);
                     $modelRelacion = \app\models\RelGruposUsuarios::find()->where(['grupo_id' => $grupo_id, 'usuario_id' => $usuario])->one();
                     $modelRelacion->delete();
-                    //$model->delete();
                     $isAjax = true;
                     $dataProvider = $searchModel->searchAjax($grupo_id);
                     
@@ -399,15 +356,14 @@ class UsuariosController extends Controller {
       $sessiones = Yii::$app->user->identity->id;
       $txtanulado = 0;
       $txtfechacreacion = date("Y-m-d");
-      //$txtfechamodificiacion = date("Y-m-d");
 
       Yii::$app->db->createCommand("truncate table tbl_usuarios_evalua")->execute();
 
       $query = Yii::$app->get('dbjarvis3')->createCommand("Select f.nombre_completo as nombre, a.documento as documento, b.id_dp_cargos as idcargo,
       b.id_dp_posicion as idposicion,b.id_dp_funciones as idfuncion,c.posicion as posicion,d.funcion as funcion,
       e.usuario_red as usuariored,	g.email_corporativo as correo, a.documento_jefe as documento_jefe,     
-      ifnull (if (a.id_dp_centros_costos != 0, dg3.nombre_completo, if (a.id_dp_centros_costos_adm != 0, ar.area_general, 'Sin información')), 'Sin información') AS directorArea,
-      if (a.cod_pcrc != 0, cl1.cliente, if (a.id_dp_centros_costos != 0, cl2.cliente, if (a.id_dp_centros_costos_adm != 0, ar.area_general, 'Sin información'))) AS clienteArea 
+      ifnull (if (a.id_dp_centros_costos != 0, dg3.nombre_completo, if (a.id_dp_centros_costos_adm != 0, ar.area_general, 'Sin informaciÃ³n')), 'Sin informaciÃ³n') AS directorArea,
+      if (a.cod_pcrc != 0, cl1.cliente, if (a.id_dp_centros_costos != 0, cl2.cliente, if (a.id_dp_centros_costos_adm != 0, ar.area_general, 'Sin informaciÃ³n'))) AS clienteArea 
 		    FROM dp_distribucion_personal a  
     
         LEFT JOIN dp_cargos b

@@ -47,7 +47,6 @@ class AdmincortesController extends \yii\web\Controller {
 		*/
 		public function actionIndex(){
 			$model = new ControlTipoCortes();
-			$sessiones = Yii::$app->user->identity->id;
 			$dataProvider = $model->searchcortes(Yii::$app->request->post());			
 			
 			return $this->render('index',[
@@ -272,11 +271,10 @@ class AdmincortesController extends \yii\web\Controller {
 			$model = new Tipocortes();			
 			$model2 = new Tiposdecortes();
 			$dataProvider = null;
-			$nameVal = null;
 			$CorteID = $idtc;
 
 			if (Yii::$app->request->get('idtc')) {
-				$id_params = Html::encode($_GET['idtc']);
+				$id_params = Html::encode(Yii::$app->request->get('idtc'));
 
 				if ((int) $id_params) {
 					$table = Tipocortes::findOne($id_params);
@@ -287,7 +285,6 @@ class AdmincortesController extends \yii\web\Controller {
 						$model->diastc = $table->diastc;
 						$model->fechainiciotc = $table->fechainiciotc;
 						$model->fechafintc = $table->fechafintc;
-						//$model->cantdiastc = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '.$idtc.'')->queryScalar();
 						$numdias = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '.$idtc.'')->queryScalar();
 
 						$dataProvider = $model2->ObtenerCorte2($idtc);
@@ -347,23 +344,19 @@ class AdmincortesController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionUpdate($idtc){
-			$model = new Tipocortes();
 			$model2 = new Tiposdecortes();
 			$dataProvider = null;
 			$nameVal = null;
 
 			$model = $this->findModel3($idtc);
 			if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			    Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
-			    // return $this->redirect(['update', 'idtc' => $model->idtc]);
+			    Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));
 			    return $this->redirect(['index']);
 			    
-			} else {
-			        
-			        }
+			}
 
 			if (Yii::$app->request->get('idtc')) {
-				$id_params = Html::encode($_GET['idtc']);
+				$id_params = Html::encode(Yii::$app->request->get('idtc'));
 
 				if ((int) $id_params) {
 					$table = Tipocortes::findOne($id_params);
@@ -418,7 +411,6 @@ class AdmincortesController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionUpdate2($idtcs){
-			$model = new Tiposdecortes();
 			$nameVal = null;
 			$nameValDias = null;
 
@@ -430,7 +422,7 @@ class AdmincortesController extends \yii\web\Controller {
 
 
 			if (Yii::$app->request->get('idtcs')) {
-				$id_params = Html::encode($_GET['idtcs']);
+				$id_params = Html::encode(Yii::$app->request->get('idtcs'));
 
 				if ((int) $id_params) {
 					$table = Tiposdecortes::findOne($id_params);

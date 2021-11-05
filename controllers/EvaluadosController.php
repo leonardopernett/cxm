@@ -51,13 +51,11 @@ class EvaluadosController extends Controller {
              */
             public function actionIndex() {
                 $searchModel = new EvaluadosSearch();
-                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                 if (Yii::$app->request->post()) {
                     Yii::$app->session['rptFilterEvaluados'] = Yii::$app->request->post();
                     $dataProvider = $searchModel->search(Yii::$app->request->post());
                 } else {
                     $dataProvider = $searchModel->search(Yii::$app->session['rptFilterEvaluados']);
-                    //$models = $dataProvider->getModels();
                 }
                 return $this->render('index', [
                             'searchModel' => $searchModel,
@@ -82,16 +80,6 @@ class EvaluadosController extends Controller {
              * @return mixed
              */
             public function actionCreate() {
-                // $model = new Evaluados();
-
-                // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                //     return $this->redirect(['view', 'id' => $model->id]);
-                // } else {
-                //     return $this->render('create', [
-                //                 'model' => $model,
-                //     ]);
-                // }
-                
                 $model = new Evaluados();
                 $query = Yii::$app->request->post();
                 $query2 = null;
@@ -164,15 +152,6 @@ class EvaluadosController extends Controller {
                                 'query' => $query,
                     ]);   
                 }   
-
-
-                // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                //     return $this->redirect(['view', 'id' => $model->id]);
-                // } else {
-                //     return $this->render('update', [
-                //                 'model' => $model,
-                //     ]);
-                // }
             }
 
             /**
