@@ -3702,6 +3702,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $vartexto = null;
                 $varvalencia = null;
                 $varcontenido = 0;
+                $varConnids = null;
                 return $this->render('showformulariosatisfaccion', [
                             'data' => $data,
                             'view' => $view,
@@ -3710,6 +3711,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'vartexto' => $vartexto,
                             'varvalencia' => $varvalencia,
                             'varcontenido' => $varcontenido,
+                            'varConnids' => $varConnids,
                 ]);
             }
 
