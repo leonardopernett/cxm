@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-use yii\base\Exepcion;
+use yii\base\Exception;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
