@@ -8,6 +8,7 @@ use yii\web\JsExpression;
 
 $varPcrc = $data->tmp_formulario->arbol_id;
 $varBase = $data->tmp_formulario->basesatisfaccion_id;
+$varcontenidoKaliope = $varcontenido;
 ?>
 
 
@@ -202,7 +203,7 @@ $banderaSaltoComentario = true;
                     </td>
                 </tr>
 
-                <?php if ($varcontenido != 0) { ?>
+                <?php if ($varcontenidoKaliope != 0) { ?>
 
                     <tr>
                         <td>
