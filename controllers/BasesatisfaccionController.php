@@ -2555,7 +2555,7 @@ class BasesatisfaccionController extends Controller {
                 $varConnids = $modelBase->connid;
                 $vartexto = null;
                 $varvalencia = null;
-                $varcontenido = null;
+                $varcontenido = 0;
                 
                     ob_start();
                     $curl = curl_init();
@@ -2599,7 +2599,7 @@ class BasesatisfaccionController extends Controller {
                         $varvalencia = $response[0]['valencia'];
 
                         if ($varvalencia == "NULL") {
-                            $varvalencia = "Buzón sin información";
+                            $varvalencia = "Buzon sin informacion";
                         }
 
                         $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN ('$varConnids')")->queryScalar();
