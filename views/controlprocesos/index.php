@@ -163,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
-                <div align="center">
+                <div class="text-center">
                     <?= Html::submitButton(Yii::t('app', 'Buscar técnico/lider'),
                         ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                             'data-toggle' => 'tooltip',
@@ -206,7 +206,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
 
-                    <?php   if($sessiones == 2953) { ?>
+                    <?php   if($sessiones != 0) { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;">remover técnico/lider: </label>
