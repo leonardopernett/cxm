@@ -384,10 +384,10 @@ use yii\helpers\Url;
                          <option value="">Seleccione</option>
                          <option value="0-3 meses">0-3 meses</option>
                          <option value="4-6 meses">4-6 meses</option>
-                         <option value="7 meses - 1 año">7 meses - 1 a&ntilde;o</option>
-                         <option value="1 años - 3 años">1 a&ntilde;os - 3 a&ntilde;os</option>
-                         <option value="4 años - 6 años">4 a&ntilde;os - 6 a&ntilde;os</option>
-                         <option value="mayor a 6 años">mayor a 6 a&ntilde;os</option>
+                         <option value="7 meses - 1 aÃ±o">7 meses - 1 a&ntilde;o</option>
+                         <option value="1 aÃ±os - 3 aÃ±os">1 a&ntilde;os - 3 a&ntilde;os</option>
+                         <option value="4 aÃ±os - 6 aÃ±os">4 a&ntilde;os - 6 a&ntilde;os</option>
+                         <option value="mayor a 6 aÃ±os">mayor a 6 a&ntilde;os</option>
                    </select>
                </div>
 
@@ -399,7 +399,7 @@ use yii\helpers\Url;
                           
             <div class="form-group">
                        <div class="d-flex">
-                         <label for="" class="label"><span class="texto">*</span> Afinidad: </label> <i class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter"></i>
+                         <label for="" class="label"><span class="texto">*</span> Afinidad: </label> <em class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter"></em>
                        </div>
                       <select name="afinidad" id="afinidad" class="form-control" required >
                           <option value="">Seleccionar</option>
@@ -415,7 +415,7 @@ use yii\helpers\Url;
 
                   
                     <div class="form-group hidden" id="group">
-                        <label for=""> Tipo:</label><i class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter2"></i>
+                        <label for=""> Tipo:</label><em class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter2"></em>
                         <br/>
                         <select name="tipo" class="form-control tipo" placeholder="Tipo" >
                                     <option value="">Seleccione</option>
@@ -425,7 +425,7 @@ use yii\helpers\Url;
                     </div>
 
                         <div class="form-group hidden" id="group2">
-                            <label for=""> Nivel:</label> <i class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter3"></i>
+                            <label for=""> Nivel:</label> <em class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter3"></em>
                             <br/>
                             <select name="nivel" class="form-control nivel" placeholder="Nivel" >
                                     <option value="">Seleccione</option>
@@ -515,7 +515,7 @@ use yii\helpers\Url;
                 </div>  
 
 
-                <small style="color:#000"><b>Los campos con <span style="color:red">*</span> son requeridos</b></small> 
+                <small style="color:#000"><strong>Los campos con <span style="color:red">*</span> son requeridos</strong></small> 
  
           </div>
 
@@ -539,7 +539,7 @@ use yii\helpers\Url;
 
         <div class="botones">
             <a class="btn btn-success"  style="margin-top:10px" href="javascript:window.history.back()">
-            <i class="fa fa-backward" aria-hidden="true"></i> Atr&aacute;s 
+            <em class="fa fa-backward" aria-hidden="true"></em> Atr&aacute;s 
             </a>
             <button type="submit" class="btn btn-success" style="margin-top:10px">Registrar Informaci&oacute;n</button>
 
@@ -557,8 +557,8 @@ use yii\helpers\Url;
       
       <div class="modal-body">
         <h2 class="modal-title" id="exampleModalCenterTitle">Afinidad con Konecta</h2>
-         <p><b>Relacion Directa:</b> Son tus contactos del d&iacute;a a d&iacute;a, con quienes defines estrategias para  el canal y/o  haces seguimiento a los indicadores operativos. </p>
-         <p><b>Relacion Inter&eacute;s:</b> Son aquellos contactos que no tiene relaci&oacute;n con el contrato de Konecta, sin embargo tienen cargos estrat&eacute;gicos dentro de la compa&ntilde;&iacute;a por ejemplo Directores de Tecnolog&iacute;a, Presidente, Gerentes, Vicepresidentes.</p>
+         <p><strong>Relacion Directa:</strong> Son tus contactos del d&iacute;a a d&iacute;a, con quienes defines estrategias para  el canal y/o  haces seguimiento a los indicadores operativos. </p>
+         <p><strong>Relacion Inter&eacute;s:</strong> Son aquellos contactos que no tiene relaci&oacute;n con el contrato de Konecta, sin embargo tienen cargos estrat&eacute;gicos dentro de la compa&ntilde;&iacute;a por ejemplo Directores de Tecnolog&iacute;a, Presidente, Gerentes, Vicepresidentes.</p>
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success boton" data-dismiss="modal">OK</button>
@@ -572,11 +572,11 @@ use yii\helpers\Url;
     <div class="modal-content">
       
       <div class="modal-body">
-        <h2 class="modal-title" id="exampleModalCenterTitle">¿Es un decisor del contrato?</h2>
-         <p><b>Decisor:</b>  Es aquel contacto de 'nivel superior o muy superior' que puede tomar decisiones en referencia a la relaci&oacute;n comercial con Konecta, es altamente influyente en las decisiones del cliente corporativo y su percepci&oacute;n afecta de manera cr&iacute;tica la Imagen corporativa de Konecta.
+        <h2 class="modal-title" id="exampleModalCenterTitle">Â¿Es un decisor del contrato?</h2>
+         <p><strong>Decisor:</strong>  Es aquel contacto de 'nivel superior o muy superior' que puede tomar decisiones en referencia a la relaci&oacute;n comercial con Konecta, es altamente influyente en las decisiones del cliente corporativo y su percepci&oacute;n afecta de manera cr&iacute;tica la Imagen corporativa de Konecta.
                 Este contacto es un 'alto influenciador' para el mantenimiento de los contratos con Konecta Colombia.
                 cumplimiento de Objetivos a nivel Regional. </p>
-                        <p><b>Nota:</b>Cada Cuenta deber&aacute; tener al menos 2 decisores. Estos contactos ser&aacute;n objeto de seguimiento de la Junta de Konecta.</p>
+                        <p><strong>Nota:</strong>Cada Cuenta deber&aacute; tener al menos 2 decisores. Estos contactos ser&aacute;n objeto de seguimiento de la Junta de Konecta.</p>
                         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success boton" data-dismiss="modal">OK</button>
@@ -591,8 +591,8 @@ use yii\helpers\Url;
       
       <div class="modal-body">
         <h2 class="modal-title" id="exampleModalCenterTitle"></h2>
-         <p><b>Estrat&eacute;gicos:</b> Es aquel contacto de 'nivel superior' que aunque quiz&aacute;s no posee mucho conocimiento de los resultados Operativos, con este contacto se definen las estrategias de desarrollo del canal administrado por Konecta, se definen aspectos de la operación que impactan la rentabilidad de la cuenta. Este contacto es un alto influenciador para el mantenimiento y permanencia de los negocios con Konecta. </p>
-         <p><b>Operativos:</b> Es aquel contacto de 'nivel intermedio o bajo', que esta al frente de los resultados /m&eacute;tricas de las Operaciones, es quien realiza los escalamientos de resultados a sus superiores y con estos los contactos estrat&eacute;gicos podr&iacute;an tomar decisiones o fijar posiciones con Konecta. A pesar de ser influenciadores de los negocios, no necesariamente &eacute;stos se definen por su autonom&iacute;a.</p>
+         <p><strong>Estrat&eacute;gicos:</strong> Es aquel contacto de 'nivel superior' que aunque quiz&aacute;s no posee mucho conocimiento de los resultados Operativos, con este contacto se definen las estrategias de desarrollo del canal administrado por Konecta, se definen aspectos de la operaciÃ³n que impactan la rentabilidad de la cuenta. Este contacto es un alto influenciador para el mantenimiento y permanencia de los negocios con Konecta. </p>
+         <p><strong>Operativos:</strong> Es aquel contacto de 'nivel intermedio o bajo', que esta al frente de los resultados /m&eacute;tricas de las Operaciones, es quien realiza los escalamientos de resultados a sus superiores y con estos los contactos estrat&eacute;gicos podr&iacute;an tomar decisiones o fijar posiciones con Konecta. A pesar de ser influenciadores de los negocios, no necesariamente &eacute;stos se definen por su autonom&iacute;a.</p>
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success boton" data-dismiss="modal">OK</button>
@@ -629,14 +629,10 @@ document.getElementById('afinidad').addEventListener('change',e =>{
         agrupar2.classList.remove('block')
        }
   })
-
+</script>
   <?php if(Yii::$app->session->hasFlash('info2')):  ?>
       <script>
           toastr.info('<?php echo Yii::$app->session->getFlash('info2') ?>')
       </script>
       <?php Yii::$app->session->close(); ?>
   <?php endif  ?>
-
-
-
-</script>

@@ -422,10 +422,10 @@ small{
                                 <option value="">Seleccione</option>
                                 <option value="0-3 meses" <?php if($data['antiguedadrol']=== '0-3 meses') echo 'selected' ?> >0-3 meses</option>
                                 <option value="4-6 meses" <?php if($data['antiguedadrol']=== '4-6 meses') echo 'selected' ?> >4-6 meses</option>
-                                <option value="7 meses - 1 año" <?php if($data['antiguedadrol']=== '7 meses - 1 año') echo 'selected' ?> >7 meses - 1 a&ntilde;o</option>
-                                <option value="1 años - 3 años" <?php if($data['antiguedadrol']=== '1 años - 3 años') echo 'selected' ?> >1 a&ntilde;os - 3 a&ntilde;os</option>
-                                <option value="4 años - 6 años" <?php if($data['antiguedadrol']=== '4 años - 6 años') echo 'selected' ?> >4 a&ntilde;os - 6 a&ntilde;os</option>
-                                <option value="mayor a 6 años" <?php if($data['antiguedadrol']=== 'mayor a 6 años') echo 'selected' ?> >mayor a 6 a&ntilde;os</option>
+                                <option value="7 meses - 1 aÃ±o" <?php if($data['antiguedadrol']=== '7 meses - 1 aÃ±o') echo 'selected' ?> >7 meses - 1 a&ntilde;o</option>
+                                <option value="1 aÃ±os - 3 aÃ±os" <?php if($data['antiguedadrol']=== '1 aÃ±os - 3 aÃ±os') echo 'selected' ?> >1 a&ntilde;os - 3 a&ntilde;os</option>
+                                <option value="4 aÃ±os - 6 aÃ±os" <?php if($data['antiguedadrol']=== '4 aÃ±os - 6 aÃ±os') echo 'selected' ?> >4 a&ntilde;os - 6 a&ntilde;os</option>
+                                <option value="mayor a 6 aÃ±os" <?php if($data['antiguedadrol']=== 'mayor a 6 aÃ±os') echo 'selected' ?> >mayor a 6 a&ntilde;os</option>
                             </select>
                         </div>
 
@@ -439,7 +439,7 @@ small{
 
                         <div class="form-group">
                                 <div class="d-flex">
-                                    <label for="" class="label"><span class="texto">*</span> Afinidad:</label> <i class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter"></i>
+                                    <label for="" class="label"><span class="texto">*</span> Afinidad:</label><em class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter"></em>
                                 </div>
                                 <select name="afinidad" id="afinidad" value="<?php echo $data['afinidad']?>" class="form-control">
                                     <option value="">Seleccionar</option>
@@ -452,6 +452,7 @@ small{
                           <div  class="row">                            
                             <div class="col-md-12" style="display: inline;"><br>
                               <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                              <caption>Afinidad</caption>
                                 <thead>
                                   <tr>
                                     <th scope="text-center"><?= Yii::t('app', 'Tipo de afinidad') ?></th>
@@ -607,8 +608,8 @@ small{
       
       <div class="modal-body">
         <h2 class="modal-title" id="exampleModalCenterTitle">Afinidad con Konecta</h2>
-         <p><b>Relacion Directa:</b> Son tus contactos del d&iacute;a a d&iacute;a, con quienes defines estrategias para  el canal y/o  haces seguimiento a los indicadores operativos. </p>
-         <p><b>Relacion Inter&eacute;s:</b> Son aquellos contactos que no tiene relaci&oacute;n con el contrato de Konecta, sin embargo tienen cargos estrat&eacute;gicos dentro de la compa&ntilde;&iacute;a por ejemplo Directores de Tecnolog&iacute;a, Presidente, Gerentes, Vicepresidentes.</p>
+         <p><strong>Relacion Directa:</strong> Son tus contactos del d&iacute;a a d&iacute;a, con quienes defines estrategias para  el canal y/o  haces seguimiento a los indicadores operativos. </p>
+         <p><strong>Relacion Inter&eacute;s:</strong> Son aquellos contactos que no tiene relaci&oacute;n con el contrato de Konecta, sin embargo tienen cargos estrat&eacute;gicos dentro de la compa&ntilde;&iacute;a por ejemplo Directores de Tecnolog&iacute;a, Presidente, Gerentes, Vicepresidentes.</p>
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success boton" data-dismiss="modal">OK</button>
