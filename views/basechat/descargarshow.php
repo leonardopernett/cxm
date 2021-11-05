@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card1 mb">
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
-                <caption>Gestión</caption>
+                <caption>Tabla Gestión</caption>
                     <thead>
                         <tr>
                             <th scope="col" colspan="19" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo  'Listado de gestión'; ?></label></th>
