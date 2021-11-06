@@ -10,7 +10,7 @@ use kartik\select2\Select2;
 use yii\web\JsExpression;
 use kartik\daterange\DateRangePicker;
 
-$this->params['breadcrumbs'][] = ['label' => 'Administración de cortes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'AdministraciÃ³n de cortes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Ver Tipo de Corte';
 
 ?>

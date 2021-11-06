@@ -38,8 +38,6 @@ class LogeventsadminController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->session['rptFilterLogeventsadmin']);
-            //$models = $dataProvider->getModels();
-            //$banderaReporte = $searchModel->generarReporteLogAdmin($models);
         }
         return $this->render('index', [
                     'searchModel' => $searchModel,

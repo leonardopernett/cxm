@@ -61,9 +61,7 @@ class UsuariosController extends Controller {
                         Yii::$app->session['rptFilterUsuarios']['grupo'] = Yii::$app->request->get('grupo_id');
                         $dataProvider = $searchModel->searchAjax(Yii::$app->session['rptFilterUsuarios']);
                     } else {
-                        //Yii::$app->session['rptFilterUsuarios']['grupo'] = Yii::$app->request->get('grupo_id');                       
                         $dataProvider = $searchModel->searchAjax($grupo_id);
-                        //$models = $dataProvider->getModels();
                     }
                     return $this->renderAjax('index', [
                                 'searchModel' => $searchModel,
@@ -77,7 +75,6 @@ class UsuariosController extends Controller {
                     $dataProvider = $searchModel->search(Yii::$app->request->post());
                 } else {
                     $dataProvider = $searchModel->search(Yii::$app->session['rptFilterUsuarios']);
-                    //$models = $dataProvider->getModels();
                 }
                 return $this->render('index', [
                             'searchModel' => $searchModel,
@@ -97,8 +94,6 @@ class UsuariosController extends Controller {
                 if (Yii::$app->getRequest()->isAjax) {
                     $isAjax = true;
                     $grupo_id = Yii::$app->request->get('grupo_id');
-                    //$preguntaid = $model->fk_pregunta;
-                    //$dataProvider = $searchModel->searchOpcionespregunta($preguntaid);
                     return $this->renderPartial('view', [
                                 'model' => $this->findModel($id),
                                 'isAjax' => $isAjax,
