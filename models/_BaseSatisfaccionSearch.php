@@ -358,7 +358,6 @@ WHERE pe.programa = " . $this->pcrc;
             $titulos[] = ['header' => 'Usuario de red Agente', 'value' => '4'];
             $titulos[] = ['header' => 'Identificación Líder de equipo', 'value' => '32'];
             $titulos[] = ['header' => 'Nombre Lider de Equipo', 'value' => '31'];
-            //$titulos[] = ['header' => 'Agente 2', 'value' => '5'];            
             $titulos[] = ['header' => 'Chat Transfer', 'value' => '10'];
             $titulos[] = ['header' => 'Extensión', 'value' => '11'];
             $titulos[] = ['header' => 'RN', 'value' => '12'];
@@ -566,7 +565,6 @@ WHERE pe.programa = " . $this->pcrc;
 
         // Variables de control
         $export = false;
-        $genTitulos = true;
 
         /* Archivos */
         $fileName = Yii::$app->basePath . DIRECTORY_SEPARATOR . "web" .
@@ -574,7 +572,6 @@ WHERE pe.programa = " . $this->pcrc;
                 . Yii::t('app', 'Reporte_Gestion') . '_' . date('Ymd') . "_" .
                 Yii::$app->user->identity->id . ".xlsx";
 
-        //$handleFile = fopen($fileName, 'w');
         /* Titulos */
         $titulos[] = ['header' => 'Id', 'value' => '0'];
         $titulos[] = ['header' => 'Año', 'value' => '6'];
@@ -586,8 +583,7 @@ WHERE pe.programa = " . $this->pcrc;
         $titulos[] = ['header' => 'ANI', 'value' => '3'];
         $titulos[] = ['header' => 'Usuario de red Agente', 'value' => '4'];
         $titulos[] = ['header' => 'Identificación  Agente', 'value' => '5'];
-
-        //$titulos[] = ['header' => 'Agente 2', 'value' => '5'];            
+        
         $titulos[] = ['header' => 'Chat Transfer', 'value' => '10'];
         $titulos[] = ['header' => 'Extensión', 'value' => '11'];
         $titulos[] = ['header' => 'RN', 'value' => '12'];
@@ -622,7 +618,6 @@ WHERE pe.programa = " . $this->pcrc;
         $titulos[47] = ['header' => 'Formulario', 'value' => '47'];
         $titulos[48] = ['header' => 'Cedula Valorado', 'value' => '48'];
         $titulos[49] = ['header' => 'Valorado', 'value' => '49'];
-        //$titulos[46] = ['header' => 'Responsable', 'value' => '46'];
         $titulos[50] = ['header' => 'Valorador', 'value' => '50'];
         $titulos[51] = ['header' => 'Rol', 'value' => '51'];
         $titulos[52] = ['header' => 'Fuente', 'value' => '52'];
@@ -642,11 +637,6 @@ WHERE pe.programa = " . $this->pcrc;
 
         // Generar los tituloos
         $filecontent = "";
-        /* foreach ($titulos as $value) {
-          $filecontent .= $value['header'] . "|";
-          }
-          $filecontent .= "\n";
-          fwrite($handleFile, $filecontent); */
 
         //QUERY COMPLETO SIN PARTIR POR LIMITES
         $sql = "SELECT f.created 'Fecha' ,f.id fid ,s.id 'sid' , xb.id 'did', xd.id 'cdPregunta', xd.tipificacion_id 'idTipi', 
@@ -755,17 +745,6 @@ WHERE pe.programa = " . $this->pcrc;
                         if ($fid != -1) {
                             //CSV PARA MEJORAR EL EXCEL DEL EXTRACTAR
                             $filecontent = "";
-
-                            //MUESTRO LOS ENCABEZADO SOLO UNA VEZ
-                            /*
-                              if ($printTitle) {
-                              foreach ($titulos as $value) {
-                              $filecontent .= utf8_decode($value['header']) . "|";
-                              }
-                              //$filecontent .= "\n";
-                              //fwrite($handleFile, $filecontent);
-                              } */
-                            $filecontent = "";
                             $printTitle = false;
 
                             //IMPRIMO EN EL CSV LOS RESULTADOS QUE VAYAN
@@ -774,8 +753,6 @@ WHERE pe.programa = " . $this->pcrc;
                                 $tmpCont = implode("|", $value);
                                 $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
                                 $objPHPexcel->getActiveSheet()->setCellValue('A' . $fila, $filecontent);
-                                //$filecontent .= "\n";
-                                //fwrite($handleFile, utf8_decode($filecontent));
                                 $fila++;
                             }
                             // Ya se escribio - Lo puedo liberar
@@ -847,7 +824,6 @@ WHERE pe.programa = " . $this->pcrc;
                         $dataProvider[$newRow][47] = $this->vData($data[$i]['Formulario']);
                         $dataProvider[$newRow][48] = $this->vData($data[$i]['cedula_evaluado']);
                         $dataProvider[$newRow][49] = $this->vData($data[$i]['evaluado']);
-                        //$dataProvider[$newRow][46] = $this->vData($data[$i]['responsable']);
                         $dataProvider[$newRow][50] = $this->vData($data[$i]['evaluador']);
                         $dataProvider[$newRow][51] = $this->vData($data[$i]['rol']);
                         $dataProvider[$newRow][52] = $this->vData($data[$i]['fuente']);
@@ -990,14 +966,6 @@ WHERE pe.programa = " . $this->pcrc;
             } // Fin se hay registros
         } while (count($data) > 0);
         //SI SOLO HABIA UNA VALORACIÓN PINTO LOS TITULOS
-        /*
-          if ($printTitle) {
-          foreach ($titulos as $value) {
-          $filecontent .= utf8_decode($value['header']) . "|";
-          }
-          //$filecontent .= "\n";
-          //fwrite($handleFile, $filecontent);
-          } */
         $filecontent = "";
         $printTitle = false;
         //IMPRIMO EL ULTIMO REGISTRO
@@ -1007,11 +975,8 @@ WHERE pe.programa = " . $this->pcrc;
                 $tmpCont = implode("|", $value);
                 $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
                 $objPHPexcel->getActiveSheet()->setCellValue('A' . $fila, $filecontent);
-                //$filecontent .= "\n";
-                //fwrite($handleFile, $filecontent);
                 $fila++;
             }
-            //fclose($handleFile);
         } else {
             $export = false;
         }
@@ -1107,18 +1072,6 @@ WHERE pe.programa = " . $this->pcrc;
         }
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
         $objWriter->save($fileName);
-
-
-        /* $downloadfile = Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . ".csv";
-          header("Content-Disposition: attachment; filename=" . $downloadfile);
-          header("Content-Type: application/force-download");
-          header("Content-Transfer-Encoding: binary");
-          header("Content-Length: " . strlen($filecontent));
-          header("Pragma: no-cache");
-          header("Expires: 0");
-          echo $filecontent;
-          exit; */
-
 
         return $export;
     }

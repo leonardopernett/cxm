@@ -148,8 +148,6 @@ use app\models\ControlProcesosVOC;
 	public function actionCrearfeedback(){
 
             $txtvarid_causas = Yii::$app->request->get("txtvarid_causas");
-            $txtvarName_lider = Yii::$app->request->get("txtvarName_lider");
-            $txtvarcat_id = Yii::$app->request->get("txtvarcat_id");
             $txtvartipo_id = Yii::$app->request->get("txtvartipo_id");
             $txtvarcomen_id = Yii::$app->request->get("txtvarcomen_id");
             $txtvarvalorado = Yii::$app->request->get("txtvarvalorado");
@@ -247,7 +245,6 @@ use app\models\ControlProcesosVOC;
             $txtvanular1 = Yii::$app->request->post("txtvanular");
             $txtRta = 1;
 
-           //die(json_encode($txtvsesion1));
 
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_listadohijo',[
                                 'idsessionvoc' => $txtvsesion1,
@@ -356,20 +353,11 @@ use app\models\ControlProcesosVOC;
 
         public function actionReportevoc(){
             $model = new ControlProcesosVOC();
-            $txtIdBlo = null;
             $formData = Yii::$app->request->post();
-            $arbolid1 = 0;
-            $fechacreacion1 = 0;
-            $valorador_id1 = 0;
-            $tecnico_id1 = 0;
             $txtValorador = null;
             $txtArbol_id = null;
 	    $txtFechacreacion = null;
 	    $txtTecnico = null;
-          //  $arrayUsu[] = null;
-          //  $arrayUsu[] = null;
-	  //  $arrayUsu[] = null;
-	 //   $arrayUsu[] = null;
 
             if ($model->load($formData)) {
                 $dataProvider = $model->buscarVoc($formData);
@@ -387,26 +375,7 @@ use app\models\ControlProcesosVOC;
              $arrayUsu[] = $txtArbol_id;
 	     $arrayUsu[] = $txtFechacreacion;
 	     $arrayUsu[] = $txtTecnico;
-           // var_dump($formData);
-            $arrayPara[] = 0;
-            $varcontar=0;
-            $txtIdBloques1 = $dataProvider->getModels();
-           
-            
-           // var_dump($txtValorador);
-
-           // $arrayUsu[] = 0;
-           // $arrayUsu[] = $model->valorador_id;
-           // $arrayUsu[] = $model->arbol_id;
-	  //  $arrayUsu[] = $model->fechacreacion;
-	  //  $arrayUsu[] = $model->tecnico_id;
-
-
-           // foreach ($txtIdBloques1 as $key => $value) {
-            //    $arrayUsu[] = $value['idbloque1'];
-
-            //    $varcontar++;
-           // }
+            $arrayPara[] = 0
                      
             
             return $this->render('reportevoc',[
@@ -524,7 +493,6 @@ use app\models\ControlProcesosVOC;
             $txtNombreTecnico = Yii::$app->db->createCommand("select name from tbl_evaluados where id = $varTecnico")->queryScalar(); 
             $txtDimensiones = Yii::$app->db->createCommand("select dimensions from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
             $txtFecha = Yii::$app->db->createCommand("select fechahora from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtAgente = Yii::$app->db->createCommand("select usuagente from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
             $txtDureacion = Yii::$app->db->createCommand("select duracion from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
             $txtExtension = Yii::$app->db->createCommand("select extencion from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
             $txtSpeech = Yii::$app->db->createCommand("select numidextsp from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
@@ -670,7 +638,6 @@ use app\models\ControlProcesosVOC;
         }  
 
         public function actionEditarvocp($var_pcrc,$var_IdList){
-            $model = new ControlvocListadopadre();
             $txtIdList = $var_IdList;
             $txtPcrc = $var_pcrc;
 
@@ -698,7 +665,6 @@ use app\models\ControlProcesosVOC;
         } 
 
         public function actionEditarvoch($var_pcrc,$var_IdList){
-            $model = new ControlvocListadohijo();
             $txtIdList = $var_IdList;
             $txtPcrc = $var_pcrc;
 

@@ -358,7 +358,6 @@ WHERE pe.programa = " . $this->pcrc;
             $titulos[] = ['header' => 'Usuario de red Agente', 'value' => '4'];
             $titulos[] = ['header' => 'Identificación Líder de equipo', 'value' => '32'];
             $titulos[] = ['header' => 'Nombre Lider de Equipo', 'value' => '31'];
-            //$titulos[] = ['header' => 'Agente 2', 'value' => '5'];            
             $titulos[] = ['header' => 'Chat Transfer', 'value' => '10'];
             $titulos[] = ['header' => 'Extensión', 'value' => '11'];
             $titulos[] = ['header' => 'RN', 'value' => '12'];
@@ -566,7 +565,6 @@ WHERE pe.programa = " . $this->pcrc;
 
         // Variables de control
         $export = false;
-        $genTitulos = true;
 
         /* Archivos */
         $fileName = Yii::$app->basePath . DIRECTORY_SEPARATOR . "web" .
@@ -574,7 +572,6 @@ WHERE pe.programa = " . $this->pcrc;
                 . Yii::t('app', 'Reporte_Gestion') . '_' . date('Ymd') . "_" .
                 Yii::$app->user->identity->id . ".xlsx";
 
-        //$handleFile = fopen($fileName, 'w');
         /* Titulos */
         $titulos[] = ['header' => 'Id', 'value' => '0'];
         $titulos[] = ['header' => 'Año', 'value' => '6'];
@@ -585,9 +582,7 @@ WHERE pe.programa = " . $this->pcrc;
         $titulos[] = ['header' => 'Nombre Cliente', 'value' => '2'];
         $titulos[] = ['header' => 'ANI', 'value' => '3'];
         $titulos[] = ['header' => 'Usuario de red Agente', 'value' => '4'];
-        $titulos[] = ['header' => 'Identificación  Agente', 'value' => '5'];
-
-        //$titulos[] = ['header' => 'Agente 2', 'value' => '5'];            
+        $titulos[] = ['header' => 'Identificación  Agente', 'value' => '5'];         
         $titulos[] = ['header' => 'Chat Transfer', 'value' => '10'];
         $titulos[] = ['header' => 'Extensión', 'value' => '11'];
         $titulos[] = ['header' => 'RN', 'value' => '12'];
@@ -625,7 +620,6 @@ WHERE pe.programa = " . $this->pcrc;
         $titulos[47] = ['header' => 'Formulario', 'value' => '47'];
         $titulos[48] = ['header' => 'Cedula Valorado', 'value' => '48'];
         $titulos[49] = ['header' => 'Valorado', 'value' => '49'];
-        //$titulos[46] = ['header' => 'Responsable', 'value' => '46'];
         $titulos[50] = ['header' => 'Valorador', 'value' => '50'];
         $titulos[51] = ['header' => 'Rol', 'value' => '51'];
         $titulos[52] = ['header' => 'Fuente', 'value' => '52'];
@@ -645,11 +639,6 @@ WHERE pe.programa = " . $this->pcrc;
 
         // Generar los tituloos
         $filecontent = "";
-        /* foreach ($titulos as $value) {
-          $filecontent .= $value['header'] . "|";
-          }
-          $filecontent .= "\n";
-          fwrite($handleFile, $filecontent); */
 
         //QUERY COMPLETO SIN PARTIR POR LIMITES
         $sql = "SELECT f.created 'Fecha' ,f.id fid ,s.id 'sid' , xb.id 'did', xd.id 'cdPregunta', xd.tipificacion_id 'idTipi', 
@@ -743,7 +732,6 @@ WHERE pe.programa = " . $this->pcrc;
         $objPHPexcel->setActiveSheetIndex(0);
         $arrayIds = [];
         do {
-            //print_r("entro 1"); die;
             $data = null;
             $limite_ciclo_inicial += $delta_ciclo;
             $sqlRango = $sql . " LIMIT " . $limite_ciclo_inicial . "," . $limite_ciclo_final . " ";
@@ -752,7 +740,6 @@ WHERE pe.programa = " . $this->pcrc;
             //Codigo nuevo -----------------------------------------------------            
             if (count($data) > 0) {
 
-                //print_r("entro 2"); die;
 
                 foreach ($data as $i => $row) {
 
@@ -760,17 +747,6 @@ WHERE pe.programa = " . $this->pcrc;
                         // Si no es el primer registro se imprime la fila
                         if ($fid != -1) {
                             //CSV PARA MEJORAR EL EXCEL DEL EXTRACTAR
-                            $filecontent = "";
-
-                            //MUESTRO LOS ENCABEZADO SOLO UNA VEZ
-                            /*
-                              if ($printTitle) {
-                              foreach ($titulos as $value) {
-                              $filecontent .= utf8_decode($value['header']) . "|";
-                              }
-                              //$filecontent .= "\n";
-                              //fwrite($handleFile, $filecontent);
-                              } */
                             $filecontent = "";
                             $printTitle = false;
 
@@ -780,8 +756,6 @@ WHERE pe.programa = " . $this->pcrc;
                                 $tmpCont = implode("|", $value);
                                 $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
                                 $objPHPexcel->getActiveSheet()->setCellValue('A' . $fila, $filecontent);
-                                //$filecontent .= "\n";
-                                //fwrite($handleFile, utf8_decode($filecontent));
                                 $fila++;
                             }
                             // Ya se escribio - Lo puedo liberar
@@ -843,9 +817,8 @@ WHERE pe.programa = " . $this->pcrc;
                         $dataProvider[$newRow][38] = $this->vData($data[$i]['modified']); // se toma fecha de modificacion tbl_ejecucionformularios                      
                         
                         $varConnids = $this->vData($data[$i]['connid']);
-                        $txttrancsipcion = Yii::$app->db->createCommand("SELECT k.transcripcion FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();                        $vartexto = null;
+                        $txttrancsipcion = Yii::$app->db->createCommand("SELECT k.transcripcion FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();
                         $varvalencia = Yii::$app->db->createCommand("SELECT k.valencia FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();   
-                        $varvacio = " - ";   
                     
                         $dataProvider[$newRow][67] = $txttrancsipcion;
                         $dataProvider[$newRow][68] = $varvalencia;                        
@@ -855,7 +828,7 @@ WHERE pe.programa = " . $this->pcrc;
                             $dataProvider[$newRow][39] = "GENERAL";
                         } else { 
                             $dataProvider[$newRow][39] = $this->vData($data[$i]['tipo_inbox']);
-                        };
+                        }
                         
                         $dataProvider[$newRow][40] = $this->vData($data[$i]['responsabilidad']);
                         $dataProvider[$newRow][41] = $this->vData($data[$i]['canal']);
@@ -868,7 +841,6 @@ WHERE pe.programa = " . $this->pcrc;
                         $dataProvider[$newRow][47] = $this->vData($data[$i]['Formulario']);
                         $dataProvider[$newRow][48] = $this->vData($data[$i]['cedula_evaluado']);
                         $dataProvider[$newRow][49] = $this->vData($data[$i]['evaluado']);
-                        //$dataProvider[$newRow][46] = $this->vData($data[$i]['responsable']);
                         $dataProvider[$newRow][50] = $this->vData($data[$i]['evaluador']);
                         $dataProvider[$newRow][51] = $this->vData($data[$i]['rol']);
                         $dataProvider[$newRow][52] = $this->vData($data[$i]['fuente']);
@@ -885,10 +857,6 @@ WHERE pe.programa = " . $this->pcrc;
                         $dataProvider[$newRow][63] = $this->vData($data[$i]['fi8_nmcalculo']);
                         $dataProvider[$newRow][64] = $this->vData($data[$i]['fi9_nmcalculo']);
                         $dataProvider[$newRow][65] = $this->vData($data[$i]['fi10_nmcalculo']);
-                        // $varIdBase = $this->vData($data[$i]['id']);
-                        // $dataProvider[$newRow][67] = Yii::$app->db->createCommand("select reason3 from tbl_base_Avon where id = $varIdBase")->queryScalar();
-                        // $dataProvider[$newRow][67] = Yii::$app->db->createCommand("select reason4 from tbl_base_Avon where id = $varIdBase")->queryScalar();
-                        // $dataProvider[$newRow][68] = Yii::$app->db->createCommand("select formulario from tbl_base_Avon where id = $varIdBase")->queryScalar();
                     }
 
 
@@ -1014,16 +982,6 @@ WHERE pe.programa = " . $this->pcrc;
                 $export = true;
             } // Fin se hay registros
         } while (count($data) > 0);
-        //SI SOLO HABIA UNA VALORACIÓN PINTO LOS TITULOS
-        /*
-          if ($printTitle) {
-          foreach ($titulos as $value) {
-          $filecontent .= utf8_decode($value['header']) . "|";
-          }
-          //$filecontent .= "\n";
-          //fwrite($handleFile, $filecontent);
-          } */
-
         $filecontent = "";
         $printTitle = false;
         //IMPRIMO EL ULTIMO REGISTRO
@@ -1033,11 +991,8 @@ WHERE pe.programa = " . $this->pcrc;
                 $tmpCont = implode("|", $value);
                 $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
                 $objPHPexcel->getActiveSheet()->setCellValue('A' . $fila, $filecontent);
-                //$filecontent .= "\n";
-                //fwrite($handleFile, $filecontent);
                 $fila++;
             }
-            //fclose($handleFile);
         } else {
             $export = false;
         }
@@ -1123,10 +1078,10 @@ WHERE pe.programa = " . $this->pcrc;
 
 
                     if ($satu['tipo_inbox'] == "NORMAL"){ 
-                            $dataProvider[$newRow][39] = "GENERAL";
-                        } else { 
-                            $dataProvider[$newRow][39] = $this->vData($satu['tipo_inbox']);;
-                        };
+                        $dataProvider[$newRow][39] = "GENERAL";
+                    } else { 
+                        $dataProvider[$newRow][39] = $this->vData($satu['tipo_inbox']);
+                    }
                     
                     $tmpCont = implode("|", $dataProvider[$newRow]);
                     $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
@@ -1151,19 +1106,6 @@ WHERE pe.programa = " . $this->pcrc;
         }
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPexcel);
         $objWriter->save($fileName);
-
-
-        /* $downloadfile = Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . ".csv";
-          header("Content-Disposition: attachment; filename=" . $downloadfile);
-          header("Content-Type: application/force-download");
-          header("Content-Transfer-Encoding: binary");
-          header("Content-Length: " . strlen($filecontent));
-          header("Pragma: no-cache");
-          header("Expires: 0");
-          echo $filecontent;
-          exit; */
-
-
         return $export;
     }
 

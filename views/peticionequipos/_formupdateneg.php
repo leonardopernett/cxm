@@ -35,15 +35,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
     <br>
     <div class="page-header" >
-        <h3 style="color:#100048;"><center><?= Html::encode($this->title) ?></center></h3>
+        <h3 class="text-center" style="color:#100048;"><?= Html::encode($this->title) ?></h3>
     </div> 
     <br>
     <br>
     <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+    <caption style="display: none;">Desvincular</caption>
     	<thead>
     		<tr>
-	    		<th><?= Yii::t('app', 'Coordinador Actual') ?></th>
-	    		<th><?= Yii::t('app', 'Valorador') ?></th>
+	    		<th scope="col"><?= Yii::t('app', 'Coordinador Actual') ?></th>
+	    		<th scope="col"><?= Yii::t('app', 'Valorador') ?></th>
     		</tr>
     	</thead>
     	<tbody>

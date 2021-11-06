@@ -186,7 +186,6 @@ class Bloquedetalles extends \yii\db\ActiveRecord {
                 ->asArray()
                 ->all();
         $arr = array();
-        $objeto = new \stdClass();
         foreach ($form as $value) {
             $objeto = new \stdClass();
             foreach ($value as $k => $v) {

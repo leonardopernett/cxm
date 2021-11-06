@@ -236,46 +236,47 @@ button.dt-button, div.dt-button, a.dt-button, input.dt-button{
                 </a>
 
                 <table class="table table-bordered"  id="myTable" style="margin-top:20px">
+                <caption>Evento</caption>
                    <thead>
                        <tr>
                            
-                           <th>Nombre</th>
-                           <th class="hide">Identificacion</th>
-                           <th class="hide">Direccion Oficina</th>
-                           <th class="hide">Direccion Casa</th>
-                           <th class="hide">Email</th>
-                           <th class="hide">Movil</th>
-                           <th class="hide">Contacto oficina</th>
-                           <th class="hide">Pais</th>
-                           <th class="hide">Cuidad</th>
-                           <th class="hide">Modalidad de Trabajo</th>
-                           <th class="hide">Area de Trabajo</th>
+                           <th scope="col">Nombre</th>
+                           <th scope="col" class="hide">Identificacion</th>
+                           <th scope="col" class="hide">Direccion Oficina</th>
+                           <th scope="col" class="hide">Direccion Casa</th>
+                           <th scope="col" class="hide">Email</th>
+                           <th scope="col" class="hide">Movil</th>
+                           <th scope="col" class="hide">Contacto oficina</th>
+                           <th scope="col" class="hide">Pais</th>
+                           <th scope="col" class="hide">Cuidad</th>
+                           <th scope="col" class="hide">Modalidad de Trabajo</th>
+                           <th scope="col" class="hide">Area de Trabajo</th>
 
-                           <th class="hide">Cliente</th>
-                           <th class="hide">Director</th>
-                           <th class="hide">Gerente</th>
-                           <th class="hide">PCRC</th>
+                           <th scope="col" class="hide">Cliente</th>
+                           <th scope="col" class="hide">Director</th>
+                           <th scope="col" class="hide">Gerente</th>
+                           <th scope="col" class="hide">PCRC</th>
 
-                           <th class="hide">Antiguedad</th>
-                           <th class="hide">Tipo</th>
-                           <th class="hide">Nivel</th>
-                           <th class="hide">afinidad</th>
-                           <th class="hide">nombre del jefe</th>
-                           <th class="hide">cargojefe</th>
-                           <th class="hide">rol anterior</th>
-                           <th class="hide">estado civil</th>
-                           <th class="hide">dominancia</th>
-                           <th class="hide">Numero de hijos</th>
-                           <th class="hide">Estilo social</th>
+                           <th scope="col" class="hide">Antiguedad</th>
+                           <th scope="col" class="hide">Tipo</th>
+                           <th scope="col" class="hide">Nivel</th>
+                           <th scope="col" class="hide">afinidad</th>
+                           <th scope="col" class="hide">nombre del jefe</th>
+                           <th scope="col" class="hide">cargojefe</th>
+                           <th scope="col" class="hide">rol anterior</th>
+                           <th scope="col" class="hide">estado civil</th>
+                           <th scope="col" class="hide">dominancia</th>
+                           <th scope="col" class="hide">Numero de hijos</th>
+                           <th scope="col" class="hide">Estilo social</th>
 
 
-                           <th>Nombre Evento</th>
-                           <th>Tipo de Evento</th>
-                           <th>Ciudad de Evento</th>
-                           <th>Fecha del Evento</th>
-                           <th>Asistio</th>
+                           <th scope="col">Nombre Evento</th>
+                           <th scope="col">Tipo de Evento</th>
+                           <th scope="col">Ciudad de Evento</th>
+                           <th scope="col">Fecha del Evento</th>
+                           <th scope="col">Asistio</th>
 
-                           <th>Accion</th>
+                           <th scope="col">Accion</th>
                        </tr>
                    </thead>
                    <tbody>
@@ -325,11 +326,11 @@ button.dt-button, div.dt-button, a.dt-button, input.dt-button{
                             <td style="text-align:center">
                             
                               <a href="<?php echo Url::to(['/hvinfopersonal/editarevento','id'=> $evento['id']])  ?>" data-toggle="tooltip" data-placement="top" title="Editar Evento">
-                                   <i class="fa fa-search"></i>
+                                   <em class="fa fa-search"></em>
                                </a>
 
                                 <a style="margin-left:10px" href="<?php echo Url::to([ '/hvinfopersonal/eliminarevento', 'id' => $evento['id'],'id_user'=>$evento['idhvinforpersonal'] ]) ?>" data-toggle="tooltip" data-placement="top" title="Eliminar Evento">
-                                    <i class="fa fa-trash text-danger text-center"></i>
+                                    <em class="fa fa-trash text-danger text-center"></em>
                                 </a>
 
                             </td>

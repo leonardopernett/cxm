@@ -65,9 +65,6 @@ class ControlProcesos extends \yii\db\ActiveRecord
     /**
     * @return \yii\db\ActiveQuery
     */
-    //public function getEvaluados() {
-    //    return $this->hasOne(Evaluados::className(), ['id' => 'evaluados_id']);
-    //}
     public function getUsuarios() {
         return $this->hasOne(Usuarios::className(), ['usua_id' => 'evaluados_id']);
     }
@@ -108,13 +105,12 @@ class ControlProcesos extends \yii\db\ActiveRecord
     public function getMetas($opcion1, $opcion){
         $varId = $opcion1;
         $variableid = $opcion;
-	$varCero = 0;
 
-	$txtcorte = Yii::$app->db->createCommand("select tipo_corte from tbl_control_procesos where evaluados_id ='$variableid' and id ='$varId' and anulado = 0")->queryScalar();
+	    $txtcorte = Yii::$app->db->createCommand("select tipo_corte from tbl_control_procesos where evaluados_id ='$variableid' and id ='$varId' and anulado = 0")->queryScalar();
         $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '%$txtcorte%' and anulado = 0")->queryScalar();
         $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '%$txtcorte%' and anulado = 0")->queryScalar();
 
-	$data =  Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = '$variableid' and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
+	    $data =  Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = '$variableid' and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
 
         return $data;
     }
@@ -122,21 +118,18 @@ class ControlProcesos extends \yii\db\ActiveRecord
     public function getMetas1($opcion1, $opcion){
         $varId = $opcion1;
         $variableid = $opcion;
-	$varCero = 0;
 
-	$txtcorte = Yii::$app->db->createCommand("select idtc from tbl_control_procesos where evaluados_id ='$variableid' and id ='$varId' and anulado = 0")->queryScalar();
+	    $txtcorte = Yii::$app->db->createCommand("select idtc from tbl_control_procesos where evaluados_id ='$variableid' and id ='$varId' and anulado = 0")->queryScalar();
         $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = '$txtcorte'")->queryScalar();
         $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = '$txtcorte'")->queryScalar();
 
-	$data =  Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = '$variableid' and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
+	    $data =  Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = '$variableid' and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
 
         return $data;
     }
 
     public function getRealizadas($opcion) {
-        $variableid = $opcion;
-        // $fechainiC = date('2018-08-22');
-        // $fechafinC = date('2018-08-30');  
+        $variableid = $opcion; 
 	$varCero = 0;
 
             $varMes = date("n");
@@ -182,13 +175,9 @@ class ControlProcesos extends \yii\db\ActiveRecord
                     # code...
                     break;
             }   
-	$txtMes = 'Septiembre';
         $txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$variableid.' and tipo_corte like "%'.$txtMes.'%" and anulado ='.$varCero.'')->queryScalar();
-	//var_dump($txtcorte);
         $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte' and anulado = 0")->queryScalar();
-	//var_dump($fechainiC);
         $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte' and anulado = 0")->queryScalar();                         
-	//var_dump($fechafinC);
 
         $querys =  new Query;
         $querys     ->select(['tbl_ejecucionformularios.created', 'tbl_usuarios.usua_nombre'])->distinct()
@@ -203,17 +192,13 @@ class ControlProcesos extends \yii\db\ActiveRecord
         $queryss = $command->queryAll();   
 
         $query = count($queryss);
-	//var_dump($query);
         return $query; 
     }
 
     public function getCumplimiento($opcion){
         $variableid = $opcion;
-	$varCero = 0;
-	$varsumagestion = 0;
-        $variabletxt = 'Total Monitoreos';
-        // $fechainiC = date('2018-08-22');
-        // $fechafinC = date('2018-08-30'); 
+	    $varCero = 0;
+	    $varsumagestion = 0;
             $varMes = date("n");
             $txtMes = null;
             switch ($varMes) {
@@ -257,8 +242,6 @@ class ControlProcesos extends \yii\db\ActiveRecord
                     # code...
                     break;
             }   
- 
-        $txtMes = 'Octubre';
         $txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$variableid.' and tipo_corte like "%'.$txtMes.'%" and anulado ='.$varCero.'')->queryScalar();
         $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'  and anulado = 0")->queryScalar();
         $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'  and anulado = 0")->queryScalar();    
@@ -342,10 +325,8 @@ class ControlProcesos extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
          
-        // Comentario pero proceso no eliminados$varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-	$varfechainicio = '2021-10-01';
-        // Comentario pero proceso no eliminados$varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-	$varfechafin = '2021-11-05';
+        $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
         $data = Yii::$app->db->createCommand("select sum(cantidadjustificar) from tbl_plan_escalamientos where anulado = 0 and tecnicolider = $opcion and Estado = 1 and fechacreacion between '$varfechainicio' and '$varfechafin'")->queryScalar();
 

@@ -222,7 +222,7 @@ class TmptableroexperienciasController extends Controller {
                 $out = [];
                 $html = "";
                 if (isset($_POST["tab_id"]) && !empty($_POST["tab_id"]) && is_numeric($_POST["tab_id"])) {
-                    $out = \app\models\Tableroproblemadetalles::getAllProblemsDetByEnfoqueID($_POST["tab_id"]);
+                    $out = \app\models\Tableroproblemadetalles::getAllProblemsDetByEnfoqueID(Yii::$app->request->post("tab_id"));
                     if (count($out) > 0) {
                         foreach ($out as $value) {
                             $html .= "<option value='" . $value['id'] . "'>" . $value['name']

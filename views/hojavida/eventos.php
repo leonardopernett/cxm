@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-info" style="font-size: 15px; color: #FFC72C;"></i> Ingresar Registros: </label>
+        <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 15px; color: #FFC72C;"></em> Ingresar Registros: </label>
       
         <div class="row">
           <div class="col-md-6">
@@ -158,7 +158,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-md-4">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
         <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -169,19 +169,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-md-4">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Guardar Evento: </label>
+        <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Guardar Evento: </label>
         <?= Html::submitButton(Yii::t('app', 'Guardar'),
                                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                     'data-toggle' => 'tooltip',
                                     'title' => 'Guardar Evento',
                                     'onclick' => 'validar();']) 
         ?> 
-      </div>  
-    </div>
-
-    <div class="col-md-4">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></i> Exportar Eventos: </label>
       </div>  
     </div>
 
@@ -192,12 +186,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="capaLista" style="display: inline;">
   <div class="row">
     <div class="col-md-12">
-      <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></i> Lista de Eventos: </label>
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></em> Lista de Eventos: </label>
         <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
-          <caption></caption>
+          <caption><?php echo "Total Resultados: ".count($dataProvider); ?></caption>
             <thead>
                 <tr>
-                  <th scope="col" colspan="6" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de eventos') ?></label></th>
+                  <th scope="col" colspan="7" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Listado de eventos') ?></label></th>
                 </tr>
                 <tr>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Evento') ?></label></th>
@@ -206,6 +201,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Inicio') ?></label></th>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Fin') ?></label></th>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Comentarios') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Eliminar') ?></label></th>
                 </tr>
             </thead>
             <tbody>
@@ -221,12 +217,16 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td><label style="font-size: 12px;"><?php echo  $value['fecha_evento_inicio']; ?></label></td>
                   <td><label style="font-size: 12px;"><?php echo  $value['fecha_evento_fin']; ?></label></td>
                   <td><label style="font-size: 12px;"><?php echo  $value['asistencia']; ?></label></td>
+                  <td class="text-center">
+                    <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarevento','ideventos' => $value['hv_ideventos']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                  </td>
                 </tr>
               <?php
                 }
               ?>
             </tbody>
         </table>
+      </div>      
     </div>
   </div>
 </div>

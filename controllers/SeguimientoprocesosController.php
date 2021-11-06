@@ -107,9 +107,6 @@ class SeguimientoprocesosController extends \yii\web\Controller {
 			$dataProvider2 = null;
 			$idValorador = null;
 			$nomValorador = null;
-			$cantValor = null;
-			$varRealizadas = null;
-			$varCumplimiento = null;
 
 			$varMes = date("n");
 			$txtMes = null;
@@ -239,20 +236,14 @@ $varMes = date("n");
 
 			$model = new Seguimientorendimiento();
 			$sessiones = Yii::$app->user->identity->id;
-			$query = new Query();
 
 			$nameVar = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id ='.$idValorador.'')->queryScalar();
 
-			//$varName = Yii::$app->db->createCommand("select tipo_corte from tbl_control_procesos where evaluados_id = $varName and anulado = 0")->queryScalar();
-			//var_dump($varNametc);
-//return;
 			$varidtc = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where tipocortetc like '$varName' and anulado = 0")->queryScalar();
 
 			$formData = Yii::$app->request->post();
 
 			if ($model->load($formData)) {
-				//var_dump($model);
-				//return;
 				if ($model->save()) {
 						Yii::$app->getsession()->setFlash('message','Registro agregado correctamente');
 
@@ -443,8 +434,6 @@ $varMes = date("n");
 
          	$dataFF = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$querys' and anulado = 0")->queryScalar();
 		
-			//$dataFI = date('2018-08-21'); 
-			//$dataFF = date('2018-08-30'); 
 
 			
 			$querys =  new Query;
@@ -475,8 +464,6 @@ $varMes = date("n");
 			$month = date('m');
         	$year = date('Y');
         	$day = date("d", mktime(0,0,0, $month+1, 0, $year));
-		//$fechainiC = date('2019-04-01');
-		//$fechafinC = date('2019-04-30');
         	$fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
         	$fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); 
 
@@ -583,7 +570,6 @@ $varMes = date("n");
 
 		$varCero = 0;
 			$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where anulado = 0 and responsable ='.$sessiones.' and tipo_corte like "%'.$txtMes.'%" and anulado ='.$varCero.'')->queryScalar(); 
-        	//var_dump($txtcorte);       	
         	$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte' and anulado = 0")->queryScalar();
         	$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte' and anulado = 0")->queryScalar();  
 
@@ -616,7 +602,6 @@ $varMes = date("n");
 		*/
 		public function actionDimensiones(){
 			$model = new ControlParams();
-			$sessiones = Yii::$app->user->identity->id;
 			$dataProvider = $model->Obtenerdimensiones(Yii::$app->request->post());			
 
 			return $this->render('_formdimensiones', [
@@ -657,8 +642,6 @@ $varMes = date("n");
         	$year = date('Y');
         	$day = date("d", mktime(0,0,0, $month+1, 0, $year));			
 
-		//$fechainiC = date('2019-04-01 00:00:00');
-        	//$fechafinC = date('2019-04-30 23:59:59'); 
 
         	$fechainiC = date('Y-m-d 00:00:00', mktime(0,0,0, $month, 1, $year));
         	$fechafinC = date('Y-m-d 23:59:59', mktime(0,0,0, $month, $day, $year)); 
@@ -871,20 +854,8 @@ $varMes = date("n");
 
 		$month = date('m');
         	$year = date('Y');
-        	$day = date("d", mktime(0,0,0, $month+1, 0, $year));			
 
-			//$fechainiC = date('2018-08-22 00:00:00');
-        	//$fechafinC = date('2018-08-30 23:59:59'); 
 
-        	//$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where responsable ='.$sessiones.' and tipo_corte like "%'.$txtMes.'%"')->queryScalar(); 
-        	//var_dump($txtcorte);       	
-        	//$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
-        	//$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();  
-
-        	//$fechainiC = date('Y-m-d 00:00:00', mktime(0,0,0, $month, 2, $year));
-        	//var_dump($fechainiC);
-        	//$fechafinC = date('Y-m-d 23:59:59', mktime(0,0,0, $month, $day + 1, $year)); 
-        	//var_dump($fechafinC);
 
 	        $rol =  new Query;
 	        $rol     ->select(['tbl_roles.role_id'])
@@ -900,7 +871,6 @@ $varMes = date("n");
 	        if($roles == "270")
 	        {
 	        	$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where anulado = 0 and tipo_corte like "%'.$txtMes.'%"')->queryScalar(); 
-			        	//var_dump($txtcorte);       	
 			$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
 			$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar(); 
 
@@ -931,7 +901,6 @@ $varMes = date("n");
 	        	if ($roles == "276") {
 	        		if ($sessiones == "70") {
 	        			$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where anulado = 0  and tipo_corte like "%'.$txtMes.'%" and tipo_corte like "%Bancolombia%"')->queryScalar(); 
-			        	//var_dump($txtcorte);       	
 			        	$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
 			        	$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar(); 
 
@@ -974,7 +943,6 @@ $varMes = date("n");
 	        		else
 	        		{
 	        			$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where anulado = 0 and responsable ='.$sessiones.' and tipo_corte like "%'.$txtMes.'%"')->queryScalar(); 
-			        	//var_dump($txtcorte);       	
 			        	$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
 			        	$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar(); 
 

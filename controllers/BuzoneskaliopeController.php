@@ -63,7 +63,6 @@ use app\models\Formularios;
 
       $form = Yii::$app->request->post();
       if ($model->load($form)) {
-          // $varpcrc = $model->arbol_id;
           $varpcrc = 18;
           $varfecha = explode(" ", $model->fechacreacion);
           $varFechaInicio = $varfecha[0];
@@ -123,7 +122,6 @@ use app\models\Formularios;
 
     public function actionTranscripcionkaliope(){
       $txtvaridruta = Yii::$app->request->GET("txtvaridruta");
-      $txtconnid = '04321012431610129768';
 
       ob_start();
       $curl = curl_init();
@@ -160,8 +158,6 @@ use app\models\Formularios;
         die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
       }
       
-      // var_dump($response[0]['transcription']);
-      // var_dump($response[0]['valencia']);
 
       $varrespuesta = 'Transcripcion: '.$response[0]['transcription'].'  *****  Valencia emocional: '.$response[0]['valencia'];
       
@@ -169,7 +165,6 @@ use app\models\Formularios;
     }
 
     public function actionGenerarlogs(){
-      // $vartextto = Yii::$app->request->GET("vartextto");
       ini_set("max_execution_time", "900");
       ini_set("memory_limit", "1024M");
       ini_set( 'post_max_size', '1024M' );
@@ -216,7 +211,6 @@ use app\models\Formularios;
         ob_clean();
 
         if (!$response) {
-          // die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
           $vartexto = "Error al buscar transcipcion";
           $varvalencia = "Error al buscar valencia emocioanl";
         }
@@ -224,7 +218,6 @@ use app\models\Formularios;
         $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
 
         if (count($response) == 0) {
-          // die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
           $vartexto = "Transcripcion no encontrada";
           $varvalencia = "Valencia emocional no encontrada";
         }else{
@@ -232,7 +225,7 @@ use app\models\Formularios;
           $varvalencia = $response[0]['valencia'];
 
           if ($varvalencia == "NULL") {
-            $varvalencia = "Buzón sin información";
+            $varvalencia = "BuzÃ³n sin informaciÃ³n";
           }
 
           Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[

@@ -121,7 +121,6 @@ class RolesController extends Controller {
             public function actionDelete($id) {
                 $this->findModel($id)->delete();
                 return $this->redirect(Yii::$app->session['rolPage']);
-                //return $this->redirect(['index']);
             }
 
             /**

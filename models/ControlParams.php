@@ -88,20 +88,7 @@ class ControlParams extends \yii\db\ActiveRecord
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
-        // if (!($this->load($params) && $this->validate())) {
-        //      return $dataProvider;
-        // }
-
-        // $query->andFilterWhere([
-        //     'evaluados_id' => $this->evaluados_id,
-        // ]);
-
-        // $query->andFilterWhere(['like', 'evaluados_id', $this->evaluados_id]);
-
         return $dataProvider;
-        
-
     }
 
 
@@ -172,17 +159,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
- 	// $fechainiC = date('2019-04-01');
-        // $fechafinC = date('2019-04-30');
         $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
         $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));  
-  
-        //$query = ControlParams::find()->distinct()
-        //            ->select(['tbl_control_params.arbol_id','tbl_arbols.name'])
-        //            ->joinWith('arboles')
-        //            ->where(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-        //            //-> where(['responsable' => Yii::$app->user->identity->id]);
-
         $txtvarBanco = 'Bancolombia';
         $txtvarDirectv = 'Directv';
         $txtFechaIniBank = Yii::$app->db->createCommand('select fechainiciotc from tbl_tipocortes where anulado = 0 and tipocortetc like "%'.$txtvarBanco.'%"')->queryScalar();
@@ -670,8 +648,6 @@ class ControlParams extends \yii\db\ActiveRecord
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
- 	// $fechainiC = date('2019-04-01');
-        // $fechafinC = date('2019-04-30');
         $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
         $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));  
 
@@ -692,8 +668,6 @@ class ControlParams extends \yii\db\ActiveRecord
 
     public function getRealizadascp($opcion) {
         $varRealizadas = $opcion;
- 	// $fechainiC = date('2019-04-01');
-        // $fechafinC = date('2019-04-30');    
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
@@ -718,8 +692,6 @@ class ControlParams extends \yii\db\ActiveRecord
 
     public function getCumplimientocp($opcion){
         $varCumplimiento = $opcion;
- 	// $fechainiC = date('2019-04-01');
-        // $fechafinC = date('2019-04-30'); 
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
@@ -764,10 +736,7 @@ class ControlParams extends \yii\db\ActiveRecord
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
         $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); 
- 	// $fechainiC = date('2019-04-01');
-        // $fechafinC = date('2019-04-30');
-
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
         $query = ControlParams::find()
                     ->joinWith('arboles')
                     ->where(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC])
@@ -896,8 +865,6 @@ class ControlParams extends \yii\db\ActiveRecord
 
     public function getRealizadasd($opcion) {
         $varRealizadas = $opcion;
- 	// $fechainiC = date('2019-04-01');
-        // $fechafinC = date('2019-04-30'); 
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
@@ -922,8 +889,6 @@ class ControlParams extends \yii\db\ActiveRecord
 
     public function getCumplimientod($opcion){
         $varCumplimiento = $opcion;
- 	// $fechainiC = date('2019-04-01');
-        // $fechafinC = date('2019-04-30'); 
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));

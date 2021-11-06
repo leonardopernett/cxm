@@ -2555,7 +2555,7 @@ class BasesatisfaccionController extends Controller {
                 $varConnids = $modelBase->connid;
                 $vartexto = null;
                 $varvalencia = null;
-                $varcontenido = null;
+                $varcontenido = 0;
                 
                     ob_start();
                     $curl = curl_init();
@@ -3705,6 +3705,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $data->esAsesor = true;
                 $vartexto = null;
                 $varvalencia = null;
+                $varcontenido = 0;
+                $varConnids = null;
                 return $this->render('showformulariosatisfaccion', [
                             'data' => $data,
                             'view' => $view,
@@ -3712,6 +3714,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'banderaescalado' => false,
                             'vartexto' => $vartexto,
                             'varvalencia' => $varvalencia,
+                            'varcontenido' => $varcontenido,
+                            'varConnids' => $varConnids,
                 ]);
             }
 

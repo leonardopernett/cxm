@@ -73,7 +73,7 @@ class PlanvaloracionController extends \yii\web\Controller {
 			$nameVal = null;
 
 			if (Yii::$app->request->get('id')) {
-				$id_params = Html::encode($_GET['id']);
+				$id_params = Html::encode(Yii::$app->request->get('id'));
 
 				if ((int) $id_params) {
 					$table = ControlProcesos::findOne($id_params);

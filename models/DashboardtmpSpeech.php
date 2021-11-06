@@ -72,7 +72,6 @@ class DashboardtmpSpeech extends \yii\db\ActiveRecord
 
         $FechaActual = date("Y-m-d");
 
-        $varIndicador = "Indicador";
         $varVariable = "Variable";   
         $varMotivo = "Detalle motivo contacto"; 
 
@@ -191,12 +190,6 @@ class DashboardtmpSpeech extends \yii\db\ActiveRecord
         $message = "<html><body>";
         $message .= "<h3>Se ha realizado el envio correcto de las valoraciones.</h3>";
         $message .= "</body></html>";
-
-        // var_dump($sessiones);
-        // var_dump($varParam3);
-        // var_dump($varParam1);
-        // var_dump($varParam2);
-        // var_dump($dataListCall);
 
         Yii::$app->mailer->compose()
                         ->setTo($varParam4)

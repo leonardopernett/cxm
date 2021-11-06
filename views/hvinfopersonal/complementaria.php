@@ -117,7 +117,6 @@
         .hb{
           height:100px !important;
           overflow-y:scroll;
-          height:20vh;
         }
 
 
@@ -255,7 +254,7 @@
                         <input placeholder="" name="nombre" value="<?= $hijos['nombre'] ?>"  class="form-control hb"> 
 
                       </div>
-                      <small><b>Escriba los nombres de los hijos separado con  comas <b>( , )</b> en caso tal tenga</b></small>
+                      <small><strong>Escriba los nombres de los hijos separado con  comas <strong>( , )</strong> en caso tal tenga</b></small>
                     </div>       
 
                 </div>
@@ -280,7 +279,7 @@
                             <option value="Emprendedor" <?php if($usuario['estilosocial'] === "Emprendedor") echo 'selected' ?> >Emprendedor</option>
                             <option value="Afable" <?php if($usuario['estilosocial'] === "Afable") echo 'selected' ?> >Afable</option>
                             <option value="Expresivo" <?php if($usuario['estilosocial'] === "Expresivo") echo 'selected' ?> >Expresivo</option>
-                            <option value="Sin información" <?php if($usuario['estilosocial'] === "Sin información") echo 'selected' ?> >Sin informaci&oacute;n</option>
+                            <option value="Sin informaciÃ³n" <?php if($usuario['estilosocial'] === "Sin informaciÃ³n") echo 'selected' ?> >Sin informaci&oacute;n</option>
 
                           </select>
                       </div>

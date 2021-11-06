@@ -233,7 +233,6 @@ class Arboles extends \yii\db\ActiveRecord {
      */
     public function getArbolesByRoles() {
 
-        //$rol = Yii::$app->user->identity->rolId;
         $grupo = Yii::$app->user->identity->grupousuarioid;
         return ArrayHelper::map(Arboles::find()
                                 ->joinWith('permisosGruposArbols')

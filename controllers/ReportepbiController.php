@@ -67,7 +67,6 @@ use app\models\ControlProcesosEquipos;
 
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
     $listWorkspaces = $model->filter_user_permits('workspace',$listWorkspaces, $sessiones);
-   // $listaworkspaces = ['1' => 'workspaces1','2' => 'workspaces2','3' => 'workspaces3','4' => 'workspaces4'];
 
 
             return $this->render('reporte', [
@@ -94,9 +93,7 @@ use app\models\ControlProcesosEquipos;
       }
      
       public function actionPermisoreporteusua(){
-        $varnombreareat = Yii::$app->request->post("workspace");
         $model = new ControlProcesosEquipos();
-        $sessiones = Yii::$app->user->identity->id;
   
         die(json_encode($model));
       }
@@ -130,7 +127,6 @@ use app\models\ControlProcesosEquipos;
         $vardataper = (array)json_decode($dataper);
         $varnombreareat = $workspace;
         $varnombrerep = $nombrerepor;
-        //$vardataper = $dataper;
   
         return $this->render('permisocolabordor',[
           'dataper'=>$vardataper, 
@@ -161,15 +157,12 @@ use app\models\ControlProcesosEquipos;
         
         Yii::$app->db->createCommand("delete from tbl_permisos_reportes_powerbi where id_usuario = '$varusua' and id_reporte = '$varIdrepor' and id_workspace = '$varAreatrab'")->execute();
        
-        $rta = 1;
         die(json_encode($model));
     } 
 
      public function actionReporteframe(){
       
-      $sessiones = Yii::$app->user->identity->id; 
-      $rutaframe = $_POST["rutaframe"];
-     // $rutaframe = "https://app.powerbi.com/view?r=eyJrIjoiNzAyMWFjY2QtYTBkMC00ODRlLWJjZjYtNDljODdkMzA3NmQ1IiwidCI6IjhkMGNjZmQzLWZhZDctNDhiNy04MzQ3LWE4NWExMzg2MzBmOSIsImMiOjh9";
+      $rutaframe = Yii::$app->request->post("rutaframe");
 
       return $this->render('reporteframe',[
         'rutaframe' => $rutaframe,
@@ -207,12 +200,9 @@ use app\models\ControlProcesosEquipos;
 
   // FUNCTION CREATE WORKSPACE
   public function actionCreate_workspace(){
- //   helper_check_permit( 88 );
     $model = new ReportesAdministracion();
-    $sessiones = Yii::$app->user->identity->id;
-    $workspace_name = $_POST["workspace_name"];
+    $workspace_name = Yii::$app->request->post("workspace_name");
 
-   // $workspace_name = $_POST["workspace_name"];
     
     // Obtener un access token de azure AD para consumir API
     $accessToken = $model->getAzureAccessToken();
@@ -224,13 +214,9 @@ use app\models\ControlProcesosEquipos;
     $result = $model->create_workspace($accessToken, $workspace_name);
     $res= 0;
     if($result !== TRUE){
-      //die( json_encode( array("status"=>"0","data"=>"No se ha logrado autenticar con Azure AD. Contacte un administrador") ) );
       die( json_encode( $res));
     }
     
-    //$log_data = array( "id_logs_grupos"=> 75 , "id_usuario" => $sessiones, "datos" => json_encode(array("Nombre del workspace"=>$workspace_name)),  "ip" => $_SERVER["REMOTE_ADDR"] );
-    //@add_log($log_data);
-    //die( json_encode( array("status"=>"1","data"=>"Area de trabajo creada correctamente") ) );
     $res=1;
     die( json_encode( $res));
   }
@@ -242,7 +228,7 @@ use app\models\ControlProcesosEquipos;
     $model = new ReportesAdministracion();
     $sessiones = Yii::$app->user->identity->id;
     // Obtener el ID del workspace para consumir sus reportes
-    $workspace_id = $_POST["workspace_id"];
+    $workspace_id = Yii::$app->request->post("workspace_id");
     // Inicializar access token
     $accessToken = "";
 
@@ -263,10 +249,6 @@ use app\models\ControlProcesosEquipos;
     
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
     $reports = $model->filter_user_permits('report',$reports,$sessiones); 
-   /* $reporte1 = $workspace_id . "rep1";
-   $reporte2 = $workspace_id . "rep2";
-    
-    $reports = [$reporte1, $reporte2];*/
     
 
     die(json_encode( array("status"=>"1","data"=>$reports) ));
@@ -279,8 +261,8 @@ use app\models\ControlProcesosEquipos;
   public function actionSearch_report(){
     $model = new ReportesAdministracion();
     // Obtener el ID del workspace para consumir sus reportes
-    $report_id = $_POST["report_id"];
-    $workspace_id = $_POST["workspace_id"];
+    $report_id = Yii::$app->request->post("report_id");
+    $workspace_id = Yii::$app->request->post("workspace_id");
 
     // Validar ID del workspace indicado por el cliente
     if(!isset($workspace_id) || empty($workspace_id)){
@@ -301,9 +283,6 @@ use app\models\ControlProcesosEquipos;
     // Obtener embed token
     $result = $model->search_report($accessToken, $workspace_id, $report_id);
     die( json_encode( array("status"=>"1","data"=>$result) ) );
-  /*  return $this->render('reporteframe',[
-      'rutaframe' => $$result,
-      ]);*/
 
   }
  // FUNCTION SEARCH AND SHOW A REPORTEND
@@ -311,7 +290,7 @@ use app\models\ControlProcesosEquipos;
   //  FUNCTION SEARCH USER PERMITS
   public function search_user_permits (){
     $model = new ReportesAdministracion();
-    $reporte = $_POST["reporte"];
+    $reporte = Yii::$app->request->post("reporte");
 
     $get_users = $model->search_user_permits($reporte);
     if(!$get_users){
@@ -326,9 +305,9 @@ use app\models\ControlProcesosEquipos;
     $model = new ReportesAdministracion();
     $sessiones = Yii::$app->user->identity->id;
 
-    $list_users = json_decode(($_POST["list_users"]),true);
-    $reporte = $_POST["reporte"];
-    $workspace = $_POST["workspace"];
+    $list_users = json_decode((Yii::$app->request->post("list_users")),true);
+    $reporte = Yii::$app->request->post("reporte");
+    $workspace = Yii::$app->request->post("workspace");
     $id_users = array_column($list_users,"id_usuario");
 
     $save_permits = $model->save_report_user_permits($list_users,$reporte,$workspace);
@@ -359,10 +338,10 @@ use app\models\ControlProcesosEquipos;
    // helper_check_permit( 88 );
     // TIPO 1: ELIMINAR REPORTE
     // TIPO 2: DUPLICAR REPORTE EN UN AREA DE TRABAJO
-    $tipo = $_POST["tipo"];
-    $reporte = $_POST["reporte"];
-    $workspace = $_POST["workspace"];
-    $new_name_report = $_POST["new_name_report"];
+    $tipo = Yii::$app->request->post("tipo");
+    $reporte = Yii::$app->request->post("reporte");
+    $workspace = Yii::$app->request->post("workspace");
+    $new_name_report = Yii::$app->request->post("new_name_report");
     $info_log["id_user"] = $sessiones;
 
     // Obtener un access token de azure AD para consumir API
@@ -398,24 +377,16 @@ use app\models\ControlProcesosEquipos;
   // FUNCTION DELETE WORKSPACE
   public function actionDelete_workspace (){
     $model = new ReportesAdministracion();
-    $sessiones = Yii::$app->user->identity->id;
-   // helper_check_permit( 88 );   
-    $workspace = $_POST["workspace"];
-    //$workspace = $_POST["workspace"];
+    $workspace = Yii::$app->request->post("workspace");
     // Obtener un access token de azure AD para consumir API
 
     $accessToken = $model->getAzureAccessToken();
     $res=0;
     $delete_workspace = $model->delete_workspace($workspace,$accessToken);
     if(!$delete_workspace){
-      //die(json_encode( array("status"=>"0","data"=>"Error al eliminar este workspace") ));
       die(json_encode($res));
     }
 
-    ////$log_data = array( "id_logs_grupos"=> 72 , "id_usuario" => $sessiones, "datos" => json_encode( array("name"=>$workspace["name"],"id"=>$workspace["id"] ) ),  "ip" => $_SERVER["REMOTE_ADDR"] );
-    ////@add_log($log_data);
-
-    //die( json_encode( array("status"=>"1","data"=>"Area de trabajo eliminada correctamente") ) );
     $res=1;
     die( json_encode($res) );
   }
@@ -423,12 +394,8 @@ use app\models\ControlProcesosEquipos;
 
   // FUNCTION SEARCH COLABORADORES WORKSPACE
   public function actionSearch_workspace_contributors (){
-   // helper_check_permit( 88 );
-   // $workspace = $this->input->post("workspace",true);
     $model = new ReportesAdministracion();
-    $sessiones = Yii::$app->user->identity->id;
-    $workspace = $_POST["workspace"];
-    //$accessToken = $this->reportes_administracion_model->getAzureAccessToken();
+    $workspace = Yii::$app->request->post("workspace");
     $accessToken = $model->getAzureAccessToken();
 
    $search_workspace_contributors = $model->search_workspace_contributors($workspace,$accessToken);
@@ -441,30 +408,19 @@ use app\models\ControlProcesosEquipos;
 
   // FUNCTION DELETE COLABORATOR WORKSPACE
   public function actionDelete_workspace_colaborator (){
-    //helper_check_permit( 88 );
     $model = new ReportesAdministracion();
-    $sessiones = Yii::$app->user->identity->id;
 
-    //$workspace = $this->input->post("workspace",true);
-    //$colaborator = $this->input->post("colaborator",true);    
-    $workspace = $_POST["workspace"];    
-    $colaborator = $_POST["colaborator"];
+    $workspace = Yii::$app->request->post("workspace");
+    $colaborator = Yii::$app->request->post("colaborator");
 
     $accessToken = $model->getAzureAccessToken();
-    //$accessToken = $this->reportes_administracion_model->getAzureAccessToken();
-    
-    //$delete_workspace_colaborator = $this->reportes_administracion_model->delete_workspace_colaborator($workspace,$accessToken,$colaborator);
     $delete_workspace_colaborator = $model->delete_workspace_colaborator($workspace,$accessToken,$colaborator);
     $res=0;
     if(!$delete_workspace_colaborator){
-      //die(json_encode( array("status"=>"0","data"=>"Error al intentar eliminar este colaborador") ));
       die(json_encode( $res));
     }
 
-   // $log_data = array( "id_logs_grupos"=> 76 , "id_usuario" => $this->session->userdata("id"), "datos" => json_encode( array("workspace"=>$workspace,"colaborator"=>$colaborator) ),  "ip" => $_SERVER["REMOTE_ADDR"] );
-    //@add_log($log_data);
     $res=1;    
-    //die( json_encode(array( "status"=>"1","data"=>"Colaborador eliminado correctamente" )) );
     die(json_encode($delete_workspace_colaborator));
 
   }
@@ -472,34 +428,19 @@ use app\models\ControlProcesosEquipos;
 
   // FUNCTION ADD WORKSPACE COLABORATOR
   public function actionAdd_workspace_colaborator(){
-    //helper_check_permit( 88 );
-
-    /*$colaborator = $this->input->post("colaborator",true);
-    $workspace = $this->input->post("workspace",true);
-    $accessToken = $this->reportes_administracion_model->getAzureAccessToken();*/
     $model = new ReportesAdministracion();
-    $sessiones = Yii::$app->user->identity->id;
 
-    //$workspace = $this->input->post("workspace",true);
-    //$colaborator = $this->input->post("colaborator",true);    
-    $workspace = $_POST["workspace"];
-    //$workspace = '0332fe05-1dc3-4b06-8060-5b93ac326dff';    
-    $colaborator = $_POST["colaborator"];
-    //$colaborator = 'rdfigueroao@grupokonecta.com.co';
+    $workspace = Yii::$app->request->post("workspace");
+    $colaborator = Yii::$app->request->post("colaborator");
     $accessToken = $model->getAzureAccessToken();
 
-    //$add_workspace_colaborator = $this->reportes_administracion_model->add_workspace_colaborator($workspace,$accessToken,$colaborator);
     $add_workspace_colaborator = $model->add_workspace_colaborator($workspace,$accessToken,$colaborator);
     $res=0;
     if(!$add_workspace_colaborator){
-      //die(json_encode( array("status"=>"0","data"=>"Error al intentar agregar este colaborador") ));
       die(json_encode( $res));
     }
 
-    //$log_data = array( "id_logs_grupos"=> 77 , "id_usuario" => $this->session->userdata("id"), "datos" => json_encode( array("workspace"=>$workspace,"colaborator"=>$colaborator) ),  "ip" => $_SERVER["REMOTE_ADDR"] );
-    //@add_log($log_data);
     $res=1;
-    //die( json_encode(array( "status"=>"1","data"=>"Colaborador agregado correctamente" )) );
     die(json_encode($add_workspace_colaborator));
 
   }

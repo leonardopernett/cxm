@@ -32,13 +32,11 @@ class ErroressatuController extends Controller {
      */
     public function actionIndex() {
         $searchModel = new ErroresSatuSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         if (Yii::$app->request->post()) {
             Yii::$app->session['rptFilterErroressatu'] = Yii::$app->request->post();
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->session['rptFilterErroressatu']);
-            //$models = $dataProvider->getModels();
         }
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -155,7 +153,6 @@ class ErroressatuController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->session['rptFilterErroressatu']);
-            //$models = $dataProvider->getModels();
         }
         Yii::$app->session->setFlash('success', Yii::t('app', 'Eliminación exitosa'));
         return $this->render('index', [
