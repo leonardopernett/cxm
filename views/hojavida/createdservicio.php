@@ -12,7 +12,7 @@ use yii\bootstrap\Modal;
 use app\models\ControlProcesosPlan;
 use yii\db\Query;
 
-$this->title = 'Hoja de Vida - Pais & Ciudad';
+$this->title = 'Hoja de Vida - Permisos';
 $this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-12">'
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <style>
-    .card1 {
+	.card1 {
             height: auto;
             width: auto;
             margin-top: auto;
@@ -53,7 +53,6 @@ $this->params['breadcrumbs'][] = $this->title;
             text-align: left;    
     }
 
-
     .col-sm-6 {
         width: 100%;
     }
@@ -64,39 +63,26 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
-
-
-<div class="capaPrincipal" style="display: inline;">
-  <div class="row">
-
-    <div class="col-md-12">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Registro de Paises: </label>
-        <?= $form->field($modelpais, 'pais', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idnombrepais', 'placeholder'=>'Ingresar Nombre del Pais'])?>
-          
-        <?= Html::submitButton(Yii::t('app', 'Guardar Pais'),
-                                ['class' => $modelpais->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-                                    'data-toggle' => 'tooltip',
-                                    'title' => 'Guardar pais',
-                                    'onclick' => 'validarpais();']) 
-        ?>
-      </div>
-    </div>
-
-  </div>
-</div>
-<?php $form->end() ?>
-
-<script type="text/javascript">
-  function validarpais(){
-    var varidnombrepais = document.getElementById("idnombrepais").value;
-
-    if (varidnombrepais == "") {
-        event.preventDefault();
-        swal.fire("¡¡¡ Advertencia !!!","Campo vacio, debe ingresar un pais.","warning");
-        return;
-    }
-  };
-</script>
+<?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+	<div class="capaPrincipal" style="display: inline;">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card1 mb">
+					<label><em class="fas fa-cogs" style="font-size: 20px; color: #2CA5FF;"></em> Seleccionar Permisos Servicios & Pcrc: </label>
+					<?=  $form->field($model2, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+	                                          [
+	                                              'prompt'=>'Seleccionar...',
+	                                              'multiple' => true,
+	                                              'size'=>"6",
+	                                          ]
+	                                                      )->label(''); 
+	                ?>
+	                <br>
+	                <?= Html::submitButton('Agregar Servicios', ['class' => $model2->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'btn_submit', 'onclick'=>'cargarpage();'] ) ?>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php $form->end() ?> 

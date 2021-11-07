@@ -5,24 +5,23 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "tbl_hojavida_datapcrc".
+ * This is the model class for table "tbl_hojavida_asignareventos".
  *
- * @property integer $hv_idpcrc
+ * @property integer $hv_idasignareventos
  * @property integer $hv_idpersonal
- * @property integer $id_dp_cliente
- * @property string $cod_pcrc
+ * @property integer $hv_ideventos
  * @property integer $anulado
  * @property string $fechacreacion
  * @property integer $usua_id
  */
-class HojavidaDatapcrc extends \yii\db\ActiveRecord
+class HojavidaAsignareventos extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tbl_hojavida_datapcrc';
+        return 'tbl_hojavida_asignareventos';
     }
 
     /**
@@ -31,9 +30,8 @@ class HojavidaDatapcrc extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['hv_idpersonal', 'anulado', 'usua_id'], 'integer'],
-            [['fechacreacion'], 'safe'],
-            [['cod_pcrc'], 'string', 'max' => 100]
+            [['hv_idpersonal', 'hv_ideventos', 'anulado', 'usua_id'], 'integer'],
+            [['fechacreacion'], 'safe']
         ];
     }
 
@@ -43,9 +41,9 @@ class HojavidaDatapcrc extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'hv_idpcrc' => Yii::t('app', ''),
+            'hv_idasignareventos' => Yii::t('app', ''),
             'hv_idpersonal' => Yii::t('app', ''),
-            'cod_pcrc' => Yii::t('app', ''),
+            'hv_ideventos' => Yii::t('app', ''),
             'anulado' => Yii::t('app', ''),
             'fechacreacion' => Yii::t('app', ''),
             'usua_id' => Yii::t('app', ''),

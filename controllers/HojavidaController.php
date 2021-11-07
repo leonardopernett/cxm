@@ -33,7 +33,11 @@ use app\models\HojavidaDatagerente;
 use app\models\HojavidaDatacivil;
 use app\models\HvDominancias;
 use app\models\HvEstilosocial;
-
+use app\models\HvHobbies;
+use app\models\HvGustos;
+use app\models\HojavidaPermisosacciones;
+use app\models\HojavidaPermisoscliente;
+use app\models\HojavidaDatacomplementos;
 
 
   class HojavidaController extends Controller {
@@ -42,7 +46,7 @@ use app\models\HvEstilosocial;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv'],
+              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion'],
               'rules' => [
                 [
                   'allow' => true,
@@ -67,8 +71,22 @@ use app\models\HvEstilosocial;
     } 
    
     public function actionIndex(){
+      $sesiones = Yii::$app->user->identity->id;
 
-      $dataProviderhv = Yii::$app->db->createCommand("
+      $rol =  new Query;
+      $rol     ->select(['tbl_roles.role_id'])
+                  ->from('tbl_roles')
+                  ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                              'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+                  ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                              'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
+                  ->where('tbl_usuarios.usua_id = '.$sesiones.'');                    
+      $command = $rol->createCommand();
+      $roles = $command->queryScalar();
+
+      if ($roles == "270") {
+
+        $dataProviderhv = Yii::$app->db->createCommand("
         SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrátegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
         INNER JOIN tbl_hojavida_datalaboral dl ON 
           dl.hv_idpersonal = dp.hv_idpersonal
@@ -76,12 +94,44 @@ use app\models\HvEstilosocial;
           hp.hv_idpais = dp.hv_idpais
         LEFT JOIN tbl_hojavida_dataacademica da ON 
           da.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_hojavida_datacuenta dc ON 
+        LEFT JOIN tbl_hojavida_datapcrc dc ON 
           dc.hv_idpersonal = dp.hv_idpersonal
         LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
           pc.id_dp_clientes = dc.id_dp_cliente
+        WHERE
+          dp.anulado = 0
           GROUP BY dp.hv_idpersonal
         ")->queryAll();
+
+      }else{
+        $paramsuser = [':idsesion' => $sesiones ];
+        $varidclientes = Yii::$app->db->createCommand('
+          SELECT GROUP_CONCAT(id_dp_clientes SEPARATOR", ") servicios 
+            FROM tbl_hojavida_permisoscliente hp
+              WHERE   
+                hp.usuario_registro = :idsesion')->bindValues($paramsuser)->queryScalar(); 
+
+        $dataProviderhv = Yii::$app->db->createCommand("
+        SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrátegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+        INNER JOIN tbl_hojavida_datalaboral dl ON 
+          dl.hv_idpersonal = dp.hv_idpersonal
+        LEFT JOIN tbl_hv_pais hp ON 
+          hp.hv_idpais = dp.hv_idpais
+        LEFT JOIN tbl_hojavida_dataacademica da ON 
+          da.hv_idpersonal = dp.hv_idpersonal
+        LEFT JOIN tbl_hojavida_datapcrc dc ON 
+          dc.hv_idpersonal = dp.hv_idpersonal
+        LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
+          pc.id_dp_clientes = dc.id_dp_cliente
+        WHERE 
+          dc.id_dp_cliente IN ($varidclientes)
+            AND dp.anulado = 0
+          GROUP BY dp.hv_idpersonal
+        ")->queryAll();
+
+      }
+
+      
       
       return $this->render('index',[
         'dataProviderhv' => $dataProviderhv,
@@ -232,6 +282,7 @@ use app\models\HvEstilosocial;
       $model4 = new HojavidaDatapcrc();
       $model5 = new HojavidaDatadirector();
       $model6 = new HojavidaDatagerente();
+      $model7 = new HojavidaEventos();
 
 
       return $this->render('informacionpersonal',[
@@ -241,6 +292,7 @@ use app\models\HvEstilosocial;
         'model4' => $model4,
         'model5' => $model5,
         'model6' => $model6,
+        'model7' => $model7,
       ]);
     }
 
@@ -291,7 +343,7 @@ use app\models\HvEstilosocial;
                             ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
                             ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1") 
                             ->all();            
-          $valor = 0;
+          
                     
           foreach ($varListaCiudad as $key => $value) {
             echo "<option value='" . $value->documento_director. "'>" . $value->director_programa. "</option>";
@@ -305,7 +357,6 @@ use app\models\HvEstilosocial;
     }
 
     public function actionListargerentes(){
-      $txtAnulado = 0; 
       $txtId = Yii::$app->request->get('id');
 
       if ($txtId) {
@@ -319,8 +370,8 @@ use app\models\HvEstilosocial;
                           ->select(['tbl_proceso_cliente_centrocosto.documento_gerente','tbl_proceso_cliente_centrocosto.gerente_cuenta'])->distinct()
                             ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
                             ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1") 
-                            ->all();            
-          $valor = 0;
+                            ->all();           
+         
                     
           foreach ($varListaCiudad as $key => $value) {
             echo "<option value='" . $value->documento_gerente. "'>" . $value->gerente_cuenta. "</option>";
@@ -364,7 +415,7 @@ use app\models\HvEstilosocial;
                     'email' => $txtvaridemail,
                     'numero_movil' => $txtvaridnumeromovil,
                     'numero_fijo' => $txtvaridnumerooficina,
-                    'direccion_oficina' => $txtvaridnumerooficina,
+                    'direccion_oficina' => $txtvariddireccionoficiona,
                     'direccion_casa' => $txtvariddireccioncasa,
                     'hv_idpais' => $txtvaridpais,
                     'hv_idciudad' => $txtvarididciudad,
@@ -383,7 +434,6 @@ use app\models\HvEstilosocial;
     
     public function actionGuardarlaboral(){
       $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
-      $txtvarididentificacion = Yii::$app->request->get("txtvarididentificacion");
       $txtvaridrol = Yii::$app->request->get("txtvaridrol");
       $txtvaridantiguedad = Yii::$app->request->get("txtvaridantiguedad");
       $txtvaridfechainicio = Yii::$app->request->get("txtvaridfechainicio");
@@ -464,6 +514,21 @@ use app\models\HvEstilosocial;
       die(json_encode($txtrta));
     }
 
+    public function actionAplicareventos(){
+      $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
+      $txtvarlisteventos = Yii::$app->request->get("txtvarlisteventos");
+
+      Yii::$app->db->createCommand()->insert('tbl_hojavida_asignareventos',[
+                    'hv_ideventos' => $txtvarlisteventos,
+                    'hv_idpersonal' => $txtvarautoincrement,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute();   
+      
+      die(json_encode($txtrta));
+    }
+
     public function actionGuardarcuentas(){
       $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
       $txtvarid_dp_cliente = Yii::$app->request->get("txtvarid_dp_cliente");
@@ -493,7 +558,6 @@ use app\models\HvEstilosocial;
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
                     'hv_idpersonal' => $txtvarautoincrement,
-                    'id_dp_cliente' => $txtvarid_dp_cliente,
                     'ccdirector' => $vardirector,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
@@ -507,7 +571,6 @@ use app\models\HvEstilosocial;
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
                     'hv_idpersonal' => $txtvarautoincrement,
-                    'id_dp_cliente' => $txtvarid_dp_cliente,
                     'ccgerente' => $vargerente,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
@@ -519,16 +582,38 @@ use app\models\HvEstilosocial;
     }
 
     public function actionViewinfo($idinfo){
-      $model = new HojavidaDatapersonal();
-      $model2 = new HojavidaDatalaboral();
-      $model3 = new HojavidaDataacademica();
-      $model4 = new HojavidaDatacuenta(); 
+      $paramsinfo = [':varInfo' => $idinfo];
+      $dataProviderInfo = Yii::$app->db->createCommand('
+        SELECT 
+          dp.hv_idpersonal, dp.nombre_full AS NombreFull, dp.identificacion AS Identificacion,
+          dp.email AS Email, dp.numero_movil AS Movil, dp.numero_fijo AS Fijo, dp.direccion_oficina AS DireccioOficina,
+          dp.direccion_casa AS DireccionCasa, p.pais AS Pais, c.ciudad AS Ciudad, m.modalidad AS Modalidad,
+          if(dp.tratamiento_data = 1,"No","Si") AS TratamientoDatos, if(dp.suceptible = 1,"No","Si") AS Susceptible,
+          dp.indicador_satu AS IndicadorSatu, l.rol AS Rol, a.antiguedad AS Antiguedad, l.fecha_inicio_contacto AS FechaContacto,
+          l.nombre_jefe AS NombreJefe, l.cargo_jefe AS CargoJefe, l.trabajo_anterior AS TrabajoAnterior,
+          if(l.afinidad = 1,"Relación Directa","Relación de Interes") AS Afinidad,
+          if(l.tipo_afinidad = 1,"Decisor","No Decisor") AS TipoAfinidad, if(l.nivel_afinidad = 1,"Estratégio","Operativo") AS NivelAfinidad,
+          pc.id_dp_cliente AS IdCliente
+           FROM tbl_hojavida_datapersonal dp
+            INNER JOIN tbl_hv_pais p ON 
+              dp.hv_idpais = p.hv_idpais
+            INNER JOIN tbl_hv_ciudad c ON 
+              p.hv_idpais = c.pais_id
+            INNER JOIN tbl_hv_modalidad_trabajo m ON 
+              dp.hv_idmodalidad = m.hv_idmodalidad
+            INNER JOIN tbl_hojavida_datalaboral l ON 
+              dp.hv_idpersonal = l.hv_idpersonal
+            INNER JOIN tbl_hv_antiguedad_rol a ON 
+              l.hv_id_antiguedad = a.hv_id_antiguedad
+            INNER JOIN tbl_hojavida_datapcrc pc ON 
+              dp.hv_idpersonal = pc.hv_idpersonal
+            WHERE 
+              dp.hv_idpersonal = :varInfo
+            GROUP BY dp.hv_idpersonal               
+            ')->bindValues($paramsinfo)->queryAll();
 
       return $this->render('viewinfo',[
-        'model' => $model,
-        'model2' => $model2,
-        'model3' => $model3,
-        'model4' => $model4,
+        'dataProviderInfo' => $dataProviderInfo,
       ]);
     }
 
@@ -536,6 +621,8 @@ use app\models\HvEstilosocial;
       $model = new HojavidaDatacivil();
       $model1 = new HvDominancias();
       $model2 = new HvEstilosocial();
+      $model3 = new HvHobbies();
+      $model4 = new HvGustos();
 
       $dataProviderCivil = HojavidaDatacivil::find()
                             ->asArray()
@@ -549,6 +636,13 @@ use app\models\HvEstilosocial;
                               ->asArray()
                               ->all();
 
+      $dataProviderHobbies = HvHobbies::find()
+                              ->asArray()
+                              ->all();
+
+      $dataProvidergustos = HvGustos::find()
+                              ->asArray()
+                              ->all();
 
       return $this->render('complementoshv',[
         'model' => $model,
@@ -557,6 +651,11 @@ use app\models\HvEstilosocial;
         'dataProviderDominancias' => $dataProviderDominancias,
         'model2' => $model2,
         'dataProviderEstilo' => $dataProviderEstilo,
+        'model3' => $model3,
+        'dataProviderHobbies' => $dataProviderHobbies,
+        'model4' => $model4,
+        'dataProvidergustos' => $dataProvidergustos,
+
       ]);
     }
 
@@ -602,12 +701,469 @@ use app\models\HvEstilosocial;
 
     }
 
-    public function actionPermisoshv(){
+    public function actionIngresarhobbie(){
+      $txtvaridhobbies = Yii::$app->request->get("txtvaridhobbies");
 
+      Yii::$app->db->createCommand()->insert('tbl_hv_hobbies',[
+                    'text' => $txtvaridhobbies,                                     
+                ])->execute(); 
+
+      die(json_encode($txtvaridhobbies));
+
+    }
+
+    public function actionIngresargustos(){
+      $txtvaridgustos = Yii::$app->request->get("txtvaridgustos");
+
+      Yii::$app->db->createCommand()->insert('tbl_hv_gustos',[
+                    'text' => $txtvaridgustos,                                     
+                ])->execute(); 
+
+      die(json_encode($txtvaridgustos));
+
+    }
+
+    public function actionAsignarpermisos(){
+
+      $dataProviderPermisos = HojavidaPermisosacciones::find()
+                              ->asArray()
+                              ->all();
+
+
+      return $this->renderAjax('asignarpermisos',[
+        'dataProviderPermisos' => $dataProviderPermisos,
+      ]);
+    }
+
+
+    public function actionPermisoshv(){
+      $model = new HojavidaPermisosacciones(); 
+      $model2 = new HojavidaPermisoscliente();
+      $varUsuario = null;
+      $varNombre = null;
+
+      $form = Yii::$app->request->post();
+      if($model->load($form)){
+
+        $varUsuario = $model->usuario_registro;
+        $paramsdocumento = [':documento' => $varUsuario];
+        $varNombre = Yii::$app->db->createCommand('
+          SELECT usua_nombre FROM tbl_usuarios
+            WHERE usua_id = :documento
+            ')->bindValues($paramsdocumento)->queryScalar();
+          
+      }
+
+      return $this->render('permisoshv',[
+        'model' => $model,
+        'model2' => $model2,
+        'varUsuario' => $varUsuario,
+        'varNombre' => $varNombre,
+      ]);
+    }
+
+    public function actionEliminarpermisos($id) {      
+
+      $paramsdocumento = [':documento' => $id];
+      $idDoslist = Yii::$app->db->createCommand('
+          SELECT p.hv_idpermisocliente FROM tbl_hojavida_permisosacciones h 
+            INNER JOIN tbl_hojavida_permisoscliente p ON 
+              h.usuario_registro = p.usuario_registro
+            WHERE h.hv_idacciones = :documento
+            ')->bindValues($paramsdocumento)->queryAll();
+
+      if (count($idDoslist) != 0) {
+        foreach ($idDoslist as $key => $value) {
+          $idDos = $value['hv_idpermisocliente'];
+          $this->findModelDos($idDos)->delete(); 
+        }        
+      }
+
+      $this->findModel($id)->delete(); 
+           
+      return $this->redirect(['index']);
+    }
+
+    public function actionEliminarservicio($idDos,$id){
+      $this->findModelDos($idDos)->delete();
+
+      return $this->redirect(['editarpermisos','id'=>$id]);
+    }
+
+    public function actionEditarpermisos($id) {
+      $idacciones = $id;
+      $model = $this->findModel($id);
+
+      $paramsdocumento = [':idaccion' => $id];
+      $varNombre = Yii::$app->db->createCommand('
+          SELECT u.usua_nombre FROM tbl_usuarios u
+            INNER JOIN tbl_hojavida_permisosacciones hp ON 
+              u.usua_id = hp.usuario_registro
+            WHERE hp.hv_idacciones = :idaccion
+            ')->bindValues($paramsdocumento)->queryScalar();
+
+      $varUsuario = Yii::$app->db->createCommand('
+          SELECT hp.usuario_registro FROM tbl_hojavida_permisosacciones hp 
+            WHERE hp.hv_idacciones = :idaccion
+            ')->bindValues($paramsdocumento)->queryScalar();
+
+      $model2 = new HojavidaPermisoscliente();
+
+      $dataProviderClientes = Yii::$app->db->createCommand('
+          SELECT hp.hv_idpermisocliente, pc.cliente FROM tbl_proceso_cliente_centrocosto pc
+            INNER JOIN tbl_hojavida_permisoscliente hp ON 
+              pc.id_dp_clientes = hp.id_dp_clientes
+            INNER JOIN tbl_hojavida_permisosacciones pa ON 
+              hp.usuario_registro = pa.usuario_registro
+                WHERE pa.hv_idacciones = :idaccion
+             GROUP BY pc.id_dp_clientes
+            ')->bindValues($paramsdocumento)->queryAll();
+
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->render('editarpermisos',[
+          'model' => $model,
+          'varNombre' => $varNombre,
+          'varUsuario' => $varUsuario,
+          'model2' => $model2,
+          'dataProviderClientes' => $dataProviderClientes,
+          'idacciones' => $idacciones,
+        ]);
+      }
+
+
+      return $this->render('editarpermisos',[
+        'model' => $model,
+        'varNombre' => $varNombre,
+        'varUsuario' => $varUsuario,
+        'model2' => $model2,
+        'dataProviderClientes' => $dataProviderClientes,
+        'idacciones' => $idacciones,
+      ]);
+    }
+
+    protected function findModel($id) {
+      if (($model = HojavidaPermisosacciones::findOne($id)) !== null) {
+        return $model;
+      } else {
+        throw new NotFoundHttpException('El resultado de la bus no existe.');
+      }
+    }
+
+    protected function findModelDos($idDos) {
+      if (($model = HojavidaPermisoscliente::findOne($idDos)) !== null) {
+        return $model;
+      } else {
+        throw new NotFoundHttpException('El resultado de la bus no existe.');
+      }
+    }
+
+    public function actionPermisosaccion(){
+      $txtvarideliminar = Yii::$app->request->get("txtvarideliminar");
+      $txtvarideditar = Yii::$app->request->get("txtvarideditar");
+      $txtvaridmasiva = Yii::$app->request->get("txtvaridmasiva");
+      $txtvariddata = Yii::$app->request->get("txtvariddata");
+      $txtvaridver = Yii::$app->request->get("txtvaridver");
+      $txtvariduser = Yii::$app->request->get("txtvariduser");
+      $txtvarverdata = Yii::$app->request->get("txtvarverdata");
+
+      
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_permisosacciones',[
+                    'usuario_registro' => $txtvariduser,   
+                    'hveliminar' => $txtvarideliminar,
+                    'hveditar' => $txtvarideditar,
+                    'hvcasrgamasiva' => $txtvaridmasiva,
+                    'hvdatapersonal' => $txtvariddata,
+                    'hvverresumen' => $txtvaridver,
+                    'hvverdata' => $txtvarverdata,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                  
+                ])->execute();      
+
+      die(json_encode($txtvarguardarpermisos));
+    }
+
+    public function actionPermisosaccioncliente(){
+      $txtvaridservicio = Yii::$app->request->get("txtvaridservicio");
+      $txtvariduser = Yii::$app->request->get("txtvariduser");
+
+      $array_idclientes = count($txtvaridservicio);
+      for ($i=0; $i < $array_idclientes; $i++) { 
+        $variddpcliente = $txtvaridservicio[$i];
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_permisoscliente',[
+                    'usuario_registro' => $txtvariduser,  
+                    'id_dp_clientes' => $variddpcliente,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                  
+        ])->execute();
+      }       
+
+      die(json_encode($txtvariduser));
+    }
+
+    public function actionCreatedservicio($idusuario,$idaccion){
+      $model2 = new HojavidaPermisoscliente();
+      $varidusua = $idusuario;
+
+      $form = Yii::$app->request->post();
+      if($model2->load($form)){
+        
+        $array_idclientes = count($model2->id_dp_clientes);
+        for ($i=0; $i < $array_idclientes; $i++) { 
+          $variddpcliente = $model2->id_dp_clientes[$i];
+
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_permisoscliente',[
+                      'usuario_registro' => $varidusua,  
+                      'id_dp_clientes' => $variddpcliente,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,                                  
+          ])->execute();
+        }    
+
+        return $this->redirect(array('editarpermisos','id'=>$idaccion));
+      }
+
+      return $this->renderAjax('createdservicio',[
+        'model2' => $model2,
+        'varidusua' => $varidusua,
+      ]);
+    }
+
+    public function actionDeleteinfo($idinfo){
+      Yii::$app->db->createCommand()->update('tbl_hojavida_asignareventos',[
+                                          'anulado' => 1,
+                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_dataacademica',[
+                                          'anulado' => 1,
+                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
+                                          'anulado' => 1,
+                                      ],'hv_idpersonal ='.$idinfo.'')->execute(); 
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
+                                          'anulado' => 1,
+                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datalaboral',[
+                                          'anulado' => 1,
+                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datapcrc',[
+                                          'anulado' => 1,
+                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datapersonal',[
+                                          'anulado' => 1,
+                                      ],'hv_idpersonal ='.$idinfo.'')->execute();
+
+      return $this->redirect('index');
+    }
+
+    public function actionEditinfo($idinfo){
+      $model = HojavidaDatapersonal::findOne($idinfo);
+      $model2 = HojavidaDatalaboral::findOne($idinfo);
+      $model3 = new HojavidaDataacademica();
+      $model4 = new HojavidaDatapcrc();
+      $model5 = new HojavidaDatadirector();
+      $model6 = new HojavidaDatagerente();
+      $model7 = new HojavidaEventos();
+
+
+      return $this->render('editinfo',[
+        'model' => $model,
+        'model2' => $model2,
+        'model3' => $model3,
+        'model4' => $model4,
+        'model5' => $model5,
+        'model6' => $model6,
+        'model7' => $model7,
+        'idinfo' => $idinfo,
+      ]);
+    }
+
+    public function actionDeletepcrc($id,$idsinfo){
+      HojavidaDatapcrc::findOne($id)->delete();
+
+      return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+    }
+
+    public function actionDeletedirector($id,$idsinfo){
+      HojavidaDatadirector::findOne($id)->delete();
+
+      return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+    }
+
+    public function actionDeletegerente($id,$idsinfo){
+      HojavidaDatagerente::findOne($id)->delete();
+
+      return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+    }
+
+    public function actionDeleteacademico($id,$idsinfo){
+      HojavidaDataacademica::findOne($id)->delete();
+
+      return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+    }
+
+    public function actionDeleteeventos($id,$idsinfo){
+      HojavidaEventos::findOne($id)->delete();
+
+      return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+    }
+
+    public function actionDeletecomplementos($id,$idsinfo){
+      HojavidaDatacomplementos::findOne($id)->delete();
+
+      return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+    }
+
+    public function actionComplementosaccion($idsinfo){
+      $model = new HojavidaDatacomplementos();
+
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+      }
+
+      return $this->renderAjax('complementosaccion',[
+        'model' => $model,
+        'idsinfo' => $idsinfo,
+      ]);
+    }
+
+    public function actionActualizapersonal(){
+      $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
+      $txtvaridnombrefull = Yii::$app->request->get("txtvaridnombrefull");
+      $txtvarididentificacion = Yii::$app->request->get("txtvarididentificacion");
+      $txtvaridemail = Yii::$app->request->get("txtvaridemail");
+      $txtvaridnumeromovil = Yii::$app->request->get("txtvaridnumeromovil");
+      $txtvaridnumerooficina = Yii::$app->request->get("txtvaridnumerooficina");
+      $txtvaridmdoalidad = Yii::$app->request->get("txtvaridmdoalidad");
+      $txtvariddireccionoficiona = Yii::$app->request->get("txtvariddireccionoficiona");
+      $txtvariddireccioncasa = Yii::$app->request->get("txtvariddireccioncasa");
+      $txtvaridautoriza = Yii::$app->request->get("txtvaridautoriza");
+      $txtvaridpais = Yii::$app->request->get("txtvaridpais");
+      $txtvarididciudad = Yii::$app->request->get("txtvarididciudad");
+      $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");
+      $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
+
+      $txtrta = 0;
+      
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datapersonal',[
+                    'nombre_full' => $txtvaridnombrefull,
+                    'identificacion' => $txtvarididentificacion,
+                    'email' => $txtvaridemail,
+                    'numero_movil' => $txtvaridnumeromovil,
+                    'numero_fijo' => $txtvaridnumerooficina,
+                    'direccion_oficina' => $txtvariddireccionoficiona,
+                    'direccion_casa' => $txtvariddireccioncasa,
+                    'hv_idpais' => $txtvaridpais,
+                    'hv_idciudad' => $txtvarididciudad,
+                    'hv_idmodalidad' => $txtvaridmdoalidad,
+                    'tratamiento_data' => $txtvaridautoriza,
+                    'suceptible' => $txtvaridsusceptible,
+                    'indicador_satu' => $txtvaridsatu,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
+
+      
+      die(json_encode($txtrta));
+    }
+    
+    public function actionActualizalaboral(){
+      $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
+      $txtvaridrol = Yii::$app->request->get("txtvaridrol");
+      $txtvaridantiguedad = Yii::$app->request->get("txtvaridantiguedad");
+      $txtvaridfechainicio = Yii::$app->request->get("txtvaridfechainicio");
+      $txtvaridnombrejefe = Yii::$app->request->get("txtvaridnombrejefe");
+      $txtvaridcargojefe = Yii::$app->request->get("txtvaridcargojefe");
+      $txtvaridtrabajoanterior = Yii::$app->request->get("txtvaridtrabajoanterior");
+      $txtvaridafinidad = Yii::$app->request->get("txtvaridafinidad");
+      $txtvaridtipoafinidad = Yii::$app->request->get("txtvaridtipoafinidad");
+      $txtvaridnivelafinidad = Yii::$app->request->get("txtvaridnivelafinidad");
+      
+      $txtrta = 0;      
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datalaboral',[
+                    'rol' => $txtvaridrol,
+                    'hv_id_antiguedad' => $txtvaridantiguedad,
+                    'fecha_inicio_contacto' => $txtvaridfechainicio,
+                    'nombre_jefe' => $txtvaridnombrejefe,
+                    'cargo_jefe' => $txtvaridcargojefe,
+                    'trabajo_anterior' => $txtvaridtrabajoanterior,
+                    'afinidad' => $txtvaridafinidad,
+                    'tipo_afinidad' => $txtvaridtipoafinidad,
+                    'nivel_afinidad' => $txtvaridnivelafinidad,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();      
+
+      die(json_encode($txtrta));
+    }
+
+
+    public function actionActualizacuentas(){
+      $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
+      $txtvarid_dp_cliente = Yii::$app->request->get("txtvarid_dp_cliente");
+      $txtvaridrequester = Yii::$app->request->get("txtvaridrequester");
+      $txtvaridrequester2 = Yii::$app->request->get("txtvaridrequester2");
+      $txtvaridrequester3 = Yii::$app->request->get("txtvaridrequester3");
+      
+      $txtrta = 0;      
+
+      $array_codpcrc = count($txtvaridrequester);
+      for ($i=0; $i < $array_codpcrc; $i++) { 
+        $varcodpcrc = $txtvaridrequester[$i];
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
+                    'id_dp_cliente' => $txtvarid_dp_cliente,
+                    'cod_pcrc' => $varcodpcrc,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();  
+      }
+
+      $array_director = count($txtvaridrequester2);
+      for ($i=0; $i < $array_director; $i++) { 
+        $vardirector = $txtvaridrequester2[$i];
+
+        Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
+                    'ccdirector' => $vardirector,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
+      }
+
+      $array_gerente = count($txtvaridrequester3);
+      for ($i=0; $i < $array_gerente; $i++) { 
+        $vargerente = $txtvaridrequester3[$i];
+
+        Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
+                    'ccgerente' => $vargerente,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();  
+      }          
+
+      die(json_encode($txtrta));
+    }
+
+    public function actionVerficarConnid(){
       $varConnid = Yii::$app->db->createCommand("
         SELECT * FROM tbl_base_satisfaccion b WHERE b.fecha_satu BETWEEN '2021-10-01 00:00:00' AND '2021-10-31 23:59:59'
-  AND b.pcrc = 2727
-    AND b.id = 14930572 ")->queryAll();
+        AND b.pcrc = 2727
+          AND b.id = 14930572 ")->queryAll();
 
       foreach ($varConnid as $key => $value) {
 
@@ -627,9 +1183,6 @@ use app\models\HvEstilosocial;
 
       }
    
-      
-
-      return $this->render('permisoshv');
     }
 
     private function _buscarArchivoBuzon($fechaEncuesta, $connId) {

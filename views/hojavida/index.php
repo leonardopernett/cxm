@@ -28,6 +28,25 @@ $this->params['breadcrumbs'][] = $this->title;
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
+    $paramssession = [':idsession' => $sesiones ];
+    $varPermisos = Yii::$app->db->createCommand('
+      SELECT * 
+        FROM tbl_hojavida_permisosacciones pa
+          WHERE 
+            pa.usuario_registro = :idsession')->bindValues($paramssession)->queryAll();
+
+    $varEliminar = null;
+    $varResumen = null;
+    $varInformacion = null;
+    $varCargar = null;
+    $varEditar = null;
+    foreach ($varPermisos as $key => $value) {
+      $varEliminar = $value['hveliminar'];
+      $varResumen = $value['hvverresumen'];
+      $varInformacion = $value['hvdatapersonal'];
+      $varCargar = $value['hvcasrgamasiva'];
+      $varEditar = $value['hveditar'];
+    }
 ?>
 <style>
     .card1 {
@@ -91,8 +110,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -100,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br><br>
 <div class="capaBotones" style="display: inline;">
    <div class="row">
-
+      <?php if ($varResumen == 1) { ?>
        <div class="col-md-4">
            <div class="card1 mb">
                <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 15px; color: #559FFF;"></em> Resumen General </label>
@@ -110,7 +127,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
            </div>
        </div>
+      <?php } ?>
 
+      <?php if($varInformacion == 1) { ?>
        <div class="col-md-4">
            <div class="card1 mb">
                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #559FFF;"></em> Informaci&oacute;n Personal </label>
@@ -120,7 +139,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
            </div>
        </div>
+      <?php } ?>
 
+      <?php if($varCargar == 1) { ?>
        <div class="col-md-4">
            <div class="card1 mb">
                <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #559FFF;"></em> Carga Masiva </label>
@@ -130,6 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
            </div>
        </div>
+      <?php } ?>
 
    </div>
 </div>
@@ -174,7 +196,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <tbody>
                       <?php 
                         foreach ($dataProviderhv as $key => $value) {
-                          $varIdHv = $value['idHojaVida']; 
+                          $varIdHv = $value['idHojaVida'];
                           $varCliente = $value['cliente'];
                           $varTipo = $value['tipo'];
                           $varNivel = $value['nivel'];
@@ -208,30 +230,31 @@ $this->params['breadcrumbs'][] = $this->title;
                               FROM tbl_hojavida_datagerente dc 
                                 INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
                                   cc.documento_gerente = dc.ccgerente
-                                WHERE dc.hv_idpersonal = :codpcrc GROUP BY cc.director_programa')->bindValues($paramspcrc)->queryAll();
+                                WHERE dc.hv_idpersonal = :codpcrc GROUP BY cc.gerente_cuenta')->bindValues($paramspcrc)->queryAll();
                           $vararraygerente = array();
                           foreach ($varlistgerente as $key => $value) {
                             array_push($vararraygerente, $value['Programagerente']);
                           }
                           $varGerentes = implode("; ", $vararraygerente);
 
-                          $varPrograma = Yii::$app->db->createCommand('
-                            SELECT GROUP_CONCAT(cc.cod_pcrc," - ",cc.pcrc SEPARATOR "; ") AS Programa
-                              FROM tbl_hojavida_datacuenta dc 
-                                INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
-                                  dc.cod_pcrc = cc.cod_pcrc
-                                WHERE dc.hv_idpersonal = :codpcrc')->bindValues($paramspcrc)->queryScalar();
                       ?>
                         <tr>
                           <td class="text-center">
-                            <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #B833FF;"></em>',  ['viewinfo','idinfo' => $varIdHv], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Ver datos']) ?>
+                            <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #B833FF;"></em>',  ['viewinfo','idinfo' => $varIdHv], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700; border-color: #4298b500 !important; color:#000000;", 'title' => 'Ver datos']) ?>
 
-                            <?= Html::a('<em class="fas fa-trash" style="font-size: 12px; color: #FC4343;"></em>',  ['deleteinfo','idinfo' => $varIdHv], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar datos']) ?>
+                          <?php if($varEditar == 1) { ?>
+                            <?= Html::a('<em class="fas fa-edit" style="font-size: 12px; color: #495057;"></em>',  ['editinfo','idinfo' => $varIdHv], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700; border-color: #4298b500 !important; color:#000000;", 'title' => 'Editar datos']) ?>
+                          <?php } ?>
+
+                          <?php if ($varEliminar == 1) { ?>
+
+                            <?= Html::a('<em class="fas fa-trash" style="font-size: 12px; color: #FC4343;"></em>',  ['deleteinfo','idinfo' => $varIdHv], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700; border-color: #4298b500 !important; color:#000000;", 'title' => 'Eliminar datos']) ?>
+                          <?php } ?>
                           </td>
                           <td><label style="font-size: 12px;"><?php echo  $varDirectores; ?></label></td>
                           <td><label style="font-size: 12px;"><?php echo  $varGerentes; ?></label></td>
                           <td><label style="font-size: 12px;"><?php echo  $varCliente; ?></label></td>
-                          <td><label style="font-size: 12px;"><?php echo  $varPrograma; ?></label></td>
+                          <td><label style="font-size: 12px;"><?php echo  $varVerifica; ?></label></td>
                           <td><label style="font-size: 12px;"><?php echo  $varTipo; ?></label></td>
                           <td><label style="font-size: 12px;"><?php echo  $varNivel; ?></label></td>
                           <td><label style="font-size: 12px;"><?php echo  $varNombre; ?></label></td>
@@ -285,7 +308,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                        <div class="col-md-2">
                            <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Modalidad Trabajo: </label>
+                                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Modalidad Trabajo: </label>
                                 <?= Html::a('Crear',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Modalidad Trabajo']) 
@@ -295,7 +318,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                        <div class="col-md-2">
                            <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Datos Acad&eacute;micos: </label>
+                                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Datos Acad&eacute;micos: </label>
                                 <?= Html::a('Crear',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Modalidad Trabajo']) 
@@ -305,17 +328,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
                        <div class="col-md-2">
                            <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Permisos: </label>
-                                <?= Html::a('Crear',  ['permisoshv'], ['class' => 'btn btn-primary',                                        
-                                        'data-toggle' => 'tooltip',
-                                        'title' => 'Crear Modalidad Trabajo']) 
+                                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Permisos: </label>
+                                <?= 
+                                    Html::button('Crear & Editar', ['value' => url::to(['asignarpermisos']), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Crear & Editar Permisos'])
                                 ?>
+                                <?php
+                                    Modal::begin([
+                                        'header' => '<h4></h4>',
+                                        'id' => 'modal2',
+                                    ]);
+
+                                    echo "<div id='modalContent2'></div>";
+                                                                            
+                                    Modal::end(); 
+                                ?> 
                            </div>
                        </div>
 
                        <div class="col-md-2">
                            <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Complementos: </label>
+                                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Complementos: </label>
                                 <?= Html::a('Crear',  ['complementoshv'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Modalidad Trabajo']) 
@@ -355,4 +387,5 @@ $this->params['breadcrumbs'][] = $this->title;
       } 
     });
   });
+
 </script>
