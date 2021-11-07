@@ -244,6 +244,13 @@ if (!isset($aleatorio) || !$aleatorio) {
             ?>
             <?= Html::a(Yii::t('app', 'Buscar llamadas'),  "javascript:void(0)", ['class' => 'btn btn-warning llamadasMasivas'])
             ?>
+            <?php 
+                $sesiones = Yii::$app->user->identity->id;
+                if($sesiones == "2953") {
+            ?>
+                <?= Html::a(Yii::t('app', 'Buscar buzones'),  "javascript:void(0)", ['class' => 'btn btn-warning llamadasMasivasBuzon'])
+            ?>
+            <?php } ?>
         </div>        
     </div>
     <?php ActiveForm::end(); ?>
@@ -403,6 +410,12 @@ if (!isset($aleatorio) || !$aleatorio) {
             var buscarMasivos = $("#buscarMasivos");
             buscarMasivos.attr('action', '<?php echo Url::to(["buscarllamadasmasivas", "aleatorio" => ($aleatorio)?1:2]); ?>');
             buscarMasivos.submit();
+        });
+
+        $('.llamadasMasivasBuzon').click(function(){
+            var buscarMasivosBuzon = $("#buscarMasivosBuzon");
+            buscarMasivosBuzon.attr('action', '<?php echo Url::to(["buscarllamadasmasivasbuzon", "aleatorio" => ($aleatorio)?1:2]); ?>');
+            buscarMasivosBuzon.submit();
         });
     });
 </script>
