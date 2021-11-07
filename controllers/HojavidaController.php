@@ -21,7 +21,7 @@ use PHPExcel_IOFactory;
 use app\models\UploadForm2;
 use GuzzleHttp;
 use app\models\HojavidaEventos;
-use app\models\HVCiudad;
+use app\models\HvCiudad;
 use app\models\HvPais;
 use app\models\HojavidaDatapersonal;
 use app\models\HojavidaDatalaboral;
@@ -640,7 +640,7 @@ use app\models\HojavidaDatacomplementos;
                               ->asArray()
                               ->all();
 
-      $dataProvidergustos = HvGustos::find()
+      $dataProvidergustos = HvCiudad::find()
                               ->asArray()
                               ->all();
 
