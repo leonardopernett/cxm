@@ -82,8 +82,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -205,21 +203,74 @@ $this->params['breadcrumbs'][] = $this->title;
       
         <div class="col-md-6">
           <div class="card1 mb">
-            <label style="font-size: 15px;"><em class="fas fa-external-link-square-alt" style="font-size: 15px; color: #FFC72C;"></em> N&uacute;meros de Hijos </label>
+            <label style="font-size: 15px;"><em class="fas fa-external-link-square-alt" style="font-size: 15px; color: #FFC72C;"></em> Hobbies </label>
+
+            <?= $form->field($model3, 'text', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idhobbies', 'placeholder'=>'Ingresar el Hobbie'])?>
+
+            <div onclick="generatedhobbies();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
+                  Guardar
+            </div>
+            <br>
+            <table id="tblDataHobbie" class="table table-striped table-bordered tblResDetFreed">
+              <caption>Resultados</caption>
+              <thead>
+                <tr>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hobbie') ?></label></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  foreach ($dataProviderHobbies as $key => $value) {                    
+                ?>
+                  <tr>
+                    <td><label style="font-size: 12px;"><?php echo  $value['id']; ?></label></td>
+                    <td><label style="font-size: 12px;"><?php echo  $value['text']; ?></label></td>
+                  </tr>
+                <?php
+                  }
+                ?>
+              </tbody>
+            </table>
+
           </div>
         </div>
       </div>
       <br>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="card1 mb">
-            <label style="font-size: 15px;"><em class="fas fa-external-link-square-alt" style="font-size: 15px; color: #FFC72C;"></em> Hobbies </label>
-          </div>
-        </div>
-      
+      <div class="row">   
         <div class="col-md-6">
           <div class="card1 mb">
             <label style="font-size: 15px;"><em class="fas fa-external-link-square-alt" style="font-size: 15px; color: #FFC72C;"></em> Intereses / Gustos </label>
+
+            <?= $form->field($model4, 'text', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idgustos', 'placeholder'=>'Ingresar Gustos'])?>
+
+            <div onclick="generatedgustos();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
+                  Guardar
+            </div>
+            <br>
+            <table id="tblDatagustos" class="table table-striped table-bordered tblResDetFreed">
+              <caption>Resultados</caption>
+              <thead>
+                <tr>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hobbie') ?></label></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  foreach ($dataProvidergustos as $key => $value) {                    
+                ?>
+                  <tr>
+                    <td><label style="font-size: 12px;"><?php echo  $value['id']; ?></label></td>
+                    <td><label style="font-size: 12px;"><?php echo  $value['text']; ?></label></td>
+                  </tr>
+                <?php
+                  }
+                ?>
+              </tbody>
+            </table>
+
+
           </div>
         </div>
       </div>
@@ -309,6 +360,50 @@ $this->params['breadcrumbs'][] = $this->title;
         url: "ingresarestilo",
         data: {
           txtvaridestio : varidestio,
+        },
+        success : function(response){
+          numRta =   JSON.parse(response);          
+          location.reload();
+        }
+      });
+    }
+  };
+
+  function generatedhobbies(){
+    var varidhobbies = document.getElementById("idhobbies").value;
+    
+    if (iddominancia == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Debe de ingresar Hobbie","warning");
+      return;
+    }else{
+      $.ajax({
+        method: "get",
+        url: "ingresarhobbie",
+        data: {
+          txtvaridhobbies : varidhobbies,
+        },
+        success : function(response){
+          numRta =   JSON.parse(response);          
+          location.reload();
+        }
+      });
+    }
+  };
+
+  function generatedgustos(){
+    var varidgustos = document.getElementById("idgustos").value;
+    
+    if (iddominancia == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Debe de ingresar Gustos","warning");
+      return;
+    }else{
+      $.ajax({
+        method: "get",
+        url: "ingresargustos",
+        data: {
+          txtvaridgustos : varidgustos,
         },
         success : function(response){
           numRta =   JSON.parse(response);          

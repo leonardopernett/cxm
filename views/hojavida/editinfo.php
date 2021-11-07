@@ -31,8 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
-    $varmaximoid = Yii::$app->db->createCommand("SELECT max(hv_idpersonal) from tbl_hojavida_datapersonal WHERE  anulado = 0")->queryScalar();
-    $variddatapersonal = $varmaximoid + 1;
 
     $varRespuesta = ['1' => 'No', '2' => 'Si'];
     $varAfinidad = ['1' => 'Relación Directa', '2' => 'Relación de Interés'];
@@ -214,6 +212,7 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </div>
 <hr>
+
 <div id="idcapados" class="capaDos" style="display: inline;">
   <div class="row">
     <div class="col-md-12">
@@ -284,6 +283,7 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </div>
 <hr>
+
 <div id="idcapatres" class="capaTres" style="display: inline;">
   <div class="row">
     <div class="col-md-12">
@@ -293,7 +293,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
           <div class="col-md-4">
             <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Cliente: </label>
-            <?=  $form->field($model4, 'id_dp_cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+            <?php
+              $paramsidcliente = [':idhvaccion' => $idinfo];
+              $varIdCliente = Yii::$app->db->createCommand('
+                SELECT dc.id_dp_cliente FROM tbl_hojavida_datapcrc dc
+                  INNER JOIN tbl_hojavida_datapersonal dp ON 
+                    dc.hv_idpersonal = dp.hv_idpersonal
+                  WHERE
+                    dp.hv_idpersonal = :idhvaccion
+                  GROUP BY dc.id_dp_cliente')->bindValues($paramsidcliente)->queryScalar();
+            ?>
+            <?=  $form->field($model4, 'id_dp_cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes = $varIdCliente")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                           [
                                               'prompt'=>'Seleccionar...',
                                               'onchange' => '
@@ -377,11 +387,122 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-4">
+              <table id="tblDataCuentaspcrc" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Resultados Pcrc"; ?></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Programa Pcrc') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $paramscliente = [':idhvaccion' => $idinfo];
+                    $varListaPcrc = Yii::$app->db->createCommand('
+                    SELECT dc.hv_idpcrc, CONCAT(cc.cod_pcrc," - ",cc.pcrc) AS Pcrc
+                       FROM tbl_hojavida_datapcrc dc 
+                          INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
+                            dc.cod_pcrc = cc.cod_pcrc
+                          WHERE dc.hv_idpersonal = :idhvaccion
+                            GROUP BY cc.cod_pcrc')->bindValues($paramscliente)->queryAll();
+
+                    foreach ($varListaPcrc as $key => $value) {
+                      
+                  ?>             
+                    <tr>
+                      <td><label style="font-size: 12px;"><?php echo  $value['Pcrc']; ?></label></td>
+                      <td class="text-center">
+                        <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletepcrc','id'=> $value['hv_idpcrc'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                      </td>
+                    </tr>
+                  <?php
+                    }
+                  ?>
+                </tbody>
+              </table>
+          </div>
+
+          <div class="col-md-4">
+              <table id="tblDataCuentasdirector" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Resultados Director"; ?></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Director') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $paramsdirector = [':idhvaccion' => $idinfo];
+                    $varListaDirector = Yii::$app->db->createCommand('
+                    SELECT dc.hv_iddirector, cc.director_programa
+                      FROM tbl_hojavida_datadirector dc 
+                        INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
+                          dc.ccdirector = cc.documento_director
+                        WHERE dc.hv_idpersonal = :idhvaccion
+                          GROUP BY cc.documento_director')->bindValues($paramsdirector)->queryAll();
+
+                    foreach ($varListaDirector as $key => $value) {
+                      
+                  ?>             
+                    <tr>
+                      <td><label style="font-size: 12px;"><?php echo  $value['director_programa']; ?></label></td>
+                      <td class="text-center">
+                        <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletedirector','id'=> $value['hv_iddirector'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                      </td>
+                    </tr>
+                  <?php
+                    }
+                  ?>
+                </tbody>
+              </table>
+          </div>
+
+          <div class="col-md-4">
+              <table id="tblDataCuentasgerente" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Resultados Director"; ?></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gerente') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $paramsgerente = [':idhvaccion' => $idinfo];
+                    $varListaGerente = Yii::$app->db->createCommand('
+                    SELECT dc.hv_idgerente, cc.gerente_cuenta
+                     FROM tbl_hojavida_datagerente dc 
+                        INNER JOIN tbl_proceso_cliente_centrocosto cc ON 
+                          dc.ccgerente = cc.documento_gerente
+                        WHERE dc.hv_idpersonal = :idhvaccion
+                          GROUP BY cc.documento_gerente')->bindValues($paramsgerente)->queryAll();
+
+                    foreach ($varListaGerente as $key => $value) {
+                      
+                  ?>             
+                    <tr>
+                      <td><label style="font-size: 12px;"><?php echo  $value['gerente_cuenta']; ?></label></td>
+                      <td class="text-center">
+                        <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletegerente','id'=> $value['hv_idgerente'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                      </td>
+                    </tr>
+                  <?php
+                    }
+                  ?>
+                </tbody>
+              </table>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
 <hr>
+
 <div id="idcapacuatro" class="capaCuatro" style="display: inline;">
   <div class="row">
     <div class="col-md-12">
@@ -437,11 +558,48 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-12">
+            
+              <table id="tblDataAcademico" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Resultados"; ?></caption>
+                <tbody>
+                  <?php 
+                    $paramsacademy = [':idhvaccion' => $idinfo];
+                    $varListaAcademica = Yii::$app->db->createCommand('
+                      SELECT da.hv_idacademica, n.hvacademico AS Nivel, c.hv_cursos AS Cursos FROM tbl_hv_nivelacademico n 
+                          INNER JOIN tbl_hv_cursosacademico c ON  
+                            n.idhvacademico = c.idhvacademico
+                          INNER JOIN tbl_hojavida_dataacademica da ON 
+                            c.idhvcursosacademico = da.idhvcursosacademico
+                          WHERE 
+                            da.hv_idpersonal = :idhvaccion')->bindValues($paramsacademy)->queryAll();
+
+                    foreach ($varListaAcademica as $key => $value) {              
+                    
+                  ?>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $value['Nivel']) ?></label></th>
+                    <td><label style="font-size: 12px;"><?php echo  $value['Cursos']; ?></label></td>
+                    <td class="text-center">
+                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deleteacademico','id'=> $value['hv_idacademica'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                    </td>
+                  </tr>
+                  <?php
+                    }
+                  ?>
+                </tbody>
+              </table>
+            
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
 <hr>
+
 <div class="capaCinco" style="display: inline;">
   <div class="row">
     <div class="col-md-12">
@@ -456,12 +614,152 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]
                                 )->label(''); 
         ?>
+
+        <br>
+
+              <table id="tblDataEventos" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Resultados Eventos"; ?></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Evento') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Evento') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ciudad Evento') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Evento') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                      $paramsevento = [':idhvaccion' => $idinfo];
+                      $varListaEventos = Yii::$app->db->createCommand('
+                        SELECT ha.hv_idasignareventos, he.nombre_evento, he.tipo_evento, c.ciudad,
+                          he.fecha_evento_inicio FROM tbl_hv_ciudad c
+                            INNER JOIN tbl_hojavida_eventos he ON 
+                              c.hv_idciudad = he.hv_idciudad
+                            INNER JOIN tbl_hojavida_asignareventos ha ON 
+                              he.hv_ideventos = ha.hv_ideventos
+                            INNER JOIN tbl_hojavida_datapersonal hd ON 
+                              ha.hv_idpersonal = hd.hv_idpersonal
+                            WHERE 
+                              hd.hv_idpersonal = :idhvaccion')->bindValues($paramsevento)->queryAll();
+
+                      foreach ($varListaEventos as $key => $value) { 
+                      
+                  ?>             
+                    <tr>
+                      <td><label style="font-size: 12px;"><?php echo  $value['nombre_evento']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['tipo_evento']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['ciudad']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['fecha_evento_inicio']; ?></label></td>
+                      <td class="text-center">
+                        <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deleteeventos','id'=> $value['hv_idasignareventos'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                      </td>
+                    </tr>
+                  <?php
+                    }
+                  ?>
+                </tbody>
+              </table>
+           
       </div>
 
     </div>
   </div>
 </div>
 <hr>
+
+<div class="capaCinco" style="display: inline;">
+  <div class="row">
+    <div class="col-md-12">
+      
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Complementos: </label> 
+
+        <div class="row">
+          <div class="col-md-12">
+            <?= 
+                Html::button('Agregar Complementos', ['value' => url::to(['complementosaccion','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar Complementos'])
+            ?>
+            <?php
+                Modal::begin([
+                    'header' => '<h4></h4>',
+                    'id' => 'modal1',
+                ]);
+
+                echo "<div id='modalContent1'></div>";
+                                                        
+                Modal::end(); 
+            ?> 
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+              <table id="tblDataComplementos" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Resultados Complementos"; ?></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado Civil') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estilo Social') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Dominancia Cerebral') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hobbies') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gustos') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Hijos') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Hijos') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                      $paramscomplement = [':idhvaccion' => $idinfo];
+                      $varListaComplementos = Yii::$app->db->createCommand('
+                        SELECT dc.hv_idcomplemento, hd.estadocivil, dc.cantidadhijos, dc.NombreHijos, d.dominancia,
+                        e.estilosocial, g.text, h.text AS hobbies FROM tbl_hojavida_datacomplementos dc
+                          LEFT JOIN tbl_hojavida_datacivil hd ON 
+                            dc.hv_idcivil = hd.hv_idcivil
+                          LEFT JOIN tbl_hv_dominancias d ON 
+                            dc.iddominancia = d.iddominancia
+                          LEFT JOIN tbl_hv_estilosocial e ON 
+                            dc.idestilosocial = e.idestilosocial
+                          LEFT JOIN tbl_hv_gustos g ON 
+                            dc.idgustos = g.id
+                          LEFT JOIN tbl_hv_hobbies h ON 
+                            dc.idhobbies = h.id
+                          LEFT JOIN tbl_hojavida_datapersonal dp ON 
+                            dc.hv_idpersonal = dp.hv_idpersonal
+                          WHERE 
+                            dp.hv_idpersonal = :idhvaccion')->bindValues($paramscomplement)->queryAll();
+
+                      foreach ($varListaComplementos as $key => $value) { 
+                      
+                  ?>             
+                    <tr>
+                      <td><label style="font-size: 12px;"><?php echo  $value['estadocivil']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['cantidadhijos']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['NombreHijos']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['dominancia']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['estilosocial']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['text']; ?></label></td>
+                      <td><label style="font-size: 12px;"><?php echo  $value['hobbies']; ?></label></td>
+                      <td class="text-center">
+                        <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletecomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                      </td>
+                    </tr>
+                  <?php
+                    }
+                  ?>
+                </tbody>
+              </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<hr>
+
 <div class="capaBtn" style="display: inline;">
   <div class="row">
     <div class="col-md-12">
@@ -481,8 +779,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
           <div class="card1 mb">
             <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Guardar Datos: </label>
-            <div onclick="generated();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                  Guardar Informacion
+            <div onclick="updatedata();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
+                  Actualizar Informacion
             </div> 
           </div>
         </div>
@@ -492,8 +790,9 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </div>
 
-<?php $form->end() ?>
 <hr>
+
+<?php $form->end() ?>
 
 <script type="text/javascript">
   function valida(e){
@@ -519,9 +818,9 @@ $this->params['breadcrumbs'][] = $this->title;
     }else{
       varidafinidades.style.display = 'none';
     }
-  }
+  };
 
-  function generated(){
+  function updatedata(){
     var varidnombrefull = document.getElementById("idnombrefull").value;
     var varididentificacion = document.getElementById("ididentificacion").value;
     var varidemail = document.getElementById("idemail").value;
@@ -535,7 +834,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varididciudad = document.getElementById("idciudad").value;
     var varidsusceptible = document.getElementById("idsusceptible").value;
     var varidsatu = document.getElementById("idsatu").value;
-    var varautoincrement = "<?php echo $variddatapersonal; ?>";
+    var varautoincrement = "<?php echo $idinfo; ?>";
 
     if (varididentificacion == "") {
 
@@ -544,22 +843,6 @@ $this->params['breadcrumbs'][] = $this->title;
       return;
 
     }else{
-
-      $.ajax({
-        method: "get",
-        url: "verificacedula",
-        data: {
-          txtvarididentificacion : varididentificacion,
-        },
-        success : function(response){
-          numRta =   JSON.parse(response);
-          
-          if (numRta != "0") {
-            event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Usuario ya esta registrado en el sistema","warning");
-            return;
-          }else{
-                        
             if (varidnombrefull == "") {
               event.preventDefault();
               swal.fire("!!! Advertencia !!!","Debe de ingresar el nombre completo","warning");
@@ -609,8 +892,9 @@ $this->params['breadcrumbs'][] = $this->title;
             // Esta accion permite guardar el primer bloque...
             $.ajax({
               method: "get",
-              url: "guardarpersonal",
+              url: "actualizapersonal",
               data: {
+                txtvarautoincrement : varautoincrement,
                 txtvaridnombrefull: varidnombrefull,
                 txtvarididentificacion : varididentificacion,
                 txtvaridemail : varidemail,
@@ -659,7 +943,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // Esta accion permite guardar el segundo bloque...
             $.ajax({
               method: "get",
-              url: "guardarlaboral",
+              url: "actualizalaboral",
               data: {
                 txtvarautoincrement : varautoincrement,
                 txtvarididentificacion : varididentificacion,
@@ -689,43 +973,25 @@ $this->params['breadcrumbs'][] = $this->title;
             var vargerente = document.querySelectorAll('#requester3 option:checked');
             var varlistgerente = Array.from(vargerente).map(el => el.value);
 
-            if (varid_dp_cliente == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar un cliente","warning");
-              return;
-            }
-            if (varidrequester == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar al menos un pcrc","warning");
-              return;
-            }
-            if (varidrequester2 == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar el menos un gerente","warning");
-              return;
-            }
-            if (varidrequester3 == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar al menos un director","warning");
-              return;
-            }
+            if (varid_dp_cliente != "") {
+              // Esta accion permite guardar el tercer bloque...
+              $.ajax({
+                method: "get",
+                url: "actualizacuentas",
+                data: {
+                  txtvarautoincrement : varautoincrement,
+                  txtvarid_dp_cliente : varid_dp_cliente,
+                  txtvaridrequester : varlistcodpcrc,
+                  txtvaridrequester2 : varlistdirector,
+                  txtvaridrequester3 : varlistgerente,
 
-            // Esta accion permite guardar el tercer bloque...
-            $.ajax({
-              method: "get",
-              url: "guardarcuentas",
-              data: {
-                txtvarautoincrement : varautoincrement,
-                txtvarid_dp_cliente : varid_dp_cliente,
-                txtvaridrequester : varlistcodpcrc,
-                txtvaridrequester2 : varlistdirector,
-                txtvaridrequester3 : varlistgerente,
-
-              },
-              success : function(response){
-                numRta =   JSON.parse(response);
-              }
-            });
+                },
+                success : function(response){
+                  numRta =   JSON.parse(response);
+                }
+              });
+            }
+            
 
             var vareventos = document.querySelectorAll('#hojavidadataacademica-usua_id option:checked');
             var varlisteventos = Array.from(vareventos).map(el => el.value);
@@ -779,14 +1045,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
 
             window.open('../hojavida/index','_self');
-
-          }
-
-        }
-      });
-
     }
-
 
   };
 </script>
