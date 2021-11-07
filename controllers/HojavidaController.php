@@ -640,7 +640,7 @@ use app\models\HojavidaDatacomplementos;
                               ->asArray()
                               ->all();
 
-      $dataProvidergustos = HvCiudad::find()
+      $dataProvidergustos = HvGustos::find()
                               ->asArray()
                               ->all();
 
