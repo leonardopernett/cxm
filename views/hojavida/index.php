@@ -160,20 +160,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
        <div class="col-md-12">
            <div class="card1 mb">
-               <label style="font-size: 15px;"><i class="fas fa-address-book" style="font-size: 15px; color: #B833FF;"></i> Listado </label>
+              <label style="font-size: 15px;"><em class="fas fa-address-book" style="font-size: 15px; color: #B833FF;"></em> Listado </label>
 
+              <?php if($sesiones == "2953") { ?>
                <div class="row">
                  <div class="col-md-6">
                     <a href=""  class="btn btn-success" data-toggle="modal" data-target="#exampleModal4">
-                       Exportar Usuarios <i class="fa fa-file-archive" aria-hidden="true"></i>
+                       Exportar Usuarios <em class="fa fa-file-archive" aria-hidden="true"></em>
                     </a>
 
                     <a href=""  class="btn btn-success" data-toggle="modal" data-target="#exampleModal5">
-                       Exportar Eventos <i class="fa fa-file-archive" aria-hidden="true"></i>
+                       Exportar Eventos <em class="fa fa-file-archive" aria-hidden="true"></em>
                     </a>
                  </div>
                </div>
                <br>
+              <?php } ?>
+              
                <div class="row">
                  <div class="col-md-12">
                    <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
@@ -282,13 +285,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                   <label style="font-size: 15px;"><i class="fas fa-cogs" style="font-size: 15px; color: #FFC72C;"></i> Acciones Administrativas: </label>
+                   <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 15px; color: #FFC72C;"></em> Acciones Administrativas: </label>
 
                    <div class="row">
 
                        <div class="col-md-2">
                            <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Eventos: </label>
+                                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Eventos: </label>
                                 <?= Html::a('Crear',  ['eventos'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Eventos']) 
@@ -298,7 +301,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                        <div class="col-md-2">
                            <div class="card1 mb">
-                                <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Pais & Ciudad: </label>
+                                <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Pais & Ciudad: </label>
                                 <?= Html::a('Crear',  ['paisciudad'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Pais & Ciudad']) 
