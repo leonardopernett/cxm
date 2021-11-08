@@ -39,6 +39,7 @@ use app\models\HojavidaPermisosacciones;
 use app\models\HojavidaPermisoscliente;
 use app\models\HojavidaDatacomplementos;
 use app\models\ProcesosClienteCentrocosto;
+use app\models\HojavidaDataclasificacion;
 
 
   class HojavidaController extends Controller {
@@ -406,7 +407,8 @@ use app\models\ProcesosClienteCentrocosto;
       $txtvaridautoriza = Yii::$app->request->get("txtvaridautoriza");
       $txtvaridpais = Yii::$app->request->get("txtvaridpais");
       $txtvarididciudad = Yii::$app->request->get("txtvarididciudad");
-      $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");
+      $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");      
+      $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
 
       $txtrta = 0;
@@ -424,6 +426,7 @@ use app\models\ProcesosClienteCentrocosto;
                     'tratamiento_data' => $txtvaridautoriza,
                     'suceptible' => $txtvaridsusceptible,
                     'indicador_satu' => $txtvaridsatu,
+                    'clasificacion' => $txtvarclasificacion,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,                                       
@@ -592,7 +595,7 @@ use app\models\ProcesosClienteCentrocosto;
           if(dp.tratamiento_data = 1,"No","Si") AS TratamientoDatos, if(dp.suceptible = 1,"No","Si") AS Susceptible,
           dp.indicador_satu AS IndicadorSatu, l.rol AS Rol, a.antiguedad AS Antiguedad, l.fecha_inicio_contacto AS FechaContacto,
           l.nombre_jefe AS NombreJefe, l.cargo_jefe AS CargoJefe, l.trabajo_anterior AS TrabajoAnterior,
-          if(l.afinidad = 1,"Relación Directa","Relación de Interes") AS Afinidad,
+          if(l.afinidad = 1,"Relación Directa","Relación de Interes") AS Afinidad,  dp.clasificacion,
           if(l.tipo_afinidad = 1,"Decisor","No Decisor") AS TipoAfinidad, if(l.nivel_afinidad = 1,"Estratégio","Operativo") AS NivelAfinidad,
           pc.id_dp_cliente AS IdCliente
            FROM tbl_hojavida_datapersonal dp
@@ -624,6 +627,7 @@ use app\models\ProcesosClienteCentrocosto;
       $model2 = new HvEstilosocial();
       $model3 = new HvHobbies();
       $model4 = new HvGustos();
+      $model5 = new HojavidaDataclasificacion();
 
       $dataProviderCivil = HojavidaDatacivil::find()
                             ->asArray()
@@ -645,6 +649,10 @@ use app\models\ProcesosClienteCentrocosto;
                               ->asArray()
                               ->all();
 
+      $dataProviderClasificacion = HojavidaDataclasificacion::find()
+                                    ->asArray()
+                                    ->all();
+
       return $this->render('complementoshv',[
         'model' => $model,
         'dataProviderCivil' => $dataProviderCivil,
@@ -656,6 +664,8 @@ use app\models\ProcesosClienteCentrocosto;
         'dataProviderHobbies' => $dataProviderHobbies,
         'model4' => $model4,
         'dataProvidergustos' => $dataProvidergustos,
+        'model5' => $model5,
+        'dataProviderClasificacion' => $dataProviderClasificacion,
 
       ]);
     }
@@ -1051,6 +1061,7 @@ use app\models\ProcesosClienteCentrocosto;
       $txtvarididciudad = Yii::$app->request->get("txtvarididciudad");
       $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
+      $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
 
       $txtrta = 0;
       
@@ -1069,6 +1080,7 @@ use app\models\ProcesosClienteCentrocosto;
                     'tratamiento_data' => $txtvaridautoriza,
                     'suceptible' => $txtvaridsusceptible,
                     'indicador_satu' => $txtvaridsatu,
+                    'clasificacion' => $txtvarclasificacion,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,                                       

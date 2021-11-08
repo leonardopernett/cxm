@@ -273,6 +273,42 @@ $this->params['breadcrumbs'][] = $this->title;
 
           </div>
         </div>
+
+        <div class="col-md-6">
+          <div class="card1 mb">
+            <label style="font-size: 15px;"><em class="fas fa-external-link-square-alt" style="font-size: 15px; color: #FFC72C;"></em> Clasificacion Konecta </label>
+
+            <?= $form->field($model5, 'ciudadclasificacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idclasificar', 'placeholder'=>'Ingresar Ciudad de Clasificacion'])?>
+
+            <div onclick="generatedclasificacion();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
+                  Guardar
+            </div>
+            <br>
+            <table id="tblDataclasificacion" class="table table-striped table-bordered tblResDetFreed">
+              <caption>Resultados</caption>
+              <thead>
+                <tr>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ciudad de Clasificacion') ?></label></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  foreach ($dataProviderClasificacion as $key => $value) {                    
+                ?>
+                  <tr>
+                    <td><label style="font-size: 12px;"><?php echo  $value['hv_idclasificacion']; ?></label></td>
+                    <td><label style="font-size: 12px;"><?php echo  $value['ciudadclasificacion']; ?></label></td>
+                  </tr>
+                <?php
+                  }
+                ?>
+              </tbody>
+            </table>
+
+
+          </div>
+        </div>
       </div>
 
     </div>
@@ -404,6 +440,28 @@ $this->params['breadcrumbs'][] = $this->title;
         url: "ingresargustos",
         data: {
           txtvaridgustos : varidgustos,
+        },
+        success : function(response){
+          numRta =   JSON.parse(response);          
+          location.reload();
+        }
+      });
+    }
+  };
+
+  function generatedclasificacion(){
+    var varidclasificar = document.getElementById("idclasificar").value;
+    
+    if (varidclasificar == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Debe de ingresar la ciudad de clasificacion","warning");
+      return;
+    }else{
+      $.ajax({
+        method: "get",
+        url: "ingresarclasificar",
+        data: {
+          txtvaridclasificar : varidclasificar,
         },
         success : function(response){
           numRta =   JSON.parse(response);          
