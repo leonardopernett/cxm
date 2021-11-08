@@ -498,14 +498,6 @@ class FormulariosController extends Controller {
                     }
                 }
 
-                //$data->indices_calcular = call_user_func_array('array_merge', $data->indices_calcular);
-                /* if (!isset($data->formulario)) {
-                  $data->formulario = new Formularios();
-                  $data->formulario->id_plantilla_form = 1;
-                  } */
-
-                // echo "<pre>";
-                // print_r($data); die;
                 return $this->render('show-formulario', [
                                                         'data' => $data,
                 ]);
@@ -529,8 +521,6 @@ class FormulariosController extends Controller {
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
-                } elseif (!empty($id)) {
-                    
                 } else {
                     $out['results'] = ['id' => 0, 'text' => Yii::t('app', 'No matching records found')];
                 }
@@ -580,7 +570,6 @@ class FormulariosController extends Controller {
                 $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
                 $arrFormulario["transacion_id"] = $_POST['transacion_id'];
                  $view = (isset($_POST['view']))?$_POST['view']:null;
-                //$arrFormulario["subi_calculo"] = !isset($_POST['subi_calculo']) ? '' : $_POST['subi_calculo'];
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
                 if ($_POST['subi_calculo'] != '') {
@@ -594,7 +583,6 @@ class FormulariosController extends Controller {
                     $modelRegistro->ejec_form_id = $tmp_id;
                     $modelRegistro->descripcion = 'Primera valoración';
                 }
-                //$modelRegistro = new \app\models\RegistroEjec();
                 $modelRegistro->dimension_id = $_POST['dimension_id'];
                 $modelRegistro->valorado_id = $data->evaluado_id;
                 $modelRegistro->valorador_id = $data->usua_id;
@@ -603,10 +591,6 @@ class FormulariosController extends Controller {
                 $modelRegistro->fecha_modificacion = date("Y-m-d H:i:s");
                 $modelRegistro->save();
                 //FIN
-                //$formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
-                /* if (isset($formulario->subi_calculo)) {
-                  $arrFormulario["subi_calculo"] .= ','.$formulario->subi_calculo;
-                  } */
 
                 /* EDITO EL TMP FORMULARIO */
                 \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
@@ -1507,7 +1491,6 @@ class FormulariosController extends Controller {
                     //en 1 por defecto
                     $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
                     if (/* !isset($data->formulario->subi_calculo) || */!isset($TmpForm->subi_calculo)) {
-                        //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
                         if (isset($data->formulario->subi_calculo)) {
                             $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                             $TmpForm->save();
@@ -1574,10 +1557,6 @@ class FormulariosController extends Controller {
                     $data->subi_calculo .=',' . $_POST['subi_calculo'];
                     $data->save();
                 }
-                //$formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
-                /* if (isset($formulario->subi_calculo)) {
-                  $arrFormulario["subi_calculo"] .= ','.$formulario->subi_calculo;
-                  } */
                 /* EDITO EL TMP FORMULARIO */
                 \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
 

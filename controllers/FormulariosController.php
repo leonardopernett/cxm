@@ -585,21 +585,12 @@ class FormulariosController extends Controller {
                 }else{
                     $data->idcliente =  $varIdcliente;
                 }
-                //$data->idcliente =  $varIdcliente;
                 $data->varidarbol =  $varidarbol;
                 $data->codpcrc =  $varCodpcrc;
                 $data->IdclienteSel =$varIdclienteSel;
  		        $data->varIdformu =  $varIdformu;
 
 
-                //$data->indices_calcular = call_user_func_array('array_merge', $data->indices_calcular);
-                /* if (!isset($data->formulario)) {
-                  $data->formulario = new Formularios();
-                  $data->formulario->id_plantilla_form = 1;
-                  } */
-
-                // echo "<pre>";
-                // print_r($data); die;
                 return $this->render('show-formulario', [
                                                         'data' => $data,                            
                                                         'model' => $model,
@@ -624,8 +615,6 @@ class FormulariosController extends Controller {
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
-                } elseif (!empty($id)) {
-                    
                 } else {
                     $out['results'] = ['id' => 0, 'text' => Yii::t('app', 'No matching records found')];
                 }

@@ -30,7 +30,7 @@ AppAsset::register($this);
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
         <style type="text/css">
             .cxlogueo {
-                font-family: "Nunito";
+                font-family: "Nunito", sans-serif;
                 font-weight: bold;
                 font-size: 150%;
                 color: #FFFFFF;
@@ -39,13 +39,13 @@ AppAsset::register($this);
                 margin-right: -90px;
             }
             .dropdown {
-                font-family: "Nunito";                
+                font-family: "Nunito", sans-serif;                
                 font-weight: bold;
                 font-size: 150%;
                 margin-top: 8px;
             }
             .dropdown-menu {
-                font-family: "Nunito";
+                font-family: "Nunito", sans-serif;
                 font-weight: normal;
                 /* font-size: 90%; */
                 color: #777777;
@@ -116,7 +116,7 @@ AppAsset::register($this);
                 font-weight: bold;
                 font-feature-settings: "frac";
             }            .menutitulos {
-                font-family: "Nunito";
+                font-family: "Nunito", sans-serif;
                 font-size: 130%;
                 color: #999;
                 font-weight: bold;
