@@ -92,6 +92,15 @@ $this->params['breadcrumbs'][] = $this->title;
   foreach ($dataProviderInfo as $key => $value) {   
       $varIdAccion = $value['hv_idpersonal'];
       $varIdClientes = $value['IdCliente'];
+
+      $paramsclasifica = [':idclasifica' => $value['clasificacion']];
+      $varClasificacion = Yii::$app->db->createCommand('
+        SELECT dc.ciudadclasificacion FROM tbl_hojavida_dataclasificacion dc
+          INNER JOIN tbl_hojavida_datapersonal dp ON 
+            dc.hv_idclasificacion = dp.clasificacion
+            WHERE 
+              dp.hv_idpersonal = :idclasifica ')->bindValues($paramsclasifica)->queryScalar();
+
 ?>
   <div id="idcapauno" class="capaPrincipal" style="display: inline;">
     <div class="row">
@@ -141,6 +150,8 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indicador Satu') ?></label></th>
                 <td><label style="font-size: 12px;"><?php echo  $value['IndicadorSatu'].'%'; ?></label></td>
+                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Clasificación Ciudad Konecta') ?></label></th>
+                <td><label style="font-size: 12px;"><?php echo  $varClasificacion; ?></label></td>
               </tr>
             </tbody>
           </table>

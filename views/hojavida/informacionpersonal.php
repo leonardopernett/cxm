@@ -209,6 +209,18 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-4">
+            <label style="font-size: 15px;"> Clasificación Ciudad Konecta</label>
+            <?=  $form->field($model, 'clasificacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\HojavidaDataclasificacion::find()->distinct()->orderBy(['hv_idclasificacion'=> SORT_ASC])->all(), 'hv_idclasificacion', 'ciudadclasificacion'),
+                                        [
+                                            'prompt'=>'Seleccionar...',
+                                        ]
+                            )->label(''); 
+            ?>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -536,6 +548,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidsusceptible = document.getElementById("idsusceptible").value;
     var varidsatu = document.getElementById("idsatu").value;
     var varautoincrement = "<?php echo $variddatapersonal; ?>";
+    var varclasificacion = document.getElementById("hojavidadatapersonal-clasificacion").value;
 
     if (varididentificacion == "") {
 
@@ -605,6 +618,11 @@ $this->params['breadcrumbs'][] = $this->title;
               swal.fire("!!! Advertencia !!!","Debe de seleccionar la ciudad","warning");
               return;
             }
+            if (varclasificacion == "") {
+              event.preventDefault();
+              swal.fire("!!! Advertencia !!!","Debe de seleccionar una clasificacion de konecta","warning");
+              return;
+            }
 
             // Esta accion permite guardar el primer bloque...
             $.ajax({
@@ -624,6 +642,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvarididciudad : varididciudad,
                 txtvaridsusceptible : varidsusceptible,
                 txtvaridsatu : varidsatu,
+                txtvarclasificacion : varclasificacion,
               },
               success : function(response){
                 numRta =   JSON.parse(response);
