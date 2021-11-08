@@ -38,6 +38,7 @@ use app\models\HvGustos;
 use app\models\HojavidaPermisosacciones;
 use app\models\HojavidaPermisoscliente;
 use app\models\HojavidaDatacomplementos;
+use app\models\ProcesosClienteCentrocosto;
 
 
   class HojavidaController extends Controller {
@@ -332,13 +333,13 @@ use app\models\HojavidaDatacomplementos;
       $txtId = Yii::$app->request->get('id');
 
       if ($txtId) {
-        $txtControl = \app\models\ProcesoClienteCentrocosto::find()->distinct()
+        $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
                           ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
                           ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1")
                           ->count();            
 
         if ($txtControl > 0) {
-          $varListaCiudad = \app\models\ProcesoClienteCentrocosto::find()
+          $varListaCiudad = \app\models\ProcesosClienteCentrocosto::find()
                           ->select(['tbl_proceso_cliente_centrocosto.documento_director','tbl_proceso_cliente_centrocosto.director_programa'])->distinct()
                             ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
                             ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1") 
@@ -360,13 +361,13 @@ use app\models\HojavidaDatacomplementos;
       $txtId = Yii::$app->request->get('id');
 
       if ($txtId) {
-        $txtControl = \app\models\ProcesoClienteCentrocosto::find()->distinct()
+        $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
                           ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
                           ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1")
                           ->count();            
 
         if ($txtControl > 0) {
-          $varListaCiudad = \app\models\ProcesoClienteCentrocosto::find()
+          $varListaCiudad = \app\models\ProcesosClienteCentrocosto::find()
                           ->select(['tbl_proceso_cliente_centrocosto.documento_gerente','tbl_proceso_cliente_centrocosto.gerente_cuenta'])->distinct()
                             ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
                             ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1") 
