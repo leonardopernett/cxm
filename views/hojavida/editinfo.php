@@ -684,24 +684,68 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       
-      <div class="card1 mb">
+    <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Complementos: </label> 
+
+        <?php
+
+          $paramscomplement = [':idhvaccion' => $idinfo];
+          $varListaComplementos = Yii::$app->db->createCommand('
+                        SELECT dc.hv_idcomplemento, hd.estadocivil, dc.cantidadhijos, dc.NombreHijos, d.dominancia,
+                        e.estilosocial, g.text, h.text AS hobbies FROM tbl_hojavida_datacomplementos dc
+                          LEFT JOIN tbl_hojavida_datacivil hd ON 
+                            dc.hv_idcivil = hd.hv_idcivil
+                          LEFT JOIN tbl_hv_dominancias d ON 
+                            dc.iddominancia = d.iddominancia
+                          LEFT JOIN tbl_hv_estilosocial e ON 
+                            dc.idestilosocial = e.idestilosocial
+                          LEFT JOIN tbl_hv_gustos g ON 
+                            dc.idgustos = g.id
+                          LEFT JOIN tbl_hv_hobbies h ON 
+                            dc.idhobbies = h.id
+                          LEFT JOIN tbl_hojavida_datapersonal dp ON 
+                            dc.hv_idpersonal = dp.hv_idpersonal
+                          WHERE 
+                            dp.hv_idpersonal = :idhvaccion')->bindValues($paramscomplement)->queryAll();
+
+        ?>
 
         <div class="row">
           <div class="col-md-12">
-            <?= 
-                Html::button('Agregar Complementos', ['value' => url::to(['complementosaccion','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar Complementos'])
-            ?>
-            <?php
-                Modal::begin([
-                    'header' => '<h4></h4>',
-                    'id' => 'modal1',
-                ]);
 
-                echo "<div id='modalContent1'></div>";
-                                                        
-                Modal::end(); 
-            ?> 
+            <?php if (count($varListaComplementos) == 0) { ?>
+              
+              <?= 
+                  Html::button('Nuevo Complementos', ['value' => url::to(['complementosaccion','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Nuevo Complementos'])
+              ?>
+              <?php
+                  Modal::begin([
+                      'header' => '<h4></h4>',
+                      'id' => 'modal1',
+                  ]);
+
+                  echo "<div id='modalContent1'></div>";
+                                                          
+                  Modal::end(); 
+              ?> 
+
+            <?php }else{ ?>
+
+              <?= 
+                  Html::button('Agregar Complementos', ['value' => url::to(['complementosadd','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Agregar Complementos'])
+              ?>
+              <?php
+                  Modal::begin([
+                      'header' => '<h4></h4>',
+                      'id' => 'modal2',
+                  ]);
+
+                  echo "<div id='modalContent2'></div>";
+                                                          
+                  Modal::end(); 
+              ?> 
+
+            <?php } ?>
           </div>
         </div>
 
@@ -723,27 +767,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </thead>
                 <tbody>
                   <?php
-                      $paramscomplement = [':idhvaccion' => $idinfo];
-                      $varListaComplementos = Yii::$app->db->createCommand('
-                        SELECT dc.hv_idcomplemento, hd.estadocivil, dc.cantidadhijos, dc.NombreHijos, d.dominancia,
-                        e.estilosocial, g.text, h.text AS hobbies FROM tbl_hojavida_datacomplementos dc
-                          LEFT JOIN tbl_hojavida_datacivil hd ON 
-                            dc.hv_idcivil = hd.hv_idcivil
-                          LEFT JOIN tbl_hv_dominancias d ON 
-                            dc.iddominancia = d.iddominancia
-                          LEFT JOIN tbl_hv_estilosocial e ON 
-                            dc.idestilosocial = e.idestilosocial
-                          LEFT JOIN tbl_hv_gustos g ON 
-                            dc.idgustos = g.id
-                          LEFT JOIN tbl_hv_hobbies h ON 
-                            dc.idhobbies = h.id
-                          LEFT JOIN tbl_hojavida_datapersonal dp ON 
-                            dc.hv_idpersonal = dp.hv_idpersonal
-                          WHERE 
-                            dp.hv_idpersonal = :idhvaccion')->bindValues($paramscomplement)->queryAll();
-
+                      $varContador = 2;
                       foreach ($varListaComplementos as $key => $value) { 
-                      
+                        $varContador += 1;
                   ?>             
                     <tr>
                       <td><label style="font-size: 12px;"><?php echo  $value['estadocivil']; ?></label></td>
@@ -755,6 +781,8 @@ $this->params['breadcrumbs'][] = $this->title;
                       <td><label style="font-size: 12px;"><?php echo  $value['hobbies']; ?></label></td>
                       <td class="text-center">
                         <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletecomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                        <?= Html::a('<em class="fas fa-edit" style="font-size: 15px; color: #FC4343;"></em>',  ['editcomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Editar']) ?>
+                        
                       </td>
                     </tr>
                   <?php

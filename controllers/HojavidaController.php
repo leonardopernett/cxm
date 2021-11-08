@@ -1172,6 +1172,46 @@ use app\models\HojavidaDataclasificacion;
       die(json_encode($txtrta));
     }
 
+    public function actionEditcomplementos($id,$idsinfo){
+      $model = HojavidaDatacomplementos::findOne($id);;
+
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        
+        $varcivil = $model->hv_idcivil;
+        Yii::$app->db->createCommand()->update('tbl_hojavida_datacomplementos',[
+                    'hv_idcivil' => $varcivil,                                      
+                ],'hv_idpersonal ='.$idsinfo.'')->execute(); 
+
+        return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+      }
+
+      return $this->render('editcomplementos',[
+        'model' => $model,
+        'idsinfo' => $idsinfo,
+      ]);
+    }
+ 
+    public function actionComplementosadd($idsinfo){
+      $model = new HojavidaDatacomplementos();      
+
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+      }
+
+      $paramscomplement = [':idhvaccion' => $idsinfo];
+      $varCivil = Yii::$app->db->createCommand('
+        SELECT dc.hv_idcivil from tbl_hojavida_datacomplementos dc
+          WHERE 
+            dc.hv_idpersonal = :idhvaccion
+          GROUP BY dc.hv_idcivil')->bindValues($paramscomplement)->queryScalar();
+
+      return $this->render('complementosadd',[
+        'model' => $model,
+        'idsinfo' => $idsinfo,
+        'varCivil' => $varCivil,
+      ]);
+    }
+
     public function actionVerficarConnid(){
       $varConnid = Yii::$app->db->createCommand("
         SELECT * FROM tbl_base_satisfaccion b WHERE b.fecha_satu BETWEEN '2021-10-01 00:00:00' AND '2021-10-31 23:59:59'
