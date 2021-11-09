@@ -88,22 +88,49 @@ use app\models\HojavidaDataclasificacion;
 
       if ($roles == "270") {
 
-        $dataProviderhv = Yii::$app->db->createCommand("
-        SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrátegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
-        INNER JOIN tbl_hojavida_datalaboral dl ON 
-          dl.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_hv_pais hp ON 
-          hp.hv_idpais = dp.hv_idpais
-        LEFT JOIN tbl_hojavida_dataacademica da ON 
-          da.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_hojavida_datapcrc dc ON 
-          dc.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
-          pc.id_dp_clientes = dc.id_dp_cliente
-        WHERE
-          dp.anulado = 0
-          GROUP BY dp.hv_idpersonal
-        ")->queryAll();
+        $paramsuser = [':idsesion' => $sesiones ];
+        $varidclientes = Yii::$app->db->createCommand('
+          SELECT GROUP_CONCAT(id_dp_clientes SEPARATOR", ") servicios 
+            FROM tbl_hojavida_permisoscliente hp
+              WHERE   
+                hp.usuario_registro = :idsesion')->bindValues($paramsuser)->queryScalar(); 
+
+        if ($varidclientes != null) {
+          $dataProviderhv = Yii::$app->db->createCommand("
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrátegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          INNER JOIN tbl_hojavida_datalaboral dl ON 
+            dl.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_hv_pais hp ON 
+            hp.hv_idpais = dp.hv_idpais
+          LEFT JOIN tbl_hojavida_dataacademica da ON 
+            da.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_hojavida_datapcrc dc ON 
+            dc.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
+            pc.id_dp_clientes = dc.id_dp_cliente
+          WHERE
+            dc.id_dp_cliente IN ($varidclientes)
+              AND dp.anulado = 0
+            GROUP BY dp.hv_idpersonal
+          ")->queryAll();
+        }else{
+          $dataProviderhv = Yii::$app->db->createCommand("
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrátegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          INNER JOIN tbl_hojavida_datalaboral dl ON 
+            dl.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_hv_pais hp ON 
+            hp.hv_idpais = dp.hv_idpais
+          LEFT JOIN tbl_hojavida_dataacademica da ON 
+            da.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_hojavida_datapcrc dc ON 
+            dc.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
+            pc.id_dp_clientes = dc.id_dp_cliente
+          WHERE
+            dp.anulado = 0
+            GROUP BY dp.hv_idpersonal
+          ")->queryAll();
+        }
 
       }else{
         $paramsuser = [':idsesion' => $sesiones ];
@@ -1203,6 +1230,44 @@ use app\models\HojavidaDataclasificacion;
         'idsinfo' => $idsinfo,
         'varCivil' => $varCivil,
       ]);
+    }
+
+    
+
+    public function actionEliminarcivil($id){
+      HojavidaDatacivil::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminardominancia($id){
+      HvDominancias::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminarsocial($id){
+      HvEstilosocial::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminarhobbie($id){
+      HvHobbies::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminargustos($id){
+      HvGustos::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminarclasificacion($id){
+      HojavidaDataclasificacion::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
     }
 
     public function actionVerficarConnid(){
