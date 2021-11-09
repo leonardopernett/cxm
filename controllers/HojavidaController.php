@@ -1460,6 +1460,11 @@ use app\models\ProcesosClienteCentrocosto;
     }
 
 
+    public function actionAcademico(){
+       return $this->redner('academico');
+    }
+
+
  
  
   }
