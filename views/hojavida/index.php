@@ -201,7 +201,7 @@ $this->params['breadcrumbs'][] = $this->title;
            <div class="card1 mb">
               <label style="font-size: 15px;"><em class="fas fa-address-book" style="font-size: 15px; color: #B833FF;"></em> Listado </label>
 
-              <?php if($sesiones == "2953") { ?>
+              <?php if($sesiones != "0") { ?>
                <div class="row">
                  <div class="col-md-6">
                     <a href=""  class="btn btn-success" data-toggle="modal" data-target="#exampleModal4">
