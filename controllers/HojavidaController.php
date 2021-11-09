@@ -1205,7 +1205,7 @@ use app\models\HojavidaDataclasificacion;
             dc.hv_idpersonal = :idhvaccion
           GROUP BY dc.hv_idcivil')->bindValues($paramscomplement)->queryScalar();
 
-      return $this->render('complementosadd',[
+      return $this->renderAjax('complementosadd',[
         'model' => $model,
         'idsinfo' => $idsinfo,
         'varCivil' => $varCivil,
