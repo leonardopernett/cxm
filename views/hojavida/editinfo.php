@@ -731,19 +731,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php }else{ ?>
 
-              <?= 
-                  Html::button('Agregar Complementos', ['value' => url::to(['complementosadd','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Agregar Complementos'])
-              ?>
-              <?php
-                  Modal::begin([
-                      'header' => '<h4></h4>',
-                      'id' => 'modal2',
-                  ]);
-
-                  echo "<div id='modalContent2'></div>";
-                                                          
-                  Modal::end(); 
-              ?> 
+              <?= Html::a('Agregar Complementos',  ['complementosadd','idsinfo'=>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab7;", 'title' => 'Agregar Complementos']) ?>
 
             <?php } ?>
           </div>
