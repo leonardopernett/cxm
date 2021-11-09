@@ -1631,8 +1631,6 @@ use app\models\HojavidaDataclasificacion;
      return $this->redirect(['academico']) ;
    }
     
-
-
    public function actionEliminarprofesion($id){
       
       Yii::$app->db->createCommand('DELETE FROM tbl_hv_cursosacademico WHERE idhvcursosacademico=:id')
@@ -1665,6 +1663,1143 @@ use app\models\HojavidaDataclasificacion;
     Yii::$app->session->setFlash('list','Lista Eliminada Exitosamente');
     return $this->redirect(['academico']);
    }
+
+
+
+
+   public function actionExcelexportadmin(){
+  
+    $varCorreo = Yii::$app->request->post("email");
+
+
+    $varlistusuarios = Yii::$app->db->createCommand("SELECT p.nombre_full AS nombre, p.identificacion AS identificacion,
+    p.direccion_oficina AS hvdireccionoficina , p.direccion_casa AS hvdireccioncasa,
+    p.email AS hvemailcorporativo , p.numero_movil AS hvmovil, p.numero_fijo AS hvcontactooficina,
+    pa.pais AS hvpais , ci.ciudad AS hvciudad , m.modalidad AS hvmodalidadtrabajo, p.indicador_satu,
+    p.fechacreacion, a.afinidad AS afinidad , t.tipoafinidad AS tipo , n.nivelafinidad , c.cantidadhijos ,
+    civ.estadocivil, c.NombreHijos , h.text AS hobbie , g.text AS gustos, cla.ciudadclasificacion, ant.antiguedad,
+    l.nombre_jefe, l.cargo_jefe, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial
+    
+    FROM tbl_hojavida_datapersonal p
+    
+    LEFT JOIN   tbl_hojavida_dataclasificacion cla
+    ON cla.hv_idclasificacion = p.clasificacion
+    
+    LEFT JOIN   tbl_hojavida_datalaboral l
+    ON p.hv_idpersonal = l.hv_idpersonal
+    
+    LEFT JOIN tbl_hv_antiguedad_rol ant
+    ON ant.hv_id_antiguedad = l.hv_id_antiguedad
+    
+    LEFT JOIN  tbl_hv_pais pa
+    ON pa.hv_idpais = p.hv_idpais
+    
+    LEFT JOIN  tbl_hv_ciudad ci
+    ON ci.hv_idciudad = p.hv_idciudad
+    
+    LEFT JOIN tbl_hojavida_dataafinidad a
+    ON a.hv_idafinidad = l.afinidad
+    
+    LEFT JOIN tbl_hojavida_datatipoafinidad t
+    on t.hv_idtipoafinidad = l.tipo_afinidad
+    
+    LEFT JOIN tbl_hojavida_datanivelafinidad n
+    ON n.hv_idinvelafinidad = l.tipo_afinidad
+    
+    LEFT JOIN tbl_hv_modalidad_trabajo m
+    ON m.hv_idmodalidad = p.hv_idmodalidad
+    
+    LEFT JOIN tbl_hojavida_datacomplementos c
+    ON c.hv_idpersonal = p.hv_idpersonal
+    
+    LEFT JOIN tbl_hv_hobbies h
+    ON h.id = c.idhobbies
+    
+    LEFT JOIN tbl_hv_gustos g
+    on g.id = c.idgustos
+    
+    LEFT JOIN  tbl_hv_estilosocial social
+    on social.idestilosocial = c.idestilosocial
+    
+    LEFT JOIN tbl_hojavida_datacivil civ
+    ON civ.hv_idcivil = c.hv_idcivil")->queryAll();
+
+    $phpExc = new \PHPExcel();
+    $phpExc->getProperties()
+            ->setCreator("Konecta")
+            ->setLastModifiedBy("Konecta")
+            ->setTitle("Lista de usuarios - Evaluacion Desarrollo")
+            ->setSubject("Evaluacion de Desarrollo")
+            ->setDescription("Este archivo contiene el listado de los usuarios registrados para maestro cliente")
+            ->setKeywords("Lista de usuarios");
+    $phpExc->setActiveSheetIndex(0);
+   
+    $phpExc->getActiveSheet()->setShowGridlines(False);
+
+    $styleArray = array(
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ),
+        );
+
+    $styleColor = array( 
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => '28559B'),
+            )
+        );
+
+    $styleArrayTitle = array(
+            'font' => array(
+              'bold' => false,
+              'color' => array('rgb' => 'FFFFFF')
+            )
+        );
+
+    $styleArraySubTitle2 = array(              
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => 'C6C6C6'),
+            )
+        );  
+
+    // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+    $styleArrayBody = array(
+            'font' => array(
+                'bold' => false,
+                'color' => array('rgb' => '2F4F4F')
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => 'DDDDDD')
+                )
+            )
+        );
+
+      $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+      $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+      $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+      $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AJ1');
+  
+      $phpExc->getActiveSheet()->SetCellValue('A2','NOMBRE');
+      $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('B2','IDENTIFICACION');
+      $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('C2','DIRECCION OFICINA');
+      $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('D2','DIRECCION CASA');
+      $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('E2','CORREO');
+      $phpExc->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('F2','CELULAR');
+      $phpExc->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);
+  
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('G2','CONTACTO OFICINA');
+      $phpExc->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);
+  
+    
+      $phpExc->getActiveSheet()->SetCellValue('H2','PAIS');
+      $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArraySubTitle2);
+  
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('I2','CIUDAD');
+      $phpExc->getActiveSheet()->getStyle('I2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArraySubTitle2);
+  
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('J2','MODALIDAD DE TRABAJO');
+      $phpExc->getActiveSheet()->getStyle('J2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('K2','SATU');
+      $phpExc->getActiveSheet()->getStyle('K2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('L2','FECHA DE CREACION');
+      $phpExc->getActiveSheet()->getStyle('L2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('M2','AFINIDAD');
+      $phpExc->getActiveSheet()->getStyle('M2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('N2','TIPO');
+      $phpExc->getActiveSheet()->getStyle('N2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('O2','NIVEL DE AFINIDAD');
+      $phpExc->getActiveSheet()->getStyle('O2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('P2','CANTIDAD DE HIJOS');
+      $phpExc->getActiveSheet()->getStyle('P2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('Q2','ESTADO CIVIL');
+      $phpExc->getActiveSheet()->getStyle('Q2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('R2','NOMBRE DE HIJOS');
+      $phpExc->getActiveSheet()->getStyle('R2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('S2','HOBBIES');
+      $phpExc->getActiveSheet()->getStyle('S2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('T2','GUSTOS');
+      $phpExc->getActiveSheet()->getStyle('T2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('U2','CIUDAD DE CLASIFICACION');
+      $phpExc->getActiveSheet()->getStyle('U2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('V2','ANTIGUEDAD');
+      $phpExc->getActiveSheet()->getStyle('V2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('W2','NOMBRE JEFE');
+      $phpExc->getActiveSheet()->getStyle('W2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('X2','CARGO JEFE');
+      $phpExc->getActiveSheet()->getStyle('X2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('Y2','TRABAJO ANTERIOR');
+      $phpExc->getActiveSheet()->getStyle('Y2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('Z2','FECHA INICIO CONTACTO');
+      $phpExc->getActiveSheet()->getStyle('Z2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('AA2','ESTILO SOCIAL');
+      $phpExc->getActiveSheet()->getStyle('AA2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArraySubTitle2);
+  
+    
+   
+    $numCell = 3;
+    foreach ($varlistusuarios as $key => $value) {
+      $numCell++;
+
+      $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['nombre']); 
+
+      $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['identificacion']); 
+
+      $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['hvdireccionoficina']);
+
+      $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $value['hvdireccioncasa']);
+
+      $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $value['hvemailcorporativo']); 
+
+      $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $value['hvmovil']); 
+
+      $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['hvcontactooficina']);
+
+      $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $value['hvpais']); 
+      $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $value['hvciudad']); 
+      $phpExc->getActiveSheet()->setCellValue('J'.$numCell, $value['hvmodalidadtrabajo']); 
+      $phpExc->getActiveSheet()->setCellValue('K'.$numCell, $value['indicador_satu']);
+      $phpExc->getActiveSheet()->setCellValue('L'.$numCell, $value['fechacreacion']);
+
+      $phpExc->getActiveSheet()->setCellValue('M'.$numCell, $value['afinidad']); 
+      $phpExc->getActiveSheet()->setCellValue('N'.$numCell, $value['tipo']); 
+      $phpExc->getActiveSheet()->setCellValue('O'.$numCell, $value['nivelafinidad']); 
+      $phpExc->getActiveSheet()->setCellValue('P'.$numCell, $value['cantidadhijos']); 
+      $phpExc->getActiveSheet()->setCellValue('Q'.$numCell, $value['estadocivil']); 
+      $phpExc->getActiveSheet()->setCellValue('R'.$numCell, $value['NombreHijos']); 
+      $phpExc->getActiveSheet()->setCellValue('S'.$numCell, $value['hobbie']);
+      $phpExc->getActiveSheet()->setCellValue('T'.$numCell, $value['gustos']);
+
+      $phpExc->getActiveSheet()->setCellValue('U'.$numCell, $value['ciudadclasificacion']); 
+      $phpExc->getActiveSheet()->setCellValue('V'.$numCell, $value['antiguedad']); 
+      $phpExc->getActiveSheet()->setCellValue('W'.$numCell, $value['nombre_jefe']); 
+      $phpExc->getActiveSheet()->setCellValue('X'.$numCell, $value['cargo_jefe']); 
+      $phpExc->getActiveSheet()->setCellValue('Y'.$numCell, $value['trabajo_anterior']); 
+      $phpExc->getActiveSheet()->setCellValue('Z'.$numCell, $value['fecha_inicio_contacto']); 
+      $phpExc->getActiveSheet()->setCellValue('AA'.$numCell, $value['estilosocial']);
+
+
+    }
+    $numCell = $numCell;
+
+    $hoy = getdate();
+    $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."ListadoUsuarios_Evaluacion_Desarrollo";
+          
+    $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+            
+    $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+    $tmpFile.= ".xls";
+
+    $objWriter->save($tmpFile);
+
+    $message = "<html><body>";
+    $message .= "<h3>Adjunto del archivo listado usuario maestro cliente</h3>";
+    $message .= "</body></html>";
+
+    Yii::$app->mailer->compose()
+                    ->setTo($varCorreo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Envio Listado de usuarios registrado - Hoja de Vida")
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
+
+     Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
+    return $this->redirect(['index']);
+
+   }
+
+   public function actionExcelexport(){
+
+    $varCorreo = Yii::$app->request->post("email");
+
+    $sessiones = Yii::$app->user->identity->id;
+
+    $varlistusuarios = Yii::$app->db->createCommand("SELECT p.nombre_full AS nombre, p.identificacion AS identificacion,
+    p.direccion_oficina AS hvdireccionoficina , p.direccion_casa AS hvdireccioncasa,
+    p.email AS hvemailcorporativo , p.numero_movil AS hvmovil, p.numero_fijo AS hvcontactooficina,
+    pa.pais AS hvpais , ci.ciudad AS hvciudad , m.modalidad AS hvmodalidadtrabajo, p.indicador_satu,
+    p.fechacreacion, a.afinidad AS afinidad , t.tipoafinidad AS tipo , n.nivelafinidad , c.cantidadhijos ,
+    civ.estadocivil, c.NombreHijos , h.text AS hobbie , g.text AS gustos, cla.ciudadclasificacion, ant.antiguedad,
+    l.nombre_jefe, l.cargo_jefe, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial
+    
+    FROM tbl_hojavida_datapersonal p
+    
+    LEFT JOIN   tbl_hojavida_dataclasificacion cla
+    ON cla.hv_idclasificacion = p.clasificacion
+    
+    LEFT JOIN   tbl_hojavida_datalaboral l
+    ON p.hv_idpersonal = l.hv_idpersonal
+    
+    LEFT JOIN tbl_hv_antiguedad_rol ant
+    ON ant.hv_id_antiguedad = l.hv_id_antiguedad
+    
+    LEFT JOIN  tbl_hv_pais pa
+    ON pa.hv_idpais = p.hv_idpais
+    
+    LEFT JOIN  tbl_hv_ciudad ci
+    ON ci.hv_idciudad = p.hv_idciudad
+    
+    LEFT JOIN tbl_hojavida_dataafinidad a
+    ON a.hv_idafinidad = l.afinidad
+    
+    LEFT JOIN tbl_hojavida_datatipoafinidad t
+    on t.hv_idtipoafinidad = l.tipo_afinidad
+    
+    LEFT JOIN tbl_hojavida_datanivelafinidad n
+    ON n.hv_idinvelafinidad = l.tipo_afinidad
+    
+    LEFT JOIN tbl_hv_modalidad_trabajo m
+    ON m.hv_idmodalidad = p.hv_idmodalidad
+    
+    LEFT JOIN tbl_hojavida_datacomplementos c
+    ON c.hv_idpersonal = p.hv_idpersonal
+    
+    LEFT JOIN tbl_hv_hobbies h
+    ON h.id = c.idhobbies
+    
+    LEFT JOIN tbl_hv_gustos g
+    on g.id = c.idgustos
+    
+    LEFT JOIN  tbl_hv_estilosocial social
+    on social.idestilosocial = c.idestilosocial
+    
+    LEFT JOIN tbl_hojavida_datacivil civ
+    ON civ.hv_idcivil = c.hv_idcivil WHERE p.usua_id= :id")->bindParam(':id',$sessiones)->queryAll();
+
+
+    $phpExc = new \PHPExcel();
+    $phpExc->getProperties()
+            ->setCreator("Konecta")
+            ->setLastModifiedBy("Konecta")
+            ->setTitle("Lista de usuarios - Evaluacion Desarrollo")
+            ->setSubject("Evaluacion de Desarrollo")
+            ->setDescription("Este archivo contiene el listado de los usuarios registrados para maestro cliente")
+            ->setKeywords("Lista de usuarios");
+    $phpExc->setActiveSheetIndex(0);
+
+    $phpExc->getActiveSheet()->setShowGridlines(False);
+
+    $styleArray = array(
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ),
+        );
+
+    $styleColor = array( 
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => '28559B'),
+            )
+        );
+
+    $styleArrayTitle = array(
+            'font' => array(
+              'bold' => false,
+              'color' => array('rgb' => 'FFFFFF')
+            )
+        );
+
+    $styleArraySubTitle2 = array(              
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => 'C6C6C6'),
+            )
+        );  
+
+    // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+    $styleArrayBody = array(
+            'font' => array(
+                'bold' => false,
+                'color' => array('rgb' => '2F4F4F')
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => 'DDDDDD')
+                )
+            )
+        );
+
+        $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+        $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+        $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AJ1');
+    
+        $phpExc->getActiveSheet()->SetCellValue('A2','NOMBRE');
+        $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle2);
+    
+        $phpExc->getActiveSheet()->SetCellValue('B2','IDENTIFICACION');
+        $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
+    
+        $phpExc->getActiveSheet()->SetCellValue('C2','DIRECCION OFICINA');
+        $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
+    
+        $phpExc->getActiveSheet()->SetCellValue('D2','DIRECCION CASA');
+        $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArraySubTitle2);
+    
+        $phpExc->getActiveSheet()->SetCellValue('E2','CORREO');
+        $phpExc->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('F2','CELULAR');
+        $phpExc->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);
+    
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('G2','CONTACTO OFICINA');
+        $phpExc->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);
+    
+      
+        $phpExc->getActiveSheet()->SetCellValue('H2','PAIS');
+        $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArraySubTitle2);
+    
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('I2','CIUDAD');
+        $phpExc->getActiveSheet()->getStyle('I2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArraySubTitle2);
+    
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('J2','MODALIDAD DE TRABAJO');
+        $phpExc->getActiveSheet()->getStyle('J2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('K2','SATU');
+        $phpExc->getActiveSheet()->getStyle('K2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleArraySubTitle2);
+    
+        $phpExc->getActiveSheet()->SetCellValue('L2','FECHA DE CREACION');
+        $phpExc->getActiveSheet()->getStyle('L2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleArraySubTitle2);
+    
+        $phpExc->getActiveSheet()->SetCellValue('M2','AFINIDAD');
+        $phpExc->getActiveSheet()->getStyle('M2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('N2','TIPO');
+        $phpExc->getActiveSheet()->getStyle('N2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('O2','NIVEL DE AFINIDAD');
+        $phpExc->getActiveSheet()->getStyle('O2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('P2','CANTIDAD DE HIJOS');
+        $phpExc->getActiveSheet()->getStyle('P2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('Q2','ESTADO CIVIL');
+        $phpExc->getActiveSheet()->getStyle('Q2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('R2','NOMBRE DE HIJOS');
+        $phpExc->getActiveSheet()->getStyle('R2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('S2','HOBBIES');
+        $phpExc->getActiveSheet()->getStyle('S2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('T2','GUSTOS');
+        $phpExc->getActiveSheet()->getStyle('T2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('U2','CIUDAD DE CLASIFICACION');
+        $phpExc->getActiveSheet()->getStyle('U2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('V2','ANTIGUEDAD');
+        $phpExc->getActiveSheet()->getStyle('V2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('W2','NOMBRE JEFE');
+        $phpExc->getActiveSheet()->getStyle('W2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleArraySubTitle2);
+    
+        $phpExc->getActiveSheet()->SetCellValue('X2','CARGO JEFE');
+        $phpExc->getActiveSheet()->getStyle('X2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleArraySubTitle2);
+    
+        $phpExc->getActiveSheet()->SetCellValue('Y2','TRABAJO ANTERIOR');
+        $phpExc->getActiveSheet()->getStyle('Y2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('Z2','FECHA INICIO CONTACTO');
+        $phpExc->getActiveSheet()->getStyle('Z2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleArraySubTitle2);
+    
+    
+        $phpExc->getActiveSheet()->SetCellValue('AA2','ESTILO SOCIAL');
+        $phpExc->getActiveSheet()->getStyle('AA2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArraySubTitle2);
+
+
+
+    $numCell = 3;
+    foreach ($varlistusuarios as $key => $value) {
+      $numCell++;
+
+      $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['nombre']); 
+
+      $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['identificacion']); 
+
+      $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['hvdireccionoficina']);
+
+      $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $value['hvdireccioncasa']);
+
+      $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $value['hvemailcorporativo']); 
+
+      $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $value['hvmovil']); 
+
+      $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['hvcontactooficina']);
+
+      $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $value['hvpais']); 
+      $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $value['hvciudad']); 
+      $phpExc->getActiveSheet()->setCellValue('J'.$numCell, $value['hvmodalidadtrabajo']); 
+      $phpExc->getActiveSheet()->setCellValue('K'.$numCell, $value['indicador_satu']);
+      $phpExc->getActiveSheet()->setCellValue('L'.$numCell, $value['fechacreacion']);
+
+      $phpExc->getActiveSheet()->setCellValue('M'.$numCell, $value['afinidad']); 
+      $phpExc->getActiveSheet()->setCellValue('N'.$numCell, $value['tipo']); 
+      $phpExc->getActiveSheet()->setCellValue('O'.$numCell, $value['nivelafinidad']); 
+      $phpExc->getActiveSheet()->setCellValue('P'.$numCell, $value['cantidadhijos']); 
+      $phpExc->getActiveSheet()->setCellValue('Q'.$numCell, $value['estadocivil']); 
+      $phpExc->getActiveSheet()->setCellValue('R'.$numCell, $value['NombreHijos']); 
+      $phpExc->getActiveSheet()->setCellValue('S'.$numCell, $value['hobbie']);
+      $phpExc->getActiveSheet()->setCellValue('T'.$numCell, $value['gustos']);
+
+      $phpExc->getActiveSheet()->setCellValue('U'.$numCell, $value['ciudadclasificacion']); 
+      $phpExc->getActiveSheet()->setCellValue('V'.$numCell, $value['antiguedad']); 
+      $phpExc->getActiveSheet()->setCellValue('W'.$numCell, $value['nombre_jefe']); 
+      $phpExc->getActiveSheet()->setCellValue('X'.$numCell, $value['cargo_jefe']); 
+      $phpExc->getActiveSheet()->setCellValue('Y'.$numCell, $value['trabajo_anterior']); 
+      $phpExc->getActiveSheet()->setCellValue('Z'.$numCell, $value['fecha_inicio_contacto']); 
+      $phpExc->getActiveSheet()->setCellValue('AA'.$numCell, $value['estilosocial']);
+
+
+    }
+    $numCell = $numCell;
+
+    $hoy = getdate();
+    $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."ListadoUsuarios_Evaluacion_Desarrollo";
+          
+    $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+            
+    $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+    $tmpFile.= ".xls";
+
+    $objWriter->save($tmpFile);
+
+    $message = "<html><body>";
+    $message .= "<h3>Adjunto del archivo listado usuario maestro cliente</h3>";
+    $message .= "</body></html>";
+
+    Yii::$app->mailer->compose()
+                    ->setTo($varCorreo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Envio Listado de usuarios registrado - Hoja de Vida")
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
+
+     Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
+    return $this->redirect(['index']);
+
+   }
+
+
+   public function actionExcelexporteventosadmin(){
+    $varCorreo = Yii::$app->request->post("email");
+
+
+    $evento =Yii::$app->db->createCommand("SELECT p.nombre_full AS nombre, p.identificacion , p.email,
+    e.nombre_evento, e.tipo_evento,c.ciudad, e.fecha_evento_inicio , e.fecha_evento_fin,
+    e.asistencia
+    
+    FROM tbl_hojavida_asignareventos a
+    
+    LEFT JOIN tbl_hojavida_eventos e
+    ON e.hv_ideventos = a.hv_ideventos
+    
+    LEFT JOIN tbl_hojavida_datapersonal p
+    ON p.hv_idpersonal = a.hv_idpersonal
+    
+    LEFT JOIN tbl_hv_ciudad c
+    ON c.hv_idciudad = p.hv_idciudad
+    ")->queryAll();
+
+    $phpExc = new \PHPExcel();
+    $phpExc->getProperties()
+            ->setCreator("Konecta")
+            ->setLastModifiedBy("Konecta")
+            ->setTitle("Lista de usuarios - Evaluacion Desarrollo")
+            ->setSubject("eventos - Evaluacion de Desarrollo")
+            ->setDescription("Este archivo contiene el listado de los eventos registrados ")
+            ->setKeywords("Lista de usuarios");
+    $phpExc->setActiveSheetIndex(0);
+   
+    $phpExc->getActiveSheet()->setShowGridlines(False);
+
+    $styleArray = array(
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ),
+        );
+
+    $styleColor = array( 
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => '28559B'),
+            )
+        );
+
+    $styleArrayTitle = array(
+            'font' => array(
+              'bold' => false,
+              'color' => array('rgb' => 'FFFFFF')
+            )
+        );
+
+    $styleArraySubTitle2 = array(              
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => 'C6C6C6'),
+            )
+        );  
+
+    // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+    $styleArrayBody = array(
+            'font' => array(
+                'bold' => false,
+                'color' => array('rgb' => '2F4F4F')
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => 'DDDDDD')
+                )
+            )
+        );
+
+    $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+
+    $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+    $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+    $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+    $phpExc->setActiveSheetIndex(0)->mergeCells('A1:I1');
+
+    $phpExc->getActiveSheet()->SetCellValue('A2','NOMBRE');
+    $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('B2','IDENTIFICACION');
+    $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('C2','EMAIL');
+    $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('D2','NOMBRE EVENTO');
+    $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('E2','TIPO EVENTO');
+    $phpExc->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('F2','CIUDAD EVENTO');
+    $phpExc->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('G2','FECHA EVENTO INICIO');
+    $phpExc->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);
+
+
+    $phpExc->getActiveSheet()->SetCellValue('H2','FECHA EVENTO FIN');
+    $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('I2','ASISTENCIA');
+    $phpExc->getActiveSheet()->getStyle('I2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArraySubTitle2);
+
+
+  
+      $numCell = 3;
+
+      foreach ($evento as $key => $value) {
+        $numCell++;
+
+        $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['nombre']); 
+        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['identificacion']); 
+        $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['email']);
+        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $value['nombre_evento']);
+
+        $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $value['tipo_evento']); 
+        $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $value['ciudad']); 
+        $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['fecha_evento_inicio']);     
+        $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $value['fecha_evento_fin']); 
+        $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $value['asistencia']); 
+
+      }
+
+    $numCell = $numCell;
+
+    $hoy = getdate();
+    $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."ListadoUsuarios_Evaluacion_Desarrollo";
+          
+    $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+            
+    $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+    $tmpFile.= ".xls";
+
+    $objWriter->save($tmpFile);
+
+    $message = "<html><body>";
+    $message .= "<h3>Adjunto del archivo listado de eventos en maestro cliente</h3>";
+    $message .= "</body></html>";
+
+    Yii::$app->mailer->compose()
+                    ->setTo($varCorreo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Envio Listado de eventos registrado - Hoja de Vida")
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
+
+     Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
+    return $this->redirect(['index']);
+   }
+
+   public function actionExcelexporteventos(){
+    $varCorreo = Yii::$app->request->post("email");
+    $sessiones = Yii::$app->user->identity->id;
+
+
+    $evento =Yii::$app->db->createCommand("SELECT p.nombre_full AS nombre, p.identificacion , p.email,
+    e.nombre_evento, e.tipo_evento,c.ciudad, e.fecha_evento_inicio , e.fecha_evento_fin,
+    e.asistencia
+    
+    FROM tbl_hojavida_asignareventos a
+    
+    LEFT JOIN tbl_hojavida_eventos e
+    ON e.hv_ideventos = a.hv_ideventos
+    
+    LEFT JOIN tbl_hojavida_datapersonal p
+    ON p.hv_idpersonal = a.hv_idpersonal
+    
+    LEFT JOIN tbl_hv_ciudad c
+    ON c.hv_idciudad = p.hv_idciudad
+    where p.usua_id = :id")->bindParam(':id',$sessiones)->queryAll();
+
+    $phpExc = new \PHPExcel();
+    $phpExc->getProperties()
+            ->setCreator("Konecta")
+            ->setLastModifiedBy("Konecta")
+            ->setTitle("Lista de usuarios - Evaluaci n Desarrollo")
+            ->setSubject("Evaluaci n de Desarrollo")
+            ->setDescription("Este archivo contiene el listado de los usuarios registrados para maetsro cliente")
+            ->setKeywords("Lista de usuarios");
+    $phpExc->setActiveSheetIndex(0);
+   
+    $phpExc->getActiveSheet()->setShowGridlines(False);
+
+    $styleArray = array(
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ),
+        );
+
+    $styleColor = array( 
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => '28559B'),
+            )
+        );
+
+    $styleArrayTitle = array(
+            'font' => array(
+              'bold' => false,
+              'color' => array('rgb' => 'FFFFFF')
+            )
+        );
+
+    $styleArraySubTitle2 = array(              
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => 'C6C6C6'),
+            )
+        );  
+
+    // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+    $styleArrayBody = array(
+            'font' => array(
+                'bold' => false,
+                'color' => array('rgb' => '2F4F4F')
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => 'DDDDDD')
+                )
+            )
+        );
+
+    $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+
+    $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+    $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+    $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+    $phpExc->setActiveSheetIndex(0)->mergeCells('A1:I1');
+
+    $phpExc->getActiveSheet()->SetCellValue('A2','NOMBRE');
+    $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('B2','IDENTIFICACION');
+    $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('C2','EMAIL');
+    $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('D2','NOMBRE EVENTO');
+    $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('E2','TIPO EVENTO');
+    $phpExc->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('F2','CIUDAD EVENTO');
+    $phpExc->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('G2','FECHA EVENTO INICIO');
+    $phpExc->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);
+
+
+    $phpExc->getActiveSheet()->SetCellValue('H2','FECHA EVENTO FIN');
+    $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArraySubTitle2);
+
+    $phpExc->getActiveSheet()->SetCellValue('I2','ASISTENCIA');
+    $phpExc->getActiveSheet()->getStyle('I2')->getFont()->setBold(true);
+    $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArray);            
+    $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleColor);
+    $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArraySubTitle2);
+
+
+   
+      $numCell = 3;
+
+      foreach ($evento as $key => $value) {
+        $numCell++;
+
+        $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['nombre']); 
+        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['identificacion']); 
+        $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['email']);
+        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $value['nombre_evento']);
+
+        $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $value['tipo_evento']); 
+        $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $value['ciudad']); 
+        $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['fecha_evento_inicio']);     
+        $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $value['fecha_evento_fin']); 
+        $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $value['asistencia']); 
+
+      }
+
+    $numCell = $numCell;
+
+    $hoy = getdate();
+    $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."ListadoUsuarios_Evaluacion_Desarrollo";
+          
+    $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+            
+    $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+    $tmpFile.= ".xls";
+
+    $objWriter->save($tmpFile);
+
+    $message = "<html><body>";
+    $message .= "<h3>Adjunto del archivo listado de eventos maestro cliente</h3>";
+    $message .= "</body></html>";
+
+    Yii::$app->mailer->compose()
+                    ->setTo($varCorreo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Envio Listado de eventos registrado - Hoja de Vida")
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
+
+     Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
+    return $this->redirect(['index']);
+   }
+
+
+
+
+
+
 
 
  

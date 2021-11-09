@@ -436,6 +436,74 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
     }
 ?>
+
+
+<div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Enviar informaci&oacute;n por correo de los usuarios</h3>
+      </div>
+        <div class="modal-body">
+
+        <?php if($roles == 270 || $roles == 309):  ?>
+            <?php $form = Activeform::begin(['action'=>['hojavida/excelexportadmin'], 'method'=>'post']) ?>
+              <div class="form-group">
+                 <label for="">Correo Destinatario</label>
+                 <input type="text" class="form-control" name="email" placeholder="Example@correo.com" required>
+              </div>
+              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em> </button>
+            <?php  Activeform::end() ?>
+          <?php endif  ?>
+
+          <?php if($roles != 270 && $roles != 309):  ?>
+            <?php $form = Activeform::begin(['action'=>['hojavida/excelexport'], 'method'=>'post']) ?>
+              <div class="form-group">
+                 <label for="">Correo Destinatario</label>
+                 <input type="text" class="form-control" name="email" placeholder="correo destinatario" required>
+              </div>
+              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em></button>
+            <?php  Activeform::end() ?>
+          <?php endif  ?>
+              
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Enviar informaci&oacute;n por correo de los eventos</h3>
+      </div>
+        <div class="modal-body">
+
+        <?php if($roles == 270 || $roles == 309):  ?>
+            <?php $form = Activeform::begin(['action'=>['hojavida/excelexporteventosadmin'], 'method'=>'post']) ?>
+              <div class="form-group">
+                 <label for="">Correo Destinatario</label>
+                 <input type="text" class="form-control" name="email" placeholder="Example@correo.com" required>
+              </div>
+              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em> </button>
+            <?php  Activeform::end() ?>
+          <?php endif  ?>
+
+          <?php if($roles != 270 && $roles != 309):  ?>
+            <?php $form = Activeform::begin(['action'=>['hojavida/excelexporteventos'], 'method'=>'post']) ?>
+              <div class="form-group">
+                 <label for="">Correo Destinatario</label>
+                 <input type="text" class="form-control" name="email" placeholder="correo destinatario" required>
+              </div>
+              <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em></button>
+            <?php  Activeform::end() ?>
+          <?php endif  ?>
+              
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
   $(document).ready( function () {
     $('#myTable').DataTable({
