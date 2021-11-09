@@ -655,6 +655,7 @@ var options ={
                 'rgba(255, 99, 132, 1)', 
             ],
             borderWidth: 1
+            /* s */
         }]
     },
     options: options
