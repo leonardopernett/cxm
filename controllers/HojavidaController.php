@@ -1461,8 +1461,93 @@ use app\models\ProcesosClienteCentrocosto;
 
 
     public function actionAcademico(){
-       return $this->redner('academico');
+       $profesion =  Yii::$app->db->createCommand('select * from tbl_hv_cursosacademico where idhvacademico = 4')->queryAll();
+       $especializacion =  Yii::$app->db->createCommand('select * from tbl_hv_cursosacademico where idhvacademico = 2')->queryAll();
+       $maestria =  Yii::$app->db->createCommand('select * from tbl_hv_cursosacademico where idhvacademico = 3')->queryAll();
+       $doctorado =  Yii::$app->db->createCommand('select * from tbl_hv_cursosacademico where idhvacademico = 1')->queryAll();
+       return $this->render('academico',[
+          'profesion' => $profesion,
+          'especializacion' => $especializacion,
+          'maestria' =>$maestria,
+          'doctorado' =>$doctorado
+       ]);
     }
+
+    
+    public function actionProfesion(){
+      Yii::$app->db->createCommand()->insert('tbl_hv_cursosacademico',[
+          'idhvacademico'=> 4,
+          'hv_cursos'=> Yii::$app->request->post('profesion')
+      ])
+      ->execute();
+      Yii::$app->session->setFlash('list','Lista Agregada Exitosamente');
+      return $this->redirect(['academico']);
+   }
+
+   public function actionEspecializacion(){
+     Yii::$app->db->createCommand()->insert('tbl_hv_cursosacademico',[
+       'idhvacademico'=> 2,
+       'hv_cursos'=> Yii::$app->request->post('especializacion')
+     ])
+     ->execute();
+     Yii::$app->session->setFlash('list','Lista Agregada Exitosamente');
+     return $this->redirect(['academico']) ;
+   }
+
+   public function actionMaestria(){
+     Yii::$app->db->createCommand()->insert('tbl_hv_cursosacademico',[
+       'idhvacademico'=> 3,
+       'hv_cursos'=> Yii::$app->request->post('maestria')
+     ])
+     ->execute();
+     Yii::$app->session->setFlash('list','Lista Agregada Exitosamente');
+     return $this->redirect(['academico']) ;
+   }
+
+   public function actionDoctorado(){
+     Yii::$app->db->createCommand()->insert('tbl_hv_cursosacademico',[
+       'idhvacademico'=> 1,
+       'hv_cursos'=> Yii::$app->request->post('doctorado')
+    ])
+     ->execute();
+     Yii::$app->session->setFlash('list','Lista Agregada Exitosamente');
+     return $this->redirect(['academico']) ;
+   }
+    
+
+
+   public function actionEliminarprofesion($id){
+      
+      Yii::$app->db->createCommand('DELETE FROM tbl_hv_cursosacademico WHERE idhvcursosacademico=:id')
+      ->bindParam(':id',$id )
+      ->execute();
+      Yii::$app->session->setFlash('list','Lista Eliminada Exitosamente');
+      return $this->redirect(['academico']);
+   }
+   
+   public function actionEliminarespecializacion($id){
+      Yii::$app->db->createCommand('DELETE FROM tbl_hv_cursosacademico WHERE idhvcursosacademico=:id')
+      ->bindParam(':id',$id )
+      ->execute();
+      Yii::$app->session->setFlash('list','Lista Eliminada Exitosamente');
+      return $this->redirect(['academico']);
+   }
+
+   public function actionEliminarmaestria($id){
+    Yii::$app->db->createCommand('DELETE FROM tbl_hv_cursosacademico WHERE idhvcursosacademico=:id')
+    ->bindParam(':id',$id )
+    ->execute();
+    Yii::$app->session->setFlash('list','Lista Eliminada Exitosamente');
+    return $this->redirect(['academico']);
+   }
+
+   public function actionEliminardoctorado($id){
+    Yii::$app->db->createCommand('DELETE FROM tbl_hv_cursosacademico WHERE idhvcursosacademico=:id')
+    ->bindParam(':id',$id )
+    ->execute();
+    Yii::$app->session->setFlash('list','Lista Eliminada Exitosamente');
+    return $this->redirect(['academico']);
+   }
 
 
  

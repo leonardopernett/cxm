@@ -390,7 +390,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        <div class="col-md-2">
                            <div class="card1 mb">
                                 <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Datos Acad&eacute;micos: </label>
-                                <?= Html::a('Crear',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
+                                <?= Html::a('Crear',  ['academico'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Modalidad Trabajo']) 
                                 ?>
