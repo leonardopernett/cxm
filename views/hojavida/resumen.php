@@ -320,7 +320,7 @@ use yii\widgets\ActiveForm;
         <div class="card1">
             <div class="details">
                <em class="fa fa-angle-double-right"></em>
-               <h4>Total clientes por clasificación</h4>
+               <h4>Total clientes </h4>
             </div>
             <div class="content">
                 <table class="table table-bordered">
@@ -376,7 +376,7 @@ use yii\widgets\ActiveForm;
         <div class="card1">
             <div class="details">
                <em class="fa fa-angle-double-right"></em>
-               <h4>Total Decisor por clasificación </h4>
+               <h4>Total decisores </h4>
             </div>
             <div class="content">
                 <table class="table table-bordered">
@@ -431,7 +431,7 @@ use yii\widgets\ActiveForm;
         <div class="card1">
             <div class="details">
                <em class="fa fa-angle-double-right"></em>
-               <h4>Total cliente estratégico por clasificación </h4>
+               <h4>Total clientes estratégicos  </h4>
             </div>
             <div class="content">
                 <table class="table table-bordered">
@@ -486,7 +486,7 @@ use yii\widgets\ActiveForm;
         <div class="card1">
             <div class="details">
                <em class="fa fa-angle-double-right"></em>
-               <h4>Total cliente operativo por clasificación </h4>
+               <h4>Total clientes operativos </h4>
             </div>
             <div class="content">
                 <table class="table table-bordered">
@@ -665,7 +665,7 @@ var options ={
   const charts = new Chart(ctx2,{
     type: 'doughnut',
     data: {
-        labels: ['Total Clientes Bogota', 'Total Clinetes Medellin'],
+        labels: ['Total Clientes Bogota', 'Total Clientes Medellin'],
         datasets: [{
             label: 'Totales de Clientes por clasificacion de ciudad',
             data: [bogota, medellin, ],

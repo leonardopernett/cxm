@@ -1577,6 +1577,11 @@ use app\models\HojavidaDataclasificacion;
     }
 
 
+    public function actionAcademico(){
+       return $this->redner('academico');
+    }
+
+
  
  
   }
