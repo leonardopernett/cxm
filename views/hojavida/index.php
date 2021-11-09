@@ -91,6 +91,45 @@ $this->params['breadcrumbs'][] = $this->title;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 
+    
+    .input-area{
+            width: 400px;
+            height: 100px;
+            border: 2px dotted #002855;
+            margin: 0 auto;
+            position:relative;
+          }
+
+          .input-text{
+            
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            color:#002855
+
+          }
+
+          .input-file{
+            position: absolute;
+            left:0;
+            right:0;
+            top:0;
+            bottom:0;
+            opacity:0 ;
+            width: 100%;
+            height:100%;
+            cursor:pointer;
+          }
+
+          .button{
+            text-align: center;
+            margin-top: 15px;
+            display: block;
+            position:relative;
+           }
+
 </style>
 <!-- datatable -->
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
@@ -118,10 +157,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="capaBotones" style="display: inline;">
    <div class="row">
       <?php if ($varResumen == 1) { ?>
-       <div class="col-md-4">
+        <div class="col-md-4">
            <div class="card1 mb">
                <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 15px; color: #559FFF;"></em> Resumen General </label>
-               <?= Html::a('Aceptar',  ['resumen'], ['class' => 'btn btn-primary',                                        
+               <?= Html::a('Aceptar',  ['resumen','id'=>Yii::$app->user->identity->id], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Regumen General']) 
                 ?>
@@ -142,15 +181,15 @@ $this->params['breadcrumbs'][] = $this->title;
       <?php } ?>
 
       <?php if($varCargar == 1) { ?>
-       <div class="col-md-4">
+
+        <div class="col-md-4">
            <div class="card1 mb">
-               <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #559FFF;"></em> Carga Masiva </label>
-               <?= Html::a('Aceptar',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
-                                        'data-toggle' => 'tooltip',
-                                        'title' => 'Carga Masiva']) 
-                ?>
+               <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #559FFF;"></em> Carga Masiva </label>
+               <a href="" class="btn btn-primary" style="font-size:15px;font-weight:bold" data-toggle="modal" data-target="#exampleModal3">Aceptar</a>
+
            </div>
        </div>
+
       <?php } ?>
 
    </div>
@@ -278,6 +317,35 @@ $this->params['breadcrumbs'][] = $this->title;
    </div>
 </div>
 <hr>
+
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Agregar Carga Masiva</h3>
+
+      </div>
+      <div class="modal-body body">
+          
+            <?php $form = ActiveForm::begin(['action'=>['hojavida/export'], 'method'=>'POST', 'options'=>['enctype'=>'multipart/form-data']]) ?>
+                <div class="input-area">
+                      <div class="input-text" id="text">Seleccione o arrastre el archivo</div>
+                      <em class="fa fa-upload"></em>
+                      <?= $form->field($modelos, 'file')->fileInput(["class"=>"input-file" ,'id'=>'file']) ?>
+                  </div> 
+
+
+                  <div class="button">
+                      <button  class="btn btn-success">Agregar <em class="fa fa-plus" style="padding-top:5px"></em> </button>
+                  </div>
+            <?php ActiveForm::end() ?>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
 <?php
     if ($roles == "270") {
 ?>
@@ -312,7 +380,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        <div class="col-md-2">
                            <div class="card1 mb">
                                 <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Modalidad Trabajo: </label>
-                                <?= Html::a('Crear',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
+                                <?= Html::a('Crear',  ['crearmodalidad'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Crear Modalidad Trabajo']) 
                                 ?>
@@ -390,5 +458,13 @@ $this->params['breadcrumbs'][] = $this->title;
       } 
     });
   });
+
+  const text = document.getElementById('text');
+  const file = document.getElementById('file');
+
+  file.addEventListener('change',()=>{
+      text.innerHTML= file.files[0].name
+  })
+
 
 </script>

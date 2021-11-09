@@ -74,7 +74,7 @@ use app\models\HojavidaDataclasificacion;
    
     public function actionIndex(){
       $sesiones = Yii::$app->user->identity->id;
-
+      $modelos = new HojavidaDatapersonal();
       $rol =  new Query;
       $rol     ->select(['tbl_roles.role_id'])
                   ->from('tbl_roles')
@@ -137,14 +137,8 @@ use app\models\HojavidaDataclasificacion;
       
       return $this->render('index',[
         'dataProviderhv' => $dataProviderhv,
+        'modelos' =>  $modelos
       ]);
-    }
-
-    public function actionResumen(){
-      $id = Yii::$app->user->identity->id;
-
-
-      return $this->render('resumen');
     }
 
     public function actionEventos(){
@@ -746,7 +740,6 @@ use app\models\HojavidaDataclasificacion;
       ]);
     }
 
-
     public function actionPermisoshv(){
       $model = new HojavidaPermisosacciones(); 
       $model2 = new HojavidaPermisoscliente();
@@ -1254,9 +1247,273 @@ use app\models\HojavidaDataclasificacion;
                     return $output;
                 }
                 return $output;
-            }
+    }
+
+    public function actionCrearmodalidad(){
+      $modalidad = Yii::$app->db->createCommand('select * from tbl_hv_modalidad_trabajo')->queryAll();
+      return $this->render('modalidad',[ "modalidad"=> $modalidad ]);
+    }
+
+    public function actionGuardarmodalidad(){
+       Yii::$app->db->createCommand()->insert('tbl_hv_modalidad_trabajo',[
+           "modalidad"=>Yii::$app->request->post('modalidad'),
+           "usua_id"  =>Yii::$app->user->identity->id
+       ])->execute();
+       Yii::$app->session->setFlash('info','MODALIDAD CREADA EXITOSAMENTE');
+       return $this->redirect(["crearmodalidad"]);
+    }
+
+    public function actionEliminarmodalidad($id){
+      Yii::$app->db->createCommand('DELETE FROM tbl_hv_modalidad_trabajo WHERE hv_idmodalidad=:id')->bindParam(':id',$id)->execute();
+      Yii::$app->session->setFlash('info','MODALIDAD ELIMINADA CORRECTAMENTE');
+      return $this->redirect(["crearmodalidad"]);
+    }
+
+    public function actionResumen($id){
+
+        $sessiones = Yii::$app->user->identity->id;
+        $rol =  new Query;
+        $rol     ->select(['tbl_roles.role_id'])
+                  ->from('tbl_roles')
+                  ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                              'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+                  ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                              'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
+                  ->where('tbl_usuarios.usua_id = '.$sessiones.'');                    
+        $command = $rol->createCommand();
+        $roles = $command->queryScalar();
 
 
+        $clientsTotalBogota   = Yii::$app->db->createCommand("SELECT COUNT( i.hv_idpersonal) AS total FROM tbl_hojavida_datapersonal i where clasificacion= 1 ")->queryAll();
+        $clientsTotalMedellin = Yii::$app->db->createCommand("SELECT COUNT( i.hv_idpersonal) AS total FROM tbl_hojavida_datapersonal i where clasificacion= 2 ")->queryAll();
+        $clientsTotalAdmin    = Yii::$app->db->createCommand('SELECT COUNT(i.hv_idpersonal) AS total FROM tbl_hojavida_datapersonal i')->queryAll();
+        
+        $clientDecisorBogota   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datatipoafinidad t
+        ON l.tipo_afinidad = t.hv_idtipoafinidad
+        WHERE t.tipoafinidad='Decisor' AND p.clasificacion = 1")->queryAll();
+
+        $clientDecisorMedellin = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datatipoafinidad t
+        ON l.tipo_afinidad = t.hv_idtipoafinidad
+        WHERE t.tipoafinidad='Decisor' AND p.clasificacion = 2")->queryAll();
+
+        $clientDecisor    = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datatipoafinidad t
+        ON l.tipo_afinidad = t.hv_idtipoafinidad
+        WHERE t.tipoafinidad='Decisor' ")->queryAll();
+
+
+
+        $clientEstrategicoBogota   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        WHERE n.nivelafinidad='Estratégico' AND p.clasificacion = 1")->queryAll();
+
+        $clientEstrategicoMedellin = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        WHERE n.nivelafinidad='Estratégico' AND p.clasificacion = 2")->queryAll();
+
+        $clientEstrategico   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        WHERE n.nivelafinidad='Estratégico' ")->queryAll();
+
+
+
+        $clientOperativoBogota   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        WHERE n.nivelafinidad='Operativo' AND p.clasificacion = 1")->queryAll();
+
+        $clientOperativoMedellin = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        WHERE n.nivelafinidad='Operativo' AND p.clasificacion = 2")->queryAll();
+
+        $clienOperativo   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        WHERE n.nivelafinidad='Operativo' ")->queryAll();
+
+
+
+
+
+
+        $totalDecisorEstrategico   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        INNER JOIN tbl_hojavida_datatipoafinidad t
+        ON t.hv_idtipoafinidad = l.tipo_afinidad
+        where t.tipoafinidad='Decisor' AND n.nivelafinidad='Estratégico' ")->queryAll();
+
+
+        $totalDecisorOperativo   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        INNER JOIN tbl_hojavida_datatipoafinidad t
+        ON t.hv_idtipoafinidad = l.tipo_afinidad
+        where t.tipoafinidad='Decisor' AND n.nivelafinidad='Operativo' ")->queryAll();
+
+
+
+        $totalNoDecisorEstrategico   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        INNER JOIN tbl_hojavida_datatipoafinidad t
+        ON t.hv_idtipoafinidad = l.tipo_afinidad
+        where t.tipoafinidad='No Decisor' AND n.nivelafinidad='Estratégico' ")->queryAll();
+
+
+        $totalNoDecisorOperativo   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p
+        INNER JOIN tbl_hojavida_datalaboral l
+        ON p.hv_idpersonal = l.hv_idpersonal
+        INNER JOIN tbl_hojavida_datanivelafinidad n
+        ON n.hv_idinvelafinidad = l.nivel_afinidad
+        INNER JOIN tbl_hojavida_datatipoafinidad t
+        ON t.hv_idtipoafinidad = l.tipo_afinidad
+        where t.tipoafinidad='No Decisor' AND n.nivelafinidad='Operativo' ")->queryAll();
+        
+
+       return $this->render('resumen',[
+           'roles' => $roles,
+           'clientsTotalBogota'   => $clientsTotalBogota,
+           'clientsTotalMedellin' => $clientsTotalMedellin,
+           'clientsTotalAdmin'    => $clientsTotalAdmin,
+
+           'clientDecisorBogota'  => $clientDecisorBogota,
+           'clientDecisorMedellin'=> $clientDecisorMedellin,
+           'clientDecisor'        => $clientDecisor ,
+
+           'clientEstrategicoBogota'  => $clientEstrategicoBogota,
+           'clientEstrategicoMedellin'=> $clientEstrategicoMedellin,
+           'clientEstrategico'        => $clientEstrategico,
+
+
+           'clientOperativoBogota'   =>  $clientOperativoBogota,
+           'clientOperativoMedellin' =>  $clientOperativoMedellin,
+           'clienOperativo'          =>  $clienOperativo,
+
+           'totalDecisorEstrategico'  => $totalDecisorEstrategico,
+           'totalDecisorOperativo'    => $totalDecisorOperativo,
+           'totalNoDecisorEstrategico'  => $totalDecisorEstrategico,
+           'totalNoDecisorOperativo'    => $totalDecisorOperativo
+
+        ]);
+
+
+
+
+    }
+ 
+    public function actionExport(){
+      $modelos = new HojavidaDatapersonal();
+      if($modelos->load(Yii::$app->request->post())){
+          $modelos->file = UploadedFile::getInstance($modelos, 'file');
+          $ruta = 'archivos/'.time()."_".$modelos->file->baseName. ".".$modelos->file->extension;
+          $modelos->file->saveAs( $ruta ); 
+          $this->Importexcel($ruta);  
+      }
+
+      Yii::$app->session->setFlash('file','archivo cargado exitosamente');
+      unlink( $ruta);
+      return $this->redirect(['index']);
+    }
+
+    public function Importexcel($name){
+      /* $inputFile = 'categorias/' . $name . '.xlsx'; */
+      $inputFile  = $name;
+  
+      try {
+        $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+        $objPHPExcel = $objReader->load($inputFile);
+      } catch (Exception $e) {
+        die('Error');
+      }
+  
+      $sheet = $objPHPExcel->getSheet(0);
+      $highestRow = $sheet->getHighestRow();
+      $highestcolumn = $sheet->getHighestColumn();
+      
+      for ($row = 3; $row <= $highestRow; $row++) {
+
+        $identificacion = Yii::$app->db->createCommand(" SELECT identificacion FROM tbl_hojavida_datapersonal WHERE identificacion =:identificacion")
+                                       ->bindParam(':identificacion',$sheet->getCell("A".$row)->getValue())
+                                       ->queryAll();
+                                       
+                    Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[                                        
+                        'identificacion' => $sheet->getCell("A".$row)->getValue(),
+                        'nombre_full'    => $sheet->getCell("B".$row)->getValue(),
+                        'email'=> $sheet->getCell("C".$row)->getValue(),
+                        'numero_movil'=> $sheet->getCell("D".$row)->getValue(),
+                        'numero_fijo'=> $sheet->getCell("E".$row)->getValue(),
+                        'direccion_casa'=> $sheet->getCell("F".$row)->getValue(),
+                        'hv_idpais'=> $sheet->getCell("G".$row)->getValue() =='Argentina'  ? 1 :
+                                      $sheet->getCell("G".$row)->getValue() =='Bolivia'    ? 2 :
+                                      $sheet->getCell("G".$row)->getValue() =='Chile'  ? 3 :
+                                      $sheet->getCell("G".$row)->getValue() =='Colombia'  ? 4 :
+                                      $sheet->getCell("G".$row)->getValue() =='España'  ? 5 :
+                                      $sheet->getCell("G".$row)->getValue() =='Estados Unidos'  ? 6 : 
+                                      $sheet->getCell("G".$row)->getValue() =='Uruguay'  ? 7 : null,
+
+                        'hv_idciudad'=> $sheet->getCell("H".$row)->getValue()  == 'Barranquilla' ? 1 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Bogotá' ? 2 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Bucaramanga' ? 3 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Buenos Aires' ? 4 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Cali' ? 5 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Cartagena' ? 6 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Cúcuta' ? 7 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Ibagué' ? 8 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Itagüí' ? 9 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Medellín' ? 10 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Monteria' ? 11 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Rionegro' ? 12 : 
+                                        $sheet->getCell("H".$row)->getValue()  == 'Santa Marta' ? 13 : null,
+                        
+                        'direccion_oficina'=> $sheet->getCell("I".$row)->getValue(),
+                        'hv_idmodalidad'=> $sheet->getCell("J".$row)->getValue(),
+                        'tratamiento_data'=> $sheet->getCell("K".$row)->getValue(),
+                        'suceptible'=> $sheet->getCell("L".$row)->getValue(),
+                        'anulado'=> $sheet->getCell("M".$row)->getValue() == 'Activo' ? 1 : 2,
+                        'usua_id'=>Yii::$app->user->identity->id,
+                        'clasificacion'  =>      $sheet->getCell("N".$row)->getValue() == 'Bogotá' ? 1 : 2
+            ])->execute();
+                       
+        
+
+      }
+    }
+
+
+ 
+ 
   }
 
 ?>
