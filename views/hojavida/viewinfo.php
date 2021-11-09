@@ -92,6 +92,14 @@ $this->params['breadcrumbs'][] = $this->title;
   foreach ($dataProviderInfo as $key => $value) {   
       $varIdAccion = $value['hv_idpersonal'];
       $varIdClientes = $value['IdCliente'];
+
+      $paramsclasifica = [':idclasifica' => $value['clasificacion']];
+      $varClasificacion = Yii::$app->db->createCommand('
+        SELECT dc.ciudadclasificacion FROM tbl_hojavida_dataclasificacion dc
+          INNER JOIN tbl_hojavida_datapersonal dp ON 
+            dc.hv_idclasificacion = dp.clasificacion
+            WHERE 
+              dp.hv_idpersonal = :idclasifica ')->bindValues($paramsclasifica)->queryScalar();
 ?>
   <div id="idcapauno" class="capaPrincipal" style="display: inline;">
     <div class="row">
@@ -141,6 +149,8 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indicador Satu') ?></label></th>
                 <td><label style="font-size: 12px;"><?php echo  $value['IndicadorSatu'].'%'; ?></label></td>
+                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Clasificación Ciudad Konecta') ?></label></th>
+                <td><label style="font-size: 12px;"><?php echo  $varClasificacion; ?></label></td>
               </tr>
             </tbody>
           </table>
@@ -281,32 +291,33 @@ $this->params['breadcrumbs'][] = $this->title;
       <div class="col-md-12">
         <div class="card1 mb">
           <label style="font-size: 15px;"><em class="fas fa-plus" style="font-size: 15px; color: #FFC72C;"></em> Datos Acad&eacute;micos </label>
-
-          <?php 
-            $varListaAcademica = Yii::$app->db->createCommand('
-              SELECT n.hvacademico AS Nivel, c.hv_cursos AS Cursos FROM tbl_hv_nivelacademico n 
-                  INNER JOIN tbl_hv_cursosacademico c ON  
-                    n.idhvacademico = c.idhvacademico
-                  INNER JOIN tbl_hojavida_dataacademica da ON 
-                    c.idhvcursosacademico = da.idhvcursosacademico
-                  WHERE 
-                    da.hv_idpersonal = :idhvacciones')->bindValues($paramsaccion)->queryAll();
-
-            foreach ($varListaAcademica as $key => $value) {              
-            
-          ?>
+          
             <table id="tblDataAcademico" class="table table-striped table-bordered tblResDetFreed">
               <caption><?php echo "Resultados"; ?></caption>
               <tbody>
+                <?php 
+                  $varListaAcademica = Yii::$app->db->createCommand('
+                    SELECT n.hvacademico AS Nivel, c.hv_cursos AS Cursos FROM tbl_hv_nivelacademico n 
+                        INNER JOIN tbl_hv_cursosacademico c ON  
+                          n.idhvacademico = c.idhvacademico
+                        INNER JOIN tbl_hojavida_dataacademica da ON 
+                          c.idhvcursosacademico = da.idhvcursosacademico
+                        WHERE 
+                          da.hv_idpersonal = :idhvacciones')->bindValues($paramsaccion)->queryAll();
+
+                  foreach ($varListaAcademica as $key => $value) {              
+                  
+                ?>
                 <tr>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $value['Nivel']) ?></label></th>
                   <td><label style="font-size: 12px;"><?php echo  $value['Cursos']; ?></label></td>
                 </tr>
+                <?php
+                  }
+                ?>
               </tbody>
             </table>
-          <?php
-            }
-          ?>
+          
 
         </div>
       </div>
@@ -388,7 +399,6 @@ $this->params['breadcrumbs'][] = $this->title;
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gustos') ?></label></th>
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Hijos') ?></label></th>
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Hijos') ?></label></th>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -422,9 +432,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td><label style="font-size: 12px;"><?php echo  $value['estilosocial']; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $value['text']; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $value['hobbies']; ?></label></td>
-                        <td class="text-center">
-                          <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletecomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
-                        </td>
+                       
                       </tr>
                     <?php
                       }

@@ -39,6 +39,7 @@ use app\models\HojavidaPermisosacciones;
 use app\models\HojavidaPermisoscliente;
 use app\models\HojavidaDatacomplementos;
 use app\models\ProcesosClienteCentrocosto;
+use app\models\HojavidaDataclasificacion;
 
 
   class HojavidaController extends Controller {
@@ -87,22 +88,49 @@ use app\models\ProcesosClienteCentrocosto;
 
       if ($roles == "270") {
 
-        $dataProviderhv = Yii::$app->db->createCommand("
-        SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrátegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
-        INNER JOIN tbl_hojavida_datalaboral dl ON 
-          dl.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_hv_pais hp ON 
-          hp.hv_idpais = dp.hv_idpais
-        LEFT JOIN tbl_hojavida_dataacademica da ON 
-          da.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_hojavida_datapcrc dc ON 
-          dc.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
-          pc.id_dp_clientes = dc.id_dp_cliente
-        WHERE
-          dp.anulado = 0
-          GROUP BY dp.hv_idpersonal
-        ")->queryAll();
+        $paramsuser = [':idsesion' => $sesiones ];
+        $varidclientes = Yii::$app->db->createCommand('
+          SELECT GROUP_CONCAT(id_dp_clientes SEPARATOR", ") servicios 
+            FROM tbl_hojavida_permisoscliente hp
+              WHERE   
+                hp.usuario_registro = :idsesion')->bindValues($paramsuser)->queryScalar(); 
+
+        if ($varidclientes != null) {
+          $dataProviderhv = Yii::$app->db->createCommand("
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrátegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          INNER JOIN tbl_hojavida_datalaboral dl ON 
+            dl.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_hv_pais hp ON 
+            hp.hv_idpais = dp.hv_idpais
+          LEFT JOIN tbl_hojavida_dataacademica da ON 
+            da.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_hojavida_datapcrc dc ON 
+            dc.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
+            pc.id_dp_clientes = dc.id_dp_cliente
+          WHERE
+            dc.id_dp_cliente IN ($varidclientes)
+              AND dp.anulado = 0
+            GROUP BY dp.hv_idpersonal
+          ")->queryAll();
+        }else{
+          $dataProviderhv = Yii::$app->db->createCommand("
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrátegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          INNER JOIN tbl_hojavida_datalaboral dl ON 
+            dl.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_hv_pais hp ON 
+            hp.hv_idpais = dp.hv_idpais
+          LEFT JOIN tbl_hojavida_dataacademica da ON 
+            da.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_hojavida_datapcrc dc ON 
+            dc.hv_idpersonal = dp.hv_idpersonal
+          LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
+            pc.id_dp_clientes = dc.id_dp_cliente
+          WHERE
+            dp.anulado = 0
+            GROUP BY dp.hv_idpersonal
+          ")->queryAll();
+        }
 
       }else{
         $paramsuser = [':idsesion' => $sesiones ];
@@ -400,7 +428,8 @@ use app\models\ProcesosClienteCentrocosto;
       $txtvaridautoriza = Yii::$app->request->get("txtvaridautoriza");
       $txtvaridpais = Yii::$app->request->get("txtvaridpais");
       $txtvarididciudad = Yii::$app->request->get("txtvarididciudad");
-      $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");
+      $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");      
+      $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
 
       $txtrta = 0;
@@ -418,6 +447,7 @@ use app\models\ProcesosClienteCentrocosto;
                     'tratamiento_data' => $txtvaridautoriza,
                     'suceptible' => $txtvaridsusceptible,
                     'indicador_satu' => $txtvaridsatu,
+                    'clasificacion' => $txtvarclasificacion,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,                                       
@@ -586,7 +616,7 @@ use app\models\ProcesosClienteCentrocosto;
           if(dp.tratamiento_data = 1,"No","Si") AS TratamientoDatos, if(dp.suceptible = 1,"No","Si") AS Susceptible,
           dp.indicador_satu AS IndicadorSatu, l.rol AS Rol, a.antiguedad AS Antiguedad, l.fecha_inicio_contacto AS FechaContacto,
           l.nombre_jefe AS NombreJefe, l.cargo_jefe AS CargoJefe, l.trabajo_anterior AS TrabajoAnterior,
-          if(l.afinidad = 1,"Relación Directa","Relación de Interes") AS Afinidad,
+          if(l.afinidad = 1,"Relación Directa","Relación de Interes") AS Afinidad,  dp.clasificacion,
           if(l.tipo_afinidad = 1,"Decisor","No Decisor") AS TipoAfinidad, if(l.nivel_afinidad = 1,"Estratégio","Operativo") AS NivelAfinidad,
           pc.id_dp_cliente AS IdCliente
            FROM tbl_hojavida_datapersonal dp
@@ -618,6 +648,7 @@ use app\models\ProcesosClienteCentrocosto;
       $model2 = new HvEstilosocial();
       $model3 = new HvHobbies();
       $model4 = new HvGustos();
+      $model5 = new HojavidaDataclasificacion();
 
       $dataProviderCivil = HojavidaDatacivil::find()
                             ->asArray()
@@ -639,6 +670,10 @@ use app\models\ProcesosClienteCentrocosto;
                               ->asArray()
                               ->all();
 
+      $dataProviderClasificacion = HojavidaDataclasificacion::find()
+                                    ->asArray()
+                                    ->all();
+
       return $this->render('complementoshv',[
         'model' => $model,
         'dataProviderCivil' => $dataProviderCivil,
@@ -650,6 +685,8 @@ use app\models\ProcesosClienteCentrocosto;
         'dataProviderHobbies' => $dataProviderHobbies,
         'model4' => $model4,
         'dataProvidergustos' => $dataProvidergustos,
+        'model5' => $model5,
+        'dataProviderClasificacion' => $dataProviderClasificacion,
 
       ]);
     }
@@ -1044,6 +1081,7 @@ use app\models\ProcesosClienteCentrocosto;
       $txtvarididciudad = Yii::$app->request->get("txtvarididciudad");
       $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
+      $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
 
       $txtrta = 0;
       
@@ -1062,6 +1100,7 @@ use app\models\ProcesosClienteCentrocosto;
                     'tratamiento_data' => $txtvaridautoriza,
                     'suceptible' => $txtvaridsusceptible,
                     'indicador_satu' => $txtvaridsatu,
+                    'clasificacion' => $txtvarclasificacion,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,                                       
@@ -1151,6 +1190,84 @@ use app\models\ProcesosClienteCentrocosto;
       }          
 
       die(json_encode($txtrta));
+    }
+
+    public function actionEditcomplementos($id,$idsinfo){
+      $model = HojavidaDatacomplementos::findOne($id);;
+
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        
+        $varcivil = $model->hv_idcivil;
+        Yii::$app->db->createCommand()->update('tbl_hojavida_datacomplementos',[
+                    'hv_idcivil' => $varcivil,                                      
+                ],'hv_idpersonal ='.$idsinfo.'')->execute(); 
+
+        return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+      }
+
+      return $this->render('editcomplementos',[
+        'model' => $model,
+        'idsinfo' => $idsinfo,
+      ]);
+    }
+ 
+    public function actionComplementosadd($idsinfo){
+      $model = new HojavidaDatacomplementos();      
+
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
+      }
+
+      $paramscomplement = [':idhvaccion' => $idsinfo];
+      $varCivil = Yii::$app->db->createCommand('
+        SELECT dc.hv_idcivil from tbl_hojavida_datacomplementos dc
+          WHERE 
+            dc.hv_idpersonal = :idhvaccion
+          GROUP BY dc.hv_idcivil')->bindValues($paramscomplement)->queryScalar();
+
+      return $this->render('complementosadd',[
+        'model' => $model,
+        'idsinfo' => $idsinfo,
+        'varCivil' => $varCivil,
+      ]);
+    }
+
+    
+
+    public function actionEliminarcivil($id){
+      HojavidaDatacivil::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminardominancia($id){
+      HvDominancias::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminarsocial($id){
+      HvEstilosocial::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminarhobbie($id){
+      HvHobbies::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminargustos($id){
+      HvGustos::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+    }
+
+    public function actionEliminarclasificacion($id){
+      HojavidaDataclasificacion::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
     }
 
     public function actionVerficarConnid(){

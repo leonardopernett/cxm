@@ -171,7 +171,7 @@ $this->params['breadcrumbs'][] = $this->title;
       <?php if($varInformacion == 1) { ?>
        <div class="col-md-4">
            <div class="card1 mb">
-               <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #559FFF;"></em> Informaci&oacute;n Personal </label>
+               <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #559FFF;"></em> Crear Contacto </label>
                <?= Html::a('Aceptar',  ['informacionpersonal'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Informacion personal']) 
@@ -201,7 +201,7 @@ $this->params['breadcrumbs'][] = $this->title;
            <div class="card1 mb">
               <label style="font-size: 15px;"><em class="fas fa-address-book" style="font-size: 15px; color: #B833FF;"></em> Listado </label>
 
-              <?php if($sesiones == "2953") { ?>
+              <?php if($sesiones != "0") { ?>
                <div class="row">
                  <div class="col-md-6">
                     <a href=""  class="btn btn-success" data-toggle="modal" data-target="#exampleModal4">

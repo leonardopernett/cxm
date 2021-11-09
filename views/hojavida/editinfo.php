@@ -207,6 +207,18 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-4">
+            <label style="font-size: 15px;"> Clasificación Ciudad Konecta</label>
+            <?=  $form->field($model, 'clasificacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\HojavidaDataclasificacion::find()->distinct()->orderBy(['hv_idclasificacion'=> SORT_ASC])->all(), 'hv_idclasificacion', 'ciudadclasificacion'),
+                                        [
+                                            'prompt'=>'Seleccionar...',
+                                        ]
+                            )->label(''); 
+            ?>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -672,47 +684,13 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       
-      <div class="card1 mb">
+    <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Complementos: </label> 
 
-        <div class="row">
-          <div class="col-md-12">
-            <?= 
-                Html::button('Agregar Complementos', ['value' => url::to(['complementosaccion','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar Complementos'])
-            ?>
-            <?php
-                Modal::begin([
-                    'header' => '<h4></h4>',
-                    'id' => 'modal1',
-                ]);
+        <?php
 
-                echo "<div id='modalContent1'></div>";
-                                                        
-                Modal::end(); 
-            ?> 
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-12">
-              <table id="tblDataComplementos" class="table table-striped table-bordered tblResDetFreed">
-                <caption><?php echo "Resultados Complementos"; ?></caption>
-                <thead>
-                  <tr>
-                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado Civil') ?></label></th>
-                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estilo Social') ?></label></th>
-                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Dominancia Cerebral') ?></label></th>
-                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hobbies') ?></label></th>
-                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gustos') ?></label></th>
-                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Hijos') ?></label></th>
-                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Hijos') ?></label></th>
-                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                      $paramscomplement = [':idhvaccion' => $idinfo];
-                      $varListaComplementos = Yii::$app->db->createCommand('
+          $paramscomplement = [':idhvaccion' => $idinfo];
+          $varListaComplementos = Yii::$app->db->createCommand('
                         SELECT dc.hv_idcomplemento, hd.estadocivil, dc.cantidadhijos, dc.NombreHijos, d.dominancia,
                         e.estilosocial, g.text, h.text AS hobbies FROM tbl_hojavida_datacomplementos dc
                           LEFT JOIN tbl_hojavida_datacivil hd ON 
@@ -730,8 +708,56 @@ $this->params['breadcrumbs'][] = $this->title;
                           WHERE 
                             dp.hv_idpersonal = :idhvaccion')->bindValues($paramscomplement)->queryAll();
 
+        ?>
+
+        <div class="row">
+          <div class="col-md-12">
+
+            <?php if (count($varListaComplementos) == 0) { ?>
+              
+              <?= 
+                  Html::button('Nuevo Complementos', ['value' => url::to(['complementosaccion','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Nuevo Complementos'])
+              ?>
+              <?php
+                  Modal::begin([
+                      'header' => '<h4></h4>',
+                      'id' => 'modal1',
+                  ]);
+
+                  echo "<div id='modalContent1'></div>";
+                                                          
+                  Modal::end(); 
+              ?> 
+
+            <?php }else{ ?>
+
+              <?= Html::a('Agregar Complementos',  ['complementosadd','idsinfo'=>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab7;", 'title' => 'Agregar Complementos']) ?>
+
+            <?php } ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+              <table id="tblDataComplementos" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Resultados Complementos"; ?></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado Civil') ?></label></th>                    
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Hijos') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Hijos') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estilo Social') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Dominancia Cerebral') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hobbies') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gustos') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                      $varContador = 2;
                       foreach ($varListaComplementos as $key => $value) { 
-                      
+                        $varContador += 1;
                   ?>             
                     <tr>
                       <td><label style="font-size: 12px;"><?php echo  $value['estadocivil']; ?></label></td>
@@ -743,6 +769,8 @@ $this->params['breadcrumbs'][] = $this->title;
                       <td><label style="font-size: 12px;"><?php echo  $value['hobbies']; ?></label></td>
                       <td class="text-center">
                         <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletecomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                        <?= Html::a('<em class="fas fa-edit" style="font-size: 15px; color: #FC4343;"></em>',  ['editcomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Editar']) ?>
+                        
                       </td>
                     </tr>
                   <?php
@@ -835,6 +863,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidsusceptible = document.getElementById("idsusceptible").value;
     var varidsatu = document.getElementById("idsatu").value;
     var varautoincrement = "<?php echo $idinfo; ?>";
+    var varclasificacion = document.getElementById("hojavidadatapersonal-clasificacion").value;
 
     if (varididentificacion == "") {
 
@@ -888,6 +917,11 @@ $this->params['breadcrumbs'][] = $this->title;
               swal.fire("!!! Advertencia !!!","Debe de seleccionar la ciudad","warning");
               return;
             }
+            if (varclasificacion == "") {
+              event.preventDefault();
+              swal.fire("!!! Advertencia !!!","Debe de seleccionar la clasificacion konecta","warning");
+              return;
+            }
 
             // Esta accion permite guardar el primer bloque...
             $.ajax({
@@ -908,6 +942,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvarididciudad : varididciudad,
                 txtvaridsusceptible : varidsusceptible,
                 txtvaridsatu : varidsatu,
+                txtvarclasificacion : varclasificacion,
               },
               success : function(response){
                 numRta =   JSON.parse(response);
@@ -1020,11 +1055,7 @@ $this->params['breadcrumbs'][] = $this->title;
             var varidestado = document.getElementById("idestado").value;
 
             // Esta accion permite guardar el cuarto bloque...
-            if (varidestado == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar un estado","warning");
-              return;
-            }else{
+            
               $.ajax({
                 method: "get",
                 url: "guardaracademicos",
@@ -1041,7 +1072,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   numRta =   JSON.parse(response);
                 }
               });
-            }
+            
             
 
             window.open('../hojavida/index','_self');

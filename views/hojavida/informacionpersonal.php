@@ -209,6 +209,18 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-4">
+            <label style="font-size: 15px;"> Clasificación Ciudad Konecta</label>
+            <?=  $form->field($model, 'clasificacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\HojavidaDataclasificacion::find()->distinct()->orderBy(['hv_idclasificacion'=> SORT_ASC])->all(), 'hv_idclasificacion', 'ciudadclasificacion'),
+                                        [
+                                            'prompt'=>'Seleccionar...',
+                                        ]
+                            )->label(''); 
+            ?>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -262,18 +274,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="row">
           <div class="col-md-4">
-            <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Afinidad: </label>
+            <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Afinidad: </label> <em class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter"></em>
             <?= $form->field($model2, "afinidad", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varAfinidad, ['prompt' => 'Seleccionar...', 'id'=>"idafinidad", 'onchange' => 'habilitar();']) ?>
           </div>
 
           <div id="idafinidades" style="display: none;">
             <div class="col-md-4">
-              <label style="font-size: 15px;"> Tipo Afinidad: </label>
+              <label style="font-size: 15px;"> Tipo Afinidad: </label> <em class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter2"></em>
               <?= $form->field($model2, "tipo_afinidad", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varTipo, ['prompt' => 'Seleccionar...', 'id'=>"idtipoafinidad"]) ?>
             </div>
 
             <div class="col-md-4">
-              <label style="font-size: 15px;"> Nivel Afinidad: </label>
+              <label style="font-size: 15px;"> Nivel Afinidad: </label> <em class="fa fa-info-circle fa-1x" data-toggle="modal" data-target="#exampleModalCenter3"></em>
               <?= $form->field($model2, "nivel_afinidad", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varNivel, ['prompt' => 'Seleccionar...', 'id'=>"idnivelafinidad"]) ?>
             </div>
           </div>          
@@ -494,6 +506,56 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $form->end() ?>
 <hr>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-body">
+        <h2 class="modal-title" id="exampleModalCenterTitle">Afinidad con Konecta</h2>
+         <p><strong>Relacion Directa:</strong> Son tus contactos del d&iacute;a a d&iacute;a, con quienes defines estrategias para  el canal y/o  haces seguimiento a los indicadores operativos. </p>
+         <p><strong>Relacion Inter&eacute;s:</strong> Son aquellos contactos que no tiene relaci&oacute;n con el contrato de Konecta, sin embargo tienen cargos estrat&eacute;gicos dentro de la compa&ntilde;&iacute;a por ejemplo Directores de Tecnolog&iacute;a, Presidente, Gerentes, Vicepresidentes.</p>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success boton" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-body">
+        <h2 class="modal-title" id="exampleModalCenterTitle">¿Es un decisor del contrato?</h2>
+         <p><strong>Decisor:</strong>  Es aquel contacto de 'nivel superior o muy superior' que puede tomar decisiones en referencia a la relaci&oacute;n comercial con Konecta, es altamente influyente en las decisiones del cliente corporativo y su percepci&oacute;n afecta de manera cr&iacute;tica la Imagen corporativa de Konecta.
+                Este contacto es un 'alto influenciador' para el mantenimiento de los contratos con Konecta Colombia.
+                cumplimiento de Objetivos a nivel Regional. </p>
+                        <p><strong>Nota:</strong>Cada Cuenta deber&aacute; tener al menos 2 decisores. Estos contactos ser&aacute;n objeto de seguimiento de la Junta de Konecta.</p>
+                        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success boton" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-body">
+        <h2 class="modal-title" id="exampleModalCenterTitle"></h2>
+         <p><strong>Estrat&eacute;gicos:</strong> Es aquel contacto de 'nivel superior' que aunque quiz&aacute;s no posee mucho conocimiento de los resultados Operativos, con este contacto se definen las estrategias de desarrollo del canal administrado por Konecta, se definen aspectos de la operación que impactan la rentabilidad de la cuenta. Este contacto es un alto influenciador para el mantenimiento y permanencia de los negocios con Konecta. </p>
+         <p><strong>Operativos:</strong> Es aquel contacto de 'nivel intermedio o bajo', que esta al frente de los resultados /m&eacute;tricas de las Operaciones, es quien realiza los escalamientos de resultados a sus superiores y con estos los contactos estrat&eacute;gicos podr&iacute;an tomar decisiones o fijar posiciones con Konecta. A pesar de ser influenciadores de los negocios, no necesariamente &eacute;stos se definen por su autonom&iacute;a.</p>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success boton" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
   function valida(e){
@@ -536,6 +598,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidsusceptible = document.getElementById("idsusceptible").value;
     var varidsatu = document.getElementById("idsatu").value;
     var varautoincrement = "<?php echo $variddatapersonal; ?>";
+    var varclasificacion = document.getElementById("hojavidadatapersonal-clasificacion").value;
 
     if (varididentificacion == "") {
 
@@ -605,6 +668,11 @@ $this->params['breadcrumbs'][] = $this->title;
               swal.fire("!!! Advertencia !!!","Debe de seleccionar la ciudad","warning");
               return;
             }
+            if (varclasificacion == "") {
+              event.preventDefault();
+              swal.fire("!!! Advertencia !!!","Debe de seleccionar una clasificacion de konecta","warning");
+              return;
+            }
 
             // Esta accion permite guardar el primer bloque...
             $.ajax({
@@ -624,6 +692,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvarididciudad : varididciudad,
                 txtvaridsusceptible : varidsusceptible,
                 txtvaridsatu : varidsatu,
+                txtvarclasificacion : varclasificacion,
               },
               success : function(response){
                 numRta =   JSON.parse(response);

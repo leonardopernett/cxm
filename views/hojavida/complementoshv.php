@@ -82,6 +82,8 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
+        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
+        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -110,6 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado Civil') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                 </tr>
               </thead>
               <tbody>
@@ -119,6 +122,9 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <td><label style="font-size: 12px;"><?php echo  $value['hv_idcivil']; ?></label></td>
                     <td><label style="font-size: 12px;"><?php echo  $value['estadocivil']; ?></label></td>
+                    <td class="text-center">
+                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarcivil','id'=> $value['hv_idcivil']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                    </td>
                   </tr>
                 <?php
                   }
@@ -145,6 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Dominancia') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                 </tr>
               </thead>
               <tbody>
@@ -154,6 +161,9 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <td><label style="font-size: 12px;"><?php echo  $value['iddominancia']; ?></label></td>
                     <td><label style="font-size: 12px;"><?php echo  $value['dominancia']; ?></label></td>
+                    <td class="text-center">
+                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminardominancia','id'=> $value['iddominancia']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                    </td>
                   </tr>
                 <?php
                   }
@@ -182,6 +192,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estilo Social') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                 </tr>
               </thead>
               <tbody>
@@ -191,6 +202,9 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <td><label style="font-size: 12px;"><?php echo  $value['idestilosocial']; ?></label></td>
                     <td><label style="font-size: 12px;"><?php echo  $value['estilosocial']; ?></label></td>
+                    <td class="text-center">
+                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarsocial','id'=> $value['idestilosocial']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                    </td>
                   </tr>
                 <?php
                   }
@@ -217,6 +231,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hobbie') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                 </tr>
               </thead>
               <tbody>
@@ -226,6 +241,9 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <td><label style="font-size: 12px;"><?php echo  $value['id']; ?></label></td>
                     <td><label style="font-size: 12px;"><?php echo  $value['text']; ?></label></td>
+                    <td class="text-center">
+                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarhobbie','id'=> $value['id']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                    </td>
                   </tr>
                 <?php
                   }
@@ -254,6 +272,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
                   <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hobbie') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                 </tr>
               </thead>
               <tbody>
@@ -263,6 +282,49 @@ $this->params['breadcrumbs'][] = $this->title;
                   <tr>
                     <td><label style="font-size: 12px;"><?php echo  $value['id']; ?></label></td>
                     <td><label style="font-size: 12px;"><?php echo  $value['text']; ?></label></td>
+                    <td class="text-center">
+                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminargustos','id'=> $value['id']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                    </td>
+                  </tr>
+                <?php
+                  }
+                ?>
+              </tbody>
+            </table>
+
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card1 mb">
+            <label style="font-size: 15px;"><em class="fas fa-external-link-square-alt" style="font-size: 15px; color: #FFC72C;"></em> Clasificacion Konecta </label>
+
+            <?= $form->field($model5, 'ciudadclasificacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idclasificar', 'placeholder'=>'Ingresar Ciudad de Clasificacion'])?>
+
+            <div onclick="generatedclasificacion();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
+                  Guardar
+            </div>
+            <br>
+            <table id="tblDataclasificacion" class="table table-striped table-bordered tblResDetFreed">
+              <caption>Resultados</caption>
+              <thead>
+                <tr>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ciudad de Clasificacion') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  foreach ($dataProviderClasificacion as $key => $value) {                    
+                ?>
+                  <tr>
+                    <td><label style="font-size: 12px;"><?php echo  $value['hv_idclasificacion']; ?></label></td>
+                    <td><label style="font-size: 12px;"><?php echo  $value['ciudadclasificacion']; ?></label></td>
+                    <td class="text-center">
+                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarclasificacion','id'=> $value['hv_idclasificacion']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                    </td>
                   </tr>
                 <?php
                   }
@@ -404,6 +466,28 @@ $this->params['breadcrumbs'][] = $this->title;
         url: "ingresargustos",
         data: {
           txtvaridgustos : varidgustos,
+        },
+        success : function(response){
+          numRta =   JSON.parse(response);          
+          location.reload();
+        }
+      });
+    }
+  };
+
+  function generatedclasificacion(){
+    var varidclasificar = document.getElementById("idclasificar").value;
+    
+    if (varidclasificar == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Debe de ingresar la ciudad de clasificacion","warning");
+      return;
+    }else{
+      $.ajax({
+        method: "get",
+        url: "ingresarclasificar",
+        data: {
+          txtvaridclasificar : varidclasificar,
         },
         success : function(response){
           numRta =   JSON.parse(response);          
