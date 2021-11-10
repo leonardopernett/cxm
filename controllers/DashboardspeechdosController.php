@@ -5859,11 +5859,6 @@ public function actionCantidadentto(){
                                                     'anulado' => $txtanulado,
                                                 ],'ejec_form_id ='.$varIdformu .'')->execute();   
                 }else{
-
-                //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
-           // $txtidejec_formu = intval($txtidejec_formu) + 1;
-               //insertar Cliente y centro de costo
-                  //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
         $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar(); 
                     Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
                         'ejec_form_id' => $txtidejec_formu,
