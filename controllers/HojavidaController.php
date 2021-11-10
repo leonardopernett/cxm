@@ -1497,86 +1497,7 @@ use app\models\HojavidaDataclasificacion;
 
     }
  
-    public function actionExport(){
-      $modelos = new HojavidaDatapersonal();
-      if($modelos->load(Yii::$app->request->post())){
-          $modelos->file = UploadedFile::getInstance($modelos, 'file');
-          $ruta = 'archivos/'.time()."_".$modelos->file->baseName. ".".$modelos->file->extension;
-          $modelos->file->saveAs( $ruta ); 
-          $this->Importexcel($ruta);  
-      }
-
-      Yii::$app->session->setFlash('file','archivo cargado exitosamente');
-      unlink( $ruta);
-      return $this->redirect(['index']);
-    }
-
-    public function Importexcel($name){
-      /* $inputFile = 'categorias/' . $name . '.xlsx'; */
-      $inputFile  = $name;
-  
-      try {
-        $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
-        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
-        $objPHPExcel = $objReader->load($inputFile);
-      } catch (Exception $e) {
-        die('Error');
-      }
-  
-      $sheet = $objPHPExcel->getSheet(0);
-      $highestRow = $sheet->getHighestRow();
-      $highestcolumn = $sheet->getHighestColumn();
-      
-      for ($row = 3; $row <= $highestRow; $row++) {
-
-        $identificacion = Yii::$app->db->createCommand(" SELECT identificacion FROM tbl_hojavida_datapersonal WHERE identificacion =:identificacion")
-                                       ->bindParam(':identificacion',$sheet->getCell("A".$row)->getValue())
-                                       ->queryAll();
-                                       
-                    Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[                                        
-                        'identificacion' => $sheet->getCell("A".$row)->getValue(),
-                        'nombre_full'    => $sheet->getCell("B".$row)->getValue(),
-                        'email'=> $sheet->getCell("C".$row)->getValue(),
-                        'numero_movil'=> $sheet->getCell("D".$row)->getValue(),
-                        'numero_fijo'=> $sheet->getCell("E".$row)->getValue(),
-                        'direccion_casa'=> $sheet->getCell("F".$row)->getValue(),
-                        'hv_idpais'=> $sheet->getCell("G".$row)->getValue() =='Argentina'  ? 1 :
-                                      $sheet->getCell("G".$row)->getValue() =='Bolivia'    ? 2 :
-                                      $sheet->getCell("G".$row)->getValue() =='Chile'  ? 3 :
-                                      $sheet->getCell("G".$row)->getValue() =='Colombia'  ? 4 :
-                                      $sheet->getCell("G".$row)->getValue() =='España'  ? 5 :
-                                      $sheet->getCell("G".$row)->getValue() =='Estados Unidos'  ? 6 : 
-                                      $sheet->getCell("G".$row)->getValue() =='Uruguay'  ? 7 : null,
-
-                        'hv_idciudad'=> $sheet->getCell("H".$row)->getValue()  == 'Barranquilla' ? 1 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Bogotá' ? 2 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Bucaramanga' ? 3 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Buenos Aires' ? 4 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Cali' ? 5 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Cartagena' ? 6 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Cúcuta' ? 7 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Ibagué' ? 8 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Itagüí' ? 9 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Medellín' ? 10 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Monteria' ? 11 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Rionegro' ? 12 : 
-                                        $sheet->getCell("H".$row)->getValue()  == 'Santa Marta' ? 13 : null,
-                        
-                        'direccion_oficina'=> $sheet->getCell("I".$row)->getValue(),
-                        'hv_idmodalidad'=> $sheet->getCell("J".$row)->getValue(),
-                        'tratamiento_data'=> $sheet->getCell("K".$row)->getValue(),
-                        'suceptible'=> $sheet->getCell("L".$row)->getValue(),
-                        'anulado'=> $sheet->getCell("M".$row)->getValue() == 'Activo' ? 1 : 2,
-                        'usua_id'=>Yii::$app->user->identity->id,
-                        'clasificacion'  =>      $sheet->getCell("N".$row)->getValue() == 'Bogotá' ? 1 : 2
-            ])->execute();
-                       
-        
-
-      }
-    }
-
-
+   
     public function actionAcademico(){
        $profesion =  Yii::$app->db->createCommand('select * from tbl_hv_cursosacademico where idhvacademico = 4')->queryAll();
        $especializacion =  Yii::$app->db->createCommand('select * from tbl_hv_cursosacademico where idhvacademico = 2')->queryAll();
@@ -1593,12 +1514,12 @@ use app\models\HojavidaDataclasificacion;
     
     public function actionProfesion(){
       Yii::$app->db->createCommand()->insert('tbl_hv_cursosacademico',[
-          'idhvacademico'=> 4,
-          'hv_cursos'=> Yii::$app->request->post('profesion')
+        'idhvacademico'=> 4,
+        'hv_cursos'=> Yii::$app->request->post('especializacion')
       ])
       ->execute();
       Yii::$app->session->setFlash('list','Lista Agregada Exitosamente');
-      return $this->redirect(['academico']);
+      return $this->render(['academico']) ;
    }
 
    public function actionEspecializacion(){
@@ -1663,8 +1584,6 @@ use app\models\HojavidaDataclasificacion;
     Yii::$app->session->setFlash('list','Lista Eliminada Exitosamente');
     return $this->redirect(['academico']);
    }
-
-
 
 
    public function actionExcelexportadmin(){
@@ -2796,14 +2715,141 @@ use app\models\HojavidaDataclasificacion;
    }
 
 
+   public function actionExport(){
+      
+    $modelos = new HojavidaDatapersonal();
+    if($modelos->load(Yii::$app->request->post())){
+        $modelos->file = UploadedFile::getInstance($modelos, 'file');
+        $ruta = 'archivos/'.time()."_".$modelos->file->baseName. ".".$modelos->file->extension;
+        $modelos->file->saveAs( $ruta ); 
+         $this->Importexcel($ruta);  
+    }
 
+    Yii::$app->session->setFlash('file','archivo cargado exitosamente');
+    unlink( $ruta);
+    return $this->redirect(['index']);
+  }
 
+  public function Importexcel($name){
 
+  
+    /* $inputFile = 'categorias/' . $name . '.xlsx'; */
+    $inputFile  = $name;
 
+    try {
+      $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+      $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+      $objPHPExcel = $objReader->load($inputFile);
+    } catch (Exception $e) {
+      die('Error');
+    }
 
+    $sheet = $objPHPExcel->getSheet(0);
+    $highestRow = $sheet->getHighestRow();
+    $highestcolumn = $sheet->getHighestColumn();
+    
+    for ($row = 3; $row <= $highestRow; $row++) {
 
- 
- 
+          $user = Yii::$app->db->createCommand('select * from tbl_hojavida_datapersonal where hv_idpersonal =:id')
+          ->bindParam(':id',$sheet->getCell("A".$row)->getValue())
+          ->queryOne();
+            
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[                                        
+            'identificacion'   =>  $sheet->getCell("A".$row)->getValue(),
+            'nombre_full'      =>  $sheet->getCell("B".$row)->getValue(),
+            'email'            =>  $sheet->getCell("C".$row)->getValue(),
+            'numero_movil'     =>  $sheet->getCell("D".$row)->getValue(),
+            'numero_fijo'      =>  $sheet->getCell("E".$row)->getValue(),
+            'direccion_casa'   =>  $sheet->getCell("F".$row)->getValue(),
+            'hv_idpais'        =>  $sheet->getCell("G".$row)->getValue() =='Argentina'  ? 1 :
+                                   $sheet->getCell("G".$row)->getValue() =='Bolivia'    ? 2 :
+                                   $sheet->getCell("G".$row)->getValue() =='Chile'  ? 3 :
+                                   $sheet->getCell("G".$row)->getValue() =='Colombia'  ? 4 :
+                                   $sheet->getCell("G".$row)->getValue() =='España'  ? 5 :
+                                   $sheet->getCell("G".$row)->getValue() =='Estados Unidos'  ? 6 : 
+                                   $sheet->getCell("G".$row)->getValue() =='Uruguay'  ? 7 : null,
+
+            'hv_idciudad'      =>   $sheet->getCell("H".$row)->getValue()  == 'Barranquilla' ? 1 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Bogotá' ? 2 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Bucaramanga' ? 3 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Buenos Aires' ? 4 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Cali' ? 5 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Cartagena' ? 6 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Cúcuta' ? 7 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Ibagué' ? 8 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Itagüí' ? 9 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Medellín' ? 10 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Monteria' ? 11 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Rionegro' ? 12 : 
+                                    $sheet->getCell("H".$row)->getValue()  == 'Santa Marta' ? 13 : null,
+                    
+            'direccion_oficina'=>   $sheet->getCell("I".$row)->getValue(),
+            'hv_idmodalidad'   =>   $sheet->getCell("J".$row)->getValue() == 'Trabajo en casa' ? 1 :
+                                    $sheet->getCell("J".$row)->getValue() == 'Oficina' ? 2 :
+                                    $sheet->getCell("J".$row)->getValue() == 'Alternancia' ? 3 : null
+            ,
+            'tratamiento_data' =>   $sheet->getCell("K".$row)->getValue() == 'Si' ? 1 : 2,
+            'suceptible'       =>   $sheet->getCell("L".$row)->getValue() == 'Si' ? 1 : 2,
+            'anulado'          =>   $sheet->getCell("M".$row)->getValue() == 'Activo' ? 0 : 1,
+            'usua_id'          =>   Yii::$app->user->identity->id,
+            'clasificacion'    =>   $sheet->getCell("N".$row)->getValue() == 'Bogotá' ? 1 : 2
+        ])->execute();
+
+        $personal = Yii::$app->db->createCommand('SELECT hv_idpersonal FROM tbl_hojavida_datapersonal WHERE identificacion=:identi')
+        ->bindParam(':identi',$sheet->getCell("A".$row)->getValue())
+        ->queryOne();
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_datalaboral',[
+          'hv_idpersonal'      =>   $personal['hv_idpersonal'],
+          'afinidad'           =>   $sheet->getCell("O".$row)->getValue() == 'Relación Directa' ? 1 : 2,
+          'tipo_afinidad'      =>   $sheet->getCell("P".$row)->getValue() == 'Decisor' ? 1 : 2,
+          'nivel_afinidad'     =>   $sheet->getCell("Q".$row)->getValue() == 'Estratégico' ? 1 : 2,
+        ])->execute();
+
+         $data = explode(",", $sheet->getCell("R".$row)->getValue());
+         $data1 = explode(",", $sheet->getCell("S".$row)->getValue()); 
+
+         foreach ($data as $director) {
+            Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
+            'hv_idpersonal'=>   $personal['hv_idpersonal'],
+            'ccdirector'   =>   $director,
+            'usua_id'      =>   Yii::$app->user->identity->id
+              ])->execute();
+         }
+
+         foreach ($data1 as $gerente) {
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
+          'hv_idpersonal'=>   $personal['hv_idpersonal'],
+          'ccgerente'    =>   $gerente,
+          'usua_id'      =>   Yii::$app->user->identity->id
+            ])->execute();
+        }
+
+           $data2 =  $sheet->getCell("T".$row)->getValue();
+           $data3 =  $sheet->getCell("U".$row)->getValue();
+
+           $clientes = Yii::$app->db->createCommand('SELECT id_dp_clientes AS id, cliente, cod_pcrc FROM tbl_proceso_cliente_centrocosto GROUP BY cliente')
+                ->queryAll();
+            
+              foreach ($clientes as $cliente) {
+                 if($cliente['cliente'] === $data2){
+                    
+                     $res = Yii::$app->db->createCommand('SELECT id_dp_clientes AS id, cliente, cod_pcrc FROM tbl_proceso_cliente_centrocosto where cliente=:cliente GROUP BY cliente')
+                     ->bindParam(':cliente',$data2)
+                     ->queryOne() ;
+
+                     Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
+                      'hv_idpersonal'    =>   $personal['hv_idpersonal'],
+                      'id_dp_cliente'    =>   $res['id'],
+                      'cod_pcrc'         =>   $res['cod_pcrc'],
+                      'usua_id'          => Yii::$app->user->identity->id
+                      ])->execute();
+                     
+                 }
+             }
+      }
+    }
+
   }
 
 ?>

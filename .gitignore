@@ -13,6 +13,6 @@ web/A.TXT
 web/a.txt
 runtime/DB/*
 web/assets/*
-config/*
+config/db
 !.gitkeep
 !runtime/debug/mail
