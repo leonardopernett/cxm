@@ -453,6 +453,22 @@ use app\models\HojavidaDataclasificacion;
                     'usua_id' => Yii::$app->user->identity->id,                                       
                 ])->execute();
 
+
+      $message  = "<html><body>";
+      $message .= "<h3>Se ha realizado Correctamente la creacion de un nuevo contacto</h3>";
+      $message .= "<p><b>Contacto: </b>".$txtvaridnombrefull."</p>";
+      $message .= "<p><b>Identificacion: </b>".$txtvarididentificacion."</p>";
+      $message .= "<p><b>Email Corporativo: </b>".$txtvaridemail."</p>";
+      $message .= "</body></html>";
+        
+         
+      Yii::$app->mailer->compose()
+                ->setTo('engie.guerrero@grupokonecta.com')
+                ->setFrom(Yii::$app->params['email_satu_from'])
+                ->setSubject("Contacto creado en la Hoja de Vida CXM")
+                // ->attach($tmpFile)
+                ->setHtmlBody($message) 
+                ->send(); 
       
       die(json_encode($txtrta));
     }
