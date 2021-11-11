@@ -613,23 +613,22 @@ use app\models\IdaGeneral;
       $varDocumentos = $data_post["documentos"];
       $varUsuarios = $data_post["usuarios"];
 
-
       
       $listdimensiones = array();
       $array_dimensiones = count($varDimension);
-      $arrayStringDimension = array();
       for ($i = 0; $i < $array_dimensiones; ++$i){
-          array_push($listdimensiones, $varDimension[$i]);
-          if ($varDimension[$i] == "1") {
-            array_push($arrayStringDimension, "Calidad de Entrenamiento");
-          }
-          if ($varDimension[$i] == "2") {
-            array_push($arrayStringDimension, "OJT");
-          }
+          array_push($listdimensiones, $varDimension[$i]);          
       }
 
       $varparametros = implode(", ", $listdimensiones);
-      $varStrDimension = implode(", ", $arrayStringDimension);
+      $varStrDimension = null;
+      if ($varDimension == "1") {
+        $varStrDimension = "Calidad de Entrenamiento";
+      }
+      if ($varDimension == "2") {
+        $varStrDimension = "OJT";
+      }
+      
 
       $varextensiones = Yii::$app->db->createCommand("SELECT concat(sp.rn,sp.ext,sp.usuared) AS extensiones FROM tbl_speech_parametrizar sp WHERE sp.cod_pcrc IN ('$varpcrc') and sp.tipoparametro in ($varparametros)")->queryAll();
 
@@ -745,7 +744,7 @@ use app\models\IdaGeneral;
         }
         
 
-        array_push($arraydata, array("usuarios"=>$varusuariologin,"cantidadllamadas"=>$varpromedio,"score"=>$resultadosIDA,"dimension"=>$arrayStringDimension));
+        array_push($arraydata, array("usuarios"=>$varusuariologin,"cantidadllamadas"=>$varpromedio,"score"=>$resultadosIDA,"dimension"=>$varStrDimension));
 
 
       }
