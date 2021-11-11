@@ -844,7 +844,7 @@ if($txtvalidadocumento != 0) {
 
                                                             $paramsBusqueda = [':idNivel' => $varNiveles, ':idCompetencias' => $varidcompetencia];
                                                             echo $varListSecciones = Yii::$app->db->createCommand('
-                                                                SELECT em.mensaje FROM tbl_evaluacion_mensaje_resul em
+                                                                SELECT em.mensajepos FROM tbl_evaluacion_mensaje_resul em
                                                                     INNER JOIN tbl_evaluacion_competencias ec ON 
                                                                         em.idevaluacioncompetencia = ec.idevaluacioncompetencia
                                                                     INNER JOIN tbl_evaluacion_nivel en ON 
