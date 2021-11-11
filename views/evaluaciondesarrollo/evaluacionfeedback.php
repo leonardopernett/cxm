@@ -1089,7 +1089,7 @@ var vardocumento = '<?php echo $documento; ?>';
                        });
                     }else if (numRta == 2) {
                         event.preventDefault();
-                            swal.fire("!!! Advertencia !!!","No se pudo guaradr la información, esta persona ya tiene datos guardados","warning");
+                            swal.fire("!!! Advertencia !!!","No se pudo guardar la información, esta persona ya tiene datos guardados","warning");
                         return;
                     } else if (numRta == 0) {
                         event.preventDefault();
