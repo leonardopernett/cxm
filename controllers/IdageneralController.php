@@ -617,12 +617,19 @@ use app\models\IdaGeneral;
       
       $listdimensiones = array();
       $array_dimensiones = count($varDimension);
-
+      $arrayStringDimension = array();
       for ($i = 0; $i < $array_dimensiones; ++$i){
           array_push($listdimensiones, $varDimension[$i]);
+          if ($varDimension[$i] == "1") {
+            array_push($arrayStringDimension, "Calidad de Entrenamiento");
+          }
+          if ($varDimension[$i] == "2") {
+            array_push($arrayStringDimension, "OJT");
+          }
       }
 
       $varparametros = implode(", ", $listdimensiones);
+      $varStrDimension = implode(", ", $arrayStringDimension);
 
       $varextensiones = Yii::$app->db->createCommand("SELECT concat(sp.rn,sp.ext,sp.usuared) AS extensiones FROM tbl_speech_parametrizar sp WHERE sp.cod_pcrc IN ('$varpcrc') and sp.tipoparametro in ($varparametros)")->queryAll();
 
@@ -644,26 +651,17 @@ use app\models\IdaGeneral;
 
       $listdocumentos = array();
       $array_documentos = count($varDocumentos);
-      $arrayStringDimension = array();
 
       for ($i = 0; $i < $array_documentos; ++$i){
           array_push($listdocumentos, $varDocumentos[$i]);
-
-          if ($varDimension[$i] == "1") {
-            array_push($arrayStringDimension, "Calidad de Entrenamiento");
-          }
-          if ($varDimension[$i] == "2") {
-            array_push($arrayStringDimension, "OJT");
-          }
       }
 
       $varlogindocumento = implode("', '", $listdocumentos);
-      $varStrDimension = implode(", ", $arrayStringDimension);
+
 
 
       $listusuarios = array();
       $array_usuarios = count($varUsuarios);
-
       for ($i = 0; $i < $array_usuarios; ++$i){
           array_push($listusuarios, $varUsuarios[$i]);
       }
@@ -687,7 +685,8 @@ use app\models\IdaGeneral;
       for ($i = 0; $i < $arra_login_id; ++$i){
         $varusuariologin = $varlogin_id[$i];
 
-        $varpromedio = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND idcategoria IN ($txtIdCatagoria) AND login_id IN ('$varusuariologin')")->queryScalar(); 
+        $varpromedio = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND idcategoria IN ($txtIdCatagoria) AND login_id IN ('$varusuariologin')")->queryScalar();
+
 
         $varcountarCallid = Yii::$app->db->createCommand("SELECT DISTINCT callId FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND login_id IN ('$varusuariologin')")->queryAll();
 
