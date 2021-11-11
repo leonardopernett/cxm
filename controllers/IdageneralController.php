@@ -644,13 +644,21 @@ use app\models\IdaGeneral;
 
       $listdocumentos = array();
       $array_documentos = count($varDocumentos);
+      $arrayStringDimension = array();
 
       for ($i = 0; $i < $array_documentos; ++$i){
           array_push($listdocumentos, $varDocumentos[$i]);
+
+          if ($varDimension[$i] == "1") {
+            array_push($arrayStringDimension, "Calidad de Entrenamiento");
+          }
+          if ($varDimension[$i] == "2") {
+            array_push($arrayStringDimension, "OJT");
+          }
       }
 
       $varlogindocumento = implode("', '", $listdocumentos);
-
+      $varStrDimension = implode(", ", $arrayStringDimension);
 
 
       $listusuarios = array();
@@ -738,7 +746,7 @@ use app\models\IdaGeneral;
         }
         
 
-        array_push($arraydata, array("usuarios"=>$varusuariologin,"cantidadllamadas"=>$varpromedio,"score"=>$resultadosIDA));
+        array_push($arraydata, array("usuarios"=>$varusuariologin,"cantidadllamadas"=>$varpromedio,"score"=>$resultadosIDA,"dimension"=>$arrayStringDimension));
 
 
       }
