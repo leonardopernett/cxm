@@ -225,7 +225,8 @@ $this->params['breadcrumbs'][] = $this->title;
     }    
 ?>
 <?php 
-    if ($sessiones != '852' || $sessiones != '2953' || $sessiones != '6080' || $sessiones != '57' || $sessiones != '3229') {    
+    //Este proceso se comenta pero despues se quita if ($sessiones != '852' || $sessiones != '2953' || $sessiones != '6080' || $sessiones != '57' || $sessiones != '3229') {    
+    if ($sessiones == '0') {
 ?>
     <br>
     <div class="CapaDos" style="display: inline;">
