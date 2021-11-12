@@ -375,7 +375,7 @@ use app\models\ControlProcesosVOC;
              $arrayUsu[] = $txtArbol_id;
 	     $arrayUsu[] = $txtFechacreacion;
 	     $arrayUsu[] = $txtTecnico;
-            $arrayPara[] = 0
+            $arrayPara[] = 0;
                      
             
             return $this->render('reportevoc',[
