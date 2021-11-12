@@ -260,9 +260,9 @@ class FormulariosController extends Controller {
 
                 if (isset($_POST) && !empty($_POST)) {
 
-                    $arbol_id = $_POST["arbol_id"];
-                    $dimension_id = $_POST["dimension_id"];
-                    $formulario_id = $_POST["formulario_id"];
+                    $arbol_id = Yii::$app->request->post('arbol_id');
+                    $dimension_id = Yii::$app->request->post('dimension_id');
+                    $formulario_id = Yii::$app->request->post('formulario_id');
                     $evaluado_id = $_POST["Evaluados"]["evaluado_id"];
                     $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? $_POST["tipo_interaccion"] : 1;
                     $usua_id = ($preview == 1) ? 0 : Yii::$app->user->identity->id;
@@ -517,21 +517,21 @@ class FormulariosController extends Controller {
              */
             public function actionGuardarformulario() {
 
-                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
-                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
+                $arrCalificaciones = !Yii::$app->request->post('calificaciones') ? array() : Yii::$app->request->post('calificaciones');
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
+                $arrComentariosSecciones = !Yii::$app->request->post('comentarioSeccion') ? array() : Yii::$app->request->post('comentarioSeccion');
 
                 $arrFormulario = [];
 
-                $tmp_id = $_POST['tmp_formulario_id'];
-                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
-                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
-                $arrFormulario["dimension_id"] = $_POST['dimension_id'];
-                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
-                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
-                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
-                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
+                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
+                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
+                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
+                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension_id');
+                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
+                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
 
                 /* EDITO EL TMP FORMULARIO */
                 \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
@@ -608,23 +608,23 @@ class FormulariosController extends Controller {
              */
             public function actionGuardaryenviarformulario() {
 
-                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
-                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
+                $arrCalificaciones = !Yii::$app->request->post('calificaciones') ? array() : Yii::$app->request->post('calificaciones');
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
+                $arrComentariosSecciones = !Yii::$app->request->post('comentarioSeccion') ? array() : Yii::$app->request->post('comentarioSeccion');
 
                 $arrFormulario = [];
                 $arrayCountBloques = [];
                 $arrayBloques = [];
                 $count = 0;
-                $tmp_id = $_POST['tmp_formulario_id'];
-                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
-                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
-                $arrFormulario["dimension_id"] = $_POST['dimension_id'];
-                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
-                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
-                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
-                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
+                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
+                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
+                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
+                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension_id');
+                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
+                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
 
                 /* EDITO EL TMP FORMULARIO */
                 $model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
@@ -729,24 +729,7 @@ class FormulariosController extends Controller {
                  * Se envia datos a la aplicacion amigo, indicando que se realizo una valoracion
                  */
                 //TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
-                /*
-                  $modelEvaluado = \app\models\Evaluados::findOne(["id" => $tmp_ejecucion->evaluado_id]);
-                  $ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
-                  $params = [];
-                  $params['titulo'] = 'Te han realizado una valoración';
-                  $params['pcrc'] = '';
-                  $params['descripcion'] = '';
-                  $params['notificacion'] = 'SI';
-                  $params['muro'] = 'NO';
-                  $params['usuariored'] = $modelEvaluado->dsusuario_red;
-                  $params['cedula'] = '';
-                  $params['plataforma'] = 'QA';
-                  $params['url'] = '' . Url::to(['formularios/showformulariodiligenciadoamigo']).'?form_id='.  base64_encode($ejecucion[0]->id);
-                  $webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
-                  $tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
-                  if (!$webservicesresponse && $tmp_ejecucion=='') {
-                  Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));
-                  } */
+                
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Formulario guardado'));
 
                 return $this->redirect(['interaccionmanual']);

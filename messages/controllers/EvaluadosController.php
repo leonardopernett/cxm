@@ -57,7 +57,6 @@ class EvaluadosController extends Controller {
                     $dataProvider = $searchModel->search(Yii::$app->request->post());
                 } else {
                     $dataProvider = $searchModel->search(Yii::$app->session['rptFilterEvaluados']);
-                    //$models = $dataProvider->getModels();
                 }
                 return $this->render('index', [
                             'searchModel' => $searchModel,

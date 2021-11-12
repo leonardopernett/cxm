@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -93,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	   
 	</div>
 
-	<div align="center">
+	<div style="text-align: center;">
 		<div onclick="sumadias();" class="btn btn-primary"  method='post' id="botones1" >
             Calcular Dias
     	</div>  
@@ -114,19 +113,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <br>
 <div class="formularios-form">
-	<table align="center">
+	<table style="margin: auto;">
 	<caption>Tabla cortes</caption>
 		<tr>
-			<th scope="col" width="70">
+			<th scope="col" style="width: 70px;">
 				<em class='fas fa-check-circle' style='font-size:48px;color:green'></em>
 			</th>
-			<td width="70">
+			<td style="width: 70px;">
 				<em class='fas fa-check-circle' style='font-size:48px;color:green'></em>
 			</td>
-			<td width="70">
+			<td style="width: 70px;">
 				<em class='fas fa-check-circle' style='font-size:48px'></em>
 			</td>
-			<td width="70">
+			<td style="width: 70px;">
 				<em class='fas fa-check-circle' style='font-size:48px'></em>
 			</td>
 		</tr>	

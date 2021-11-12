@@ -2599,7 +2599,7 @@ class BasesatisfaccionController extends Controller {
                         $varvalencia = $response[0]['valencia'];
 
                         if ($varvalencia == "NULL") {
-                            $varvalencia = "Buzon sin informacion";
+                            $varvalencia = "Buzón sin información";
                         }
 
                         $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN ('$varConnids')")->queryScalar();
@@ -3314,6 +3314,10 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         case ($inihoratramo >= '230001') && ($finhoratramo <= '235959'):
                             $tramo = $pcrc['tramo24'];
                             break;
+                        default:
+
+                        break;
+                        
 
                     }
 

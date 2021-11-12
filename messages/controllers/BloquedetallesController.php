@@ -250,6 +250,7 @@ class BloquedetallesController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
+        $filterBloque = false;
         //Eliminacion por ajax--------------------------------------------------
         if (Yii::$app->getRequest()->isAjax) {
             try {                
@@ -279,11 +280,12 @@ class BloquedetallesController extends Controller {
 
         //Eliminacion por post--------------------------------------------------
         if (Yii::$app->getRequest()->isPost) {
-            $filterBloque = false;
+            
             $bloqueId = Yii::$app->request->get('bloque_id');
             if (!empty($bloqueId)) {
                 $filterBloque = true;
             }
+            
 
             try {
                 $model = $this->findModel($id);

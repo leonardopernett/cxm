@@ -53,10 +53,6 @@ class FeedbackController extends \yii\web\Controller {
                         $model->created = date("Y-m-d H:i:s");
                         $model->usua_id_lider = $modelBasesatisafaccion->id_lider_equipo;
                         $model->basessatisfaccion_id = $modelBasesatisafaccion->id;
-                        //$modelRn = \app\models\Reglanegocio::findOne(["cod_industria"=>$modelBasesatisafaccion->industria,
-                        //    "cod_institucion"=>$modelBasesatisafaccion->institucion,
-                        //    "pcrc"=>$modelBasesatisafaccion->pcrc]);
-                        //$model->ejecucionformulario_id = $modelRn->id_formulario;
                         if ($model->save()) {
                             Yii::$app->session->setFlash('success', Yii::t('app', 'Feedback creado'));
                         }
@@ -76,22 +72,6 @@ class FeedbackController extends \yii\web\Controller {
                         //$modelEvaluado = \app\models\Evaluados::findOne(["id" => $model->evaluado_id]);
                         if ($model->save()) {
                             Yii::$app->session->setFlash('success', Yii::t('app', 'Feedback creado'));
-                            //TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
-                            /*
-                            $params = [];
-                            $params['titulo'] = 'Tienes un feedback';
-                            $params['pcrc'] = '';
-                            $params['descripcion'] = '';
-                            $params['notificacion'] = 'SI';
-                            $params['muro'] = 'NO';
-                            $params['usuariored'] = $modelEvaluado->dsusuario_red;
-                            $params['cedula'] = '';
-                            $params['plataforma'] = 'QA';
-                            $params['url'] = '';
-                            $webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
-                            if (!$webservicesresponse) {
-                                Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));
-                            }*/
                         }
                         return $this->redirect(['create']);
                     } else {

@@ -38,7 +38,6 @@ class ErroressatuController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->session['rptFilterErroressatu']);
-            //$models = $dataProvider->getModels();
         }
         return $this->render('index', [
                     'searchModel' => $searchModel,
@@ -137,7 +136,7 @@ class ErroressatuController extends Controller {
         if (count($datosEliminar) > 0) {
             $model = new ErroresSatu();
             try {
-                foreach ($datosEliminar as $key => $value) {
+                foreach ($datosEliminar as $value) {
                     $model = $this->findModel($value);
                     $model->delete();
                 }
@@ -155,7 +154,6 @@ class ErroressatuController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->post());
         } else {
             $dataProvider = $searchModel->search(Yii::$app->session['rptFilterErroressatu']);
-            //$models = $dataProvider->getModels();
         }
         Yii::$app->session->setFlash('success', Yii::t('app', 'Eliminación exitosa'));
         return $this->render('index', [

@@ -72,13 +72,6 @@ class TmpejecucionfeedbacksController extends Controller {
                 } else {
                     return $this->redirect(['tmpejecucionfeedbacks/index']);
                 }
-                /* $searchModel = new TmpejecucionfeedbacksSearch();
-                  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-                  return $this->render('index', [
-                  'searchModel' => $searchModel,
-                  'dataProvider' => $dataProvider,
-                  ]); */
             }
 
             /**
@@ -95,9 +88,6 @@ class TmpejecucionfeedbacksController extends Controller {
                 } else {
                     return $this->redirect(['tmpejecucionfeedbacks/index']);
                 }
-                /* return $this->render('view', [
-                  'model' => $this->findModel($id),
-                  ]); */
             }
 
             /**

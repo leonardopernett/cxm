@@ -182,7 +182,6 @@ class GruposusuariosController extends Controller {
     public function actionDelete($id) {
         $searchModel = new GruposusuariosSearch();
         $isAjax = false;
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         if (Yii::$app->getRequest()->isAjax) {
             $usuario = Yii::$app->request->get('usuario_id');
             $model = $this->findModel($id);
