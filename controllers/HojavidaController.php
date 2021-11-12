@@ -1535,7 +1535,7 @@ use app\models\HojavidaDataclasificacion;
       ])
       ->execute();
       Yii::$app->session->setFlash('list','Lista Agregada Exitosamente');
-      return $this->render(['academico']) ;
+      return $this->redirect(['academico']) ;
    }
 
    public function actionEspecializacion(){
