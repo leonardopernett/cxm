@@ -145,7 +145,7 @@ use yii\db\Query;
     <div class="row">
         <div class="col-md-3">
             <div class="card1">
-            <?php ActiveForm::begin(['action'=>['/hojavida/profesion'], 'method'=>'POST']);  ?>
+            <?php ActiveForm::begin(['action'=>['/hvinfopersonal/profesion'], 'method'=>'POST']);  ?>
                   <div class="form-group row">
                       <div class="col-md-10">
                       <label for="">Agregar Profesi&oacute;n</label>
