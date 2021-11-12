@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <label style="font-size: 15px;">Tipo de evento: </label>
             <?= $form->field($model, 'tipo_evento', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idtipoevento', 'placeholder'=>'Tipo del Evento'])?>
             
-            <label style="font-size: 15px;">Tipo de evento: </label>
+            <label style="font-size: 15px;">Fecha del evento: </label>
             <?=
                     $form->field($model, 'fechacreacion', [
                         'labelOptions' => ['class' => 'col-md-12'],
@@ -236,6 +236,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidnombreevento = document.getElementById("idnombreevento").value;
     var varciudad = document.getElementById("hojavidaeventos-hv_idciudad").value;
     var varidtipoevento = document.getElementById("idtipoevento").value;
+    var varfechas = document.getElementById("hojavidaeventos-fechacreacion").value;
 
     if (varidnombreevento == "") {
       event.preventDefault();
@@ -251,6 +252,12 @@ $this->params['breadcrumbs'][] = $this->title;
           event.preventDefault();
           swal.fire("!!! Advertencia !!!","Debe de ingresar el tipo de evento","warning");
           return;
+        }else{
+          if (varfechas == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Debe de ingresar el rango de fechas del evento","warning");
+            return;
+          }
         }
       }
     }
