@@ -6,7 +6,6 @@ return [
     'username' => 'ci_monitoreo',
     'password' => 'monit000r300',
     'charset' => 'utf8',
-    // Proceso de produccion
 
     'on afterOpen' =>function ($event) {
     	$event->sender->createCommand("SET lc_time_names = 'es_CO'")->execute();

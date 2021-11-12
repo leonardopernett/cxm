@@ -13,6 +13,5 @@ web/A.TXT
 web/a.txt
 runtime/DB/*
 web/assets/*
-config/*
 !.gitkeep
 !runtime/debug/mail

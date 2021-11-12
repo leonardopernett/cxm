@@ -557,9 +557,7 @@ use yii\widgets\ActiveForm;
             </div>
             
             <div class="col-md-6">
-
-               
-               
+                        
           <?php ActiveForm::begin(['action'=>['hvinfopersonal/eliminarprofesion'],'method'=>'POST'])  ?>
               
               <div class="form-group row">
@@ -654,6 +652,8 @@ use yii\widgets\ActiveForm;
 
           <?php ActiveForm::end()  ?>
 
+               
+       
 
 
              </div>

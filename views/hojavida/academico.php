@@ -17,7 +17,7 @@ use yii\db\Query;
 <style>
     .card1 {
             height: auto;
-            width: auto;
+            width: 100%;
             margin-top: auto;
             margin-bottom: auto;
             background: #FFFFFF;
@@ -34,6 +34,12 @@ use yii\db\Query;
             font-size: 150%;    
             text-align: left;    
     }
+
+    table.table tbody tr td,
+            table.table tbody tr td a,
+            table.table thead tr th a{    
+                font-size: 15px !important ;
+            }
 
 
     .col-sm-6 {
@@ -96,6 +102,13 @@ use yii\db\Query;
             position:relative;
            }
 
+           .tbody {
+            overflow-y:scroll;
+            height:300px;
+            display:block;
+            width:100%;
+           }
+
 </style>
 <!-- datatable -->
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
@@ -121,5 +134,243 @@ use yii\db\Query;
 </header>
 <br><br>
 
+<div class="breadcrumb">
+    <li>
+        <a href=" <?php echo Url::to(['hojavida/index']) ?> ">Inicio</a>
+    </li>
+    <li class="active">Academico</li>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card1">
+            <?php ActiveForm::begin(['action'=>['/hvinfopersonal/profesion'], 'method'=>'POST']);  ?>
+                  <div class="form-group row">
+                      <div class="col-md-10">
+                      <label for="">Agregar Profesi&oacute;n</label>
+                      </div>
+                      <div class="col-md-8">
+                        <input type="text" class="form-control" placeholder="Profesion" name="profesion" required>
+                      </div>
+
+                      <div class="col-md-2">
+                        <button class="btn btn-success" >Agregar</button>
+                      </div>
+                  </div>
+              <?php ActiveForm::end();  ?>
+             
+            </div>
+         </div>
+
+           <div class="col-md-3">
+               <div class="card1">
+               <?php ActiveForm::begin(['action'=>['hojavida/especializacion'], 'method'=>'post']);  ?>
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                        <label for="">Agregar Especializaci&oacute;n</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="especializacion" class="form-control" placeholder="Especializacion" required>
+                        </div>
+
+                        <div class="col-md-2">
+                          <button class="btn btn-success">Agregar</button>
+                        </div>
+                    </div>
+                <?php ActiveForm::end();  ?>
+
+             
+               </div>
+           </div>
+
+           <div class="col-md-3">
+              <div class="card1">
+              <?php ActiveForm::begin(['action'=>['hojavida/maestria'], 'method'=>'post']);  ?>
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                        <label for="">Agregar Maestr&iacute;a</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="maestria" class="form-control" placeholder="Maestria" required>
+                        </div>
+
+                        <div class="col-md-2">
+                          <button class="btn btn-success">Agregar</button>
+                        </div>
+                    </div>
+                <?php ActiveForm::end();  ?>
 
 
+               
+              </div>
+           </div>
+
+            <div class="col-md-3">
+               <div class="card1">
+               <?php ActiveForm::begin(['action'=>['hojavida/doctorado'], 'method'=>'post']);  ?>
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                        <label for="">Agregar Doctorado</label>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="doctorado" class="form-control" placeholder="Doctorado" required>
+                        </div>
+
+                        <div class="col-md-2">
+                          <button class="btn btn-success">Agregar</button>
+                        </div>
+                    </div>
+                <?php ActiveForm::end();  ?>
+               </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" style="margin:20px">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card1">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                    
+                            <th>Profesión</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($profesion as $pro) { ?>
+                             <tr>
+
+                                 <td>
+                                     <?php echo $pro['hv_cursos'] ?>
+                                 </td>
+                                 <td style="text-align:center">                                          
+                                     <a href="<?php echo Url::to(['hojavida/eliminarprofesion', 'id' => $pro['idhvcursosacademico']]) ?>" style="color:#981F40 !important">
+                                         <em class="fa fa-trash"></em>
+                                     </a>
+                           
+                                 </td>
+                             </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card1">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Especialización</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($especializacion as $pro) { ?>
+                             <tr>
+                                 <td>
+                                     <?php echo $pro['hv_cursos'] ?>
+                                 </td>
+
+                                 <td style="text-align:center">                                          
+                                     <a href="<?php echo Url::to(['hojavida/eliminarespecializacion', 'id' => $pro['idhvcursosacademico']]) ?>" style="color:#981F40 !important">
+                                         <em class="fa fa-trash"></em>
+                                     </a>
+                           
+                                 </td>
+                             </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card1">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                         
+                            <th>Maestría </th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($maestria as $pro) { ?>
+                             <tr>
+                                 <td>
+                                     <?php echo $pro['hv_cursos'] ?>
+                                 </td>
+
+                                 <td style="text-align:center">                                          
+                                     <a href="<?php echo Url::to(['hojavida/eliminarespecializacion', 'id' => $pro['idhvcursosacademico']]) ?>" style="color:#981F40 !important">
+                                         <em class="fa fa-trash"></em>
+                                     </a>
+                           
+                                 </td>
+                             </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card1">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                         
+                            <th>Doctorado </th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($doctorado)) { ?>
+                             <tr>
+                                 <td colspan="2" style="text-align:center">No hay datos aun</td>
+                             </tr>
+                        <?php }else { ?>
+                            <?php foreach ($doctorado as $pro) { ?>
+                             <tr>
+                                 <td>
+                                     <?php echo $pro['hv_cursos'] ?>
+                                 </td>
+
+                                 <td style="text-align:center">                                          
+                                     <a href="<?php echo Url::to(['hojavida/eliminarespecializacion', 'id' => $pro['idhvcursosacademico']]) ?>" style="color:#981F40 !important">
+                                         <em class="fa fa-trash"></em>
+                                     </a>
+                           
+                                 </td>
+                             </tr>
+                        <?php } ?>
+                    <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-md-3">
+    <div class="card1 mb">
+            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+            <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                            'style' => 'background-color: #707372',
+                                            'data-toggle' => 'tooltip',
+                                            'title' => 'Regresar']) 
+            ?>
+        </div> 
+    </div>
+    </div>
+</div>
