@@ -43,7 +43,6 @@ use yii\widgets\ActiveForm;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -93,7 +92,7 @@ use yii\widgets\ActiveForm;
         <div class="col-md-6">
             <div class="card1">
                <p>
-                 <i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> <span> Modalidad de trabajo:</span> 
+                 <em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> <span> Modalidad de trabajo:</span> 
                </p>  
                <?php ActiveForm::begin([ 'action' => ['hojavida/guardarmodalidad'] , 'method' => 'post' ])  ?>
 
@@ -104,7 +103,7 @@ use yii\widgets\ActiveForm;
                 
             </div>
             <div class="card1 mb">
-            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #707372',
                                             'data-toggle' => 'tooltip',
@@ -115,7 +114,7 @@ use yii\widgets\ActiveForm;
 
         <div class="col-md-6">
             <div class="card1">
-                <p> <i class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></i> Lista de modalidad de trabajo</p>
+                <p> <em class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></em> Lista de modalidad de trabajo</p>
                 <table class="table table-striped table-bordered content"  >
                     <thead>
                         <tr>
@@ -137,7 +136,7 @@ use yii\widgets\ActiveForm;
                               </th>
                               <th  class="text" style="text-align:center;">
                                   <a href="<?php echo Url::to(['eliminarmodalidad','id'=> $modal['hv_idmodalidad']]) ?>">
-                                      <i class="fa fa-trash" style="font-size: 15px;  color: #C51616;"></i>
+                                      <em class="fa fa-trash" style="font-size: 15px;  color: #C51616;"></em>
                                     </a>
                               </th>
                           </tr>
