@@ -1531,7 +1531,7 @@ use app\models\HojavidaDataclasificacion;
     public function actionProfesion(){
       Yii::$app->db->createCommand()->insert('tbl_hv_cursosacademico',[
         'idhvacademico'=> 4,
-        'hv_cursos'=> Yii::$app->request->post('especializacion')
+        'hv_cursos'=> Yii::$app->request->post('profesion')
       ])
       ->execute();
       Yii::$app->session->setFlash('list','Lista Agregada Exitosamente');
