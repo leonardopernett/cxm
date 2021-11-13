@@ -17,7 +17,7 @@ use yii\helpers\Url;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
             height:400px;     
@@ -56,7 +56,6 @@ use yii\helpers\Url;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -174,7 +173,6 @@ small{
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
  <!-- Compiled and minified CSS -->
-<!-- <div class="masthead"></div> -->
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>

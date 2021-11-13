@@ -2,8 +2,6 @@
 
 namespace app\controllers;
 
-/* ini_set('upload_max_filesize', '50M');
- */
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -40,7 +38,7 @@ use app\models\HojavidaPermisoscliente;
 use app\models\HojavidaDatacomplementos;
 use app\models\ProcesosClienteCentrocosto;
 use app\models\HojavidaDataclasificacion;
-
+use Exception;
 
   class HojavidaController extends Controller {
 
