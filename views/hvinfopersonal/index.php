@@ -97,7 +97,7 @@ use yii\widgets\ActiveForm;
         }
 
         h3 {
-          font-family: "Nunito";
+          font-family: "Nunito",sans-serif;
           text-align:center;
           color:#002855
         }

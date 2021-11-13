@@ -100,7 +100,7 @@
 
         .edit {
             font-weight:600;
-            font-family:'nunito';
+            font-family: "Nunito",sans-serif;
             text-align:center;
         }
 
