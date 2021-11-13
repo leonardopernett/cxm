@@ -1,10 +1,17 @@
-
-
 <?php
 
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+
+$this->title = 'Hoja de Vida - Resumen General';
+$this->params['breadcrumbs'][] = $this->title;
+
+$varCiudad = "Ciudad";
+$varTotal = "Total";
+$varBogota = "Bogotá";
+$varMedellin = "Medellín";
+
 ?>
 <style>
             .card1 {
@@ -22,7 +29,7 @@ use yii\widgets\ActiveForm;
                     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     border-radius: 5px;    
-                    font-family: "Nunito";
+                    font-family: "Nunito",sans-serif;
                     font-size: 150%;    
                     text-align: left;    
                     
@@ -44,7 +51,7 @@ use yii\widgets\ActiveForm;
                     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     border-radius: 5px;    
-                    font-family: "Nunito";
+                    font-family: "Nunito",sans-serif;
                     font-size: 150%;    
                     text-align: left;    
                     margin:0 auto;
@@ -67,7 +74,7 @@ use yii\widgets\ActiveForm;
                     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                     border-radius: 5px;    
-                    font-family: "Nunito";
+                    font-family: "Nunito",sans-serif;
                     font-size: 150%;    
                     text-align: left;    
                     margin:0 auto;
@@ -322,47 +329,40 @@ use yii\widgets\ActiveForm;
                <h4>Total clientes </h4>
             </div>
             <div class="content">
-                <table class="table table-bordered">
+                <table id="tblDataclientes" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Resultados</caption>
                     <thead>
                         <tr>
-                            <th>
-                               Ciudad
-                            </th>
-                            <th>
-                                Total:
-                            </th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varCiudad) ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varTotal) ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                           <td>Bogotá</td>
-                           <td>
-                             <?php foreach($clientsTotalBogota as $bogota): ?> 
-                                  <span id="bogota"> <?php echo $bogota['total']   ?></span>
-                               
-                              <?php endforeach ?> 
-                           </td>
+                        <tr>                            
+                            <td style="text-align:center"><?php echo  $varBogota; ?></td>
+                            <td>
+                                <?php foreach($clientsTotalBogota as $bogota): ?> 
+                                    <span id="bogota"> <?php echo $bogota['total']   ?></span>                               
+                                <?php endforeach ?> 
+                            </td>
                         </tr>
 
                         <tr>
-                           <td>Medellín</td>
-                           <td>
-                             <?php foreach($clientsTotalMedellin as $medellin): ?> 
-                                <span id="medellin"> <?php echo $medellin['total']   ?></span>
-                                 
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varMedellin; ?></td>
+                            <td>
+                                <?php foreach($clientsTotalMedellin as $medellin): ?> 
+                                    <span id="medellin"> <?php echo $medellin['total']   ?></span>                                 
+                                <?php endforeach ?> 
+                            </td>
                         </tr>
 
                         <tr>
-                           <td>Total</td>
-                           <td>
-                             <?php foreach($clientsTotalAdmin as $client): ?> 
-                                 <span id="clienteAdmin">
-                                   <?php echo $client['total']   ?>
-                                 </span>
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varTotal; ?></td>
+                            <td>
+                                <?php foreach($clientsTotalAdmin as $client): ?> 
+                                    <span id="clienteAdmin"><?php echo $client['total']   ?></span>
+                                <?php endforeach ?> 
+                            </td>
                         </tr>  
                         
                     </tbody>
@@ -378,46 +378,42 @@ use yii\widgets\ActiveForm;
                <h4>Total decisores </h4>
             </div>
             <div class="content">
-                <table class="table table-bordered">
+                <table id="tblDatadecisores" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Resultados</caption>
                     <thead>
                         <tr>
-                            <th>
-                               Ciudad
-                            </th>
-                            <th>
-                                Total:
-                            </th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varCiudad) ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varTotal) ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                           <td>Bogotá</td>
-                           <td>
-                             <?php foreach($clientDecisorBogota as $bogota): ?> 
-                                  <?php echo $bogota['total']   ?>
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varBogota; ?></td>
+                            <td>
+                                <?php foreach($clientDecisorBogota as $bogota): ?> 
+                                    <?php echo $bogota['total']   ?>
+                                <?php endforeach ?> 
+                            </td>
                         </tr>
 
                         <tr>
-                           <td>Medellín</td>
-                           <td>
-                             <?php foreach($clientDecisorMedellin as $medellin): ?> 
-                                  <?php echo $medellin['total']   ?>
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varMedellin; ?></td>
+                            <td>
+                                <?php foreach($clientDecisorMedellin as $medellin): ?> 
+                                    <?php echo $medellin['total']   ?>
+                                <?php endforeach ?> 
+                            </td>
                         </tr>
 
                         <tr>
-                           <td>Total</td>
-                           <td>
-                             <?php foreach($clientDecisor as $decisor): ?> 
-                                <span id="decisorAdmin">
-                                   <?php echo $decisor['total']   ?>
-                                </span>
-                               
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varTotal; ?></td>
+                            <td>
+                                <?php foreach($clientDecisor as $decisor): ?> 
+                                    <span id="decisorAdmin">
+                                        <?php echo $decisor['total']   ?>
+                                    </span>                               
+                                <?php endforeach ?> 
+                            </td>
                         </tr>  
                         
                     </tbody>
@@ -433,46 +429,42 @@ use yii\widgets\ActiveForm;
                <h4>Total clientes estratégicos  </h4>
             </div>
             <div class="content">
-                <table class="table table-bordered">
+                <table id="tblDataestrategicos" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Resultados</caption>
                     <thead>
                         <tr>
-                            <th>
-                               Ciudad
-                            </th>
-                            <th>
-                                Total:
-                            </th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varCiudad) ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varTotal) ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                           <td>Bogotá</td>
-                           <td>
-                             <?php foreach($clientEstrategicoBogota as $bogotaEs): ?> 
-                                  <?php echo $bogotaEs['total']   ?>
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varBogota; ?></td>
+                            <td>
+                                <?php foreach($clientEstrategicoBogota as $bogotaEs): ?> 
+                                    <?php echo $bogotaEs['total']   ?>
+                                <?php endforeach ?> 
+                            </td>
                         </tr>
 
                         <tr>
-                           <td>Medellín</td>
-                           <td>
-                             <?php foreach($clientEstrategicoMedellin as $medellinEs): ?> 
-                                  <?php echo $medellinEs['total']   ?>
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varMedellin; ?></td>
+                            <td>
+                                <?php foreach($clientEstrategicoMedellin as $medellinEs): ?> 
+                                    <?php echo $medellinEs['total']   ?>
+                                <?php endforeach ?> 
+                            </td>
                         </tr>
 
                         <tr>
-                           <td>Total</td>
-                           <td>
-                             <?php foreach($clientEstrategico as $decisorEs): ?> 
-                                <span id="estrategicoAdmin">
+                            <td style="text-align:center"><?php echo  $varTotal; ?></td>
+                            <td>
+                                <?php foreach($clientEstrategico as $decisorEs): ?> 
+                                    <span id="estrategicoAdmin">
                                          <?php echo $decisorEs['total']   ?>
-                                </span>
-                             
-                              <?php endforeach ?> 
-                           </td>
+                                    </span>                             
+                                <?php endforeach ?> 
+                            </td>
                         </tr>  
                         
                     </tbody>
@@ -488,46 +480,42 @@ use yii\widgets\ActiveForm;
                <h4>Total clientes operativos </h4>
             </div>
             <div class="content">
-                <table class="table table-bordered">
+                <table id="tblDataoperativos" class="table table-striped table-bordered tblResDetFreed">
+                <caption>Resultados</caption>
                     <thead>
                         <tr>
-                            <th>
-                               Ciudad
-                            </th>
-                            <th>
-                                Total:
-                            </th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varCiudad) ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varTotal) ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                           <td>Bogotá</td>
-                           <td>
-                             <?php foreach($clientOperativoBogota as $bogotaOp): ?> 
-                                  <?php echo $bogotaOp['total']   ?>
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varBogota; ?></td>
+                            <td>
+                                <?php foreach($clientOperativoBogota as $bogotaOp): ?> 
+                                    <?php echo $bogotaOp['total']   ?>
+                                <?php endforeach ?> 
+                            </td>
                         </tr>
 
                         <tr>
-                           <td>Medellín</td>
-                           <td>
-                             <?php foreach($clientOperativoMedellin as $medellinOp): ?> 
-                                  <?php echo $medellinOp['total']   ?>
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varMedellin; ?></td>
+                            <td>
+                                <?php foreach($clientOperativoMedellin as $medellinOp): ?> 
+                                    <?php echo $medellinOp['total']   ?>
+                                <?php endforeach ?> 
+                            </td>
                         </tr>
 
                         <tr>
-                           <td>Total</td>
-                           <td>
-                             <?php foreach($clienOperativo as $decisorOpera): ?> 
-                                <span id="operativoAdmin">
-                                     <?php echo $decisorOpera['total']   ?>  
-                                </span>
-                               
-                              <?php endforeach ?> 
-                           </td>
+                            <td style="text-align:center"><?php echo  $varTotal; ?></td>
+                            <td>
+                                <?php foreach($clienOperativo as $decisorOpera): ?> 
+                                    <span id="operativoAdmin">
+                                        <?php echo $decisorOpera['total']   ?>  
+                                    </span>                               
+                                <?php endforeach ?> 
+                            </td>
                         </tr>  
                         
                     </tbody>

@@ -12,6 +12,9 @@ use yii\bootstrap\Modal;
 use app\models\ControlProcesosPlan;
 use yii\db\Query;
 
+$this->title = 'Hoja de Vida - Datos Academicos';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
    
 <style>
@@ -134,10 +137,9 @@ use yii\db\Query;
 <br><br>
 
 <div class="breadcrumb">
-    <li>
-        <a href=" <?php echo Url::to(['hojavida/index']) ?> ">Inicio</a>
-    </li>
-    <li class="active">Academico</li>
+    
+    <a href=" <?php echo Url::to(['hojavida/index']) ?> ">Inicio</a>
+    
 </div>
 
 <div class="container-fluid">
@@ -233,12 +235,12 @@ use yii\db\Query;
     <div class="row">
         <div class="col-md-3">
             <div class="card1">
-                <table class="table table-bordered">
+                <table id="tblDataprofesion" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Resultados</caption>
                     <thead>
                         <tr>
-                    
-                            <th>Profesión</th>
-                            <th>Accion</th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Profesión') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acción') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -263,11 +265,12 @@ use yii\db\Query;
 
         <div class="col-md-3">
             <div class="card1">
-                <table class="table table-bordered">
+                <table id="tblDataespecializacion" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Resultados</caption>
                     <thead>
                         <tr>
-                            <th>Especialización</th>
-                            <th>Accion</th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Especialización') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acción') ?></label></th>                            
                         </tr>
                     </thead>
                     <tbody>
@@ -292,12 +295,12 @@ use yii\db\Query;
 
         <div class="col-md-3">
             <div class="card1">
-                <table class="table table-bordered">
+                <table id="tblDatamaestria" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Resultados</caption>
                     <thead>
                         <tr>
-                         
-                            <th>Maestría </th>
-                            <th>Accion</th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Maestría') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acción') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -322,12 +325,12 @@ use yii\db\Query;
 
         <div class="col-md-3">
             <div class="card1">
-                <table class="table table-bordered">
+                <table id="tblDatadoctorado" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Resultados</caption>
                     <thead>
                         <tr>
-                         
-                            <th>Doctorado </th>
-                            <th>Accion</th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Doctorado') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acción') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -363,7 +366,7 @@ use yii\db\Query;
     <div class="row">
     <div class="col-md-3">
     <div class="card1 mb">
-            <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></i> Cancelar y regresar: </label> 
+            <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #707372',
                                             'data-toggle' => 'tooltip',

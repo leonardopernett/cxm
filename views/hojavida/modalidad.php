@@ -10,6 +10,9 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
 
+$this->title = 'Hoja de Vida - Modalidad';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <style>
@@ -79,12 +82,9 @@ use yii\widgets\ActiveForm;
 <br><br>
 
 <nav class="breadcrumb">
-  <li class="active">
-      <a href="<?php echo Url::to(['/hojavida/index']) ?> ">Inicio</a>
-  </li>
-  <li>
-      Modalida de trabajo
-  </li>
+  
+    <a href="<?php echo Url::to(['/hojavida/index']) ?> ">Inicio</a>
+
 </nav>
 
 <div class="container-fluid">
@@ -115,30 +115,25 @@ use yii\widgets\ActiveForm;
         <div class="col-md-6">
             <div class="card1">
                 <p> <em class="fas fa-list" style="font-size: 15px; color: #FFC72C;"></em> Lista de modalidad de trabajo</p>
-                <table class="table table-striped table-bordered content"  >
+                <table id="tblDatamodalidad" class="table table-striped table-bordered tblResDetFreed">
+                    <caption>Resultados</caption>
                     <thead>
                         <tr>
-                            <th></th>
-                            <td>Tipo de modalidad</td>
-                            <td  style="text-align:center;">
-                                Accion
-                            </td>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo modalidad') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acción') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach($modalidad as $modal) : ?>
                           <tr>
-                              <th class="text">
-                                
-                              </th>
-                              <th  class="text">
+                              <td  style="text-align:center">
                                 <?= $modal['modalidad'] ?>
-                              </th>
-                              <th  class="text" style="text-align:center;">
+                              </td>
+                              <td  style="text-align:center">
                                   <a href="<?php echo Url::to(['eliminarmodalidad','id'=> $modal['hv_idmodalidad']]) ?>">
                                       <em class="fa fa-trash" style="font-size: 15px;  color: #C51616;"></em>
                                     </a>
-                              </th>
+                              </td>
                           </tr>
                         <?php endforeach ?>
                     </tbody>

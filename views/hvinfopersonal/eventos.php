@@ -16,7 +16,7 @@ use yii\helpers\Url;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
             height:auto;   
@@ -49,7 +49,6 @@ use yii\helpers\Url;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -161,18 +160,6 @@ button.dt-button, div.dt-button, a.dt-button, input.dt-button{
       color:#fff !important;
   }
 
-
- /*  .select2-container--default .select2-selection--single .select2-selection__arrow{
-      right:-460px !important;
-  }
-
-  .select2-container--open .select2-dropdown--below{
-    width: 560px !important;
-  }
-  .select2-container--default .select2-selection--single{
-    width: 560px !important;
-  }
- */
 </style>
 
 
