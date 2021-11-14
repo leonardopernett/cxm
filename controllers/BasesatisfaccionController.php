@@ -3846,83 +3846,45 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
              * @param sring $connid
              * @return boolean
              */
-            public function actionBuscarllamadasmasivasbuzon($aleatorio) {
+            public function actionBuscarllamadasbuzones() {
                 
-                $arregloFiltro = Yii::$app->request->post('BaseSatisfaccionSearch');
-                if ($arregloFiltro['fecha'] != '') {
-                    $dates = explode(' - ', $arregloFiltro['fecha']);
-                    $afecha = $dates[0] . ' 00:00:00';
-                    $fecha = $dates[1] . ' 23:59:59';
-                } else {
-                    $fecha = date('Y-m-d H:i:s');
-                    $afecha = strtotime('-2 month', strtotime($fecha));
-                    $afecha = date('Y-m-d H:i:s', $afecha);
-                }
-                if ($aleatorio == "1") {
-                    $allModels = BaseSatisfaccion::find()->where(['tipo_inbox' => 'ALEATORIO'])
-                            ->andWhere('(llamada IS NULL OR buzon IS NULL)')
-                            ->andWhere('fecha_satu BETWEEN "' . $afecha . '" AND "' . $fecha . '"');
-                } else {
-                    $allModels = BaseSatisfaccion::find()->where(['tipo_inbox' => 'NORMAL'])
-                            ->andWhere('(llamada IS NULL OR buzon IS NULL)')
-                            ->andWhere('fecha_satu BETWEEN "' . $afecha . '" AND "' . $fecha . '"');
-                }
+                $varidencuesta = Yii::$app->request->post("txtvardataprovider");
 
-                if ($arregloFiltro['pcrc'] != '') {
-                    $allModels->andFilterWhere([
-                        'pcrc' => $arregloFiltro['pcrc'],]);
-                }
-                if ($arregloFiltro['responsable'] != '') {
-                    $allModels->andFilterWhere([
-                        'responsable' => $arregloFiltro['responsable'],]);
-                }
-                if ($arregloFiltro['estado'] != '') {
-                    $allModels->andFilterWhere([
-                        'estado' => $arregloFiltro['estado'],]);
-                }
-                if ($arregloFiltro['tipologia'] != '') {
-                    $allModels->andFilterWhere([
-                        'tipologia' => $arregloFiltro['tipologia'],]);
-                }
-                if ($arregloFiltro['id_lider_equipo'] != '') {
-                    $allModels->andFilterWhere([
-                        'id_lider_equipo' => $arregloFiltro['id_lider_equipo'],]);
-                }
-                if ($arregloFiltro['agente'] != '') {
-                    $evaluado = \app\models\Evaluados::findOne(['id' => $arregloFiltro['agente']]);
-                    $allModels->andFilterWhere([
-                        'agente' => $evaluado->dsusuario_red,]);
-                }
-                try {
-                    $allModels = $allModels->all();
-                } catch (Exception $exc) {
-                    \Yii::error('Error en consulta Masiva: *****' . $exc->getMessage(), 'redbox');
-                }
-
-                $count = 0;
-                foreach ($allModels as $nModel) {
+                $varLostIdEncuestas = explode(", ", $varidencuesta);
+                $varConteoIDEncuestas = count($varLostIdEncuestas);
+                for ($i=0; $i < $varConteoIDEncuestas; $i++) { 
                     
-                    //SI BUSCAN BUZÓN
-                    if (is_null($nModel->buzon) || empty($nModel->buzon) || $nModel->buzon == "") {
+                    $paramsEncuestas = [':idencuesta' => $varLostIdEncuestas[$i]];
+                    $idDoslist = Yii::$app->db->createCommand('
+                      SELECT 
+                        b.connid, b.ano, b.mes, b.dia, b.buzon
+                          FROM tbl_base_satisfaccion b 
+                            WHERE 
+                              b.id IN (:idencuesta)
+                        ')->bindValues($paramsEncuestas)->queryAll();
 
-                        //Consulta de buzon ------------------------------------------------
-                        $nModel->buzon = $this->_buscarArchivoBuzon(
-                                sprintf("%02s", $nModel->dia) . "_" . sprintf("%02s", $nModel->mes) . "_" . $nModel->ano, $nModel->connid);
+                    foreach ($idDoslist as $key => $value) {
+                        $varBuzon = $value['buzon'];
+                        $varDia = $value['dia'];
+                        $varMes = $value['mes'];
+                        $varAno = $value['ano'];
+                        $varConnid = $value['connid'];
+
+                        if (empty($varBuzon) || $varBuzon == "") {
+                            $varModelBuzon = $this->_buscarArchivoBuzon(sprintf("%02s", $varDia) . "_" . sprintf("%02s", $varMes) . "_" . $varAno, $varConnid);
+
+                            if (empty($varModelBuzon) || $varModelBuzon == "") {
+                                Yii::$app->db->createCommand()->update('tbl_base_satisfaccion',[
+                                                              'buzon' => $varModelBuzon,
+                                                          ],'id ='.$varLostIdEncuestas[$i].'')->execute();
+                            }
+                        }
                     }
 
-                    if (!is_null($nModel->llamada) || (!empty($nModel->buzon) || $nModel->buzon != "")) {
-                        $count++;
-                    }
-                    try {
-                        $nModel->save();
-                    } catch (Exception $exc) {
-                        \Yii::error('Error al momento de guardar el registro: ' . $nModel->id . ' ' . $exc->getMessage() . '#####', 'redbox');
-                    }
                 }
-                $msg = \Yii::t('app', 'La operación se realizó con éxito para ' . $count . ' registros en buzones');
-                Yii::$app->session->setFlash('warning', $msg);
-                $redct = ($aleatorio == '1') ? 'inboxaleatorio' : 'index';
-                return $this->redirect([$redct]);
+
+                $txtrta = 0;                
+                die(json_encode($txtrta));
             }
 
 
