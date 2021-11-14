@@ -244,6 +244,8 @@ if (!isset($aleatorio) || !$aleatorio) {
             ?>
             <?= Html::a(Yii::t('app', 'Buscar llamadas'),  "javascript:void(0)", ['class' => 'btn btn-warning llamadasMasivas'])
             ?>
+            <?= Html::a(Yii::t('app', 'Buscar Buzones'),  "javascript:void(0)", ['class' => 'btn btn-warning buzonesmasivos'])
+            ?>
         </div>        
     </div>
     <?php ActiveForm::end(); ?>
@@ -402,6 +404,12 @@ if (!isset($aleatorio) || !$aleatorio) {
         $('.llamadasMasivas').click(function(){
             var buscarMasivos = $("#buscarMasivos");
             buscarMasivos.attr('action', '<?php echo Url::to(["buscarllamadasmasivas", "aleatorio" => ($aleatorio)?1:2]); ?>');
+            buscarMasivos.submit();
+        });
+
+        $('.buzonesmasivos').click(function(){
+            var buscarMasivos = $("#buscarMasivos");
+            buscarMasivos.attr('action', '<?php echo Url::to(["buscarllamadasbuzones", "aleatorio" => ($aleatorio)?1:2]); ?>');
             buscarMasivos.submit();
         });
     });
