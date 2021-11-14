@@ -3858,11 +3858,16 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     $afecha = strtotime('-2 month', strtotime($fecha));
                     $afecha = date('Y-m-d H:i:s', $afecha);
                 }
-                
-                $allModels = BaseSatisfaccion::find()
-                            ->where("tipo_inbox in ('ALEATORIO','NORMAL')")
-                            ->andWhere('(llamada IS NULL OR buzon IS NULL)')
+
+                if ($aleatorio == "1") {
+                    $allModels = BaseSatisfaccion::find()->where(['tipo_inbox' => 'ALEATORIO'])
+                            ->andWhere('(buzon = "")')
                             ->andWhere('fecha_satu BETWEEN "' . $afecha . '" AND "' . $fecha . '"');
+                } else {
+                    $allModels = BaseSatisfaccion::find()->where(['tipo_inbox' => 'NORMAL'])
+                            ->andWhere('(buzon = "")')
+                            ->andWhere('fecha_satu BETWEEN "' . $afecha . '" AND "' . $fecha . '"');
+                }
 
                 if ($arregloFiltro['pcrc'] != '') {
                     $allModels->andFilterWhere([
