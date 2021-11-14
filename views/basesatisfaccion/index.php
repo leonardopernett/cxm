@@ -244,11 +244,6 @@ if (!isset($aleatorio) || !$aleatorio) {
             ?>
             <?= Html::a(Yii::t('app', 'Buscar llamadas'),  "javascript:void(0)", ['class' => 'btn btn-warning llamadasMasivas'])
             ?>
-            <?php if(Yii::$app->user->identity->id == "2953") { ?>
-                <div onclick="searchbuzon();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                    Buscar buzones
-                </div>
-            <?php } ?>
         </div>        
     </div>
     <?php ActiveForm::end(); ?>
@@ -399,14 +394,6 @@ if (!isset($aleatorio) || !$aleatorio) {
                                     ]);
                                     ?>
 </div>
-<?php 
-    $valistdata = $dataProvider->query->all();
-    $arraylistdata = array();
-    foreach ($valistdata as $key => $value) {
-        array_push($arraylistdata, $value['id']);
-    }
-    $vadata = implode(", ", $arraylistdata);   
-?>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -418,19 +405,4 @@ if (!isset($aleatorio) || !$aleatorio) {
             buscarMasivos.submit();
         });
     });
-    function searchbuzon(){
-        var vardataprovider = "<?php echo $vadata; ?>";
-
-        $.ajax({
-            method: "post",
-            url: "buscarllamadasbuzones",
-            data: {
-              txtvardataprovider : vardataprovider,
-            },
-            success : function(response){
-              numRta =   JSON.parse(response);          
-              location.reload();
-            }
-          });
-    };
 </script>
