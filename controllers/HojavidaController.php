@@ -2832,8 +2832,7 @@ use app\models\HojavidaDataclasificacion;
                 ->queryAll();
             
               foreach ($clientes as $cliente) {
-                 if($cliente['cliente'] == $data2){
-                    
+             
                      $res = Yii::$app->db->createCommand('SELECT id_dp_clientes AS id, cliente, cod_pcrc FROM tbl_proceso_cliente_centrocosto where cliente=:cliente GROUP BY cliente')
                      ->bindParam(':cliente',$data2)
                      ->queryOne() ;
@@ -2843,9 +2842,8 @@ use app\models\HojavidaDataclasificacion;
                       'id_dp_cliente'    =>   $res['id'],
                       'cod_pcrc'         =>   $res['cod_pcrc'],
                       'usua_id'          => Yii::$app->user->identity->id
-                      ])->execute();
-                     
-                 }
+                      ])->execute();  
+                 
              }
       }
     }
