@@ -334,12 +334,13 @@ $this->params['breadcrumbs'][] = $this->title;
                       <em class="fa fa-upload"></em>
                       <?= $form->field($modelos, 'file')->fileInput(["class"=>"input-file" ,'id'=>'file']) ?>
                   </div> 
-
+                   
 
                   <div class="button">
                       <button  class="btn btn-success">Agregar <em class="fa fa-plus" style="padding-top:5px"></em> </button>
                   </div>
             <?php ActiveForm::end() ?>
+            <a href="../../archivos/Plantilla-Maestro.xlsx" download>Descargar Plantilla de ejemplo</a><em class="fa fa-upload"></em>
       </div>
       
     </div>
