@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -16,7 +15,7 @@ $this->title = 'Ver Tipo de Corte';
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';
 
-//$diasnum = $numdias;
+
 
 $numdias  = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '$CorteID'")->queryScalar();
 
@@ -40,7 +39,7 @@ $numdias  = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos
 		<?= $form->field($model, "cantdiastc")->textInput(['readonly' => 'readonly', 'id' => 'txtcantdiastc', 'value' => $numdias])->label('Cantidad de dias') ?> 
 		&nbsp;&nbsp;
 
-	<div align="center">  
+	<div style="margin: auto;">  
 	&nbsp;&nbsp;
 		    <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
