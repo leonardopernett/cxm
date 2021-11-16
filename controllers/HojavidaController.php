@@ -2750,9 +2750,9 @@ use app\models\HojavidaDataclasificacion;
     
     for ($row = 3; $row <= $highestRow; $row++) {
 
-          $user = Yii::$app->db->createCommand('select * from tbl_hojavida_datapersonal where hv_idpersonal =:id')
+       /*    $user = Yii::$app->db->createCommand('select * from tbl_hojavida_datapersonal where identificacion =:id')
           ->bindParam(':id',$sheet->getCell("A".$row)->getValue())
-          ->queryOne();
+          ->queryOne(); */
             
           Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[                                        
             'identificacion'   =>  $sheet->getCell("A".$row)->getValue(),
