@@ -218,7 +218,7 @@ AppAsset::register($this);
                                             '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',    
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Hoja de Vida del Cliente&nbsp;&nbsp;'),
-                                                    'url' => ['/hvinfopersonal/index'],
+                                                    'url' => ['/hojavida/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],                                              
                                             

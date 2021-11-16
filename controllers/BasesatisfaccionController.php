@@ -78,7 +78,7 @@ class BasesatisfaccionController extends Controller {
                                     'guardarencuesta', 'index', 'reglanegocio',
                                     'showencuestatelefonica', 'update', 'guardarformulario', 'showsubtipif', 'cancelarformulario', 'declinarformulario',
                                     'reabrirformulariogestionsatisfaccion', 'clientebasesatisfaccion', 'limpiarfiltro', 'buscarllamadas', 'showformulariogestion',
-                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias'],
+                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas','buscarllamadasbuzones', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -94,7 +94,7 @@ class BasesatisfaccionController extends Controller {
                         },
                             ],
                             [
-                                'actions' => ['inboxaleatorio', 'inboxdeclinadas', 'buscarllamadasmasivas'],
+                                'actions' => ['inboxaleatorio', 'inboxdeclinadas', 'buscarllamadasmasivas','buscarllamadasbuzones'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -3839,6 +3839,93 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $redct = ($aleatorio == '1') ? 'inboxaleatorio' : 'index';
                 return $this->redirect([$redct]);
             }
+
+            /**
+             * Funcion replica para buscar solo buzones
+             * 
+             * @param sring $connid
+             * @return boolean
+             */
+            public function actionBuscarllamadasbuzones($aleatorio) {
+                $arregloFiltro = Yii::$app->request->post('BaseSatisfaccionSearch');
+                
+                if ($arregloFiltro['fecha'] != '') {
+                    $dates = explode(' - ', $arregloFiltro['fecha']);
+                    $afecha = $dates[0] . ' 00:00:00';
+                    $fecha = $dates[1] . ' 23:59:59';
+                } else {
+                    $fecha = date('Y-m-d H:i:s');
+                    $afecha = strtotime('-2 month', strtotime($fecha));
+                    $afecha = date('Y-m-d H:i:s', $afecha);
+                }
+
+                if ($aleatorio == "1") {
+                    $allModels = BaseSatisfaccion::find()->where(['tipo_inbox' => 'ALEATORIO'])
+                            ->andWhere('(buzon = "")')
+                            ->andWhere('fecha_satu BETWEEN "' . $afecha . '" AND "' . $fecha . '"');
+                } else {
+                    $allModels = BaseSatisfaccion::find()->where(['tipo_inbox' => 'NORMAL'])
+                            ->andWhere('(buzon = "")')
+                            ->andWhere('fecha_satu BETWEEN "' . $afecha . '" AND "' . $fecha . '"');
+                }
+
+                if ($arregloFiltro['pcrc'] != '') {
+                    $allModels->andFilterWhere([
+                        'pcrc' => $arregloFiltro['pcrc'],]);
+                }
+                if ($arregloFiltro['responsable'] != '') {
+                    $allModels->andFilterWhere([
+                        'responsable' => $arregloFiltro['responsable'],]);
+                }
+                if ($arregloFiltro['estado'] != '') {
+                    $allModels->andFilterWhere([
+                        'estado' => $arregloFiltro['estado'],]);
+                }
+                if ($arregloFiltro['tipologia'] != '') {
+                    $allModels->andFilterWhere([
+                        'tipologia' => $arregloFiltro['tipologia'],]);
+                }
+                if ($arregloFiltro['id_lider_equipo'] != '') {
+                    $allModels->andFilterWhere([
+                        'id_lider_equipo' => $arregloFiltro['id_lider_equipo'],]);
+                }
+                if ($arregloFiltro['agente'] != '') {
+                    $evaluado = \app\models\Evaluados::findOne(['id' => $arregloFiltro['agente']]);
+                    $allModels->andFilterWhere([
+                        'agente' => $evaluado->dsusuario_red,]);
+                }
+                try {
+                    $allModels = $allModels->all();
+                } catch (Exception $exc) {
+                    \Yii::error('Error en consulta Masiva: *****' . $exc->getMessage(), 'redbox');
+                }
+                $count = 0;
+                foreach ($allModels as $nModel) {
+                    
+                    //SI BUSCAN BUZÓN
+                    if (is_null($nModel->buzon) || empty($nModel->buzon) || $nModel->buzon == "") {
+
+                        //Consulta de buzon ------------------------------------------------
+                        $nModel->buzon = $this->_buscarArchivoBuzon(
+                                sprintf("%02s", $nModel->dia) . "_" . sprintf("%02s", $nModel->mes) . "_" . $nModel->ano, $nModel->connid);
+                    }
+
+                    if (!is_null($nModel->llamada) || (!empty($nModel->buzon) || $nModel->buzon != "")) {
+                        $count++;
+                    }
+                    try {
+                        $nModel->save();
+                    } catch (Exception $exc) {
+                        \Yii::error('Error al momento de guardar el registro: ' . $nModel->id . ' ' . $exc->getMessage() . '#####', 'redbox');
+                    }
+                }
+                $msg = \Yii::t('app', 'La operación se realizó con éxito para ' . $count . ' registros');
+                Yii::$app->session->setFlash('warning', $msg);
+                $redct = ($aleatorio == '1') ? 'inboxaleatorio' : 'index';
+                return $this->redirect([$redct]);
+            }
+
+
 
             /**
              * Action Recalcular la tipologia

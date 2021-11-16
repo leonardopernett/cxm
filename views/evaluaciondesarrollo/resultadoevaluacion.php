@@ -226,7 +226,7 @@ $this->registerJs($js);
 </header>
 <br><br>
 <?php
-if($txtvalidadocumento > 0) { 
+if($txtvalidadocumento != 0) { 
 ?>
 <div id="idCapaUno" style="display: inline"> 
     <div id="capaUno" style="display: inline">   
@@ -280,6 +280,14 @@ if($txtvalidadocumento > 0) {
                 SELECT DISTINCT CONCAT(posicion,' - ',funcion) 
                     FROM tbl_usuarios_evalua_feedback 
                         WHERE documento IN ('$documento')")->queryScalar();
+
+            $varNiveles = Yii::$app->db->createCommand("
+                SELECT en.nivel FROM tbl_evaluacion_nivel en
+                    INNER JOIN tbl_usuarios_evalua ue ON 
+                        en.cargo = ue.id_dp_posicion
+                    WHERE 
+                        ue.documento IN ('$documento')
+                        GROUP BY ue.idusuarioevalua")->queryScalar();
 
             $varnivel = Yii::$app->db->createCommand("
                 SELECT en.nivel 
@@ -566,7 +574,7 @@ if($txtvalidadocumento > 0) {
                                 <label style="font-size: 17px;"><em class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></em> Calificación Final </label>
                                 <table style="width:100%">
                                     <caption>...</caption>
-                                        <th scope="col" class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
+                                        <th scope="col" class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
                                 </table> 
                             </div>
                         </div>  
@@ -575,9 +583,22 @@ if($txtvalidadocumento > 0) {
                             <div class="card2 mb">
                                 <label style="font-size: 17px;" ><em class="far fa-comment-alt" style="font-size: 18px; color: #C148D0;"></em> Observaciones </label>
                                 <textarea type="text" class="form-control" readonly="readonly" id="txtobserva" rows="3" value="<?php echo $varcomentarios2; ?>" data-toggle="tooltip" title="Observaciones"><?php echo $varcomentarios2; ?></textarea>
-                                                                                                   
-                                <label style="font-size: 17px;"><em class="fas fa-check" style="font-size: 18px; color: #C148D0;"></em> Tipo Coaching </label>                            
-                                <label style="font-size: 20px; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $tipocoaching; ?> </label>
+                                <br>                                                               
+                                <label style="font-size: 17px;"><em class="fas fa-check" style="font-size: 18px; color: #C148D0;"></em> Tipo Feedback 
+                                <?php
+                                    echo Html::tag('span', '<i class="fas fa-info-circle" style="font-size: 18px; color: #C178G9;"></i>', [
+                                                'data-title' => Yii::t("app", ""),
+                                                'data-content' => '
+                                                * Feedback Obligatorio < 85% --
+                                                * Feedback Opcional >= 85% --
+                                                ',
+                                                'data-toggle' => 'popover',
+                                                'style' => 'cursor:pointer;'
+                                    ]);
+                                ?>
+                                </label>                            
+                                <label style="font-size: 20px; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $tipocoaching; ?> </label>                                                              
+                                
                             </div>                            
                         </div>  
                     </div>
@@ -800,7 +821,7 @@ if($txtvalidadocumento > 0) {
                                         </div>
                                         
                                         <div class="col-md-6">
-                                            <label id="<?php echo 'idtext'.$varconteocompetencia.$varconteobloque; ?>" style="font-size: 15px; <?php echo $varcolor2; ?>"> <?php echo $txtnotafinal1.'% '; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>                                                   
+                                            <label id="<?php echo 'idtext'.$varconteocompetencia.$varconteobloque; ?>" style="font-size: 15px; <?php echo $varcolor2; ?>"> <?php echo $txtnotafinal1.'% '; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>                  
                                             
                                             <?php if($txtnotafinal1 < 85 && $varidevaluacionbloques == 1){?>
                                                 <div onclick="openmensaje(<?php echo $varconteocompetencia.$varconteobloque; ?>);" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="<?php echo 'idtbn1'.$varconteocompetencia.$varconteobloque; ?>" >
@@ -810,6 +831,7 @@ if($txtvalidadocumento > 0) {
                                                 <div onclick="closemensaje(<?php echo $varconteocompetencia.$varconteobloque; ?>);" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="<?php echo 'idtbn2'.$varconteocompetencia.$varconteobloque; ?>" >
                                                     <span class="fas fa-caret-up" style="font-size: 30px; color: #f7b9b9;" ></span>
                                                 </div>
+
                                             <?php } ?>
 
                                         </div>
@@ -817,7 +839,24 @@ if($txtvalidadocumento > 0) {
                                         <div class="col-md-12">
                                             <div id="<?php echo 'idmensaje'.$varconteocompetencia.$varconteobloque; ?>" style="display: none">
                                                 <div class="panel panel-default">
-                                                    <div class="panel-body" style="background-color: #f0f8ff; font-size: 16px;"><?php echo $varmensaje; ?>
+                                                    <div class="panel-body" style="background-color: #f0f8ff; font-size: 16px;">
+                                                        <?php 
+
+                                                            $paramsBusqueda = [':idNivel' => $varNiveles, ':idCompetencias' => $varidcompetencia];
+                                                            echo $varListSecciones = Yii::$app->db->createCommand('
+                                                                SELECT em.mensajepos FROM tbl_evaluacion_mensaje_resul em
+                                                                    INNER JOIN tbl_evaluacion_competencias ec ON 
+                                                                        em.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                                                                    INNER JOIN tbl_evaluacion_nivel en ON 
+                                                                        ec.idevaluacionnivel = en.idevaluacionnivel
+                                                                    WHERE 
+                                                                        ec.idevaluacioncompetencia = :idCompetencias
+                                                                            AND en.idevaluacionnivel = :idNivel
+                                                                        GROUP BY em.idevaluacion_mensajeres')->bindValues($paramsBusqueda)->queryScalar();
+
+                                                         // Este es un mensaje para tenerlo presente echo $varmensaje; 
+
+                                                         ?>
                                                     </div>
                                                 </div>
                                             </div>                
@@ -841,8 +880,8 @@ if($txtvalidadocumento > 0) {
     <?php 
         }
     ?>
-    
-    <div id="capaSiete" style="display: none"> 
+    <hr>
+    <div id="capaSiete" style="display: inline;"> 
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
@@ -860,7 +899,7 @@ if($txtvalidadocumento > 0) {
                     </div>
 
                     <div class="col-md-12">
-                        <div id="idpanelobserva2" style="display: none">
+                        <div id="idpanelobserva2" style="display: inline;">
                             <div class="panel panel-default">
                                 <div class="panel-body" style="background-color: #f0f8ff; font-size: 16px;"> Identificamos el alto potencial que aportas a la compañia,  así como las oportunidades de desarrollo en las que te podremos acompañar, a través de un plan de desarrollo 70-20-10: 70% Autodesarrollo y autogestión 20% Mentoring y acompañamiento de tu jefe inmediato 10% Formación especifica proporcIonada por la compañia para tu rol Te sugerimos iniciar por las 3 competencias más lejos del umbral esperado y que sean estrategicas para tu proceso
                                 </div>
@@ -883,8 +922,19 @@ if($txtvalidadocumento > 0) {
                     </div>
 
                     <div class="panel panel-default">
-                        <div class="panel-body" style="background-color: #f0f8ff;"> <?php echo $varobservacion; ?>
+                        <?php 
+                            if ($varobservacion != "") {
+                        ?>
+                            <div class="panel-body" style="background-color: #f0f8ff;"> <?php echo $varobservacion; ?>
+                            </div>
+                        <?php
+                            }else{
+                        ?>
+                            <div class="panel-body" style="background-color: #f0f8ff;"> Actualmente no hay registro de feedback.
                         </div>
+                        <?php
+                            } 
+                        ?>                        
                     </div>                         
                 </div>
             </div>
@@ -896,12 +946,22 @@ if($txtvalidadocumento > 0) {
             <div class="col-md-12">
                 <div class="card1 mb">
                     <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
+
+                    <div class="row">
+                        <div class="col-md-12" style="display: inline;">
+                            <div class="panel panel-default">
+                                <div class="panel-body" style="background-color: #f0f8ff; font-size: 16px;"> Aquí encontrarás herramientas formativas para tu desarrollo.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">                        
                         <div class="col-md-4" style="display: inline;">
                             <div class="card1 mb">
                                 <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Biblioteca de Conocimiento: </label> 
                                                             
-                                <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" class="btn btn-success">Ir a Paco (Jefes - Personas)</a>                            
+                                <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" class="btn btn-success">Ir a Bilbioteca de Desarrollo Humano</a>                            
                             </div>
                         </div>
                         
@@ -1025,8 +1085,7 @@ var vardocumento = '<?php echo $documento; ?>';
         for (var i = 0; i < varconteobloque; i++) {
             varbloque = i + 1;
             var varidbloque = document.getElementById('Idbloque'+varbloque).value;
-            // console.log('El bloque es: '+varidbloque);
-
+            
             varcompetencia = 0;
             for (var j = 0; j < varconteocompetencia; j++) {
                 varcompetencia = j + 1;
@@ -1034,8 +1093,7 @@ var vardocumento = '<?php echo $documento; ?>';
                 
                 if (varcompara != null) {
                     var varidcompetencia = document.getElementById('IdCompetencia'+varcompetencia+varidbloque).value;
-                    // console.log('La competencia es: '+varidcompetencia);
-
+                    
                     for (var k = 0; k < varconteopregunta; k++) {
                         varpreguntas = k + 1;
 
@@ -1043,11 +1101,11 @@ var vardocumento = '<?php echo $documento; ?>';
 
                         if (varpreg != null) {
                             var varidtext = document.getElementById('idtext'+varpreguntas+varcompetencia+varidbloque).innerHTML;
-                            // console.log(varidtext);
+                            
                             var varidpreg = document.getElementById('Idpre'+varpreguntas+varcompetencia+varidbloque).value;
-                            // console.log('La pregunta es: '+varidpreg);
+                            
                             var varidrta = document.getElementById('Idrta'+varpreguntas+varcompetencia+varidbloque).value;
-                            // console.log('La respuesta es: '+varidrta);
+                            
 
                             if (varidrta == "") {
                                 event.preventDefault();

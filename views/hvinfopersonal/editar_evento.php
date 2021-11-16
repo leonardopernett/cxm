@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
             height:auto;   
@@ -45,7 +45,6 @@ use yii\widgets\ActiveForm;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -76,7 +75,7 @@ use yii\widgets\ActiveForm;
 
    .edit {
        font-weight:600;
-       font-family:'nunito';
+       font-family: "Nunito",sans-serif;
        text-align:center;
    }
    .d-flex {
@@ -162,7 +161,6 @@ button.dt-button, div.dt-button, a.dt-button, input.dt-button{
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
  <!-- Compiled and minified CSS -->
-<!-- <div class="masthead"></div> -->
 
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
@@ -194,7 +192,7 @@ button.dt-button, div.dt-button, a.dt-button, input.dt-button{
                         <select name="tipo_evento" value="<?= $eventoOne['tipo_evento'] ?>" class="form-control" required >
                             <option value="">Seleccione</option>
                             <option value="Boletin Corporativo" <?php if($eventoOne['tipo_evento'] === 'Boletin Corporativo') echo 'selected' ?> >Boletin Corporativo</option>
-                            <option value="Boletín Operativo Trimestral" <?php if($eventoOne['tipo_evento'] === 'Boletín Operativo Trimestral') echo 'selected' ?>>Boletín Operativo Trimestral</option>
+                            <option value="Boletï¿½n Operativo Trimestral" <?php if($eventoOne['tipo_evento'] === 'Boletï¿½n Operativo Trimestral') echo 'selected' ?>>Boletï¿½n Operativo Trimestral</option>
                             <option value="Conferencia" <?php if($eventoOne['tipo_evento'] === 'Conferencia') echo 'selected' ?>>Conferencia</option>
                             <option value="Congreso" <?php if($eventoOne['tipo_evento'] === 'Congreso') echo 'selected' ?>>Congreso</option>
                             <option value="Conversatorio" <?php if($eventoOne['tipo_evento'] === 'Conversatorio') echo 'selected' ?>>Conversatorio</option>

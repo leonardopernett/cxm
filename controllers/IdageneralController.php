@@ -613,16 +613,22 @@ use app\models\IdaGeneral;
       $varDocumentos = $data_post["documentos"];
       $varUsuarios = $data_post["usuarios"];
 
-
       
       $listdimensiones = array();
       $array_dimensiones = count($varDimension);
-
       for ($i = 0; $i < $array_dimensiones; ++$i){
-          array_push($listdimensiones, $varDimension[$i]);
+          array_push($listdimensiones, $varDimension[$i]);          
       }
 
       $varparametros = implode(", ", $listdimensiones);
+      $varStrDimension = null;
+      if ($varDimension == "1") {
+        $varStrDimension = "Calidad de Entrenamiento";
+      }
+      if ($varDimension == "2") {
+        $varStrDimension = "OJT";
+      }
+      
 
       $varextensiones = Yii::$app->db->createCommand("SELECT concat(sp.rn,sp.ext,sp.usuared) AS extensiones FROM tbl_speech_parametrizar sp WHERE sp.cod_pcrc IN ('$varpcrc') and sp.tipoparametro in ($varparametros)")->queryAll();
 
@@ -655,7 +661,6 @@ use app\models\IdaGeneral;
 
       $listusuarios = array();
       $array_usuarios = count($varUsuarios);
-
       for ($i = 0; $i < $array_usuarios; ++$i){
           array_push($listusuarios, $varUsuarios[$i]);
       }
@@ -679,7 +684,8 @@ use app\models\IdaGeneral;
       for ($i = 0; $i < $arra_login_id; ++$i){
         $varusuariologin = $varlogin_id[$i];
 
-        $varpromedio = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND idcategoria IN ($txtIdCatagoria) AND login_id IN ('$varusuariologin')")->queryScalar(); 
+        $varpromedio = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND idcategoria IN ($txtIdCatagoria) AND login_id IN ('$varusuariologin')")->queryScalar();
+
 
         $varcountarCallid = Yii::$app->db->createCommand("SELECT DISTINCT callId FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND login_id IN ('$varusuariologin')")->queryAll();
 
@@ -738,7 +744,7 @@ use app\models\IdaGeneral;
         }
         
 
-        array_push($arraydata, array("usuarios"=>$varusuariologin,"cantidadllamadas"=>$varpromedio,"score"=>$resultadosIDA));
+        array_push($arraydata, array("usuarios"=>$varusuariologin,"cantidadllamadas"=>$varpromedio,"score"=>$resultadosIDA,"dimension"=>$varStrDimension));
 
 
       }

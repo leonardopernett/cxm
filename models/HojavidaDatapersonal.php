@@ -41,10 +41,10 @@ class HojavidaDatapersonal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['hv_idpais', 'hv_idciudad', 'hv_idmodalidad', 'tratamiento_data', 'suceptible', 'anulado', 'usua_id'], 'integer'],
+            [['clasificacion', 'hv_idpais', 'hv_idciudad', 'hv_idmodalidad', 'tratamiento_data', 'suceptible', 'anulado', 'usua_id'], 'integer'],
             [['indicador_satu'], 'number'],
             [['fechacreacion'], 'safe'],
-            [['numero_movil', 'numero_fijo','nombre_full', 'email', 'direccion_oficina', 'direccion_casa'], 'string', 'max' => 250],
+            [['numero_movil', 'numero_fijo','nombre_full', 'email', 'direccion_oficina', 'direccion_casa','file'], 'string', 'max' => 250],
             [['identificacion'], 'string', 'max' => 50]
         ];
     }
@@ -69,9 +69,11 @@ class HojavidaDatapersonal extends \yii\db\ActiveRecord
             'tratamiento_data' => Yii::t('app', ''),
             'suceptible' => Yii::t('app', ''),
             'indicador_satu' => Yii::t('app', ''),
+            'clasificacion' =>  Yii::t('app', ''),
             'anulado' => Yii::t('app', ''),
             'fechacreacion' => Yii::t('app', ''),
             'usua_id' => Yii::t('app', ''),
+            'file' => Yii::t('app', ''),
         ];
     }
 }

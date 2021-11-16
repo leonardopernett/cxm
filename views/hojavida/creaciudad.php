@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-md-12">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><i class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></i> Registro de Paises: </label>
+        <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Registro de Paises: </label>
         <?=  $form->field($modelciudad, 'pais_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\HvPais::find()->orderBy(['hv_idpais'=> SORT_DESC])->all(), 'hv_idpais', 'pais'),
                                         [
                                             'prompt'=>'Seleccionar Pais...',

@@ -70,7 +70,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -82,8 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -116,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <label style="font-size: 15px;">Tipo de evento: </label>
             <?= $form->field($model, 'tipo_evento', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idtipoevento', 'placeholder'=>'Tipo del Evento'])?>
             
-            <label style="font-size: 15px;">Tipo de evento: </label>
+            <label style="font-size: 15px;">Fecha del evento: </label>
             <?=
                     $form->field($model, 'fechacreacion', [
                         'labelOptions' => ['class' => 'col-md-12'],
@@ -238,6 +235,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidnombreevento = document.getElementById("idnombreevento").value;
     var varciudad = document.getElementById("hojavidaeventos-hv_idciudad").value;
     var varidtipoevento = document.getElementById("idtipoevento").value;
+    var varfechas = document.getElementById("hojavidaeventos-fechacreacion").value;
 
     if (varidnombreevento == "") {
       event.preventDefault();
@@ -253,6 +251,12 @@ $this->params['breadcrumbs'][] = $this->title;
           event.preventDefault();
           swal.fire("!!! Advertencia !!!","Debe de ingresar el tipo de evento","warning");
           return;
+        }else{
+          if (varfechas == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Debe de ingresar el rango de fechas del evento","warning");
+            return;
+          }
         }
       }
     }

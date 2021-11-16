@@ -225,7 +225,8 @@ $this->params['breadcrumbs'][] = $this->title;
     }    
 ?>
 <?php 
-    if ($varexist == 0) {    
+    //Este proceso se comenta pero despues se quita if ($sessiones != '852' || $sessiones != '2953' || $sessiones != '6080' || $sessiones != '57' || $sessiones != '3229') {    
+    if ($sessiones == '0') {
 ?>
     <br>
     <div class="CapaDos" style="display: inline;">
@@ -234,7 +235,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card1 mb">
                     <label><em class="fas fa-exclamation" style="font-size: 20px; color: #ff2c2c;"></em> Notificación: </label>
                     <br>
-                    <label>CXM informa que actualmente su usuario no se encuentra registrado en la base de datos para realizar la evaluación de desarrollo. Por tanto lo invitamos a comunicarse al área de Desarrollo Humano al correo "maria.vera@grupokonecta.com" para verificar el proceso, gracias.</label> 
+                    <label>CXM informa que hemos terminado la fase de evaluación, gracias.</label> 
                 </div>
             </div>
         </div>

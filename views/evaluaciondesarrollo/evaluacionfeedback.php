@@ -100,7 +100,7 @@ $txtNotasFinal = 0;
             text-align: left;    
     }
     .card2 {
-           height: 190px;
+           height: 250px;
            width: auto;
            margin-top: auto;
            margin-bottom: auto;
@@ -193,15 +193,13 @@ $txtNotasFinal = 0;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
 </header>
 <br><br>
 <?php
-// if($sessiones != "3205" || $sessiones != "2953"){ 
+// Este proceso es una condicional utilizado para ver el modulo quienes poseen ese id if($sessiones != "3205" || $sessiones != "2953"){ 
 
 ?>
 
@@ -327,7 +325,7 @@ if($vardocumentosijefe){ ?>
         $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$documento')")->queryScalar();
         $varnivel = Yii::$app->db->createCommand("select en.nivel FROM tbl_evaluacion_solucionado es inner join tbl_evaluacion_competencias ec  ON es.idevaluacioncompetencia = ec.idevaluacioncompetencia 
                                 INNER JOIN tbl_evaluacion_nivel en ON ec.idevaluacionnivel = en.idevaluacionnivel WHERE es.documentoevaluado = $documento GROUP BY es.idevaluacioncompetencia LIMIT 1")->queryScalar();
-        //$varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $documento GROUP BY es.idevaluacioncompetencia LIMIT 1")->queryScalar();
+        
         $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $documento AND  es.comentarios != ''")->queryAll();
         foreach ($varcomentarios as $key => $value) {
             $can = $can + 1;
@@ -474,22 +472,19 @@ if($vardocumentosijefe){ ?>
                                     $txtnotafinal1 = null;
                                     if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
                                         $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
-                                        // var_dump("Entra 1");
-
+                                        
                                     }
                                     if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
                                         $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2);  
-                                        // var_dump("Entra 2");
-              
+                                                      
                                     }
                                     if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
                                         $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2); 
-                                        // var_dump("Entra 3");
-          
+                                                  
                                     }
                                     if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
                                         $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 5) /100) + (($valortotal4Pares * 30) /100),2);    
-                                        // var_dump("Entra 4");                        
+                                                             
                                     }
 
 
@@ -497,10 +492,10 @@ if($vardocumentosijefe){ ?>
                                     array_push($varArrayPromedio, $txtnotafinal1);
                                 }         
         if ($totalcomp != 0) {    
-	$varPromedios = round(array_sum($varArrayPromedio) / $totalcomp,2);
-	}else{
-	$varPromedios = 0;
-	}
+  $varPromedios = round(array_sum($varArrayPromedio) / $totalcomp,2);
+  }else{
+  $varPromedios = 0;
+  }
 
 
                                     if ($varidbloque == 1) {
@@ -514,14 +509,14 @@ if($vardocumentosijefe){ ?>
                                         }    
                                       }
                                     }              
-// var_dump($varPromedios);  
+
 
                                     array_push($varArraySumaB, $vartotalb);            
         }
 
         
         
-        // $txtProcentaje = $txtnotafinal;
+        
         $txtProcentaje =  round(array_sum($varArraySumaB),2);
         if($txtProcentaje >= 85 && $varmenorcompetencia == 0) {
             $tipocoaching = 'Opcional';
@@ -550,8 +545,8 @@ if($vardocumentosijefe){ ?>
                                 <div class="card2 mb">
                                     <label style="font-size: 17px;"><em class="fas fa-bars" style="font-size: 18px; color: #C148D0;"></em> Calificación Final </label>
                                     <table style="width:100%">
-                                    <caption>Tabla datos</caption>
-                                        <th scope="col" class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
+                                    <caption>...</caption>
+                                        <th scope="col" class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><span style="font-size: 15px;"><?php echo round($txtProcentaje,2).' %'; ?></span></td> 
                                     </table> 
                                 </div>
                             </div>                            
@@ -884,7 +879,7 @@ if($vardocumentosijefe){ ?>
   <?php } ?>
 
 <?php 
-// } else { 
+// Procesos con el condicional desde el principio } else { 
 if($sessiones != "3205" || $sessiones != "2953"){ 
 ?>
   <div class="Nueve">
@@ -1054,9 +1049,9 @@ var vardocumento = '<?php echo $documento; ?>';
     
     function guardaenvia(){
         var varobservafeedback = document.getElementById('Idcomentarios').value;
-    	var varNotafinal = '<?php echo $txtNotasFinal; ?>';
-	// var varDataNum = [<?= join($titulos, ',')?>];
-    	// var varNotafinal = varDataNum[0];
+      var varNotafinal = '<?php echo $txtNotasFinal; ?>';
+  // var varDataNum = [<?= join($titulos, ',')?>];
+      // var varNotafinal = varDataNum[0];
 
         var vardocumento = '<?php echo $documento; ?>';   
     var vardocumentojefe = '<?php echo $vardocument; ?>';
@@ -1094,7 +1089,7 @@ var vardocumento = '<?php echo $documento; ?>';
                        });
                     }else if (numRta == 2) {
                         event.preventDefault();
-                            swal.fire("!!! Advertencia !!!","No se pudo guaradr la información, esta persona ya tiene datos guardados","warning");
+                            swal.fire("!!! Advertencia !!!","No se pudo guardar la información, esta persona ya tiene datos guardados","warning");
                         return;
                     } else if (numRta == 0) {
                         event.preventDefault();
@@ -1151,7 +1146,7 @@ var vardocumento = '<?php echo $documento; ?>';
        varidtbn2.style.display = 'none';
        varidmensaje.style.display = 'none';
    };
-   function openobserva2(){
+   function openobserva2(){ 
               
               var varidtbn1 = document.getElementById('idmensaje12');
               var varidtbn2 = document.getElementById('idmensaje22');
