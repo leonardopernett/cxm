@@ -2740,7 +2740,7 @@ use Exception;
     }
 
     Yii::$app->session->setFlash('file','archivo cargado exitosamente');
-    unlink( $ruta);
+    unlink($ruta);
     return $this->redirect(['index']);
   }
 
@@ -2846,7 +2846,7 @@ use Exception;
                 ->queryAll();
             
               foreach ($clientes as $cliente) {
-                 if($cliente['cliente'] === $data2){
+                 if($cliente['cliente'] == $data2){
                     
                      $res = Yii::$app->db->createCommand('SELECT id_dp_clientes AS id, cliente, cod_pcrc FROM tbl_proceso_cliente_centrocosto where cliente=:cliente GROUP BY cliente')
                      ->bindParam(':cliente',$data2)
