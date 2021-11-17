@@ -661,7 +661,6 @@ use app\models\Controlvolumenxvalorador;
             $txtCategoria2 = 1114;
 
             $varMes = date("n");
-            $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -1008,7 +1007,6 @@ use app\models\Controlvolumenxvalorador;
             $txtfechacreacion = date("Y-m-d");
 
             $varMes = date("n");
-            $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -1146,8 +1144,6 @@ use app\models\Controlvolumenxvalorador;
 
                         foreach ($query as $key => $value) {
                             $varIdCorte = $value['idtc'];
-                            $varDateBegin = $value['fechainiciotc'];
-                            $varDateLast = $value['fechafintc'];
                             $varMesYear = $value['mesyear'];
 
                             $varNDias = date('t',strtotime($varMesYear));
@@ -1300,7 +1296,6 @@ use app\models\Controlvolumenxvalorador;
             $txtfechacreacion = date("Y-m-d");
 
             $varMes = date("n");
-            $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -1546,7 +1541,6 @@ use app\models\Controlvolumenxvalorador;
         $txtfechacreacion = date("Y-m-d");
 
         $varMes = date("n");
-        $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -1644,10 +1638,6 @@ use app\models\Controlvolumenxvalorador;
                                         array_push($varArrayProgram, $value['programacategoria']);
                                         array_push($varArrayparams, $value['rn'], $value['ext'], $value['usuared'], $value['comentarios']);
                                     }
-
-                                    $txtArbol = $varArbol;
-                                    $txtSpeech = $varSpeech;
-
                                     $txtSerivicios = implode("', '", $varArrayProgram);
                                     $txtExtensiones = implode("', '", $varArrayparams);
 
