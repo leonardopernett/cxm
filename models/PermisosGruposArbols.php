@@ -112,13 +112,6 @@ class PermisosGruposArbols extends \yii\db\ActiveRecord {
         $query = PermisosGruposArbols::find();
         $query->joinWith(['role']);
 
-        $dataProvider->sort->attributes['rolName'] = [
-            // The tables are the ones our relation are configured to
-            // in my case they are prefixed with "tbl_"
-            'asc' => ['tbl_grupos_usuarios.nombre_grupo' => SORT_ASC],
-            'desc' => ['tbl_grupos_usuarios.nombre_grupo' => SORT_DESC],
-        ];
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

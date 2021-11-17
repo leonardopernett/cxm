@@ -2108,11 +2108,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
                 $arrayIdsusuarios[]=$value['evaluadores_id'];
             }
             $idsUsuarios = implode(',', $arrayIdsusuarios);
-            if($segundoCalifPer){
-                $wherePersonas .= " AND sc.id_responsable IN (" . $idsUsuarios . ") ";
-            }else{
-                $wherePersonas .= " AND e.usua_id IN (" . $idsUsuarios . ") ";
-            }
         }
         //DATOS DE VOLUMENES
         if($volumenes){
