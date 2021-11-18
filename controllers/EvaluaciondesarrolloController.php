@@ -3761,6 +3761,23 @@ use app\models\EvaluacionDesarrollo;
                     ue.anulado = 0
                   AND ue.documento IN (:DocumentoEvaluador)')->bindValues($paramsBuscarEvaluado)->queryScalar();
 
+              $paramsBuscaComentario = [':DocEvaluador'  => $value['CcEvaluador'], ':DocEvaluado' => $value['CcEvaluado']];
+              $varComentarios = Yii::$app->db->createCommand('
+                  SELECT es.comentarios AS Comentarios
+                    FROM tbl_evaluacion_solucionado es 
+                      WHERE 
+                        es.documento = :DocEvaluador
+                          AND es.documentoevaluado = :DocEvaluado
+                            AND es.comentarios != ""')->bindValues($paramsBuscaComentario)->queryScalar();
+    
+              $varFeedbacks = Yii::$app->db->createCommand('
+                  SELECT er.observacion_feedback 
+                    FROM tbl_evaluacion_resulta_feedback er 
+                      WHERE 
+                        er.documento_jefe = :DocEvaluador
+                          AND er.documento = :DocEvaluado')->bindValues($paramsBuscaComentario)->queryScalar();
+    
+
               if ($value['TipoEvaluacion'] == "1") {
                 $varRtaAuto = $varSi;
               }else{
