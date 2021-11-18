@@ -3553,12 +3553,11 @@ use app\models\EvaluacionDesarrollo;
           $paramsBusqueda = [':Anulado' => 0];
           $varListDocumentos = Yii::$app->db->createCommand('
           SELECT 
-            ue.documento AS documentoevalua
+            GROUP_CONCAT(ue.documento SEPARATOR", ") AS documentoevalua
               FROM tbl_usuarios_evalua ue 
                 WHERE 
                   ue.anulado = :Anulado
-                    AND ue.documento IN (11201521,435604,79794429,10779852,1128435828)
-                GROUP BY ue.documento')->bindValues($paramsBusqueda)->queryAll();
+                    AND ue.documento IN (11201521,435604,79794429,10779852,1128435828)')->bindValues($paramsBusqueda)->queryScalar();
 
           $paramsBuscarBloques = [':AnuladoBloque' => 0];
           $varListBloques = Yii::$app->db->createCommand('
@@ -3694,25 +3693,25 @@ use app\models\EvaluacionDesarrollo;
           $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArrayTitle);
           $phpExc->setActiveSheetIndex(0)->mergeCells('F2:I2');
 
-          $phpExc->getActiveSheet()->SetCellValue('F3','Fecha Evaluaciones');
+          $phpExc->getActiveSheet()->SetCellValue('F3','Auto Evaluacion');
           $phpExc->getActiveSheet()->getStyle('F3')->getFont()->setBold(true);
           $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleColor);
           $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArraySubTitle);
           $phpExc->getActiveSheet()->getStyle('F3')->applyFromArray($styleArrayTitle);
 
-          $phpExc->getActiveSheet()->SetCellValue('G3','Auto Evaluacion');
+          $phpExc->getActiveSheet()->SetCellValue('G3','Evaluacion Jefe');
           $phpExc->getActiveSheet()->getStyle('G3')->getFont()->setBold(true);
           $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleColor);
           $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArraySubTitle);
           $phpExc->getActiveSheet()->getStyle('G3')->applyFromArray($styleArrayTitle);
 
-          $phpExc->getActiveSheet()->SetCellValue('H3','Evaluacion Jefe');
+          $phpExc->getActiveSheet()->SetCellValue('H3','Evaluacion Par');
           $phpExc->getActiveSheet()->getStyle('H3')->getFont()->setBold(true);
           $phpExc->getActiveSheet()->getStyle('H3')->applyFromArray($styleColor);
           $phpExc->getActiveSheet()->getStyle('H3')->applyFromArray($styleArraySubTitle);
           $phpExc->getActiveSheet()->getStyle('H3')->applyFromArray($styleArrayTitle);
 
-          $phpExc->getActiveSheet()->SetCellValue('I3','Evaluacion Pares');
+          $phpExc->getActiveSheet()->SetCellValue('I3','Evaluacion a Cargo');
           $phpExc->getActiveSheet()->getStyle('I3')->getFont()->setBold(true);
           $phpExc->getActiveSheet()->getStyle('I3')->applyFromArray($styleColor);
           $phpExc->getActiveSheet()->getStyle('I3')->applyFromArray($styleArraySubTitle);
@@ -3737,16 +3736,16 @@ use app\models\EvaluacionDesarrollo;
           $varSi = "Si";
           $varNo = "--";
 
-          foreach ($varListDocumentos as $key => $value) {
-            $paramsBusquedaEvalua = [':DocumentoEvaluado' => $value['documentoevalua']];
-            $varListEvaluados = Yii::$app->db->createCommand('
-              SELECT es.fechacrecion AS FechaEvaluacion, es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, ue.nombre_completo AS NombreEvaluado, es.idevaluaciontipo AS TipoEvaluacion FROM tbl_usuarios_evalua ue
+
+
+            $varListEvaluados = Yii::$app->db->createCommand("
+              SELECT es.fechacrecion AS FechaEvaluacion, es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, 
+		ue.nombre_completo AS NombreEvaluado, es.idevaluaciontipo AS TipoEvaluacion FROM tbl_usuarios_evalua ue
                 INNER JOIN tbl_evaluacion_solucionado es ON 
                   ue.documento = es.documentoevaluado 
               WHERE 
                 es.anulado = 0
-                  AND es.documentoevaluado IN (:DocumentoEvaluado)
-              GROUP BY es.documento')->bindValues($paramsBusquedaEvalua)->queryAll();
+                  AND es.documentoevaluado IN ($varListDocumentos) GROUP BY es.documento ORDER BY es.documentoevaluado")->queryAll();
 
               $numCell = 4;
               foreach ($varListEvaluados as $key => $value) {
@@ -3937,7 +3936,7 @@ use app\models\EvaluacionDesarrollo;
 
                 $numCell++;
               }
-          }
+          
 
 
           $hoy = getdate();
@@ -3972,6 +3971,7 @@ use app\models\EvaluacionDesarrollo;
         return $this->renderAjax('enviargeneraldos',[
           'model' => $model,
         ]);
+
       }
 
 
