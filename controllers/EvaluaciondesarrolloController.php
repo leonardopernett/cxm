@@ -3737,7 +3737,7 @@ use app\models\EvaluacionDesarrollo;
           $varSi = "Si";
           $varNo = "--";
 
-          $numCell = 4;
+          
           foreach ($varListDocumentos as $key => $value) {
 
             $paramsBusquedaEvalua = [':DocumentoEvaluado' => $value['documentoevalua']];
@@ -3750,6 +3750,7 @@ use app\models\EvaluacionDesarrollo;
                   AND es.documentoevaluado IN (:DocumentoEvaluado)
                 GROUP BY es.documento')->bindValues($paramsBusquedaEvalua)->queryAll();
 
+            $numCell = 4;
             foreach ($varListEvaluados as $key => $value) {
 
               $varfechaevalua = $value['FechaEvaluacion'];
@@ -4090,10 +4091,11 @@ use app\models\EvaluacionDesarrollo;
 
               $phpExc->getActiveSheet()->setCellValue('AY'.$numCell, $varComentarios);
               $phpExc->getActiveSheet()->setCellValue('AZ'.$numCell, $varFeedbacks);
-                                
+               
+              $numCell++;
             }
 
-            $numCell++;
+            
           }
 
           $hoy = getdate();
