@@ -3911,15 +3911,15 @@ use app\models\EvaluacionDesarrollo;
               $varRtaNotaGeneral = $varNotaFinalOne + $varNotaFinalTwo + $varNotaFinalThree;
 
               $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $varfechaevalua);
-              $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varrtaC);
-              $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varrtaC);
-              $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varrtaC);
-              $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varrtaC);
-              $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varrtaC);
-              $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varrtaC);
-              $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $varrtaC);
-              $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $varrtaC);
-              $phpExc->getActiveSheet()->setCellValue('J'.$numCell, $varrtaC);
+              $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varNombreEvaluador);
+              $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varCCEvaluador);
+              $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varNombreEvaluado);
+              $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varCCEvaluado);
+              $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varRtaAuto);
+              $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varRtaJefe);
+              $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $varRtaPares);
+              $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $varRtaCargo);
+              $phpExc->getActiveSheet()->setCellValue('J'.$numCell, $varRtaNotaGeneral);
 
               $lastColumn = 'K';
               foreach ($varListBloques as $key => $value) {
