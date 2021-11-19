@@ -214,10 +214,6 @@ class ReportesController extends \yii\web\Controller {
                     $model->load(Yii::$app->session['rptFilterFormularios']);
                     $dataProvider = $model->getReportFormularios(true);
                 }
-                //$dataProvider = $model->getReportFormularios(true);
-                /* if (isset(Yii::$app->session['rptFilterFormularios']) || !is_null(Yii::$app->session['rptFilterFormularios'])) {
-                  $model->load(Yii::$app->session['rptFilterFormularios']);
-                  } */
                 if (Yii::$app->request->post('exportformularios')) {
                     $model->load(Yii::$app->session['rptFilterFormularios']);
                     $dates = explode(' - ', $model->created);
@@ -541,7 +537,7 @@ class ReportesController extends \yii\web\Controller {
                 $out = [];
 
                 if (isset($_POST['depdrop_parents'])) {
-                    $parents = $_POST['depdrop_parents'];
+                    $parents = Yii::$app->request->post('depdrop_parents');
                     if ($parents != null && $parents[0] != "") {
                         $id = $parents[0];
                         $out = \app\models\Tmpreportes::getPreguntasByArbol($id);
@@ -868,19 +864,7 @@ class ReportesController extends \yii\web\Controller {
                     $model->startDate = $dates[0];
                     $model->endDate = $dates[1];
                     $export = $model->extractConsTransSatisfaccion();
-                    /*
-                      $dataProvider = $datos[0];
-                      if (count($dataProvider->allModels) > 0) {
-                      $export = true;
-                      } else {
-                      $export = false;
-                      }
-                      $titulos = $datos[1];
-                      $columns = array_keys($datos[1]);
-                      $_POST['export_type'] = 'Excel2007';
-                      $_POST['column_selector_enabled'] = 0;
-                      $_POST['export_columns'] = implode(',', $columns); */
-                    $_POST['exporthistorico'] = 1;
+                    Yii::$app->request->post('exporthistorico') = 1;
                 }
 
                 return $this->render('reportehistoricobasesatisfaccion', [
@@ -911,8 +895,6 @@ class ReportesController extends \yii\web\Controller {
                     if (Yii::$app->request->get('page') || Yii::$app->request->get('sort')) {
                         $model->load(Yii::$app->session['rptFilterFeedback']);
                         $dates = explode(' - ', $model->created);
-                        /* $model->startDate = strtotime('-2 month', strtotime($dates[0]));
-                          $model->startDate = date('Y-m-j', $model->startDate); */
                         $model->startDate = $dates[0] . " 00:00:00";
                         $model->endDate = $dates[1] . " 23:59:59";
                         $dataProvider = $model->getReportfeedbacksamigo();
@@ -921,8 +903,6 @@ class ReportesController extends \yii\web\Controller {
 
                     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
                         $dates = explode(' - ', $model->created);
-                        /* $model->startDate = strtotime('-2 month', strtotime($dates[0]));
-                          $model->startDate = date('Y-m-j', $model->startDate); */
                         $model->startDate = $dates[0] . " 00:00:00";
                         $model->endDate = $dates[1] . " 23:59:59";
                         $dataProvider = $model->getReportfeedbacksamigo();
@@ -943,13 +923,6 @@ class ReportesController extends \yii\web\Controller {
                 $modelEvaluado = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
                 $id_evaluado = (isset($modelEvaluado->id)) ? $modelEvaluado->id : '';
                 /* Llama al SP sp_llenar_tmpreportes. */
-                //$rol = Yii::$app->user->identity->rolId;
-                /*
-                  if ($rol == 1) {
-                  $user_admin = 1;
-                  } else {
-                  $user_admin = 0;
-                  } */
                 $model->scenario = 'historico';
                 $dataProvider = [];
                 $showGrid = false;
@@ -961,8 +934,6 @@ class ReportesController extends \yii\web\Controller {
                         $model->load(Yii::$app->session['rptFilterFormulariosamigo']);
                         $model->evaluado_id = $id_evaluado;
                         $dates = explode(' - ', $model->created);
-                        /* $model->startDate = strtotime('-2 month', strtotime($dates[0]));
-                          $model->startDate = date('Y-m-j', $model->startDate); */
                         $model->startDate = $dates[0] . " 00:00:00";
                         $model->endDate = $dates[1] . " 23:59:59";
                         $dataProvider = $model->getReportformulariosamigo(true);
@@ -970,8 +941,6 @@ class ReportesController extends \yii\web\Controller {
                     }
                     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
                         $dates = explode(' - ', $model->created);
-                        /* $model->startDate = strtotime('-2 month', strtotime($dates[0]));
-                          $model->startDate = date('Y-m-j', $model->startDate); */
                         $model->startDate = $dates[0] . " 00:00:00";
                         $model->endDate = $dates[1] . " 23:59:59";
                         $model->evaluado_id = $id_evaluado;

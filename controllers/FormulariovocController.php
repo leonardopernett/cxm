@@ -233,7 +233,6 @@ use app\models\FormvocBloque1;
             $txtPcrc = Yii::$app->request->get("txtPcrc");
             $txtCXM = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios where anulado = 0 and id_dp_clientes = $txtPcrc")->queryScalar();
             $txtcodpcrc = Yii::$app->request->get("txtcodpcrc");
-            $txtNompcrc = Yii::$app->db->createCommand("select distinct pcrc from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtcodpcrc')")->queryScalar();
             $txtFechaHora = Yii::$app->request->get("txtFechaHora");
             $txtValoraddo = Yii::$app->request->get("txtValoraddo");
 

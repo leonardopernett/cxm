@@ -145,8 +145,6 @@ class FuenteinformacionController extends Controller {
                 // borrado de tabla temporal
                 Yii::$app->db->createCommand("truncate table tbl_tmpdistribucionlidernuevo")->execute();
 
-                $varlistalider = Yii::$app->db->createCommand("SELECT  v.documentojefe, v.nombrejefe, v.usuario_redjefe from tbl_tmpvaloradosdistribucion v  WHERE v.cargo = 'Representante De Servicio' GROUP BY v.documentojefe")->queryAll();
-
                 $varlistalidernocx = Yii::$app->db->createCommand("SELECT lista.documentojefe, lista.nombrejefe, lista.usuario_redjefe, lista.idpcrc, lista.nombrepcrc from (SELECT  v.documentojefe, v.nombrejefe, v.usuario_redjefe, v.idpcrc, v.nombrepcrc from tbl_tmpvaloradosdistribucion v
                                                     WHERE v.cargo = 'Representante De Servicio'
                                                     GROUP BY v.documentojefe) lista
@@ -749,7 +747,6 @@ class FuenteinformacionController extends Controller {
                                                             
                                 $sessiones = Yii::$app->user->identity->id;
                                                 
-                                $txtanulado = 0;
                                 $txtfechacreacion = date("Y-m-d");
                                 
 

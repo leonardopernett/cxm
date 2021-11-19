@@ -724,7 +724,6 @@ WHERE pe.programa = " . $this->pcrc;
         $limite_ciclo_inicial = -$delta_ciclo;
         $limite_ciclo_final = $delta_ciclo - 1;
         $newRow = 0;
-        $printTitle = true;
         $fila = 2;
         $objPHPexcel = new \PHPExcel();
         $objPHPexcel->setActiveSheetIndex(0);
@@ -745,7 +744,6 @@ WHERE pe.programa = " . $this->pcrc;
                         if ($fid != -1) {
                             //CSV PARA MEJORAR EL EXCEL DEL EXTRACTAR
                             $filecontent = "";
-                            $printTitle = false;
 
                             //IMPRIMO EN EL CSV LOS RESULTADOS QUE VAYAN
                             foreach ($dataProvider as $value) {
@@ -967,7 +965,6 @@ WHERE pe.programa = " . $this->pcrc;
         } while (count($data) > 0);
         //SI SOLO HABIA UNA VALORACIÓN PINTO LOS TITULOS
         $filecontent = "";
-        $printTitle = false;
         //IMPRIMO EL ULTIMO REGISTRO
         if (isset($dataProvider)) {
             foreach ($dataProvider as $value) {

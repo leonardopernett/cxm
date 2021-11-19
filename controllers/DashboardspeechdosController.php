@@ -693,8 +693,6 @@ use Exception;
         $varFecha = date('Y-m-d',strtotime($var_FechaFin."+ 1 days"));
         $varFinF = $varFecha.' 05:00:00';
 
-        $fechaComoEntero = strtotime($varInicioF);
-
         $varCodigo = $varCodparametrizar;
 
         if ($varCodigo == 1) {
@@ -4104,13 +4102,11 @@ public function actionCantidadentto(){
               }
 
               if ($varidspeechindi != null && $varidspeechvar == null && $varidmotivos != null) {
-                $varconeto = 1;
                 $varidspeechindicador = Yii::$app->db->createCommand("select idcategoria from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varidspeechindi group by idcategoria")->queryScalar();
                 $varcategoriass = $varidspeechindicador.", ".$varidmotivos;
               }
 
               if ($varidspeechindi != null && $varidspeechvar != null && $varidmotivos != null) {
-                $varconeto = 2;
                 $varcategoriass = $varidspeechvar.", ".$varidmotivos;
               } 
             }else{
@@ -4871,7 +4867,6 @@ public function actionCantidadentto(){
           $txtServicio = Yii::$app->request->get("varArbol_idV");
           $txtParametros = Yii::$app->request->get("varParametros_idV");
           $varCodparametrizar = Yii::$app->request->get("varCodparametrizar");
-          $varCorreo = Yii::$app->request->get("var_Destino");
           $VarCodsPcrc = Yii::$app->request->get("var_CodsPcrc");
 
   
@@ -4881,7 +4876,6 @@ public function actionCantidadentto(){
           $varFecha = date('Y-m-d',strtotime($var_FechaFin."+ 1 days"));
           $varFinF = $varFecha.' 05:00:00';
   
-          $fechaComoEntero = strtotime($varInicioF);
   
           $varCodigo = $varCodparametrizar;
   

@@ -1648,7 +1648,6 @@ use app\models\ControlVolumenxencuestasdq;
         public function actionExportar(){
 
             $varMes = date("n");
-            $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -1823,9 +1822,6 @@ use app\models\ControlVolumenxencuestasdq;
             $numCell = $numCell++ + 1;
 
             $txtCiudades = Yii::$app->db->createCommand(" select id, name, arbol_id from tbl_arbols where id in (98, 2, 1)")->queryAll(); 
-
-            $varListMonth2 = Yii::$app->db->createCommand("select distinct mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7")->queryAll();  
-            
 
             foreach ($txtCiudades as $key => $value) {
                 $txtNameCity = $value['name'];
