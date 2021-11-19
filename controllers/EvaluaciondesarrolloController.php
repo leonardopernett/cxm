@@ -3754,6 +3754,10 @@ use app\models\EvaluacionDesarrollo;
                           AND es.documentoevaluado = :DocEvaluado
                             AND es.comentarios != ""')->bindValues($paramsBuscaComentario)->queryScalar();
 
+                if ($varComentarios == "") {
+                  $varComentarios = "--";
+                }
+
                 $varFeedbacks = Yii::$app->db->createCommand('
                   SELECT 
                     if(er.observacion_feedback = "","--",er.observacion_feedback) AS Feedbacks 
@@ -3761,6 +3765,10 @@ use app\models\EvaluacionDesarrollo;
                     WHERE 
                       er.documento_jefe = :DocEvaluador
                         AND er.documento = :DocEvaluado')->bindValues($paramsBuscaComentario)->queryScalar();
+                
+                if ($varFeedbacks == "") {
+                  $varFeedbacks = "--";
+                }
 
 
                 if ($value['TipoEvaluacion'] == "1") {
