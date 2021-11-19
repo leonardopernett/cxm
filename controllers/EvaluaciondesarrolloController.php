@@ -3551,12 +3551,18 @@ use app\models\EvaluacionDesarrollo;
           $varcorreo = $model->comentarios;
 
           $paramsBusqueda = [':Anulado' => 0];
-          $varListDocumentos = Yii::$app->db->createCommand('
+          $varListDocumentosEvalua = Yii::$app->db->createCommand('
           SELECT 
-            GROUP_CONCAT(ue.documento SEPARATOR", ") AS documentoevalua
+            ue.documento AS documentoevalua
               FROM tbl_usuarios_evalua ue 
                 WHERE 
-                  ue.anulado = :Anulado')->bindValues($paramsBusqueda)->queryScalar();
+                  ue.anulado = :Anulado')->bindValues($paramsBusqueda)->queryAll();
+          
+          $arrayListUsuarios = array();
+          foreach ($varListDocumentosEvalua as $key => $value) {
+            array_push($arrayListUsuarios, $value['documentoevalua']);
+          }
+          $varListDocumentos = implode(", ",$arrayListUsuarios);
 
           $paramsBuscarBloques = [':AnuladoBloque' => 0];
           $varListBloques = Yii::$app->db->createCommand('
