@@ -893,23 +893,6 @@ $this->registerJs($js);
             </table>
         </div>
         <br>
-        <?php //if ($data->totalDimension > 1): ?>
-            <div class="row" style="overflow-x: scroll;">
-                <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
-                    <tr>
-                        <?php
-                        
-                        ?>
-                    </tr>
-                    <tr>
-                        <?php
-                        
-                        ?>
-                    </tr>
-                </table>
-            </div>-->
-        <?php //endif; ?>
-    <?php //endif; ?>
     <br>
     <div class="row">
         <div class="col-lg-12">
