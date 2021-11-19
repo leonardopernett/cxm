@@ -3556,8 +3556,7 @@ use app\models\EvaluacionDesarrollo;
             GROUP_CONCAT(ue.documento SEPARATOR", ") AS documentoevalua
               FROM tbl_usuarios_evalua ue 
                 WHERE 
-                  ue.anulado = :Anulado
-                    AND ue.documento IN (11201521,435604,79794429,10779852,1128435828)')->bindValues($paramsBusqueda)->queryScalar();
+                  ue.anulado = :Anulado')->bindValues($paramsBusqueda)->queryScalar();
 
           $paramsBuscarBloques = [':AnuladoBloque' => 0];
           $varListBloques = Yii::$app->db->createCommand('
@@ -3634,7 +3633,7 @@ use app\models\EvaluacionDesarrollo;
           $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
           $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
           $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
-          $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AR1');
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A1:BF1');
 
           $phpExc->getActiveSheet()->SetCellValue('A2','Datos Evaluados y Evaluadores');
           $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
@@ -3715,6 +3714,18 @@ use app\models\EvaluacionDesarrollo;
           $phpExc->getActiveSheet()->getStyle('J3')->applyFromArray($styleColor);
           $phpExc->getActiveSheet()->getStyle('J3')->applyFromArray($styleArraySubTitle);
           $phpExc->getActiveSheet()->getStyle('J3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('BE3','Comentarios Evaluacion');
+          $phpExc->getActiveSheet()->getStyle('BE3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('BE3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('BE3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('BE3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('BF3','Comentarios Feedbacks');
+          $phpExc->getActiveSheet()->getStyle('BF3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('BF3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('BF3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('BF3')->applyFromArray($styleArrayTitle);
 
           $varRtaAuto = null;
           $varRtaJefe = null;
