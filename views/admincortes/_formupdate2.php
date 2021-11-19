@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -51,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?= $form->field($model, 'idtc')->textInput(['maxlength' => 150, 'id'=>'txtidtc', 'class'=>'hidden']) ?>
 		   
 		</div>
-		<div align="center">  
+		<div style="text-align: center;">  
 				<div onclick="sumadias();" class="btn btn-primary"  method='post' id="botones1" >
 	        		Calcular Dias
 	    		</div>   

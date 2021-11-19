@@ -94,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      }                  
                  }
                  $sessiones = Yii::$app->user->identity->id;   
-                // $sessiones = 2270;
+              
                  $varAnulado = 0;
                  $varMed = 2;
                  $varBog = 98;

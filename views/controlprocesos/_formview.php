@@ -1,14 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use kartik\daterange\DateRangePicker;
-//use yii\bootstrap\modal;
 use \app\models\ControlProcesos;
 use yii\bootstrap\Modal;
 
@@ -78,8 +76,6 @@ $this->title = 'Ver la Valoración';
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>

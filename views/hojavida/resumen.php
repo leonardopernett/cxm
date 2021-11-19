@@ -54,8 +54,6 @@ $varMedellin = "Medellín";
                     font-family: "Nunito",sans-serif;
                     font-size: 150%;    
                     text-align: left;    
-                    margin:0 auto;
-                   
             }
 
 
@@ -77,7 +75,6 @@ $varMedellin = "Medellín";
                     font-family: "Nunito",sans-serif;
                     font-size: 150%;    
                     text-align: left;    
-                    margin:0 auto;
             }
 
 
@@ -134,7 +131,7 @@ $varMedellin = "Medellín";
         }
 
         h3 {
-          font-family: "Nunito";
+          font-family: "Nunito", sans-serif;
           text-align:center;
           color:#002855
         }

@@ -88,9 +88,7 @@ use yii\bootstrap\modal;
 
     $txtvarServicio = $varIdServicio;
 
-    // $varAnio = date('Y');
-    // $varBeginYear = $varAnio.'-01-01';
-    // $varLastYear = $varAnio.'-12-31';
+
     $varBeginYear = '2019-01-01';
     $varLastYear = '2025-12-31';
 
@@ -104,7 +102,7 @@ use yii\bootstrap\modal;
 
         <?= $form->field($model, 'idservicio')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'TipoArbol'])->label('Servicio/PCRC') ?> 
 
-    <div class="row" align="center"> 
+    <div class="row" style="text-align: center;"> 
         <?= Html::submitButton(Yii::t('app', 'Buscar Valoradores'),
             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                 'data-toggle' => 'tooltip',

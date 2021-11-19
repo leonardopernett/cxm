@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		?>			
 
 	<?php ActiveForm::end(); ?>
-	<div class="row" align="center">      
+	<div class="row" style="text-align: center;">      
 		<div onclick="generated1();" class="btn btn-primary" style="display:inline;" method='post' id="botones2" >
           	Crear Atributo
         </div>    

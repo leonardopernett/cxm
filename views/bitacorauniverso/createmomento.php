@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			echo $form->field($model2, 'anulado')->textInput(['maxlength' => 1, 'value'=> '0', 'class'=>'hidden', 'id'=>"anuladoId"])
 		?>		
 	<?php ActiveForm::end(); ?>
-    <div class="row" align="center">      
+    <div class="row" style="text-align: center;">      
 		<div onclick="generamomento();" class="btn btn-primary" style="display:inline;" method='post' id="botones2" >
           	Crear momento
         </div>    

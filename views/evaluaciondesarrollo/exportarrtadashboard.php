@@ -165,14 +165,12 @@ $this->registerJs($js);
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
 </header>
 <br><br>
-<?php if ($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465" || $sessiones == "6080" || $sessiones == "57") { ?>
+<?php if ($sessiones = "6777" || $sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465" || $sessiones == "6080" || $sessiones == "57") { ?>
 
 <div class="capaPP" style="display: inline;">
     <div class="row">
@@ -205,7 +203,7 @@ $this->registerJs($js);
                             ?>  
                             <?php
                                 Modal::begin([
-                                    'header' => '<h4></h4>',
+                                    'header' => '<h4>__</h4>',
                                     'id' => 'modal5',
                                        //'size' => 'modal-lg',
                                     ]);
@@ -229,7 +227,7 @@ $this->registerJs($js);
                             ?>  
                             <?php
                                 Modal::begin([
-                                    'header' => '<h4></h4>',
+                                    'header' => '<h4>..</h4>',
                                     'id' => 'modal6',
                                        //'size' => 'modal-lg',
                                     ]);

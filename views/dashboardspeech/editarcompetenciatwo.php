@@ -17,7 +17,7 @@ $template = '<div class="col-md-12">'
     . ' {input}{error}{hint}</div>';
 
 $txtvaridspeech  = $varidcategoria;
-// var_dump($txtvaridspeech);
+
 $txtvarvarpcrc = $varpcrc;
 ?>
 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>

@@ -34,8 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
  <div class="container h-100">
    <div class="row h-100 align-items-center">
      <div class="col-12 text-center">
-       <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-       <p class="lead">A great starter layout for a landing page</p> -->
+       
      </div>
    </div>
  </div>
@@ -46,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
     
 	    <div class="text-center" style="text-align:left;">
-		  <!-- <a class="btn btn-default soloCancelar" data-toggle="tooltip" title="Cortes"> Agregar Cortes </a>		 -->
+		 
             <?= Html::a('Agregar Cortes',  ['create'], ['class' => $model->isNewRecord ? 'btn btn-success': 'btn btn-primary',
                         'style' => 'background-color: #337ab7',
                         'data-toggle' => 'tooltip',

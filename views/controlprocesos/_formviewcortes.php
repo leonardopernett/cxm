@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -17,7 +16,7 @@ $this->title = 'Ver Tipo de Corte';
     . ' {input}{error}{hint}</div>';
 
     $diasnum = $numdias;
-    //var_dump($diasnum);
+    
 
 ?>
 <br>
@@ -38,7 +37,7 @@ $this->title = 'Ver Tipo de Corte';
 		<?= $form->field($model, "cantdiastc")->textInput(['readonly' => 'readonly', 'id' => 'txtcantdiastc'])->label('Cantidad de dias') ?> 
 		&nbsp;&nbsp;
 
-	<div align="center">  
+	<div style="text-align: center;">  
 	&nbsp;&nbsp;
 		    <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
@@ -79,7 +78,7 @@ $this->title = 'Ver Tipo de Corte';
     <?php $form->end() ?>
 </div>
 &nbsp;&nbsp;
-<div align="center">
+<div style="text-align: center;">
 		<label>Dias festivos existentes entre la fecha inicio y fecha fin: </label><label id="resultId"> </label>
 </div>
 <script type="text/javascript">

@@ -107,14 +107,6 @@ class PermisosRolesArbols extends \yii\db\ActiveRecord {
     public function search($params) {
         $query = PermisosRolesArbols::find();
         $query->joinWith(['role']);
-
-        $dataProvider->sort->attributes['rolName'] = [
-            // The tables are the ones our relation are configured to
-            // in my case they are prefixed with "tbl_"
-            'asc' => ['tbl_roles.role_nombre' => SORT_ASC],
-            'desc' => ['tbl_roles.role_nombre' => SORT_DESC],
-        ];
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

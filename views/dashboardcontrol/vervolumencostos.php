@@ -32,9 +32,7 @@ use yii\bootstrap\Modal;
     $FechaActual = date("Y-m-d");
     $MesAnterior = date("m") - 1;
 
-    // $varAnio = date('Y');
-    // $varBeginYear = $varAnio.'-01-01';
-    // $varLastYear = $varAnio.'-12-31';
+   
     $varBeginYear = '2019-01-01';
     $varLastYear = '2025-12-31';
 
@@ -82,15 +80,7 @@ use yii\bootstrap\Modal;
                     break;
             }        
 
-    // $querys =  new Query;
-    // $querys     ->select(['tbl_arbols.id as ArbolID','tbl_arbols.name as ArbolName'])->distinct()
-    //             ->from('tbl_control_volumenxcliente')
-    //             ->join('LEFT OUTER JOIN', 'tbl_arbols',
-    //                         'tbl_control_volumenxcliente.idservicio = tbl_arbols.id');                    
-    // $command = $querys->createCommand();
-    // $query = $command->queryAll();
-
-    // $listData = ArrayHelper::map($query, 'ArbolID', 'ArbolName'); 
+    
 
 ?>
 <div class="page-header" >

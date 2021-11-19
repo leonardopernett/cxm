@@ -37,9 +37,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
     $MesAnterior = date("m") - 1;
 
     $txtConteo = 0;
-    // $txtidcliente = $txtidcliente;
-    // var_dump($txtidcliente);
-
+    
 ?>
 <div class="form-group">
     <div onclick="general();" class="btn btn-primary" style="display:inline;" method='post' id="botones1" >

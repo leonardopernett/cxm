@@ -127,8 +127,7 @@ $this->registerJs($js);
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
@@ -184,7 +183,7 @@ $this->registerJs($js);
                 </div>
             </div>  
             <br>
-            <?php // if ($sessiones == '0') { ?>
+            <?php  ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
@@ -211,7 +210,7 @@ $this->registerJs($js);
                 </div>   
             </div>  
             <br>
-            <?php // } ?>
+            <?php  ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">

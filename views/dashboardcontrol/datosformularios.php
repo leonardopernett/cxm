@@ -31,9 +31,7 @@ use yii\bootstrap\Modal;
     $FechaActual = date("Y-m-d");
     $MesAnterior = date("m") - 1;
 
-    // $varAnio = date('Y');
-    // $varBeginYear = $varAnio.'-01-01';
-    // $varLastYear = $varAnio.'-12-31';
+    
     $varBeginYear = '2019-01-01';
     $varLastYear = '2025-12-31';   
 
