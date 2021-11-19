@@ -44,7 +44,7 @@ $this->title = 'Actualización del Listado Escucha Focalizada - VOC -';
 	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
 		<?= $form->field($model, 'nombrelistap')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'indicadorID'])->label('Sesiones') ?>
 		<br>
-		<div class="row" align="center">  
+		<div class="row" style="text-align: center;">  
           <?= Html::submitButton(Yii::t('app', 'Buscar Listado'),
                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                         'data-toggle' => 'tooltip',

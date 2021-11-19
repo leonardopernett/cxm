@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -59,7 +58,7 @@ $this->title = 'Agregar Corte General';
 		<?= $form->field($model, 'anulado')->textInput(['maxlength' => 1, 'value' => 0, 'class'=>"hidden", 'label'=>""]) ?>
 </div>
 <br>
-<div align="center"> 
+<div style="text-align: center;"> 
 	<div onclick="sumadias();" class="btn btn-primary"  method='post' id="botones1" >
             Calcular Dias
     </div>  

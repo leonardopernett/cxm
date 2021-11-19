@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $txtArbol_id = $txtIdBloques1[2];
     $txtFechacreacion = $txtIdBloques1[3];
     $txtTecnico = $txtIdBloques1[4]; 
-    //var_dump($txtValorador);    
+    
 
 ?>
 <style>
@@ -46,21 +46,17 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
 </header>
 <br><br>
-<!-- <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
-</div> --!> 
-<br>
-<div class="form-grou" style="display: inline" id="CapaCero">
+
+    <?= Html::encode($this->title) ?>
+
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
-        <div class="row">
-            <div class="col-md-6">
+        
                 <?=
                     $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label('Programa/PCRC')->widget(Select2::classname(), [
                                     'id' => 'ButtonSelect',
@@ -72,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'allowClear' => true,
                                         'minimumInputLength' => 4,
                                         'ajax' => [
-                                            'url' => \yii\helpers\Url::to(['basesatisfaccion/getarbolesbypcrc']),
+                                            'url' => Url::to(['basesatisfaccion/getarbolesbypcrc']),
                                             'dataType' => 'json',
                                             'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                             'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
@@ -90,8 +86,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]
                     );
                 ?>              
-            </div>        
-            <div class="col-md-6">
                 <?=
                     $form->field($model, 'fechacreacion', [
                         'labelOptions' => ['class' => 'col-md-12'],
@@ -120,10 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     ]);
                 ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+         
                 <?=
                     $form->field($model, 'valorador_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label('Valorador')->widget(Select2::classname(), [
                                     'id' => 'ButtonSelect',
@@ -135,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'allowClear' => true,
                                         'minimumInputLength' => 4,
                                         'ajax' => [
-                                            'url' => \yii\helpers\Url::to(['reportes/usuariolist']),
+                                            'url' => Url::to(['reportes/usuariolist']),
                                             'dataType' => 'json',
                                             'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                             'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
@@ -153,8 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]
                     );
                 ?>  
-            </div>
-            <div class="col-md-6">
+           
                 <?=
                     $form->field($model, 'tecnico_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label('Valorado')->widget(Select2::classname(), [
                                     'id' => 'ButtonSelect',
@@ -166,7 +156,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'allowClear' => true,
                                         'minimumInputLength' => 4,
                                         'ajax' => [
-                                            'url' => \yii\helpers\Url::to(['evaluadolistmultiple']),
+                                            'url' => Url::to(['evaluadolistmultiple']),
                                             'dataType' => 'json',
                                             'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                             'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
@@ -184,10 +174,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]
                     );
                 ?>              
-            </div>
-        </div>
-        <br>    
-        <div class="row" align="center">
+          
             <?= Html::submitButton(Yii::t('app', 'Buscar Reporte VOC'),
                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                         'data-toggle' => 'tooltip',
@@ -214,10 +201,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                           
               Modal::end(); 
             ?> 
-        </div>    
+      
     <?php ActiveForm::end(); ?>
-</div>
-<br>  
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,

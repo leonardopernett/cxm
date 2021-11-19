@@ -79,9 +79,7 @@ $this->title = 'Métricas de Productividad/Valoración';
                     break;
             }    
 
-    // $varAnio = date('Y');
-    // $varBeginYear = $varAnio.'-01-01';
-    // $varLastYear = $varAnio.'-12-31';  
+    
     $varBeginYear = $varAnio.'-01-01';
     $varLastYear = $varAnio.'-12-31';   
     
@@ -108,20 +106,20 @@ $this->title = 'Métricas de Productividad/Valoración';
                 <th scope="col" class="text-center" colspan="8"></th>
             </tr>
             <tr>
-                <th scope="col" bgcolor="#5D92E2" class="text-center" colspan="8"><?= Yii::t('app', 'VOLUMEN DE GESTION') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center" colspan="8"><?= Yii::t('app', 'VOLUMEN DE GESTION') ?></th>
             </tr>
             <tr>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Nivel') ?></th>
+                <th scope="col" style="background-color: #5D92E2;"><?= Yii::t('app', 'Nivel') ?></th>
                 <?php
                     foreach ($varMonthYear as $key => $value) {
                         $varMonth = $value['CorteMes'];
                         $varYear = $value['CorteYear'];                    
                 ?>
-                    <th scope="col" bgcolor="#5D92E2" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                    <th scope="col" style="background-color: #5D92E2;" class="text-center">asdasds<?php echo $varMonth.' - '.$varYear; ?></th>
                 <?php
                     }
                 ?>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Promedio '.$varYear) ?></th> 
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Promedio '.$varYear) ?></th> 
             </tr>
         </thead>
         <tbody>
@@ -190,7 +188,7 @@ $this->title = 'Métricas de Productividad/Valoración';
 
             ?>
             <tr>
-                <td bgcolor="#A7B3C5" class="text-center"><?php echo $txtNameCity; ?></td>
+                <td style="background-color: #A7B3C5;"  class="text-center"><?php echo $txtNameCity; ?></td>
 
                 <?php
                     $txtTotalMonth = null;
@@ -234,20 +232,20 @@ $this->title = 'Métricas de Productividad/Valoración';
                 <th scope="col"  class="text-center" colspan="8"></th>
             </tr>   
             <tr>
-                <th scope="col" bgcolor="#5D92E2" class="text-center" colspan="8"><?= Yii::t('app', 'COSTO X GESTION') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center" colspan="8"><?= Yii::t('app', 'COSTO X GESTION') ?></th>
             </tr>   
             <tr>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Nivel') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Nivel') ?></th>
                 <?php
                     foreach ($varMonthYear as $key => $value) {
                         $varMonth = $value['CorteMes'];
                         $varYear = $value['CorteYear'];                    
                 ?>
-                    <th scope="col" bgcolor="#5D92E2" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                    <th scope="col" style="background-color: #5D92E2;" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
                 <?php
                     }
                 ?>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Promedio '.$varYear) ?></th>                 
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Promedio '.$varYear) ?></th>                 
             </tr> 
                 <?php
                     $txtCiudades = Yii::$app->db->createCommand(" select id, name, arbol_id from tbl_arbols where id in (98, 2, 1)")->queryAll(); 
@@ -258,28 +256,28 @@ $this->title = 'Métricas de Productividad/Valoración';
 
                 ?>
                 <tr>
-                    <td bgcolor="#A7B3C5" class="text-center"><?php echo $txtNameCity; ?></td>
+                    <td style="background-color: #A7B3C5;" class="text-center"><?php echo $txtNameCity; ?></td>
                 </tr>
                 <?php } ?> 
             <tr>
                 <th scope="col" class="text-center" colspan="8"></th>
             </tr>     
             <tr>
-                <th scope="col" bgcolor="#5D92E2" class="text-center" colspan="9"><?= Yii::t('app', 'VOLUMEN X CLIENTE') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center" colspan="9"><?= Yii::t('app', 'VOLUMEN X CLIENTE') ?></th>
             </tr> 
             <tr>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
                 <?php
                     foreach ($varMonthYear as $key => $value) {
                         $varMonth = $value['CorteMes'];
                         $varYear = $value['CorteYear'];
                 ?>
-                    <th scope="col" bgcolor="#5D92E2" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                    <th scope="col" style="background-color: #5D92E2;" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
                 <?php
                     }
                 ?>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Promedio '.$varYear) ?></th>                
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Promedio '.$varYear) ?></th>                
             </tr>
             <?php
                 $varPCRCPadres = Yii::$app->db->createCommand("select * from tbl_arbols where snhoja = 0 and arbol_id in (98, 2) and activo = 0")->queryAll();
@@ -301,8 +299,8 @@ $this->title = 'Métricas de Productividad/Valoración';
                     $txtRtaPromedio = $varPromedio + $varPromedio1;
             ?>
             <tr>
-                <td bgcolor="#A7B3C5" class="text-center"><?php echo $varNameCity; ?></td>
-                <td bgcolor="#2EECF5" class="text-center"><?php echo $varNamePcrc; ?></td>
+                <td style="background-color: #A7B3C5;"  class="text-center"><?php echo $varNameCity; ?></td>
+                <td style="background-color: #A7B3C5;" class="text-center"><?php echo $varNamePcrc; ?></td>
                 <?php
                 foreach ($varMeses as $key => $value) {
                     $txtvarMes = $value['mesyear'];
@@ -325,24 +323,24 @@ $this->title = 'Métricas de Productividad/Valoración';
                 <th scope="col" class="text-center" colspan="9"></th>
             </tr>     
             <tr>
-                <th scope="col" bgcolor="#5D92E2" class="text-center" colspan="11"><?= Yii::t('app', 'VOLUMEN X VALORADOR') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center" colspan="11"><?= Yii::t('app', 'VOLUMEN X VALORADOR') ?></th>
             </tr> 
             <tr>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Identificación') ?></th>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Valorador') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Ciudad') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Cliente') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Identificación') ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Valorador') ?></th>
                 <?php
 
                     foreach ($varMonthYear as $key => $value) {
                         $varMonth = $value['CorteMes'];
                         $varYear = $value['CorteYear'];
                 ?>
-                    <th scope="col" bgcolor="#5D92E2" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
+                    <th scope="col" style="background-color: #5D92E2;" class="text-center"><?php echo $varMonth.' - '.$varYear; ?></th>
                 <?php
                     }
                 ?>
-                <th scope="col" bgcolor="#5D92E2" class="text-center"><?= Yii::t('app', 'Promedio '.$varYear) ?></th>
+                <th scope="col" style="background-color: #5D92E2;" class="text-center"><?= Yii::t('app', 'Promedio '.$varYear) ?></th>
             </tr>     
             <?php
 
@@ -369,8 +367,8 @@ $this->title = 'Métricas de Productividad/Valoración';
 
             ?>
             <tr>
-                <td bgcolor="#A7B3C5" class="text-center"><?php echo $varCiudad; ?></td>
-                <td bgcolor="#2EECF5" class="text-center"><?php echo $varServicios; ?></td>
+                <td style="background-color: #A7B3C5;"  class="text-center"><?php echo $varCiudad; ?></td>
+                <td style="background-color: #A7B3C5;" class="text-center"><?php echo $varServicios; ?></td>
                 <td class="text-center"><?php echo $varIdentidad; ?></td>
                 <td class="text-center"><?php echo $varNombres; ?></td>
                 <?php

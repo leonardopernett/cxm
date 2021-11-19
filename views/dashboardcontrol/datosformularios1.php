@@ -31,9 +31,7 @@ use yii\bootstrap\Modal;
     $FechaActual = date("Y-m-d");
     $MesAnterior = date("m") - 1;
 
-    // $varAnio = date('Y');
-    // $varBeginYear = $varAnio.'-01-01';
-    // $varLastYear = $varAnio.'-12-31';
+   
     $varBeginYear = '2015-01-01';
     $varLastYear = '2025-12-31';
 
@@ -136,12 +134,11 @@ use yii\bootstrap\Modal;
 
                         if ($txtvarServicio == '17' || $txtvarServicio == '118') {
                             $varInicioF = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where mesyear = '$txtMes1' and idgrupocorte = 1")->queryScalar();
-                            //$varInicio = $varInicioF.' 05:00:00';
+                            
                             $varInicio = $txtMes1.' 05:00:00';
 
                             $varFinF = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where mesyear = '$txtMes1' and idgrupocorte = 1")->queryScalar();
-                            // $varFecha = date('Y-m-d',strtotime($varFinF."+ 1 days"));
-                            // $varFin = $varFecha.' 05:00:00';
+                            
                             $varFecha = date('Y-m-d',strtotime($txtMes1."+ 1 month"));
                             $varFin = $varFecha.' 05:00:00';
 
@@ -151,12 +148,11 @@ use yii\bootstrap\Modal;
                         }else{
                             if ($txtvarServicio == '237' || $txtvarServicio == '1358' || $txtvarServicio == '105' || $txtvarServicio == '8' || $txtvarServicio == '99') {
                                 $varInicioF = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where mesyear = '$txtMes1' and idgrupocorte = 2")->queryScalar();
-                                //$varInicio = $varInicioF.' 05:00:00';
+                                
                                 $varInicio = $txtMes1.' 05:00:00';
 
                                 $varFinF = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where mesyear = '$txtMes1' and idgrupocorte = 2")->queryScalar();
-                                // $varFecha = date('Y-m-d',strtotime($varFinF."+ 1 days"));
-                                // $varFin = $varFecha.' 05:00:00';
+                               
                                 $varFecha = date('Y-m-d',strtotime($txtMes1."+ 1 month"));
                                 $varFin = $varFecha.' 05:00:00';
 
@@ -164,11 +160,11 @@ use yii\bootstrap\Modal;
                                 $varSumPromedio = $varSumPromedio + $varcount;
                             }else{
                                 $varInicioF = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where mesyear = '$txtMes1' and idgrupocorte = 3")->queryScalar();
-                                //$varInicio = $varInicioF.' 05:00:00';
+                               
                                 $varInicio = $txtMes1.' 05:00:00';
                                 
                                 $varFinF = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where mesyear = '$txtMes1' and idgrupocorte = 1")->queryScalar();
-                                //$varFin = $varFinF .' 05:00:00';
+                               
                                 $varFecha = date('Y-m-d',strtotime($txtMes1."+ 1 month"));
                                 $varFin = $varFecha.' 05:00:00';
 

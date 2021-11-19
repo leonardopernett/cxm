@@ -85,8 +85,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -138,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
           </div>
     
-          <div class="row" align="center">      
+          <div class="row" style="text-align: center;">      
               <?= Html::submitButton(Yii::t('app', 'Valorar'),
                             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                 'data-toggle' => 'tooltip',
@@ -250,7 +248,7 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                     </div>
                   </div>
 
-                  <!--<div class="panel panel-info">
+                  
                     <div class="panel-heading">Ver listado</div>
                       <div class="panel-body">
                         <div id="capaUno" style="display: inline">
@@ -266,27 +264,23 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                                 $varIdSesiones = $value['idsessionvoc'];
                                 $varTitulos = $value['nombresession'];
                             ?>
-                            <tr>
-                              <th class="text-center"><?php echo $varTitulos; ?></th>
+                            <?php echo $varTitulos; ?>
                               <?php
                                 $dataListaP = Yii::$app->db->createCommand("select * from tbl_controlvoc_listadopadre where idsessionvoc = '$varIdSesiones'")->queryAll();
 
                                 foreach ($dataListaP as $key => $value) {
                                   $varNombre = $value['nombrelistap'];
                               ?>
-                                <td class="text-center"><?php echo $varNombre; ?></td>
+                                <?php echo $varNombre; ?>
                               <?php 
-                                }
+                                
                               ?>
-                            </tr>
+                            
                             <?php
-                              }
+                              
                             ?>  
 
-                            </tbody>
-                          </table>  
-                        </div>                 
-                      </div>
+                            
                   </div>-->
                   </div>
             </div>

@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<?= $form->field($model, "nombrelistah")->textInput(['value' => $txtNombreList, 'id'=>'idListtxt'])->label('Nombre Lista') ?>   
 
-	<div align="center"> 
+	<div style="text-align: center;"> 
         <div style="display:inline;" method='post' id="botones1">
             <?= Html::submitButton('Guardar Actualizacion', ['class' => 'btn btn-primary', 'id'=>'btn_submit'] ) ?>
         </div>  

@@ -39,8 +39,7 @@ $this->title = 'Visualización de Categorias -- QA & Speech --';
         $txtmes = $_GET['txtmes'];
     }
     $txtConteo = 0;
-    // $txtidcliente = $txtidcliente;
-    // var_dump($txtidcliente);
+   
 
 ?>
 
@@ -71,7 +70,7 @@ $this->title = 'Visualización de Categorias -- QA & Speech --';
             <th scope="col" class="text-center"><?= Yii::t('app', 'Mes') ?></th>
         </tr>
         <?php
-        //$varListVar = Yii::$app->db->createCommand("select idspeechcategoria, cod_pcrc, programacategoria, idcategoria, nombre, dashboard from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtCodPcrc') and idcategorias= 1")->queryAll(); 
+       
             $varListVar = Yii::$app->db->createCommand("select sc.idspeechcategoria, sc.cod_pcrc, sc.programacategoria, sc.idcategoria, sc.nombre, sc.dashboard, sc.definicion, sh.hallazgo 
                                                         from tbl_speech_categorias sc 
                                                         LEFT JOIN tbl_speech_hallazgos sh ON sc.idspeechcategoria = sh.idspeechcategoria and sh.mes = $txtmes

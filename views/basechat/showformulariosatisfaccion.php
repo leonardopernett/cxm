@@ -1,11 +1,8 @@
 
 <?php
-//print_r($data->tmp_formulario->hora_inicial); die;
+
 include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
 
-//echo "<pre>";
-//print_r($data);
-// echo "</pre>";
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\select2\Select2;
@@ -39,7 +36,6 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js");
 ?>
 
 <?php
@@ -246,20 +242,18 @@ $banderaSaltoComentario = true;
                                         <th scope="row"><?php echo Yii::t("app", "El sentir del cliente"); ?></th>
                                         <td><?php echo $data->basesatisfaccion->comentario_adicional ?></td>
                                     </tr>                                  
-                                    <!--<tr>
-                                        <th><?php //echo Yii::t("app", "Dimension");        ?></th>
-                                        <td><?php
+                                    
+                                        <?php        ?>
+                                        <?php
                                     /*                                     * echo Html::dropDownList("dimension"
                                       , $data->tmp_formulario->dimension_id
                                       , $data->dimension
                                       , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => true, "readonly" => true]); */
                                     ?>
-                                        </td>
-                                    </tr>-->
+                                      
                                     <?php //endif;    ?>
-                                    <tr>
-                                        <th scope="row"><?php echo Yii::t("app", "Interaccion"); ?></th>
-                                        <td>
+                                    
+                                        <?php echo Yii::t("app", "Interaccion"); ?>
                                             <?php if ($data->preview) : ?>
                                                 <?=
                                                 Html::dropDownList("transacion_id"
@@ -411,7 +405,7 @@ $banderaSaltoComentario = true;
                             </div>
                         </div>
                         <?php
-                        //$cont++;
+                        
                         $prev_bloque_descripcion = $prev_seccion = $prev_bloque = '';
                         $prev_id_bloque = 0;
                         echo $varFin
@@ -511,20 +505,16 @@ $banderaSaltoComentario = true;
                                         ?></td>
                                 </tr>
                                 <?php //else:   ?>
-                                <!--<tr>
-                                    <th><?php //echo Yii::t("app", "Dimension");        ?></th>
-                                    <td><?php
+                                
+                                    <?php //echo Yii::t("app", "Dimension");        ?><?php
                                 /*                                 * echo Html::dropDownList("dimension"
                                   , $data->tmp_formulario->dimension_id
                                   , $data->dimension
                                   , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => true, "readonly" => true]); */
                                 ?>
-                                    </td>
-                                </tr>-->
+                                    
                                 <?php //endif;   ?>
-                                <tr>
-                                    <th scope="row"><?php echo Yii::t("app", "Fuente"); ?></th>
-                                    <td>
+                               <?php echo Yii::t("app", "Fuente"); ?>
                                         <?php if ($data->preview) : ?>
                                             <?=
                                             Html::input("text"
@@ -603,7 +593,7 @@ $banderaSaltoComentario = true;
                                             <td>
                                                 <?php
                                                 $max = 5 - count($data->indices_calcular);
-                                                //echo $max;
+                                                
                                                 echo Select2::widget([
                                                     'language' => 'es',
                                                     'name' => 'subi_calculo',
@@ -709,7 +699,7 @@ $banderaSaltoComentario = true;
                             ?>
                                 <?php if ($data->preview) : ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -721,7 +711,7 @@ $banderaSaltoComentario = true;
                                     ?>
                                 <?php else: ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                   
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -744,7 +734,7 @@ $banderaSaltoComentario = true;
                             ?>
                                 <?php if ($data->preview) : ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -756,7 +746,7 @@ $banderaSaltoComentario = true;
                                     ?>
                                 <?php else: ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -775,7 +765,7 @@ $banderaSaltoComentario = true;
                             ?>
                                 <?php if ($data->preview) : ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -787,7 +777,7 @@ $banderaSaltoComentario = true;
                                     ?>
                                 <?php else: ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -807,7 +797,7 @@ $banderaSaltoComentario = true;
                             ?>
                                 <?php if ($data->preview) : ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -819,7 +809,7 @@ $banderaSaltoComentario = true;
                                     ?>
                                 <?php else: ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -838,7 +828,7 @@ $banderaSaltoComentario = true;
                             ?>
                                 <?php if ($data->preview) : ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -850,7 +840,7 @@ $banderaSaltoComentario = true;
                                     ?>
                                 <?php else: ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -870,7 +860,7 @@ $banderaSaltoComentario = true;
                             ?>
                                 <?php if ($data->preview) : ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -882,7 +872,7 @@ $banderaSaltoComentario = true;
                                     ?>
                                 <?php else: ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -901,7 +891,7 @@ $banderaSaltoComentario = true;
                             ?>
                                 <?php if ($data->preview) : ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -913,7 +903,7 @@ $banderaSaltoComentario = true;
                                     ?>
                                 <?php else: ?>
                                     <?=
-                                    //var_dump($prev_seccion);
+                                    
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
@@ -1087,7 +1077,7 @@ $banderaSaltoComentario = true;
                                 'style' => 'cursor:pointer;'
                             ]);
                             ?>
-                            <?php //echo $detalle->pregunta; ?>
+                            <?php  ?>
                         </label>
                         <?php
                         $decisionSiConTipi .="$('#detalle_" . $detalle->id . "').hide('slow');
@@ -1333,13 +1323,11 @@ $banderaSaltoComentario = true;
         }
         ?>
     </div>
-    <!--<div class="row seccion" <?php
-    /* if ($data->info_adicional['problemas'] == 0 &&
-      $data->info_adicional['tipo_llamada'] == 0)
-      echo "style='display: none'"; */
-    ?>>
-    <?php //echo Yii::t("app", "Informacion adicional");   ?>
-    </div>-->
+     <?php
+    
+    ?>
+    <?php    ?>
+    
     <?php
     if (($contadorSecciones % $cantDivs) == 0) {
         echo $varRow;
@@ -1425,13 +1413,7 @@ $banderaSaltoComentario = true;
                         );
                         ?>
                         <?php
-                        /* echo Html::dropDownList("canal"
-                          , $data->basesatisfaccion->canal
-                          , $data->responsabilidad['CANAL']
-                          , ["id" => "canal",
-                          "class" => "form-control",
-                          'prompt' => 'Seleccione ...',
-                          "disabled" => ($data->preview) ? true : false]); */
+                        
                         ?>                      
                     </div>
                 </div>
@@ -1444,13 +1426,7 @@ $banderaSaltoComentario = true;
                     </label>
                     <div class="col-sm-9">
                         <?php
-                        /* echo Html::dropDownList("marca"
-                          , $data->basesatisfaccion->marca
-                          , $data->responsabilidad['MARCA']
-                          , ["id" => "marca",
-                          "class" => "form-control",
-                          'prompt' => 'Seleccione ...',
-                          "disabled" => ($data->preview) ? true : false]); */
+                        
                         ?>
                         <?php
                         echo Html::checkboxList(
@@ -1475,13 +1451,7 @@ $banderaSaltoComentario = true;
                     </label>
                     <div class="col-sm-9">
                         <?php
-                        /* echo Html::dropDownList("equivocacion"
-                          , $data->basesatisfaccion->equivocacion
-                          , $data->responsabilidad['EQUIVOCACION']
-                          , ["id" => "equivocacion",
-                          "class" => "form-control",
-                          'prompt' => 'Seleccione ...',
-                          "disabled" => ($data->preview) ? true : false]); */
+                        
                         ?> 
                         <?php
                         echo Html::checkboxList(

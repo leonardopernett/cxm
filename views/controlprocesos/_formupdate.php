@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -29,7 +28,7 @@ $this->title = 'Actualizar Valoracion';
 	if ($textualizados == "PROCESO") {
 ?>
 	<div class="formularios-form">
-		<div align="center">
+		<div style="text-align: center;">
 			<h5>Por favor seleccionar un argumento del porque se genera la actualizacion de la valoracion.</h5>
 		</div>
 		&nbsp;&nbsp;
@@ -42,7 +41,7 @@ $this->title = 'Actualizar Valoracion';
 		<?= $form->field($model, "argumentos")->dropDownList($var, ['prompt' => 'Seleccione una opcion', 'id'=>"id_argumentos"]) ?>   				
 	</div>
 <br>
-	<div align="center">  
+	<div style="text-align: center;">  
 	
 		<?= Html::submitButton('Actualizar', ['class' => 'btn btn-primary', 'id'=>'btn_submit'] ) ?>
 	
@@ -59,7 +58,7 @@ $this->title = 'Actualizar Valoracion';
 	{
 ?>
 	<div class="formularios-form">
-		<div align="center">
+		<div style="text-align: center;">
 			<h5>Por favor seleccionar un argumento del porque se genera la actualización de la valoración.</h5>
 		</div>
 		&nbsp;&nbsp;
@@ -68,7 +67,7 @@ $this->title = 'Actualizar Valoracion';
 		<?= $form->field($model, "cant_valor")->textInput(['type' => 'number', 'maxlength' => 10, 'id'=>'cantidad_valoraciones', 'onkeypress'=>"return soloNumeros(event);", 'required'])->label('Cantidad de Valoraciones') ?> 	  				
 	</div>
 <br>
-	<div align="center">  
+	<div style="text-align: center;">  
 	
 		<?= Html::submitButton('Actualizar', ['class' => 'btn btn-primary'] ) ?>
 	
@@ -85,7 +84,7 @@ $this->title = 'Actualizar Valoracion';
 
 	<?php ActiveForm::end(); ?>
 <br>
-	<div align="center">
+	<div style="text-align: center;">
 		<h6><strong><p style="color:red;"> Advertencia  </p></strong></h6>
 		<h7><strong>Solo es posible hacer la actualizacion sobre la cantidad de valoración modificada si no tiene un argumento valido.</strong></h7>
 	</div>

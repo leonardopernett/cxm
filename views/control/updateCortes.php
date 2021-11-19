@@ -40,7 +40,7 @@ Modal::begin([
 
 
             <?php
-//Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
+
             $form = ActiveForm::begin(['options' => ['data-pjax' => true, "id" => "formCortesupdate"], 'layout' => 'horizontal'])
             ?>
             <table class="table table-striped table-bordered">
@@ -262,7 +262,7 @@ HTML;
 
 
             <?php
-//Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
+
             $form = ActiveForm::begin(['options' => ['data-pjax' => true, "id" => "formCortesupdate"], 'layout' => 'horizontal'])
             ?>
             <table class="table table-striped table-bordered">

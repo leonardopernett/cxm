@@ -10,7 +10,7 @@ use yii\web\JsExpression;
 $template = '<div class="col-sm-12">'
             . ' {input}{error}{hint}</div>';
 
-// $varvaloradoid;
+
 
     $varNamelider = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_nombre from tbl_usuarios inner join tbl_equipos on tbl_usuarios.usua_id = tbl_equipos.usua_id inner join tbl_equipos_evaluados on tbl_equipos.id = tbl_equipos_evaluados.equipo_id inner join tbl_evaluados on tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id   where tbl_evaluados.id = $varvaloradoid")->queryScalar();
 

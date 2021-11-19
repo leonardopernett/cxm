@@ -23,13 +23,10 @@ $this->title = 'Actualizar la Valoraciones';
 
     $txtCantidad = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = $txtIdusua and fechacreacion between '$txtfechainicio' and '$txtfechafin'")->queryScalar();
 
-    // $txtGrupo = Yii::$app->db->createCommand("select distinct idgrupocorte from tbl_tipocortes inner join tbl_control_procesos on tbl_tipocortes.idtc = tbl_control_procesos.idtc where
-    //     tbl_control_procesos.anulado = 0 and tbl_control_procesos.evaluados_id = $txtIdusua")->queryScalar();
+    
 
 
-    // $variables = Yii::$app->db->createCommand("select * from tbl_tipocortes where anulado = 0 and idgrupocorte = '$txtGrupo'")->queryAll();
-    // $listData = ArrayHelper::map($variables, 'tipocortetc', 'tipocortetc');
-
+   
     $fechaactual = date("Y-m-d");    
 
     $sessiones = Yii::$app->user->identity->id;
@@ -92,8 +89,7 @@ $this->title = 'Actualizar la Valoraciones';
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
@@ -215,14 +211,14 @@ $this->title = 'Actualizar la Valoraciones';
 
 
 
-                                            //if (($varFechacreacion >= $varFechaInicio) && ($varFechacreacion <= $varFechaFin)) {
+                                            
                                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update3', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                                                 'class' => '',
                                                 'data' => [
                                                 'method' => 'post',
                                             ],
                                         ]);
-                            //}
+                            
                                         },
                                         'delete' => function($url, $model){
                                              $varFechacreacion = date("Y-m-d");
@@ -234,14 +230,14 @@ $this->title = 'Actualizar la Valoraciones';
                                             $varFechaInicio = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '%$vartipocorte%'")->queryScalar();
                                             $varFechaFin = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '%$vartipocorte%'")->queryScalar();
 
-                                            //if (($varFechacreacion >= $varFechaInicio) && ($varFechacreacion <= $varFechaFin)) {
+                                            
                                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
                                                 'class' => '',
                                                 'data' => [
                                                     'method' => 'post',
                                                 ],
                                             ]);
-                                //}
+                                
                                         }
                                     ]              
                                 ],
