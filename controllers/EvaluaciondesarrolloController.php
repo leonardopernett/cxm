@@ -1317,7 +1317,14 @@ use app\models\EvaluacionDesarrollo;
 
     if($vardocumentojefe > 1){
       $varnopares = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_novedadesgeneral WHERE documento = $txtvardocumento AND aprobado = 1")->queryScalar();
+      if($varnopares > 0){
+        $vardocumento3 = 0;
+      }else {
+        $vardocumento3 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
+      } 
     }
+    $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua WHERE documento_jefe = $vardocumentojefe")->queryScalar();
+
     if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
       $txtRta = 1;
     } else{
@@ -1878,6 +1885,15 @@ use app\models\EvaluacionDesarrollo;
 
         $phpExc->getActiveSheet()->setShowGridlines(False);
 
+        $styleArraySize = array(
+          'font' => array(
+                  'bold' => true,
+                  'size'  => 15,
+          ),
+          'alignment' => array(
+                  'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+          ), 
+      );
 
         $styleColor = array( 
                 'fill' => array( 
@@ -2812,6 +2828,7 @@ use app\models\EvaluacionDesarrollo;
             $vartipoevaluacion = $value['idevaluaciontipo'];
 
             $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
+            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
 
             $varrtaA = '--';
             $varrtaJ = $varevaluador;
@@ -3707,6 +3724,7 @@ use app\models\EvaluacionDesarrollo;
             $vartipoevaluacion = $value['idevaluaciontipo'];
 
             $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
+            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
 
             $varrtaA = '--';
             $varrtaJ = $varevaluador;
