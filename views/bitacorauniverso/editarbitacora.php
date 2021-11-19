@@ -16,9 +16,6 @@ use yii\bootstrap\Modal;
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8"><div class="col-md-12">'
     . ' {input}{error}{hint}</div>';
-    /*$template = '<div class="col-md-12">'
-    . ' {input}{error}{hint}</div>';*/
-
     $sessiones = Yii::$app->user->identity->id;
     foreach ($dataprovider as $key => $value) {
         $txtcliente = $value['cliente'];
@@ -108,8 +105,6 @@ use yii\bootstrap\Modal;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>

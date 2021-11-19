@@ -118,8 +118,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -288,7 +286,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'buttons' => 
                                     [
                                         'view' => function ($url, $model) {
-                                            //return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, ['Ver'=>Yii::t('app','view'),]);
+                                            
                                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',  ['view', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                                                 'class' => '',
                                                 'data' => [
@@ -341,7 +339,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 break;
                                                         } 
                                     if ($model->tipo_corte == "Corte ".$txtMes." - General Konecta" || $model->tipo_corte == "Corte ".$txtMes." - Grupo Bancolombia" || $model->tipo_corte == "Corte ".$txtMes." - Directv" || $model->tipo_corte == "Corte ".$txtMes." - Nutresa") {                          
-                                            //return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['create'=>Yii::t('app','create'),]);
+                                            
                                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>',['update2', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                                                 'class' => '',
                                                 'data' => [

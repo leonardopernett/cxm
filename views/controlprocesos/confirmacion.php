@@ -22,7 +22,7 @@ function cerrarVentana(){
 	</div>
 	<div>
 	    <a class="btn btn-default soloCancelar" style="background-color:#337ab7" data-toggle="tooltip" title="Aceptar" href="../controlprocesos/index"> Aceptar </a>	
-<!-- 	   	<a class="btn btn-default soloCancelar" style="background-color:#707372" data-toggle="tooltip" title="Cerrar" onclick="CerrarVentana()" > Cancelar </a>		 -->
+
 	</div>
 
 </div>

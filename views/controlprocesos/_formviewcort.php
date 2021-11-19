@@ -8,8 +8,7 @@ use kartik\select2\Select2;
 use yii\web\JsExpression;
 use kartik\daterange\DateRangePicker;
 
-//$this->title = 'Administracion de Cortes';
-//$this->params['breadcrumbs'][] = $this->title;
+
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';
@@ -36,8 +35,7 @@ use kartik\daterange\DateRangePicker;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+       
       </div>
     </div>
   </div>

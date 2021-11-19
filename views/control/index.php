@@ -39,7 +39,6 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js");
 ?>
 <style>
   .masthead {
@@ -58,8 +57,6 @@ $this->registerJs($js);
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -492,16 +489,16 @@ $this->registerJs($js);
                 <?php 
                 $arrTablaAgruDimen =[];            
                 foreach ($data->infoArbol['datos'][0]['data'] as $value) {
-                    //var_dump($value);exit;
-                    if (!key_exists($value[0], $arrTablaAgruDimen)) {
+                    
+                    if (!array_key_exists($value[0], $arrTablaAgruDimen)) {
                         $arrTablaAgruDimen[$value[0]][] = $value[1] . " %";    
                     }else{
                         array_push($arrTablaAgruDimen[$value[0]], $value[1] . " %");
                     }
                 }
                 foreach ($data->infoArbolTotal['datos'][0]['data'] as $value) {
-                    //var_dump($value);exit;
-                    if (!key_exists($value[0], $arrTablaAgruDimen)) {
+                   
+                    if (!array_key_exists($value[0], $arrTablaAgruDimen)) {
                         $arrTablaAgruDimen[$value[0]][] = $value[1];    
                     }else{
                         array_push($arrTablaAgruDimen[$value[0]], $value[1]);
@@ -885,44 +882,14 @@ $this->registerJs($js);
     </div>
     <!--<br>-->
     <?php //if ($data->showGraf && $tipo_grafica == 'agru_dimen'): ?>
-        <!--<div class="row" style="overflow-x: scroll;">
-            <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
-                <tr>
+        
                     <?php
-                    /*$i = 1;
-                    echo "<td><center><b>" . "Métrica" . "</b></center></td>";
-                    foreach ($data->datosTabla['cortes'] as $cortes) {
-                        echo "<th>";
-                        echo "<center>";
-                        echo Html::tag('span', "T" . $i, [
-                            'data-title' => str_replace(['00:00:00'], '', $cortes['fechaI']) . " - " . str_replace(['23:59:59'], '', $cortes['fechaF']),
-                            'data-toggle' => 'tooltip',
-                            'style' => 'text-decoration: underline;cursor:pointer;'
-                        ]);
-                        echo "</center>";
-                        echo "</th>";
-                        $i++;
-                    }
-                    echo "<th><center>" . "Total Acumulado" . "</center></th>";*/
                     ?>
-                </tr>
-                <tr>
+                
+                
                     <?php
-                    /*echo "<td><center>" . Yii::t('app', $data->metricaSelecc) . "</center></td>";
-                    foreach ($data->datosTabla['datos'] as $dato) {
-                        if (count($dato) > 0) {
-                            if (isset($dato[0])) {
-                                echo "<td><center>" . round(($dato[0]['promedio'] * 100), 2) . '%' . "</center></td>";
-                            } else {
-                                echo "<td><center>" . " - " . "</center></td>";
-                            }
-                        } else {
-                            echo "<td><center>" . " - " . "</center></td>";
-                        }
-                    }
-                    echo "<td><center>" . round(($data->datosTabla['total'][0][0]['promedio'] * 100), 2) . '%' . "</center></td>";*/
                     ?>
-                </tr>
+               
             </table>
         </div>
         <br>
@@ -931,38 +898,12 @@ $this->registerJs($js);
                 <table id="tablaPreguntas" class="table table-striped table-bordered detail-view">
                     <tr>
                         <?php
-                        /*$i = 1;
-                        echo "<td><center><b>" . "Métrica" . "</b></center></td>";
-                        foreach ($data->datosTabla['cortes'] as $cortes) {
-                            echo "<th>";
-                            echo "<center>";
-                            echo Html::tag('span', "T" . $i, [
-                                'data-title' => str_replace(['00:00:00'], '', $cortes['fechaI']) . " - " . str_replace(['23:59:59'], '', $cortes['fechaF']),
-                                'data-toggle' => 'tooltip',
-                                'style' => 'text-decoration: underline;cursor:pointer;',
-                            ]);
-                            echo "</center>";
-                            echo "</th>";
-                            $i++;
-                        }
-                        echo "<th><center>" . "Total Acumulado" . "</center></th>";*/
+                        
                         ?>
                     </tr>
                     <tr>
                         <?php
-                        /*echo "<td><center>" . Yii::t('app', $data->metricaSelecc) . "</center></td>";
-                        foreach ($data->datosTabla['datos'] as $dato) {
-                            if (count($dato) > 0) {
-                                if (isset($dato[1])) {
-                                    echo "<td><center>" . round(($dato[1]['promedio'] * 100), 2) . '%' . "</center></td>";
-                                } else {
-                                    echo "<td><center>" . " - " . "</center></td>";
-                                }
-                            } else {
-                                echo "<td><center>" . " - " . "</center></td>";
-                            }
-                        }
-                        echo "<td><center>" . ((isset($data->datosTabla['total'][0][1])) ? round(($data->datosTabla['total'][0][1]['promedio'] * 100), 2) . '%' : '-' ) . "</center></td>";*/
+                        
                         ?>
                     </tr>
                 </table>
@@ -973,14 +914,14 @@ $this->registerJs($js);
     <div class="row">
         <div class="col-lg-12">
 
-            <!--<div class="well">
+          
             <?php /* /*=
               Html::a(Html::tag("span", "", ["aria-hidden" => "true",
               "class" => "glyphicon glyphicon-chevron-down",
               ]) . " " . Yii::t('app', 'VISTA DETALLADA'), "javascript:void(0)"
               , ["class" => "openVistas", "id" => "graficarDetallada"]) */
             ?>
-            </div> -->          
+                     
             <div id="divConfigDetallada" class="well" style="z-index:2; display: none" title="Parametros de Visualizaci&oacute;n" >
                 <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['id' => 'idVistaDetallada']]); ?>
                 <?= Html::input("hidden", "form", "1", ['id' => 'form']); ?>

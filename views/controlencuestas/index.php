@@ -17,9 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     $sessiones = Yii::$app->user->identity->id;
 
-    // $query = Yii::$app->get('dbjarvis')->createCommand("select nombre_completo from dp_datos_generales where documento = '1035832753'")->queryAll();
-    // var_dump($query);
-
+   
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito');
@@ -68,13 +66,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<!-- Full Page Image Header with Vertically Centered Content -->
+
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>

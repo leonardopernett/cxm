@@ -16,8 +16,7 @@ use app\models\Controlbitacorauniv;
 $this->title = 'Reporte Bitácora Universo';
 $this->params['breadcrumbs'][] = $this->title;
 
-    /*$template = '<div class="col-md-3">{label}</div><div class="col-md-8">'
-    . ' {input}{error}{hint}</div>';*/
+   
     $template = '<div class="col-md-12">'
     . ' {input}{error}{hint}</div>';
 
@@ -92,8 +91,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>

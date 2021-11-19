@@ -226,12 +226,7 @@ class BasesatisfaccionController extends Controller {
                 $model = $this->findModel($id);
                 $redct = ($model->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
                 $msg = "";
-                try {/*
-                  \app\models\Ejecucionfeedbacks::deleteAll(["basessatisfaccion_id" => $model->id]);
-                  \app\models\Tmpejecucionfeedbacks::deleteAll(["basessatisfaccion_id" => $model->id]);
-                  \app\models\RespuestaBasesatisfaccionSubtipificacion::deleteAll(["id_basesatisfaccion" => $model->id]);
-                  \app\models\RespuestaBasesatisfaccionTipificacion::deleteAll(["id_basesatisfaccion" => $model->id]);
-                  \app\models\RespuestaBaseSatisfaccion::deleteAll(["id_basesatisfaccion" => $model->id]); */
+                try {
                     $ejecucion = \app\models\Ejecucionformularios::findOne(['basesatisfaccion_id' => $model->id]);
                     if (!is_null($ejecucion)) {
                         $ejecucion->delete();
@@ -320,8 +315,6 @@ class BasesatisfaccionController extends Controller {
                 $model->scenario = 'encuestamanual';
                 if ($model->load(Yii::$app->request->post())) {
                     $modelEvaluado = \app\models\Evaluados::findOne($model->agente);
-                    /* $modelRN = \app\models\Reglanegocio::findOne(["rn" => $model->rn, "cod_institucion" => $model->institucion,
-                      "cod_industria" => $model->industria]); */
                     $modelRN = \app\models\Reglanegocio::findOne(["pcrc" => $model->pcrc]);
                     if (!isset($modelRN)) {
                         $msg = \Yii::t('app', 'error telephone survey');
@@ -334,7 +327,6 @@ class BasesatisfaccionController extends Controller {
                     $model->rn = $modelRN->rn;
                     $model->institucion = (string) $modelRN->cod_institucion;
                     $model->industria = (string) $modelRN->cod_industria;
-                    //$model->agente = Yii::$app->user->identity->username;
                     $model->ano = date("Y");
                     $model->mes = date("n");
                     $model->dia = date("j");
@@ -540,7 +532,7 @@ class BasesatisfaccionController extends Controller {
                                                 if ($restCond) {
                                                     $arrayCumpleRegla[] = 'true';
                                                     $model->tipologia = $value['name'];
-                                                    //$nModel->tipologia = $value['name'];
+                                                    
                                                 } else {
                                                     $arrayCumpleRegla[] = 'false';
                                                 }
@@ -766,7 +758,7 @@ class BasesatisfaccionController extends Controller {
                                 . ' AND pe.programa = ' . $nModel->pcrc;
                         $config = \Yii::$app->db->createCommand($sql)->queryAll();
 
-                        $prioridades = ArrayHelper::map($config, 'prioridad', 'name');
+                        
                         $arrayCumpleRegla = $prioridadesReales = [];
 
                         if (count($config) > 0) {
@@ -885,18 +877,14 @@ class BasesatisfaccionController extends Controller {
                         //     if (!$webservicesresponse && $tmp_basesatisfaccion == '') {
                               
                              
-                        //     Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));                  
-                        //     }
-                        // }
+                        
 
                         /* INICIO WEBSERVICE */
 
 
                         /* FIN WEBSERVICE */ 
 
-                         //echo "<pre>";
-                         //print_r($nModel->tipologia); 
-                         //print_r($nModel->agente); die;
+                         
                     }
 /* DESCOMENTAR HASTA LINEA 937
                     //Consulta de llamadas ----------------------------------------------
@@ -962,7 +950,7 @@ class BasesatisfaccionController extends Controller {
             {
 
                 $usuario = \app\models\Usuarios::findOne(['usua_id' => $nModel->id_lider_equipo]);
-                //print_r($usuario->usua_usuario); die;
+                
                 $enviararray= array();
                 array_push($enviararray, $nModel->agente);
 
@@ -974,11 +962,19 @@ class BasesatisfaccionController extends Controller {
                         }else if($value == $nModel->agente){
                             $titulo = '¡Qué bien! Un cliente quedó satisfecho en una de tus relaciones.';
                         }
+                        else{
+                            //fin
+
+                        }
 
                         if($value == $usuario->usua_usuario && $nModel->tipologia == 'CRITICA PENALIZABLE' || $nModel->tipologia == 'CRITICA' || $nModel->tipologia == 'CRITICA POR BUZÓN'){
                             $titulo = '¡Atención! Un cliente no quedó satisfecho en una de las relaciones de tu equipo.';
                         }else if($value == $usuario->usua_usuario){
                             $titulo = '¡Qué bien! En una de las relaciones de tu equipo se generó satisfacción.';
+                        }
+                        else{
+
+                            //fin
                         }
                         $params = [];
                         $params['titulo'] = $titulo;
@@ -999,7 +995,7 @@ class BasesatisfaccionController extends Controller {
                         }
                     }
                 }
-                // $enviara = array($enviararray);
+                
 
 
             }
@@ -1025,8 +1021,7 @@ class BasesatisfaccionController extends Controller {
                 //DECODIFICTO EL FORMULARIO ID
                 $id = base64_decode($form_id);
                 $modelBase = BaseSatisfaccion::findOne(["id" => $id]);
-                //echo "<pre>";
-                //print_r($modelBase); die;
+                
 
                 $model = \app\models\BaseSatisfaccion::findOne($id);
                 $nuevo->pcrc = \app\models\Arboles::findOne($model->pcrc);
@@ -1037,8 +1032,7 @@ class BasesatisfaccionController extends Controller {
                                 ->join("INNER JOIN", "tbl_preguntas", "tbl_parametrizacion_encuesta.id = tbl_preguntas.id_parametrizacion")
                                 ->join("INNER JOIN", "tbl_categorias", "tbl_categorias.id = tbl_preguntas.categoria")
                                 ->where(["cliente" => $modelBase->cliente, "programa" => $modelBase->pcrc])->asArray()->all();
-                //echo "<pre>";
-                //print_r($nuevo->dimension); die;
+                
                 
                 return $this->render("showencuestamigo", ["data" => $model, "nuevo" => $nuevo, "preguntas" => $preguntas]);
             }
@@ -1055,11 +1049,6 @@ class BasesatisfaccionController extends Controller {
             public function actionFormulariogestionsatisfaccion($id) {
                 $model = BaseSatisfaccion::findOne(["id" => $id]);
                 $redct = ($model->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
-                /* if (Yii::$app->user->identity->isAdminSistema() && $model->estado == 'Cerrado') {
-                  //MARCO EL REGISTRO COMO TOMADO
-                  $model->estado = "Abierto";
-                  $model->save();
-                  } */
                 if ($model->usado == "SI" && $model->responsable != Yii::$app->user->identity->username) {
                     return $this->redirect([$redct]);
                 }
@@ -1247,6 +1236,9 @@ class BasesatisfaccionController extends Controller {
                             $startDate = date('Y-m-d', strtotime('-' . $numDias . ' day'));
                             $table = "Llamada" . date('Ym', strtotime('-1 month'));
                         }
+                        else{
+                            //fin
+                        }
 
                         //CONECTO A AL SERVIDOR
                         $connection = mssql_connect($server, $user, $pass);
@@ -1317,7 +1309,7 @@ class BasesatisfaccionController extends Controller {
                     $checked = '';
                     $disabled = '';
                     if ($preview == 1) {
-                        foreach ($respuestas as $key => $value) {
+                        foreach ($respuestas as $value) {
                             if ($objTipif['id'] == $value->subtipificacion_id) {
                                 $checked = 'checked="checked"';
                             }
@@ -1354,7 +1346,6 @@ class BasesatisfaccionController extends Controller {
             public function actionCancelarformulario($id, $tmp_form = null) {
 
                 $model = \app\models\BaseSatisfaccion::findOne($id);
-                $redct = ($model->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
                 if (Yii::$app->user->identity->username == $model->responsable) {
                     $model->usado = "NO";
                     $model->save();
@@ -1471,15 +1462,12 @@ class BasesatisfaccionController extends Controller {
                 ];
 
                 //CONSUMO EL SERVICIO WEB PARA INGRESAR LA ENCUESTA
-                /* $wsdl = \yii\helpers\Url::toRoute('basesatisfaccion/baseinicial', true);
-                  $client = new \SoapClient($wsdl);
-                  $respuesta = $client->insertBasesatisfaccion($data); */
+                
                 $respuesta = $this->insertBasesatisfaccion($data);
 
                 /* INICIO WEB SERVICE AMIGO */
 
-                // echo "<pre>";
-                // print_r($nModel->tipologia); 
+                
 
 
                 /* FIN WEB SERVICE AMIGO */
@@ -1708,7 +1696,7 @@ class BasesatisfaccionController extends Controller {
                            //$TmpForm->subi_calculo = $data->formulario->subi_calculo
                            if (isset($data->formulario->subi_calculo)) {
                                $TmpForm->subi_calculo = $data->formulario->subi_calculo;
-                               //$TmpForm->save();                        
+                                                       
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
                                        ->where('id IN (' . $TmpForm->subi_calculo . ')')
@@ -1730,7 +1718,7 @@ class BasesatisfaccionController extends Controller {
                                }
                            }
                        }
-                       //$data->banderaescalado = $banderaescalado;
+                       
                 }else{
                     $validarEjecucionForm = \app\models\Ejecucionformularios::findOne(['basesatisfaccion_id' => $modelBase->id]);
                     //$data->banderaescalado = "";
@@ -1752,7 +1740,7 @@ class BasesatisfaccionController extends Controller {
 						if (is_null($validarTmpejecucionForm)) {
 							$TmpForm = new \app\models\Tmpejecucionformularios();
 						   $TmpForm->dimension_id = 1;
-						   //$TmpForm->subi_calculo = '1';
+						   
 						   $TmpForm->arbol_id = $modelBase->pcrc;
 						   $TmpForm->usua_id = Yii::$app->user->id;
 						   $TmpForm->formulario_id = $modelReglaNegocio->id_formulario;
@@ -1767,10 +1755,10 @@ class BasesatisfaccionController extends Controller {
 						   //en 1 por defecto
 						   $data->formulario = \app\models\Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
 						   if (!isset($TmpForm->subi_calculo)) {
-							   //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
+							   
 							   if (isset($data->formulario->subi_calculo)) {
 								   $TmpForm->subi_calculo = $data->formulario->subi_calculo;
-								   //$TmpForm->save();                        
+								                          
 								   $array_indices_TmpForm = \app\models\Textos::find()
 										   ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
 										   ->where('id IN (' . $TmpForm->subi_calculo . ')')
@@ -1799,10 +1787,10 @@ class BasesatisfaccionController extends Controller {
 							$TmpForm = $validarTmpejecucionForm;
 							$data->formulario = \app\models\Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
 							   if (!isset($TmpForm->subi_calculo)) {
-								   //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
+								   
 								   if (isset($data->formulario->subi_calculo)) {
 									   $TmpForm->subi_calculo = $data->formulario->subi_calculo;
-									   //$TmpForm->save();                        
+									                        
 									   $array_indices_TmpForm = \app\models\Textos::find()
 											   ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
 											   ->where('id IN (' . $TmpForm->subi_calculo . ')')
@@ -1830,10 +1818,10 @@ class BasesatisfaccionController extends Controller {
                        $TmpForm = \app\models\Tmpejecucionformularios::findOne(['id' => $formId['0']['tmp_id'], 'basesatisfaccion_id' => $modelBase->id]);
                        $data->formulario = \app\models\Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
                        if (!isset($TmpForm->subi_calculo)) {
-                           //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                           
                            if (isset($data->formulario->subi_calculo)) {
                                $TmpForm->subi_calculo = $data->formulario->subi_calculo;
-                               //$TmpForm->save();                        
+                                                    
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
                                        ->where('id IN (' . $TmpForm->subi_calculo . ')')
@@ -1932,11 +1920,11 @@ class BasesatisfaccionController extends Controller {
                 //print_r($data); die;
                 //VALIDO Q  LA REGLA DE NEGOCIO TENGA UN FORMULARIO ASOCIADO
                 $form_val = \app\models\Formularios::findOne($modelReglaNegocio->id_formulario);
-                //$TmpForm->subi_calculo = $form_val->subi_calculo;
+                
                 if (empty($form_val)) {
                     $msg = \Yii::t('app', 'No existe formulario asociada para esta gestión:' . $modelBase->id);
                     Yii::$app->session->setFlash('danger', $msg);
-                    //var_dump($data); die;
+                    
                     return $this->render("showformulariosatisfaccion", ["data" => $data,"view" => $view, "formulario" => false]);
                 }
 
@@ -1948,11 +1936,7 @@ class BasesatisfaccionController extends Controller {
                                         ])
                                         ->asArray()->all(), 'nombre', 'nombre', 'tipo'
                 );
-                /* if (!isset($data->responsabilidad['EQUIVOCACION'])||!isset($data->responsabilidad['CANAL'])||!isset($data->responsabilidad['MARCA'])) {
-                  $msg = \Yii::t('app', 'Por favor verifique la configuración de la PROTECCIÓN DE LA EXPERIENCIA, ya que falta parametrizar alguna de sus opciones');
-                  Yii::$app->session->setFlash('danger', $msg);
-                  } */
-                //var_dump($data); die;
+                
                 return $this->render('showformulariosatisfaccion', [
                             'data' => $data,
 							'view' => $view,
@@ -2234,7 +2218,7 @@ class BasesatisfaccionController extends Controller {
                 $satu = new \app\models\ErroresSatu();
                 $satu->created = date('Y-m-d H:i:s');
                 $satu->fecha_satu = date('Y-m-d H:i:s');
-                $horaSatu = '00:00:00';
+                $horaSatu = '';
                 if (isset($datos['hora'])) {
                     if (strlen($datos['hora']) <= 4) {
                         $horaSatu = '00:00:00';
@@ -2511,7 +2495,7 @@ class BasesatisfaccionController extends Controller {
                     $TmpForm->basesatisfaccion_id = $modelBase->id;
                     $data->formulario = Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
                     if (!isset($TmpForm->subi_calculo)) {
-                        //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                        
                         if (isset($data->formulario->subi_calculo)) {
                             $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                             $TmpForm->save();
@@ -2544,7 +2528,7 @@ class BasesatisfaccionController extends Controller {
                     $TmpForm = \app\models\Tmpejecucionformularios::findOne(['id' => $formId['0']['tmp_id'], 'basesatisfaccion_id' => $modelBase->id]);
                     $data->formulario = Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
                     if (!isset($TmpForm->subi_calculo)) {
-                        //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                        
                         if (isset($data->formulario->subi_calculo)) {
                             $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                             $TmpForm->save();
@@ -2680,7 +2664,7 @@ class BasesatisfaccionController extends Controller {
              * @return boolean
              */
             public function actionBuscarllamadasmasivas($aleatorio) {
-                //$aleatorio = Yii::$app->request->get();
+                
                 $arregloFiltro = Yii::$app->request->post('BaseSatisfaccionSearch');
                 if ($arregloFiltro['fecha'] != '') {
                     $dates = explode(' - ', $arregloFiltro['fecha']);
@@ -2731,10 +2715,8 @@ class BasesatisfaccionController extends Controller {
                 } catch (Exception $exc) {
                     \Yii::error('Error en consulta Masiva: *****' . $exc->getMessage(), 'redbox');
                 }
-                //$allModels = $allModels->all();        
-                //$msgError = "";
                 $count = 0;
-                //$error = false;
+                
                 foreach ($allModels as $nModel) {
                     //SI BUSCAN LLAMADA
                     if (is_null($nModel->llamada)) {
@@ -2855,7 +2837,7 @@ class BasesatisfaccionController extends Controller {
                             }
 
                             if (!$errorConfig) {
-                                foreach ($config as $key => $value) {
+                                foreach ($config as $value) {
                                     if (!empty($value['configuracion'])) {
                                         $preExplode = explode('-', $value['configuracion']);
                                         $explode = explode('||', $preExplode[0]);
@@ -3026,15 +3008,6 @@ class BasesatisfaccionController extends Controller {
                 $arrFormulario["transacion_id"] = $_POST['transacion_id'];
                 $arrFormulario["sn_mostrarcalculo"] = 1;
                 $modelBase = BaseSatisfaccion::findOne($basesatisfaccion_id);
-                /* $modelBase->comentario = $arrFormulario["dscomentario"];
-                  $modelBase->tipologia = $_POST['categoria'];
-                  $modelBase->estado = $_POST['estado'];
-                  $modelBase->usado = "NO";
-                  $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? $_POST['responsabilidad'] : "";
-                  $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", $_POST['canal']) : "";
-                  $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", $_POST['marca']) : "";
-                  $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", $_POST['equivocacion']) : "";
-                  $modelBase->save(); */
                 $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
                 $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
                 //$arrFormulario["sn_mostrarcalculo"] = 1;
@@ -3178,7 +3151,7 @@ class BasesatisfaccionController extends Controller {
                     //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                     /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
                     \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
-                    //$data->generarCalculos($tmp_id);
+                   
                     $modelBase->comentario = $arrFormulario["dscomentario"];
                     $modelBase->tipologia = $_POST['categoria'];
                     $modelBase->estado = $_POST['estado'];

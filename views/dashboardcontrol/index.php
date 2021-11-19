@@ -80,9 +80,7 @@ $this->title = 'Métricas de Productividad/Valoración';
                     break;
             }  
 
-    // $varAnio = date('Y');
-    // $varBeginYear = $varAnio.'-01-01';
-    // $varLastYear = $varAnio.'-12-31';
+    
     $varBeginYear = '2019-01-01';
     $varLastYear = '2020-12-31';
     $varMonthYear = Yii::$app->db->createCommand("select concat_ws('- ', CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1)) as CorteTipo from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a     where CorteMes not like '%$txtMes%' order by a.mesyear asc")->queryAll();
@@ -156,7 +154,7 @@ $this->title = 'Métricas de Productividad/Valoración';
         array_push($varListMeses1, $txtTotalMonthV);
         array_push($varListMeses2, $txtRtaProcentaje);
     }
-    //var_dump($varListMeses);
+    
 
     $vaListPeople = array();
     foreach ($varListMonth as $key => $value) {
@@ -550,7 +548,7 @@ $this->title = 'Métricas de Productividad/Valoración';
 
             series: [{
               name: 'Cantidad ',
-              data: [<?= join($varListMeses, ',')?>]
+              data: [<?= implode($varListMeses, ',')?>]
             }]
           });
 
@@ -578,7 +576,7 @@ $this->title = 'Métricas de Productividad/Valoración';
 
             series: [{
               name: 'Totalidad: ',
-              data: [<?= join($varListMeses1, ',')?>]
+              data: [<?= implode($varListMeses1, ',')?>]
             }]
           });
 
@@ -610,8 +608,8 @@ $this->title = 'Métricas de Productividad/Valoración';
 
             series: [{
               name: 'Totalidad: ',
-              //data: [<?= join($varListMeses2, ',')?>]      
-              data: [<?= join($varListMeses2, ',')?>]
+              //data: [<?= implode($varListMeses2, ',')?>]      
+              data: [<?= implode($varListMeses2, ',')?>]
             }]
           });
 

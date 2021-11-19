@@ -37,7 +37,7 @@ $this->title = 'Registro de Categorias';
     $FechaActual = date("Y-m-d");
     $MesAnterior = date("m") - 1;
     $FechaValor = date("2020-01-01");
-//var_dump($FechaValor);
+
 
     $varIndicador = "Indicador";
     $varMotivos = "Detalle motivo contacto";
@@ -136,7 +136,7 @@ $this->title = 'Registro de Categorias';
 
             </div>            
         </div> 
-        <div class="form-group" align="center">
+        <div class="form-group" style="text-align: center;">
             <?= Html::submitButton(Yii::t('app', 'Guardar Categoria'),
                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                         'data-toggle' => 'tooltip',

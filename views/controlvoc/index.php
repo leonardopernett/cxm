@@ -38,16 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
 </header>
 <br><br>
-<!-- <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
-</div> -->
+
+    <?= Html::encode($this->title) ?>
+
 <br>
 <div class="formularios-form" style="display: inline" id="idBloques0">
 
@@ -80,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <br>
 
-    <div class="row" align="center">      
+    <div class="row" style="text-align: center;">      
       <?= Html::submitButton(Yii::t('app', 'Aceptar'),
                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                         'data-toggle' => 'tooltip',

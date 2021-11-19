@@ -81,8 +81,6 @@ use yii\bootstrap\Modal;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -204,8 +202,6 @@ use yii\bootstrap\Modal;
                       $varCategonomList = $value['categoria_nombre'];
                       $varAtribunomList = $value['atributo_nombre'];
                       $varIdAtributoList = $value['id_atrib_alin'];
-                    // $varMedicionnomList = $value['medicion'];
-                    // $varAcuerdoList = $value['acuerdo'];
                       $varMedicionnomList = null;
                       $varAcuerdoList = null;
                     $txtQuery3 =  new Query;

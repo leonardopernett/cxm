@@ -34,10 +34,10 @@ $txtcontar = count($txtidbloque);
         <thead>
 
             <tr>
-                <td colspan="16" align="center" style="font-size:110%;background-color: #28559B; color: #fff"><?= Yii::t('app', 'KONECTA- QA MANAGEMENT') ?></td>
+                <td colspan="16" style="font-size:110%;background-color: #28559B; color: #fff;text-align: center;"><?= Yii::t('app', 'KONECTA- QA MANAGEMENT') ?></td>
             </tr>
             <tr>
-                <td colspan="16" align="center" style="font-size:160%;"><?= Yii::t('app', 'Reporte Alinear + - VOC -') ?></td>
+                <td colspan="16" style="font-size:160%;text-align: center;"><?= Yii::t('app', 'Reporte Alinear + - VOC -') ?></td>
             </tr>
             
         </thead>
@@ -74,13 +74,13 @@ $txtcontar = count($txtidbloque);
                      }                  
                  }
                  $sessiones = Yii::$app->user->identity->id;   
-                // $sessiones = 2270;
+                
                  $varAnulado = 0;
                  $varMed = 2;
                  $varBog = 98;
                  $varK = 1;
                 $sessiones = Yii::$app->user->identity->id;   
-                // $sessiones = 2270;
+            
                  $varAnulado = 0;
                  $varMed = 2;
                  $varBog = 98;
@@ -335,8 +335,6 @@ $txtcontar = count($txtidbloque);
                         $varCategonomList = $value['categoria_nombre'];
                         $varAtribunomList = $value['atributo_nombre'];
                         $varIdAtributoList = $value['id_atrib_alin'];
-                        //$varMedicionnomList = $value['medicion'];
-                        //$varAcuerdoList = $value['acuerdo'];
                         $varfila = $varfila + 1;   
 
                          $varMedicionnomList = null;
@@ -457,7 +455,7 @@ $txtcontar = count($txtidbloque);
                           <td class="text-center" style="background-color: #4298B5; color: #fff"><?php echo $txtObservacion; ?></td>
                        </tr>
               <tr>
-                <td colspan="16" align="center" style="font-size:110%;background-color: #C6C6C6;"></td>
+                <td colspan="16" style="font-size:110%;background-color: #C6C6C6;text-align: center;"></td>
               </tr>
                     
                 <?php } ?>

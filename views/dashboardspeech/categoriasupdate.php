@@ -107,7 +107,7 @@ $this->title = 'Actualizar Categorias -- QA & Speech --';
         </div>
     </div>
     <br>
-    <div class="form-group" align="center">
+    <div class="form-group" style="text-align: center;">
         <?= Html::submitButton('Actualizar', ['class' => 'btn btn-primary', 'id'=>'btn_submit'] ) ?>
     </div>
     <?php ActiveForm::end(); ?>

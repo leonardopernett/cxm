@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			echo $form->field($model3, 'anulado')->textInput(['maxlength' => 1, 'value'=> '0', 'class'=>'hidden', 'id'=>"anuladoId1"])
 		?>		
 	<?php ActiveForm::end(); ?>
-    <div class="row" align="center">      
+    <div class="row" style="text-align: center;">      
 		<div onclick="generated();" class="btn btn-primary" style="display:inline;" method='post' id="botones2" >
           	Crear participante
         </div>    

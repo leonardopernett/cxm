@@ -79,9 +79,7 @@ $this->title = 'Métricas de Productividad/Valoración';
                     break;
             }  
 
-    // $varAnio = date('Y');
-    // $varBeginYear = $varAnio.'-01-01';
-    // $varLastYear = $varAnio.'-12-31';   
+    
     $varBeginYear = '2019-01-01';
     $varLastYear = '2025-12-31';        
 

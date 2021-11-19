@@ -113,7 +113,7 @@ $this->registerJs(
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <table align="center">
+                <table style="margin: auto;">
                 <caption>Llamadas</caption>
                     <thead>
                         <tr>
