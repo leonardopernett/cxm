@@ -852,10 +852,6 @@ $varMes = date("n");
 					break;
 			}
 
-		$month = date('m');
-        	$year = date('Y');
-
-
 
 	        $rol =  new Query;
 	        $rol     ->select(['tbl_roles.role_id'])
