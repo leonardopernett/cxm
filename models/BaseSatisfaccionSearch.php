@@ -726,7 +726,6 @@ WHERE pe.programa = " . $this->pcrc;
         $limite_ciclo_inicial = -$delta_ciclo;
         $limite_ciclo_final = $delta_ciclo - 1;
         $newRow = 0;
-        $printTitle = true;
         $fila = 2;
         $objPHPexcel = new \PHPExcel();
         $objPHPexcel->setActiveSheetIndex(0);
@@ -748,7 +747,6 @@ WHERE pe.programa = " . $this->pcrc;
                         if ($fid != -1) {
                             //CSV PARA MEJORAR EL EXCEL DEL EXTRACTAR
                             $filecontent = "";
-                            $printTitle = false;
 
                             //IMPRIMO EN EL CSV LOS RESULTADOS QUE VAYAN
                             foreach ($dataProvider as $value) {
@@ -983,7 +981,6 @@ WHERE pe.programa = " . $this->pcrc;
             } // Fin se hay registros
         } while (count($data) > 0);
         $filecontent = "";
-        $printTitle = false;
         //IMPRIMO EL ULTIMO REGISTRO
         if (isset($dataProvider)) {
             foreach ($dataProvider as $value) {
@@ -1069,9 +1066,8 @@ WHERE pe.programa = " . $this->pcrc;
 
 
                     	$varConnids = $this->vData($satu['connid']);
-                        $txttrancsipcion = Yii::$app->db->createCommand("SELECT k.transcripcion FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();                        $vartexto = null;
+                        $txttrancsipcion = Yii::$app->db->createCommand("SELECT k.transcripcion FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();
                         $varvalencia = Yii::$app->db->createCommand("SELECT k.valencia FROM tbl_kaliope_transcipcion k WHERE k.connid in ('$varConnids')")->queryScalar();   
-                        $varvacio = " - ";   
                     
                         $dataProvider[$newRow][67] = $txttrancsipcion;
                         $dataProvider[$newRow][68] = $varvalencia;                     
