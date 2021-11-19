@@ -1086,9 +1086,7 @@ WHERE pe.programa = " . $this->pcrc;
                     $newRow++;
                 }
                 $export = true;
-            } /*else {
-                $export = false;
-            }*/
+            }
         }
         $arrayTitulos = [];
 
