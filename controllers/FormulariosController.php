@@ -267,11 +267,11 @@ class FormulariosController extends Controller {
 
                 if (isset($_POST) && !empty($_POST)) {
 
-                    $arbol_id = $_POST["arbol_id"];
-                    $dimension_id = $_POST["dimension_id"];
-                    $formulario_id = $_POST["formulario_id"];
+                    $arbol_id = Yii::$app->request->post("arbol_id");
+                    $dimension_id = Yii::$app->request->post("dimension_id");
+                    $formulario_id = Yii::$app->request->post("formulario_id");
                     $evaluado_id = $_POST["Evaluados"]["evaluado_id"];
-                    $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? $_POST["tipo_interaccion"] : 1;
+                    $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? Yii::$app->request->post("tipo_interaccion") : 1;
                     $usua_id = ($preview == 1) ? 0 : Yii::$app->user->identity->id;
                     $created = date("Y-m-d H:i:s");
                     $sneditable = 1;
@@ -439,7 +439,6 @@ class FormulariosController extends Controller {
                     'tipo_llamada' => $arbol->snactivar_tipo_llamada
                 ];
                 $data->ruta_arbol = $arbol->dsname_full;
-                //$data->dimension = \app\models\Dimensiones::findOne($TmpForm->dimension_id);
                 $data->dimension = \yii\helpers\ArrayHelper::map(\app\models\Dimensiones::find()->all(), 'id', 'name');
                 $data->detalles = \app\models\Tmpejecucionbloquedetalles::getAllByFormId($formulario_id);
                 $data->totalBloques = \app\models\Tmpejecucionbloques::findAll(['tmpejecucionformulario_id' => $TmpForm->id]);
@@ -488,7 +487,6 @@ class FormulariosController extends Controller {
                 //en 1 por defecto
                 $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
                 if (!isset($TmpForm->subi_calculo)) {
-                    //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
                     if (isset($data->formulario->subi_calculo)) {
                         $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                         $TmpForm->save();
@@ -522,56 +520,18 @@ class FormulariosController extends Controller {
 
                     $dteDiff1->format("Y-m-d H:i:s");
 
-                    //print_r($dteDiff1); die;
-
                     $data->fecha_inicial = $data->tmp_formulario->hora_inicial;
                     $data->fecha_final = $data->tmp_formulario->hora_final;
                     $data->minutes = $dteDiff1->h . ":" . $dteDiff1->i . ":" . $dteDiff1->s;
                 }
 
-                /*$data->mod_fecha_inicial = "";
-                $data->mod_fecha_final = "";
-                $data->mod_minutes = "";
-
-                if($data->tmp_formulario->mod_hora_inicial != "" AND $data->tmp_formulario->mod_hora_final != ""){
-                    $inicial = new DateTime($data->tmp_formulario->mod_hora_inicial);
-                    $final = new DateTime($data->tmp_formulario->mod_hora_final);
-
-                    $dteDiff2  = $inicial->diff($final);
-
-                    $dteDiff2->format("Y-m-d H:i:s");
-
-                    //print_r($dteDiff2); die;
-
-                    $data->mod_fecha_inicial = $data->tmp_formulario->mod_hora_inicial;
-                    $data->mod_fecha_final = $data->tmp_formulario->mod_hora_final;
-                    $data->mod_minutes = $dteDiff2->h . ":" . $dteDiff2->i . ":" . $dteDiff2->s . " Segundos ";
-
-                    $uno = $dteDiff1->h + $dteDiff2->h;
-                    $dos = $dteDiff1->i + $dteDiff2->i;
-                    $tres = $dteDiff1->s + $dteDiff2->s;
-
-                    $data->tiempototal = $uno . ":" . $dos . ":" . $tres . " Segundos ";
-                    
-                }*/
 
                 $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$formulario_id'")->queryScalar();
-             
-            //DATOS GENERALES
-               /* $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
-                $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
-                $data->idcliente =  $varIdcliente;
-                $data->codpcrc =  $varCodpcrc;*/
-	
 		//DATOS GENERALES
 
                 $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = '$TmpForm->arbol_id'")->queryScalar();
 
                  $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = '$TmpForm->arbol_id'")->queryScalar();
-               //$varIdclienteSel = Yii::$app->db->createCommand("select id_dp_clientes FROM tbl_speech_servicios WHERE arbol_id = '$varidarbol'")->queryScalar();
-
-                //SELECT * FROM tbl_speech_servicios WHERE arbol_id = 17
-                 //SELECT a.id, a.name FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = 2559
 
                 $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
                 $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
@@ -647,28 +607,27 @@ class FormulariosController extends Controller {
              */
             public function actionGuardarformulario() {
 
-                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
-                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
-                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
+                $arrCalificaciones = !$_POST['calificaciones'] ? array() : Yii::$app->request->post('calificaciones');
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
+                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : Yii::$app->request->post('comentarioSeccion');
+                $arrCheckPits = !isset($_POST['checkPits']) ? array() : Yii::$app->request->post('checkPits');
 
                 $arrFormulario = [];
 
-                $tmp_id = $_POST['tmp_formulario_id'];
-                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
-                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
-                $arrFormulario["dimension_id"] = $_POST['dimension_id'];
-                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
-                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
-                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
-                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
-                 $view = (isset($_POST['view']))?$_POST['view']:null;
-                //$arrFormulario["subi_calculo"] = !isset($_POST['subi_calculo']) ? '' : $_POST['subi_calculo'];
+                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
+                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
+                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
+                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension_id');
+                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
+                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
+                 $view = (isset($_POST['view']))?Yii::$app->request->post('view'):null;
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
                 if ($_POST['subi_calculo'] != '') {
-                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
+                    $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
                     $data->save();
                 }
                 //TO-DO  : COMENTAR LINEA EN CASO DE NO NECESITAR LO DE ADICIONAR Y ESCALAR
@@ -676,10 +635,9 @@ class FormulariosController extends Controller {
                 if (!isset($modelRegistro)) {
                     $modelRegistro = new \app\models\RegistroEjec();
                     $modelRegistro->ejec_form_id = $tmp_id;
-                    $modelRegistro->descripcion = 'Primera valoraci�n';
+                    $modelRegistro->descripcion = 'Primera valoración';
                 }
-                //$modelRegistro = new \app\models\RegistroEjec();
-                $modelRegistro->dimension_id = $_POST['dimension_id'];
+                $modelRegistro->dimension_id = Yii::$app->request->post('dimension_id');
                 $modelRegistro->valorado_id = $data->evaluado_id;
                 $modelRegistro->valorador_id = $data->usua_id;
                 $modelRegistro->pcrc_id = $data->arbol_id;
@@ -687,10 +645,6 @@ class FormulariosController extends Controller {
                 $modelRegistro->fecha_modificacion = date("Y-m-d H:i:s");
                 $modelRegistro->save();
                 //FIN
-                //$formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
-                /* if (isset($formulario->subi_calculo)) {
-                  $arrFormulario["subi_calculo"] .= ','.$formulario->subi_calculo;
-                  } */
 
                 /* EDITO EL TMP FORMULARIO */
                 \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
@@ -778,53 +732,38 @@ class FormulariosController extends Controller {
 
                 $txtanulado = 0;
                 $txtfechacreacion = date("Y-m-d");
-                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
-                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
-                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
+                $arrCalificaciones = !$_POST['calificaciones'] ? array() : Yii::$app->request->post('calificaciones');
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
+                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : Yii::$app->request->post('comentarioSeccion');
+                $arrCheckPits = !isset($_POST['checkPits']) ? array() : Yii::$app->request->post('checkPits');
                 $arrFormulario = [];
                 $arrayCountBloques = [];
                 $arrayBloques = [];
 
-                $varid_clientes = $_POST['id_dp_clientes'];
-                $varid_centro_costo = $_POST['requester'];                
+                $varid_clientes = Yii::$app->request->post('id_dp_clientes');
+                $varid_centro_costo = Yii::$app->request->post('requester');   
                 $count = 0;
-                $tmp_id = $_POST['tmp_formulario_id'];
-                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
-                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
-                $arrFormulario["dimension_id"] = $_POST['dimension_id'];
-                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
-                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
-                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
-                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
+                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
+                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
+                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
+                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension_id');
+                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
+                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
                 $arrFormulario["sn_mostrarcalculo"] = 1;
-                $view = (isset($_POST['view']))?$_POST['view']:null;
-                //$arrFormulario["subi_calculo"] = !isset($_POST['subi_calculo']) ? '' : $_POST['subi_calculo'];
+                $view = (isset($_POST['view'])) ? Yii::$app->request->post('view') : null;
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
                 if (isset($_POST['subi_calculo']) AND $_POST['subi_calculo'] != '') {
-                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
+                    $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
                     $data->save();
                 }
-                //$formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
-                /* if (isset($formulario->subi_calculo)) {
-                  $arrFormulario["subi_calculo"] .= ','.$formulario->subi_calculo;
-                  } */
                 /* EDITO EL TMP FORMULARIO  GERMAN*/
                 $model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
-                //echo "<pre>";
-                //print_r($model); die;
                 $model->usua_id_actual = Yii::$app->user->identity->id;
                 $model->save();
-
-                // if($model['hora_final'] != ""){
-                //     $model->mod_hora_final = date("Y-m-d H:i:s");
-                //     $model->save();
-                // }else{
-                //     $model->hora_final = date("Y-m-d H:i:s");
-                //     $model->save();
-                // }
 
 
                 
@@ -835,16 +774,15 @@ class FormulariosController extends Controller {
                 if (!isset($modelRegistro)) {
                     $modelRegistro = new \app\models\RegistroEjec();
                     $modelRegistro->ejec_form_id = $tmp_id;
-                    $modelRegistro->descripcion = 'Primera valoraci�n';
+                    $modelRegistro->descripcion = 'Primera valoración';
                 }
-                //$modelRegistro = new \app\models\RegistroEjec();
-                $modelRegistro->dimension_id = $_POST['dimension_id'];
+                $modelRegistro->dimension_id = Yii::$app->request->post('dimension_id');
                 $modelRegistro->valorado_id = $data->evaluado_id;
                 $modelRegistro->valorador_id = $data->usua_id;
                 $modelRegistro->pcrc_id = $data->arbol_id;
                 $modelRegistro->tipo_interaccion = $data->tipo_interaccion;
                 $modelRegistro->fecha_modificacion = date("Y-m-d H:i:s");
-                $fecha_inicial_mod = $_POST['hora_modificacion'];
+                $fecha_inicial_mod = Yii::$app->request->post('hora_modificacion');
                 $modelRegistro->save();
                 //FIN
                 \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
@@ -972,15 +910,8 @@ class FormulariosController extends Controller {
                         $tiempo_modificacion_actual = $dteDiff->h . ":" . $dteDiff->i . ":" . $dteDiff->s;
 
                         $tmp_ejecucion->cant_modificaciones = $tmp_ejecucion->cant_modificaciones + 1;
-
-                        // $suma = strtotime($tmp_ejecucion->tiempo_modificaciones) + strtotime($tiempo_modificacion_actual);
-
-                        // $suma1 = date("h:i:s", $suma); //01:57:48
                         $date = new DateTime($tiempo_modificacion_actual);
-                        //print_r($data); die;
                         $suma2 = $this->sumarhoras($tmp_ejecucion->tiempo_modificaciones, $date->format('H:i:s'));
-                        // //$tmp_ejecucion->tiempo_modificaciones = $dt->format('H:i:s');
-                        // print_r("este: " . $tmp_ejecucion->tiempo_modificaciones . " mas : " . $tiempo_modificacion_actual . " es igual a : " .  $suma2); die;
 
                         $tmp_ejecucion->tiempo_modificaciones = $suma2;
 
@@ -990,50 +921,10 @@ class FormulariosController extends Controller {
                     $tmp_ejecucion->hora_final = $pruebafecha;
                     $tmp_ejecucion->save();
                 }
-                // echo "<pre>";
-                // print_r($tmp_ejecucion); die;
 
                 /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
                 $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
 
-		//Proceso para guardar clientes y centro de costos
-                            
-                /*$varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu '")->queryScalar();
-                                
-                if($varIdcliente){
-
-                    Yii::$app->db->createCommand()->update('tbl_registro_ejec_cliente',[
-                                                    'id_dp_clientes' => $varid_clientes,
-                                                    'cod_pcrc' => $varid_centro_costo,
-                                                    'cliente' => $varcliente,
-                                                    'pcrc' => $varpcrc,
-                                                    'ciudad' => $varcuidad,
-                                                    'director_programa' => $vardirector,
-                                                    'gerente' => $vargerente,
-                                                    'fechacreacion' => $txtfechacreacion,
-                                                    'anulado' => $txtanulado,
-                                                ],'ejec_form_id ='.$varIdformu .'')->execute();   
-                }else{
-
-                //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
-                // $txtidejec_formu = intval($txtidejec_formu) + 1;
-                //insertar Cliente y centro de costo
-                //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
-
-	          $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
-                    Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
-                        'ejec_form_id' => $txtidejec_formu,
-                        'id_dp_clientes' => $varid_clientes,
-                        'cod_pcrc' => $varid_centro_costo,
-                        'cliente' => $varcliente,
-                        'pcrc' => $varpcrc,
-                        'ciudad' => $varcuidad,
-                        'director_programa' => $vardirector,
-                        'gerente' => $vargerente,
-                        'fechacreacion' => $txtfechacreacion,
-                        'anulado' => $txtanulado,
-                    ])->execute();
-                }*/
 
                 /* validacion de guardado exitoso del tmp y paso a las tablas de ejecucion
                 en caso de no cumplirla, se redirige nuevamente al formulario */
@@ -1073,14 +964,6 @@ class FormulariosController extends Controller {
                 $params['url'] = '' . Url::to(['formularios/showformulariodiligenciadoamigo'], true) . '?form_id=' . base64_encode($ejecucion[0]->id);
 
 
-                // Aqui 2021-04-27 parte que se desomenta para amigo
-
-                //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
-                //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
-                //if (!$webservicesresponse && $tmp_ejecucion == '') {
-                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexi�n con la plataforma Amigo'));
-                //}
-
                 //Proceso para guardar clientes y centro de costos
                
 		$varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu '")->queryScalar();
@@ -1100,10 +983,7 @@ class FormulariosController extends Controller {
                                                 ],'ejec_form_id ='.$varIdformu .'')->execute();   
                 }else{
 
-                //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
-		       // $txtidejec_formu = intval($txtidejec_formu) + 1;
                //insertar Cliente y centro de costo
-                  //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
 		    $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar(); 
                     Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
                         'ejec_form_id' => $txtidejec_formu,
@@ -1331,9 +1211,7 @@ class FormulariosController extends Controller {
                 //y valido de q si tenga un formulario, de lo contrario se fija 
                 //en 1 por defecto
                 $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
-                //$data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
                 if (!isset($TmpForm->subi_calculo)) {
-                    //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
                     if (isset($data->formulario->subi_calculo)) {
                         $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                         $TmpForm->save();
@@ -1460,13 +1338,6 @@ class FormulariosController extends Controller {
                     $showInteraccion = 0;
                     $showBtnIteraccion = 0;
                 }
-                //TO-DO  : COMENTAR LINEA EN CASO DE NO NECESITAR LO DE ADICIONAR Y ESCALAR -> no se necesita
-                /* $validarRegistro = \app\models\RegistroEjec::findOne(['ejec_form_id' => $tmp_id]);
-                  if (isset($validarRegistro)) {
-                  \app\models\RegistroEjec::updateAll(['ejec_form_id' => $formId[0]["tmp_id"]], ['ejec_form_id' => $tmp_id]);
-                  } */
-                //FIN
-                  //$buuuu = 'aaaaa';
                 return $this->redirect(['showformulario'
                             , "formulario_id" => $formId[0]["tmp_id"]
                             //, "este" => $buuuu
@@ -1700,8 +1571,8 @@ class FormulariosController extends Controller {
 
                 if (!empty($tmp_id_decode) && is_numeric($tmp_id_decode)) {
                     $tmp_id = \app\models\Ejecucionformularios::llevarATmp($tmp_id_decode, $usua_id);
-                    $_GET["showInteraccion"] = base64_encode(1);
-                    $_GET["showBtnIteraccion"] = base64_encode(0);
+                    Yii::$app->request->get("showInteraccion") = base64_encode(1);
+                    Yii::$app->request->get("showBtnIteraccion") = base64_encode(0);
                     $preview = 1;
                     $fill_values = true;
 
@@ -1781,7 +1652,6 @@ class FormulariosController extends Controller {
                     //en 1 por defecto
                     $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
                     if (/* !isset($data->formulario->subi_calculo) || */!isset($TmpForm->subi_calculo)) {
-                        //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
                         if (isset($data->formulario->subi_calculo)) {
                             $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                             $TmpForm->save();
@@ -1824,34 +1694,29 @@ class FormulariosController extends Controller {
              */
             public function actionConsultarcalificacionsubi() {
 
-                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
-                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
-                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
+                $arrCalificaciones = !$_POST['calificaciones'] ? array() : Yii::$app->request->post('calificaciones');
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
+                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : Yii::$app->request->post('comentarioSeccion');
+                $arrCheckPits = !isset($_POST['checkPits']) ? array() : Yii::$app->request->post('checkPits');
 
                 $arrFormulario = [];
 
-                $tmp_id = $_POST['tmp_formulario_id'];
-                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
-                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
-                $arrFormulario["dimension_id"] = $_POST['dimension_id'];
-                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
-                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
-                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
-                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
+                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
+                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
+                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
+                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension_id');
+                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
+                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
                 $arrFormulario["sn_mostrarcalculo"] = 1;
-                //$arrFormulario["subi_calculo"] = !isset($_POST['subi_calculo']) ? '' : $_POST['subi_calculo'];
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
                 if ($_POST['subi_calculo'] != '') {
-                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
+                    $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
                     $data->save();
                 }
-                //$formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
-                /* if (isset($formulario->subi_calculo)) {
-                  $arrFormulario["subi_calculo"] .= ','.$formulario->subi_calculo;
-                  } */
                 /* EDITO EL TMP FORMULARIO */
                 \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
 
@@ -1933,7 +1798,6 @@ class FormulariosController extends Controller {
                     return $this->goHome();
                 }
                 $out = ['more' => false];
-                //$id[]='11,12';
                 if (!is_null($search)) {
                     $data = \app\models\Textos::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
@@ -1980,7 +1844,7 @@ class FormulariosController extends Controller {
                     $out['results'] = array_values($data);
                 } elseif (!empty($id)) {
                     if (isset($_POST['ids_selec'])) {
-                        $ids_selec.=$_POST['ids_selec'] . ',11,12';
+                        $ids_selec.=Yii::$app->request->post('ids_selec') . ',11,12';
                     } else {
                         $ids_selec = '11,12';
                     }
@@ -2014,7 +1878,6 @@ class FormulariosController extends Controller {
                         $dimension_id = $model->dimension_id;
                         $formulario_id = $model_tmp_ejec->formulario_id;
                         $evaluado_id = $model->valorado_id;
-                        //$tipoInteraccion = $model_tmp_ejec->tipo_interaccion;
                         $usua_id = Yii::$app->user->identity->id;
                         $created = date("Y-m-d H:i:s");
                         $sneditable = 1;
@@ -2037,20 +1900,6 @@ class FormulariosController extends Controller {
                         if ($model->tipo_interaccion == 0) {
                             $tipoInteraccion = $model_tmp_ejec->tipo_interaccion;
                             if ($tipoInteraccion == 0) {
-                                //CONSULTA DE LLAMADAS Y PANTALLAS CON WS
-                                /* try {
-                                  $modelFormularios = new Formularios;
-                                  $enlaces = $modelFormularios->getEnlaces($evaluado_id);
-                                  if ($enlaces && count($enlaces) > 0) {
-                                  $json = json_encode($enlaces);
-                                  $tmpeje->url_llamada = $json;
-                                  }
-                                  } catch (\Exception $exc) {
-                                  \Yii::error('#####' . __FILE__ . ':' . __LINE__
-                                  . $exc->getMessage() . '#####', 'redbox');
-                                  $msg = Yii::t('app', 'Error redbox');
-                                  Yii::$app->session->setFlash('danger', $msg);
-                                  } */
                                 $tmpeje->url_llamada = $model_tmp_ejec->url_llamada;
 
                                 $showInteraccion = 1;
@@ -2109,25 +1958,19 @@ class FormulariosController extends Controller {
                     $model->valorado_id = $model_tmp_ejec->evaluado_id;
                     $model->pcrc_id = $model_tmp_ejec->arbol_id;
                     $model->dimension_id = $model_tmp_ejec->dimension_id;
-                    //$model->valorador_id = $model_tmp_ejec->usua_id;
                     return $this->renderAjax('escalarValoracion', ['model' => $model, 'modelTmpeje' => $model_tmp_ejec]);
                 } else {
-                    //print_r('2'); die;
                     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-                        //print_r('3'); die;
-                        $datos = Yii::$app->request->post('RegistroEjec');
                         $enviar_new_form = '1';
                         $tmp_id = $model->ejec_form_id;
                         $arbol_id = $model->pcrc_id;
                         $dimension_id = $model_tmp_ejec->dimension_id;
                         $formulario_id = $model_tmp_ejec->formulario_id;
                         $evaluado_id = $model->valorado_id;
-                        //$tipoInteraccion = $model_tmp_ejec->tipo_interaccion;
                         $usua_id = $model->valorador_id;
                         $created = date("Y-m-d H:i:s");
                         $sneditable = 1;
                         if ($enviar_new_form == 0) {
-                            //print_r('4'); die;
                             
                             $tmpeje->dimension_id = $dimension_id;
                             $tmpeje->arbol_id = $arbol_id;
@@ -2143,20 +1986,16 @@ class FormulariosController extends Controller {
                             //EN CASO DE SELECCIONAR ITERACCION AUTOMATICA
                             //CONSULTAMOS LA ITERACCION
                             if ($model->tipo_interaccion == 0) {
-                                //print_r('5'); die;
                                 $tipoInteraccion = $model_tmp_ejec->tipo_interaccion;
                                 if ($tipoInteraccion == 0) {
-                                    //print_r('6'); die;
                                     $tmpeje->url_llamada = $model_tmp_ejec->url_llamada;
                                     $showInteraccion = 1;
                                     $showBtnIteraccion = 1;
                                 } else {
-                                    //print_r('7'); die;
                                     $showInteraccion = 0;
                                     $showBtnIteraccion = 0;
                                 }
                             } else {
-                                //print_r('8'); die;
                                 $showInteraccion = 0;
                                 $showBtnIteraccion = 0;
                             }
@@ -2171,7 +2010,6 @@ class FormulariosController extends Controller {
                             $preview = 0;
                             Yii::$app->session->setFlash('danger', 'Se creo y  escalo la valoracion con exito');
                             if ($tmpeje->basesatisfaccion_id != "") {
-                                //print_r('9'); die;
                                 return $this->redirect([
                                             "basesatisfaccion/showformulariogestion",
                                             "basesatisfaccion_id" => $model_tmp_ejec->basesatisfaccion_id,
@@ -2190,9 +2028,6 @@ class FormulariosController extends Controller {
                                         "showInteraccion" => base64_encode($showInteraccion),
                                         "showBtnIteraccion" => base64_encode($showBtnIteraccion)]);
                         } else {
-                            //print_r('10'); die;
-                            //$model_tmp_ejec = new \app\models\Tmpejecucionformularios();
-                            //$model_tmp_ejec->dimension_id = $dimension_id;
                             $model_tmp_ejec->arbol_id = $arbol_id;
                             $model_tmp_ejec->usua_id = $usua_id;
                             $model_tmp_ejec->evaluado_id = $evaluado_id;
@@ -2215,9 +2050,7 @@ class FormulariosController extends Controller {
                                 /* LIBERO LA VALORACION */
                                 $prueba = \app\models\Tmpejecucionformularios::find('basesatisfaccion_id')->where(['id' => $tmp_id])->one();
                                 $modelBase = \app\models\BaseSatisfaccion::findOne($prueba->basesatisfaccion_id);
-                                $redct = ($modelBase->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
                                 if (Yii::$app->user->identity->username == $modelBase->responsable) {
-                                    //print_r('12'); die;
                                     $modelBase->escalado = 1;
                                     $modelBase->usado = "NO";
                                     $modelBase->save();
@@ -2235,22 +2068,17 @@ class FormulariosController extends Controller {
                                 $model2->save();
                             }
 
-                            
-                            //$preview = 0;
                             Yii::$app->session->setFlash('danger', 'Se ha escalado la valoraci�n con �xito');
                             return $this->redirect(["indexescaladosenviados"]);
                         }
                     } else {
-                        //print_r('15'); die;
                         Yii::$app->session->setFlash('danger', 'Los campos Valorado, Programa/PCRC y Valorador son obligatorios');
                         $preview = 0;
                         $tipoInteraccion = $model_tmp_ejec->tipo_interaccion;
                         if ($tipoInteraccion == 0) {
-                            //print_r('16'); die;
                             $showInteraccion = 1;
                             $showBtnIteraccion = 1;
                         } else {
-                            //print_r('17'); die;
                             $showInteraccion = 0;
                             $showBtnIteraccion = 0;
                         }
@@ -2260,7 +2088,6 @@ class FormulariosController extends Controller {
                             $modelBase = \app\models\BaseSatisfaccion::findOne($prueba->basesatisfaccion_id);
                             $redct = ($modelBase->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
                             if (Yii::$app->user->identity->username == $modelBase->responsable) {
-                                //print_r('12'); die;
                                 $modelBase->usado = "NO";
                                 $modelBase->save();
                             }
@@ -2278,7 +2105,6 @@ class FormulariosController extends Controller {
                         }
                         
                         if ($tmpeje->basesatisfaccion_id != "") {
-                            //print_r('18'); die;
                             return $this->redirect([
                                         "basesatisfaccion/showformulariogestion",
                                         "basesatisfaccion_id" => $model_tmp_ejec->basesatisfaccion_id,
@@ -2342,8 +2168,6 @@ class FormulariosController extends Controller {
             public function actionIndexescalados() {
                 $model = new \app\models\Tmpejecucionformularios();
                 $dataProvider = $model->searchTmpejecucionform(Yii::$app->request->queryParams);
-                // echo "<pre>";
-                // print_r($dataProvider); die;
                 $model->scenario = 'tmpejecucionescalado';
 
 
@@ -2355,12 +2179,10 @@ class FormulariosController extends Controller {
                     $dataProvider = $model->searchTmpejecucionform();
                 }
 
-                //print_r($model); die;
                 return $this->render('indexEscalados', ['model' => $model, 'dataProvider' => $dataProvider]);
             }
 
             public function actionIndexescaladosenviados() {
-                //print_r("hola"); die;
                 $model = new \app\models\Tmpejecucionformularios();
                 $dataProvider = $model->searchTmpejecucionformenviados(Yii::$app->request->queryParams);
                 $model->scenario = 'tmpejecucionescalado';
@@ -2512,7 +2334,6 @@ class FormulariosController extends Controller {
             }
 
             public function actionListarpcrc(){            
-                $txtAnulado = 0; 
                 $txtId = Yii::$app->request->post('id');           
    
                 if ($txtId) {
