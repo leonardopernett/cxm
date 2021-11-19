@@ -1324,7 +1324,6 @@ use app\models\EvaluacionDesarrollo;
       } 
     }
     $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua WHERE documento_jefe = $vardocumentojefe")->queryScalar();
-
     if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
       $txtRta = 1;
     } else{
@@ -1885,15 +1884,16 @@ use app\models\EvaluacionDesarrollo;
 
         $phpExc->getActiveSheet()->setShowGridlines(False);
 
+
         $styleArraySize = array(
-          'font' => array(
-                  'bold' => true,
-                  'size'  => 15,
-          ),
-          'alignment' => array(
-                  'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-          ), 
-      );
+            'font' => array(
+                    'bold' => true,
+                    'size'  => 15,
+            ),
+            'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ), 
+        );
 
         $styleColor = array( 
                 'fill' => array( 
