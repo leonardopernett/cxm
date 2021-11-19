@@ -253,7 +253,9 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                       <div class="panel-body">
                         <div id="capaUno" style="display: inline">
                           <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                          <caption style="display: none;">Listado</caption>
                             <thead>
+                            <tr scope="col"></tr>
                             </thead>
                             <tbody>
                             
