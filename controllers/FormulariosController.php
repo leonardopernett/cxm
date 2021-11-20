@@ -1571,8 +1571,8 @@ class FormulariosController extends Controller {
 
                 if (!empty($tmp_id_decode) && is_numeric($tmp_id_decode)) {
                     $tmp_id = \app\models\Ejecucionformularios::llevarATmp($tmp_id_decode, $usua_id);
-                    Yii::$app->request->get("showInteraccion") = base64_encode(1);
-                    Yii::$app->request->get("showBtnIteraccion") = base64_encode(0);
+                    $_GET["showInteraccion"] = base64_encode(1);
+                    $_GET["showBtnIteraccion"] = base64_encode(0);
                     $preview = 1;
                     $fill_values = true;
 
