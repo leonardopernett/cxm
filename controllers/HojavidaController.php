@@ -485,7 +485,7 @@ use Exception;
       $txtvaridafinidad = Yii::$app->request->get("txtvaridafinidad");
       $txtvaridtipoafinidad = Yii::$app->request->get("txtvaridtipoafinidad");
       $txtvaridnivelafinidad = Yii::$app->request->get("txtvaridnivelafinidad");
-      $varidareatrabajo = Yii::$app->request->get("varidareatrabajo");
+      $txtvaridareatrabajo = Yii::$app->request->get("txtvaridareatrabajo");
       
       $txtrta = 0;      
 
@@ -503,7 +503,7 @@ use Exception;
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,  
-                    'areatrabajo' => $varidareatrabajo,                                               
+                    'areatrabajo' => $txtvaridareatrabajo,                                               
                 ])->execute();      
 
       die(json_encode($txtrta));
@@ -1021,8 +1021,15 @@ use Exception;
     }
 
     public function actionEditinfo($idinfo){
-      $model = HojavidaDatapersonal::findOne($idinfo);
-      $model2 = HojavidaDatalaboral::findOne($idinfo);
+      $model = HojavidaDatapersonal::findOne($idinfo);      
+      $paramsmodel2 = [':idinfos'=>$idinfo];
+      $varinfolaboral = Yii::$app->db->createCommand('
+        SELECT dl.hv_idlaboral FROM tbl_hojavida_datalaboral dl
+        WHERE 
+          dl.hv_idpersonal = :idinfos
+            GROUP BY dl.hv_idlaboral
+            ')->bindValues($paramsmodel2)->queryScalar();
+      $model2 = HojavidaDatalaboral::findOne($varinfolaboral);
       $model3 = new HojavidaDataacademica();
       $model4 = new HojavidaDatapcrc();
       $model5 = new HojavidaDatadirector();
