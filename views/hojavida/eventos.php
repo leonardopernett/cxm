@@ -70,6 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -81,6 +82,8 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
+        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
+        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -111,9 +114,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
           <div class="col-md-6">  
             <label style="font-size: 15px;">Tipo de evento: </label>
-            <?= $form->field($model, 'tipo_evento', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idtipoevento', 'placeholder'=>'Tipo del Evento'])?>
+            <?=  $form->field($model, 'tipo_evento', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\HojavidaTipoeventos::find()->orderBy(['hv_idtiposeventos'=> SORT_DESC])->all(), 'tipoeventos', 'tipoeventos'),
+                                        [
+                                            'id'=>'idtipoevento',
+                                            'prompt'=>'Seleccione Tipo Evento...',
+                                        ]
+                                )->label(''); 
+            ?>
             
-            <label style="font-size: 15px;">Fecha del evento: </label>
+            <label style="font-size: 15px;">Tipo de evento: </label>
             <?=
                     $form->field($model, 'fechacreacion', [
                         'labelOptions' => ['class' => 'col-md-12'],
@@ -172,6 +181,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-toggle' => 'tooltip',
                                     'title' => 'Guardar Evento',
                                     'onclick' => 'validar();']) 
+        ?> 
+      </div>  
+    </div>
+
+    <div class="col-md-4">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-plus" style="font-size: 15px; color: #FFC72C;"></em> Agregar Tipo Evento: </label>
+        <?= 
+          Html::button('Agregar', ['value' => url::to(['tiposeventos']), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar Evento'])
+        ?>
+        <?php
+          Modal::begin([
+            'header' => '<h4></h4>',
+            'id' => 'modal1',
+          ]);
+
+          echo "<div id='modalContent1'></div>";
+                                                          
+          Modal::end(); 
         ?> 
       </div>  
     </div>
@@ -235,7 +263,6 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidnombreevento = document.getElementById("idnombreevento").value;
     var varciudad = document.getElementById("hojavidaeventos-hv_idciudad").value;
     var varidtipoevento = document.getElementById("idtipoevento").value;
-    var varfechas = document.getElementById("hojavidaeventos-fechacreacion").value;
 
     if (varidnombreevento == "") {
       event.preventDefault();
@@ -251,12 +278,6 @@ $this->params['breadcrumbs'][] = $this->title;
           event.preventDefault();
           swal.fire("!!! Advertencia !!!","Debe de ingresar el tipo de evento","warning");
           return;
-        }else{
-          if (varfechas == "") {
-            event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debe de ingresar el rango de fechas del evento","warning");
-            return;
-          }
         }
       }
     }

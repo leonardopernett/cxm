@@ -218,6 +218,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             )->label(''); 
             ?>
           </div>
+
+          <div class="col-md-4">
+            <label style="font-size: 15px;"> Fecha de Cumpleaños</label>
+            <?= $form->field($model, 'fechacumple', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->widget(\yii\jui\DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control', 'id'=>'idfechacumple'],]) ?>
+          </div>
         </div>
 
       </div>
@@ -288,6 +293,13 @@ $this->params['breadcrumbs'][] = $this->title;
               <?= $form->field($model2, "nivel_afinidad", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varNivel, ['prompt' => 'Seleccionar...', 'id'=>"idnivelafinidad"]) ?>
             </div>
           </div>          
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <label style="font-size: 15px;"> Ingresar el &aacute;rea de Trabajo: </label>
+                <?= $form->field($model2, 'areatrabajo', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idareatrabajo', 'placeholder'=>'Ingresar el Área de Trabajo'])?>
+            </div>
         </div>
 
       </div>
@@ -598,6 +610,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidsatu = document.getElementById("idsatu").value;
     var varautoincrement = "<?php echo $variddatapersonal; ?>";
     var varclasificacion = document.getElementById("hojavidadatapersonal-clasificacion").value;
+    var varfechacumple = document.getElementById("idfechacumple").value;
 
     if (varididentificacion == "") {
 
@@ -692,6 +705,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvaridsusceptible : varidsusceptible,
                 txtvaridsatu : varidsatu,
                 txtvarclasificacion : varclasificacion,
+                txtvarfechacumple : varfechacumple,
               },
               success : function(response){
                 numRta =   JSON.parse(response);
@@ -707,6 +721,7 @@ $this->params['breadcrumbs'][] = $this->title;
             var varidafinidad = document.getElementById("idafinidad").value;
             var varidtipoafinidad = document.getElementById("idtipoafinidad").value;
             var varidnivelafinidad = document.getElementById("idnivelafinidad").value;
+            var varidareatrabajo = document.getElementById("idareatrabajo").value;
 
             if (varidrol == "") {
               event.preventDefault();
@@ -740,6 +755,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvaridafinidad : varidafinidad,
                 txtvaridtipoafinidad : varidtipoafinidad,
                 txtvaridnivelafinidad : varidnivelafinidad,
+                txtvaridareatrabajo : varidareatrabajo,
               },
               success : function(response){
                 numRta =   JSON.parse(response);

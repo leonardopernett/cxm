@@ -71,6 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -91,6 +92,9 @@ $this->params['breadcrumbs'][] = $this->title;
   foreach ($dataProviderInfo as $key => $value) {   
       $varIdAccion = $value['hv_idpersonal'];
       $varIdClientes = $value['IdCliente'];
+      $varCumple = $value['fechacumple'];
+
+      $paramsaccion = [':idhvacciones' => $varIdAccion];
 
       $paramsclasifica = [':idclasifica' => $value['clasificacion']];
       $varClasificacion = Yii::$app->db->createCommand('
@@ -151,6 +155,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Clasificación Ciudad Konecta') ?></label></th>
                 <td><label style="font-size: 12px;"><?php echo  $varClasificacion; ?></label></td>
               </tr>
+              <tr>
+                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha de Cumpleaños') ?></label></th>
+                <td><label style="font-size: 12px;"><?php echo  $varCumple; ?></label></td>
+              </tr>
             </tbody>
           </table>
 
@@ -195,6 +203,8 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nivel de Afinidad') ?></label></th>
                 <td><label style="font-size: 12px;"><?php echo  $value['NivelAfinidad']; ?></label></td>
+                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Area de Trabajo') ?></label></th>
+                <td><label style="font-size: 12px;"><?php echo  $value['areatrabajo']; ?></label></td>                
               </tr>
             </tbody>
           </table>
@@ -223,7 +233,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   dp.hv_idpersonal = :idhvaccion AND hd.id_dp_cliente = :idclientes
                 GROUP BY pc.id_dp_clientes')->bindValues($paramscliente)->queryScalar();
 
-            $paramsaccion = [':idhvacciones' => $varIdAccion];
+            
             $varListaDirectores = Yii::$app->db->createCommand('
               SELECT  cc.director_programa  AS Programa
                 FROM tbl_hojavida_datadirector dc 
@@ -391,34 +401,34 @@ $this->params['breadcrumbs'][] = $this->title;
                   <caption><?php echo "Resultados Complementos"; ?></caption>
                   <thead>
                     <tr>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado Civil') ?></label></th>
+                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado Civil') ?></label></th>                    
+                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Hijos') ?></label></th>
+                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Hijos') ?></label></th>
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estilo Social') ?></label></th>
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Dominancia Cerebral') ?></label></th>
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Hobbies') ?></label></th>
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gustos') ?></label></th>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Hijos') ?></label></th>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Hijos') ?></label></th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
                         $varListaComplementos = Yii::$app->db->createCommand('
-                          SELECT dc.hv_idcomplemento, hd.estadocivil, dc.cantidadhijos, dc.NombreHijos, d.dominancia,
-                          e.estilosocial, g.text, h.text AS hobbies FROM tbl_hojavida_datacomplementos dc
-                            INNER JOIN tbl_hojavida_datacivil hd ON 
-                              dc.hv_idcivil = hd.hv_idcivil
-                            INNER JOIN tbl_hv_dominancias d ON 
-                              dc.iddominancia = d.iddominancia
-                            INNER JOIN tbl_hv_estilosocial e ON 
-                              dc.idestilosocial = e.idestilosocial
-                            INNER JOIN tbl_hv_gustos g ON 
-                              dc.idgustos = g.id
-                            INNER JOIN tbl_hv_hobbies h ON 
-                              dc.idhobbies = h.id
-                            INNER JOIN tbl_hojavida_datapersonal dp ON 
-                              dc.hv_idpersonal = dp.hv_idpersonal
-                            WHERE 
-                              dp.hv_idpersonal = :idhvacciones')->bindValues($paramsaccion)->queryAll();
+                        SELECT dc.hv_idcomplemento, hd.estadocivil, dc.cantidadhijos, dc.NombreHijos, d.dominancia,
+                        e.estilosocial, g.text, h.text AS hobbies FROM tbl_hojavida_datacomplementos dc
+                          LEFT JOIN tbl_hojavida_datacivil hd ON 
+                            dc.hv_idcivil = hd.hv_idcivil
+                          LEFT JOIN tbl_hv_dominancias d ON 
+                            dc.iddominancia = d.iddominancia
+                          LEFT JOIN tbl_hv_estilosocial e ON 
+                            dc.idestilosocial = e.idestilosocial
+                          LEFT JOIN tbl_hv_gustos g ON 
+                            dc.idgustos = g.id
+                          LEFT JOIN tbl_hv_hobbies h ON 
+                            dc.idhobbies = h.id
+                          LEFT JOIN tbl_hojavida_datapersonal dp ON 
+                            dc.hv_idpersonal = dp.hv_idpersonal
+                          WHERE 
+                            dp.hv_idpersonal = :idhvacciones')->bindValues($paramsaccion)->queryAll();
 
                         foreach ($varListaComplementos as $key => $value) { 
                         

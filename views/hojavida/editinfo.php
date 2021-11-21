@@ -216,6 +216,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             )->label(''); 
             ?>
           </div>
+
+          <div class="col-md-4">
+            <label style="font-size: 15px;"> Fecha de Cumpleaños</label>
+            <?= $form->field($model, 'fechacumple', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->widget(\yii\jui\DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control', 'id'=>'idfechacumple'],]) ?>
+          </div>
         </div>
 
       </div>
@@ -287,6 +292,13 @@ $this->params['breadcrumbs'][] = $this->title;
               <?= $form->field($model2, "nivel_afinidad", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varNivel, ['prompt' => 'Seleccionar...', 'id'=>"idnivelafinidad"]) ?>
             </div>
           </div>          
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <label style="font-size: 15px;"> Ingresar el &aacute;rea de Trabajo: </label>
+                <?= $form->field($model2, 'areatrabajo', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idareatrabajo', 'placeholder'=>'Ingresar el Área de Trabajo'])?>
+            </div>
         </div>
 
       </div>
@@ -684,7 +696,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-12">
       
     <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Complementos: </label> 
+        <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Datos Complementarios:: </label> 
 
         <?php
 
@@ -715,7 +727,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php if (count($varListaComplementos) == 0) { ?>
               
               <?= 
-                  Html::button('Nuevo Complementos', ['value' => url::to(['complementosaccion','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Nuevo Complementos'])
+                  Html::button('Nuevo Datos Complementarios', ['value' => url::to(['complementosaccion','idsinfo'=>$idinfo]), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Nuevo Complementos'])
               ?>
               <?php
                   Modal::begin([
@@ -730,7 +742,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php }else{ ?>
 
-              <?= Html::a('Agregar Complementos',  ['complementosadd','idsinfo'=>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab7;", 'title' => 'Agregar Complementos']) ?>
+              <?= Html::a('Agregar Datos Complementarios',  ['complementosadd','idsinfo'=>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab7;", 'title' => 'Agregar Complementos']) ?>
 
             <?php } ?>
           </div>
@@ -739,7 +751,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
           <div class="col-md-12">
               <table id="tblDataComplementos" class="table table-striped table-bordered tblResDetFreed">
-                <caption><?php echo "Resultados Complementos"; ?></caption>
+                <caption><?php echo "Resultados Datos Complementarios"; ?></caption>
                 <thead>
                   <tr>
                     <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado Civil') ?></label></th>                    
@@ -768,7 +780,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       <td><label style="font-size: 12px;"><?php echo  $value['hobbies']; ?></label></td>
                       <td class="text-center">
                         <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletecomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
-                        <?= Html::a('<em class="fas fa-edit" style="font-size: 15px; color: #FC4343;"></em>',  ['editcomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Editar']) ?>
+                        <?= Html::a('<em class="fas fa-edit" style="font-size: 15px; color: #337ab7;"></em>',  ['editcomplementos','id'=> $value['hv_idcomplemento'], 'idsinfo' =>$idinfo], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Editar']) ?>
                         
                       </td>
                     </tr>
@@ -1078,7 +1090,7 @@ $this->params['breadcrumbs'][] = $this->title;
             }
             
 
-            var vareventos = document.querySelectorAll('#hojavidadataacademica-usua_id option:checked');
+            var vareventos = document.querySelectorAll('#hojavidaeventos-hv_ideventos option:checked');
             var varlisteventos = Array.from(vareventos).map(el => el.value);
 
             // Esta accion permite guardar el tercer bloque...

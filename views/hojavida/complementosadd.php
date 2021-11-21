@@ -12,7 +12,7 @@ use yii\bootstrap\Modal;
 use app\models\ControlProcesosPlan;
 use yii\db\Query;
 
-$this->title = 'Hoja de Vida - Pais & Ciudad';
+$this->title = 'Hoja de Vida - Datos Complementarios';
 $this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-12">'
@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="capaPrincipal" style="display: inline;">
     <div class="row">
         <div class="col-md-12">
-            <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Complementos: </label> 
+            <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Datos Complementarios: </label> 
 
             <div class="row">
                 <div class="col-md-12">
@@ -144,7 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <?= Html::submitButton('Actualizar Permisos', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'btn_submit'] ) ?> 
+                <?= Html::submitButton('Guardar Datos Complementarios', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id'=>'btn_submit'] ) ?> 
             </div>
         </div>
     </div>
