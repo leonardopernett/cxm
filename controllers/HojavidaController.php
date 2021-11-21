@@ -38,6 +38,7 @@ use app\models\HojavidaPermisoscliente;
 use app\models\HojavidaDatacomplementos;
 use app\models\ProcesosClienteCentrocosto;
 use app\models\HojavidaDataclasificacion;
+use app\models\HojavidaTipoeventos;
 use Exception;
 
   class HojavidaController extends Controller {
@@ -46,7 +47,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion'],
+              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion','tiposeventos'],
               'rules' => [
                 [
                   'allow' => true,
@@ -429,6 +430,7 @@ use Exception;
       $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");      
       $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
+      $txtvarfechacumple = Yii::$app->request->get("txtvarfechacumple");
 
       $txtrta = 0;
       Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
@@ -448,7 +450,8 @@ use Exception;
                     'clasificacion' => $txtvarclasificacion,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
+                    'usua_id' => Yii::$app->user->identity->id,  
+                    'fechacumple' => $txtvarfechacumple,                                             
                 ])->execute();
 
 
@@ -482,6 +485,7 @@ use Exception;
       $txtvaridafinidad = Yii::$app->request->get("txtvaridafinidad");
       $txtvaridtipoafinidad = Yii::$app->request->get("txtvaridtipoafinidad");
       $txtvaridnivelafinidad = Yii::$app->request->get("txtvaridnivelafinidad");
+      $varidareatrabajo = Yii::$app->request->get("varidareatrabajo");
       
       $txtrta = 0;      
 
@@ -498,7 +502,8 @@ use Exception;
                     'nivel_afinidad' => $txtvaridnivelafinidad,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
+                    'usua_id' => Yii::$app->user->identity->id,  
+                    'areatrabajo' => $varidareatrabajo,                                               
                 ])->execute();      
 
       die(json_encode($txtrta));
@@ -556,16 +561,22 @@ use Exception;
     public function actionAplicareventos(){
       $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
       $txtvarlisteventos = Yii::$app->request->get("txtvarlisteventos");
+      $txtrtaEventos = 0;
 
-      Yii::$app->db->createCommand()->insert('tbl_hojavida_asignareventos',[
-                    'hv_ideventos' => $txtvarlisteventos,
+      $array_eventos = count($txtvarlisteventos);
+      for ($i=0; $i < $array_eventos; $i++) { 
+        $vareventos = $txtvarlisteventos[$i];
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_asignareventos',[
+                    'hv_ideventos' => $vareventos,
                     'hv_idpersonal' => $txtvarautoincrement,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,                                       
-                ])->execute();   
+                ])->execute();          
+      }       
       
-      die(json_encode($txtrta));
+      die(json_encode($txtrtaEventos));
     }
 
     public function actionGuardarcuentas(){
@@ -1096,6 +1107,7 @@ use Exception;
       $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
       $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
+      $txtvarfechacumple = Yii::$app->request->get("txtvarfechacumple");
 
       $txtrta = 0;
       
@@ -1115,9 +1127,7 @@ use Exception;
                     'suceptible' => $txtvaridsusceptible,
                     'indicador_satu' => $txtvaridsatu,
                     'clasificacion' => $txtvarclasificacion,
-                    'fechacreacion' => date('Y-m-d'),
-                    'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
+                    'fechacumple' => $txtvarfechacumple,                                                 
                 ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
 
       
@@ -1135,6 +1145,7 @@ use Exception;
       $txtvaridafinidad = Yii::$app->request->get("txtvaridafinidad");
       $txtvaridtipoafinidad = Yii::$app->request->get("txtvaridtipoafinidad");
       $txtvaridnivelafinidad = Yii::$app->request->get("txtvaridnivelafinidad");
+      $txtvaridareatrabajo = Yii::$app->request->get("txtvaridareatrabajo");
       
       $txtrta = 0;      
 
@@ -1147,10 +1158,8 @@ use Exception;
                     'trabajo_anterior' => $txtvaridtrabajoanterior,
                     'afinidad' => $txtvaridafinidad,
                     'tipo_afinidad' => $txtvaridtipoafinidad,
-                    'nivel_afinidad' => $txtvaridnivelafinidad,
-                    'fechacreacion' => date('Y-m-d'),
-                    'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
+                    'nivel_afinidad' => $txtvaridnivelafinidad,  
+                    'areatrabajo' => $txtvaridareatrabajo,                                            
                 ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();      
 
       die(json_encode($txtrta));
@@ -1172,10 +1181,7 @@ use Exception;
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
                     'id_dp_cliente' => $txtvarid_dp_cliente,
-                    'cod_pcrc' => $varcodpcrc,
-                    'fechacreacion' => date('Y-m-d'),
-                    'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
+                    'cod_pcrc' => $varcodpcrc,                                       
                 ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();  
       }
 
@@ -1184,10 +1190,7 @@ use Exception;
         $vardirector = $txtvaridrequester2[$i];
 
         Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
-                    'ccdirector' => $vardirector,
-                    'fechacreacion' => date('Y-m-d'),
-                    'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
+                    'ccdirector' => $vardirector,                                      
                 ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
       }
 
@@ -1196,10 +1199,7 @@ use Exception;
         $vargerente = $txtvaridrequester3[$i];
 
         Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
-                    'ccgerente' => $vargerente,
-                    'fechacreacion' => date('Y-m-d'),
-                    'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
+                    'ccgerente' => $vargerente,                                       
                 ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();  
       }          
 
@@ -1282,6 +1282,26 @@ use Exception;
       HojavidaDataclasificacion::findOne($id)->delete();
 
       return $this->redirect(['complementoshv']);
+    }
+
+    public function actionTiposeventos(){
+     $model = new HojavidaTipoeventos();
+ 
+     $form = Yii::$app->request->post();
+     if($model->load($form)){
+       Yii::$app->db->createCommand()->insert('tbl_hojavida_tipoeventos',[
+                     'tipoeventos' => $model->tipoeventos,  
+                     'fechacreacion' => date('Y-m-d'),
+                     'anulado' => 0,
+                     'usua_id' => Yii::$app->user->identity->id,                                  
+         ])->execute();
+ 
+       return $this->redirect(['eventos']);
+     }
+ 
+     return $this->renderAjax('tiposeventos',[
+       'model' => $model,
+     ]);
     }
 
     public function actionVerficarConnid(){

@@ -40,7 +40,7 @@ class HojavidaDatalaboral extends \yii\db\ActiveRecord
         return [
             [['hv_idpersonal', 'hv_id_antiguedad', 'afinidad', 'tipo_afinidad', 'nivel_afinidad', 'anulado', 'usua_id'], 'integer'],
             [['fecha_inicio_contacto', 'fechacreacion'], 'safe'],
-            [['rol', 'nombre_jefe', 'cargo_jefe', 'trabajo_anterior'], 'string', 'max' => 250]
+            [['rol', 'nombre_jefe', 'cargo_jefe', 'trabajo_anterior','areatrabajo'], 'string', 'max' => 250]
         ];
     }
 
@@ -64,6 +64,7 @@ class HojavidaDatalaboral extends \yii\db\ActiveRecord
             'anulado' => Yii::t('app', ''),
             'fechacreacion' => Yii::t('app', ''),
             'usua_id' => Yii::t('app', ''),
+            'areatrabajo' => Yii::t('app', ''),
         ];
     }
 }
