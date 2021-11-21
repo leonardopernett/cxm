@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
-    $varmaximoid = Yii::$app->db->createCommand("SELECT max(hv_idpersonal) from tbl_hojavida_datapersonal WHERE  anulado = 0")->queryScalar();
+    $varmaximoid = Yii::$app->db->createCommand("SELECT max(hv_idpersonal) from tbl_hojavida_datapersonal")->queryScalar();
     $variddatapersonal = $varmaximoid + 1;
 
     $varRespuesta = ['1' => 'No', '2' => 'Si'];
