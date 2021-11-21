@@ -643,7 +643,7 @@ use Exception;
           l.nombre_jefe AS NombreJefe, l.cargo_jefe AS CargoJefe, l.trabajo_anterior AS TrabajoAnterior,
           if(l.afinidad = 1,"Relación Directa","Relación de Interes") AS Afinidad,  dp.clasificacion,
           if(l.tipo_afinidad = 1,"Decisor","No Decisor") AS TipoAfinidad, if(l.nivel_afinidad = 1,"Estratégio","Operativo") AS NivelAfinidad,
-          pc.id_dp_cliente AS IdCliente
+          pc.id_dp_cliente AS IdCliente, dp.fechacumple, l.areatrabajo
            FROM tbl_hojavida_datapersonal dp
             INNER JOIN tbl_hv_pais p ON 
               dp.hv_idpais = p.hv_idpais
