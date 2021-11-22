@@ -2786,7 +2786,6 @@ use Exception;
 
     $sheet = $objPHPExcel->getSheet(0);
     $highestRow = $sheet->getHighestRow();
-    $highestcolumn = $sheet->getHighestColumn();
 
     for ($row=3; $row < $highestRow; $row++) { 
       $varDocumento = $sheet->getCell("A".$row)->getValue();
