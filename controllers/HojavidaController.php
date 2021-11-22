@@ -2757,136 +2757,222 @@ use Exception;
 
 
    public function actionExport(){
+    $model = new HojavidaDatapersonal();
       
-    $modelos = new HojavidaDatapersonal();
-    if($modelos->load(Yii::$app->request->post())){
-        $modelos->file = UploadedFile::getInstance($modelos, 'file');
-        $ruta = 'archivos/'.time()."_".$modelos->file->baseName. ".".$modelos->file->extension;
-        $modelos->file->saveAs( $ruta ); 
-         $this->Importexcel($ruta);  
-    }
+      if ($model->load(Yii::$app->request->post())) {
+        
+        $model->file = UploadedFile::getInstances($model, 'file');
 
-    Yii::$app->session->setFlash('file','archivo cargado exitosamente');
-    unlink($ruta);
-    return $this->redirect(['index']);
+        if ($model->file && $model->validate()) {
+                        
+          foreach ($model->file as $file) {
+            
+            $fecha = date('Y-m-d-h-i-s');
+            $user = Yii::$app->user->identity->username;
+            $name = $fecha . '-' . $user;
+            $file->saveAs('avonencuestas/' . $name . '.' . $file->extension);
+            $this->Importexcel($name);
+
+            return $this->redirect('index');
+          }
+        }
+      }
   }
 
   public function Importexcel($name){
 
-  
-    /* $inputFile = 'categorias/' . $name . '.xlsx'; */
-    $inputFile  = $name;
+    $inputFile = 'avonencuestas/' . $name . '.xlsx';
 
-    try {
+    try{
       $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
       $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
       $objPHPExcel = $objReader->load($inputFile);
-    } catch (Exception $e) {
+
+    }catch(Exception $e) {
       die('Error');
     }
+
 
     $sheet = $objPHPExcel->getSheet(0);
     $highestRow = $sheet->getHighestRow();
     $highestcolumn = $sheet->getHighestColumn();
-    
-    for ($row = 3; $row <= $highestRow; $row++) {
 
-       /*    $user = Yii::$app->db->createCommand('select * from tbl_hojavida_datapersonal where identificacion =:id')
-          ->bindParam(':id',$sheet->getCell("A".$row)->getValue())
-          ->queryOne(); */
-            
-          Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[                                        
-            'identificacion'   =>  $sheet->getCell("A".$row)->getValue(),
-            'nombre_full'      =>  $sheet->getCell("B".$row)->getValue(),
-            'email'            =>  $sheet->getCell("C".$row)->getValue(),
-            'numero_movil'     =>  $sheet->getCell("D".$row)->getValue(),
-            'numero_fijo'      =>  $sheet->getCell("E".$row)->getValue(),
-            'direccion_casa'   =>  $sheet->getCell("F".$row)->getValue(),
-            'hv_idpais'        =>  $sheet->getCell("G".$row)->getValue() =='Argentina'  ? 1 :
-                                   $sheet->getCell("G".$row)->getValue() =='Bolivia'    ? 2 :
-                                   $sheet->getCell("G".$row)->getValue() =='Chile'  ? 3 :
-                                   $sheet->getCell("G".$row)->getValue() =='Colombia'  ? 4 :
-                                   $sheet->getCell("G".$row)->getValue() =='España'  ? 5 :
-                                   $sheet->getCell("G".$row)->getValue() =='Estados Unidos'  ? 6 : 
-                                   $sheet->getCell("G".$row)->getValue() =='Uruguay'  ? 7 : null,
+    for ($i=3; $i < $highestRow; $i++) { 
+      $varDocumento = $sheet->getCell("A".$row)->getValue();
+      
+      $paramsPais = [':TextPais' => $sheet->getCell("G".$row)->getValue()];
+      $varIdPais = Yii::$app->db->createCommand('
+      SELECT if(hp.hv_idpais = "",4,hp.hv_idpais) AS Pais_ids FROM tbl_hv_pais hp 
+        WHERE 
+          hp.anulado = 0 
+            AND hp.pais LIKE "%:TextPais%"')->bindValues($paramsPais)->queryScalar();
 
-            'hv_idciudad'      =>   $sheet->getCell("H".$row)->getValue()  == 'Barranquilla' ? 1 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Bogotá' ? 2 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Bucaramanga' ? 3 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Buenos Aires' ? 4 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Cali' ? 5 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Cartagena' ? 6 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Cúcuta' ? 7 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Ibagué' ? 8 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Itagüí' ? 9 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Medellín' ? 10 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Monteria' ? 11 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Rionegro' ? 12 : 
-                                    $sheet->getCell("H".$row)->getValue()  == 'Santa Marta' ? 13 : null,
-                    
-            'direccion_oficina'=>   $sheet->getCell("I".$row)->getValue(),
-            'hv_idmodalidad'   =>   $sheet->getCell("J".$row)->getValue() == 'Trabajo en casa' ? 1 :
-                                    $sheet->getCell("J".$row)->getValue() == 'Oficina' ? 2 :
-                                    $sheet->getCell("J".$row)->getValue() == 'Alternancia' ? 3 : null
-            ,
-            'tratamiento_data' =>   $sheet->getCell("K".$row)->getValue() == 'Si' ? 1 : 2,
-            'suceptible'       =>   $sheet->getCell("L".$row)->getValue() == 'Si' ? 1 : 2,
-            'anulado'          =>   $sheet->getCell("M".$row)->getValue() == 'Activo' ? 0 : 1,
-            'usua_id'          =>   Yii::$app->user->identity->id,
-            'clasificacion'    =>   $sheet->getCell("N".$row)->getValue() == 'Bogotá' ? 1 : 2
-        ])->execute();
+      $paramsCiudad = [':TextCiudad' => $sheet->getCell("H".$row)->getValue()];
+      $varIdCiudad = Yii::$app->db->createCommand('
+      SELECT if(hc.hv_idciudad="",9,hc.hv_idciudad) AS Ciudad_ids FROM tbl_hv_ciudad hc
+        WHERE 
+          hc.anulado = 0
+            AND hc.ciudad LIKE "%:TextCiudad%"')->bindValues($paramsCiudad)->queryScalar();
 
-        $personal = Yii::$app->db->createCommand('SELECT hv_idpersonal FROM tbl_hojavida_datapersonal WHERE identificacion=:identi')
-        ->bindParam(':identi',$sheet->getCell("A".$row)->getValue())
-        ->queryOne();
+      $paramsModalidad = [':TextModalidad' => $sheet->getCell("J".$row)->getValue()];
+      $varIdModalidad = Yii::$app->db->createCommand('
+      SELECT if(mt.modalidad = "",2,mt.hv_idmodalidad) AS resultadoModalidad FROM tbl_hv_modalidad_trabajo mt
+        WHERE 
+          mt.anulado = 0
+            AND mt.modalidad LIKE "%:TextModalidad%"')->bindValues($paramsModalidad)->queryScalar();
 
-        Yii::$app->db->createCommand()->insert('tbl_hojavida_datalaboral',[
-          'hv_idpersonal'      =>   $personal['hv_idpersonal'],
-          'afinidad'           =>   $sheet->getCell("O".$row)->getValue() == 'Relación Directa' ? 1 : 2,
-          'tipo_afinidad'      =>   $sheet->getCell("P".$row)->getValue() == 'Decisor' ? 1 : 2,
-          'nivel_afinidad'     =>   $sheet->getCell("Q".$row)->getValue() == 'Estratégico' ? 1 : 2,
-        ])->execute();
-
-         $data = explode(",", $sheet->getCell("R".$row)->getValue());
-         $data1 = explode(",", $sheet->getCell("S".$row)->getValue()); 
-
-         foreach ($data as $director) {
-            Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
-            'hv_idpersonal'=>   $personal['hv_idpersonal'],
-            'ccdirector'   =>   $director,
-            'usua_id'      =>   Yii::$app->user->identity->id
-              ])->execute();
-         }
-
-         foreach ($data1 as $gerente) {
-          Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
-          'hv_idpersonal'=>   $personal['hv_idpersonal'],
-          'ccgerente'    =>   $gerente,
-          'usua_id'      =>   Yii::$app->user->identity->id
-            ])->execute();
-        }
-
-           $data2 =  $sheet->getCell("T".$row)->getValue();
-           $data3 =  $sheet->getCell("U".$row)->getValue();
-
-           $clientes = Yii::$app->db->createCommand('SELECT id_dp_clientes AS id, cliente, cod_pcrc FROM tbl_proceso_cliente_centrocosto GROUP BY cliente')
-                ->queryAll();
-            
-              foreach ($clientes as $cliente) {
-             
-                     $res = Yii::$app->db->createCommand('SELECT id_dp_clientes AS id, cliente, cod_pcrc FROM tbl_proceso_cliente_centrocosto where cliente=:cliente GROUP BY cliente')
-                     ->bindParam(':cliente',$data2)
-                     ->queryOne() ;
-
-                     Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
-                      'hv_idpersonal'    =>   $personal['hv_idpersonal'],
-                      'id_dp_cliente'    =>   $res['id'],
-                      'cod_pcrc'         =>   $res['cod_pcrc'],
-                      'usua_id'          => Yii::$app->user->identity->id
-                      ])->execute();  
-                 
-             }
+      $varAutoriza = null;
+      $varTextAutoriza = $sheet->getCell("K".$row)->getValue();
+      if ($varTextAutoriza == "Si" || $varTextAutoriza == "SI" || $varTextAutoriza == "si") {
+        $varAutoriza = 2;
+      }else{
+        $varAutoriza = 1;
       }
+
+      $varSusceptible = null;
+      $varTextsusceptible = $sheet->getCell("L".$row)->getValue();
+      if ($varTextsusceptible == "Si" || $varTextsusceptible == "SI" || $varTextsusceptible == "si") {
+        $varSusceptible = 2;
+      }else{
+        $varSusceptible = 1;
+      }
+
+      $paramsClasificacion = [':TextClasificacion' => $sheet->getCell("N".$row)->getValue()];
+      $varIdClasificacion = Yii::$app->db->createCommand('
+      SELECT if(dc.hv_idclasificacion="",1,dc.hv_idclasificacion) FROM tbl_hojavida_dataclasificacion dc 
+        WHERE 
+          dc.anulado = 0
+            AND dc.ciudadclasificacion LIKE  "%:TextClasificacion%"')->bindValues($paramsClasificacion)->queryScalar();
+
+      $varTextAfinidad = null;
+      $varAfinidad = $sheet->getCell("O".$row)->getValue();
+      if ($varAfinidad == "Relación Directa" ||$varAfinidad == "relacion directa" || $varAfinidad == "Relación directa") {
+        $varTextAfinidad = 1;
+      }else{
+        $varTextAfinidad = 2;
+      }
+
+      $varTextTipoAfinidad = null;
+      $varTipoAfinidad = $sheet->getCell("P".$row)->getValue();
+      if ($varTipoAfinidad == "Decisor" || $varTipoAfinidad == "decisor") {
+        $varTextTipoAfinidad = 1;
+      }else{
+        $varTextTipoAfinidad = 2;
+      }
+
+      $varTextNivelAfinidad = null;
+      $varNivelAfinidad = $sheet->getCell("Q".$row)->getValue();
+      if ($varNivelAfinidad == "Operativo" || $varNivelAfinidad == "operativo") {
+        $varTextNivelAfinidad = 2;
+      }else{
+        $varTextNivelAfinidad = 1;
+      }
+
+      $varDirectores = $sheet->getCell("R".$row)->getValue();
+      $varListDirector = explode(", ", $varDirectores);
+
+      $varGerentes = $sheet->getCell("S".$row)->getValue();
+      $varListGerentes = explode(", ", $varGerentes);
+
+      $paramsCliente = [':TextCliente' => $sheet->getCell("T".$row)->getValue()];
+      $varIdCliente = Yii::$app->db->createCommand('
+      SELECT DISTINCT cc.id_dp_clientes, cc.cliente FROM tbl_proceso_cliente_centrocosto cc
+        WHERE 
+          cc.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
+
+
+      $varPcrcs = $sheet->getCell("U".$row)->getValue();
+      $varListPcrcs = explode(", ", $varPcrcs);
+
+
+      Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
+                  'nombre_full' => $sheet->getCell("B".$row)->getValue();
+                  'identificacion' => $varDocumento;
+                  'email' => $sheet->getCell("C".$row)->getValue();
+                  'numero_movil' => $sheet->getCell("D".$row)->getValue();
+                  'numero_fijo' => $sheet->getCell("E".$row)->getValue();
+                  'direccion_oficina' => $sheet->getCell("I".$row)->getValue();
+                  'direccion_casa' => $sheet->getCell("F".$row)->getValue();
+                  'hv_idpais' => $varIdPais,
+                  'hv_idciudad' => $varIdCiudad,
+                  'hv_idmodalidad' => $varIdModalidad,
+                  'tratamiento_data' => $varAutoriza,
+                  'suceptible' => $varSusceptible,
+                  'indicador_satu' => null,
+                  'clasificacion' => $varIdClasificacion,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id, 
+                  'fechacumple' => null,                                   
+              ])->execute();
+
+
+      $paramsInfoPersonal = [':DocumentoInfo' => $varDocumento];
+      $varIdInfoPersonal = Yii::$app->db->createCommand('
+      SELECT dp.hv_idpersonal FROM tbl_hojavida_datapersonal dp 
+        WHERE 
+          dp.identificacion = :DocumentoInfo ')->bindValues($paramsInfoPersonal)->queryScalar();
+
+      $varNA = "Sin datos";
+
+      Yii::$app->db->createCommand()->insert('tbl_hojavida_datalaboral',[
+                  'rol' => $varNA,
+                  'hv_idpersonal' => $varIdInfoPersonal,
+                  'hv_id_antiguedad' => 1,
+                  'fecha_inicio_contacto' => null,
+                  'nombre_jefe' => $varNA,
+                  'cargo_jefe' => $varNA,
+                  'trabajo_anterior' => $varNA,
+                  'afinidad' => $varTextAfinidad,
+                  'tipo_afinidad' => $varTextTipoAfinidad,
+                  'nivel_afinidad' => $varTextNivelAfinidad,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id, 
+                  'areatrabajo' => $varNA,                                  
+              ])->execute(); 
+
+
+      $arrayDirectores = count($varListDirector);
+      for ($i=0; $i < $arrayClientes; $i++) { 
+        $varDocDirector = $varListDirector[$i];
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
+                  'hv_idpersonal' => $varIdInfoPersonal,
+                  'ccdirector' => $varDocDirector,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                                       
+              ])->execute(); 
+      }
+
+      $arrayGerentes = count($varListGerentes);
+      for ($i=0; $i < $arrayGerentes; $i++) { 
+        $varDocGerente = $varListGerentes[$i];
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
+                  'hv_idpersonal' => $varIdInfoPersonal,
+                  'ccgerente' => $varDocGerente,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                                       
+              ])->execute();  
+      }
+
+      $arrayClientes = count($varListPcrcs);
+      for ($i=0; $i < $arrayClientes; $i++) { 
+        $varCodPcrcs = $varListPcrcs[$i];
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
+                  'hv_idpersonal' => $varIdInfoPersonal,
+                  'id_dp_cliente' => $varIdCliente,
+                  'cod_pcrc' => $varCodPcrcs,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                                       
+              ])->execute(); 
+      }
+
     }
 
   }
