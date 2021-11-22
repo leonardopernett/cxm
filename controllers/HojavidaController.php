@@ -2757,31 +2757,22 @@ use Exception;
 
 
    public function actionExport(){
-    $model = new HojavidaDatapersonal();
-      
-      if ($model->load(Yii::$app->request->post())) {
-        
-        $model->file = UploadedFile::getInstances($model, 'file');
+    $modelos = new HojavidaDatapersonal();
+    if($modelos->load(Yii::$app->request->post())){
+        $modelos->file = UploadedFile::getInstance($modelos, 'file');
+        $ruta = 'archivos/'.time()."_".$modelos->file->baseName. ".".$modelos->file->extension;
+        $modelos->file->saveAs( $ruta ); 
+         $this->Importexcel($ruta);  
+    }
 
-        if ($model->file && $model->validate()) {
-                        
-          foreach ($model->file as $file) {
-            
-            $fecha = date('Y-m-d-h-i-s');
-            $user = Yii::$app->user->identity->username;
-            $name = $fecha . '-' . $user;
-            $file->saveAs('avonencuestas/' . $name . '.' . $file->extension);
-            $this->Importexcel($name);
-
-            return $this->redirect('index');
-          }
-        }
-      }
+    Yii::$app->session->setFlash('file','archivo cargado exitosamente');
+    unlink($ruta);
+    return $this->redirect(['index']);
   }
 
   public function Importexcel($name){
 
-    $inputFile = 'avonencuestas/' . $name . '.xlsx';
+    $inputFile  = $name;
 
     try{
       $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
@@ -2797,7 +2788,7 @@ use Exception;
     $highestRow = $sheet->getHighestRow();
     $highestcolumn = $sheet->getHighestColumn();
 
-    for ($i=3; $i < $highestRow; $i++) { 
+    for ($row=3; $row < $highestRow; $row++) { 
       $varDocumento = $sheet->getCell("A".$row)->getValue();
       
       $paramsPais = [':TextPais' => $sheet->getCell("G".$row)->getValue()];
@@ -2934,7 +2925,7 @@ use Exception;
 
 
       $arrayDirectores = count($varListDirector);
-      for ($i=0; $i < $arrayClientes; $i++) { 
+      for ($i=0; $i < $arrayDirectores; $i++) { 
         $varDocDirector = $varListDirector[$i];
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
