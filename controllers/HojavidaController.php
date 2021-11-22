@@ -2886,13 +2886,13 @@ use Exception;
 
 
       Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
-                  'nombre_full' => $sheet->getCell("B".$row)->getValue();
-                  'identificacion' => $varDocumento;
-                  'email' => $sheet->getCell("C".$row)->getValue();
-                  'numero_movil' => $sheet->getCell("D".$row)->getValue();
-                  'numero_fijo' => $sheet->getCell("E".$row)->getValue();
-                  'direccion_oficina' => $sheet->getCell("I".$row)->getValue();
-                  'direccion_casa' => $sheet->getCell("F".$row)->getValue();
+                  'nombre_full' => $sheet->getCell("B".$row)->getValue(),
+                  'identificacion' => $varDocumento,
+                  'email' => $sheet->getCell("C".$row)->getValue(),
+                  'numero_movil' => $sheet->getCell("D".$row)->getValue(),
+                  'numero_fijo' => $sheet->getCell("E".$row)->getValue(),
+                  'direccion_oficina' => $sheet->getCell("I".$row)->getValue(),
+                  'direccion_casa' => $sheet->getCell("F".$row)->getValue(),
                   'hv_idpais' => $varIdPais,
                   'hv_idciudad' => $varIdCiudad,
                   'hv_idmodalidad' => $varIdModalidad,
