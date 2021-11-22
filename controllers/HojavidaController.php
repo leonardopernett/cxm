@@ -2940,6 +2940,7 @@ use Exception;
       $arrayGerentes = count($varListGerentes);
       for ($i=0; $i < $arrayGerentes; $i++) { 
         $varDocGerente = $varListGerentes[$i];
+        // Proceso para guardar los gerentes
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
                   'hv_idpersonal' => $varIdInfoPersonal,
@@ -2953,6 +2954,7 @@ use Exception;
       $arrayClientes = count($varListPcrcs);
       for ($i=0; $i < $arrayClientes; $i++) { 
         $varCodPcrcs = $varListPcrcs[$i];
+        // Proceso para guardar los pcrc y el cliente
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
                   'hv_idpersonal' => $varIdInfoPersonal,
