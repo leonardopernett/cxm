@@ -2758,15 +2758,19 @@ use Exception;
 
    public function actionExport(){
     $modelos = new HojavidaDatapersonal();
+
     if($modelos->load(Yii::$app->request->post())){
+
         $modelos->file = UploadedFile::getInstance($modelos, 'file');
         $ruta = 'archivos/'.time()."_".$modelos->file->baseName. ".".$modelos->file->extension;
         $modelos->file->saveAs( $ruta ); 
          $this->Importexcel($ruta);  
+
     }
 
     Yii::$app->session->setFlash('file','archivo cargado exitosamente');
     unlink($ruta);
+    
     return $this->redirect(['index']);
   }
 
