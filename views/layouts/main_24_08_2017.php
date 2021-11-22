@@ -387,7 +387,7 @@ AppAsset::register($this);
         <footer class="footer">
             <div class="container">
                 <p class="pull-left">&copy; QA Management <?= date('Y') ?></p>
-                <p class="pull-right">Desarrollado por <a href="http://www.ingeneo.com.co/" target="_blank" rel="external">Ingeneo S.A.S</a></p>
+                <p class="pull-right">Desarrollado por <a href="http://www.ingeneo.com.co/" target="_blank" rel="noopener noreferrer external">Ingeneo S.A.S</a></p>
             </div>
         </footer>
 

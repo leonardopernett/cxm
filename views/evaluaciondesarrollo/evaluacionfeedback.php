@@ -834,7 +834,7 @@ if($vardocumentosijefe){ ?>
                             <div class="card1 mb">
                                 <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Biblioteca de Conocimiento: </label> 
                                                             
-                                <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" class="btn btn-success">Ir a Paco (Jefes - Personas)</a>                            
+                                <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" rel="noopener noreferrer" class="btn btn-success">Ir a Paco (Jefes - Personas)</a>                            
                             </div>
                         </div>
                         
