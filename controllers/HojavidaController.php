@@ -2839,7 +2839,7 @@ $modelos = new HojavidaDatapersonal();
 
       $varTextAfinidad = null;
       $varAfinidad = $sheet->getCell("O".$row)->getValue();
-      if ($varAfinidad == "RelaciÃ³n Directa" ||$varAfinidad == "relacion directa" || $varAfinidad == "RelaciÃ³n directa") {
+      if ($varAfinidad == "Relaci0n Directa" ||$varAfinidad == "relacion directa" || $varAfinidad == "Relacion directa") {
         $varTextAfinidad = 1;
       }else{
         $varTextAfinidad = 2;
@@ -2942,7 +2942,7 @@ $modelos = new HojavidaDatapersonal();
       $arrayGerentes = count($varListGerentes);
       for ($i=0; $i < $arrayGerentes; $i++) { 
         $varDocGerente = $varListGerentes[$i];
-
+        
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
                   'hv_idpersonal' => $varIdInfoPersonal,
                   'ccgerente' => $varDocGerente,
