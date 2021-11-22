@@ -2925,7 +2925,8 @@ use Exception;
 
       $arrayDirectores = count($varListDirector);
       for ($i=0; $i < $arrayDirectores; $i++) { 
-        $varDocDirector = $varListDirector[$i];
+        $varDocDirector = $varListDirector[$i]; 
+        // Procesos para guardar el director
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
                   'hv_idpersonal' => $varIdInfoPersonal,
