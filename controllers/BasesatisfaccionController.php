@@ -2368,7 +2368,7 @@ class BasesatisfaccionController extends Controller {
                         $varcontenido = 0;
                     } else {
                         $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
-                        
+
                         if (count($response) == 0) {
                             $vartexto = "Transcripcion no encontrada";
                             $varvalencia = "Valencia emocional no encontrada";
@@ -2398,9 +2398,6 @@ class BasesatisfaccionController extends Controller {
                             $varcontenido = 1;
                         } 
                     }
-
-                    $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
-
 
 
                 return $this->render('showformulariosatisfaccion', [
