@@ -277,7 +277,7 @@ use GuzzleHttp;
             uq.usua_id = eq.usua_id
 
           WHERE
-            ef.arbol_id IN (:Arbol_id )
+            f.arbol_id IN (:Arbol_id )
               AND f.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsFormularios)->queryAll();
 
       $arraydataf = array();
@@ -314,13 +314,22 @@ use GuzzleHttp;
 
       $paramsBusqueda = [':Arbol_id' => $varIdArbol, ':Fecha_inicio' => $varFechaInicio.' 00:00:00', ':Fecha_Fin' => $varFechaFin.' 23:59:59'];
       $varListPreguntas = Yii::$app->db->createCommand('
-        SELECT ef.id AS Id_Formulario, s.id AS id_Seccion, b.id AS id_Bloque, b.name AS Bloque, bd.id AS id_pregunta, bd.name AS Pregunta FROM tbl_bloquedetalles bd
-          INNER  JOIN tbl_bloques b ON 
-            bd.bloque_id = b.id
-          INNER JOIN tbl_seccions s ON 
-            b.seccion_id = s.id
-          INNER JOIN tbl_ejecucionformularios ef ON 
-            s.formulario_id = ef.formulario_id     
+      SELECT ef.id AS Id_Formulario, b.id AS Id_Bloque, b.name AS Bloque, bd.id AS Id_Pregunta, bd.name AS Pregunta, 
+        cd.id AS Id_Respuesta, cd.name AS Respuesta FROM tbl_calificaciondetalles cd
+                INNER JOIN tbl_ejecucionbloquedetalles ebd ON
+                   ebd.calificaciondetalle_id = cd.id
+                INNER JOIN tbl_bloquedetalles bd ON
+                  ebd.bloquedetalle_id = bd.id  
+                INNER JOIN tbl_bloques b ON 
+                  b.id = bd.bloque_id
+                INNER JOIN tbl_ejecucionbloques eb ON
+                  b.id = eb.bloque_id AND eb.id = ebd.ejecucionbloque_id
+                INNER JOIN tbl_ejecucionseccions es ON
+                  eb.ejecucionseccion_id = es.id
+                INNER JOIN tbl_seccions s ON
+                  s.id = es.seccion_id
+                INNER JOIN tbl_ejecucionformularios ef ON 
+                  es.ejecucionformulario_id = ef.id
           WHERE 
             ef.arbol_id IN  (:Arbol_id)
               AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsBusqueda)->queryAll();
@@ -328,30 +337,7 @@ use GuzzleHttp;
       $arraydatap = array();
       foreach ($varListPreguntas as $key => $value) {
 
-        $paramsRta = [':idSession' => $value['id_Seccion'], ':idBloque' => $value['id_Bloque'], ':idPregunta' => $value['id_pregunta'], ':IdFormulario' => $value['Id_Formulario']];
-
-        $varListRtas = Yii::$app->db->createCommand('
-        SELECT  cd.name AS Respuesta FROM tbl_calificaciondetalles cd
-          INNER JOIN tbl_ejecucionbloquedetalles ebd ON
-             ebd.calificaciondetalle_id = cd.id
-          INNER JOIN tbl_bloquedetalles bd ON
-            ebd.bloquedetalle_id = bd.id  
-          INNER JOIN tbl_bloques b ON 
-            b.id = bd.bloque_id
-          INNER JOIN tbl_ejecucionbloques eb ON
-            b.id = eb.bloque_id AND eb.id = ebd.ejecucionbloque_id
-          INNER JOIN tbl_ejecucionseccions es ON
-            eb.ejecucionseccion_id = es.id
-          INNER JOIN tbl_seccions s ON
-            s.id = es.seccion_id
-          WHERE
-            s.id = :idSession
-              AND b.id = :idBloque
-                AND bd.id = :idPregunta 
-                  AND es.ejecucionformulario_id = :IdFormulario')->bindValues($paramsRta)->queryScalar();
-
-
-        array_push($arraydatap, array("Id_Formulario "=>$value['Id_Formulario'],"Pregunta "=>$value['Pregunta'],"Respuesta "=>$varListRtas)); 
+        array_push($arraydatap, array("Id_Formulario "=>$value['Id_Formulario'],"Id_Bloque"=>$value['Id_Bloque'],"Bloque"=>$value['Bloque'],"Id_Pregunta"=>$value['Id_Pregunta'],"Pregunta "=>$value['Pregunta'],"Id_Respuesta"=>$value['Id_Respuesta'],"Respuesta "=>$value['Respuesta'])); 
 
       }
 
