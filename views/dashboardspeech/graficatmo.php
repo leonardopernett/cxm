@@ -34,12 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $FechaActual = date("Y-m-d");
     $MesAnterior = date("m") - 1;
 
-    // var_dump($varCantidadllamadas);
-    // var_dump($varArbol_idV);
-    // var_dump($varParametros_idV);
-    // var_dump($varCodparametrizar);
-    // var_dump($varFechaI);
-    // var_dump($varFechaF);
+    
 
     $txtvDatosMotivos = "select distinct sc.nombre, sc.idcategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 3 and sc.cod_pcrc in ('$varCodigPcrc') and sc.programacategoria in ('$varArbol_idV')";
 
@@ -132,11 +127,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantidad, ',')?>],
+              data: [<?= implode($varListCantidad, ',')?>],
               color: '#4298B5'
             },{
               name: 'Duración de llamadas',
-              data: [<?= join($varListDuracion, ',')?>],
+              data: [<?= implode($varListDuracion, ',')?>],
               color: '#FFc72C',
               type: 'line'
             }],

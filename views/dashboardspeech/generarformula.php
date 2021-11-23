@@ -101,7 +101,7 @@ $varMes = date("n");
                 <?= $form->field($model, 'comentarios', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listData, ['prompt' => 'Seleccionar Mes...', 'id'=>'clienteID'])->label('Seleccionar Mes') ?>
             </div>
             <br>
-            <div align="center">
+            <div style="text-align: center;">
                 <?= Html::submitButton(Yii::t('app', 'Guardar Parametros'),
                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                         'data-toggle' => 'tooltip',

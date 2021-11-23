@@ -1289,9 +1289,9 @@ $this->title = 'Dashboard Voz del Cliente';
                               ?>
                               <tr>
                                 <td class="text-left"><?php echo $arraylistanombre[$i]; ?></td>
-                                <td class="text-center" <?php  if(round($arraylistaagente[$i],2) >= 95) {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistaagente[$i],2) < 95 && round($arraylistaagente[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistaagente[$i],2) < 75 && round($arraylistaagente[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?> ><div ></div><?php if(round($arraylistaagente[$i],2) == 0){ } else{ echo round($arraylistaagente[$i],2).' % ';}?></td>
-                                <td class="text-center" <?php  if(round($arraylistacanal[$i],2) >= 95)  {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistacanal[$i],2) < 95 && round($arraylistacanal[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistacanal[$i],2) < 75 && round($arraylistacanal[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?> ><div ></div><?php if(round($arraylistacanal[$i],2) == 0){ } else{ echo round($arraylistacanal[$i],2).' % ';}?></td>
-                                <td class="text-center" <?php  if(round($arraylistamarca[$i],2) >= 95)  {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistamarca[$i],2) < 95 && round($arraylistamarca[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistamarca[$i],2) < 75 && round($arraylistamarca[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?>><div ></div><?php if(round($arraylistamarca[$i],2) == 0){ } else{ echo round($arraylistamarca[$i],2).' % ';}?></td>
+                                <td class="text-center" <?php  if(round($arraylistaagente[$i],2) >= 95) {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistaagente[$i],2) < 95 && round($arraylistaagente[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistaagente[$i],2) < 75 && round($arraylistaagente[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?> ><div ></div><?php if(round($arraylistaagente[$i],2) == 0){/*?*/} else{ echo round($arraylistaagente[$i],2).' % ';}?></td>
+                                <td class="text-center" <?php  if(round($arraylistacanal[$i],2) >= 95)  {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistacanal[$i],2) < 95 && round($arraylistacanal[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistacanal[$i],2) < 75 && round($arraylistacanal[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?> ><div ></div><?php if(round($arraylistacanal[$i],2) == 0){ /*?*/} else{ echo round($arraylistacanal[$i],2).' % ';}?></td>
+                                <td class="text-center" <?php  if(round($arraylistamarca[$i],2) >= 95)  {?>style="font-weight: bold; color: #298f09;"<?php } ?> <?php if(round($arraylistamarca[$i],2) < 95 && round($arraylistamarca[$i],2) > 75) {?>style="font-weight: bold; color: #f5e50a;"<?php } ?> <?php  if(round($arraylistamarca[$i],2) < 75 && round($arraylistamarca[$i],2) > 1) {?>style="font-weight: bold; color: #db6d07;"<?php } ?>><div ></div><?php if(round($arraylistamarca[$i],2) == 0){ /*?*/} else{ echo round($arraylistamarca[$i],2).' % ';}?></td>
                               <?php } ?>  
                               </tr>                              
                           </tbody>
@@ -1804,7 +1804,7 @@ $this->title = 'Dashboard Voz del Cliente';
 
 
 <script type="text/javascript">
-var varDataNum = [<?= join($titulos, ',')?>];
+var varDataNum = [<?= implode($titulos, ',')?>];
 // console.log(varDataNum);
 $(document).ready(function(){
   console.log(varDataNum.length);
@@ -2205,7 +2205,7 @@ function sortTable(n,type) {
 
             series: [{
               name: 'Porcentaje de participación',
-              data: [<?= join($arraylistparticipacion, ',')?>],
+              data: [<?= implode($arraylistparticipacion, ',')?>],
               color: '#C148D0'
             }],
 
@@ -2264,11 +2264,11 @@ function sortTable(n,type) {
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantidad, ',')?>],
+              data: [<?= implode($varListCantidad, ',')?>],
               color: '#4298B5'
             },{
               name: 'Duración de llamadas',
-              data: [<?= join($varListDuracion, ',')?>],
+              data: [<?= implode($varListDuracion, ',')?>],
               color: '#FFc72C',
               type: 'line',
               yAxis: 1
@@ -2323,7 +2323,7 @@ function sortTable(n,type) {
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantiVar5, ',')?>],
+              data: [<?= implode($varListCantiVar5, ',')?>],
               color: '#4298B5'
             }],
 
@@ -2375,7 +2375,7 @@ function sortTable(n,type) {
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantiVar, ',')?>],
+              data: [<?= implode($varListCantiVar, ',')?>],
               color: '#ffa126'
             }],
 
@@ -2428,7 +2428,7 @@ function sortTable(n,type) {
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantiVar0, ',')?>],
+              data: [<?= implode($varListCantiVar0, ',')?>],
               color: '#ffa126'
             }],
 
@@ -2492,7 +2492,7 @@ function sortTable(n,type) {
 
             series: [{
               name: '% de responsable',
-              data: [<?= join($arraylistaresponsable, ',')?>],
+              data: [<?= implode($arraylistaresponsable, ',')?>],
               color: '#627cf0'
             }],
 
@@ -2567,7 +2567,7 @@ function sortTable(n,type) {
         var vartxtTotalLlamadas = "<?php echo $txtTotalLlamadas; ?>";
         var varvarCodigo = "<?php echo $varCodigo; ?>";
 
-        var varDataNumeros = [<?= join($titulos, ',')?>];
+        var varDataNumeros = [<?= implode($titulos, ',')?>];
 
         for (var i = 0; i < varDataNumeros.length; i++) {
             var varNumbers = i + 1;  
