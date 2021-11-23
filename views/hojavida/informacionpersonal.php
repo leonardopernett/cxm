@@ -35,9 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
     $variddatapersonal = $varmaximoid + 1;
 
     $varRespuesta = ['1' => 'No', '2' => 'Si'];
-    $varAfinidad = ['1' => 'Relación Directa', '2' => 'Relación de Interés'];
+    $varAfinidad = ['1' => 'Relacion Directa', '2' => 'Relacion de Interés'];
     $varTipo = ['1' => 'Decisor', '2' => 'No Decisor'];
-    $varNivel = ['1' => 'Estratégico', '2' => 'Operativo'];
+    $varNivel = ['1' => 'Estrategico', '2' => 'Operativo'];
     $varEstado = ['1' => 'Activo', '2' => 'No Activo'];
 ?>
 <style>
