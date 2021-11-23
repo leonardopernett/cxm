@@ -2952,14 +2952,32 @@ $modelos = new HojavidaDatapersonal();
               ])->execute();  
       }
 
-      $arrayClientes = count($varListPcrcs);
-      for ($i=0; $i < $arrayClientes; $i++) { 
-        $varCodPcrcs = $varListPcrcs[$i];
+      if(count($varIdCliente) != 0) {
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
+                  'hv_idpersonal' => $varIdInfoPersonal,
+                  'id_dp_cliente' => $varIdCliente,
+                  'cod_pcrc' => null,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                                       
+              ])->execute(); 
+      } 
+
+
+      $arrayPcrc = count($varListPcrcs);
+      for ($i=0; $i < $arrayPcrc; $i++) { 
+
+        $paramsPcrc = [':varCodPcrcs' => $varListPcrcs[$i]];
+
+        $varCentroCostos = Yii::$app->db->createCommand('
+        SELECT DISTINCT if(pc.cod_pcrc = "",NULL,pc.cod_pcrc)  FROM tbl_proceso_cliente_centrocosto pc
+          WHERE 
+            pc.pcrc IN (:varCodPcrcs)')->bindValues($paramsPcrc)->queryScalar();
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
                   'hv_idpersonal' => $varIdInfoPersonal,
                   'id_dp_cliente' => $varIdCliente,
-                  'cod_pcrc' => $varCodPcrcs,
+                  'cod_pcrc' => $varCentroCostos,
                   'fechacreacion' => date('Y-m-d'),
                   'anulado' => 0,
                   'usua_id' => Yii::$app->user->identity->id,                                       
