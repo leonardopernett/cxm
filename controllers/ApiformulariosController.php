@@ -102,10 +102,8 @@ use GuzzleHttp;
         SELECT s.id, s.name AS Seccion FROM tbl_seccions s
           INNER JOIN tbl_ejecucionformularios ef ON 
             s.formulario_id = ef.formulario_id
-          INNER JOIN tbl_arbols a ON 
-            ef.formulario_id = a.formulario_id
           WHERE 
-            a.id IN (:Arbol_id)
+            ef.arbol_id IN (:Arbol_id)
               AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
             GROUP BY s.id')->bindValues($paramsBusqueda)->queryAll();
 
@@ -175,11 +173,9 @@ use GuzzleHttp;
           INNER JOIN tbl_seccions s ON 
             b.seccion_id = s.id
           INNER JOIN tbl_ejecucionformularios ef ON 
-            s.formulario_id = ef.formulario_id
-          INNER JOIN tbl_arbols a ON 
-            ef.formulario_id = a.formulario_id    
+            s.formulario_id = ef.formulario_id   
           WHERE 
-            a.id IN  (:Arbol_id)
+            ef.arbol_id IN  (:Arbol_id)
               AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
             GROUP BY b.id
               ORDER BY ef.id')->bindValues($paramsBusqueda)->queryAll();
@@ -281,8 +277,8 @@ use GuzzleHttp;
             uq.usua_id = eq.usua_id
 
           WHERE
-            a.id IN (:Arbol_id )
-            AND f.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsFormularios)->queryAll();
+            ef.arbol_id IN (:Arbol_id )
+              AND f.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsFormularios)->queryAll();
 
       $arraydataf = array();
       foreach ($varListFormularios as $key => $value) {
@@ -324,11 +320,9 @@ use GuzzleHttp;
           INNER JOIN tbl_seccions s ON 
             b.seccion_id = s.id
           INNER JOIN tbl_ejecucionformularios ef ON 
-            s.formulario_id = ef.formulario_id
-          INNER JOIN tbl_arbols a ON 
-            ef.formulario_id = a.formulario_id     
+            s.formulario_id = ef.formulario_id     
           WHERE 
-            a.id IN  (:Arbol_id)
+            ef.arbol_id IN  (:Arbol_id)
               AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatap = array();
