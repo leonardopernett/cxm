@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="/web/js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../web/js_extensions/jquery-2.1.1.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <!-- Full Page Image Header with Vertically Centered Content -->

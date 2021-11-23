@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         . ' {input}{error}{hint}</div>';
 ?>
-<script src="/web/js_extensions/jquery-2.1.3.min.js"></script>
+<script src="../../web/js_extensions/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="tableExport.js"></script>
 <script type="text/javascript" src="jquery.base64.js"></script>
 <script type="text/javascript" src="html2canvas.js"></script>
