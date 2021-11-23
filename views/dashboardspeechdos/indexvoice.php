@@ -375,10 +375,10 @@ $varColorM = null;
   }
 
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../web/js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../web/js_extensions/highcharts/highcharts.js"></script>
+<script src="../../web/js_extensions/chart.min.js"></script>
+<script src="../../web/js_extensions/highcharts/exporting.js"></script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
