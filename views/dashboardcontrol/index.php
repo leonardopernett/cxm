@@ -174,9 +174,9 @@ $this->title = 'Métricas de Productividad/Valoración';
     }
 
 ?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../web/js_exporting/jquery-2.1.1.min.js"></script>
+<script src="../../web/js_exporting/highcharts/highcharts.js"></script>
+<script src="../../web/js_exporting/highcharts/exporting.js"></script>
 
 <div class="row">
   <div class="col-md-3 well" style="margin-right: 10px; text-align: center;">
