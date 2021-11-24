@@ -137,10 +137,10 @@
 
 
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="../../web/js_exporting/jquery-2.1.1.min.js"></script>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../web/js_exporting/highcharts/highcharts.js"></script>
+<script src="../../web/js_exporting/highcharts/exporting.js"></script>
 
 
 <!-- datatable -->
@@ -148,13 +148,13 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
 
-<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+<script src="../../web/js_exporting/datatables/jquery.dataTables.min.js"></script>
+<script src="../../web/js_exporting/datatables/dataTables.buttons.min.js"></script>
+<script src="../../web/js_exporting/cloudflare/jszip.min.js"></script>
+<script src="../../web/js_exporting/cloudflare/pdfmake.min.js"></script>
+<script src="../../web/js_exporting/cloudflare/vfs_fonts.js"></script>
+<script src="../../web/js_exporting/datatables/buttons.html5.min.js"></script>
+<script src="../../web/js_exporting/datatables/buttons.print.min.js"></script>
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -162,11 +162,11 @@
 <!-- sweet alert -->
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
+<script src="../../web/js_exporting/sweetalert2/sweetalert2.all.min.js"></script>
 
 <!-- toastr -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="../../web/js_exporting/cloudflare/toastr.min.js"></script>
  
 
 
