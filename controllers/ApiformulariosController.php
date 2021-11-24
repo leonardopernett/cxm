@@ -248,7 +248,9 @@ use GuzzleHttp;
       $varListFormularios = Yii::$app->db->createCommand('
        SELECT 
         f.id, f.basesatisfaccion_id AS ID_Encuesta, f.created AS FechaYHora, f.hora_inicial AS HoraInicialValoracion, 
-        f.hora_final AS HoraFinalValoracion, f.cant_modificaciones AS CantModificaciones, f.tiempo_modificaciones AS TiempoModificaciones, d.name AS Dimension, aa.name AS ArbolPadre, a.id AS IDArbol, a.name AS Arbol, ff.name AS Formulario, uq.usua_nombre AS Lider, e.name AS Asesor, e.identificacion AS CedulaEvaluado, e.name AS NombreEvaluado, (select ux.usua_nombre from tbl_usuarios ux where ux.usua_id = f.usua_id_lider) AS Rsponsable,   uu.usua_nombre AS Evaluador, r.role_nombre AS rol, f.dsfuente_encuesta AS Fuente, t.name AS Transacciones, eq.name AS Equipo, f.dscomentario AS Comentarios, f.score AS Score, f.i1_nmcalculo AS PEC
+        f.hora_final AS HoraFinalValoracion, f.cant_modificaciones AS CantModificaciones, f.tiempo_modificaciones AS TiempoModificaciones, d.name AS Dimension, aa.name AS ArbolPadre, a.id AS IDArbol, a.name AS Arbol, ff.name AS Formulario, 
+        re.cod_pcrc AS CentroCostos, re.pcrc AS Pcrc,
+        uq.usua_nombre AS Lider, e.name AS Asesor, e.identificacion AS CedulaEvaluado, e.name AS NombreEvaluado, (select ux.usua_nombre from tbl_usuarios ux where ux.usua_id = f.usua_id_lider) AS Rsponsable,   uu.usua_nombre AS Evaluador, r.role_nombre AS rol, f.dsfuente_encuesta AS Fuente, t.name AS Transacciones, eq.name AS Equipo, f.dscomentario AS Comentarios, f.score AS Score, f.i1_nmcalculo AS PEC
 
         FROM tbl_ejecucionformularios f
           INNER JOIN tbl_dimensions d ON 
@@ -274,7 +276,9 @@ use GuzzleHttp;
           INNER JOIN tbl_equipos eq ON 
             f.equipo_id = eq.id
           INNER JOIN tbl_usuarios uq ON 
-            uq.usua_id = eq.usua_id
+            uq.usua_id = eq.usua_id          
+          LEFT JOIN tbl_registro_ejec_cliente re ON 
+            re.ejec_form_id = f.id
 
           WHERE
             f.arbol_id IN (:Arbol_id )
@@ -284,7 +288,7 @@ use GuzzleHttp;
       foreach ($varListFormularios as $key => $value) {
       
 
-        array_push($arraydataf, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC']));  
+        array_push($arraydataf, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC'],"CentroCostos"=>$value['CentroCostos'],"Canal"=>$value['Pcrc']));  
       }
 
       die(json_encode(array("status"=>"1","data"=>$arraydataf)));
