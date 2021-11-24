@@ -155,9 +155,9 @@ button.dt-button, div.dt-button, a.dt-button, input.dt-button{
 
 
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="../../web/js_exporting/jquery-2.1.1.min.js"></script>
-<script src="../../web/js_exporting/highcharts/highcharts.js"></script>
-<script src="../../web/js_exporting/highcharts/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
  <!-- Compiled and minified CSS -->
@@ -166,12 +166,12 @@ button.dt-button, div.dt-button, a.dt-button, input.dt-button{
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
 
-<script src="../../web/js_exporting/datatables/jquery.dataTables.min.js"></script>
-<script src="../../web/js_exporting/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
 
 <!-- toastr -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script src="../../web/js_exporting/cloudflare/toastr.min.js"></script>
+<script src="../../js_extensions/cloudflare/toastr.min.js"></script>
  
 
  <div class="container">

@@ -79,9 +79,9 @@ $roles = $command->queryScalar();
 
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="../../web/js_exporting/jquery-2.1.1.min.js"></script>
-<script src="../../web/js_exporting/highcharts/highcharts.js"></script>
-<script src="../../web/js_exporting/highcharts/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">

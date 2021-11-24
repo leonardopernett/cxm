@@ -190,10 +190,10 @@ use yii\widgets\ActiveForm;
 </style>
 
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="../../web/js_exporting/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
 
-<script src="../../web/js_exporting/highcharts/highcharts.js"></script>
-<script src="../../web/js_exporting/highcharts/exporting.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 
 
 <!-- datatable -->
@@ -201,21 +201,21 @@ use yii\widgets\ActiveForm;
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
 
-<script src="../../web/js_exporting/datatables/jquery.dataTables.min.js"></script>
-<script src="../../web/js_exporting/datatables/dataTables.buttons.min.js"></script>
-<script src="../../web/js_exporting/cloudflare/jszip.min.js"></script>
-<script src="../../web/js_exporting/cloudflare/pdfmake.min.js"></script>
-<script src="../../web/js_exporting/cloudflare/vfs_fonts.js"></script>
-<script src="../../web/js_exporting/datatables/buttons.html5.min.js"></script>
-<script src="../../web/js_exporting/datatables/buttons.print.min.js"></script>
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
+<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
+<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
+<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
+<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
 
 <!-- sweet alert -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
-<script src="../../web/js_exporting/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="../../js_extensions/sweetalert2/sweetalert2.all.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- toastr -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script src="../../web/js_exporting/cloudflare/toastr.min.js"></script>
+<script src="../../js_extensions/cloudflare/toastr.min.js"></script>
  
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">

@@ -167,19 +167,19 @@ small{
 </style>
 
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="../../web/js_exporting/jquery-2.1.1.min.js"></script>
-<script src="../../web/js_exporting/highcharts/highcharts.js"></script>
-<script src="../../web/js_exporting/highcharts/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
  <!-- Compiled and minified CSS -->
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
-<script src="../../web/js_exporting/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="../../js_extensions/sweetalert2/sweetalert2.all.min.js"></script>
 
 <!-- toastr -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script src="../../web/js_exporting/cloudflare/toastr.min.js"></script>
+<script src="../../js_extensions/cloudflare/toastr.min.js"></script>
  
 
 
