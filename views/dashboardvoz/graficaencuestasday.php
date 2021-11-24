@@ -156,9 +156,9 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
             text-align: left;    
     }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../web/js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../web/js_extensions/highcharts/highcharts.js"></script>
+<script src="../../web/js_extensions/highcharts/exporting.js"></script>
 
 <div class="page-header">
     <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
