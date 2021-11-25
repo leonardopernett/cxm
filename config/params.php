@@ -6,7 +6,7 @@ return [
     /* MODO DE CONEXIÓN */
     'auth_mode' => 'LDAP', /* LDAP o DATABASE */
     /* PARAMETROS LDAP */
-    'LDAP_SERVER1' => "172.20.88.250",
+    'LDAP_SERVER1' => "172.20.1.220",
     'LDAP_accsufix' => '@multienlace.com.co',
     /* VALORACIONES POR MES */
     'valoracionesMes' => 5,
