@@ -3040,8 +3040,7 @@ use app\models\EvaluacionDesarrollo;
               ue.documento AS documentoevalua
                 FROM tbl_usuarios_evalua ue 
                   WHERE 
-                  ue.documento IN (11201521,435604,79794429,10779852,1128435828,1152447323)
-                  AND ue.anulado = :Anulado')->bindValues($paramsBusqueda)->queryAll();
+                    ue.anulado = :Anulado')->bindValues($paramsBusqueda)->queryAll();
 
           $arraListGeneral = array();
           foreach ($varListDocumentosGeneral as $key => $value) {
