@@ -214,6 +214,11 @@ AppAsset::register($this);
                                                     'url' => ['/controlencuestas/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Quejas y Reclamos &nbsp;&nbsp;'),
+                                                    'url' => ['/qr/index'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                ],
                                                 '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',    
                                                 [
