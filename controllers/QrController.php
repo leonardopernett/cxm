@@ -28,7 +28,7 @@ class QrController extends Controller {
 
     
     public function actionIndex(){
-       $casos = Yii::$app->db->createCommand('SELECT c.numero_caso as id, a.nombre as area, s.tipo_de_dato, t.tipologia , comentario, cli.clientes, c.nombre, c.documento, c.correo, es.estado, c.fecha_creacion  FROM qr_casos c INNER JOIN  qr_tipos_de_solicitud s ON c.id_solicitud = s.id INNER JOIN  qr_tipologias t ON t.id = c.id_tipologia INNER JOIN qr_areas a ON a.id = t.id_areas INNER JOIN  qr_clientes cli ON cli.id = c.id_cliente INNER JOIN  qr_estados_casos es ON es.id = c.id_estado_caso')->queryAll();
+       $casos = Yii::$app->db->createCommand('SELECT c.numero_caso as id, a.nombre as area, s.tipo_de_dato, t.tipologia , comentario, cli.clientes, c.nombre, c.documento, c.correo, es.estado, c.fecha_creacion  FROM tbl_qr_casos c INNER JOIN  tbl_qr_tipos_de_solicitud s ON c.id_solicitud = s.id INNER JOIN  tbl_qr_tipologias t ON t.id = c.id_tipologia INNER JOIN tbl_qr_areas a ON a.id = t.id_areas INNER JOIN  tbl_qr_clientes cli ON cli.id = c.id_cliente INNER JOIN  tbl_qr_estados_casos es ON es.id = c.id_estado_caso')->queryAll();
 
        return $this->render('index',[
            'casos'=>$casos
