@@ -3591,7 +3591,7 @@ use app\models\EvaluacionDesarrollo;
 
                 $lastColumn++;
 
-                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['PorcentajeCompetencia']);
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$varNotasGeneral);
                 $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
                 $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
 
