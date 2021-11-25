@@ -3040,7 +3040,8 @@ use app\models\EvaluacionDesarrollo;
               ue.documento AS documentoevalua
                 FROM tbl_usuarios_evalua ue 
                   WHERE 
-                    ue.anulado = :Anulado')->bindValues($paramsBusqueda)->queryAll();
+                  ue.documento IN (11201521,435604,79794429,10779852,1128435828,1152447323)
+                  AND ue.anulado = :Anulado')->bindValues($paramsBusqueda)->queryAll();
 
           $arraListGeneral = array();
           foreach ($varListDocumentosGeneral as $key => $value) {
@@ -3061,7 +3062,7 @@ use app\models\EvaluacionDesarrollo;
                         ->setTitle("Archivo de los Resultados Evaluacion Desarrollo General Opcion 1")
                         ->setSubject("Archivo Resultados Evaluacion Desarrollo Opcion 1")
                         ->setDescription("Este archivo contiene el proceso de la evaluacion de desarrollo general opcion 2")
-                        ->setKeywords("Archivo Resultados Evaluacion Desarrollo General Opcion 1");
+                        ->setKeywords("Archivo Resultados Evaluacion Desarrollo General de la Opcion 1");
           $phpExc->setActiveSheetIndex(0);
       
           $phpExc->getActiveSheet()->setShowGridlines(False);
