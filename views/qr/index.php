@@ -140,7 +140,7 @@ use yii\db\Query;
             <th scope="col"><span>Correo</span></th>
             <th scope="col"><span>Estados</span></th>
             <th scope="col"><span>Fecha de creación</span></th>
-            <th>
+            <th scope="col">
                 <span>Acciones</span>
             </th>
         </tr>
