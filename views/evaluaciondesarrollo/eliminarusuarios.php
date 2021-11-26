@@ -94,10 +94,10 @@ $this->params['breadcrumbs'][] = $this->title;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
-<script src="../../web/js_extensions/jquery-2.1.1.min.js"></script>
-<script src="../../web/js_extensions/highcharts/highcharts.js"></script>
-<script src="../../web/js_extensions/chart.min.js"></script>
-<script src="../../web/js_extensions/highcharts/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/chart.min.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">

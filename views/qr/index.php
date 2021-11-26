@@ -87,13 +87,13 @@ use yii\db\Query;
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
 
-<script src="../../web/js_extensions/datatables/jquery.dataTables.min.js"></script>
-<script src="../../web/js_extensions/datatables/dataTables.buttons.min.js"></script>
-<script src="../../web/js_extensions/cloudflare/jszip.min.js"></script>
-<script src="../../web/js_extensions/cloudflare/pdfmake.min.js"></script>
-<script src="../../web/js_extensions/cloudflare/vfs_fonts.js"></script>
-<script src="../../web/js_extensions/datatables/buttons.html5.min.js"></script>
-<script src="../../web/js_extensions/datatables/buttons.print.min.js"></script>
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
+<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
+<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
+<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
+<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 
 

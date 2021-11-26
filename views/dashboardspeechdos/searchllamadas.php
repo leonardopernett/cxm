@@ -145,10 +145,10 @@ $this->title = 'Dashboard Escuchar + 2.0';
   }
 
 </style>
-<script src="../../web/js_extensions/jquery-2.1.1.min.js"></script>
-<script src="../../web/js_extensions/highcharts/highcharts.js"></script>
-<script src="../../web/js_extensions/chart.min.js"></script>
-<script src="../../web/js_extensions/highcharts/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/chart.min.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">

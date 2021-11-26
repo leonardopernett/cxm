@@ -570,10 +570,10 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
 </style>
-<script src="../../web/js_extensions/jquery-2.1.1.min.js"></script>
-<script src="../../web/js_extensions/highcharts/highcharts.js"></script>
-<script src="../../web/js_extensions/chart.min.js"></script>
-<script src="../../web/js_extensions/highcharts/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/chart.min.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 
 <header class="masthead">
   <div class="container h-100">
