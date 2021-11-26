@@ -108,30 +108,38 @@ use yii\db\Query;
 <br><br>
 
 <div class="breadcrumb">
-   <li>
+<ul>
+
+<li>
        <a href="<?= Url::to(['/'])  ?>">Inicio</a>
    </li>
 
    <li>
        <a  class="active">Quejas y reclamos</a>
    </li>
+   
+   </ul>
+   
+
+   
 </div>
 
 
 <table class="table table-bordered" id="myTable">
+<caption>Tabla datos</caption>
     <thead>
         <tr>
-            <th><span> Id casos</span> </th>
-            <th><span>Tipos</span></th>
-            <th> <span>Areas</span> </th>
-            <th><span>Tipificación</span></th>
-            <th><span>Comentarios</span></th>
-            <th><span>Clientes</span></th>
-            <th><span>Nombre</span></th>
-            <th><span>Cedula</span></th>
-            <th><span>Correo</span></th>
-            <th><span>Estados</span></th>
-            <th><span>Fecha de creación</span></th>
+            <th scope="col"><span> Id casos</span> </th>
+            <th scope="col"><span>Tipos</span></th>
+            <th scope="col"> <span>Areas</span> </th>
+            <th scope="col"><span>Tipificación</span></th>
+            <th scope="col"><span>Comentarios</span></th>
+            <th scope="col"><span>Clientes</span></th>
+            <th scope="col"><span>Nombre</span></th>
+            <th scope="col"><span>Cedula</span></th>
+            <th scope="col"><span>Correo</span></th>
+            <th scope="col"><span>Estados</span></th>
+            <th scope="col"><span>Fecha de creación</span></th>
             <th>
                 <span>Acciones</span>
             </th>
