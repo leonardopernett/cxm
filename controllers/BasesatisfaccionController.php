@@ -1699,7 +1699,7 @@ class BasesatisfaccionController extends Controller {
                             $where = " ";
                 }
                 
-// aca voy German91# toca traer la hora de la llamada que se acaba de declinar para traer la llamada en el mismo rango horario.
+      // aca voy German91# toca traer la hora de la llamada que se acaba de declinar para traer la llamada en el mismo rango horario.
 
 
                 $sql = "select id from tbl_base_satisfaccion where ano = ".$model["ano"]." AND mes = ".$model["mes"]." AND dia = ".$model["dia"]." AND LPAD(hora,6,'0') >= '".$inicio."' AND LPAD(hora,6,'0') <= '".$final."' AND pcrc = ".$model['pcrc']." AND tipo_inbox = 'NORMAL' ".$where." ORDER BY RAND() LIMIT 1;";

@@ -1507,6 +1507,14 @@ use Exception;
         where t.tipoafinidad='No Decisor' AND n.nivelafinidad='Operativo' ")->queryAll();
         
 
+       $directores = Yii::$app->db->createCommand('SELECT director_programa 
+       FROM tbl_proceso_cliente_centrocosto 
+       GROUP BY documento_director 
+       ORDER BY director_programa
+       ')->queryAll();
+
+
+
        return $this->render('resumen',[
            'roles' => $roles,
            'clientsTotalBogota'   => $clientsTotalBogota,
@@ -1529,13 +1537,23 @@ use Exception;
            'totalDecisorEstrategico'  => $totalDecisorEstrategico,
            'totalDecisorOperativo'    => $totalDecisorOperativo,
            'totalNoDecisorEstrategico'  => $totalDecisorEstrategico,
-           'totalNoDecisorOperativo'    => $totalDecisorOperativo
-
+           'totalNoDecisorOperativo'    => $totalDecisorOperativo,
+            'directores' =>$directores
         ]);
 
 
 
 
+    }
+
+    public function actionResumenapi(){
+      $directores = Yii::$app->db->createCommand('SELECT  d.ccdirector AS cedula , COUNT(*) AS total,
+      (SELECT c.director_programa FROM tbl_proceso_cliente_centrocosto c WHERE c.documento_director = d.ccdirector LIMIT 1) AS nombre
+      FROM tbl_hojavida_datadirector d
+      GROUP BY d.ccdirector
+      ')->queryAll();
+
+       return  json_encode($directores);
     }
  
    

@@ -295,7 +295,7 @@ $varMedellin = "Medellín";
 </header>
 <br><br>
 
-  
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -525,7 +525,17 @@ $varMedellin = "Medellín";
 </div>
 
 <div class="container" style="margin-top:20px">
-    <div class="row">
+      
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="card1">
+                    <canvas id="myChartDirector"></canvas>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="row" style="margin-top:20px">
        <div class="col-md-6">
            <div class="card1">
               <canvas id="myChartAdmin"></canvas>
@@ -604,8 +614,9 @@ var options ={
     }
     
 }
- 
-  const ctx = document.getElementById('myChartAdmin').getContext('2d')
+
+  const ctxd = document.getElementById('myChartDirector').getContext('2d')
+  const ctx  = document.getElementById('myChartAdmin').getContext('2d')
   const ctx2 = document.getElementById('myChartAdmin2').getContext('2d')
 
   const clienteAdmin = document.getElementById('clienteAdmin').innerHTML
@@ -617,6 +628,40 @@ var options ={
   const bogota = document.getElementById('bogota').innerHTML
   const medellin = document.getElementById('medellin').innerHTML
 
+
+
+  fetch('<?php echo Url::to(['/hojavida/resumenapi']) ?>')
+    .then(res  => res.json())
+    .then(data => {
+
+        const chart = new Chart(ctxd,{
+            type: 'bar',
+            data: {
+                labels:    data.map(item => item.nombre),
+                datasets: [{
+                    label: 'Totales de Directores',
+                    data:  data.map(item => item.total),
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)', 
+                        
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)', 
+                    ],
+                    borderWidth: 1
+                    /* s */
+                }]
+            },
+            options: options
+        })
+         
+    })
 
   const chart = new Chart(ctx,{
     type: 'bar',
