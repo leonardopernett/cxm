@@ -35,9 +35,9 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 
 ?>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 
 <div class="text-center" style="text-align:left;">
     <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',

@@ -634,9 +634,9 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
   }
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 
 <header class="masthead">
   <div class="container h-100">

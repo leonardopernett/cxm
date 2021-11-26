@@ -64,11 +64,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
 
 <!-- toastr -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="../../js_extensions/cloudflare/toastr.min.js"></script>
  
 
 <header class="masthead">

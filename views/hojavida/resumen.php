@@ -253,10 +253,10 @@ $varMedellin = "Medellín";
 </style>
 
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 
 
 <!-- datatable -->
@@ -264,21 +264,21 @@ $varMedellin = "Medellín";
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
 
-<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
+<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
+<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
+<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
+<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
 
 <!-- sweet alert -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
+<script src="../../js_extensions/sweetalert2/sweetalert2.all.min.js"></script>
 
 <!-- toastr -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="../../js_extensions/cloudflare/toastr.min.js"></script>
  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js" integrity="sha512-G8JE1Xbr0egZE5gNGyUm1fF764iHVfRXshIoUWCTPAbKkkItp/6qal5YAHXrxEu4HNfPTQs6HOu3D5vCGS1j3w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
