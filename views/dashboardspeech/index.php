@@ -81,19 +81,17 @@ $this->title = 'Dashboard Voz del Cliente';
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
 </header>
 <br>
-<!--    <div class="page-header" id="idTitle" style="display: inline">
-        <h3><center><?= Html::encode($this->title) ?></center></h3>
-    </div>   -->
+   
+       <?= Html::encode($this->title) ?>   
 <br>
-<div class="formularios-form" id="idCapa" align="center" style="display: none">
-  <table align="center" width="700" >
+<div class="formularios-form" id="idCapa"  style="display: none; text-align: center;">
+  <table style="margin: auto;" style="width: 700px;" >
   <caption>Tabla datos</caption>
     <thead>
       <tr>
@@ -106,7 +104,7 @@ $this->title = 'Dashboard Voz del Cliente';
 </div>
 <div class="formularios-form" id="idCapa0" style="display: inline">
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
-        <div class="row" align="center">
+        <div class="row" style="text-align: center;">
             &nbsp; 
           <?= Html::a('Recargar',  ['index'], ['class' => 'btn btn-success',
                                 'id'=>'recarga1',                                
@@ -255,7 +253,7 @@ $this->title = 'Dashboard Voz del Cliente';
     <div class="col-md-offset-2 col-sm-8 panel panel-warning">
       <div style="text-align: center;" class="panel-body">
         <p><strong>Importante: </b> No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta. </strong>
-        <div class="row" align="center">
+        <div class="row" style="text-align: center;">
         <?= Html::a('Nueva consulta',  ['index'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
                         'data-toggle' => 'tooltip',
