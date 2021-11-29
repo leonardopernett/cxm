@@ -129,7 +129,8 @@ $this->title = 'Dashboard Escuchar + 2.0';
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <table align="center">
+        <table style="margin: auto;"
+>
         <caption>...</caption>
           <thead>
             <tr>
