@@ -32,10 +32,7 @@ $this->title = 'DashBoard Voz del Cliente';
                                                     AND t.id_pcrc = '$varCodigPcrc'
                                                     GROUP BY t.usuario_red ORDER BY promedio desc")->queryAll();
 
-    /*$varListLogin0 =  array();
-    $varListCantiVar0 =  array();
-    $varListidcateAgente = array();
-    $vartotallogin = 0;*/
+    
     
 
     $varListLogin =  array();
@@ -85,13 +82,7 @@ $this->title = 'DashBoard Voz del Cliente';
 
 
 
-    /*foreach ($txtlistatopvar as $key => $value) {
-        $varlogin = $value['usuario_red'];      
-        $varcateAgente = $value['promedio'];
-        $vartotallogin = $vartotallogin + 1;
-        array_push($varListLogin0, $varlogin);
-        array_push($varListidcateAgente, $varcateAgente);
-    }*/
+    
 
 ?>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
@@ -284,7 +275,7 @@ $(function() {
 
             series: [{
               name: '% Agentes',
-              data: [<?= join($varListCantiVar5, ',')?>],
+              data: [<?= implode($varListCantiVar5, ',')?>],
               color: '#4298B5'
             }],
 
@@ -336,7 +327,7 @@ $(function() {
 
             series: [{
               name: '% Agentes',
-              data: [<?= join($varListCantiVar, ',')?>],
+              data: [<?= implode($varListCantiVar, ',')?>],
               color: '#ffa126'
             }],
 
@@ -389,7 +380,7 @@ $(function() {
 
             series: [{
               name: '% Agentes',
-              data: [<?= join($varListCantiVar0, ',')?>],
+              data: [<?= implode($varListCantiVar0, ',')?>],
               color: '#ffa126'
             }],
 

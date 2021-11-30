@@ -76,9 +76,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
     $varCodigo = $txtCodParametrizar;    
 
 
-    // $varListIndicadores = "select distinct sc.cod_pcrc, sc.idcategoria, sc.nombre, sc.tipoparametro, sc.orientacionsmart, sc.orientacionform, sc.programacategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1  and sc.programacategoria in ('$txtServicio') ";
-
-    //$varListIndicadores = "select  sc.idcategoria, sc.nombre, sc.tipoparametro, sc.orientacionsmart, sc.orientacionform, sc.programacategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sc.cod_pcrc in ('$txtCodPcrcok') and sc.programacategoria in ('$txtServicio') ";
+    
     $varListIndicadoresH = Yii::$app->db->createCommand("SELECT CONCAT(UPPER(sc.nombre),': ',sh.hallazgo) AS texto FROM tbl_speech_hallazgos sh   LEFT JOIN tbl_speech_categorias sc ON sh.idspeechcategoria = sc.idspeechcategoria WHERE sc.anulado = 0 AND sc.idcategorias IN (1) AND sc.cod_pcrc IN ('$txtCodPcrcok') AND sc.programacategoria IN ('$txtServicio') AND sh.mes = $txtmes")->queryAll();
 
     $varListIndicadores = "select sc.idcategoria, sc.nombre, sc.tipoparametro, sc.orientacionsmart, sc.orientacionform, 
@@ -145,9 +143,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
     $txtTotalRedbox = Yii::$app->db->createCommand("select distinct count(idredbox) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varProgramas') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF'")->queryScalar();    
 
     $txtTotalGrabadora = Yii::$app->db->createCommand("select distinct count(idgrabadora) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varProgramas') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF'")->queryScalar();
-//var_dump($varProgramas);
-//var_dump($txtParametros);
-//var_dump($txtIdCatagoria1);
+
     $txtnombrepcrc = Yii::$app->db->createCommand("select distinct pcrc from tbl_speech_categorias where anulado = 0  and cod_pcrc in ('$txtCodPcrcok') and programacategoria in ('$varProgramas')")->queryScalar();
     $txtCodPcrcokc1 = Yii::$app->db->createCommand("select distinct cod_pcrc from tbl_speech_categorias where anulado = 0  and cod_pcrc in ('$txtCodPcrcok') and programacategoria in ('$varProgramas')")->queryScalar();
 
@@ -217,7 +213,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
     $canlogin = 0;
     $contador = 0;
     $vartotalreg  = 0;
-    //var_dump($varNametop);
+    
     if ($varNametop){
     $txtlistatopvar = Yii::$app->db->createCommand("select COUNT(*) AS cantidad, login_id FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN('$varProgramas') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND extension IN ('$txtParametros') AND idcategoria IN ($varNametop) GROUP BY login_id ORDER BY cantidad")->queryAll();
     $varNametop = Yii::$app->db->createCommand("select distinct nombre from tbl_speech_categorias where anulado = 0 and idcategoria = $varNametop and cod_pcrc in ('$txtCodPcrcok')")->queryScalar();
@@ -510,9 +506,9 @@ $varColorM = null;
                     $arrayMarca = array();
 
                     foreach ($varListIndicadores as $key => $value) {
-                      // $varCodPcrc = $value['cod_pcrc'];
+                     
                       $txtIdIndicadores = $value['idcategoria'];
-                      // var_dump($txtIdIndicadores);
+                     
                       $txtNombreCategoria = $value['nombre']; 
                       $txtTipoSmart2 = $value['orientacionsmart']; 
                       $txtTipoFormIndicador = $value['orientacionform'];
@@ -520,16 +516,11 @@ $varColorM = null;
                       $txtdefinicion = $value['definicion'];
 
                       $txtresponsable = $value['responsable'];
-                      // $arrayvarCodPcrc = array();
-                      // $varListCod_Pcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_categorias where anulado = 0 and programacategoria in ('$txtServicio') and idcategorias = 1 and idcategoria = $txtIdIndicadores")->queryAll();
-
-                      // foreach ($varListCod_Pcrc as $key => $value) {
-                      //   array_push($arrayvarCodPcrc, $value['cod_pcrc']);
-                      // }
+                      
                       $varCodPcrc = $txtCodPcrcok;
                         
                         if ($varCodigo == 1) {
-                          // var_dump("RN");
+                       
                           $varTipoPAram = Yii::$app->db->createCommand("select distinct sc.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sp.rn in ('$txtParametros') and sc.programacategoria in ('$txtServicio') and sc.idcategoria = '$txtIdIndicadores' and sc.dashboard in (1,3)")->queryScalar();
 
                           $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform, sc.responsable from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.rn in ('$txtParametros')    and sc.cod_pcrc in ('$varCodPcrc') and sc.dashboard in (1,3) group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
@@ -553,14 +544,12 @@ $varColorM = null;
                           $arrayVariable = implode(", ", $arrayListOfVar);
                           $arrayVariableMas = implode(", ", $arraYListOfVarMas);
                           $arrayVariableMenos = implode(", ", $arraYListOfVarMenos);
-                          //var_dump($arrayVariable);
-                          //var_dump($arrayVariableMas);
-                          //var_dump($arrayVariableMenos);
+                         
 
 
                         }else{
                           if ($varCodigo == 2) {
-                            // var_dump("Ext");
+                          
                             $varTipoPAram = Yii::$app->db->createCommand("select distinct sc.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sp.ext in ('$txtParametros') and sc.programacategoria in ('$txtServicio') and sc.idcategoria = '$txtIdIndicadores' and sc.dashboard in (1,3)")->queryScalar();
 
                             $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform, sc.responsable from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.ext in ('$txtParametros')  and sc.cod_pcrc in ('$varCodPcrc') and sc.dashboard in (1,3) group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
@@ -585,7 +574,7 @@ $varColorM = null;
                             $arrayVariableMas = implode(", ", $arraYListOfVarMas);
                             $arrayVariableMenos = implode(", ", $arraYListOfVarMenos);
                           }else{
-                            // var_dump("UsuaRed");
+                           
                             $varTipoPAram = Yii::$app->db->createCommand("select distinct sc.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sp.usuared in ('$txtParametros') and sc.programacategoria in ('$txtServicio') and sc.idcategoria = '$txtIdIndicadores' and sc.dashboard in (1,3)")->queryScalar();
 
                             $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform, sc.responsable from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.usuared in ('$txtParametros')  and sc.cod_pcrc in ('$varCodPcrc') and sc.dashboard in (1,3) group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
@@ -752,7 +741,7 @@ $varColorM = null;
                                   array_push($varArrayPromedio, $txtRtaIndicador); 
                                 }
                                 $varArrayInidicador = array_sum($varArrayPromedio);
-                                // var_dump($varArrayInidicador);
+                               
                               }
                             }
                           }
@@ -767,7 +756,7 @@ $varColorM = null;
                               $txtCallid = $value['callid'];
 
                               $varcantidadproceso = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid   and idcategoria = $txtIdIndicadores")->queryScalar();
-                              // $varcantidadproceso = Yii::$app->db->createCommand("select cantproceso from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid")->queryScalar();
+                             
                               if ($varcantidadproceso == null) {
                                 $varcantidadproceso = 0;
                               }
@@ -787,7 +776,7 @@ $varColorM = null;
 
                                 $varcantidadproceso = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid   and idcategoria = $txtIdIndicadores")->queryScalar();
 
-                                // $varcantidadproceso = Yii::$app->db->createCommand("select cantproceso from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid")->queryScalar();
+                                
 
                                 if ($varcantidadproceso == null) {
                                   $varcantidadproceso = 0;
@@ -803,12 +792,10 @@ $varColorM = null;
 
                         if ($varArrayInidicador != 0) { 
                           if ($txtTipoFormIndicador == 0) {
-                             //var_dump($varArrayInidicador);
-                             //var_dump($txtTotalLlamadas);
                             $txtRtaProcentaje = (round(($varArrayInidicador / $txtTotalLlamadas) * 100, 1));
                           }else{
                             if ($txtTipoFormIndicador == 1) {
-                              // var_dump("Hola Uno");
+                  
                               $txtRtaProcentaje = (100 - (round(($varArrayInidicador / $txtTotalLlamadas) * 100, 1)));
                             }                      
                           }     
@@ -1006,8 +993,7 @@ $varColorM = null;
 
                         if ($varArrayInidicador != 0) { 
                           if ($txtTipoFormIndicador == 0) {
-                             //var_dump($varArrayInidicador);
-                             //var_dump($txtTotalLlamadas);
+                           
                             if ($txtrtaidaA != 0) {
                               $txttotalidadA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1)).'%';
                               $varrtacolorA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
@@ -1076,7 +1062,7 @@ $varColorM = null;
                             
                           }else{
                             if ($txtTipoFormIndicador == 1) {
-                              // var_dump("Hola Uno");
+                             
                               if ($txtrtaidaA != 0) {
                                 $txttotalidadA = (100 - (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1))).'%';
                                 $varrtacolorA = (100 - (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1)));
@@ -1234,16 +1220,16 @@ $varColorM = null;
             <table style="width:100%">
             <caption>...</caption>
               <tr>
-                <th scope="col" class="text-center" width="100">
+                <th scope="col" class="text-center" style="width: 100px;">
                     <label style="font-size: 15px;"><?php echo "Agente"; ?></label>
                 </th>
-                <th scope="col" class="text-center" width="100">
+                <th scope="col" class="text-center" style="width: 100px;">
                     <label style="font-size: 15px;"><?php echo "Canal"; ?></label>
                 </th>
-                <th scope="col" class="text-center" width="100">
+                <th scope="col" class="text-center" style="width: 100px;">
                     <label style="font-size: 15px;"><?php echo "Marca"; ?></label>
                 </th>
-                <th scope="col" class="text-center" width="100">
+                <th scope="col" class="text-center" style="width: 100px;">
                     <label style="font-size: 15px;"><?php echo "Calidad: General Konecta"; ?></label>
                 </th>
               </tr>
@@ -1346,10 +1332,10 @@ $varColorM = null;
                 }
               ?>
               <tr>
-                <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerA"></canvas></div><span style="font-size: 15px;"><?php echo $totalAgenteDonalds.' %'; ?></span></td> 
-                <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerC"></canvas></div><span style="font-size: 15px;"><?php echo $totalCanalDonalds.' %'; ?></span></td> 
-                <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerM"></canvas></div><span style="font-size: 15px;"><?php echo $totalMarcaDonalds.' %'; ?></span></td> 
-                <td class="text-center" width="100"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerK"></canvas></div><span style="font-size: 15px;"><?php echo $totalkonecta.' %'; ?></span></td> 
+                <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerA"></canvas></div><span style="font-size: 15px;"><?php echo $totalAgenteDonalds.' %'; ?></span></td> 
+                <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerC"></canvas></div><span style="font-size: 15px;"><?php echo $totalCanalDonalds.' %'; ?></span></td> 
+                <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerM"></canvas></div><span style="font-size: 15px;"><?php echo $totalMarcaDonalds.' %'; ?></span></td> 
+                <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerK"></canvas></div><span style="font-size: 15px;"><?php echo $totalkonecta.' %'; ?></span></td> 
               </tr>
             </table>
           </div>
@@ -1389,7 +1375,7 @@ $varColorM = null;
               </div>
               <div class="col-md-2">
                 <div style="display: inline;" id="idindibtn">
-                  <div class="row" align="center" >
+                  <div class="row" style="text-align: center;">
                     <?= Html::submitButton(Yii::t('app', 'Buscar Indicador'),
                             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                 'data-toggle' => 'tooltip',
@@ -1399,7 +1385,7 @@ $varColorM = null;
                   </div>
                 </div>   
                 <div style="display: none;" id="idrtabtn">
-                  <div class="row" align="center">
+                  <div class="row" style="text-align: center;">
                     <label style="font-size: 15px;"><?php echo 'Buscando Variables...'; ?></label>
                   </div> 
                 </div>                         
@@ -1514,7 +1500,7 @@ $varColorM = null;
                                     $txtIdCatagoria = $value['idcategoria'];                 
 
                                     $txtvCantVari = Yii::$app->db->createCommand("select count(idcategoria) from tbl_dashboardspeechcalls   where idcategoria = $txtIdCatagoria and servicio in ('$txtServicio') and extension in ('$txtParametros')  and fechallamada between '$varInicioF' and '$varFinF' and anulado = 0")->queryScalar(); 
-                                    //$txtvCantVari = Yii::$app->db->createCommand("select count(cantproceso)  from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and idindicador = $txtIdCatagoria and idvariable = $txtIdCatagoria")->queryScalar(); 
+                                   
 
                                     $txtvCantSeg = Yii::$app->db->createCommand("select AVG(callduracion) from tbl_dashboardspeechcalls   where idcategoria = $txtIdCatagoria and servicio in ('$txtServicio') and extension in ('$txtParametros')  and fechallamada between '$varInicioF' and '$varFinF' and anulado = 0")->queryScalar();
 
@@ -1542,7 +1528,7 @@ $varColorM = null;
                                             $txtParticipacion = round(($txtvCantVari / $txtTotalLlamadas) * 100,2);
                                           }else{
                                             $txtParticipacion = (100 - (round(($txtvCantVari / $txtTotalLlamadas) * 100, 1)));
-                                            // $txtParticipacion = 1 - $txtParticipacion;
+                                            
 
                                           }
                                         }
@@ -1591,7 +1577,7 @@ $varColorM = null;
                                     $txtIdCatagoria = $value['idcategoria'];                 
 
                                     $txtvCantVari = Yii::$app->db->createCommand("select count(idcategoria) from tbl_dashboardspeechcalls   where idcategoria = $txtIdCatagoria and servicio in ('$txtServicio') and extension in ('$txtParametros')  and fechallamada between '$varInicioF' and '$varFinF' and anulado = 0")->queryScalar(); 
-                                    //$txtvCantVari = Yii::$app->db->createCommand("select count(cantproceso)  from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and idindicador = $txtIdCatagoria and idvariable = $txtIdCatagoria")->queryScalar(); 
+                                    
 
                                     $txtvCantSeg = Yii::$app->db->createCommand("select AVG(callduracion) from tbl_dashboardspeechcalls   where idcategoria = $txtIdCatagoria and servicio in ('$txtServicio') and extension in ('$txtParametros')  and fechallamada between '$varInicioF' and '$varFinF' and anulado = 0")->queryScalar();
 
@@ -1619,7 +1605,7 @@ $varColorM = null;
                                             $txtParticipacion = round(($txtvCantVari / $txtTotalLlamadas) * 100,1);
                                           }else{
                                             $txtParticipacion = (100 - (round(($txtvCantVari / $txtTotalLlamadas) * 100, 1)));
-                                            // $txtParticipacion = 1 - $txtParticipacion;
+
 
                                           }
                                         }
@@ -1716,7 +1702,7 @@ $varColorM = null;
               <?= $form->field($model, 'nombre')->textInput(['class'=>'hidden','maxlength' => true, 'value' => $txtCodPcrcok])  ?>
             </div>
 
-            <div class="col-md-2" align="center">
+            <div class="col-md-2" style="text-align: center;">
               <?= Html::submitButton(Yii::t('app', 'Buscar Motivos'),
                                         ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                             'data-toggle' => 'tooltip', 'onclick' => 'openview2();',
@@ -1753,11 +1739,11 @@ $varColorM = null;
                             foreach ($txtvDatosMotivos as $key => $value) {
                               $varMotivos = $value['nombre'];               
                               $varIdCatagoria = $value['idcategoria'];
-                              // var_dump($varIdCatagoria);
+                              
 
                               $txtvCantMotivos1 = Yii::$app->db->createCommand("select count(idcategoria) from tbl_dashboardspeechcalls  where idcategoria = '$varIdCatagoria' and servicio in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and anulado = 0")->queryScalar();
                               $txtvCantMotivos = intval($txtvCantMotivos1);
-                              // var_dump($varIdCatagoria);
+                             
 
                               if ($txtvCantMotivos != 0 && $txtTotalLlamadas != 0) {
                                 $txtParticipación2 = round(($txtvCantMotivos / $txtTotalLlamadas) * 100,2);
@@ -1775,11 +1761,9 @@ $varColorM = null;
                               if ($txtcoincidencia != 0 && $txtvCantMotivos != 0 && $txtTotalLlamadas != 0) {
                                 
                                 $txtRtaVar = round(($txtcoincidencia / $txtvCantMotivos) * 100,2);
-                                //$txtRtaVariable = round(($txtcoincidencia / $txtrtaConteo)*100,2);
+                                
                               }else{
-                                // var_dump($txtcoincidencia);
-                                // var_dump($txtvCantMotivos);
-                                // var_dump($txtTotalLlamadas);
+                               
                                 $txtRtaVar = 0;
                                 $txtRtaVariable = 0;
                               }
@@ -1853,7 +1837,7 @@ $varColorM = null;
                   <?= $form->field($model3, 'nombreCategoria')->textInput(['class'=>'hidden','maxlength' => true, 'value' => $txtCodPcrcok])  ?>
                 </div>               
                 
-                <div class="col-md-2" align="center">
+                <div class="col-md-2" style="text-align: center;">
                   <?= Html::submitButton(Yii::t('app', 'Buscar Top Asesores'),
                                                 ['class' => $model3->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                                     'data-toggle' => 'tooltip', 'onclick' => 'openview3();',
@@ -2137,7 +2121,7 @@ $varColorM = null;
 
             series: [{
               name: 'Indicadores',
-              data: [<?= join($txtrtasporcentajes, ',')?>],
+              data: [<?= implode($txtrtasporcentajes, ',')?>],
               color: '#4298B5'
             }],
 
@@ -2197,7 +2181,7 @@ $varColorM = null;
 
             series: [{
               name: 'Porcentaje de participaci&oacuten',
-              data: [<?= join($arraylistparticipacion, ',')?>],
+              data: [<?= implode($arraylistparticipacion, ',')?>],
               color: '#615E9B'
             }],
 
@@ -2255,11 +2239,11 @@ $varColorM = null;
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantidad, ',')?>],
+              data: [<?= implode($varListCantidad, ',')?>],
               color: '#4298B5'
             },{
               name: 'Duración de llamadas',
-              data: [<?= join($varListDuracion, ',')?>],
+              data: [<?= implode($varListDuracion, ',')?>],
               color: '#FFc72C',
               type: 'line',
               yAxis: 1
@@ -2315,7 +2299,7 @@ $varColorM = null;
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantiVar5, ',')?>],
+              data: [<?= implode($varListCantiVar5, ',')?>],
               color: '#4298B5'
             }],
 
@@ -2367,7 +2351,7 @@ $varColorM = null;
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantiVar, ',')?>],
+              data: [<?= implode($varListCantiVar, ',')?>],
               color: '#ffa126'
             }],
 
@@ -2420,7 +2404,7 @@ $varColorM = null;
 
             series: [{
               name: 'Cantidad de llamadas',
-              data: [<?= join($varListCantiVar0, ',')?>],
+              data: [<?= implode($varListCantiVar0, ',')?>],
               color: '#ffa126'
             }],
 

@@ -194,7 +194,7 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
                         </div>
                         <br>
                         <br> 
-                        <div class="row" align="center"> 
+                        <div class="row" style="text-align: center;"> 
                             <?= Html::submitButton(Yii::t('app', 'Buscar'),
                                                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                                     'data-toggle' => 'tooltip',
@@ -291,7 +291,7 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
 
             series: [{
                 name: 'Cantidad Total Encuestas Por Dias',
-                data: [<?= join($varListCant, ',')?>],
+                data: [<?= implode($varListCant, ',')?>],
                 color: '#4298B5'
             }],
 

@@ -497,13 +497,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                 ]);
 
 
-                                            // return Html::a('<i class="fas fa-play-circle" style="font-size: 17px; color: #ff3838;"></i>',  ['viewcalls', 'idredbox' => $model->idredbox, 'idgrabadora' => $model->idgrabadora], [
-                                            //     'class' => '',
-                                            //     'title' => 'Verificar audio',
-                                            //     'data' => [
-                                            //         'method' => 'post',
-                                            //     ],
-                                            // ]);  
+                                            
                                         }
                                     }
                                 ]                              
@@ -577,12 +571,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                         
 
 
-                                                    // }else{
-                                                    //     return Html::a('<span class="fas fa-eye" style="font-size: 20px; color: #4ad427;" ></span>'
-                                                    //                     , Url::to(['showbasechatview',
-                                                    //                         'basechatid' => $model->idbasechat_tigob]), ['title' => Yii::t('yii', 'ver Gesti�n')]);
-                                                    // }
-                                                // },
+                                                   
                                         }else{
                                             if ($idbase == "") {
                                                 return Html::a('<i id="idimage" class="fas fa-search" style="font-size: 17px; color: #4c6ef5; display: inline;"></i>'
