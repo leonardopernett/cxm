@@ -53,10 +53,7 @@ $this->title = 'DashBoard Voz del Cliente';
     $fechaFinCat = date("Y", $fechaComoEntero).'-12-31';
 
 
-    /*$txtVariablesList = Yii::$app->db->createCommand("select distinct idcategoria from tbl_dashboardcategorias where clientecategoria like '%$varPcrc%' and idcategorias = 2 and anulado = 0")->queryAll();
-    $varServicio1 = Yii::$app->db->createCommand("select distinct clientecategoria from tbl_dashboardservicios where clientecategoria like '$varPcrc' and anulado = 0")->queryScalar();
-    $idArbol = Yii::$app->db->createCommand("select arbol_id from tbl_dashboardservicios where clientecategoria like '$varServicio1' and anulado = 0")->queryScalar();*/
-
+    
 ?>
 <div class="control-procesos-index" style="display: inline" id="IdCapaCero">
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
