@@ -1552,8 +1552,15 @@ use Exception;
       FROM tbl_hojavida_datadirector d
       GROUP BY d.ccdirector
       ')->queryAll();
-
        return  json_encode($directores);
+    }
+
+    public function actionResumenapicliente(){
+       $clientes =  Yii::$app->db->createCommand('SELECT COUNT(*) AS total,
+        (SELECT c.cliente FROM tbl_proceso_cliente_centrocosto c  WHERE c.id_dp_clientes = pcrc.id_dp_cliente LIMIT 1 ) AS cliente
+        FROM tbl_hojavida_datapcrc pcrc
+        GROUP BY pcrc.id_dp_cliente')->queryAll();
+        return json_encode($clientes);
     }
  
    
