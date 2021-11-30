@@ -1209,7 +1209,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
         $limite_ciclo_inicial = -$delta_ciclo;
         $limite_ciclo_final = $delta_ciclo - 1;
         $newRow = 0;
-        $printTitle = true;
         $fila = 2;
         $objPHPexcel = new \PHPExcel();
         $objPHPexcel->setActiveSheetIndex(0);
@@ -1232,7 +1231,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
 
                             //MUESTRO LOS ENCABEZADO SOLO UNA VEZ
                             $filecontent = "";
-                            $printTitle = false;
 
                             //IMPRIMO EN EL CSV LOS RESULTADOS QUE VAYAN
                             foreach ($dataProvider as $value) {
@@ -1473,7 +1471,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
             } // Fin se hay registros
         } while (count($data) > 0);
         $filecontent = "";
-        $printTitle = false;
         //IMPRIMO EL ULTIMO REGISTRO
         if (isset($dataProvider)) {
             foreach ($dataProvider as $value) {
@@ -2278,7 +2275,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
         $fechaIni = $fechas[0] . " 00:00:00";
         $fechaFin = $fechas[1] . " 23:59:59";
         $baseConsulta = $metrica;
-        $groupBy = 'ar.arbol_id';
         $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio,je.arbol_id, dimension_id, COUNT(je.id) total, je.*")
                 ->from('`tbl_ejecucionformularios` je')
                 //->join('INNER JOIN', '`tbl_arbols` ar', 'ar.id = `je`.`arbol_id`')
