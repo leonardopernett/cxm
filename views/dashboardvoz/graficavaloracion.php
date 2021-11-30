@@ -324,15 +324,15 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
 
             series: [{
               name: 'Cantidad Total Valoracion Nivel Konecta',
-              data: [<?= join($varListKonecta, ',')?>],
+              data: [<?= implode($varListKonecta, ',')?>],
               color: '#4298B5'
             },{
               name: 'Cantidad Total Valoracion Medellin',
-              data: [<?= join($varListMed, ',')?>],
+              data: [<?= implode($varListMed, ',')?>],
               color: '#615E9B'
             },{
               name: 'Cantidad Total Valoracion Bogota',
-              data: [<?= join($varListBog, ',')?>],
+              data: [<?= implode($varListBog, ',')?>],
               color: '#FFc72C'
             }],
 
@@ -382,15 +382,15 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
 
             series: [{
               name: 'Cantidad Total Valoracion Nivel Konecta',
-              data: [<?= join($varListKonecta, ',')?>],
+              data: [<?= implode($varListKonecta, ',')?>],
               color: '#4298B5'
             },{
               name: 'Cantidad Total Valoracion Manual Konecta',
-              data: [<?= join($varListKonectaManual, ',')?>],
+              data: [<?= implode($varListKonectaManual, ',')?>],
               color: '#615E9B'
             },{
               name: 'Cantidad Total Valoracion Automatico Konecta',
-              data: [<?= join($varListKonectaSpeech, ',')?>],
+              data: [<?= implode($varListKonectaSpeech, ',')?>],
               color: '#FFc72C'
             }],
 
@@ -441,15 +441,15 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
 
             series: [{
               name: 'Cantidad Total Valoracion Nivel Medellin',
-              data: [<?= join($varListMed, ',')?>],
+              data: [<?= implode($varListMed, ',')?>],
               color: '#4298B5'
             },{
               name: 'Cantidad Total Valoracion Manual Medellin',
-              data: [<?= join($varListMedManual, ',')?>],
+              data: [<?= implode($varListMedManual, ',')?>],
               color: '#615E9B'
             },{
               name: 'Cantidad Total Valoracion Automatico Medellin',
-              data: [<?= join($varListMedSpeech, ',')?>],
+              data: [<?= implode($varListMedSpeech, ',')?>],
               color: '#FFc72C'
             }],
 
@@ -499,15 +499,15 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
 
             series: [{
               name: 'Cantidad Total Valoracion Nivel Bogota',
-              data: [<?= join($varListBog, ',')?>],
+              data: [<?= implode($varListBog, ',')?>],
               color: '#4298B5'
             },{
               name: 'Cantidad Total Valoracion Manual Bogota',
-              data: [<?= join($varListBogManual, ',')?>],
+              data: [<?= implode($varListBogManual, ',')?>],
               color: '#615E9B'
             },{
               name: 'Cantidad Total Valoracion Automatico Bogota',
-              data: [<?= join($varListBogSpeech, ',')?>],
+              data: [<?= implode($varListBogSpeech, ',')?>],
               color: '#FFc72C'
             }],
 

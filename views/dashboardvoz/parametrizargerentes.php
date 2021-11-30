@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'id_Arbol'])->label('Cleinte') ?>
 
         <br>
-        <div class="form-group" align="center">
+        <div class="form-group" style="text-align: center;">
             <?= Html::submitButton(Yii::t('app', 'Guardar Parametrización'),
                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                         'data-toggle' => 'tooltip',

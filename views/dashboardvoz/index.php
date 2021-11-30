@@ -579,16 +579,12 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
 </header>
 <br><br>
-<!-- <div class="page-header">
-    <p style="font-family: 'Nunito';"><h3><center><?= Html::encode($this->title) ?></center></h3></p>
-</div>  -->
+<?= Html::encode($this->title) ?>
 <div class="Principal">
     <div id="capaUno" style="display: inline">
         <div id="dtbloque0" class="form-group col-sm-12" style="display: inline;">
@@ -676,7 +672,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                                                 ->andwhere(['between','tbl_control_volumenxclientedq.mesyear', $varListYear, $varListYear]);                    
                                                                                     $command = $txtQuery->createCommand();
                                                                                     $txtTotalMonth1 = $command->queryScalar();
-                                                                                    //var_dump($txtTotalMonth1);
+                                                                                   
 
                                                                                     $txtQuery1 =  new Query;
                                                                                     $txtQuery1   ->select(['sum(tbl_control_volumenxclienteds.cantidadvalor)'])->distinct()
@@ -1245,7 +1241,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                 )->label('Cliente'); 
                                         ?>
                                     </div>
-                                    <div class="form-group" align="center">
+                                    <div class="form-group" style="text-align: center;">
                                         <?= Html::submitButton(Yii::t('app', 'Buscar Servicio'),
                                                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'data-toggle' => 'tooltip',
                                                         'onclick' => 'verificaclick();',
@@ -1424,15 +1420,15 @@ function openCity(evt, cityName) {
 
             series: [{
               name: 'Métrica Konecta',
-              data: [<?= join($varListKonecta, ',')?>],
+              data: [<?= implode($varListKonecta, ',')?>],
               color: '#4298B5'
             },{
               name: 'Métrica Medellín',
-              data: [<?= join($varListMed, ',')?>],
+              data: [<?= implode($varListMed, ',')?>],
               color: '#615E9B'
             },{
               name: 'Métrica Bogota',
-              data: [<?= join($varListBog, ',')?>],
+              data: [<?= implode($varListBog, ',')?>],
               color: '#FFc72C'
             }],
 
@@ -1479,15 +1475,15 @@ function openCity(evt, cityName) {
 
             series: [{
               name: 'Total Valoración Nivel Konecta',
-              data: [<?= join($varListKonecta, ',')?>],
+              data: [<?= implode($varListKonecta, ',')?>],
               color: '#4298B5'
             },{
               name: 'Total Valoración Manual Konecta',
-              data: [<?= join($varListKonectaManual, ',')?>],
+              data: [<?= implode($varListKonectaManual, ',')?>],
               color: '#615E9B'
             },{
               name: 'Total Valoración Automático Konecta',
-              data: [<?= join($varListKonectaSpeech, ',')?>],
+              data: [<?= implode($varListKonectaSpeech, ',')?>],
               color: '#FFc72C'
             }],
 
@@ -1535,15 +1531,15 @@ function openCity(evt, cityName) {
 
             series: [{
               name: 'Total Valoración Medellín',
-              data: [<?= join($varListMed, ',')?>],
+              data: [<?= implode($varListMed, ',')?>],
               color: '#4298B5'
             },{
               name: 'Total Valoracion Manual Medellín',
-              data: [<?= join($varListMedManual, ',')?>],
+              data: [<?= implode($varListMedManual, ',')?>],
               color: '#615E9B'
             },{
               name: 'Total Valoración Automático Medellín',
-              data: [<?= join($varListMedSpeech, ',')?>],
+              data: [<?= implode($varListMedSpeech, ',')?>],
               color: '#FFc72C'
             }],
 
@@ -1590,15 +1586,15 @@ function openCity(evt, cityName) {
 
             series: [{
               name: 'Total Valoración Nivel Bogotá',
-              data: [<?= join($varListBog, ',')?>],
+              data: [<?= implode($varListBog, ',')?>],
               color: '#4298B5'
             },{
               name: 'Total Valoración Manual Bogotá',
-              data: [<?= join($varListBogManual, ',')?>],
+              data: [<?= implode($varListBogManual, ',')?>],
               color: '#615E9B'
             },{
               name: 'Total Valoración Automático Bogotá',
-              data: [<?= join($varListBogSpeech, ',')?>],
+              data: [<?= implode($varListBogSpeech, ',')?>],
               color: '#FFc72C'
             }],
 
@@ -1649,15 +1645,15 @@ function openCity(evt, cityName) {
 
             series: [{
               name: 'Total Encuestas Konecta',
-              data: [<?= join($varListKonectae, ',')?>],
+              data: [<?= implode($varListKonectae, ',')?>],
               color: '#4298B5'
             },{
               name: 'Total Encuestas Medellín',
-              data: [<?= join($varListMede, ',')?>],
+              data: [<?= implode($varListMede, ',')?>],
               color: '#615E9B'
             },{
               name: 'Total Encuestas Bogotá',
-              data: [<?= join($varListBoge, ',')?>],
+              data: [<?= implode($varListBoge, ',')?>],
               color: '#FFc72C'
             }],
 
