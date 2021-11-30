@@ -37,7 +37,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
     $MesAnterior = date("m") - 1;
 
 ?>
-<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+<script src='../../js_extensions/fontawesome/a076d05399.js'></script>
   &nbsp; 
   <?= Html::a('Regresar',  ['categoriasconfig'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
