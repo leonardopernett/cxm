@@ -825,8 +825,7 @@ class BasesatisfaccionController extends Controller {
                                                 
 												
 												$comando .= '#####' . $eval;
-                                                eval("\$restCond = $eval;");
-                                                if ($restCond) {
+                                                if ($eval) {
                                                     $arrayCumpleRegla[] = 'true';
                                                     $model->tipologia = $value['name'];
                                                 } else {
@@ -1185,8 +1184,7 @@ class BasesatisfaccionController extends Controller {
                                                         . ')';
                                                 $conditon = '';
                                                 $comando .= '#####' . $eval;
-                                                eval("\$restCond = $eval;");
-                                                if ($restCond) {
+                                                if ($eval) {
 													$prioridadesReales[$value['prioridad']] = $value['name'];
                                                     $arrayCumpleRegla[] = 'true';
                                                     $nModel->tipologia = $value['name'];
@@ -3799,8 +3797,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                                         . ')';
                                                 $conditon = '';
                                                 $comando .= '#####' . $eval;
-                                                eval("\$restCond = $eval;");
-                                                if ($restCond) {
+                                                if ($eval) {
                                                     $arrayCumpleRegla[] = 'true';
                                                     $model->tipologia = $value['name'];
                                                 } else {
