@@ -527,9 +527,15 @@ $varMedellin = "Medellín";
 <div class="container" style="margin-top:20px">
       
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-6 ">
                 <div class="card1">
                     <canvas id="myChartDirector"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-6 ">
+                <div class="card1">
+                    <canvas id="myChartCliente"></canvas>
                 </div>
             </div>
         </div>
@@ -616,6 +622,9 @@ var options ={
 }
 
   const ctxd = document.getElementById('myChartDirector').getContext('2d')
+
+  const ctxc = document.getElementById('myChartCliente').getContext('2d')
+
   const ctx  = document.getElementById('myChartAdmin').getContext('2d')
   const ctx2 = document.getElementById('myChartAdmin2').getContext('2d')
 
@@ -630,7 +639,7 @@ var options ={
 
 
 
-  fetch('<?php echo Url::to(['/hojavida/resumenapi']) ?>')
+fetch('<?php echo Url::to(['/hojavida/resumenapi']) ?>')
     .then(res  => res.json())
     .then(data => {
 
@@ -663,12 +672,44 @@ var options ={
          
     })
 
-  const chart = new Chart(ctx,{
+fetch('<?php echo Url::to(['/hojavida/resumenapicliente']) ?>')
+    .then(res  => res.json())
+    .then(data => {
+        const chart = new Chart(ctxc,{
+            type: 'bar',
+            data: {
+                labels:    data.map(item => item.cliente),
+                datasets: [{
+                    label: 'Totales de Clientes',
+                    data:  data.map(item => item.total),
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)', 
+                        
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)', 
+                    ],
+                    borderWidth: 1
+                    /* s */
+                }]
+            },
+            options: options
+        })
+    })
+
+
+const chart = new Chart(ctx,{
     type: 'bar',
     data: {
         labels: ['Total Clientes', 'Total Decisor', 'Total Estrategicos', 'Total Operativo'],
         datasets: [{
-            label: 'Totales de Clientes',
+            label: 'Resumen General',
             data: [clienteAdmin, decisorAdmin, estrategicoAdmin, operativoAdmin],
             backgroundColor: [
                 'rgba(75, 192, 192, 1)',
@@ -691,7 +732,8 @@ var options ={
   })
 
 
-  const charts = new Chart(ctx2,{
+
+const charts = new Chart(ctx2,{
     type: 'doughnut',
     data: {
         labels: ['Total Clientes Bogota', 'Total Clientes Medellin'],
