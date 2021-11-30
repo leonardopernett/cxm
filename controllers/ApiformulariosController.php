@@ -102,10 +102,8 @@ use GuzzleHttp;
         SELECT s.id, s.name AS Seccion FROM tbl_seccions s
           INNER JOIN tbl_ejecucionformularios ef ON 
             s.formulario_id = ef.formulario_id
-          INNER JOIN tbl_arbols a ON 
-            ef.formulario_id = a.formulario_id
           WHERE 
-            a.id IN (:Arbol_id)
+            ef.arbol_id IN (:Arbol_id)
               AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
             GROUP BY s.id')->bindValues($paramsBusqueda)->queryAll();
 
@@ -175,11 +173,9 @@ use GuzzleHttp;
           INNER JOIN tbl_seccions s ON 
             b.seccion_id = s.id
           INNER JOIN tbl_ejecucionformularios ef ON 
-            s.formulario_id = ef.formulario_id
-          INNER JOIN tbl_arbols a ON 
-            ef.formulario_id = a.formulario_id    
+            s.formulario_id = ef.formulario_id   
           WHERE 
-            a.id IN  (:Arbol_id)
+            ef.arbol_id IN  (:Arbol_id)
               AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
             GROUP BY b.id
               ORDER BY ef.id')->bindValues($paramsBusqueda)->queryAll();
@@ -252,7 +248,9 @@ use GuzzleHttp;
       $varListFormularios = Yii::$app->db->createCommand('
        SELECT 
         f.id, f.basesatisfaccion_id AS ID_Encuesta, f.created AS FechaYHora, f.hora_inicial AS HoraInicialValoracion, 
-        f.hora_final AS HoraFinalValoracion, f.cant_modificaciones AS CantModificaciones, f.tiempo_modificaciones AS TiempoModificaciones, d.name AS Dimension, aa.name AS ArbolPadre, a.id AS IDArbol, a.name AS Arbol, ff.name AS Formulario, uq.usua_nombre AS Lider, e.name AS Asesor, e.identificacion AS CedulaEvaluado, e.name AS NombreEvaluado, (select ux.usua_nombre from tbl_usuarios ux where ux.usua_id = f.usua_id_lider) AS Rsponsable,   uu.usua_nombre AS Evaluador, r.role_nombre AS rol, f.dsfuente_encuesta AS Fuente, t.name AS Transacciones, eq.name AS Equipo, f.dscomentario AS Comentarios, f.score AS Score, f.i1_nmcalculo AS PEC
+        f.hora_final AS HoraFinalValoracion, f.cant_modificaciones AS CantModificaciones, f.tiempo_modificaciones AS TiempoModificaciones, d.name AS Dimension, aa.name AS ArbolPadre, a.id AS IDArbol, a.name AS Arbol, ff.name AS Formulario, 
+        re.cod_pcrc AS CentroCostos, re.pcrc AS Pcrc,
+        uq.usua_nombre AS Lider, e.name AS Asesor, e.identificacion AS CedulaEvaluado, e.name AS NombreEvaluado, (select ux.usua_nombre from tbl_usuarios ux where ux.usua_id = f.usua_id_lider) AS Rsponsable,   uu.usua_nombre AS Evaluador, r.role_nombre AS rol, f.dsfuente_encuesta AS Fuente, t.name AS Transacciones, eq.name AS Equipo, f.dscomentario AS Comentarios, f.score AS Score, f.i1_nmcalculo AS PEC
 
         FROM tbl_ejecucionformularios f
           INNER JOIN tbl_dimensions d ON 
@@ -278,17 +276,19 @@ use GuzzleHttp;
           INNER JOIN tbl_equipos eq ON 
             f.equipo_id = eq.id
           INNER JOIN tbl_usuarios uq ON 
-            uq.usua_id = eq.usua_id
+            uq.usua_id = eq.usua_id          
+          LEFT JOIN tbl_registro_ejec_cliente re ON 
+            re.ejec_form_id = f.id
 
           WHERE
-            a.id IN (:Arbol_id )
-            AND f.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsFormularios)->queryAll();
+            f.arbol_id IN (:Arbol_id )
+              AND f.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsFormularios)->queryAll();
 
       $arraydataf = array();
       foreach ($varListFormularios as $key => $value) {
       
 
-        array_push($arraydataf, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC']));  
+        array_push($arraydataf, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC'],"CentroCostos"=>$value['CentroCostos'],"Canal"=>$value['Pcrc']));  
       }
 
       die(json_encode(array("status"=>"1","data"=>$arraydataf)));
@@ -318,46 +318,30 @@ use GuzzleHttp;
 
       $paramsBusqueda = [':Arbol_id' => $varIdArbol, ':Fecha_inicio' => $varFechaInicio.' 00:00:00', ':Fecha_Fin' => $varFechaFin.' 23:59:59'];
       $varListPreguntas = Yii::$app->db->createCommand('
-        SELECT ef.id AS Id_Formulario, s.id AS id_Seccion, b.id AS id_Bloque, b.name AS Bloque, bd.id AS id_pregunta, bd.name AS Pregunta FROM tbl_bloquedetalles bd
-          INNER  JOIN tbl_bloques b ON 
-            bd.bloque_id = b.id
-          INNER JOIN tbl_seccions s ON 
-            b.seccion_id = s.id
-          INNER JOIN tbl_ejecucionformularios ef ON 
-            s.formulario_id = ef.formulario_id
-          INNER JOIN tbl_arbols a ON 
-            ef.formulario_id = a.formulario_id     
+      SELECT ef.id AS Id_Formulario, b.id AS Id_Bloque, b.name AS Bloque, bd.id AS Id_Pregunta, bd.name AS Pregunta, 
+        cd.id AS Id_Respuesta, cd.name AS Respuesta FROM tbl_calificaciondetalles cd
+                INNER JOIN tbl_ejecucionbloquedetalles ebd ON
+                   ebd.calificaciondetalle_id = cd.id
+                INNER JOIN tbl_bloquedetalles bd ON
+                  ebd.bloquedetalle_id = bd.id  
+                INNER JOIN tbl_bloques b ON 
+                  b.id = bd.bloque_id
+                INNER JOIN tbl_ejecucionbloques eb ON
+                  b.id = eb.bloque_id AND eb.id = ebd.ejecucionbloque_id
+                INNER JOIN tbl_ejecucionseccions es ON
+                  eb.ejecucionseccion_id = es.id
+                INNER JOIN tbl_seccions s ON
+                  s.id = es.seccion_id
+                INNER JOIN tbl_ejecucionformularios ef ON 
+                  es.ejecucionformulario_id = ef.id
           WHERE 
-            a.id IN  (:Arbol_id)
+            ef.arbol_id IN  (:Arbol_id)
               AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatap = array();
       foreach ($varListPreguntas as $key => $value) {
 
-        $paramsRta = [':idSession' => $value['id_Seccion'], ':idBloque' => $value['id_Bloque'], ':idPregunta' => $value['id_pregunta'], ':IdFormulario' => $value['Id_Formulario']];
-
-        $varListRtas = Yii::$app->db->createCommand('
-        SELECT  cd.name AS Respuesta FROM tbl_calificaciondetalles cd
-          INNER JOIN tbl_ejecucionbloquedetalles ebd ON
-             ebd.calificaciondetalle_id = cd.id
-          INNER JOIN tbl_bloquedetalles bd ON
-            ebd.bloquedetalle_id = bd.id  
-          INNER JOIN tbl_bloques b ON 
-            b.id = bd.bloque_id
-          INNER JOIN tbl_ejecucionbloques eb ON
-            b.id = eb.bloque_id AND eb.id = ebd.ejecucionbloque_id
-          INNER JOIN tbl_ejecucionseccions es ON
-            eb.ejecucionseccion_id = es.id
-          INNER JOIN tbl_seccions s ON
-            s.id = es.seccion_id
-          WHERE
-            s.id = :idSession
-              AND b.id = :idBloque
-                AND bd.id = :idPregunta 
-                  AND es.ejecucionformulario_id = :IdFormulario')->bindValues($paramsRta)->queryScalar();
-
-
-        array_push($arraydatap, array("Id_Formulario "=>$value['Id_Formulario'],"Pregunta "=>$value['Pregunta'],"Respuesta "=>$varListRtas)); 
+        array_push($arraydatap, array("Id_Formulario "=>$value['Id_Formulario'],"Id_Bloque"=>$value['Id_Bloque'],"Bloque"=>$value['Bloque'],"Id_Pregunta"=>$value['Id_Pregunta'],"Pregunta "=>$value['Pregunta'],"Id_Respuesta"=>$value['Id_Respuesta'],"Respuesta "=>$value['Respuesta'])); 
 
       }
 

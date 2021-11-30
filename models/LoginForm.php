@@ -54,18 +54,24 @@ class LoginForm extends Model {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
+            
+
             /* SI ES MODO DESARROLLO NO VALIDO EL PASSWORD */
             if (\Yii::$app->params["dev_mode"]) {
+                
                 if (!$user) {
                     $this->addError($attribute, Yii::t("app", "Incorrect username or password"));
                 }
                 return true;
             }
             
+   
             if (!$user) {
                 $this->addError($attribute, Yii::t("app", "Incorrect username or password"));
                 return;
             }
+            
+           
             
             $valid = $user->validatePassword($this->password);
 

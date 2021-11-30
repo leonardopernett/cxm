@@ -1507,6 +1507,14 @@ use Exception;
         where t.tipoafinidad='No Decisor' AND n.nivelafinidad='Operativo' ")->queryAll();
         
 
+       $directores = Yii::$app->db->createCommand('SELECT director_programa 
+       FROM tbl_proceso_cliente_centrocosto 
+       GROUP BY documento_director 
+       ORDER BY director_programa
+       ')->queryAll();
+
+
+
        return $this->render('resumen',[
            'roles' => $roles,
            'clientsTotalBogota'   => $clientsTotalBogota,
@@ -1529,13 +1537,30 @@ use Exception;
            'totalDecisorEstrategico'  => $totalDecisorEstrategico,
            'totalDecisorOperativo'    => $totalDecisorOperativo,
            'totalNoDecisorEstrategico'  => $totalDecisorEstrategico,
-           'totalNoDecisorOperativo'    => $totalDecisorOperativo
-
+           'totalNoDecisorOperativo'    => $totalDecisorOperativo,
+            'directores' =>$directores
         ]);
 
 
 
 
+    }
+
+    public function actionResumenapi(){
+      $directores = Yii::$app->db->createCommand('SELECT  d.ccdirector AS cedula , COUNT(*) AS total,
+      (SELECT c.director_programa FROM tbl_proceso_cliente_centrocosto c WHERE c.documento_director = d.ccdirector LIMIT 1) AS nombre
+      FROM tbl_hojavida_datadirector d
+      GROUP BY d.ccdirector
+      ')->queryAll();
+       return  json_encode($directores);
+    }
+
+    public function actionResumenapicliente(){
+       $clientes =  Yii::$app->db->createCommand('SELECT COUNT(*) AS total,
+        (SELECT c.cliente FROM tbl_proceso_cliente_centrocosto c  WHERE c.id_dp_clientes = pcrc.id_dp_cliente LIMIT 1 ) AS cliente
+        FROM tbl_hojavida_datapcrc pcrc
+        GROUP BY pcrc.id_dp_cliente')->queryAll();
+        return json_encode($clientes);
     }
  
    
@@ -2952,14 +2977,32 @@ $modelos = new HojavidaDatapersonal();
               ])->execute();  
       }
 
-      $arrayClientes = count($varListPcrcs);
-      for ($i=0; $i < $arrayClientes; $i++) { 
-        $varCodPcrcs = $varListPcrcs[$i];
+      if(count($varIdCliente) != 0) {
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
+                  'hv_idpersonal' => $varIdInfoPersonal,
+                  'id_dp_cliente' => $varIdCliente,
+                  'cod_pcrc' => null,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                                       
+              ])->execute(); 
+      } 
+
+
+      $arrayPcrc = count($varListPcrcs);
+      for ($i=0; $i < $arrayPcrc; $i++) { 
+
+        $paramsPcrc = [':varCodPcrcs' => $varListPcrcs[$i]];
+
+        $varCentroCostos = Yii::$app->db->createCommand('
+        SELECT DISTINCT if(pc.cod_pcrc = "",NULL,pc.cod_pcrc)  FROM tbl_proceso_cliente_centrocosto pc
+          WHERE 
+            pc.pcrc IN (:varCodPcrcs)')->bindValues($paramsPcrc)->queryScalar();
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
                   'hv_idpersonal' => $varIdInfoPersonal,
                   'id_dp_cliente' => $varIdCliente,
-                  'cod_pcrc' => $varCodPcrcs,
+                  'cod_pcrc' => $varCentroCostos,
                   'fechacreacion' => date('Y-m-d'),
                   'anulado' => 0,
                   'usua_id' => Yii::$app->user->identity->id,                                       

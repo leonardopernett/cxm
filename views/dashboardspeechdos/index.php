@@ -129,8 +129,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <table style="margin: auto;"
->
+        <table style="margin: auto;">
         <caption>...</caption>
           <thead>
             <tr>
@@ -322,7 +321,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
         <div class="panel-body">
           <p class="text-center"><strong>Importante: </strong> No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta. </p>
-          <div class="row" align="center">
+          <div class="row" style="text-align: center;">
             <?= Html::a('Nueva consulta',  ['index'], ['class' => 'btn btn-success',
                             'style' => 'background-color: #707372',
                             'data-toggle' => 'tooltip',

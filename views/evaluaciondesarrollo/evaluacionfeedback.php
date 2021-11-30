@@ -183,10 +183,10 @@ $txtNotasFinal = 0;
     }
 
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/chart.min.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
@@ -834,7 +834,7 @@ if($vardocumentosijefe){ ?>
                             <div class="card1 mb">
                                 <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Biblioteca de Conocimiento: </label> 
                                                             
-                                <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" class="btn btn-success">Ir a Paco (Jefes - Personas)</a>                            
+                                <a href="https://paco.grupokonecta.co/course/view.php?id=880" target="_blank" rel="noopener noreferrer" class="btn btn-success">Ir a Paco (Jefes - Personas)</a>                            
                             </div>
                         </div>
                         

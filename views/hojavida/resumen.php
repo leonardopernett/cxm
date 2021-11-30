@@ -253,10 +253,10 @@ $varMedellin = "Medellín";
 </style>
 
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 
 
 <!-- datatable -->
@@ -264,21 +264,21 @@ $varMedellin = "Medellín";
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
 
-<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
+<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
+<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
+<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
+<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
 
 <!-- sweet alert -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
+<script src="../../js_extensions/sweetalert2/sweetalert2.all.min.js"></script>
 
 <!-- toastr -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="../../js_extensions/cloudflare/toastr.min.js"></script>
  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js" integrity="sha512-G8JE1Xbr0egZE5gNGyUm1fF764iHVfRXshIoUWCTPAbKkkItp/6qal5YAHXrxEu4HNfPTQs6HOu3D5vCGS1j3w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -295,7 +295,7 @@ $varMedellin = "Medellín";
 </header>
 <br><br>
 
-  
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -525,7 +525,23 @@ $varMedellin = "Medellín";
 </div>
 
 <div class="container" style="margin-top:20px">
-    <div class="row">
+      
+        <div class="row">
+            <div class="col-md-6 ">
+                <div class="card1">
+                    <canvas id="myChartDirector"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-6 ">
+                <div class="card1">
+                    <canvas id="myChartCliente"></canvas>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="row" style="margin-top:20px">
        <div class="col-md-6">
            <div class="card1">
               <canvas id="myChartAdmin"></canvas>
@@ -604,8 +620,12 @@ var options ={
     }
     
 }
- 
-  const ctx = document.getElementById('myChartAdmin').getContext('2d')
+
+  const ctxd = document.getElementById('myChartDirector').getContext('2d')
+
+  const ctxc = document.getElementById('myChartCliente').getContext('2d')
+
+  const ctx  = document.getElementById('myChartAdmin').getContext('2d')
   const ctx2 = document.getElementById('myChartAdmin2').getContext('2d')
 
   const clienteAdmin = document.getElementById('clienteAdmin').innerHTML
@@ -618,12 +638,78 @@ var options ={
   const medellin = document.getElementById('medellin').innerHTML
 
 
-  const chart = new Chart(ctx,{
+
+fetch('<?php echo Url::to(['/hojavida/resumenapi']) ?>')
+    .then(res  => res.json())
+    .then(data => {
+
+        const chart = new Chart(ctxd,{
+            type: 'bar',
+            data: {
+                labels:    data.map(item => item.nombre),
+                datasets: [{
+                    label: 'Totales de Directores',
+                    data:  data.map(item => item.total),
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)', 
+                        
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)', 
+                    ],
+                    borderWidth: 1
+                    /* s */
+                }]
+            },
+            options: options
+        })
+         
+    })
+
+fetch('<?php echo Url::to(['/hojavida/resumenapicliente']) ?>')
+    .then(res  => res.json())
+    .then(data => {
+        const chart = new Chart(ctxc,{
+            type: 'bar',
+            data: {
+                labels:    data.map(item => item.cliente),
+                datasets: [{
+                    label: 'Totales de Clientes',
+                    data:  data.map(item => item.total),
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)', 
+                        
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)', 
+                    ],
+                    borderWidth: 1
+                    /* s */
+                }]
+            },
+            options: options
+        })
+    })
+
+
+const chart = new Chart(ctx,{
     type: 'bar',
     data: {
         labels: ['Total Clientes', 'Total Decisor', 'Total Estrategicos', 'Total Operativo'],
         datasets: [{
-            label: 'Totales de Clientes',
+            label: 'Resumen General',
             data: [clienteAdmin, decisorAdmin, estrategicoAdmin, operativoAdmin],
             backgroundColor: [
                 'rgba(75, 192, 192, 1)',
@@ -646,7 +732,8 @@ var options ={
   })
 
 
-  const charts = new Chart(ctx2,{
+
+const charts = new Chart(ctx2,{
     type: 'doughnut',
     data: {
         labels: ['Total Clientes Bogota', 'Total Clientes Medellin'],

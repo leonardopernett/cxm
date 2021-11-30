@@ -208,15 +208,15 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
 
             series: [{
               name: 'Cantidad Total Encuestas Nivel Konecta',
-              data: [<?= join($varListKonecta, ',')?>],
+              data: [<?= implode($varListKonecta, ',')?>],
               color: '#4298B5'
             },{
               name: 'Cantidad Total Encuestas Medellin',
-              data: [<?= join($varListMed, ',')?>],
+              data: [<?= implode($varListMed, ',')?>],
               color: '#615E9B'
             },{
               name: 'Cantidad Total Encuestas Bogota',
-              data: [<?= join($varListBog, ',')?>],
+              data: [<?= implode($varListBog, ',')?>],
               color: '#FFc72C'
             }],
 

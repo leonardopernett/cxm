@@ -214,6 +214,11 @@ AppAsset::register($this);
                                                     'url' => ['/controlencuestas/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Quejas y Reclamos &nbsp;&nbsp;'),
+                                                    'url' => ['/qr/index'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                ],
                                                 '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',    
                                                 [
@@ -666,16 +671,16 @@ AppAsset::register($this);
                             
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank"><img src="<?= Url::to("@web/images/link80.png"); ?>" style="height: 106px; width: 215px;" alt="Card image cap"></a>
+                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link80.png"); ?>" style="height: 106px; width: 215px;" alt="Card image cap"></a>
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://amigo.grupokonecta.local/AmigoV1/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link3.png"); ?>" alt="Card image cap"></a>
+                            <a class="direccionar" href="https://amigo.grupokonecta.local/AmigoV1/index.php/component/users/?view=login" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link3.png"); ?>" alt="Card image cap"></a>
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://galeria.allus.com.co/galeriaexperiencias/index.php/component/users/?view=login" target="_blank"><img src="<?= Url::to("@web/images/link2.png"); ?>" alt="Card image cap"></a>
+                            <a class="direccionar" href="https://galeria.allus.com.co/galeriaexperiencias/index.php/component/users/?view=login" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link2.png"); ?>" alt="Card image cap"></a>
                         </div>   
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://konectados/" target="_blank"><img src="<?= Url::to("@web/images/link8.png"); ?>" style="width: 200px; height: 106px;" alt="Card image cap"></a>
+                            <a class="direccionar" href="https://konectados/" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link8.png"); ?>" style="width: 200px; height: 106px;" alt="Card image cap"></a>
                         </div>                     
                     </div>                
                     <br>
