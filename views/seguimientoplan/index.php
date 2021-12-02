@@ -245,7 +245,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
-                <div align="center">
+                <div class="text-center">
                     <?= Html::submitButton(Yii::t('app', 'Buscar técnico/lider'),
                         ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                             'data-toggle' => 'tooltip',
