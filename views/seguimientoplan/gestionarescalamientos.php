@@ -33,10 +33,9 @@ $month = date('m');
 $year = date('Y');
 $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
-// Codigo para descomentar $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-$varfechainicio = '2021-11-01';
-// Descomentar el codigo despues de los dos primeros dias $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-$varfechafin = '2021-12-05';
+$varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+$varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito');
