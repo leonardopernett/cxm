@@ -502,8 +502,8 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],                                                
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Distribuci&oacute;n&nbsp;&nbsp;'),
-                                                    'url' => ['/fuenteinformacion/index'],
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Distribuci&oacute;n Version 2.0&nbsp;&nbsp;'),
+                                                    'url' => ['/distribuciondos/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
                                                 '<br>',
