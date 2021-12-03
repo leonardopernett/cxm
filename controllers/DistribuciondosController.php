@@ -248,7 +248,7 @@ use app\models\DistribucionAsesores;
                       'usua_identificacion' => $varCCLider,
                       'usua_activo' => "S",
                       'usua_estado' => "D",  
-                      'usua_fechatimeout' => null,
+                      'usua_fechhoratimeout' => null,
                       'fechacreacion' =>  date('Y-m-d'),                                  
                   ])->execute();
 
