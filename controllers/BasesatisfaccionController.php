@@ -3797,7 +3797,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                                         . ')';
                                                 $conditon = '';
                                                 $comando .= '#####' . $eval;
-                                                if ($eval) {
+                                                eval("\$restCond = $eval;");
+                                                if ($restCond) {
                                                     $arrayCumpleRegla[] = 'true';
                                                     $model->tipologia = $value['name'];
                                                 } else {
