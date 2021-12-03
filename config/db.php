@@ -16,7 +16,7 @@ return [
     'password' => 'monit000r300',
     'charset' => 'utf8',  
 
-   /*   'dsn' => 'mysql:host=172.20.100.50;dbname=nuevo_qa',
+/*      'dsn' => 'mysql:host=172.20.100.50;dbname=nuevo_qa',
     'username' => 'leonardo.pernett',
     'password' => 'Kcxm12345+',
     'charset' => 'utf8',  
