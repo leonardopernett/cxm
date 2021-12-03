@@ -648,7 +648,7 @@ fetch('<?php echo Url::to(['/hojavida/resumenapi']) ?>')
             data: {
                 labels:    data.map(item => item.nombre),
                 datasets: [{
-                    label: 'Totales de Directores',
+                    label: 'Totales de clientes',
                     data:  data.map(item => item.total),
                     backgroundColor: [
                         'rgba(75, 192, 192, 1)',
