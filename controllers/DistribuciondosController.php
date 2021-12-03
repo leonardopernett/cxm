@@ -286,7 +286,7 @@ use app\models\DistribucionAsesores;
             WHERE 
               eq.usua_id IN ($varCCLider)")->queryScalar();
 
-          if ($varContarEquipos == 0) {
+          if ($varContarEquipos == 0 && $varUsuaIdLider != 0) {
             Yii::$app->db->createCommand()->insert('tbl_equipos',[
                       'name' => $varUsuaNombreLider.'_'.$varNombreCliente,
                       'nmumbral_verde' => 1, 
