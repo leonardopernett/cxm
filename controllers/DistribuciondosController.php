@@ -259,15 +259,29 @@ use app\models\DistribucionAsesores;
                 WHERE 
                   u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
-            Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
-                      'rel_usua_id' => $varUsuarioLider,
-                      'rel_role_id' => 273,                               
-                  ])->execute();
+            $varValidadosrol = Yii::$app->db->createCommand("
+                  SELECT COUNT(u.rel_usua_id) FROM rel_usuarios_roles u
+                    WHERE 
+                      u.rel_usua_id IN ($varUsuarioLider)")->queryScalar();
 
-            Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
-                      'usuario_id' => $varUsuarioLider,
-                      'grupo_id' => 1,                               
-                  ])->execute();
+            if ($varValidadosrol != 0) {
+                Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
+                    'rel_usua_id' => $varUsuarioLider,
+                    'rel_role_id' => 273,                               
+                ])->execute();
+            }
+            
+            $varValidadosgrupo = Yii::$app->db->createCommand("
+                  SELECT COUNT(u.usuario_id) FROM rel_grupos_usuarios u
+                    WHERE 
+                      u.usuario_id IN ($varUsuarioLider)")->queryScalar();
+
+            if ($varValidadosgrupo != 0) {
+                Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
+                    'usuario_id' => $varUsuarioLider,
+                    'grupo_id' => 1,                               
+                ])->execute();
+            }            
 
           }
 
