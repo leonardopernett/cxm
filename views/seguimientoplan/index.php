@@ -34,10 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
     $year = date('Y');
     $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
-    // Este codigo comentado debe de descomentarse despues de los dos primeros dias $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-    // Este codigo tambien se debe de descomentar $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-    $varfechainicio = '2021-11-01';
-    $varfechafin = '2021-12-05';
+    $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+    $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+
 
 
     $sessiones = Yii::$app->user->identity->id;
