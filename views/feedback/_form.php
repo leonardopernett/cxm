@@ -24,7 +24,12 @@ use yii\web\JsExpression;
             <?= Yii::$app->session->getFlash('danger') ?>
         </div>
     <?php endif; ?>
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'id' => 'feedback']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal', 'id' => 'feedback',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?=
             $form->field($model, 'catfeedback')

@@ -24,7 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="formularios-form" id="capaUno" style="display: inline">
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]) ?>
 
     	<?php  echo $form->field($model2, 'idlimeencuesta')->dropDownList($listData2, ['prompt' => 'Seleccionar...', 'id'=>'TipoArbol'])->label('Seleccionar encuesta') ?> 
 

@@ -29,7 +29,12 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         <h3><?= Html::encode($this->title) ?></h3>
     </div>-->
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <div class="row">
         <div class="col-md-6">

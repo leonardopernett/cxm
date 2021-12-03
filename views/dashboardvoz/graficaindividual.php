@@ -196,7 +196,12 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
             <div class="card1 mb">
                 <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #C148D0;"></em> Métricas de experiencia emitida y percibia en detalle por dia:</label>
 
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?>
                     <div class="col-md-6">
                         <?= $form->field($model, 'idservicio', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 200, 'readonly' => 'readonly', 'value' =>$txtArbol, 'id'=>'id_Service'])->label('Servicio') ?>
                         

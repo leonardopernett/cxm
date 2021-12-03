@@ -22,7 +22,12 @@ $this->title = 'Configuración de Categorias Calidad Entto';
     <div class="row">
     	<div class="col-md-12">
     		<div class="formularios-form" id="capaUno" style="display: inline">
-			    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+			    <?php $form = ActiveForm::begin([
+					'options' => ['enctype' => 'multipart/form-data'],
+					'fieldConfig' => [
+						'inputOptions' => ['autocomplete' => 'off']
+					]
+					]) ?>
 
 			        <?= $form->field($model, 'file')->fileInput()->label('') ?>
 

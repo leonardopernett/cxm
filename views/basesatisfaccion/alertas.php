@@ -52,7 +52,12 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
                 <thead style="display: none">
                     <th scope="col"></th>
                 </thead>
-            <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?> 
+            <?php $form = ActiveForm::begin([
+                'options' => ['enctype' => 'multipart/form-data'],
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ]) ?> 
                 <tbody>
                     <form class="form-horizontal">
                         <div class="form-group">

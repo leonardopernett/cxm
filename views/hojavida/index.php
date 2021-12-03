@@ -327,7 +327,14 @@ $this->params['breadcrumbs'][] = $this->title;
       </div>
       <div class="modal-body body">
           
-            <?php $form = ActiveForm::begin(['action'=>['hojavida/export'], 'method'=>'POST', 'options'=>['enctype'=>'multipart/form-data']]) ?>
+            <?php $form = ActiveForm::begin
+            'action'=>['hojavida/export'],
+            'method'=>'POST',
+            'options'=>['enctype'=>'multipart/form-data'],
+            'fieldConfig' => [
+              'inputOptions' => ['autocomplete' => 'off']
+            ]
+            ]) ?>
                 <div class="input-area">
                       <div class="input-text" id="text">Seleccione o arrastre el archivo</div>
                       <em class="fa fa-upload"></em>
@@ -447,7 +454,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="modal-body">
 
         <?php if($roles == 270 || $roles == 309):  ?>
-            <?php $form = Activeform::begin(['action'=>['hojavida/excelexportadmin'], 'method'=>'post']) ?>
+            <?php $form = Activeform::begin([
+              'action'=>['hojavida/excelexportadmin'],
+              'method'=>'post',
+              'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+              ]) ?>
               <div class="form-group">
                  <label for="">Correo Destinatario</label>
                  <input type="text" class="form-control" name="email" placeholder="Example@correo.com" required>
@@ -457,7 +470,13 @@ $this->params['breadcrumbs'][] = $this->title;
           <?php endif  ?>
 
           <?php if($roles != 270 && $roles != 309):  ?>
-            <?php $form = Activeform::begin(['action'=>['hojavida/excelexport'], 'method'=>'post']) ?>
+            <?php $form = Activeform::begin([
+              'action'=>['hojavida/excelexport'],
+              'method'=>'post',
+              'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+              ]) ?>
               <div class="form-group">
                  <label for="">Correo Destinatario</label>
                  <input type="text" class="form-control" name="email" placeholder="correo destinatario" required>
@@ -480,7 +499,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="modal-body">
 
         <?php if($roles == 270 || $roles == 309):  ?>
-            <?php $form = Activeform::begin(['action'=>['hojavida/excelexporteventosadmin'], 'method'=>'post']) ?>
+            <?php $form = Activeform::begin([
+              'action'=>['hojavida/excelexporteventosadmin'],
+              'method'=>'post',
+              'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+              ]) ?>
               <div class="form-group">
                  <label for="">Correo Destinatario</label>
                  <input type="text" class="form-control" name="email" placeholder="Example@correo.com" required>
@@ -490,7 +515,13 @@ $this->params['breadcrumbs'][] = $this->title;
           <?php endif  ?>
 
           <?php if($roles != 270 && $roles != 309):  ?>
-            <?php $form = Activeform::begin(['action'=>['hojavida/excelexporteventos'], 'method'=>'post']) ?>
+            <?php $form = Activeform::begin([
+              'action'=>['hojavida/excelexporteventos'],
+              'method'=>'post',
+              'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+              ]) ?>
               <div class="form-group">
                  <label for="">Correo Destinatario</label>
                  <input type="text" class="form-control" name="email" placeholder="correo destinatario" required>

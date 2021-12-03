@@ -49,7 +49,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="formularios-form" style="display: inline" id="idBloques0">
 
-  <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+  <?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+      'inputOptions' => ['autocomplete' => 'off']
+    ]
+    ]); ?>
     <div class="row">
       <div class="col-md-offset-2 col-sm-8">
         <?=

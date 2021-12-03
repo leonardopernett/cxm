@@ -45,7 +45,12 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 
 <div class="formularios-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]); ?>
 
     <?= $form->field($model, 'identificacion')->textInput(['maxlength' => 45]) ?>
 

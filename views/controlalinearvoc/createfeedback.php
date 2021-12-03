@@ -54,7 +54,13 @@ $template = '<div class="col-sm-12">'
         <div class="col-md-12">
           <div class="card1 mb">
             <label style="font-size: 20px;"><em class="fas fa-bookmark" style="font-size: 20px; color: #559FFF;"></em> Registro de feedback</label>
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'id' => 'feedback']); ?>
+            <?php $form = ActiveForm::begin([
+                'layout' => 'horizontal',
+                'id' => 'feedback',
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ]); ?>
             <div class="row">
                 <div class="col-md-12">
                     <?php $var = ['Informacion correcto y completo' => 'Informacion correcto y completo', 'Procedimientos correctos y completos' => 'Procedimientos correctos y completos', 'Procedimientos en la parte de escucha' => 'Procedimientos en la parte de escucha', 'Procedimientos del tono de voz' => 'Procedimientos del tono de voz', 'Entiende la necesidad del usuario' => 'Entiende la necesidad del usuario']; ?>

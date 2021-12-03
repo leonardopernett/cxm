@@ -55,7 +55,12 @@ $this->title = 'Visualización de Categorias -- QA & Speech --';
 </div>
 <br>
 <div class="col-sm-12" id="idCapa0" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
     <caption>Categoria</caption>
         <tr>

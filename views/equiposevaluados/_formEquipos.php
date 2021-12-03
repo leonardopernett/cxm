@@ -17,7 +17,13 @@ $url = \yii\helpers\Url::to(['equiposlist', 'evaluado_id'=>$model->evaluado_id])
 
 <div class="equipos-evaluados-form">
     <?php    
-        $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]);
+        $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'options' => ['data-pjax' => true],
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+        ]);
     ?>
         
     <?= $form->field($model, 'equipo_id')->widget(Select2::classname(), [        

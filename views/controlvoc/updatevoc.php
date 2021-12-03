@@ -41,7 +41,12 @@ $this->title = 'Actualización del Listado Escucha Focalizada - VOC -';
 </div> 
 <br>
 <div id="dtbloque1" class="col-sm-12">
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		]
+		]); ?> 
 		<?= $form->field($model, 'nombrelistap')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'indicadorID'])->label('Sesiones') ?>
 		<br>
 		<div class="row" style="text-align: center;">  

@@ -61,7 +61,12 @@ $this->title = 'Registro de Categorias DashBoard Speech';
         </div>
 
         <div id="dtbloque" class="form-group col-sm-12" style="display: inline;">
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+            <?php $form = ActiveForm::begin([
+                'layout' => 'horizontal',
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ]); ?>
                 <div class="row">
                     <div class="col-md-6">                        
                         <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
@@ -147,7 +152,12 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                 <label>Debes seleccionar el centro de costos para seguir con el proceso.</label>
             </div>
             <div id="idCapaBloque1" class="CapaBloque1" style="display: none;">
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?>
                     <div class="row">
                         <div class="col-md-6">
                             <?= $form->field($model3, 'rn', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 200,  'id'=>'idRn', 'readonly' => 'readonly'])->label('Regla de Negocio') ?>

@@ -56,7 +56,12 @@ if (!isset($aleatorio) || !$aleatorio) {
     }
     ?>
 
-    <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],'layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ["id" => "buscarMasivos"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]]); ?>
 
     <div class="row">
         <div class="col-md-6">

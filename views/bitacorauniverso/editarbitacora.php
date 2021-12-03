@@ -177,7 +177,12 @@ use yii\bootstrap\Modal;
 </div>
 <hr>
 <div class="capaDos">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
@@ -237,7 +242,12 @@ use yii\bootstrap\Modal;
 </div>
 <hr>
 <div class="capaTres">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">

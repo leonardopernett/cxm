@@ -24,7 +24,12 @@ use yii\bootstrap\Modal;
     }
 </style>
 <div class="CapaUno" style="display: inline;">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
         <div class="row">
             <div class="col-md-12">
                 <label style="font-size: 15px;">Seleccionar Pcrc: </label>

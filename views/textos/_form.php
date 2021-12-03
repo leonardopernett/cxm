@@ -10,7 +10,12 @@ use yii\bootstrap\ActiveForm;
 
 <div class="textos-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'detexto')->textInput(['maxlength' => 500]) ?>
 

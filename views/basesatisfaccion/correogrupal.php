@@ -23,7 +23,12 @@ $fechaActual = date('Y-m-d');
 
 ?>
 <div class="formularios-form">
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
 
     
         <div id="parte1" style="display: none;">            

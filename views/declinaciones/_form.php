@@ -10,7 +10,12 @@ use yii\bootstrap\ActiveForm;
 
 <div class="declinaciones-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => 300]) ?>
 

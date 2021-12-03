@@ -17,7 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="capaUno" style="display: inline;">
 	<div class="row">
 		<div class="col-md-12">
-			<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+			<?php $form = ActiveForm::begin([
+				'layout' => 'horizontal',
+				'fieldConfig' => [
+					'inputOptions' => ['autocomplete' => 'off']
+				  ]
+				]); ?>
 				<?=
 		            $form->field($model, 'evaluados_id')->label(Yii::t('app',''))
 		                ->widget(Select2::classname(), [

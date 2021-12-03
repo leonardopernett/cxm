@@ -217,7 +217,12 @@ $contadorSecciones = 0;
                                     <td> 
                                         <?php if ($data->preview) : 
                                                $data->IdclienteSel='';?>
-                                            <?php $form = ActiveForm::begin(['layout' => 'horizontal']);?> 
+                                            <?php $form = ActiveForm::begin([
+                                                'layout' => 'horizontal',
+                                                'fieldConfig' => [
+                                                    'inputOptions' => ['autocomplete' => 'off']
+                                                  ]
+                                                ]);?> 
                                                 <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-8 btn-show-alert']])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                                             [
                                                                     'name' => 'id_dp_clientes',
@@ -243,7 +248,12 @@ $contadorSecciones = 0;
                                         
                                         <?php else: ?>
                                           
-                                            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); 
+                                            <?php $form = ActiveForm::begin([
+                                                'layout' => 'horizontal',
+                                                'fieldConfig' => [
+                                                    'inputOptions' => ['autocomplete' => 'off']
+                                                  ]
+                                            ]); 
                                             $model->id_dp_clientes = $data->idcliente;?>
                                                 <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-8 btn-show-alert']])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                                                 [
@@ -283,7 +293,12 @@ $contadorSecciones = 0;
                                                 });
                                         </script>
 
-                                        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                                        <?php $form = ActiveForm::begin([
+                                            'layout' => 'horizontal',
+                                            'fieldConfig' => [
+                                                'inputOptions' => ['autocomplete' => 'off']
+                                              ]
+                                            ]); ?>
                                                     
                                                     <?= $form->field($model,'cod_pcrc', ['labelOptions' => ['class' => 'col-md-8']])->dropDownList(
                                                         [],
@@ -307,7 +322,12 @@ $contadorSecciones = 0;
                                                 });
                                         </script>
 
-                                        <?php $form = ActiveForm::begin(['layout' => 'horizontal']);
+                                        <?php $form = ActiveForm::begin([
+                                            'layout' => 'horizontal',
+                                            'fieldConfig' => [
+                                                'inputOptions' => ['autocomplete' => 'off']
+                                              ]
+                                        ]);
                                                     $model->cod_pcrc = $data->codpcrc;?>
                                                     <?= $form->field($model,'cod_pcrc', ['labelOptions' => ['class' => 'col-md-8']])->dropDownList(
                                                         [],

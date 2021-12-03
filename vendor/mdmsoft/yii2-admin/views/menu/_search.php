@@ -15,6 +15,9 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
     ]); ?>
 
     <?= $form->field($model, 'id') ?>

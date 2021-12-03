@@ -105,7 +105,12 @@ $this->registerJs(
 
 <div class="reglanegocio-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'rn')->textInput(['maxlength' => 255]) ?>
 

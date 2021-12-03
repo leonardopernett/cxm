@@ -30,8 +30,16 @@ $this->registerJs(
         Pjax::begin(['id' => 'Declinaciones-Usuarios-pj', 'enablePushState' => false]);
     ?>
     
-    <?php $form = ActiveForm::begin(['id'=>'form-Declinaciones-Usuarios','enableClientValidation' => true,
-    'enableAjaxValidation' => false,'layout' => 'horizontal', 'options' => ['data-pjax' => true]]); ?>
+    <?php $form = ActiveForm::begin([
+        'id'=>'form-Declinaciones-Usuarios',
+        'enableClientValidation' => true,
+        'enableAjaxValidation' => false,
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     
     <?= $form->field($model, 'declinacion_id')->dropDownList($model->getDeclinacionesActiveList(), ['prompt' => Yii::t('app', 'Select ...')]) ?>
     

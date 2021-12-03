@@ -11,7 +11,12 @@ use dosamigos\ckeditor\CKEditor;
 
 <div class="noticias-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'titulo')->textInput(['maxlength' => 255]) ?>
 

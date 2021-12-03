@@ -53,7 +53,12 @@ console.log(bicontrol);
 </script>
 
 <div class="control-procesos-index">
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?> 
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]) ?> 
         <div class="form-group">
             <label class="control-label col-xs-3">Destinatario:</label>
                 <div class="col-xs-9">

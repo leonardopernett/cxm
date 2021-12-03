@@ -34,7 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <script src="../../js_extensions/highcharts/exporting.js"></script>
 
 <div class="row">
-  <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?> 
+  <?php $form = ActiveForm::begin([
+    'options' => ["id" => "buscarMasivos"],
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+      'inputOptions' => ['autocomplete' => 'off']
+    ]
+    ]); ?> 
 
   <div id="container" style="height: 400px; margin-top: 1em">
   </div>

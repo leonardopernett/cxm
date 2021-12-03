@@ -23,7 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="control-procesos-index" id="actualizarID">
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
 	<?= $form->field($model, "id_atrib_alin")->textInput(['readonly' => 'readonly', 'value' => $txtIdAtri, 'id'=>'invisible_valorado', 'class'=>"hidden"])->label(' ') ?>   
     
         <label for="txtIDExtSp" style="margin-left: 300px;">Sesion - Categoria:</label>

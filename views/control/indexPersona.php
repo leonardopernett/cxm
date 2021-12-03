@@ -87,7 +87,13 @@ $this->registerJs($js);
                     <div class="well" style="display: block" id="filtrosControlproceso">
                 <?php endif; ?>
                 <?php
-                $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['id' => 'idVistaunicapersona']]);
+                $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'options' => ['id' => 'idVistaunicapersona'],
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                ]);
                 ?>
                 <?= Html::input("hidden", "form", "0", ['id' => 'form']); ?>
                 
@@ -962,7 +968,13 @@ $this->registerJs($js);
 <div class="row">
     <div class="col-lg-12">
         <div id="divConfigDetallada" class="well row" style="z-index:2; display: none" title="Parametros de Visualizaci&oacute;n" >
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['id' => 'idVistaDetalladapersona']]); ?>
+            <?php $form = ActiveForm::begin([
+                'layout' => 'horizontal',
+                'options' => ['id' => 'idVistaDetalladapersona'],
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ]); ?>
             <?= Html::input("hidden", "form", "1", ['id' => 'form']); ?>
             <div class="col-md-12">
                 <?php

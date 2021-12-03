@@ -327,7 +327,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <hr>
 <div class="CapaUno" style="display: inline;">
     <div class="row">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
         <div class="col-md-12">
             <div class="card1 mb">
 

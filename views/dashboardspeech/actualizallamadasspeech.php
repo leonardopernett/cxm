@@ -46,14 +46,14 @@ $this->registerJs(
 });"
 );
 
-// Html::a('Auto Grupo A',  Url::to(['automaticspeecha','varNumber' => 1,'varArbol'=>$model->id_dp_clientes]), ['class' => 'btn btn-success',
-                            // 'style' => 'background-color: #337ab7',
-                            // 'data-toggle' => 'tooltip',
-                            // 'title' => 'Automaticas Speech']) 
-
 ?>
 <div id="capaOne" class="capaPP" style="display: inline;">
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">

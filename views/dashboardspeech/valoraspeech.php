@@ -166,7 +166,13 @@ $this->title = 'Dashboard Voz del Cliente';
 </div>
 <hr>
 <div class="capapp" style="display: inline;">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'action' => \yii\helpers\Url::to(['guardarpaso2'])]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ],
+        'action' => \yii\helpers\Url::to(['guardarpaso2'])
+        ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">

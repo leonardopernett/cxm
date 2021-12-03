@@ -13,7 +13,13 @@ use yii\helpers\Url;
 
     <?php yii\widgets\Pjax::begin(['id' => 'form_tmptiposllamada']); ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'tmpejecucionformulario_id')->hiddenInput(['value' => $model->tmpejecucionformulario_id])->label('') ?>
 

@@ -20,7 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="CapaUno" style="display: inline;">
     <div class="row">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		],
+		'layout' => 'horizontal'
+		]); ?>
         <div class="col-md-12">
             <div class="card1 mb">
             	<label style="font-size: 15px;"> Nombre de la encuesta: </label> 

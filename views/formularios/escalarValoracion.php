@@ -46,7 +46,13 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 
 <div class="formularios-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     
     <?=
             $form->field($model, 'valorado_id')

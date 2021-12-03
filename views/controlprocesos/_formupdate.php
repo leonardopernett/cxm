@@ -32,7 +32,12 @@ $this->title = 'Actualizar Valoracion';
 			<h5>Por favor seleccionar un argumento del porque se genera la actualizacion de la valoracion.</h5>
 		</div>
 		&nbsp;&nbsp;
-		<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+		<?php $form = ActiveForm::begin([
+			'layout' => 'horizontal',
+			'fieldConfig' => [
+				'inputOptions' => ['autocomplete' => 'off']
+			  ]
+			]); ?>
 
 		<?= $form->field($model, "cant_valor")->textInput(['type' => 'number', 'maxlength' => 10, 'id'=>'cantidad_valoraciones', 'onkeypress'=>"return soloNumeros(event);", 'required'])->label('Cantidad de Valoraciones') ?> 	
 
@@ -62,7 +67,12 @@ $this->title = 'Actualizar Valoracion';
 			<h5>Por favor seleccionar un argumento del porque se genera la actualización de la valoración.</h5>
 		</div>
 		&nbsp;&nbsp;
-		<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+		<?php $form = ActiveForm::begin([
+			'layout' => 'horizontal',
+			'fieldConfig' => [
+				'inputOptions' => ['autocomplete' => 'off']
+			  ]
+			]); ?>
 
 		<?= $form->field($model, "cant_valor")->textInput(['type' => 'number', 'maxlength' => 10, 'id'=>'cantidad_valoraciones', 'onkeypress'=>"return soloNumeros(event);", 'required'])->label('Cantidad de Valoraciones') ?> 	  				
 	</div>

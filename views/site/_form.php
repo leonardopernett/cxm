@@ -7,7 +7,13 @@ use yii\bootstrap\ActiveForm;
 <?php if ($bandera == 0): ?>
     <div class="segundo-calificador-form">
 
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true, 'id' => 'createSC']]); ?>
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'options' => ['data-pjax' => true, 'id' => 'createSC'],
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
 
 
         <?= $form->field($model, 'argumentoAsesor')->textarea(['rows' => 6]) ?>
@@ -34,7 +40,13 @@ use yii\bootstrap\ActiveForm;
     <div class="segundo-calificador-form">
 
 
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true, 'id' => 'createSC']]); ?>
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'options' => ['data-pjax' => true,'id' => 'createSC'],
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
         <?php if (isset($model->argumento)): ?>
             <div class="row">
                 <div class="col-lg-10 col-sm-offset-1" style="height: 300px; overflow: auto">

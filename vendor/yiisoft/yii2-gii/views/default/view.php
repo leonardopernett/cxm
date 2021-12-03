@@ -28,7 +28,10 @@ foreach ($generator->templates as $name => $path) {
     <?php $form = ActiveForm::begin([
         'id' => "$id-generator",
         'successCssClass' => '',
-        'fieldConfig' => ['class' => ActiveField::className()],
+        'fieldConfig' => [
+            'class' => ActiveField::className(),
+            'inputOptions' => ['autocomplete' => 'off']
+        ],
     ]); ?>
         <div class="row">
             <div class="col-lg-8 col-md-10">

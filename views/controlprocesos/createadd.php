@@ -55,7 +55,12 @@ function valida(e){
 
 <div class="formularios-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'arbol_id')->textInput(['maxlength' => 200, 'id'=>"<?php echo $id_arbol ?>", 'class'=>'hidden']) ?> 
 

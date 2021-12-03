@@ -70,7 +70,11 @@ $this->title = 'Gestion Preguntas';
     	<div id="datosGenerales" class="col-md-offset-1 col-sm-10">
     		<table class="table table-striped table-bordered detail-view formDinamico">
 			<caption>Tabla datos generales</caption>
-    		<?php $form = ActiveForm::begin(); ?>  
+    		<?php $form = ActiveForm::begin([
+				'fieldConfig' => [
+					'inputOptions' => ['autocomplete' => 'off']
+				  ]
+			]); ?>  
     			<tbody>
     			<div class="row seccion-data">
     			<div class="col-md-10">

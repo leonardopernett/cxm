@@ -147,7 +147,12 @@ $this->title = 'Dashboard Escuchar + 2.0';
 </div>
 
 <div class="capaForm" id="idCapa0" style="display: inline;">
-  <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+  <?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+      'inputOptions' => ['autocomplete' => 'off']
+    ]
+    ]); ?>
 
   <!-- Aqui va lacapa de los botones -->
   <div class="capabtn1" style="display: inline;">

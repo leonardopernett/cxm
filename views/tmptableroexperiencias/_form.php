@@ -23,7 +23,13 @@ use yii\helpers\Url;
 
     <?php yii\widgets\Pjax::begin(['id' => 'form_tmptableroexperiencias']); ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true, 'id' => 'formProblems']]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true, 'id' => 'formProblems'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'tmpejecucionformulario_id')->hiddenInput(['value' => $model->tmpejecucionformulario_id])->label('') ?>
 

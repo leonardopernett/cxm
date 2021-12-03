@@ -36,7 +36,12 @@ $this->title = 'Registro de Categorias DashBoard Speech';
 ?>
 <div class="row">
     <div id="dtbloque0" class="form-group col-sm-12" style="display: inline;">
-        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+        <?php $form = ActiveForm::begin([
+            'options' => ['enctype' => 'multipart/form-data'],
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]) ?>
             <?= $form->field($model2, 'file')->fileInput() ?>
             <br>
             <button class="form-control" style="width:25%; background: #4298B4; color: #FFFFFF" id="buttonID" >Importar</button>

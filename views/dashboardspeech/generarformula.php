@@ -88,7 +88,12 @@ $varMes = date("n");
 
 ?>
 <div class="formularios-form" id="idCapa" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
             <div class="row">
                 <?=  $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'arbol_id', 'nameArbol'),
                                         [

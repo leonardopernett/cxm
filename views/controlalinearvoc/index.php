@@ -92,7 +92,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card1 mb">
                 <label><em class="fas fa-search" style="font-size: 20px; color: #FFC72C;"></em> Búsqueda del formulario: </label>
 
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?>
                     <?=
                         $form->field($model, 'arbol_id')->label(Yii::t('app','Programa o PCRC'))
                             ->widget(Select2::classname(), [                

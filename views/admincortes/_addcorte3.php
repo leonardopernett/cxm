@@ -71,7 +71,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		</table>
 	</div>
 	<hr>
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		]
+		]); ?>
 	<div class="form-group">
 		<h3 style="color:#100048;"><left>Ingresar Datos Corte 3</left></h3>
 		

@@ -37,7 +37,12 @@ $this->title = 'Actualizar Cantidad Valoracion';
 			<h5>Por favor seleccionar un argumento del porque se genera la actualizacion de la valoracion.</h5>
 		</div>
 		&nbsp;&nbsp;
-		<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+		<?php $form = ActiveForm::begin([
+			'layout' => 'horizontal',
+			'fieldConfig' => [
+				'inputOptions' => ['autocomplete' => 'off']
+			  ]
+			]); ?>
 
 		<?php $var2 = ['AGENTES' => 'AGENTES', 'ALTO VALOR' => 'ALTO VALOR', 'CALIDAD DEL ENTRENAMIENTO' => 'CALIDAD DEL ENTRENAMIENTO', 'HEROES POR EL CLIENTE' => 'HEROES POR EL CLIENTE', 'OJT' => 'OJT', 'OTROS' => 'OTROS', 'PRECISIÓN Y APRENDIZAJE' => 'PRECISIÓN Y APRENDIZAJE', 'PROCESO' => 'PROCESO', 'PROTECCION DE LA EXPERIENCIA' => 'PROTECCION DE LA EXPERIENCIA', 'PRUEBAS' => 'PRUEBAS']; ?>
 		
@@ -77,7 +82,12 @@ $this->title = 'Actualizar Cantidad Valoracion';
 			<h5>Por favor seleccionar un argumento del porque se genera la actualizacion de la valoracion.</h5>
 		</div>
 		&nbsp;&nbsp;
-		<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+		<?php $form = ActiveForm::begin([
+			'layout' => 'horizontal',
+			'fieldConfig' => [
+				'inputOptions' => ['autocomplete' => 'off']
+			  ]
+			]); ?>
 
 		<?php $var2 = ['AGENTES' => 'AGENTES', 'ALTO VALOR' => 'ALTO VALOR', 'CALIDAD DEL ENTRENAMIENTO' => 'CALIDAD DEL ENTRENAMIENTO', 'HEROES POR EL CLIENTE' => 'HEROES POR EL CLIENTE', 'OJT' => 'OJT', 'OTROS' => 'OTROS', 'PRESICION Y APRENDIZAJE' => 'PRECISION Y APRENDIZAJE', 'PROCESO' => 'PROCESO', 'PROTECCION DE LA EXPERIENCIA' => 'PROTECCION DE LA EXPERIENCIA', 'PRUEBAS' => 'PRUEBAS']; ?>
 		

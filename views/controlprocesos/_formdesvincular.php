@@ -16,7 +16,12 @@ $txtFechaActual = date("Y-m-d");
 $txtListResponsable = Yii::$app->db->createCommand("select distinct usua_id, usua_nombre from tbl_usuarios inner join tbl_control_procesos on  tbl_usuarios.usua_id = tbl_control_procesos.responsable group by tbl_usuarios.usua_nombre")->queryAll();
 $listData2 = ArrayHelper::map($txtListResponsable, 'usua_id', 'usua_nombre');
 ?>
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
 <div class="CapaUno" id="CapaUno">
     <div class="row">
         <div class="col-md-12">

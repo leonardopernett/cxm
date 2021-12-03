@@ -67,7 +67,13 @@ $sessiones = Yii::$app->user->identity->id;
         ?>
         <?php
         //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
-        $form = ActiveForm::begin(['options' => ["id" => "formUsuarios"], 'layout' => 'horizontal'])
+        $form = ActiveForm::begin([
+            'options' => ["id" => "formUsuarios"],
+            'layout' => 'horizontal',
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ])
         ?>
         <p>
             <?= Html::a(Yii::t('app', 'Create Usuarios'), ['create', 'grupo_id' => $grupo_id], ['class' => 'btn btn-success']) ?>
@@ -189,7 +195,13 @@ $sessiones = Yii::$app->user->identity->id;
             ?>
                 <?php
                 //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
-                $form = ActiveForm::begin(['options' => ["id" => "formUsuarios"], 'layout' => 'horizontal'])
+                $form = ActiveForm::begin([
+                    'options' => ["id" => "formUsuarios"],
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ])
                 ?>
                 <p>
                 <?= Html::a(Yii::t('app', 'Create Usuarios'), ['create'], ['class' => 'btn btn-success']) ?>

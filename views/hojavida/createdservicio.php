@@ -65,7 +65,13 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 
-<?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'options' => ["id" => "buscarMasivos"],
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
 	<div class="capaPrincipal" style="display: inline;">
 		<div class="row">
 			<div class="col-md-12">
