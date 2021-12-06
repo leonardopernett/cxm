@@ -1184,7 +1184,8 @@ class BasesatisfaccionController extends Controller {
                                                         . ')';
                                                 $conditon = '';
                                                 $comando .= '#####' . $eval;
-                                                if ($eval) {
+                                                eval("\$restCond = $eval;");
+                                                if ($restCond) {
 													$prioridadesReales[$value['prioridad']] = $value['name'];
                                                     $arrayCumpleRegla[] = 'true';
                                                     $nModel->tipologia = $value['name'];
