@@ -37,6 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
     $varTipo = ['1' => 'Decisor', '2' => 'No Decisor'];
     $varNivel = ['1' => 'Estratégico', '2' => 'Operativo'];
     $varEstado = ['1' => 'Activo', '2' => 'No Activo'];
+
+    $varidCity = $model->hv_idciudad;
 ?>
 <style>
     .card1 {
@@ -220,6 +222,43 @@ $this->params['breadcrumbs'][] = $this->title;
           <div class="col-md-4">
             <label style="font-size: 15px;"> Fecha de Cumpleaños</label>
             <?= $form->field($model, 'fechacumple', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->widget(\yii\jui\DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control', 'id'=>'idfechacumple'],]) ?>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <table id="tblDataPartOne" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Datos Informativos"; ?></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Data Pais') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Data Ciudad') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Data Cumpleaños') ?></label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php                     
+                    $paramsCiudad = [':idciudad'=>$model->hv_idciudad];
+                    $VarciudadName = Yii::$app->db->createCommand('
+                      SELECT hp.pais, hc.ciudad FROM tbl_hv_pais hp
+                        INNER JOIN  tbl_hv_ciudad hc ON 
+                          hp.hv_idpais = hc.pais_id
+                          WHERE 
+                            hc.hv_idciudad = :idciudad
+                              AND hc.anulado = 0
+                      ')->bindValues($paramsCiudad)->queryAll();
+
+                    foreach ($VarciudadName as $key => $value) {
+                      
+                  ?>
+                    <td><label style="font-size: 12px;"><?php echo  $value['pais']; ?></label></td>
+                    <td><label style="font-size: 12px;"><?php echo  $value['ciudad']; ?></label></td>
+                  <?php
+                    }
+                  ?>
+                  <td><label style="font-size: 12px;"><?php echo  $model->fechacumple; ?></label></td>
+                </tbody>
+            </table>
           </div>
         </div>
 
@@ -975,9 +1014,7 @@ $this->params['breadcrumbs'][] = $this->title;
               return;
             }
             if (varididciudad == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar la ciudad","warning");
-              return;
+              varididciudad = "<?php echo $varidCity; ?>";
             }
             if (varclasificacion == "") {
               event.preventDefault();
