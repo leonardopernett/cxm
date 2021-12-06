@@ -1556,10 +1556,13 @@ use Exception;
     }
 
     public function actionResumenapicliente(){
+
        $clientes =  Yii::$app->db->createCommand('SELECT COUNT(*) AS total,
         (SELECT c.cliente FROM tbl_proceso_cliente_centrocosto c  WHERE c.id_dp_clientes = pcrc.id_dp_cliente LIMIT 1 ) AS cliente
         FROM tbl_hojavida_datapcrc pcrc
+        WHERE pcrc.id_dp_cliente != 0
         GROUP BY pcrc.id_dp_cliente')->queryAll();
+
         return json_encode($clientes);
     }
  
