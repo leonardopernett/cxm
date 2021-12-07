@@ -2929,7 +2929,7 @@ $modelos = new HojavidaDatapersonal();
       $varIdInfoPersonal = Yii::$app->db->createCommand('
       SELECT dp.hv_idpersonal FROM tbl_hojavida_datapersonal dp 
         WHERE 
-          dp.identificacion = :DocumentoInfo ')->bindValues($paramsInfoPersonal)->queryScalar();
+          dp.identificacion IN (:DocumentoInfo) ')->bindValues($paramsInfoPersonal)->queryScalar();
 
       $varNA = "Sin datos";
 
