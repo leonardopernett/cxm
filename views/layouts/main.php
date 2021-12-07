@@ -29,6 +29,14 @@ AppAsset::register($this);
         <?php $this->head() ?>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
         <style type="text/css">
+           .luces {
+          background-image: url(https://lh4.googleusercontent.com/-T2mr4hYEJt8/TuuwZfwTgvI/AAAAAAAAB_Y/oZAKIIvxRa0/s435/luces%2525209.gif);
+          background-repeat: repeat-x;
+          height: 50px;
+          width: 100%;
+          top: 0;
+          left: 0;
+  }
             .cxlogueo {
                 font-family: "Nunito",sans-serif;
                 font-weight: bold;
@@ -158,10 +166,13 @@ AppAsset::register($this);
             }
 
         </style>
+        
     </head>
     <body>
+    
         <?php $this->beginBody() ?>
         <nav id='cssmenu'>
+        
             <?php
                 NavBar::begin([
                     'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
@@ -176,6 +187,7 @@ AppAsset::register($this);
                 ]);
 
                 if (!\Yii::$app->user->isGuest) {
+                    
                     echo nav::widget([
                         'activateItems' => true,
                         'activateParents' => true,
@@ -639,9 +651,11 @@ AppAsset::register($this);
                         
                     ]);
                 }
+                
 
                 NavBar::end();
             ?>
+            <div class='luces'></div>
         </nav>
 
             <script defer src="/qa_managementv2/web/font_awesome_local/js.js"></script>
@@ -656,6 +670,7 @@ AppAsset::register($this);
                 <?= $content ?>
             </div>
         </div>
+        
             
         <footer class="footer2">
             <div class="container1">
