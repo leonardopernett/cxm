@@ -35,6 +35,12 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 
 </style>
 <!-- Full Page Image Header with Vertically Centered Content -->
+<script>
+    $(document).ready(function(){
+        $.fn.snow();
+    });
+</script>
+<script src="../../js_extensions/mijs.js"> </script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">

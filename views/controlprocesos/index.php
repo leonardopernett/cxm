@@ -112,6 +112,12 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
+<script>
+    $(document).ready(function(){
+        $.fn.snow();
+    });
+</script>
+<script src="../../js_extensions/mijs.js"> </script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">

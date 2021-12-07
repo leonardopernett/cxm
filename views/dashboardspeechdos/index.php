@@ -110,6 +110,12 @@ $this->title = 'Dashboard Escuchar + 2.0';
     }
 
 </style>
+<script>
+    $(document).ready(function(){
+        $.fn.snow();
+    });
+</script>
+<script src="../../js_extensions/mijs.js"> </script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
