@@ -2895,11 +2895,23 @@ $modelos = new HojavidaDatapersonal();
       $varGerentes = $sheet->getCell("S".$row)->getValue();
       $varListGerentes = explode(", ", $varGerentes);
 
-      $paramsCliente = [':TextCliente' => $sheet->getCell("T".$row)->getValue()];
+      $varnombrecliente = $sheet->getCell("T".$row)->getValue();
+      if ($varnombrecliente == "Directv") {
+        $varIdCliente = "255";
+      }
+
+      $paramsCliente = [':TextCliente' => $varnombrecliente];
       $varIdCliente = Yii::$app->db->createCommand('
       SELECT DISTINCT cc.id_dp_clientes, cc.cliente FROM tbl_proceso_cliente_centrocosto cc
         WHERE 
           cc.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
+      
+      if ($varIdCliente == "") {
+        $varIdCliente = Yii::$app->db->createCommand('
+        SELECT ss.id_dp_clientes FROM tbl_speech_servicios ss
+          WHERE 
+            ss.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
+      }
 
 
       $varPcrcs = $sheet->getCell("U".$row)->getValue();
