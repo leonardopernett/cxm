@@ -2901,10 +2901,8 @@ $modelos = new HojavidaDatapersonal();
         WHERE 
           cc.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
 
-
       $varPcrcs = $sheet->getCell("U".$row)->getValue();
       $varListPcrcs = explode(", ", $varPcrcs);
-
 
       Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
                   'nombre_full' => $sheet->getCell("B".$row)->getValue(),
@@ -2926,7 +2924,6 @@ $modelos = new HojavidaDatapersonal();
                   'usua_id' => Yii::$app->user->identity->id, 
                   'fechacumple' => null,                                   
               ])->execute();
-
 
       $paramsInfoPersonal = [':DocumentoInfo' => $varDocumento];
       $varIdInfoPersonal = Yii::$app->db->createCommand('
@@ -2990,7 +2987,6 @@ $modelos = new HojavidaDatapersonal();
                   'usua_id' => Yii::$app->user->identity->id,                                       
               ])->execute(); 
       } 
-
 
       $arrayPcrc = count($varListPcrcs);
       for ($i=0; $i < $arrayPcrc; $i++) { 
