@@ -533,6 +533,9 @@ class PHPExcel_Writer_Excel5 extends PHPExcel_Writer_Abstract implements PHPExce
 						$renderingFunction = 'imagepng';
 						break;
 
+					default:
+			     	#code
+			    	break;
 					}
 
 					ob_start();

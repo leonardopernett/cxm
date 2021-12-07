@@ -2667,6 +2667,9 @@ class BasesatisfaccionController extends Controller {
                         case ($inihoratramo >= '230001') && ($finhoratramo <= '235959'):
                             $tramo = $pcrc['tramo24'];
                             break;
+                       default:
+                            # code...
+                            break;
 
                     }
 

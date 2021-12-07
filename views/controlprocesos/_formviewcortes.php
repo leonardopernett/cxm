@@ -130,6 +130,9 @@ $this->title = 'Ver Tipo de Corte';
 			    	case "12":
 			    		festivo = 1;
 			    		break;
+					default:
+                 
+                       break;
 			    }	    	
 	
 	if(idtipocort == "Corte Marzo - Grupo Bancolombia (Inactivo)"){

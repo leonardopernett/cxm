@@ -435,6 +435,9 @@ class Swift_Signers_DKIMSigner implements Swift_Signers_HeaderSigner
             case 'rsa-sha1' :
                 $this->_bodyHashHandler = hash_init('sha1');
                 break;
+            default:
+                #code 
+                break;
         }
         $this->_bodyCanonLine = '';
     }
@@ -571,6 +574,9 @@ class Swift_Signers_DKIMSigner implements Swift_Signers_HeaderSigner
                 $header = $name.":".trim($value).($is_sig ? '' : "\r\n");
             case 'simple' :
                 // Nothing to do
+            default:
+                #code 
+                break;
         }
         $this->_addToHeaderHash($header);
     }
@@ -674,6 +680,9 @@ class Swift_Signers_DKIMSigner implements Swift_Signers_HeaderSigner
                 break;
             case 'rsa-sha256':
                 $algorithm = OPENSSL_ALGO_SHA256;
+                break;
+            default:
+                #code 
                 break;
         }
         $pkeyId = openssl_get_privatekey($this->_privateKey);

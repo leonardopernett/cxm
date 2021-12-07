@@ -528,6 +528,9 @@ class PHPExcel_DocumentProperties
             case 'cf'        :    //    Clipboard Data
                 return $propertyValue;
                 break;
+            default:
+				#code
+				break;
         }
         return $propertyValue;
     }
@@ -580,6 +583,9 @@ class PHPExcel_DocumentProperties
             case 'cf'        :    //    Clipboard Data
                 return self::PROPERTY_TYPE_UNKNOWN;
                 break;
+            default:
+				#code
+				break;
         }
         return self::PROPERTY_TYPE_UNKNOWN;
     }

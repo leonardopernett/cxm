@@ -372,6 +372,9 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 					$objWriter->writeAttribute('diagonalUp', 	'true');
 					$objWriter->writeAttribute('diagonalDown', 	'true');
 					break;
+				default:
+			     	#code
+			    	break;
 			}
 
 			// BorderPr

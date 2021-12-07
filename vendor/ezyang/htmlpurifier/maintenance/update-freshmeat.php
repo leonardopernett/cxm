@@ -97,6 +97,9 @@ class XmlRpc_Freshmeat
             case 'logout':
                 $this->sid = null;
                 break;
+        default:
+                #code
+                break;
         }
         if ($this->chatty) print_r($result);
         return $result;

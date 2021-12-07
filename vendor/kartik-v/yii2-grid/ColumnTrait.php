@@ -124,6 +124,9 @@ trait ColumnTrait
                 return max($data);
             case GridView::F_MIN:
                 return min($data);
+            default:
+            #code
+            break;
         }
         return '';
     }

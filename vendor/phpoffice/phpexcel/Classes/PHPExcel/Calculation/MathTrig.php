@@ -1102,6 +1102,9 @@ class PHPExcel_Calculation_MathTrig {
 				case 11	:
 					return PHPExcel_Calculation_Statistical::VARP($aArgs);
 					break;
+				default:
+					#code
+					break;
 			}
 		}
 		return PHPExcel_Calculation_Functions::VALUE();

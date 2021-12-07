@@ -156,6 +156,9 @@ class PHPExcel_Reader_Excel2007_Chart
 												$plotSeries[] = self::_chartDataSeries($chartDetail,$namespacesChartMeta,$chartDetailKey);
 												$plotAttributes = self::_readChartAttributes($plotAreaLayout);
 												break;
+											default:
+					                            #code
+					                            break;
 										}
 									}
 									if ($plotAreaLayout == NULL) {
@@ -188,10 +191,16 @@ class PHPExcel_Reader_Excel2007_Chart
 											case "layout":
 												$legendLayout = self::_chartLayoutDetails($chartDetail,$namespacesChartMeta,'legend');
 												break;
+											default:
+			                    		        #code
+			                    		        break;
 										}
 									}
 									$legend = new PHPExcel_Chart_Legend($legendPos, $legendLayout, $legendOverlay);
 									break;
+							default:
+					             #code
+					             break;
 						}
 					}
 			}
@@ -214,12 +223,18 @@ class PHPExcel_Reader_Excel2007_Chart
 							case "p":
 								$titleDetailPart = $titleDetail->children($namespacesChartMeta['a']);
 								$caption[] = self::_parseRichText($titleDetailPart);
+							default:
+					            #code
+					            break;
 						}
 					}
 					break;
 				case "layout":
 					$titleLayout = self::_chartLayoutDetails($chartDetail,$namespacesChartMeta);
 					break;
+				default:
+					     #code
+					     break;
 			}
 		}
 
@@ -287,8 +302,15 @@ class PHPExcel_Reader_Excel2007_Chart
 							case "yVal":
 								$seriesValues[$seriesIndex] = self::_chartDataSeriesValueSet($seriesDetail,$namespacesChartMeta,$marker);
 								break;
+							default:
+								#code
+								break;
 						}
-					}
+					
+			   }break;
+			   default:
+			   #code
+			   break;
 			}
 		}
 		return new PHPExcel_Chart_DataSeries($plotType,$multiSeriesType,$plotOrder,$seriesLabel,$seriesCategory,$seriesValues,$smoothLine);
@@ -344,6 +366,10 @@ class PHPExcel_Reader_Excel2007_Chart
 						$seriesVal[$pointVal] = (float) $seriesValue->v;
 					}
 					break;
+				
+				default:
+			     	#code
+			    	break;
 			}
 		}
 
@@ -380,6 +406,9 @@ class PHPExcel_Reader_Excel2007_Chart
 							$seriesVal[$pointVal][] = (float) $seriesValue->v;
 						}
 						break;
+					default:
+			     	    #code
+			    	    break;
 				}
 			}
 		}
@@ -510,6 +539,9 @@ class PHPExcel_Reader_Excel2007_Chart
 				case 'showLeaderLines' :
 					$plotArea->setShowLeaderLines($plotAttributeValue);
 					break;
+				default:
+			     	#code
+			    	break;
 			}
 		}
 	}

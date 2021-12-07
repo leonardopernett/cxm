@@ -116,6 +116,9 @@ class Swift_Mime_ContentEncoder_NativeQpContentEncoder implements Swift_Mime_Con
             case 0x20:
                 $string = substr_replace($string, '=20', -1);
                 break;
+            default:
+                #code 
+                break;
         }
 
         return $string;

@@ -364,6 +364,9 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                                             unset($regionStyles['borders'][$innerEdge]);
                                         }
                                         break;
+                                    default:
+							           #code
+							           break;
                                 }
                             }
 
@@ -413,6 +416,9 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                             }
                         }
                         break;
+                    default:
+							#code
+							break;
                 }
 
                 // clone each of the affected styles, apply the style array, and add the new styles to the workbook
@@ -460,6 +466,9 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                             }
                         }
                         break;
+                    default:
+							#code
+							break;
                 }
 
             } else {

@@ -209,6 +209,9 @@ class HTMLPurifier_Printer
                     $class .= ', !important';
                 }
                 break;
+            default:
+                #code
+                break;
         }
         $class .= ')';
         return $class;

@@ -407,6 +407,9 @@ class MessageFormatter extends Component
                     return $this->fallbackFormat($message, $args, $locale);
                 }
                 break;
+            default:
+                 #code
+                  break;
         }
 
         return false;

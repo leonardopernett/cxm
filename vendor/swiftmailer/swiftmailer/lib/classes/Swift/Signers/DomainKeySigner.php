@@ -410,6 +410,9 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
                 $header = $name.":".trim($value)."\r\n";
             case 'simple' :
                 // Nothing to do
+            default:
+                #code 
+                break;
         }
         $this->_addToHash($header);
     }
@@ -488,6 +491,9 @@ class Swift_Signers_DomainKeySigner implements Swift_Signers_HeaderSigner
         switch ($this->_hashAlgorithm) {
             case 'rsa-sha1' :
                 $this->_hashHandler = hash_init('sha1');
+                break;
+            default:
+                #code 
                 break;
         }
         $this->_canonLine = '';

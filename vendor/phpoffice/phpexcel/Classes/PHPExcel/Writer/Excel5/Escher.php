@@ -507,6 +507,9 @@ class PHPExcel_Writer_Excel5_Escher
 
 			$this->_data = $header . $data;
 			break;
+			default:
+			#code
+		   break;
 
 		}
 

@@ -2015,6 +2015,9 @@ class PHPExcel_Calculation {
 								case 'ARGUMENTSEPARATOR' :
 									self::$_localeArgumentSeparator = trim($settingValue);
 									break;
+								default:
+                                    #code
+                                    break;
 							}
 						}
 					}
@@ -2044,6 +2047,9 @@ class PHPExcel_Calculation {
 							if (!$inBraces) {
 								$formula = mb_substr($formula,0,$i).$toSeparator.mb_substr($formula,$i+1);
 							}
+			    default:
+				# code
+				break;
 			}
 		}
 		return $formula;
@@ -2868,6 +2874,9 @@ class PHPExcel_Calculation {
 									$expectedArgumentCountString = 'either '.$argMatch[1].' or '.$argMatch[3];
 								}
 								break;
+							default:
+							#code
+							break;
 						}
 					}
 					if ($argumentCountError) {
@@ -3239,6 +3248,9 @@ class PHPExcel_Calculation {
 						$this->_debugLog->writeDebugLog('Evaluation Result is ', $this->_showTypeDetails($cellIntersect));
 						$stack->push('Value',$cellIntersect,$cellRef);
 						break;
+						default:
+							#code
+							break;
 				}
 
 			// if the token is a unary operator, pop one value off the stack, do the operation, and push it back on
@@ -3614,6 +3626,9 @@ class PHPExcel_Calculation {
 			case '<>':
 				$result = ($operand1 != $operand2);
 				break;
+			default:
+				#code
+				break;
 		}
 
 		//	Log the result details
@@ -3696,6 +3711,9 @@ class PHPExcel_Calculation {
 					case '^':
 						$result = pow($operand1, $operand2);
 						break;
+					default:
+							#code
+							break;
 				}
 			}
 		}

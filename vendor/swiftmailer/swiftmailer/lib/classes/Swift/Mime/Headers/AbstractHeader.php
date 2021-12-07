@@ -295,6 +295,9 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
                     case "\t":
                         $value .= $firstChar;
                         $token = substr($token, 1);
+                    default:
+                #code 
+                break;
                 }
 
                 if (-1 == $usedLength) {

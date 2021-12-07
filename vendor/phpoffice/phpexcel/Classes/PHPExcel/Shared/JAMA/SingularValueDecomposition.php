@@ -427,6 +427,9 @@ class SingularValueDecomposition  {
 						$iter = 0;
 						--$p;
 						break;
+				default:
+			     	#code
+			    	break;
 			} // end switch
 		} // end while
 

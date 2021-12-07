@@ -48,6 +48,10 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
                 $sign = '-';
             case '+':
                 $number = substr($number, 1);
+                
+            default:
+                #code
+                break;
         }
 
         if (ctype_digit($number)) {

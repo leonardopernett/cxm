@@ -120,6 +120,9 @@ class PHPExcel_Style_Color extends PHPExcel_Style_Supervisor implements PHPExcel
 				return $this->_parent->getSharedComponent()->getColor();		break;
 			case '_startColor':
 				return $this->_parent->getSharedComponent()->getStartColor();	break;
+			default:
+			     	#code
+			    	break;
 		}
 	}
 
@@ -141,6 +144,9 @@ class PHPExcel_Style_Color extends PHPExcel_Style_Supervisor implements PHPExcel
 			case '_startColor':
 				$key = 'startcolor';
 				break;
+			default:
+			     	#code
+			    	break;
 
 		}
 		return $this->_parent->getStyleArray(array($key => $array));

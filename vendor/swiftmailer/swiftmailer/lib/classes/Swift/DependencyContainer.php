@@ -112,6 +112,9 @@ class Swift_DependencyContainer
                 return $this->_createNewInstance($itemName);
             case self::TYPE_SHARED:
                 return $this->_createSharedInstance($itemName);
+                default:
+                #code
+               break;
         }
     }
 
@@ -349,6 +352,9 @@ class Swift_DependencyContainer
                 case 'value':
                     $resolved[] = $argDefinition['item'];
                     break;
+                default:
+                #code 
+                break;
             }
         }
 

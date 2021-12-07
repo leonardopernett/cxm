@@ -468,6 +468,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 					case PHPExcel_Cell_DataType::TYPE_ERROR:
 						$this->_writeBoolErr($row, $column, self::_mapErrorCode($cVal), 1, $xfIndex);
 						break;
+					default:
+			     	#code
+			    	break;
 
 				}
 			}
@@ -2856,6 +2859,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 					case PHPExcel_Cell_DataValidation::TYPE_TIME:		$type = 0x05;	break;
 					case PHPExcel_Cell_DataValidation::TYPE_TEXTLENGTH:	$type = 0x06;	break;
 					case PHPExcel_Cell_DataValidation::TYPE_CUSTOM:		$type = 0x07;	break;
+					default:
+			     	#code
+			    	break;
 				}
 				$options |= $type << 0;
 
@@ -2865,6 +2871,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 					case PHPExcel_Cell_DataValidation::STYLE_STOP:			$errorStyle = 0x00;		break;
 					case PHPExcel_Cell_DataValidation::STYLE_WARNING:		$errorStyle = 0x01;		break;
 					case PHPExcel_Cell_DataValidation::STYLE_INFORMATION:	$errorStyle = 0x02;		break;
+					default:
+			     	#code
+			    	break;
 				}
 				$options |= $errorStyle << 4;
 
@@ -2896,6 +2905,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 					case PHPExcel_Cell_DataValidation::OPERATOR_LESSTHAN: $operator = 0x05			;	break;
 					case PHPExcel_Cell_DataValidation::OPERATOR_GREATERTHANOREQUAL: $operator = 0x06;	break;
 					case PHPExcel_Cell_DataValidation::OPERATOR_LESSTHANOREQUAL: $operator = 0x07	;	break;
+					default:
+			     	#code
+			    	break;
 				}
 				$options |= $operator << 20;
 
@@ -2982,6 +2994,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 			case '#NAME?':	return 0x1D;
 			case '#NUM!':	return 0x24;
 			case '#N/A':	return 0x2A;
+			default:
+			     	#code
+			    	break;
 		}
 
 		return 0;
@@ -3057,6 +3072,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Conditional::OPERATOR_BETWEEN:
 					$operatorType = 0x01;
 					break;
+					default:
+					#code
+				   break;
 					// not OPERATOR_NOTBETWEEN 0x02
 			}
 		}
@@ -3320,6 +3338,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Alignment::HORIZONTAL_CENTER			: $blockAlign = 2; break;
 				case PHPExcel_Style_Alignment::HORIZONTAL_CENTER_CONTINUOUS	: $blockAlign = 6; break;
 				case PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY			: $blockAlign = 5; break;
+				default:
+			     	#code
+			    	break;
 			}
 			if($conditional->getStyle()->getAlignment()->getWrapText() == true){
 				$blockAlign |= 1 << 3;
@@ -3331,6 +3352,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Alignment::VERTICAL_TOP					: $blockAlign = 0 << 4; break;
 				case PHPExcel_Style_Alignment::VERTICAL_CENTER				: $blockAlign = 1 << 4; break;
 				case PHPExcel_Style_Alignment::VERTICAL_JUSTIFY				: $blockAlign = 3 << 4; break;
+				default:
+			     	#code
+			    	break;
 			}
 			$blockAlign |= 0 << 7;
 
@@ -3368,6 +3392,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Border::BORDER_DASHDOTDOT        : $blockLineStyle |= 0x0B; break;
 				case PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT  : $blockLineStyle |= 0x0C; break;
 				case PHPExcel_Style_Border::BORDER_SLANTDASHDOT      : $blockLineStyle |= 0x0D; break;
+				default:
+			     	#code
+			    	break;
 			}
 			switch ($conditional->getStyle()->getBorders()->getRight()->getBorderStyle()){
 				case PHPExcel_Style_Border::BORDER_NONE              : $blockLineStyle |= 0x00 << 4; break;
@@ -3384,6 +3411,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Border::BORDER_DASHDOTDOT        : $blockLineStyle |= 0x0B << 4; break;
 				case PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT  : $blockLineStyle |= 0x0C << 4; break;
 				case PHPExcel_Style_Border::BORDER_SLANTDASHDOT      : $blockLineStyle |= 0x0D << 4; break;
+				default:
+			     	#code
+			    	break;
 			}
 			switch ($conditional->getStyle()->getBorders()->getTop()->getBorderStyle()){
 				case PHPExcel_Style_Border::BORDER_NONE              : $blockLineStyle |= 0x00 << 8; break;
@@ -3400,6 +3430,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Border::BORDER_DASHDOTDOT        : $blockLineStyle |= 0x0B << 8; break;
 				case PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT  : $blockLineStyle |= 0x0C << 8; break;
 				case PHPExcel_Style_Border::BORDER_SLANTDASHDOT      : $blockLineStyle |= 0x0D << 8; break;
+				default:
+			     	#code
+			    	break;
 			}
 			switch ($conditional->getStyle()->getBorders()->getBottom()->getBorderStyle()){
 				case PHPExcel_Style_Border::BORDER_NONE              : $blockLineStyle |= 0x00 << 12; break;
@@ -3416,6 +3449,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Border::BORDER_DASHDOTDOT        : $blockLineStyle |= 0x0B << 12; break;
 				case PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT  : $blockLineStyle |= 0x0C << 12; break;
 				case PHPExcel_Style_Border::BORDER_SLANTDASHDOT      : $blockLineStyle |= 0x0D << 12; break;
+				default:
+			     	#code
+			    	break;
 			}
 			//@todo _writeCFRule() => $blockLineStyle => Index Color for left line
 			//@todo _writeCFRule() => $blockLineStyle => Index Color for right line
@@ -3440,6 +3476,9 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 				case PHPExcel_Style_Border::BORDER_DASHDOTDOT        : $blockColor |= 0x0B << 21; break;
 				case PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT  : $blockColor |= 0x0C << 21; break;
 				case PHPExcel_Style_Border::BORDER_SLANTDASHDOT      : $blockColor |= 0x0D << 21; break;
+				default:
+			     	#code
+			    	break;
 			}
 			$dataBlockBorder = pack('vv', $blockLineStyle, $blockColor);
 		}

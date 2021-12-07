@@ -177,6 +177,9 @@ class PHPExcel_Reader_SYLK extends PHPExcel_Reader_Abstract implements PHPExcel_
 						case 'Y' :
 							$rowIndex = substr($rowDatum,1);
 							break;
+						default:
+					        #code
+					        break;
 					}
 
 					$worksheetInfo[0]['totalRows'] = max($worksheetInfo[0]['totalRows'], $rowIndex);
@@ -280,9 +283,15 @@ class PHPExcel_Reader_SYLK extends PHPExcel_Reader_Abstract implements PHPExcel_
 														break;
 											case 'R' :	$formatArray['borders']['right']['style'] = PHPExcel_Style_Border::BORDER_THIN;
 														break;
+											default:
+					                                #code
+					                                break;
 										}
 									}
 									break;
+						default:
+					        #code
+					        break;
 					}
 				}
 				$this->_formats['P'.$this->_format++] = $formatArray;
@@ -336,6 +345,9 @@ class PHPExcel_Reader_SYLK extends PHPExcel_Reader_Abstract implements PHPExcel_
 									$cellDataFormula = implode('"',$temp);
 									$hasCalculatedValue = true;
 									break;
+						default:
+					        #code
+					        break;
 					}
 				}
 				$columnLetter = PHPExcel_Cell::stringFromColumnIndex($column-1);
@@ -381,6 +393,9 @@ class PHPExcel_Reader_SYLK extends PHPExcel_Reader_Abstract implements PHPExcel_
 										}
 									}
 									break;
+						default:
+					        #code
+					        break;
 					}
 				}
 				if (($formatStyle > '') && ($column > '') && ($row > '')) {
@@ -415,6 +430,9 @@ class PHPExcel_Reader_SYLK extends PHPExcel_Reader_Abstract implements PHPExcel_
 						case 'R' :
 						case 'Y' :	$row = substr($rowDatum,1);
 									break;
+						default:
+					        #code
+					        break;
 					}
 				}
 			}

@@ -137,6 +137,9 @@ class PHPExcel_Style_Border extends PHPExcel_Style_Supervisor implements PHPExce
 				return $this->_parent->getSharedComponent()->getRight();		break;
 			case '_top':
 				return $this->_parent->getSharedComponent()->getTop();			break;
+			default:
+			     	#code
+			    	break;
 
 		}
 	}
@@ -170,6 +173,9 @@ class PHPExcel_Style_Border extends PHPExcel_Style_Supervisor implements PHPExce
 				$key = 'top';			break;
 		case '_vertical':
 				$key = 'vertical';		break;
+		default:
+			     	#code
+			    	break;
 		}
 		return $this->_parent->getStyleArray(array($key => $array));
 	}

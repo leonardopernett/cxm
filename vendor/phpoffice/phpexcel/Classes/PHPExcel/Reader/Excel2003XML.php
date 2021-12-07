@@ -372,6 +372,9 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 					case 'Description' :
 							$docProps->setDescription(self::_convertStringEncoding($propertyValue,$this->_charSet));
 							break;
+					default:
+							#code
+							break;
 				}
 			}
 		}
@@ -401,6 +404,9 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 						$propertyType = PHPExcel_DocumentProperties::PROPERTY_TYPE_DATE;
 						$propertyValue = strtotime(trim($propertyValue));
 						break;
+					default:
+							#code
+							break;
 				}
 				$docProps->setCustomProperty($propertyName,$propertyValue,$propertyType);
 			}
@@ -437,6 +443,9 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 									case 'WrapText' :
 											$this->_styles[$styleID]['alignment']['wrap'] = true;
 											break;
+									default:
+							                #code
+							                break;
 								}
 							}
 							break;
@@ -461,6 +470,9 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 												$borderColour = substr($borderStyleValue,1);
 												$thisBorder['color']['rgb'] = $borderColour;
 												break;
+										default:
+							                #code
+							                break;
 									}
 								}
 								if (!empty($thisBorder)) {
@@ -495,6 +507,10 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 												$this->_styles[$styleID]['font']['underline'] = $styleAttributeValue;
 											}
 											break;
+									
+									default:
+							                #code
+							                break;
 								}
 							}
 							break;
@@ -505,6 +521,9 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 									case 'Color' :
 											$this->_styles[$styleID]['fill']['color']['rgb'] = substr($styleAttributeValue,1);
 											break;
+									default:
+							                #code
+							                break;
 								}
 							}
 							break;
@@ -516,6 +535,9 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 									case 'Short Date' :
 											$styleAttributeValue = 'dd/mm/yyyy';
 											break;
+									default:
+							                #code
+							                break;
 								}
 								if ($styleAttributeValue > '') {
 									$this->_styles[$styleID]['numberformat']['code'] = $styleAttributeValue;
@@ -527,6 +549,9 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 //								echo $styleAttributeKey.' = '.$styleAttributeValue.'<br />';
 							}
 							break;
+					default:
+							                #code
+							                break;
 				}
 			}
 //			print_r($this->_styles[$styleID]);
@@ -661,6 +686,9 @@ class PHPExcel_Reader_Excel2003XML extends PHPExcel_Reader_Abstract implements P
 									case 'Error' :
 											$type = PHPExcel_Cell_DataType::TYPE_ERROR;
 											break;
+									default:
+							                #code
+							                break;
 								}
 							}
 

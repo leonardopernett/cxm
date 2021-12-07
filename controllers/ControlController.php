@@ -1038,6 +1038,8 @@ class ControlController extends \yii\web\Controller {
                     case 30:
                         $baseConsulta = 'usua_id';
                         break;
+                    default:
+                    echo "no se cumple ninguna";
                 }
                 return $baseConsulta;
             }
@@ -2245,6 +2247,8 @@ class ControlController extends \yii\web\Controller {
                     case 30:
                         $segundoCalifPer = true;
                         break;
+                    default:
+                        echo "no se cumple";
                 }
                 if ($agrupar == 1) {
                     $arrayGrupos = $this->construirArbolgrupos($model->arbol);

@@ -115,6 +115,9 @@ class testDataFileIterator implements Iterator
                     case 'NULL' :  $dataValue = NULL; break;
                     case 'TRUE' :  $dataValue = TRUE; break;
                     case 'FALSE' : $dataValue = FALSE; break;
+                    default:
+			     	#code
+			    	break;
                 }
             }
         } else {

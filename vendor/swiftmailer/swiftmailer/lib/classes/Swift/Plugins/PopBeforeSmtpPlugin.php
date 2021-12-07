@@ -266,6 +266,9 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
             case 'tls':
                 $host = 'tls://'.$host;
                 break;
+            default:
+                #code 
+                break;
         }
 
         return $host;

@@ -133,6 +133,9 @@ class HTMLPurifier_ContentSets
                 return new HTMLPurifier_ChildDef_Empty();
             case 'custom':
                 return new HTMLPurifier_ChildDef_Custom($value);
+            default:
+                #code
+                break;
         }
         // defer to its module
         $return = false;

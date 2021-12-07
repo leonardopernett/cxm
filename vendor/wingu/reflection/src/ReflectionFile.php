@@ -118,6 +118,9 @@ class ReflectionFile
                     }
                     $level--;
                     break;
+                default:
+                 #code
+                  break;
             }
         }
 

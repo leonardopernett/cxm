@@ -253,6 +253,9 @@ class PHPExcel
 				$ReturnData=$this->_ribbonXMLData[$What];
 			}//else $ReturnData stay at null
 			break;
+        default:
+            #code
+            break;
 		}//default: $ReturnData at null
 		return $ReturnData;
 	}

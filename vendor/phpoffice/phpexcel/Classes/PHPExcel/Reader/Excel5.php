@@ -1064,6 +1064,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 						}
 					}
 					break;
+				default:
+					#code
+					break;
 
 				}
 			} else {
@@ -1252,6 +1255,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 0x47: // Clipboard format
 					// not needed yet, fix later if necessary
 					break;
+				default:
+					#code
+					break;
 			}
 
 			switch ($id) {
@@ -1330,6 +1336,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 0x13:	//	Security
 					//	Not supported by PHPExcel
 					break;
+				default:
+						#code
+						break;
 
 			}
 		}
@@ -1423,6 +1432,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 0x47:	//	Clipboard format
 					// not needed yet, fix later if necessary
 					break;
+				default:
+						#code
+						break;
 			}
 
 			switch ($id) {
@@ -1489,6 +1501,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 0x10:	//	Links up-to-date
 					//	Not supported by PHPExcel
 					break;
+				default:
+						#code
+						break;
 
 			}
 		}
@@ -1915,6 +1930,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 0x0002:
 					$objFont->setSubScript(true);
 					break;
+					default:
+					#code
+					break;
 			}
 
 			// offset: 10; size: 1; underline type
@@ -1934,6 +1952,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 0x22:
 					$objFont->setUnderline(PHPExcel_Style_Font::UNDERLINE_DOUBLEACCOUNTING);
 					break;
+					default:
+							#code
+							break;
 			}
 
 			// offset: 11; size: 1; font family
@@ -2080,6 +2101,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 6:
 					$objStyle->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER_CONTINUOUS);
 					break;
+					default:
+							#code
+							break;
 			}
 			// bit 3, mask 0x08; wrap text
 			$wrapText = (0x08 & ord($recordData{6})) >> 3;
@@ -2090,6 +2114,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 1:
 					$objStyle->getAlignment()->setWrapText(true);
 					break;
+					default:
+							#code
+							break;
 			}
 			// bit 6-4, mask 0x70; vertical alignment
 			$vertAlign = (0x70 & ord($recordData{6})) >> 4;
@@ -2106,6 +2133,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				case 3:
 					$objStyle->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_JUSTIFY);
 					break;
+					default:
+							#code
+							break;
 			}
 
 			if ($this->_version == self::XLS_BIFF8) {
@@ -2134,6 +2164,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 							break;
 						case 1:
 							$objStyle->getAlignment()->setShrinkToFit(true);
+							break;
+							default:
+							#code
 							break;
 					}
 
@@ -2226,6 +2259,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					case 3:
 						$objStyle->getAlignment()->setTextRotation(-90);
 						break;
+						default:
+							#code
+							break;
 				}
 
 				// offset: 8; size: 4; cell border lines and background area
@@ -2455,6 +2491,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 							}
 						}
 						break;
+						default:
+							#code
+							break;
 				}
 
 				$offset += $cb;
@@ -3306,7 +3345,11 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				switch ($isPortrait) {
 				case 0: $this->_phpSheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE); break;
 				case 1: $this->_phpSheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT); break;
+				default:
+							#code
+							break;
 				}
+				
 
 				$this->_phpSheet->getPageSetup()->setScale($scale, false);
 				$this->_phpSheet->getPageSetup()->setFitToPage((bool) $this->_isFitToPages);
@@ -4030,6 +4073,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					// add cell value
 					$cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_ERROR);
 					break;
+					default:
+							#code
+							break;
 			}
 
 			if (!$this->_readDataOnly) {
@@ -4696,6 +4742,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 			case 0x05:	$type = PHPExcel_Cell_DataValidation::TYPE_TIME;		break;
 			case 0x06:	$type = PHPExcel_Cell_DataValidation::TYPE_TEXTLENGTH;	break;
 			case 0x07:	$type = PHPExcel_Cell_DataValidation::TYPE_CUSTOM;		break;
+			default:
+							#code
+							break;
 		}
 
 		// bit: 4-6; mask: 0x00000070; error type
@@ -4704,6 +4753,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 			case 0x00:	$errorStyle = PHPExcel_Cell_DataValidation::STYLE_STOP;			break;
 			case 0x01:	$errorStyle = PHPExcel_Cell_DataValidation::STYLE_WARNING;		break;
 			case 0x02:	$errorStyle = PHPExcel_Cell_DataValidation::STYLE_INFORMATION;	break;
+			default:
+							#code
+							break;
 		}
 
 		// bit: 7; mask: 0x00000080; 1= formula is explicit (only applies to list)
@@ -4733,6 +4785,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 			case 0x05: $operator = PHPExcel_Cell_DataValidation::OPERATOR_LESSTHAN			;	break;
 			case 0x06: $operator = PHPExcel_Cell_DataValidation::OPERATOR_GREATERTHANOREQUAL;	break;
 			case 0x07: $operator = PHPExcel_Cell_DataValidation::OPERATOR_LESSTHANOREQUAL	;	break;
+			default:
+							#code
+							break;
 		}
 
 		// offset: 4; size: var; title of the prompt box
@@ -4862,6 +4917,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					// TODO: Investigate structure for .xls SHEETLAYOUT record as saved by MS Office Excel 2007
 					return;
 					break;
+				default:
+							#code
+							break;
 			}
 		}
 	}
@@ -5420,6 +5478,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 				$formulaStrings[] = "$space1$space0{$token['data']}";
 				unset($space0, $space1);
 				break;
+				default:
+							#code
+							break;
 			}
 		}
 		$formulaString = $formulaStrings[0];
@@ -6482,6 +6543,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 			$value = self::_mapErrorCode(ord($valueData[1]));
 			$size = 9;
 			break;
+		default:
+							#code
+							break;
 		}
 		return array(
 			'value' => $value,

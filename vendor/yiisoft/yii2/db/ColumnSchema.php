@@ -103,6 +103,9 @@ class ColumnSchema extends Object
                 return (bool) $value;
             case 'double':
                 return (double) $value;
+            default:
+                 #code
+                  break;
         }
 
         return $value;

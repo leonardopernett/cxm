@@ -122,6 +122,9 @@ class BaseVarDumper
                     self::$_output .= "\n" . $spaces . ')';
                 }
                 break;
+            default:
+                 #code
+                  break;
         }
     }
 
