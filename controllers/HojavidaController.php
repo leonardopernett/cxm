@@ -2898,25 +2898,20 @@ $modelos = new HojavidaDatapersonal();
       $varnombrecliente = $sheet->getCell("T".$row)->getValue();
       if ($varnombrecliente == "Directv") {
         $varIdCliente = "255";
-      }
-
-      $paramsCliente = [':TextCliente' => $varnombrecliente];
-      $varIdCliente = Yii::$app->db->createCommand('
-      SELECT DISTINCT cc.id_dp_clientes, cc.cliente FROM tbl_proceso_cliente_centrocosto cc
-        WHERE 
-          cc.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
-      
-      if ($varIdCliente == "") {
-        $varIdCliente = Yii::$app->db->createCommand('
-        SELECT ss.id_dp_clientes FROM tbl_speech_servicios ss
-          WHERE 
-            ss.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
-      }
-
+      }else{
+        if ($varnombrecliente == "Metro") {
+          $varIdCliente = "308";
+        }else{
+          $paramsCliente = [':TextCliente' => $varnombrecliente];
+          $varIdCliente = Yii::$app->db->createCommand('
+          SELECT DISTINCT cc.id_dp_clientes, cc.cliente FROM tbl_proceso_cliente_centrocosto cc
+            WHERE 
+              cc.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
+        }        
+      }     
 
       $varPcrcs = $sheet->getCell("U".$row)->getValue();
       $varListPcrcs = explode(", ", $varPcrcs);
-
 
       Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
                   'nombre_full' => $sheet->getCell("B".$row)->getValue(),
