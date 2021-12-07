@@ -96,7 +96,7 @@ use Exception;
 
         if ($varidclientes != null) {
           $dataProviderhv = Yii::$app->db->createCommand("
-          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'EstrÃ¡tegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'EstrÃƒÂ¡tegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
           INNER JOIN tbl_hojavida_datalaboral dl ON 
             dl.hv_idpersonal = dp.hv_idpersonal
           LEFT JOIN tbl_hv_pais hp ON 
@@ -114,7 +114,7 @@ use Exception;
           ")->queryAll();
         }else{
           $dataProviderhv = Yii::$app->db->createCommand("
-          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'EstrÃ¡tegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'EstrÃƒÂ¡tegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
           INNER JOIN tbl_hojavida_datalaboral dl ON 
             dl.hv_idpersonal = dp.hv_idpersonal
           LEFT JOIN tbl_hv_pais hp ON 
@@ -140,7 +140,7 @@ use Exception;
                 hp.usuario_registro = :idsesion')->bindValues($paramsuser)->queryScalar(); 
 
         $dataProviderhv = Yii::$app->db->createCommand("
-        SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'EstrÃ¡tegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+        SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'EstrÃƒÂ¡tegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
         INNER JOIN tbl_hojavida_datalaboral dl ON 
           dl.hv_idpersonal = dp.hv_idpersonal
         LEFT JOIN tbl_hv_pais hp ON 
@@ -641,8 +641,8 @@ use Exception;
           if(dp.tratamiento_data = 1,"No","Si") AS TratamientoDatos, if(dp.suceptible = 1,"No","Si") AS Susceptible,
           dp.indicador_satu AS IndicadorSatu, l.rol AS Rol, a.antiguedad AS Antiguedad, l.fecha_inicio_contacto AS FechaContacto,
           l.nombre_jefe AS NombreJefe, l.cargo_jefe AS CargoJefe, l.trabajo_anterior AS TrabajoAnterior,
-          if(l.afinidad = 1,"RelaciÃ³n Directa","RelaciÃ³n de Interes") AS Afinidad,  dp.clasificacion,
-          if(l.tipo_afinidad = 1,"Decisor","No Decisor") AS TipoAfinidad, if(l.nivel_afinidad = 1,"EstratÃ©gio","Operativo") AS NivelAfinidad,
+          if(l.afinidad = 1,"RelaciÃƒÂ³n Directa","RelaciÃƒÂ³n de Interes") AS Afinidad,  dp.clasificacion,
+          if(l.tipo_afinidad = 1,"Decisor","No Decisor") AS TipoAfinidad, if(l.nivel_afinidad = 1,"EstratÃƒÂ©gio","Operativo") AS NivelAfinidad,
           pc.id_dp_cliente AS IdCliente, dp.fechacumple, l.areatrabajo
            FROM tbl_hojavida_datapersonal dp
             INNER JOIN tbl_hv_pais p ON 
@@ -1422,21 +1422,21 @@ use Exception;
         ON p.hv_idpersonal = l.hv_idpersonal
         INNER JOIN tbl_hojavida_datanivelafinidad n
         ON n.hv_idinvelafinidad = l.nivel_afinidad
-        WHERE n.nivelafinidad='EstratÃ©gico' AND p.clasificacion = 1")->queryAll();
+        WHERE n.nivelafinidad='EstratÃƒÂ©gico' AND p.clasificacion = 1")->queryAll();
 
         $clientEstrategicoMedellin = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
         INNER JOIN tbl_hojavida_datalaboral l
         ON p.hv_idpersonal = l.hv_idpersonal
         INNER JOIN tbl_hojavida_datanivelafinidad n
         ON n.hv_idinvelafinidad = l.nivel_afinidad
-        WHERE n.nivelafinidad='EstratÃ©gico' AND p.clasificacion = 2")->queryAll();
+        WHERE n.nivelafinidad='EstratÃƒÂ©gico' AND p.clasificacion = 2")->queryAll();
 
         $clientEstrategico   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p 
         INNER JOIN tbl_hojavida_datalaboral l
         ON p.hv_idpersonal = l.hv_idpersonal
         INNER JOIN tbl_hojavida_datanivelafinidad n
         ON n.hv_idinvelafinidad = l.nivel_afinidad
-        WHERE n.nivelafinidad='EstratÃ©gico' ")->queryAll();
+        WHERE n.nivelafinidad='EstratÃƒÂ©gico' ")->queryAll();
 
 
 
@@ -1473,7 +1473,7 @@ use Exception;
         ON n.hv_idinvelafinidad = l.nivel_afinidad
         INNER JOIN tbl_hojavida_datatipoafinidad t
         ON t.hv_idtipoafinidad = l.tipo_afinidad
-        where t.tipoafinidad='Decisor' AND n.nivelafinidad='EstratÃ©gico' ")->queryAll();
+        where t.tipoafinidad='Decisor' AND n.nivelafinidad='EstratÃƒÂ©gico' ")->queryAll();
 
 
         $totalDecisorOperativo   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p
@@ -1494,7 +1494,7 @@ use Exception;
         ON n.hv_idinvelafinidad = l.nivel_afinidad
         INNER JOIN tbl_hojavida_datatipoafinidad t
         ON t.hv_idtipoafinidad = l.tipo_afinidad
-        where t.tipoafinidad='No Decisor' AND n.nivelafinidad='EstratÃ©gico' ")->queryAll();
+        where t.tipoafinidad='No Decisor' AND n.nivelafinidad='EstratÃƒÂ©gico' ")->queryAll();
 
 
         $totalNoDecisorOperativo   = Yii::$app->db->createCommand("SELECT COUNT(*) AS total FROM tbl_hojavida_datapersonal p
@@ -2816,6 +2816,7 @@ $modelos = new HojavidaDatapersonal();
 
     $sheet = $objPHPExcel->getSheet(0);
     $highestRow = $sheet->getHighestRow();
+    $highestcolumn = $sheet->getHighestColumn();
 
     for ($row=3; $row < $highestRow; $row++) { 
       $varDocumento = $sheet->getCell("A".$row)->getValue();
@@ -2862,7 +2863,7 @@ $modelos = new HojavidaDatapersonal();
       SELECT if(dc.hv_idclasificacion="",1,dc.hv_idclasificacion) FROM tbl_hojavida_dataclasificacion dc 
         WHERE 
           dc.anulado = 0
-            AND dc.ciudadclasificacion IN (:TextClasificacion)')->bindValues($paramsClasificacion)->queryScalar();
+            AND dc.ciudadclasificacion IN  (:TextClasificacion)')->bindValues($paramsClasificacion)->queryScalar();
 
       $varTextAfinidad = null;
       $varAfinidad = $sheet->getCell("O".$row)->getValue();
@@ -2900,8 +2901,10 @@ $modelos = new HojavidaDatapersonal();
         WHERE 
           cc.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
 
+
       $varPcrcs = $sheet->getCell("U".$row)->getValue();
       $varListPcrcs = explode(", ", $varPcrcs);
+
 
       Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
                   'nombre_full' => $sheet->getCell("B".$row)->getValue(),
@@ -2924,11 +2927,12 @@ $modelos = new HojavidaDatapersonal();
                   'fechacumple' => null,                                   
               ])->execute();
 
+
       $paramsInfoPersonal = [':DocumentoInfo' => $varDocumento];
       $varIdInfoPersonal = Yii::$app->db->createCommand('
       SELECT dp.hv_idpersonal FROM tbl_hojavida_datapersonal dp 
         WHERE 
-          dp.identificacion IN (:DocumentoInfo) ')->bindValues($paramsInfoPersonal)->queryScalar();
+          dp.identificacion = :DocumentoInfo ')->bindValues($paramsInfoPersonal)->queryScalar();
 
       $varNA = "Sin datos";
 
@@ -2986,6 +2990,7 @@ $modelos = new HojavidaDatapersonal();
                   'usua_id' => Yii::$app->user->identity->id,                                       
               ])->execute(); 
       } 
+
 
       $arrayPcrc = count($varListPcrcs);
       for ($i=0; $i < $arrayPcrc; $i++) { 
