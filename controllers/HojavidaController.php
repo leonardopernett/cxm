@@ -2826,21 +2826,21 @@ $modelos = new HojavidaDatapersonal();
       SELECT if(hp.hv_idpais = "",4,hp.hv_idpais) AS Pais_ids FROM tbl_hv_pais hp 
         WHERE 
           hp.anulado = 0 
-            AND hp.pais LIKE "%:TextPais%"')->bindValues($paramsPais)->queryScalar();
+            AND hp.pais IN (:TextPais)')->bindValues($paramsPais)->queryScalar();
 
       $paramsCiudad = [':TextCiudad' => $sheet->getCell("H".$row)->getValue()];
       $varIdCiudad = Yii::$app->db->createCommand('
       SELECT if(hc.hv_idciudad="",9,hc.hv_idciudad) AS Ciudad_ids FROM tbl_hv_ciudad hc
         WHERE 
           hc.anulado = 0
-            AND hc.ciudad LIKE "%:TextCiudad%"')->bindValues($paramsCiudad)->queryScalar();
+            AND hc.ciudad IN (:TextCiudad)')->bindValues($paramsCiudad)->queryScalar();
 
       $paramsModalidad = [':TextModalidad' => $sheet->getCell("J".$row)->getValue()];
       $varIdModalidad = Yii::$app->db->createCommand('
       SELECT if(mt.modalidad = "",2,mt.hv_idmodalidad) AS resultadoModalidad FROM tbl_hv_modalidad_trabajo mt
         WHERE 
           mt.anulado = 0
-            AND mt.modalidad LIKE "%:TextModalidad%"')->bindValues($paramsModalidad)->queryScalar();
+            AND mt.modalidad IN (:TextModalidad)')->bindValues($paramsModalidad)->queryScalar();
 
       $varAutoriza = null;
       $varTextAutoriza = $sheet->getCell("K".$row)->getValue();
@@ -2863,7 +2863,7 @@ $modelos = new HojavidaDatapersonal();
       SELECT if(dc.hv_idclasificacion="",1,dc.hv_idclasificacion) FROM tbl_hojavida_dataclasificacion dc 
         WHERE 
           dc.anulado = 0
-            AND dc.ciudadclasificacion LIKE  "%:TextClasificacion%"')->bindValues($paramsClasificacion)->queryScalar();
+            AND dc.ciudadclasificacion IN (:TextClasificacion)')->bindValues($paramsClasificacion)->queryScalar();
 
       $varTextAfinidad = null;
       $varAfinidad = $sheet->getCell("O".$row)->getValue();
