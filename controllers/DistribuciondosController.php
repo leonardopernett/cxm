@@ -328,7 +328,10 @@ use app\models\DistribucionAsesores;
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
-      if($model->load($form)){
+      if($model->load($form)){        
+        $modelos = Yii::$app->db->createCommand('DELETE FROM tbl_equipos_evaluados');
+        $modelos->execute();
+
         $varListLider = Yii::$app->db->createCommand("
         SELECT e.id, u.usua_id, da.cedulalider FROM tbl_equipos e
           INNER JOIN tbl_usuarios u ON 
@@ -340,13 +343,7 @@ use app\models\DistribucionAsesores;
 
         foreach ($varListLider as $key => $value) {
           $varIdEquipos = $value['id'];
-          $varIdUsuas = $value['usua_id'];
           $varCcLideres = $value['cedulalider'];
-
-          $modelos = Yii::$app->db->createCommand('DELETE FROM tbl_equipos_evaluados WHERE equipo_id = :idequipos');
-          $modelos->bindParam(':idequipos', $paramsEquipos);
-          $paramsEquipos = $varIdEquipos;
-          $modelos->execute();
 
           $varListAsesores = Yii::$app->db->createCommand("
           SELECT e.id FROM tbl_evaluados e
