@@ -287,6 +287,9 @@ $this->title = 'Agregar Corte General';
 			    	case "12":
 			    		festivo = 1;
 			    		break;
+					default:
+                      
+                      break;
 			    }
 			}	
 

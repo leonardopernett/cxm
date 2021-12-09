@@ -214,6 +214,9 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
                 }
                 $ret .= substr($this->_datas, $start, $to - $start);
                 break;
+            default:
+                #code 
+                break;
         }
 
         return $ret;

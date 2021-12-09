@@ -390,6 +390,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                             E_USER_WARNING
                         );
                         break;
+                    default:
+                        #code
+                        break;
                 }
             }
         }

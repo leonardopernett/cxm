@@ -249,6 +249,9 @@ class Payment extends Base
                 case 'n':
                     $result .= static::randomDigit();
                     break;
+                default:
+                #code
+                break;
             }
         }
 

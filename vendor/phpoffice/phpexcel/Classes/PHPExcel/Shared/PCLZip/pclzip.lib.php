@@ -1712,6 +1712,7 @@
           // ----- Next option
           $i++;
         break;
+        
 
         // ----- Look for options that request no value
         case PCLZIP_OPT_REMOVE_ALL_PATH :
@@ -1722,7 +1723,7 @@
         case PCLZIP_OPT_STOP_ON_ERROR :
           $v_result_list[$p_options_list[$i]] = true;
         break;
-
+        
         // ----- Look for options that request an octal value
         case PCLZIP_OPT_SET_CHMOD :
           // ----- Check the number of parameters

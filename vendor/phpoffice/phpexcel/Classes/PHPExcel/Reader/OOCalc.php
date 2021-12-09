@@ -379,6 +379,9 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
 					case 'description' :
 							$docProps->setDescription($propertyValue);
 							break;
+					default:
+					    #code
+					    break;
 				}
 			}
 			$officePropertyMeta = array();
@@ -425,6 +428,9 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
 							}
 							$docProps->setCustomProperty($propertyValueName,$propertyValue,$propertyValueType);
 							break;
+					default:
+					    #code
+					    break;
 				}
 			}
 		}
@@ -605,6 +611,9 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
 												$dataValue = PHPExcel_Shared_Date::PHPToExcel(strtotime('01-01-1970 '.implode(':',sscanf($cellDataOfficeAttributes['time-value'],'PT%dH%dM%dS'))));
 												$formatting = PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4;
 												break;
+										default:
+			                        		    #code
+		                         			    break;
 									}
 //									echo 'Data value is '.$dataValue.'<br />';
 //									if ($hyperlink !== NULL) {
@@ -685,6 +694,9 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
 							}
 							$rowID += $rowRepeats;
 							break;
+						default:
+					        #code
+					        break;
 					}
 				}
 				++$worksheetID;

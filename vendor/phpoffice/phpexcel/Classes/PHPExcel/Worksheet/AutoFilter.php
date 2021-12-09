@@ -388,6 +388,9 @@ class PHPExcel_Worksheet_AutoFilter
 					case PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_COLUMN_RULE_LESSTHANOREQUAL :
 						$retVal	= ($cellValue <= $rule['value']);
 						break;
+					default:
+			     	#code
+			    	break;
 				}
 			} elseif($rule['value'] == '') {
 				switch ($rule['operator']) {
@@ -417,6 +420,9 @@ class PHPExcel_Worksheet_AutoFilter
 				case PHPExcel_Worksheet_AutoFilter_Column::AUTOFILTER_COLUMN_JOIN_AND :
 					$returnVal = $returnVal && $retVal;
 					break;
+				default:
+			     	#code
+			    	break;
 			}
 		}
 
@@ -497,6 +503,9 @@ class PHPExcel_Worksheet_AutoFilter
 			case PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_RULETYPE_DYNAMIC_NEXTYEAR :
 				$baseDate = strtotime('+1 year',gmmktime(0,0,0,1,date('m',$baseDate),date('Y',$baseDate)));
 				break;
+			default:
+			     	#code
+			    	break;
 		}
 
 		switch ($dynamicRuleType) {
@@ -540,6 +549,9 @@ class PHPExcel_Worksheet_AutoFilter
 				$val = (int) PHPExcel_Shared_Date::PHPToExcel($baseDate) - $dayOfWeek;
 				$maxVal = $val + 7;
 				break;
+			default:
+			     	#code
+			    	break;
 		}
 
 		switch ($dynamicRuleType) {
@@ -552,6 +564,9 @@ class PHPExcel_Worksheet_AutoFilter
 				++$maxVal;
 				++$val;
 				break;
+			default:
+			     	#code
+			    	break;
 		}
 
 		//	Set the filter column rule attributes ready for writing
@@ -783,6 +798,9 @@ class PHPExcel_Worksheet_AutoFilter
 						array('maxVal' => $maxVal)
 					);
 					break;
+				default:
+			     	#code
+			    	break;
 			}
 		}
 

@@ -284,6 +284,10 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 						case 'description' :
 								$docProps->setDescription(trim($propertyValue));
 								break;
+								
+						default:
+							#code
+							break;
 					}
 				}
 				$officePropertyMeta = array();
@@ -318,8 +322,14 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 									case 'manager' :
 											$docProps->setManager(trim($propertyValue));
 											break;
+									default:
+							#code
+							break;
 								}
 								break;
+								default:
+							#code
+							break;
 					}
 				}
 			}
@@ -350,6 +360,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 					case 'company' :
 						$docProps->setCompany(trim($propertyValue));
 						break;
+					default:
+							#code
+							break;
 				}
 			}
 		}
@@ -381,6 +394,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 							case 'mm' :
 								$marginSize = intval($marginAttributes['Points']) / 100;
 								break;
+								default:
+							#code
+							break;
 						}
 						switch($key) {
 							case 'top' :
@@ -401,6 +417,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 							case 'footer' :
 								$objPHPExcel->getActiveSheet()->getPageMargins()->setFooter($marginSize);
 								break;
+								default:
+							#code
+							break;
 						}
 					}
 				}
@@ -472,6 +491,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 							break;
 						case '70' :		//	Cell Range
 						case '80' :		//	Array
+							default:
+							#code
+							break;
 					}
 				}
 				$objPHPExcel->getActiveSheet()->getCell($column.$row)->setValueExplicit($cell,$type);
@@ -536,6 +558,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 								case '32' :
 									$styleArray['alignment']['horizontal'] = PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY;
 									break;
+									default:
+							#code
+							break;
 							}
 
 							switch($styleAttributes['VAlign']) {
@@ -551,6 +576,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 								case '8' :
 									$styleArray['alignment']['vertical'] = PHPExcel_Style_Alignment::VERTICAL_JUSTIFY;
 									break;
+								default:
+							#code
+							break;
 							}
 
 							$styleArray['alignment']['wrap'] = ($styleAttributes['WrapText'] == '1') ? True : False;
@@ -626,6 +654,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 									case '20' :
 										$styleArray['fill']['type'] = PHPExcel_Style_Fill::FILL_PATTERN_MEDIUMGRAY;
 										break;
+									default:
+							            #code
+							            break;
 								}
 							}
 
@@ -661,6 +692,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 								case '-1' :
 									$styleArray['font']['subScript'] = True;
 									break;
+						 		default:
+						        	#code
+						        	break;
 							}
 
 							if (isset($styleRegion->Style->StyleBorder)) {
@@ -845,6 +879,9 @@ class PHPExcel_Reader_Gnumeric extends PHPExcel_Reader_Abstract implements PHPEx
 				break;
 			case '8' :
 				$styleArray['style'] = PHPExcel_Style_Border::BORDER_MEDIUMDASHED;
+				break;
+			default:
+				#code
 				break;
 		}
 		return $styleArray;

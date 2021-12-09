@@ -580,6 +580,9 @@ class HTMLPurifier_Encoder
                     return array("\xC2\xA5" => '\\', "\xE2\x80\xBE" => '~');
                 case 'johab':
                     return array("\xE2\x82\xA9" => '\\');
+                default:
+                    #code
+                    break;
             }
             if (strpos($lenc, 'iso-8859-') === 0) {
                 return array();

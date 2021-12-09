@@ -138,6 +138,9 @@ foreach ($versions_to_test as $version) {
                     )
                 );
                 if ($break) break;
+            default:
+                #code
+                break;
         }
     }
     if (!$AC['disable-phpt'] && (!$AC['type'] || $AC['type'] == 'phpt')) {

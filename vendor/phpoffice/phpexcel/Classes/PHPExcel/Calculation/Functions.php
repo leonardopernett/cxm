@@ -535,6 +535,9 @@ class PHPExcel_Calculation_Functions {
 					return $value;
 				}
 				break;
+			default:
+					#code
+					break;
 		}
 		return 0;
 	}	//	function N()

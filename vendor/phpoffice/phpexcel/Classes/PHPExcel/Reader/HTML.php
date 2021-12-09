@@ -233,6 +233,9 @@ class PHPExcel_Reader_HTML extends PHPExcel_Reader_Abstract implements PHPExcel_
 									//	TODO
 									//	Extract character set, so we can convert to UTF-8 if required
 									break;
+								default:
+					          		#code
+						        	break;
 							}
 						}
 						$this->_processDomElement($child,$sheet,$row,$column,$cellContent);
@@ -289,6 +292,9 @@ class PHPExcel_Reader_HTML extends PHPExcel_Reader_Abstract implements PHPExcel_
 										$sheet->getStyle($column.$row)->applyFromArray($this->_formats[$child->nodeName]);
 									}
 									break;
+								default:
+								# code
+								break;
 							}
 						}
 						$cellContent .= ' ';

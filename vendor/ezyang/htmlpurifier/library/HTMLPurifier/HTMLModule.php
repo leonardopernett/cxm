@@ -222,6 +222,9 @@ class HTMLPurifier_HTMLModule
                 return array('optional', 'Inline | #PCDATA');
             case 'Flow':
                 return array('optional', 'Flow | #PCDATA');
+            default:
+                #code
+                break;
         }
         list($content_model_type, $content_model) = explode(':', $contents);
         $content_model_type = strtolower(trim($content_model_type));

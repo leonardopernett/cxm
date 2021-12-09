@@ -124,6 +124,9 @@ class Parser
                         $state = self::SCAN;
                     }
                     break;
+                    default:
+                 #code
+                  break;
             }
         }
 

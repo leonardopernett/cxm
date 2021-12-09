@@ -84,6 +84,9 @@ class Swift_Transport_StreamBuffer extends Swift_ByteStream_AbstractFilterableIn
                     if ($this->_stream) {
                         stream_set_blocking($this->_stream, 1);
                     }
+                default:
+                #code 
+                break;
 
             }
         }

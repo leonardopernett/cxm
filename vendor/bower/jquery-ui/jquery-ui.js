@@ -1746,6 +1746,9 @@ var accordion = $.widget( "ui.accordion", {
 			case keyCode.END:
 				toFocus = this.headers[ length - 1 ];
 				break;
+			default:
+				console.log('ninguna se cumplio');
+			
 		}
 
 		if ( toFocus ) {
@@ -5266,6 +5269,8 @@ $.extend(Datepicker.prototype, {
 							year += parseInt(matches[1],10);
 							day = Math.min(day, $.datepicker._getDaysInMonth(year, month));
 							break;
+						default:
+								console.log('ninguna se cumplio');
 					}
 					matches = pattern.exec(offset);
 				}
@@ -13267,6 +13272,8 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 				this._refresh();
 				this._animateOff = false;
 				break;
+				default:
+					console.log('ninguna se cumplio');
 		}
 	},
 

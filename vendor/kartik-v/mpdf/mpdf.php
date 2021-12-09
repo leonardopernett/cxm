@@ -15252,6 +15252,10 @@ class mPDF
                                 case 'lao':
                                     $cp = 0x0ED0;
                                     break;
+                                default:
+                                    #code
+                                    break;
+        
                             }
                             $ppgno = $this->dec2other($ppgno, $cp, false);
                         } else {
@@ -15420,6 +15424,9 @@ class mPDF
                                 case 'lao':
                                     $cp = 0x0ED0;
                                     break;
+                                default:
+                                  # code
+                                  break;
                             }
                             $ppgno = $this->dec2other($ppgno, $cp, false);
                         } else {

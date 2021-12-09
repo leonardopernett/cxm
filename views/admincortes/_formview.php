@@ -138,6 +138,9 @@ $numdias  = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos
 			    	case "12":
 			    		festivo = 1;
 			    		break;
+					default:
+                
+                       break;
 			    }	    	
 	
 	if(idtipocort == "Corte Marzo - Grupo Bancolombia (Inactivo)"){

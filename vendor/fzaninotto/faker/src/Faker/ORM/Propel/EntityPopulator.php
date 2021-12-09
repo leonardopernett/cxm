@@ -97,6 +97,9 @@ class EntityPopulator
                         return true;
                     }
                     break;
+                default:
+                #code
+                break;
             }
         }
 
@@ -143,6 +146,9 @@ class EntityPopulator
                         $obj->insertAtRank(mt_rand(1, $maxRank + 1));
                     };
                     break;
+                default:
+                #code
+                break;
             }
         }
 

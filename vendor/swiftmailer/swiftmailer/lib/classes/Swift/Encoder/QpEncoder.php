@@ -274,6 +274,9 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
             case 0x09:
             case 0x20:
                 $string = substr_replace($string, self::$_qpMap[$end], -1);
+            default:
+                #code 
+                break;
         }
 
         return $string;

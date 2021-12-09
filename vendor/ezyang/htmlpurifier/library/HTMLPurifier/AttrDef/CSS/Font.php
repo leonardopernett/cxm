@@ -167,6 +167,9 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                         return rtrim($final);
                     }
                     return false;
+                default:
+                    #code
+                    break;
             }
         }
         return false;

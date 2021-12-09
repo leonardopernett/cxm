@@ -724,6 +724,9 @@ class PHPExcel_Calculation_Financial {
 					return ceil($daysBetweenSettlementAndMaturity / 60);
 			case 12: // monthly
 					return ceil($daysBetweenSettlementAndMaturity / 30);
+			default:
+					#code
+					break;
 		}
 		return PHPExcel_Calculation_Functions::VALUE();
 	}	//	function COUPNUM()

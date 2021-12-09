@@ -161,6 +161,9 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
                     $ws_accum[] = $node;
                 }
                 break;
+            default:
+                #code
+                break;
             }
         }
 
@@ -209,6 +212,10 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
                     } else {
                         $current_tr_tbody->children[] = $node;
                     }
+                    break;
+
+                default:
+                    #code
                     break;
                 }
             }

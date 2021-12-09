@@ -146,6 +146,9 @@ class Estadisticasarbols extends \yii\db\ActiveRecord {
             case 11:
                 $baseConsulta = 'nmsumatoria';
                 break;
+            default:
+                    # code...
+                    break;
         }
         return Estadisticasarbols::find()
                         ->select("`id`, `".$baseConsulta."`/`nmnumero` `promedio`, arbol_id, nmmes")

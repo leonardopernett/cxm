@@ -296,6 +296,9 @@ class Schema extends \yii\db\Schema
             case Transaction::READ_UNCOMMITTED:
                 $level = '3'; // REPEATABLE READ CLASS with READ UNCOMMITTED INSTANCES
                 break;
+            default:
+                 #code
+                  break;
         }
         parent::setTransactionIsolationLevel($level);
     }

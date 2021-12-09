@@ -191,6 +191,9 @@ class PHPExcel_Calculation_DateTime {
 			case PHPExcel_Calculation_Functions::RETURNDATE_PHP_OBJECT :
 					$retValue = new DateTime();
 					break;
+			default:
+					#code
+					break;
 		}
 		date_default_timezone_set($saveTimeZone);
 
@@ -231,6 +234,9 @@ class PHPExcel_Calculation_DateTime {
 					break;
 			case PHPExcel_Calculation_Functions::RETURNDATE_PHP_OBJECT :
 					$retValue = PHPExcel_Shared_Date::ExcelToPHPObject($excelDateTime);
+					break;
+			default:
+					#code
 					break;
 		}
 		date_default_timezone_set($saveTimeZone);
@@ -352,6 +358,9 @@ class PHPExcel_Calculation_DateTime {
 					return (integer) PHPExcel_Shared_Date::ExcelToPHP($excelDateValue);
 			case PHPExcel_Calculation_Functions::RETURNDATE_PHP_OBJECT :
 					return PHPExcel_Shared_Date::ExcelToPHPObject($excelDateValue);
+			default:
+					#code
+					break;
 		}
 	}	//	function DATE()
 
@@ -448,6 +457,9 @@ class PHPExcel_Calculation_DateTime {
 						$phpDateObject->modify($dayAdjust.' days');
 					}
 					return $phpDateObject;
+			default:
+					#code
+					break;
 		}
 	}	//	function TIME()
 
@@ -552,6 +564,9 @@ class PHPExcel_Calculation_DateTime {
 						return (integer) PHPExcel_Shared_Date::ExcelToPHP($excelDateValue);
 				case PHPExcel_Calculation_Functions::RETURNDATE_PHP_OBJECT :
 						return new DateTime($PHPDateArray['year'].'-'.$PHPDateArray['month'].'-'.$PHPDateArray['day'].' 00:00:00');
+				default:
+						#code
+						break;
 			}
 		}
 		return PHPExcel_Calculation_Functions::VALUE();
@@ -599,6 +614,9 @@ class PHPExcel_Calculation_DateTime {
 						return (integer) $phpDateValue = PHPExcel_Shared_Date::ExcelToPHP($excelDateValue+25569) - 3600;;
 				case PHPExcel_Calculation_Functions::RETURNDATE_PHP_OBJECT :
 						return new DateTime('1900-01-01 '.$PHPDateArray['hour'].':'.$PHPDateArray['minute'].':'.$PHPDateArray['second']);
+				default:
+						#code
+						break;
 			}
 		}
 		return PHPExcel_Calculation_Functions::VALUE();
@@ -854,6 +872,9 @@ class PHPExcel_Calculation_DateTime {
 					return self::DATEDIF($startDate,$endDate) / 365;
 				case 4	:
 					return self::DAYS360($startDate,$endDate,True) / 360;
+				default:
+					#code
+					break;
 			}
 		}
 		return PHPExcel_Calculation_Functions::VALUE();
@@ -1051,6 +1072,9 @@ class PHPExcel_Calculation_DateTime {
 					return (integer) PHPExcel_Shared_Date::ExcelToPHP($endDate);
 			case PHPExcel_Calculation_Functions::RETURNDATE_PHP_OBJECT :
 					return PHPExcel_Shared_Date::ExcelToPHPObject($endDate);
+			default:
+					#code
+					break;
 		}
 	}	//	function WORKDAY()
 
@@ -1133,6 +1157,9 @@ class PHPExcel_Calculation_DateTime {
 			case 3: if ($DoW == 0) { $DoW = 7; }
 					$firstDay = 0;
 					--$DoW;
+					break;
+			default:
+					#code
 					break;
 		}
 		if (PHPExcel_Calculation_Functions::getCompatibilityMode() == PHPExcel_Calculation_Functions::COMPATIBILITY_EXCEL) {
@@ -1420,6 +1447,9 @@ class PHPExcel_Calculation_DateTime {
 					return (integer) PHPExcel_Shared_Date::ExcelToPHP(PHPExcel_Shared_Date::PHPToExcel($PHPDateObject));
 			case PHPExcel_Calculation_Functions::RETURNDATE_PHP_OBJECT :
 					return $PHPDateObject;
+			default:
+					#code
+					break;
 		}
 	}	//	function EDATE()
 
@@ -1468,6 +1498,9 @@ class PHPExcel_Calculation_DateTime {
 					return (integer) PHPExcel_Shared_Date::ExcelToPHP(PHPExcel_Shared_Date::PHPToExcel($PHPDateObject));
 			case PHPExcel_Calculation_Functions::RETURNDATE_PHP_OBJECT :
 					return $PHPDateObject;
+			default:
+					#code
+					break;
 		}
 	}	//	function EOMONTH()
 

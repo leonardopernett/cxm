@@ -113,6 +113,9 @@ function stream_for($resource = '', array $options = [])
             break;
         case 'NULL':
             return new Stream(fopen('php://temp', 'r+'), $options);
+        default:
+        #code
+        break;
     }
 
     if (is_callable($resource)) {

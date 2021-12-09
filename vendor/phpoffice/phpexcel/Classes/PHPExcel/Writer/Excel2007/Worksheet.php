@@ -1089,6 +1089,10 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 						break;
 					case 'e':			// Error
 						$objWriter->writeAttribute('t', $mappedType);
+					    break;
+					default:
+			         	#code
+			        	break;
 				}
 
 				// Write data depending on its type
@@ -1155,6 +1159,9 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 						}
 
 						break;
+					default:
+			        	#code
+			        	break;
 				}
 			}
 

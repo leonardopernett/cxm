@@ -374,6 +374,11 @@ final class Mbstring
             case 'uni':
             case 'neutral':
                 self::$language = $lang;
+                break;
+            
+            default:
+                #code 
+                break;
 
                 return true;
         }
@@ -391,7 +396,12 @@ final class Mbstring
         switch (strtoupper($encoding)) {
             case 'UTF8':
             case 'UTF-8':
+            break;
+            default:
+               #code
+               break;
                 return array('utf8');
+            
         }
 
         return false;

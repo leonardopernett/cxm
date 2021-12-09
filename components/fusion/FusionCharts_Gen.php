@@ -956,6 +956,8 @@ class FusionCharts {
             case 4 :
                 return $this->getMSStackedDatasetXML();
                 break;
+            default:
+               echo "no se cumple ninguna";
         }
     }
 

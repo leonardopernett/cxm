@@ -789,6 +789,9 @@ class PHPExcel_Writer_Excel5_Parser
 			case '#NAME?':	return pack("C", 0x1D);
 			case '#NUM!':	return pack("C", 0x24);
 			case '#N/A':	return pack("C", 0x2A);
+			default:
+			     	#code
+			    	break;
 		}
 		return pack("C", 0xFF);
     }
