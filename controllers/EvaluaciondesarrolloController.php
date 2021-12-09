@@ -3690,7 +3690,7 @@ use app\models\EvaluacionDesarrollo;
         $form = Yii::$app->request->post();
         if($model->load($form)){
           $varcorreo = $model->comentarios;
-          $varPosicion = 13;
+          $varPosicion = $model->idevaluaciontipo;
 
           $paramsBuscarBloques = [':AnuladoBloque' => 0];
           $varListBloques = Yii::$app->db->createCommand('
@@ -3877,8 +3877,7 @@ use app\models\EvaluacionDesarrollo;
                   es.documentoevaluado = ue.documento
                 WHERE 
                   ue.anulado = :Anulado
-                    AND ue.id_dp_posicion IN (:idPosicion)
-                      AND ue.documento IN (1003064842)')->bindValues($paramsAnulado)->queryAll();
+                    AND ue.id_dp_posicion IN (:idPosicion)')->bindValues($paramsAnulado)->queryAll();
             
           $numCell = 4;
           foreach ($varListEvaluados as $key => $value) {
