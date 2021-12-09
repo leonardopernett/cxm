@@ -3837,6 +3837,18 @@ use app\models\EvaluacionDesarrollo;
           $phpExc->getActiveSheet()->getStyle('I3')->applyFromArray($styleArraySubTitle);
           $phpExc->getActiveSheet()->getStyle('I3')->applyFromArray($styleArrayTitle);
 
+          $phpExc->getActiveSheet()->SetCellValue('BB3','Nota Final');
+          $phpExc->getActiveSheet()->getStyle('BB3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('BB3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('BB3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('BB3')->applyFromArray($styleArrayTitle);
+
+          $phpExc->getActiveSheet()->SetCellValue('BC3','Resultado Final');
+          $phpExc->getActiveSheet()->getStyle('BC3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('BC3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('BC3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('BC3')->applyFromArray($styleArrayTitle);
+
           $phpExc->getActiveSheet()->SetCellValue('BE3','Comentarios Evaluacion');
           $phpExc->getActiveSheet()->getStyle('BE3')->getFont()->setBold(true);
           $phpExc->getActiveSheet()->getStyle('BE3')->applyFromArray($styleColor);
@@ -4172,25 +4184,25 @@ use app\models\EvaluacionDesarrollo;
               $varNotasFinal = 0;
               $varNotasFinal = array_sum($arrayFinal);
 
-              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
-
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');   
+              
               $lastColumn++;
 
-              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'Nota Final');
-              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
-              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+              $phpExc->getActiveSheet()->SetCellValue('BB'.$numCell,'Nota Final');
+              $phpExc->getActiveSheet()->getStyle('BB'.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle('BB'.$numCell)->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle('BB'.$numCell)->applyFromArray($styleArrayfirst);              
 
-              $lastColumn++;
+              $phpExc->getActiveSheet()->SetCellValue('BC'.$numCell,$varNotasFinal);
+              $phpExc->getActiveSheet()->getStyle('BC'.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle('BC'.$numCell)->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle('BC'.$numCell)->applyFromArray($styleArrayfirst);              
 
-              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$varNotasFinal);
-              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
-              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+              $phpExc->getActiveSheet()->SetCellValue('BD'.$numCell,'--');
 
-              $lastColumn++;
+              $phpExc->getActiveSheet()->SetCellValue('BE'.$numCell,$varComentarios);
 
-              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
+              $phpExc->getActiveSheet()->SetCellValue('BF'.$numCell,$varFeedbacks);
 
             }
 
