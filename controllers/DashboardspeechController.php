@@ -2689,7 +2689,6 @@ use yii\base\Exception;
                         $nombre = $nombre.$valor;
               echo "<input type='checkbox' id= '".$nombre."' value='".$value->cod_pcrc."' class='".$clase."'>";
               echo "<label for = '".$value->cod_pcrc."'>&nbsp;&nbsp; ".$value->cod_pcrc." - ".$value->pcrc . "</label> <br>";
-                        // echo "<input type='checkbox' value='" . $value->cod_pcrc . "'>" . $value->cod_pcrc." - ".$value->pcrc . "</option>";
                     }
                 }else{
                     echo "<option>-</option>";
@@ -2702,10 +2701,7 @@ use yii\base\Exception;
 
          public function actionListarprogramaindex(){            
            
-
-            // $txttxtvmotivo = Yii::$app->request->post("txtvmotivo");
              $txtCodpcrc = Yii::$app->request->post('cod_pcrc');
-            // $txtRta = Yii::$app->db->createCommand("select distinct programacategoria, rn, extension, usua_usuario from tbl_speech_categorias where anulado = 0 and cod_pcrc in('$txtCodpcrc')")->queryAll();
             $txtRta = Yii::$app->db->createCommand("select distinct sc.programacategoria, sp.rn, sp.ext, sp.usuared from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sp.cod_pcrc in ('$txtCodpcrc')")->queryAll();
 
             $arrayUsu = array();
@@ -5054,7 +5050,6 @@ public function actionCantidadentto(){
                     'tipo_llamada' => $arbol->snactivar_tipo_llamada
                 ];
                 $data->ruta_arbol = $arbol->dsname_full;
-                //$data->dimension = \app\models\Dimensiones::findOne($TmpForm->dimension_id);
                 $data->dimension = \yii\helpers\ArrayHelper::map(\app\models\Dimensiones::find()->all(), 'id', 'name');
                 $data->detalles = \app\models\Tmpejecucionbloquedetalles::getAllByFormId($formulario_id);
                 $data->totalBloques = \app\models\Tmpejecucionbloques::findAll(['tmpejecucionformulario_id' => $TmpForm->id]);
