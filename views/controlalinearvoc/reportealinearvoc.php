@@ -83,6 +83,13 @@ $this->params['breadcrumbs'][] = $this->title;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 </style>
+<script>
+    $(document).ready(function(){
+        $.fn.snow();
+    });
+</script>
+
+<script src="../../js_extensions/mijs.js"> </script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <header class="masthead">
   <div class="container h-100">

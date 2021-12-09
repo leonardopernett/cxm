@@ -34,10 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
     $year = date('Y');
     $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
-    // Este codigo comentado debe de descomentarse despues de los dos primeros dias $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-    // Este codigo tambien se debe de descomentar $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-    $varfechainicio = '2021-11-01';
-    $varfechafin = '2021-12-05';
+    $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+    $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+
 
 
     $sessiones = Yii::$app->user->identity->id;
@@ -191,8 +190,13 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
+
+
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
+
+
 <script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/mijs.js"> </script>
 <script src="../../js_extensions/highcharts/highcharts.js"></script>
 <script src="../../js_extensions/highcharts/exporting.js"></script>
 <!-- Full Page Image Header with Vertically Centered Content -->
@@ -206,6 +210,11 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
   </div>
 </header>
+<script>
+    $(document).ready(function(){
+        $.fn.snow();
+    });
+</script>
 <br><br>
 <div class="CapaUno" style="display: inline;">
     <div class="row">
@@ -251,7 +260,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
-                <div align="center">
+                <div class="text-center">
                     <?= Html::submitButton(Yii::t('app', 'Buscar técnico/lider'),
                         ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                             'data-toggle' => 'tooltip',

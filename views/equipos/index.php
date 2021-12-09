@@ -43,12 +43,16 @@ $this->params['breadcrumbs'][] = $this->title;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
 </style>
+<script src="../../js_extensions/mijs.js"> </script>
 <header class="masthead">
  <div class="container h-100">
    <div class="row h-100 align-items-center">
      <div class="col-12 text-center">
-       <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-       <p class="lead">A great starter layout for a landing page</p> -->
+     <script>
+    $(document).ready(function(){
+        $.fn.snow();
+    });
+</script>
      </div>
    </div>
  </div>
@@ -89,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script>
 function execAuto() 
 {
-  if(confirm("¿Ejecutar este proceso podria afectar la estructura de equipos actual, desea continua?")){
+  if(confirm("ï¿½Ejecutar este proceso podria afectar la estructura de equipos actual, desea continua?")){
   var preloader = document.getElementById("container_preloader");
   preloader.classList.remove("invisible");
   var botonReal = document.getElementById("botonReal");

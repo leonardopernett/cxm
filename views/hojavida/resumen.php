@@ -648,20 +648,46 @@ fetch('<?php echo Url::to(['/hojavida/resumenapi']) ?>')
             data: {
                 labels:    data.map(item => item.nombre),
                 datasets: [{
-                    label: 'Totales de Directores',
+                    label: 'Totales de clientes',
                     data:  data.map(item => item.total),
                     backgroundColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255, 99, 132, 1)', 
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
                         
                     ],
                     borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255, 99, 132, 1)', 
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        '#4298B5',
+                        
+
                     ],
                     borderWidth: 1
                     /* s */
@@ -683,17 +709,17 @@ fetch('<?php echo Url::to(['/hojavida/resumenapicliente']) ?>')
                     label: 'Totales de Clientes',
                     data:  data.map(item => item.total),
                     backgroundColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255, 99, 132, 1)', 
+                        '#ccc',
+                        '#ccc',
+                        '#ccc',
+                        '#ccc',
                         
                     ],
                     borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255, 99, 132, 1)', 
+                        '#ccc',
+                        '#ccc',
+                        '#ccc',
+                        '#ccc',
                     ],
                     borderWidth: 1
                     /* s */

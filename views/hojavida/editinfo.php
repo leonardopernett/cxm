@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $varTipo = ['1' => 'Decisor', '2' => 'No Decisor'];
     $varNivel = ['1' => 'Estratégico', '2' => 'Operativo'];
     $varEstado = ['1' => 'Activo', '2' => 'No Activo'];
+    $varidCity = $model->hv_idciudad;
 ?>
 <style>
     .card1 {
@@ -82,7 +83,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
@@ -225,6 +225,44 @@ $this->params['breadcrumbs'][] = $this->title;
           <div class="col-md-4">
             <label style="font-size: 15px;"> Fecha de Cumpleaños</label>
             <?= $form->field($model, 'fechacumple', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->widget(\yii\jui\DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control', 'id'=>'idfechacumple'],]) ?>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <table id="tblDataPartOne" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?php echo "Datos Informativos"; ?></caption>
+                <thead>
+                  <tr>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Data Pais') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Data Ciudad') ?></label></th>
+                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Data Cumpleaños') ?></label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php                     
+                    $paramsCiudad = [':idciudad'=>$model->hv_idciudad];
+                    $VarciudadName = Yii::$app->db->createCommand('
+                      SELECT hp.pais, hc.ciudad FROM tbl_hv_pais hp
+                        INNER JOIN  tbl_hv_ciudad hc ON 
+                          hp.hv_idpais = hc.pais_id
+                          WHERE 
+                            hc.hv_idciudad = :idciudad
+                              AND hc.anulado = 0
+                      ')->bindValues($paramsCiudad)->queryAll();
+
+                    foreach ($VarciudadName as $key => $value) {
+                      
+                  ?>
+                    <td><label style="font-size: 12px;"><?php echo  $value['pais']; ?></label></td>
+                    <td><label style="font-size: 12px;"><?php echo  $value['ciudad']; ?></label></td>
+                  <?php
+                    }
+                  ?>
+                  <td><label style="font-size: 12px;"><?php echo  $model->fechacumple; ?></label></td>
+                </tbody>
+            </table>
           </div>
         </div>
 
@@ -701,7 +739,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-12">
       
     <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Datos Complementarios:: </label> 
+        <label style="font-size: 15px;"><em class="fas fa-square" style="font-size: 15px; color: #FFC72C;"></em> Datos Complementarios: </label> 
 
         <?php
 
@@ -931,6 +969,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidsatu = document.getElementById("idsatu").value;
     var varautoincrement = "<?php echo $idinfo; ?>";
     var varclasificacion = document.getElementById("hojavidadatapersonal-clasificacion").value;
+    var varfechacumple = document.getElementById("idfechacumple").value;
 
     if (varididentificacion == "") {
 
@@ -974,20 +1013,13 @@ $this->params['breadcrumbs'][] = $this->title;
               swal.fire("!!! Advertencia !!!","Debe de seleccionar la autorizacion","warning");
               return;
             }
-            if (varidpais == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar el pais","warning");
-              return;
-            }
-            if (varididciudad == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar la ciudad","warning");
-              return;
-            }
             if (varclasificacion == "") {
               event.preventDefault();
               swal.fire("!!! Advertencia !!!","Debe de seleccionar la clasificacion konecta","warning");
               return;
+            }
+            if (varididciudad == "") {
+              varididciudad = "<?php echo $varidCity; ?>";
             }
 
             // Esta accion permite guardar el primer bloque...
@@ -1010,6 +1042,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvaridsusceptible : varidsusceptible,
                 txtvaridsatu : varidsatu,
                 txtvarclasificacion : varclasificacion,
+                txtvarfechacumple : varfechacumple,
               },
               success : function(response){
                 numRta =   JSON.parse(response);
@@ -1025,6 +1058,7 @@ $this->params['breadcrumbs'][] = $this->title;
             var varidafinidad = document.getElementById("idafinidad").value;
             var varidtipoafinidad = document.getElementById("idtipoafinidad").value;
             var varidnivelafinidad = document.getElementById("idnivelafinidad").value;
+            var varidareatrabajo = document.getElementById("idareatrabajo").value;
 
             if (varidrol == "") {
               event.preventDefault();
@@ -1058,6 +1092,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvaridafinidad : varidafinidad,
                 txtvaridtipoafinidad : varidtipoafinidad,
                 txtvaridnivelafinidad : varidnivelafinidad,
+                txtvaridareatrabajo : varidareatrabajo,
               },
               success : function(response){
                 numRta =   JSON.parse(response);
@@ -1110,6 +1145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 success : function(response){
                   numRta =   JSON.parse(response);
+                  // console.log(numRta);
                 }
               });
             }

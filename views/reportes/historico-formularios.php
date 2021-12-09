@@ -47,6 +47,12 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 
 </style>
 <!-- Full Page Image Header with Vertically Centered Content -->
+<script>
+    $(document).ready(function(){
+        $.fn.snow();
+    });
+</script>
+<script src="../../js_extensions/mijs.js"> </script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">

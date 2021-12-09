@@ -41,6 +41,12 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
 </style>
+<script>
+    $(document).ready(function(){
+        $.fn.snow();
+    });
+</script>
+<script src="../../js_extensions/mijs.js"> </script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
