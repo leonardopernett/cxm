@@ -30,6 +30,12 @@ $config = [
         ]
     ],
     'components' => [
+        'response' => [
+            'on beforeSend' => function ($event) {
+                $event->sender->headers->add('X-Frame-Options', 'DENY');
+                $event->sender->headers->add('X-Content-Type-Options', 'nosniff');
+            }
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
 //            'enableStrictParsing' => true,
@@ -68,9 +74,27 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '5G7dj5viBHnskiFz-yUMMjgPADhhtbrD',
+            'csrfCookie' => [
+
+                'httpOnly' => true,
+    
+                'secure' => true,
+    
+            ],
 //            'parsers' => [
 //                'application/json' => 'yii\web\JsonParser',
 //            ]
+        ],
+        'session' => [
+
+            'cookieParams' => [
+    
+                'httpOnly' => true,
+    
+                'secure' => true,
+    
+            ],
+    
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -78,6 +102,15 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'identityCookie' => [
+
+                'name' => '_identity',
+    
+                'httpOnly' => true,
+    
+                'secure' => true,
+    
+            ],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
