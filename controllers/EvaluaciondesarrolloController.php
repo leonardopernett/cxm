@@ -3870,14 +3870,14 @@ use app\models\EvaluacionDesarrollo;
             $paramsBusquedaEvalua = [':DocumentoEvaluado' => $value['documentoevalua']];
 
             $varListEvaluados = Yii::$app->db->createCommand('
-              SELECT es.fechacrecion AS FechaEvaluacion, es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, ue.nombre_completo AS NombreEvaluado, es.idevaluaciontipo AS TipoEvaluacion 
-                FROM tbl_usuarios_evalua ue
-                  INNER JOIN tbl_evaluacion_solucionado es ON 
-                    ue.documento = es.documentoevaluado 
-                  WHERE 
-                    es.anulado = 0
-                      AND es.documentoevaluado IN (:DocumentoEvaluado)
-                  GROUP BY es.documento')->bindValues($paramsBusquedaEvalua)->queryAll();
+            SELECT DISTINCT  es.fechacrecion AS FechaEvaluacion, es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, 
+            ue.nombre_completo AS NombreEvaluado, es.idevaluaciontipo AS TipoEvaluacion
+              FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_usuarios_evalua ue ON 
+                  es.documentoevaluado = ue.documento
+                WHERE 
+                  ue.anulado = 0
+                    AND ue.documento = :DocumentoEvaluado')->bindValues($paramsBusquedaEvalua)->queryAll();
             
             $numCell = 4;
             foreach ($varListEvaluados as $key => $value) {
