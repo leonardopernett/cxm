@@ -3865,7 +3865,8 @@ use app\models\EvaluacionDesarrollo;
                   es.documentoevaluado = ue.documento
                 WHERE 
                   ue.anulado = :Anulado
-                    AND ue.id_dp_posicion IN (:idPosicion)')->bindValues($paramsAnulado)->queryAll();
+                    AND ue.id_dp_posicion IN (:idPosicion)
+                      AND ue.documento IN (1003064842)')->bindValues($paramsAnulado)->queryAll();
             
           $numCell = 4;
           foreach ($varListEvaluados as $key => $value) {
@@ -4167,6 +4168,18 @@ use app\models\EvaluacionDesarrollo;
                 array_push($arrayFinal, $varNFinalGenerico);
 
               }
+
+              $varNotasFinal = 0;
+              $varNotasFinal = array_sum($arrayFinal);
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
+
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'Nota Final');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
 
             }
 
