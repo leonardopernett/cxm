@@ -12,7 +12,13 @@ use yii\bootstrap\ActiveForm;
 
     <?php yii\widgets\Pjax::begin(['id' => 'form_Tipofeedbacks']); ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'categoriaFeedName')->textInput(['value'=>$model->getCategoriafeedback()->one()->name, 'disabled'=>true]) ?>
     

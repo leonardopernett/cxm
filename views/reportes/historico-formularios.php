@@ -67,7 +67,12 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 
 <div class="equipos-evaluados-form">    
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <div class="row col-md-12">       
         <div class="col-md-6">  

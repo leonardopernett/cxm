@@ -1338,7 +1338,12 @@ $this->title = 'Dashboard Voz del Cliente';
             </div>
             <?php } } ?> 
             <br>
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>  
+            <?php $form = ActiveForm::begin([
+              'layout' => 'horizontal',
+              'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+              ]); ?>  
               <?= $form->field($model, 'idcategoria')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'indicadorID'])->label('Indicadores...') ?>
               <?= $form->field($model, 'nombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 350, 'class' => 'hidden', 'value'=>$txtCodPcrcok, 'id'=>'txtIdCod_pcrc']) ?>
             <br>
@@ -1496,7 +1501,12 @@ $this->title = 'Dashboard Voz del Cliente';
       <div class="row">
         <div class="col-md-12">
           <div class="card1 mb">
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+            <?php $form = ActiveForm::begin([
+              'layout' => 'horizontal',
+              'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+              ]); ?> 
                 <div class="row">
                   <div class="col-sm-6">
                     <label for="txtIndicadores">Indicadores...</label>
@@ -1646,7 +1656,12 @@ $this->title = 'Dashboard Voz del Cliente';
       <div class="row">
         <div class="col-md-12">
           <div class="card1 mb">
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+            <?php $form = ActiveForm::begin([
+              'layout' => 'horizontal',
+              'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+              ]); ?> 
               <div class="row">
                 <div class="col-sm-6">
                   <label for="txtIndicadores">Indicadores...</label>

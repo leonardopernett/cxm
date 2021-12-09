@@ -43,7 +43,13 @@ $this->registerJs(
         <div class="page-header">
             <h3><?= Html::encode($this->title) ?></h3>
         </div>
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]); ?>
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'options' => ['data-pjax' => true],
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
         <?php echo $form->field($modelCategoriaGestion, 'name')->textInput(['id' => 'nombre']) ?>
         <?= $form->field($modelCategoriaGestion, 'prioridad')->input('number',['id' => 'prioridad','min'=>1, 'max'=> 10, 'step'=>1]);?>

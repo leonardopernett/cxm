@@ -88,7 +88,12 @@ $this->title = 'Actualizar Categorias -- QA & Speech --';
 </div> 
 <br>
 <div class="CapaCero" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     <div class="row">              
         <div class="col-md-6">
             <?= $form->field($model, 'idcategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 200, 'type' => 'number', 'id'=>'txtIdCategorias',  'onkeypress' => 'return valida(event)'])->label('ID Categoria') ?>

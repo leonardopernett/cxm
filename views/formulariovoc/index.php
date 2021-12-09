@@ -89,7 +89,12 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 <div class="capaUno">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">

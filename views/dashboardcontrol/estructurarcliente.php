@@ -38,7 +38,12 @@ $this->title = 'Métricas de Productividad/Valoración';
 ?>
 <div class="capaCero" style="display: inline">
 	<div class="formularios-form">
-	    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	    <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
 
 
 

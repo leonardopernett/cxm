@@ -51,7 +51,13 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
     <?php
     //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
-    $form = ActiveForm::begin(['options' => ["id" => "formErroressatu"], 'layout' => 'horizontal'])
+    $form = ActiveForm::begin([
+        'options' => ["id" => "formErroressatu"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ])
     ?>
     <div class="row">
         <div class="col-md-6">  

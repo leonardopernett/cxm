@@ -128,7 +128,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card1 mb">
                 <label><em class="fas fa-object-group" style="font-size: 20px; color: #827DF9;"></em> Monitoreo de categorización general:</label>
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?>
                 <div class="col-md-12">
                     <?= $form->field($model2, 'mesyear')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'clienteID'])->label('Seleccionar Corte') ?>
                 </div>
@@ -171,7 +176,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card1 mb">
                 <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Procesos de categorización:</label>
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?>
                 <div class="col-md-12">
                     <?= $form->field($model2, 'mesyear')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'corteId'])->label('Seleccionar Corte') ?>
                 </div>

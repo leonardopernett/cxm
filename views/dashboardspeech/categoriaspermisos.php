@@ -65,7 +65,12 @@ $this->title = 'Configuración de Categorias -- QA & Speech --';
 
 ?>
 <div class="formularios-form" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
         <div class="row">              
 
                 <?= $form->field($model, 'iddashservicio', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'TipoArbol', 'onclick'=>'validarservicio();'])->label('Servicio/PCRC') ?> 

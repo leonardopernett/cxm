@@ -26,7 +26,13 @@ Modal::begin([
         'timeout' => false, 'enablePushState' => false]);
     ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     
     <?=
     $activador[0]["snaccion_correctiva"] != 0 ? $form->field($model, 'dsaccion_correctiva')->textarea() : "";

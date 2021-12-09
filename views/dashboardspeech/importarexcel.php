@@ -32,7 +32,12 @@ $this->title = 'DashBoard Voz del Cliente';
 ?>
 
 <div class="formularios-form" id="capaUno" style="display: inline">
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]) ?>
 
         <?= $form->field($model, 'file')->fileInput() ?>
 

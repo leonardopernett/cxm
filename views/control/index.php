@@ -109,7 +109,13 @@ $this->registerJs($js);
             <?php endif; ?>
                                     
                 <?php
-                $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['id' => 'idVistaunica']]);
+                $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'options' => ['id' => 'idVistaunica'],
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                ]);
                 ?>
                 <?= Html::input("hidden", "form", "0", ['id' => 'form']); ?>                
 
@@ -906,7 +912,13 @@ $this->registerJs($js);
             ?>
                      
             <div id="divConfigDetallada" class="well" style="z-index:2; display: none" title="Parametros de Visualizaci&oacute;n" >
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['id' => 'idVistaDetallada']]); ?>
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'options' => ['id' => 'idVistaDetallada'],
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?>
                 <?= Html::input("hidden", "form", "1", ['id' => 'form']); ?>
                 <div class="col-md-12">
                     <?php

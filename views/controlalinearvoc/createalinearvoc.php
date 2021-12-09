@@ -149,7 +149,12 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-      <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+      <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+          'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]); ?>
         <label><em class="fas fa-edit" style="font-size: 20px; color: #559FFF;"></em> Información de partida:</label>
           <div class="row">
             <div class="col-md-6">

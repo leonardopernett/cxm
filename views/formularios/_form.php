@@ -13,7 +13,12 @@ use yii\helpers\Url;
 
 <div class="formularios-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 150]) ?>
     <?= $form->field($model, 'id_plantilla_form')->dropDownList(Yii::$app->params["lista_plantilla"]) ?>

@@ -41,7 +41,13 @@ Modal::begin([
 
             <?php
 
-            $form = ActiveForm::begin(['options' => ['data-pjax' => true, "id" => "formCortesupdate"], 'layout' => 'horizontal'])
+            $form = ActiveForm::begin([
+                'options' => ['data-pjax' => true, "id" => "formCortesupdate"],
+                'layout' => 'horizontal',
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ])
             ?>
             <table class="table table-striped table-bordered">
             <caption>Cortes</caption>
@@ -263,7 +269,13 @@ HTML;
 
             <?php
 
-            $form = ActiveForm::begin(['options' => ['data-pjax' => true, "id" => "formCortesupdate"], 'layout' => 'horizontal'])
+            $form = ActiveForm::begin([
+                'options' => ['data-pjax' => true, "id" => "formCortesupdate"],
+                'layout' => 'horizontal',
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ])
             ?>
             <table class="table table-striped table-bordered">
             <caption>Cortes</caption>

@@ -95,7 +95,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-12">
       <div class="card1 mb">
         <label><em class="fas fa-book" style="font-size: 20px; color: #827DF9;"></em> <?php echo $txtNamePcrc; ?></label>
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+        <?php $form = ActiveForm::begin([
+          'layout' => 'horizontal',
+          'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+          ]); ?>
           <?= $form->field($model, 'arbol_id')->textInput(['maxlength' => 10, 'id'=>"pcrcid", 'class'=>'hidden', 'value'=> $txtIdPcrc ]) ?> 
           <div class="row">
             <div class="col-mod-6">

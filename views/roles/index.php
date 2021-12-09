@@ -61,7 +61,13 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta accion");
     </div>-->
     <?php
     //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
-    $form = ActiveForm::begin(['options' => ["id" => "permisosMasivos"], 'layout' => 'horizontal'])
+    $form = ActiveForm::begin([
+        'options' => ["id" => "permisosMasivos"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ])
     ?>
     <div class="form-group">
 

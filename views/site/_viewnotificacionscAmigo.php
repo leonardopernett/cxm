@@ -9,7 +9,13 @@ use yii\bootstrap\ActiveForm;
         echo '<div class="alert alert-' . $key . '" role="alert">' . $message . '</div>';
     }
     ?>
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true, 'id' => 'createSC']]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true, 'id' => 'createSC'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     <?php if (isset($model->argumento)): ?>
         <div class="row">
             <div class="col-lg-6 col-sm-offset-3">

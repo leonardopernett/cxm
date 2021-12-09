@@ -11,7 +11,12 @@ use yii\bootstrap\ActiveForm;
 
 <div class="parametrizacion-encuesta-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'cliente')->textInput() ?>
 

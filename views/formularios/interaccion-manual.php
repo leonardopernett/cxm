@@ -54,7 +54,12 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 
 <div class="formularios-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+      'layout' => 'horizontal',
+      'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+      ]); ?>
 <div class="col-md-offset-2 col-sm-8 panel panel-default">
   <div class="panel-body text-center">
     <p>Recuerda que para Valorar las dimensiones de OJT y Calidad del Entrenamiento, lo debes hacer solo con el formulario </p><p><strong>Índice de Calidad Entrenamiento Inicial</strong></p>

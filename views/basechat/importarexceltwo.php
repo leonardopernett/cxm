@@ -104,7 +104,14 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 <div class="capaIni" id="capaIniID" style="display: inline;">
-	<?php $form = ActiveForm::begin(["method" => "post", "enableClientValidation" => true, 'options' => ['enctype' => 'multipart/form-data']]) ?>
+	<?php $form = ActiveForm::begin([
+        "method" => "post",
+        "enableClientValidation" => true,
+        'options' => ['enctype' => 'multipart/form-data'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]) ?>
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">

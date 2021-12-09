@@ -34,7 +34,12 @@ $datacolab = (array)json_decode($dataper);
 </div>
 
 <br>
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]); ?>
     <div class="row">
         <div class="col-md-offset-2 col-sm-8">
         <strong>Correo Usuario </strong><?= Html::input('email','email','', $options=['class'=>'form-control', 'maxlength'=>100, 'id'=>'nombrecorreo']) ?>

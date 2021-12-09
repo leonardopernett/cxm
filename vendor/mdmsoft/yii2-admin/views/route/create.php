@@ -17,7 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="create">
 
-	<?php $form = ActiveForm::begin(); ?>
+	<?php $form = ActiveForm::begin([
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		  ]
+	]); ?>
 
 		<?= $form->field($model, 'route') ?>
 

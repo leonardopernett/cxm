@@ -109,7 +109,12 @@ $this->title = 'Dashboard Voz del Cliente';
   </table>
 </div>
 <div class="formularios-form" id="idCapa0" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+      'layout' => 'horizontal',
+      'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+      ]); ?>
         <div class="row" style="text-align: center;">
             &nbsp; 
           <?= Html::a('Recargar',  ['index'], ['class' => 'btn btn-success',

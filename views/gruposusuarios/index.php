@@ -157,7 +157,13 @@ echo Yii::t("app", "Seleccione los Grupos de usuarios");
                 <?php // echo $this->render('_search', ['model' => $searchModel]);   ?>
 <?php
     //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
-    $form = ActiveForm::begin(['options' => ["id" => "permisosMasivos"], 'layout' => 'horizontal'])
+    $form = ActiveForm::begin([
+        'options' => ["id" => "permisosMasivos"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ])
     ?>
                 <p>
                     <?= Html::a(Yii::t('app', 'Create Gruposusuarios'), ['create'], ['class' => 'btn btn-success']) ?>

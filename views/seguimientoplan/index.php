@@ -221,7 +221,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-4">
             <div class="card1 mb">
                 <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Buscar técnico/lider: </label>
-                <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?> 
+                <?php $form = ActiveForm::begin([
+                    'options' => ["id" => "buscarMasivos"],
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?> 
                 <div class="row">
                     <div class="col-sm-12">
                         <?=

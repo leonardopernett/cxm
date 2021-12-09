@@ -25,7 +25,12 @@ $this->title = 'Gestión Satisfacción Chat';
 
 ?>
 <div class="control-procesos-index" style="display: inline" id="IdCapaCero">
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]) ?>
          <div class="form-group">
 	   <div class="col-md-12">
 

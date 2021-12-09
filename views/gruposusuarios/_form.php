@@ -16,7 +16,13 @@ use yii\widgets\Pjax;
     ?>
     <div class="gruposusuarios-form">
 
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]); ?>
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'options' => ['data-pjax' => true],
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
 
         <?= $form->field($model, 'nombre_grupo')->textInput(['maxlength' => 300]) ?>
         <?= $form->field($model, 'grupo_descripcion')->textInput(['maxlength' => 300]) ?>
@@ -42,7 +48,12 @@ use yii\widgets\Pjax;
 <?php else: ?>
     <div class="gruposusuarios-form">
 
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
 
         <?= $form->field($model, 'nombre_grupo')->textInput(['maxlength' => 300]) ?>
         <?= $form->field($model, 'grupo_descripcion')->textInput(['maxlength' => 300]) ?>

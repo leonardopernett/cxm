@@ -93,7 +93,12 @@ $this->title = 'Registro de Categorias';
 
 ?>
 <div class="formularios-form" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <div class="CapaCero" style="display: inline">
         <?php $var = ['Detalle motivo contacto' => 'Motivo de contacto', 'Indicador' => 'Indicador', 'Programa' => 'Programa', 'SubMotivo' => 'Sub Motivo', 'Variable' => 'Variable']; ?>

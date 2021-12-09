@@ -76,7 +76,13 @@ $roles = $command->queryScalar();
 <br><br>
 <?php if ($roles == '270') { ?>
 <div class="CapaPp" style="display : inline;">
-    <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ["id" => "buscarMasivos"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     <div class="row">
         <div class="col-md-6">
             <div class="card1 mb">

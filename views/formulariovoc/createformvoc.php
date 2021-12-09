@@ -176,7 +176,12 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
 </div>
 <hr>
 <div class="SegundoBloque" style="display: inline;">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+      'layout' => 'horizontal',
+      'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+      ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">

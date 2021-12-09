@@ -42,7 +42,12 @@ $this->title = 'Actualización del Listado Instrumento Alinear + VOC';
 <br>
 <div id="dtbloque1" class="col-sm-12" style="align-items: center;  display: flex; justify-content: center;">
 	<div id="dtbloque2" class="col-sm-6" >
-		<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+		<?php $form = ActiveForm::begin([
+			'layout' => 'horizontal',
+			'fieldConfig' => [
+				'inputOptions' => ['autocomplete' => 'off']
+			  ]
+			]); ?>
 		<label for="txtTipo_accion" style="text-align:left !important;">Listado:</label> 
 		<select id="txtTipo_accion" class ='form-control' >Listado:
 					<option value="" disabled selected>Seleccione...</option>

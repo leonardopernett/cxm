@@ -21,7 +21,12 @@ use yii\bootstrap\modal;
       </div>
     </div>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 150, 'style' => 'text-transform:uppercase;','onKeyUp' => 'this.value=this.value.toUpperCase();']) ?>    
 

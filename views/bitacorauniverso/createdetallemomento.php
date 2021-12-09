@@ -26,7 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <br>
 <div class="formularios-form" style="display: inline" id="dtbloque1">
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		]
+		]); ?>
 		
 		<?php 
 			echo $form->field($model3, 'id_momento')->dropDownList($listData, ['prompt' => 'Seleccione...',  'id'=>'selectedID'])->label('Momentos') 

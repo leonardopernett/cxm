@@ -30,6 +30,9 @@ $listView->sorter = ['options' => ['class' => 'mail-sorter']];
     <?php $form = ActiveForm::begin([
             'method' => 'get',
             'action' => ['/debug/default/view', 'tag' => Yii::$app->request->get('tag'), 'panel' => 'mail'],
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
     ]); ?>
     <div class="row">
         <?= $form->field($searchModel, 'from', ['options' => ['class' => 'col-lg-6']])->textInput() ?>

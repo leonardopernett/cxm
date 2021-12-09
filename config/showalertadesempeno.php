@@ -228,7 +228,11 @@ $this->title = 'Alertas';
                     <table class="table table-striped table-bordered detail-view formDinamico">
                     <caption>Tabla no usada</caption>
                         <tbody>
-                            <?php $form = ActiveForm::begin(); ?>             
+                            <?php $form = ActiveForm::begin([
+                                'fieldConfig' => [
+                                    'inputOptions' => ['autocomplete' => 'off']
+                                  ]
+                            ]); ?>             
                             
                             <?php if($data->notificacion == "3"): ?>
 

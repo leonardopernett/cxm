@@ -12,7 +12,11 @@ use yii\widgets\ActiveForm;
 
 <div class="auth-item-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+    ]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 64]) ?>
 

@@ -23,7 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="control-procesos-index" id="actualizarID">
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
 	<?= $form->field($model, "idlistahijovoc")->textInput(['readonly' => 'readonly', 'value' => $txtIdList, 'id'=>'invisible_valorado', 'class'=>"hidden"])->label(' ') ?>   
 
 	<?= $form->field($model, "nombrelistah")->textInput(['value' => $txtNombreList, 'id'=>'idListtxt'])->label('Nombre Lista') ?>   

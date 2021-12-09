@@ -38,7 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+            <?php $form = ActiveForm::begin([
+                'id' => 'contact-form',
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                ]
+                ]); ?>
                 <?= $form->field($model, 'name') ?>
                 <?= $form->field($model, 'email') ?>
                 <?= $form->field($model, 'subject') ?>

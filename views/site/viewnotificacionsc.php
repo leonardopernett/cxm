@@ -25,7 +25,13 @@ Modal::begin([
         'enablePushState' => false]);
     ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true, 'id' => 'createSC']]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true, 'id' => 'createSC'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <div class="row">
         <div class="col-lg-10 col-sm-offset-1" style="height: 300px; overflow: auto">

@@ -55,7 +55,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?php
     //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
-    $form = ActiveForm::begin(['options' => ["id" => "formLogaadmin"], 'layout' => 'horizontal'])
+    $form = ActiveForm::begin([
+        'options' => ["id" => "formLogaadmin"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ])
     ?>
 
     <div class="row">

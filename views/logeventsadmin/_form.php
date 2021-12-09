@@ -11,7 +11,12 @@ use yii\bootstrap\ActiveForm;
 
 <div class="logeventsadmin-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'tabla_modificada')->textInput(['maxlength' => 300]) ?>
 

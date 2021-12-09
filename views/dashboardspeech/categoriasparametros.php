@@ -47,7 +47,12 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
 <br>
 <div class="row">
     <div class="col-sm-12" id="idCapa0" style="display: inline">
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
             <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
             <caption>Tabla datos</caption>
                 <tr>

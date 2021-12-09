@@ -36,7 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="formularios-form" style="display: inline" id="CapaCero">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
         <?=  $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->distinct()->where("arbol_id in (2,98)")->andwhere("activo = 0")->all(), 'id', 'name'),['prompt'=>'Seleccione Cliente QA...'])->label('Cliente Desde QA'); 
         ?>
 

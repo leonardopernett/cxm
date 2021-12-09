@@ -21,7 +21,12 @@ $listData2 = ArrayHelper::map($txtListResponsable, 'usua_id', 'usua_nombre');
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">            	
-            	<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+            	<?php $form = ActiveForm::begin([
+                    'options' => ['enctype' => 'multipart/form-data'],
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]) ?>
             		<div class="row">
                     	<div class="col-sm-12">
                     	<?= $form->field($model, 'usuaidpermiso')->dropDownList($listData2, ['prompt' => 'Seleccionar usuario...', 'id'=>"selectid"])->label('Seleccionar Usuario') ?> 

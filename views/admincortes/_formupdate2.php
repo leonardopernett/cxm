@@ -30,7 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="page-header" >
     <h3 class="text-center" style="color:#100048;"><?= Html::encode($this->title) ?></h3>
 </div>
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		]
+		]); ?>
 		<div class="form-group">
 			<h3 style="color:#100048;"><left>Actualizar Datos Corte...</left></h3>
 			

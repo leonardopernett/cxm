@@ -73,7 +73,13 @@ SCRIPT;
     
     <?php $this->registerJs($js); ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+    ]
+        ]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 100, 'disabled'=>'disabled']) ?>  
     

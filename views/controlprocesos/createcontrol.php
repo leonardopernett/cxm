@@ -64,7 +64,12 @@ $fechaActual = Date("Y-m-d");
         <h4>¿Esta seguro que desea guardar los registros?</h4>
     </div>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model2, 'evaluados_id')->textInput(['maxlength' => 200, 'id'=>"id_valorado", 'class'=>"hidden", 'label'=>""]) ?>
 

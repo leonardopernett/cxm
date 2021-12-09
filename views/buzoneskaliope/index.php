@@ -121,7 +121,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <br><br>
 <?php if ($sessiones == '2953' || $sessiones == '2911' || $sessiones == '3205' || $sessiones == '3229') { ?>
 <div class="capaUno" style="display: inline">
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">

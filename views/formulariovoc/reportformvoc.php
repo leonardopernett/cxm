@@ -115,7 +115,12 @@ $varDatalista = $datalista;
 </header>
 <br><br>
 <div class="CeroBloque" style="display: inline;">
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
     <div class="PrimerBloque" style="display: inline;">
         <div class="row">
             <div class="col-md-12">

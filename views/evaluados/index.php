@@ -57,7 +57,12 @@ $rolId = Yii::$app->db->createCommand("select rel_role_id from rel_usuarios_role
     ?>
     <?php
     //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
-    $form = ActiveForm::begin(['options' => ["id" => "formEvaluados"], 'layout' => 'horizontal'])
+    $form = ActiveForm::begin([
+        'options' => ["id" => "formEvaluados"], 'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ])
     ?>
     <p>
         <?php if ($rolId == 282 || $rolId == 270) { ?>
