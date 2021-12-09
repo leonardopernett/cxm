@@ -11,9 +11,12 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\db\Query;
 
-$this->title = 'Evaluaci�n de Desarrollo';
+$this->title = 'Evaluacion de Desarrollo';
 
-    
+    $txtListPosicion = Yii::$app->db->createCommand("SELECT ue.id_dp_posicion, ue.posicion 
+    FROM tbl_usuarios_evalua ue
+        GROUP BY ue.id_dp_posicion")->queryAll();
+    $listDataPosicion = ArrayHelper::map($txtListPosicion, 'id_dp_posicion', 'posicion');
 
     $sessiones = Yii::$app->user->identity->id;
 
@@ -38,6 +41,8 @@ $this->title = 'Evaluaci�n de Desarrollo';
             <div class="card1 mb">
                 <label style="font-size: 18px;"><em class="fas fa-at" style="font-size: 25px; color: #827DF9;"></em> Ingresar el correo corporativo </label>                  
 
+                <?= $form->field($model, 'idevaluaciontipo')->dropDownList($listDataPosicion, ['prompt' => 'Seleccionar Posicion...', 'id'=>"selectid"])->label('') ?> 
+                <br>
                 <?= $form->field($model, 'comentarios')->textInput(['maxlength' => 200, 'id'=>'id_destino', 'placeholder' => 'Destinatario'])->label('') ?>  
                 <br>
                 <?= Html::submitButton(Yii::t('app', 'Enviar archivo'),
