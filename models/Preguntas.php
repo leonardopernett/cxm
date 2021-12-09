@@ -35,7 +35,7 @@ class Preguntas extends \yii\db\ActiveRecord
             [['id_parametrizacion'], 'required'],
             [['categoria', 'id_parametrizacion'], 'integer'],
             [['pre_indicador'], 'string', 'max' => 100],
-            [['enunciado_pre'], 'string', 'max' => 200]
+            [['enunciado_pre'], 'string', 'max' => 250]
         ];
     }
 

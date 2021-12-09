@@ -3690,20 +3690,7 @@ use app\models\EvaluacionDesarrollo;
         $form = Yii::$app->request->post();
         if($model->load($form)){
           $varcorreo = $model->comentarios;
-
-          $paramsBusqueda = [':Anulado' => 0];
-          $varListDocumentosEvalua = Yii::$app->db->createCommand('
-          SELECT 
-            ue.documento AS documentoevalua
-              FROM tbl_usuarios_evalua ue 
-                WHERE 
-                  ue.anulado = :Anulado')->bindValues($paramsBusqueda)->queryAll();
-          
-          $arrayListUsuarios = array();
-          foreach ($varListDocumentosEvalua as $key => $value) {
-            array_push($arrayListUsuarios, $value['documentoevalua']);
-          }
-          $varListDocumentos = implode(", ",$arrayListUsuarios);
+          $varPosicion = $model->idevaluaciontipo;
 
           $paramsBuscarBloques = [':AnuladoBloque' => 0];
           $varListBloques = Yii::$app->db->createCommand('
@@ -3850,17 +3837,17 @@ use app\models\EvaluacionDesarrollo;
           $phpExc->getActiveSheet()->getStyle('I3')->applyFromArray($styleArraySubTitle);
           $phpExc->getActiveSheet()->getStyle('I3')->applyFromArray($styleArrayTitle);
 
-          $phpExc->getActiveSheet()->SetCellValue('J2','Notas');
-          $phpExc->getActiveSheet()->getStyle('J2')->getFont()->setBold(true);
-          $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArray);
-          $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArraySubTitle);
-          $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArrayTitle);          
+          $phpExc->getActiveSheet()->SetCellValue('BB3','Nota Final');
+          $phpExc->getActiveSheet()->getStyle('BB3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('BB3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('BB3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('BB3')->applyFromArray($styleArrayTitle);
 
-          $phpExc->getActiveSheet()->SetCellValue('J3','Nota General');
-          $phpExc->getActiveSheet()->getStyle('J3')->getFont()->setBold(true);
-          $phpExc->getActiveSheet()->getStyle('J3')->applyFromArray($styleColor);
-          $phpExc->getActiveSheet()->getStyle('J3')->applyFromArray($styleArraySubTitle);
-          $phpExc->getActiveSheet()->getStyle('J3')->applyFromArray($styleArrayTitle);
+          $phpExc->getActiveSheet()->SetCellValue('BC3','Resultado Final');
+          $phpExc->getActiveSheet()->getStyle('BC3')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle('BC3')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle('BC3')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle('BC3')->applyFromArray($styleArrayTitle);
 
           $phpExc->getActiveSheet()->SetCellValue('BE3','Comentarios Evaluacion');
           $phpExc->getActiveSheet()->getStyle('BE3')->getFont()->setBold(true);
@@ -3880,434 +3867,348 @@ use app\models\EvaluacionDesarrollo;
           $varRtaCargo = null;
           $varSi = "Si";
           $varNo = "--";
+          
+          $paramsAnulado = [':Anulado' => 0, ':idPosicion' => $varPosicion];
+          $varListEvaluados = Yii::$app->db->createCommand('
+            SELECT DISTINCT  es.fechacrecion AS FechaEvaluacion, es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, 
+            ue.nombre_completo AS NombreEvaluado, es.idevaluaciontipo AS TipoEvaluacion
+              FROM tbl_evaluacion_solucionado es
+                INNER JOIN tbl_usuarios_evalua ue ON 
+                  es.documentoevaluado = ue.documento
+                WHERE 
+                  ue.anulado = :Anulado
+                    AND ue.id_dp_posicion IN (:idPosicion)')->bindValues($paramsAnulado)->queryAll();
+            
+          $numCell = 4;
+          foreach ($varListEvaluados as $key => $value) {
+            $varfechaevalua = $value['FechaEvaluacion'];
+            $varCCEvaluador =  null;
+            $varCCEvaluado = null;
+            $varNombreEvaluado = null;
 
-
-
-            $varListEvaluados = Yii::$app->db->createCommand("
-              SELECT es.fechacrecion AS FechaEvaluacion, es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, 
-		            ue.nombre_completo AS NombreEvaluado, es.idevaluaciontipo AS TipoEvaluacion FROM tbl_usuarios_evalua ue
-                INNER JOIN tbl_evaluacion_solucionado es ON 
-                  ue.documento = es.documentoevaluado 
-              WHERE 
-                es.anulado = 0
-                  AND es.documentoevaluado IN ($varListDocumentos) GROUP BY es.documento ORDER BY es.documentoevaluado")->queryAll();
-
-              $numCell = 4;
-              foreach ($varListEvaluados as $key => $value) {
-                $varfechaevalua = $value['FechaEvaluacion'];
-                $paramsBuscarEvaluado = [':DocumentoEvaluador' => $value['CcEvaluador']];
-                $varNombreEvaluador = Yii::$app->db->createCommand('
-                  SELECT ue.nombre_completo AS NombreEvaluador FROM tbl_usuarios_evalua ue 
+            $paramsBuscarEvaluado = [':DocumentoEvaluador' => $value['CcEvaluador']];
+            $varNombreEvaluador = Yii::$app->db->createCommand('
+                SELECT ue.nombre_completo AS NombreEvaluador 
+                  FROM tbl_usuarios_evalua ue 
                     WHERE 
                       ue.anulado = 0
                         AND ue.documento IN (:DocumentoEvaluador)')->bindValues($paramsBuscarEvaluado)->queryScalar();
 
-                $paramsBuscaComentario = [':DocEvaluador'  => $value['CcEvaluador'], ':DocEvaluado' => $value['CcEvaluado']];
-                $varComentarios = Yii::$app->db->createCommand('
-                    SELECT 
-                      if(es.comentarios = "","--",es.comentarios) AS Comentarios 
-                    FROM tbl_evaluacion_solucionado es 
-                      WHERE 
-                        es.documento = :DocEvaluador
-                          AND es.documentoevaluado = :DocEvaluado
-                            AND es.comentarios != ""')->bindValues($paramsBuscaComentario)->queryScalar();
+            $paramsBuscaComentario = [':DocEvaluador'  => $value['CcEvaluador'], ':DocEvaluado' => $value['CcEvaluado']];
+            $varComentarios = Yii::$app->db->createCommand('
+                SELECT es.comentarios AS Comentarios
+                  FROM tbl_evaluacion_solucionado es 
+                    WHERE 
+                      es.documento = :DocEvaluador
+                        AND es.documentoevaluado = :DocEvaluado
+                          AND es.comentarios != ""')->bindValues($paramsBuscaComentario)->queryScalar();
 
-                if ($varComentarios == "") {
-                  $varComentarios = "--";
-                }
+            if ($varComentarios == "") {
+              $varComentarios = "--";
+            }         
 
-                $varFeedbacks = Yii::$app->db->createCommand('
-                  SELECT 
-                    if(er.observacion_feedback = "","--",er.observacion_feedback) AS Feedbacks 
+            $varFeedbacks = Yii::$app->db->createCommand('
+                SELECT er.observacion_feedback 
                   FROM tbl_evaluacion_resulta_feedback er 
                     WHERE 
                       er.documento_jefe = :DocEvaluador
                         AND er.documento = :DocEvaluado')->bindValues($paramsBuscaComentario)->queryScalar();
+
+            if ($varFeedbacks == "") {
+              $varFeedbacks = "--";
+            }
+
+            if ($value['TipoEvaluacion'] == "1") {
+              $varRtaAuto = $varSi;
+            }else{
+              $varRtaAuto = $varNo;
+            }
+            if ($value['TipoEvaluacion'] == "3") {
+              $varRtaJefe = $varSi;
+            }else{
+              $varRtaJefe = $varNo;
+            }
+            if ($value['TipoEvaluacion'] == "4") {
+              $varRtaPares = $varSi;
+            }else{
+              $varRtaPares = $varNo;
+            }
+            if ($value['TipoEvaluacion'] == "2") {
+              $varRtaCargo = $varSi;
+            }else{
+              $varRtaCargo = $varNo;
+            }
+
+            $varCCEvaluador =  $value['CcEvaluador'];
+            $varCCEvaluado = $value['CcEvaluado'];
+            $varNombreEvaluado = $value['NombreEvaluado'];
+
+
+            $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $varfechaevalua);
+            $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varNombreEvaluador);
+            $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varCCEvaluador);
+            $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varNombreEvaluado);
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varCCEvaluado);
+            $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varRtaAuto);
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varRtaJefe);
+            $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $varRtaPares);
+            $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $varRtaCargo);
+
+            $arrayFinal = array();
+            $lastColumn = "J";
+            foreach ($varListBloques as $key => $value) {
+              $varNombreBloque = $value['NombreBloque'];
+              $varIDBloques = $value['IdBloque'];
+              $VarNotaPorBloque = 0;
+
+              $varColor = null;
+              if ($value['IdBloque'] == "3") {                    
+                $varColor = array( 
+                  'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => '49de70'),
+                  )
+                );
+              }
+
+              if ($value['IdBloque'] == "2") {
+                $varColor = array( 
+                  'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => '22D7CF'),
+                  )
+                );
+              }
+
+              if ($value['IdBloque'] == "1") {
+                $varColor = array( 
+                  'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => 'fbcb70'),
+                  )
+                );
+              }
+
+              $paramsBusquedaPorcentajes = [':DocumentoEvaluador' => $varCCEvaluador, ':DocumentoEvaluado' => $varCCEvaluado, ':IdBloques' => $varIDBloques];
+
+              $varListPorcentaje = Yii::$app->db->createCommand('
+                SELECT 
+                es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, eb.idevaluacionbloques AS IdBloque, eb.namebloque AS NombreBloque, 
+                ec.namecompetencia AS NombreCompetencia, ec.idevaluacioncompetencia AS IdCompetencia, sum(er.valor) AS Valor,
+                FORMAT( (SUM(er.valor)*100) / (COUNT(ec.idevaluacioncompetencia)*5), 2) PorcentajeCompetencia
+                  FROM tbl_evaluacion_bloques eb
+                    INNER JOIN tbl_evaluacion_solucionado es ON 
+                      eb.idevaluacionbloques = es.idevaluacionbloques
+                    INNER JOIN tbl_evaluacion_competencias ec ON 
+                      ec.idevaluacioncompetencia = es.idevaluacioncompetencia
+                    INNER JOIN tbl_evaluacion_respuestas2 er ON 
+                      er.idevaluacionrespuesta = es.idevaluacionrespuesta
+                  WHERE 
+                    es.anulado = 0
+                      AND es.documento IN (:DocumentoEvaluador)
+                        AND es.documentoevaluado IN (:DocumentoEvaluado)
+                          AND eb.idevaluacionbloques = :IdBloques
+                  GROUP BY ec.idevaluacioncompetencia
+                    ORDER BY eb.idevaluacionbloques DESC ')->bindValues($paramsBusquedaPorcentajes)->queryAll();
+              
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,' - Cantidad bloque '.$varNombreBloque.': '.count($varListPorcentaje));
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+
+              $varNFinalGenerico = 0;
+              $varNotaOne = 0;
+              $varNotaDos = 0;
+              $varNotaTres = 0;
+
+              if (count($varListPorcentaje) != 0) {
                 
-                if ($varFeedbacks == "") {
-                  $varFeedbacks = "--";
-                }
+                foreach ($varListPorcentaje as $key => $value) {
+                  if ($varIDBloques == 1) {
+                    $varNotaOne = $varNotaOne + $value['PorcentajeCompetencia'];
 
-
-                if ($value['TipoEvaluacion'] == "1") {
-                  $varRtaAuto = $varSi;
-                }else{
-                  $varRtaAuto = $varNo;
-                }
-                
-                if ($value['TipoEvaluacion'] == "3") {
-                  $varRtaJefe = $varSi;
-                }else{
-                  $varRtaJefe = $varNo;
-                }
-                      
-                if ($value['TipoEvaluacion'] == "4") {
-                  $varRtaPares = $varSi;
-                }else{
-                  $varRtaPares = $varNo;
-                }
-                      
-                if ($value['TipoEvaluacion'] == "2") {
-                  $varRtaCargo = $varSi;
-                }else{
-                  $varRtaCargo = $varNo;
-                }
-
-                $varCCEvaluador =  $value['CcEvaluador'];
-                $varCCEvaluado = $value['CcEvaluado'];
-                $varNombreEvaluado = $value['NombreEvaluado'];
-
-                $varRtaNotaGeneral = 0;
-                $varNotaBloqueOne = 0;
-                $varNotaBloqueTwo = 0;
-                $varNotaBloqueThree = 0;
-                $varNotaFinalOne = 0;
-                $varNotaFinalTwo = 0;
-                $varNotaFinalThree = 0;
-
-                foreach ($varListBloques as $key => $value) {
-                  $varBloquesID = $value['IdBloque'];
-                                    
-                  $paramsBloquesNotas = [":CCEvaluadorNota" => $varCCEvaluador, ":CCEvaluadoNota" => $varCCEvaluado, ":IDBloqueNota" => $varBloquesID];
-
-                  $varListaNotasBloques = Yii::$app->db->createCommand('
-                                        SELECT FORMAT( (SUM(er.valor)*100) / (COUNT(ec.idevaluacioncompetencia)*5), 2) PorcentajeCompetenciaNotas
-                                            FROM tbl_evaluacion_bloques eb
-                                                INNER JOIN tbl_evaluacion_solucionado es ON 
-                                                    eb.idevaluacionbloques = es.idevaluacionbloques
-                                                INNER JOIN tbl_evaluacion_competencias ec ON 
-                                                    ec.idevaluacioncompetencia = es.idevaluacioncompetencia
-                                                INNER JOIN tbl_evaluacion_respuestas2 er ON 
-                                                    er.idevaluacionrespuesta = es.idevaluacionrespuesta
-                                                WHERE 
-                                                    es.anulado = 0
-                                                        AND es.documento IN (:CCEvaluadorNota)
-                                                            AND es.documentoevaluado IN (:CCEvaluadoNota)
-                                                                AND eb.idevaluacionbloques IN (:IDBloqueNota)
-                                                GROUP BY ec.idevaluacioncompetencia ')->bindValues($paramsBloquesNotas)->queryAll();
-                                                if (count($varListaNotasBloques) != 0) {
-                                        
-                                                  if ($varBloquesID == 1) {
-                                                      foreach ($varListaNotasBloques as $key => $value) {
-                                                          $varNotaBloqueOne = $varNotaBloqueOne + $value['PorcentajeCompetenciaNotas'];
-                                                      }
-          
-                                                      $varNotaFinalOne = round( (($varNotaBloqueOne / count($varListaNotasBloques)) * (40 / 100)), 2);
-                                                  }
-                                                  
-          
-                                                  if ($varBloquesID == 2) {
-                                                      foreach ($varListaNotasBloques as $key => $value) {
-                                                          $varNotaBloqueTwo = $varNotaBloqueTwo + $value['PorcentajeCompetenciaNotas'];
-                                                      }
-          
-                                                      $varNotaFinalTwo = round( (($varNotaBloqueTwo / count($varListaNotasBloques)) * (20 /100)), 2);
-                                                  }
-                                                  
-          
-                                                  if ($varBloquesID == 3) {
-                                                      foreach ($varListaNotasBloques as $key => $value) {
-                                                          $varNotaBloqueThree = $varNotaBloqueThree + $value['PorcentajeCompetenciaNotas'];
-                                                      }
-          
-                                                      $varNotaFinalThree = round( (($varNotaBloqueThree / count($varListaNotasBloques)) * (40 / 100)), 2);
-                                                  }
-          
-                                                  
-                                              }else{
-                                                  $varListaNotasBloques = Yii::$app->db->createCommand('
-                                                  SELECT 
-                                                      FORMAT( (SUM(er.valor)*100) / (COUNT(ec.idevaluacioncompetencia)*5), 2) PorcentajeCompetenciaNotas
-                                                      FROM tbl_evaluacion_respuestas2 er 
-                                                          INNER JOIN tbl_evaluacion_solucionado es ON 
-                                                              er.idevaluacionrespuesta = es.idevaluacionrespuesta
-                                                          INNER JOIN tbl_evaluacion_competencias ec ON 
-                                                              es.idevaluacioncompetencia = ec.idevaluacioncompetencia
-                                                          INNER JOIN tbl_evaluacion_bloques eb ON 
-                                                              ec.idevaluacionbloques = eb.idevaluacionbloques
-                                                          WHERE 
-                                                              eb.idevaluacionbloques IN (:IDBloqueNota)
-                                                                  AND es.idevaluaciontipo = 1
-                                                                      AND es.documento IN (:CCEvaluadoNota)
-                                                                          AND es.documentoevaluado IN (:CCEvaluadoNota)
-                                                          GROUP BY ec.namecompetencia ')->bindValues($paramsBloquesNotas)->queryAll();
-          
-                                                  if ($varBloquesID == 1) {
-                                                      foreach ($varListaNotasBloques as $key => $value) {
-                                                          $varNotaBloqueOne = $varNotaBloqueOne + $value['PorcentajeCompetenciaNotas'];
-                                                      }
-          
-                                                      if (count($varListaNotasBloques) != 0) {
-                                                          $varNotaFinalOne = round( (($varNotaBloqueOne / count($varListaNotasBloques)) * (40 / 100)), 2);
-                                                      }else{
-                                                          $varNotaFinalOne = 0;
-                                                      }
-                                                      
-                                                  }
-                                                  
-          
-                                                  if ($varBloquesID == 2) {
-                                                      foreach ($varListaNotasBloques as $key => $value) {
-                                                          $varNotaBloqueTwo = $varNotaBloqueTwo + $value['PorcentajeCompetenciaNotas'];
-                                                      }
-          
-                                                      if (count($varListaNotasBloques) != 0) {
-                                                          $varNotaFinalTwo = round( (($varNotaBloqueTwo / count($varListaNotasBloques)) * (20 /100)), 2);
-                                                      }else{
-                                                          $varNotaFinalTwo = 0;
-                                                      }
-                                                  }
-                                                  
-          
-                                                  if ($varBloquesID == 3) {
-                                                      foreach ($varListaNotasBloques as $key => $value) {
-                                                          $varNotaBloqueThree = $varNotaBloqueThree + $value['PorcentajeCompetenciaNotas'];
-                                                      }
-          
-                                                      if (count($varListaNotasBloques) != 0) {
-                                                          $varNotaFinalThree = round( (($varNotaBloqueThree / count($varListaNotasBloques)) * (40 / 100)), 2);
-                                                      }else{
-                                                          $varNotaFinalThree = 0;
-                                                      }
-                                                  }
-                                              }
-                    
-                }
-
-                $varRtaNotaGeneral = $varNotaFinalOne + $varNotaFinalTwo + $varNotaFinalThree;
-
-                $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $varfechaevalua);
-                $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varNombreEvaluador);
-                $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varCCEvaluador);
-                $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varNombreEvaluado);
-                $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varCCEvaluado);
-                $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varRtaAuto);
-                $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varRtaJefe);
-                $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $varRtaPares);
-                $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $varRtaCargo);
-                $phpExc->getActiveSheet()->setCellValue('J'.$numCell, $varRtaNotaGeneral);
-
-                $varNFinalGenerico = 0;
-                $varNotaOne = 0;
-                $varNotaDos = 0;
-                $varNotaTres = 0;
-
-                $lastColumn = "K";
-                foreach ($varListBloques as $key => $value) {
-                  $varNombreBloque = $value['NombreBloque'];
-                  $varIDBloques = $value['IdBloque'];
-                  $VarNotaPorBloque = 0;
-
-                  $varColor = null;
-                  if ($value['IdBloque'] == "3") {                    
-                    $varColor = array( 
-                      'fill' => array( 
-                          'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                          'color' => array('rgb' => '49de70'),
-                      )
-                    );
-                  }
-                  if ($value['IdBloque'] == "2") {
-                    $varColor = array( 
-                        'fill' => array( 
-                            'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                            'color' => array('rgb' => '22D7CF'),
-                        )
-                    );
-                  }
-                  if ($value['IdBloque'] == "1") {
-                    $varColor = array( 
-                          'fill' => array( 
-                              'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                              'color' => array('rgb' => 'fbcb70'),
-                          )
-                    );
-                  }
-
-                  $paramsBusquedaPorcentajes = [':DocumentoEvaluador' => $varCCEvaluador, ':DocumentoEvaluado' => $varCCEvaluado, ':IdBloques' => $varIDBloques];
-
-                  $varListPorcentaje = Yii::$app->db->createCommand('
-                  SELECT es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, eb.idevaluacionbloques AS IdBloque, eb.namebloque AS NombreBloque, 
-                    ec.namecompetencia AS NombreCompetencia, ec.idevaluacioncompetencia AS IdCompetencia, sum(er.valor) AS Valor,
-                      FORMAT( (SUM(er.valor)*100) / (COUNT(ec.idevaluacioncompetencia)*5), 2) PorcentajeCompetencia
-                    FROM tbl_evaluacion_bloques eb
-                      INNER JOIN tbl_evaluacion_solucionado es ON 
-                        eb.idevaluacionbloques = es.idevaluacionbloques
-                      INNER JOIN tbl_evaluacion_competencias ec ON 
-                        ec.idevaluacioncompetencia = es.idevaluacioncompetencia
-                      INNER JOIN tbl_evaluacion_respuestas2 er ON 
-                        er.idevaluacionrespuesta = es.idevaluacionrespuesta
-                    WHERE 
-                      es.anulado = 0
-                        AND es.documento IN (:DocumentoEvaluador)
-                          AND es.documentoevaluado IN (:DocumentoEvaluado)
-                            AND eb.idevaluacionbloques = :IdBloques
-                    GROUP BY ec.idevaluacioncompetencia
-                      ORDER BY eb.idevaluacionbloques DESC ')->bindValues($paramsBusquedaPorcentajes)->queryAll();
-
-                  
-                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,' - Cantidad bloque '.$varNombreBloque.': '.count($varListPorcentaje));
-                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
-                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
-
-                  
-                  if (count($varListPorcentaje) != 0) {
-                    
-                    foreach ($varListPorcentaje as $key => $value) {
-                      if ($varIDBloques == 1) {
-                        $varNotaOne = $varNotaOne + $value['PorcentajeCompetencia'];
-
-                        $varNFinalGenerico = round( (($varNotaOne / count($varListPorcentaje)) * (40 / 100)), 2);
-                      }
-
-                      if ($varIDBloques == 2) {
-                        $varNotaDos = $varNotaDos + $value['PorcentajeCompetencia'];
-
-                        $varNFinalGenerico = round( (($varNotaDos / count($varListPorcentaje)) * (20 / 100)), 2);
-                      }
-
-                      if ($varIDBloques == 3) {
-                        $varNotaTres = $varNotaTres + $value['PorcentajeCompetencia'];
-
-                        $varNFinalGenerico = round( (($varNotaTres / count($varListPorcentaje)) * (40 / 100)), 2);
-                      }
-                      
-                      $lastColumn++;
-
-                      $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['NombreCompetencia']);
-                      $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                      $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
-
-                      $lastColumn++;
-
-                      $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['PorcentajeCompetencia']);
-                      $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                      $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
-
-                    }      
-
-                    $lastColumn++;
-
-                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'Nota bloque '.$varNombreBloque.': ');
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
-
-                    $lastColumn++;
-
-                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$varNFinalGenerico);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
-
-                    $lastColumn++;
-
-                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
-
-                  }else{
-                    $paramsBusquedaPorcentajesB = [':DocumentoEvaluadoB' => $varCCEvaluado, ':IdBloquesB' => $value['IdBloque'], ':TipoEvaluacions' => 1];
-
-                    $varListPorcentajeBloque = Yii::$app->db->createCommand('
-                      SELECT ec.namecompetencia AS NombreCompetenciaB,
-                        FORMAT( (SUM(er.valor)*100) / (COUNT(ec.idevaluacioncompetencia)*5), 2) PorcentajeCompetenciaB
-                      FROM tbl_evaluacion_respuestas2 er 
-                        INNER JOIN tbl_evaluacion_solucionado es ON 
-                          er.idevaluacionrespuesta = es.idevaluacionrespuesta
-                        INNER JOIN tbl_evaluacion_competencias ec ON 
-                          es.idevaluacioncompetencia = ec.idevaluacioncompetencia
-                        INNER JOIN tbl_evaluacion_bloques eb ON 
-                          ec.idevaluacionbloques = eb.idevaluacionbloques
-                        WHERE 
-                          eb.idevaluacionbloques IN (:IdBloquesB)
-                            AND es.idevaluaciontipo = :TipoEvaluacions
-                              AND es.documento IN (:DocumentoEvaluadoB)
-                                AND es.documentoevaluado IN (:DocumentoEvaluadoB)
-                        GROUP BY ec.namecompetencia')->bindValues($paramsBusquedaPorcentajesB)->queryAll();
-
-                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,' - Cantidad bloque '.$varNombreBloque.': '.count($varListPorcentajeBloque));
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
-
-                    foreach ($varListPorcentajeBloque as $key => $value) {
-                      if ($varIDBloques == 1) {
-                        if (count($varListPorcentajeBloque) != 0) {
-                          $varNotaOne = $varNotaOne + $value['PorcentajeCompetenciaB'];
-
-                          $varNFinalGenerico = round( (($varNotaOne / count($varListPorcentajeBloque)) * (40 / 100)), 2);
-                        }else{
-                          $varNFinalGenerico = 0;   
-                        }
-                      }
-
-                      if ($varIDBloques == 2) {
-                        if (count($varListPorcentajeBloque) != 0) {
-                          $varNotaDos = $varNotaDos + $value['PorcentajeCompetenciaB'];
-
-                          $varNFinalGenerico = round( (($varNotaDos / count($varListPorcentajeBloque)) * (20 / 100)), 2);
-                        }else{
-                          $varNFinalGenerico = 0;   
-                        }
-                      }
-
-                      if ($varIDBloques == 3) {
-                        if (count($varListPorcentajeBloque) != 0) {
-                          $varNotaTres = $varNotaTres + $value['PorcentajeCompetenciaB'];
-
-                          $varNFinalGenerico = round( (($varNotaTres / count($varListPorcentajeBloque)) * (20 / 100)), 2);
-                        }else{
-                          $varNFinalGenerico = 0;   
-                        }
-                      }
-
-                      $lastColumn++;
-
-                      $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['NombreCompetenciaB']);
-                      $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                      $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
-
-                      $lastColumn++;
-
-                      $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['PorcentajeCompetenciaB']);
-                      $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                      $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
-
-                      
+                    if (count($varListPorcentaje) != 0) {
+                      $varNFinalGenerico = round( (($varNotaOne / count($varListPorcentaje)) * (40 / 100)), 2);
+                    }else{
+                      $varNFinalGenerico = 0;
                     }
+                  }
 
-                    $lastColumn++;
+                  if ($varIDBloques == 2) {
+                    $varNotaDos = $varNotaDos + $value['PorcentajeCompetencia'];
 
-                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'Nota bloque '.$varNombreBloque.': ');
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+                    if (count($varListPorcentaje) != 0) {
+                      $varNFinalGenerico = round( (($varNotaDos / count($varListPorcentaje)) * (20 / 100)), 2);
+                    }else{
+                      $varNFinalGenerico = 0;
+                    }
+                  }
 
-                    $lastColumn++;
+                  if ($varIDBloques == 3) {
+                    $varNotaTres = $varNotaTres + $value['PorcentajeCompetencia'];
 
-                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$varNFinalGenerico);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
-
-                    $lastColumn++;
-
-                    $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
-
+                    if (count($varListPorcentaje) != 0) {
+                      $varNFinalGenerico = round( (($varNotaTres / count($varListPorcentaje)) * (40 / 100)), 2);
+                    }else{
+                      $varNFinalGenerico = 0;
+                    }
                   }
 
                   $lastColumn++;
 
-                  $phpExc->getActiveSheet()->SetCellValue('BE'.$numCell,$varComentarios);
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['NombreCompetencia']);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
 
-                  $phpExc->getActiveSheet()->SetCellValue('BF'.$numCell,$varFeedbacks);
-                  
+                  $lastColumn++;
+
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['PorcentajeCompetencia']);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
+
                 }
 
-                $numCell++;
-              }
-          
+                $lastColumn++;
 
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'Nota bloque '.$varNombreBloque.': ');
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+
+                $lastColumn++;
+
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$varNFinalGenerico);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+
+                $lastColumn++;
+
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
+
+                array_push($arrayFinal, $varNFinalGenerico);
+
+              }else{
+
+                $paramsBusquedaPorcentajesB = [':DocumentoEvaluadoB' => $varCCEvaluado, ':IdBloquesB' => $value['IdBloque'], ':TipoEvaluacions' => 1];
+
+                $varListPorcentajeBloque = Yii::$app->db->createCommand('
+                  SELECT ec.namecompetencia AS NombreCompetenciaB,
+                  FORMAT( (SUM(er.valor)*100) / (COUNT(ec.idevaluacioncompetencia)*5), 2) PorcentajeCompetenciaB
+                    FROM tbl_evaluacion_respuestas2 er 
+                      INNER JOIN tbl_evaluacion_solucionado es ON 
+                        er.idevaluacionrespuesta = es.idevaluacionrespuesta
+                      INNER JOIN tbl_evaluacion_competencias ec ON 
+                        es.idevaluacioncompetencia = ec.idevaluacioncompetencia
+                      INNER JOIN tbl_evaluacion_bloques eb ON 
+                        ec.idevaluacionbloques = eb.idevaluacionbloques
+                    WHERE 
+                      eb.idevaluacionbloques IN (:IdBloquesB)
+                        AND es.idevaluaciontipo = :TipoEvaluacions
+                          AND es.documento IN (:DocumentoEvaluadoB)
+                            AND es.documentoevaluado IN (:DocumentoEvaluadoB)
+                    GROUP BY ec.namecompetencia')->bindValues($paramsBusquedaPorcentajesB)->queryAll();
+
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,' - Cantidad bloque '.$varNombreBloque.': '.count($varListPorcentajeBloque));
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+
+                foreach ($varListPorcentajeBloque as $key => $value) {
+                  
+                  if ($varIDBloques == 1) {
+                    if (count($varListPorcentajeBloque) != 0) {
+                      $varNotaOne = $varNotaOne + $value['PorcentajeCompetenciaB'];
+
+                      $varNFinalGenerico = round( (($varNotaOne / count($varListPorcentajeBloque)) * (40 / 100)), 2);
+                    }else{
+                      $varNFinalGenerico = 0;
+                    }
+                  }
+
+                  if ($varIDBloques == 2) {
+                    if (count($varListPorcentajeBloque) != 0) {
+                      $varNotaDos = $varNotaDos + $value['PorcentajeCompetenciaB'];
+
+                      $varNFinalGenerico = round( (($varNotaDos / count($varListPorcentajeBloque)) * (20 / 100)), 2);
+                    }else{
+                      $varNFinalGenerico = 0;
+                    }
+                  }
+
+                  if ($varIDBloques == 3) {
+                    if (count($varListPorcentajeBloque) != 0) {
+                      $varNotaTres = $varNotaTres + $value['PorcentajeCompetenciaB'];
+
+                      $varNFinalGenerico = round( (($varNotaTres / count($varListPorcentajeBloque)) * (20 / 100)), 2);
+                    }else{
+                      $varNFinalGenerico = 0; 
+                    }
+                  }
+
+                  $lastColumn++;
+
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['NombreCompetenciaB']);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
+
+                  $lastColumn++;
+
+                  $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$value['PorcentajeCompetenciaB']);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($varColor);
+
+                }
+
+                $lastColumn++;
+
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'Nota bloque '.$varNombreBloque.': ');
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+
+                $lastColumn++;
+
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$varNFinalGenerico);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+
+                $lastColumn++;
+
+                $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
+
+                array_push($arrayFinal, $varNFinalGenerico);
+
+              }
+
+              $varNotasFinal = 0;
+              $varNotasFinal = array_sum($arrayFinal);
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');   
+              
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->SetCellValue('BB'.$numCell,'Nota Final');
+              $phpExc->getActiveSheet()->getStyle('BB'.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle('BB'.$numCell)->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle('BB'.$numCell)->applyFromArray($styleArrayfirst);              
+
+              $phpExc->getActiveSheet()->SetCellValue('BC'.$numCell,$varNotasFinal);
+              $phpExc->getActiveSheet()->getStyle('BC'.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle('BC'.$numCell)->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle('BC'.$numCell)->applyFromArray($styleArrayfirst);              
+
+              $phpExc->getActiveSheet()->SetCellValue('BD'.$numCell,'--');
+
+              $phpExc->getActiveSheet()->SetCellValue('BE'.$numCell,$varComentarios);
+
+              $phpExc->getActiveSheet()->SetCellValue('BF'.$numCell,$varFeedbacks);
+
+            }
+
+            $numCell = $numCell + 1; 
+          }            
 
           $hoy = getdate();
           $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_ArchivoEvalDlloGeneralOpcion2";
