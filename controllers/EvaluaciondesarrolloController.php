@@ -4181,6 +4181,17 @@ use app\models\EvaluacionDesarrollo;
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
 
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,$varNotasFinal);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArray);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayfirst);
+
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
+
             }
 
             $numCell = $numCell + 1; 
