@@ -3083,7 +3083,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             $tramo = $pcrc['tramo24'];
                             break;
                         default:
-                        echo "no se cumple ninguna"
+                        echo "no se cumple ninguna";
 
                         break;
                         
