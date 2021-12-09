@@ -3866,6 +3866,7 @@ use app\models\EvaluacionDesarrollo;
           $varNo = "--";
           
           foreach ($varListDocumentos as $key => $value) {
+            $paramsBusquedaEvalua = null;
             $paramsBusquedaEvalua = [':DocumentoEvaluado' => $value['documentoevalua']];
 
             $varListEvaluados = Yii::$app->db->createCommand('
@@ -3881,6 +3882,9 @@ use app\models\EvaluacionDesarrollo;
             $numCell = 4;
             foreach ($varListEvaluados as $key => $value) {
               $varfechaevalua = $value['FechaEvaluacion'];
+              $varCCEvaluador =  null;
+              $varCCEvaluado = null;
+              $varNombreEvaluado = null;
 
               $paramsBuscarEvaluado = [':DocumentoEvaluador' => $value['CcEvaluador']];
               $varNombreEvaluador = Yii::$app->db->createCommand('
