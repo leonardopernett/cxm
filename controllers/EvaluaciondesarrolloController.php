@@ -3690,16 +3690,7 @@ use app\models\EvaluacionDesarrollo;
         $form = Yii::$app->request->post();
         if($model->load($form)){
           $varcorreo = $model->comentarios;
-
-          $paramsBusqueda = [':Anulado' => 0];
-          $varListDocumentos = Yii::$app->db->createCommand('
-          SELECT 
-            ue.documento AS documentoevalua
-            FROM tbl_usuarios_evalua ue 
-              WHERE 
-                ue.anulado = :Anulado
-                AND ue.id_dp_posicion IN (13) 
-              GROUP BY ue.documento')->bindValues($paramsBusqueda)->queryAll();
+          $varPosicion = 13;
 
           $paramsBuscarBloques = [':AnuladoBloque' => 0];
           $varListBloques = Yii::$app->db->createCommand('
@@ -3865,37 +3856,34 @@ use app\models\EvaluacionDesarrollo;
           $varSi = "Si";
           $varNo = "--";
           
-          foreach ($varListDocumentos as $key => $value) {
-            $paramsBusquedaEvalua = null;
-            $paramsBusquedaEvalua = [':DocumentoEvaluado' => $value['documentoevalua']];
-
-            $varListEvaluados = Yii::$app->db->createCommand('
+          $paramsAnulado = [':Anulado' => 0, ':idPosicion' => $varPosicion];
+          $varListEvaluados = Yii::$app->db->createCommand('
             SELECT DISTINCT  es.fechacrecion AS FechaEvaluacion, es.documento AS CcEvaluador, es.documentoevaluado AS CcEvaluado, 
             ue.nombre_completo AS NombreEvaluado, es.idevaluaciontipo AS TipoEvaluacion
               FROM tbl_evaluacion_solucionado es
                 INNER JOIN tbl_usuarios_evalua ue ON 
                   es.documentoevaluado = ue.documento
                 WHERE 
-                  ue.anulado = 0
-                    AND ue.documento = :DocumentoEvaluado')->bindValues($paramsBusquedaEvalua)->queryAll();
+                  ue.anulado = :Anulado
+                    AND ue.id_dp_posicion IN (:idPosicion)')->bindValues($paramsAnulado)->queryAll();
             
-            $numCell = 4;
-            foreach ($varListEvaluados as $key => $value) {
-              $varfechaevalua = $value['FechaEvaluacion'];
-              $varCCEvaluador =  null;
-              $varCCEvaluado = null;
-              $varNombreEvaluado = null;
+          $numCell = 4;
+          foreach ($varListEvaluados as $key => $value) {
+            $varfechaevalua = $value['FechaEvaluacion'];
+            $varCCEvaluador =  null;
+            $varCCEvaluado = null;
+            $varNombreEvaluado = null;
 
-              $paramsBuscarEvaluado = [':DocumentoEvaluador' => $value['CcEvaluador']];
-              $varNombreEvaluador = Yii::$app->db->createCommand('
+            $paramsBuscarEvaluado = [':DocumentoEvaluador' => $value['CcEvaluador']];
+            $varNombreEvaluador = Yii::$app->db->createCommand('
                 SELECT ue.nombre_completo AS NombreEvaluador 
                   FROM tbl_usuarios_evalua ue 
                     WHERE 
                       ue.anulado = 0
                         AND ue.documento IN (:DocumentoEvaluador)')->bindValues($paramsBuscarEvaluado)->queryScalar();
 
-              $paramsBuscaComentario = [':DocEvaluador'  => $value['CcEvaluador'], ':DocEvaluado' => $value['CcEvaluado']];
-              $varComentarios = Yii::$app->db->createCommand('
+            $paramsBuscaComentario = [':DocEvaluador'  => $value['CcEvaluador'], ':DocEvaluado' => $value['CcEvaluado']];
+            $varComentarios = Yii::$app->db->createCommand('
                 SELECT es.comentarios AS Comentarios
                   FROM tbl_evaluacion_solucionado es 
                     WHERE 
@@ -3903,60 +3891,59 @@ use app\models\EvaluacionDesarrollo;
                         AND es.documentoevaluado = :DocEvaluado
                           AND es.comentarios != ""')->bindValues($paramsBuscaComentario)->queryScalar();
 
-              if ($varComentarios == "") {
-                $varComentarios = "--";
-              }         
+            if ($varComentarios == "") {
+              $varComentarios = "--";
+            }         
 
-              $varFeedbacks = Yii::$app->db->createCommand('
+            $varFeedbacks = Yii::$app->db->createCommand('
                 SELECT er.observacion_feedback 
                   FROM tbl_evaluacion_resulta_feedback er 
                     WHERE 
                       er.documento_jefe = :DocEvaluador
                         AND er.documento = :DocEvaluado')->bindValues($paramsBuscaComentario)->queryScalar();
 
-              if ($varFeedbacks == "") {
-                $varFeedbacks = "--";
-              }
+            if ($varFeedbacks == "") {
+              $varFeedbacks = "--";
+            }
 
-              if ($value['TipoEvaluacion'] == "1") {
-                $varRtaAuto = $varSi;
-              }else{
-                  $varRtaAuto = $varNo;
-              }
-              if ($value['TipoEvaluacion'] == "3") {
-                  $varRtaJefe = $varSi;
-              }else{
-                  $varRtaJefe = $varNo;
-              }
-              if ($value['TipoEvaluacion'] == "4") {
-                  $varRtaPares = $varSi;
-              }else{
-                  $varRtaPares = $varNo;
-              }
-              if ($value['TipoEvaluacion'] == "2") {
-                  $varRtaCargo = $varSi;
-              }else{
-                  $varRtaCargo = $varNo;
-              }
+            if ($value['TipoEvaluacion'] == "1") {
+              $varRtaAuto = $varSi;
+            }else{
+              $varRtaAuto = $varNo;
+            }
+            if ($value['TipoEvaluacion'] == "3") {
+              $varRtaJefe = $varSi;
+            }else{
+              $varRtaJefe = $varNo;
+            }
+            if ($value['TipoEvaluacion'] == "4") {
+              $varRtaPares = $varSi;
+            }else{
+              $varRtaPares = $varNo;
+            }
+            if ($value['TipoEvaluacion'] == "2") {
+              $varRtaCargo = $varSi;
+            }else{
+              $varRtaCargo = $varNo;
+            }
 
-              $varCCEvaluador =  $value['CcEvaluador'];
-              $varCCEvaluado = $value['CcEvaluado'];
-              $varNombreEvaluado = $value['NombreEvaluado'];
+            $varCCEvaluador =  $value['CcEvaluador'];
+            $varCCEvaluado = $value['CcEvaluado'];
+            $varNombreEvaluado = $value['NombreEvaluado'];
 
 
-              $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $varfechaevalua);
-              $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varNombreEvaluador);
-              $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varCCEvaluador);
-              $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varNombreEvaluado);
-              $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varCCEvaluado);
-              $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varRtaAuto);
-              $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varRtaJefe);
-              $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $varRtaPares);
-              $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $varRtaCargo);
+            $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $varfechaevalua);
+            $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varNombreEvaluador);
+            $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varCCEvaluador);
+            $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varNombreEvaluado);
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $varCCEvaluado);
+            $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varRtaAuto);
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varRtaJefe);
+            $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $varRtaPares);
+            $phpExc->getActiveSheet()->setCellValue('I'.$numCell, $varRtaCargo);
 
-              $numCell = $numCell + 1; 
-            }            
-          }
+            $numCell = $numCell + 1; 
+          }            
 
 
           $hoy = getdate();
