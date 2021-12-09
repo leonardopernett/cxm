@@ -4087,6 +4087,8 @@ use app\models\EvaluacionDesarrollo;
 
                 $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');
 
+                array_push($arrayFinal, $varNFinalGenerico);
+
               }else{
 
                 $paramsBusquedaPorcentajesB = [':DocumentoEvaluadoB' => $varCCEvaluado, ':IdBloquesB' => $value['IdBloque'], ':TipoEvaluacions' => 1];
@@ -4183,7 +4185,6 @@ use app\models\EvaluacionDesarrollo;
 
               $varNotasFinal = 0;
               $varNotasFinal = array_sum($arrayFinal);
-              var_dump($varNotasFinal);
 
               $phpExc->getActiveSheet()->SetCellValue($lastColumn.$numCell,'--');   
               
@@ -4209,7 +4210,6 @@ use app\models\EvaluacionDesarrollo;
 
             $numCell = $numCell + 1; 
           }            
-die(json_decode("Final"));
 
           $hoy = getdate();
           $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_ArchivoEvalDlloGeneralOpcion2";
