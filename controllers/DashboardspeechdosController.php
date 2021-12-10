@@ -602,7 +602,8 @@ use Exception;
           return $this->redirect('categoriasconfig');
       } 
           if (Yii::$app->request->get('txtServicioCategorias')) {
-            $id_params = Html::encode($_GET['txtServicioCategorias']);
+            $txtServicioCategorias = Yii::$app->request->get('txtServicioCategorias');
+            $id_params = Html::encode($txtServicioCategorias);
 
             if ((int)$id_params) {
               $table = Dashboardcategorias::findOne($id_params);

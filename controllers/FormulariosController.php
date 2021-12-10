@@ -271,7 +271,7 @@ class FormulariosController extends Controller {
                     $arbol_id = Yii::$app->request->post("arbol_id");
                     $dimension_id = Yii::$app->request->post("dimension_id");
                     $formulario_id = Yii::$app->request->post("formulario_id");
-                    $evaluados = Yii::$app->request->post("Evaluados")
+                    $evaluados = Yii::$app->request->post("Evaluados");
                     $evaluado_id = $evaluados["evaluado_id"];
                     $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? Yii::$app->request->post("tipo_interaccion") : 1;
                     $usua_id = ($preview == 1) ? 0 : Yii::$app->user->identity->id;
