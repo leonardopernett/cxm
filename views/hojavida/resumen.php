@@ -527,6 +527,26 @@ $varMedellin = "Medellín";
 <div class="container" style="margin-top:20px">
       
         <div class="row">
+
+
+            <div class="col-md-6">
+                <div class="card1">
+                    <canvas id="myChartAdmin"></canvas>
+                </div>
+            </div>
+       
+            <div class="col-md-6">
+                <div class="card1">
+                    <canvas id="myChartAdmin2"></canvas>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    <div class="row" style="margin-top:20px">
+
             <div class="col-md-6 ">
                 <div class="card1">
                     <canvas id="myChartDirector"></canvas>
@@ -538,64 +558,7 @@ $varMedellin = "Medellín";
                     <canvas id="myChartCliente"></canvas>
                 </div>
             </div>
-        </div>
 
-
-    <div class="row" style="margin-top:20px">
-       <div class="col-md-6">
-           <div class="card1">
-              <canvas id="myChartAdmin"></canvas>
-           </div>
-       </div>
-       
-       <div class="col-md-6">
-           <div class="card1">
-              <canvas id="myChartAdmin2"></canvas>
-           </div>
-       </div>
-
-      <!--  <div class="col-md-5 col-md-offset-1" >
-           <div class="card1" style="margin:20px;">
-            <table class="table table-bordered" style="text-align-center">
-                <thead>
-                    <tr>
-                        <td></td>
-                        <th>Estratégico</th>
-                        <th>Operativo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Decisor</td>
-                        <td>
-                            <?php foreach($totalDecisorEstrategico as $total1): ?>
-                                 <?php echo $total1['total'] ?>
-                            <?php endforeach ?>
-                        </td>
-                        <td>
-                            <?php foreach($totalDecisorOperativo as $total2): ?>
-                                 <?php echo $total2['total'] ?>
-                             <?php endforeach ?>
-                          </td>
-                    </tr>
-
-                    <tr>
-                        <td>No decisor</td>
-                        <td>
-                            <?php foreach($totalNoDecisorEstrategico as $total3): ?>
-                                 <?php echo $total3['total'] ?>
-                            <?php endforeach ?>
-                        </td>
-                        <td>
-                            <?php foreach($totalNoDecisorOperativo as $total4): ?>
-                                 <?php echo  $total4['total'] ?>
-                             <?php endforeach ?>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-           </div>
-       </div> -->
     </div>
 </div>
 
@@ -636,8 +599,6 @@ var options ={
 
   const bogota = document.getElementById('bogota').innerHTML
   const medellin = document.getElementById('medellin').innerHTML
-
-
 
 fetch('<?php echo Url::to(['/hojavida/resumenapi']) ?>')
     .then(res  => res.json())
