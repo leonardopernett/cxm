@@ -75,6 +75,8 @@ use app\models\Tipofeedbacks;
             $txtConteo = count($varListresponsabilidad);
 
             $varnombrepcrc = Yii::$app->db->createCommand("SELECT a.name FROM tbl_arbols a WHERE a.id in ('$varidarbol')")->queryScalar();
+        }else{
+          #code
         }
 
         return $this->render('viewresponsability',[

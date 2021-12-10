@@ -523,6 +523,8 @@ class FormulariosController extends Controller {
                     $data->fecha_inicial = $data->tmp_formulario->hora_inicial;
                     $data->fecha_final = $data->tmp_formulario->hora_final;
                     $data->minutes = $dteDiff1->h . ":" . $dteDiff1->i . ":" . $dteDiff1->s;
+                }else{
+                    
                 }
 
 

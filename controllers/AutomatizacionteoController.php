@@ -55,7 +55,11 @@ class AutomatizacionteoController extends Controller {
             {
                 if(!isset($element)){
                     return '';
+                }else
+                {
+                    #code
                 }
+                
                 $element = utf8_decode($element);
                 $element = strtolower(trim($element));
                 $element = str_replace("�",'n', $element);
@@ -200,7 +204,13 @@ class AutomatizacionteoController extends Controller {
                                      //Impacto BD            
                                      $EquiposEvaluados->deleteEvaluado($key, $equipo['id']);
                                  }
+                                 else{
+                                    #code
+                                }
                             }
+                        }
+                        else{
+                            #code
                         }
                         if($evaluadosTeo != null)
                         {
@@ -212,6 +222,9 @@ class AutomatizacionteoController extends Controller {
                                 {
                                     if(!isset($evaluadosQA)){
                                         $evaluadosQA = array();
+                                    }
+                                    else{
+                                        #code
                                     }
                                     if(in_array($evaluadoTeo, $evaluadosQA))
                                     {
@@ -230,10 +243,14 @@ class AutomatizacionteoController extends Controller {
                                     array_push($reporteAgentes, array('name' => $evaluadoTeo, 'identificacion' => $key, 'estado' => "No creado", 'equipo' => $equipo['name']));
                                 }
                             }
+                        }else{
+                            #code
                         }
                     }
                     $this->ExcelReport($reporteEquipos, $reporteAgentes, "Ejecucion");
                     return $this->redirect(['equipos/index']);
+                }else{
+                    #code
                 }
             }
 
@@ -344,6 +361,8 @@ class AutomatizacionteoController extends Controller {
                             $EquipoQaByEquipoId = $EquiposEvaluados->getEvaluadosEquipo(isset($equipo['id']) ? intval($equipo['id']) : 0 );
                             $evaluadosQA = isset($EquipoQaByEquipoId) ? $this->arrayEquipoQA($EquipoQaByEquipoId) : null;
                             $evaluadosQA =  $evaluadosQA != null ? array_map(array($this,'TrimElementArray'),$evaluadosQA) : null;
+                        }else{
+                            #code
                         }                        
                         if($evaluadosQA != null && $evaluadosTeo != null && Count($evaluadosTeo) >= 1)
                         {
@@ -354,7 +373,12 @@ class AutomatizacionteoController extends Controller {
                                      //Impacto BD            
                                      //$EquiposEvaluados->deleteEvaluado($key, $equipo['id']);
                                  }
+                                 else{
+                                    #code
+                                }
                             }
+                        }else{
+                            #code
                         }
                         if($evaluadosTeo != null)
                         {
@@ -366,6 +390,9 @@ class AutomatizacionteoController extends Controller {
                                 {
                                     if(!isset($evaluadosQA)){
                                         $evaluadosQA = array();
+                                    }
+                                    else{
+                                        #code
                                     }
                                     if(in_array($evaluadoTeo, $evaluadosQA))
                                     {
@@ -384,10 +411,15 @@ class AutomatizacionteoController extends Controller {
                                     array_push($reporteAgentes, array('name' => $evaluadoTeo, 'identificacion' => $key, 'estado' => "No creado", 'equipo' => $equipo['name']));
                                 }
                             }
+                        }else{
+                            #code
                         }
                     }
                     $this->ExcelReport($reporteEquipos, $reporteAgentes, "Simulacion");
                     return $this->redirect(['equipos/index']);
+                }
+                else{
+                    #code
                 }
             }
 
@@ -450,6 +482,8 @@ class AutomatizacionteoController extends Controller {
                             $numCell++;
                         }
                     }
+                }else{
+                    #code
                 }
 
                 $hoy = getdate();

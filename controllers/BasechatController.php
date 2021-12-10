@@ -748,6 +748,8 @@ use yii\base\Exception;
                     }
 
                     $data->minutes = $hour . ":" . $minute . ":" . $seconds;
+                }else{
+                    #code
                 }
 
                 if (empty($form_val)) {

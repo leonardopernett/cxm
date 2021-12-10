@@ -277,6 +277,7 @@ $this->title = 'Alertas';
                                             <?= $form->field($data, 'puntovista_lider')->textArea(['rows' => 6, 'disabled' => true])->label('Punto de vista Lider:') ?>
                                         </th>
                                     </tr>
+                                    <?php else: ?> 
                                 <?php endif; ?> 
                             
 

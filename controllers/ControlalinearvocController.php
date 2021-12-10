@@ -319,6 +319,8 @@ use app\models\ControlProcesosReportAlinearVOC;
                                 ])->execute(); 
                 if(!$txtRta){
                     die(json_encode($txtRta));
+                }else{
+                    #code
                 }
             }
 
@@ -702,7 +704,9 @@ use app\models\ControlProcesosReportAlinearVOC;
                    INNER JOIN tbl_atributos_alinear ON tbl_atributos_alinear.id_categ_ali = tbl_categorias_alinear.id_categ_ali
                    INNER JOIN tbl_sesion_alinear ON tbl_sesion_alinear.sesion_id = tbl_categorias_alinear.sesion_id
                    WHERE tbl_categorias_alinear.arbol_id = '$varArbol' AND tbl_categorias_alinear.sesion_id in(1, 2) ")->queryScalar();
-             }
+             }else{
+                #code
+            }
              if($txtSesion2 != 3){
                 $txtContarSi2 = Yii::$app->db->createCommand("select COUNT(tbl_atributos_alinear.atributo_nombre) AS cuentasi
                     FROM tbl_categorias_alinear
@@ -726,7 +730,9 @@ use app\models\ControlProcesosReportAlinearVOC;
                     INNER JOIN tbl_atributos_alinear ON tbl_atributos_alinear.id_categ_ali = tbl_categorias_alinear.id_categ_ali
                     INNER JOIN tbl_sesion_alinear ON tbl_sesion_alinear.sesion_id = tbl_categorias_alinear.sesion_id
                     WHERE tbl_categorias_alinear.arbol_id = '$varArbol' AND tbl_categorias_alinear.sesion_id =  '$txtSesion2' ")->queryScalar();
-              }
+              }else{
+                            #code
+                        }
            
 
                 $indicadorPrecic1 = "";
@@ -734,10 +740,14 @@ use app\models\ControlProcesosReportAlinearVOC;
                
                 if ($txtContarSesion1) {
                     $indicadorPrecic1 = number_format($txtContarSi1 / ($txtContarSesion1 - $txtContarNA1),2) * 100;
+                }else{
+                    #code
                 }
 
                  if ($txtContarSesion2) {
                      $indicadorPrecic2 = number_format($txtContarSi2 / ($txtContarSesion2 - $txtContarNA2),2) * 100;
+                }else{
+                    #code
                 }
                 
                
@@ -896,5 +906,3 @@ use app\models\ControlProcesosReportAlinearVOC;
         }
 //Diego fin
     }
-
-?>

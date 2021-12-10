@@ -378,15 +378,21 @@ class PDFBarcode {
 		if ($extended) {
 			// extended mode
 			$code = $this->encode_code39_ext($code);
-		}
+		}else{
+			#code
+		  }
 		if ($code === false) {
 			return false;
-		}
+		}else{
+			#code
+		  }
 		if ($checksum) {
 			// checksum
 			$checkdigit = $this->checksum_code39($code);
 			$code .= $checkdigit ;
-		}
+		}else{
+			#code
+		  }
 		// add start and stop codes
 		$code = '*'.$code.'*';
 		
@@ -398,7 +404,9 @@ class PDFBarcode {
 			if(!isset($chr[$char])) {
 				// invalid character
 				return false;
-			}
+			}else{
+				#code
+			  }
 			for ($j = 0; $j < 9; ++$j) {
 				if (($j % 2) == 0) {
 					$t = true; // bar
@@ -596,7 +604,9 @@ class PDFBarcode {
 			if(!isset($chr[$char])) {
 				// invalid character
 				return false;
-			}
+			}else{
+				#code
+			  }
 			for ($j = 0; $j < 6; ++$j) {
 				if (($j % 2) == 0) {
 					$t = true; // bar
@@ -674,7 +684,9 @@ class PDFBarcode {
 		$r = $sum % 10;
 		if($r > 0) {
 			$r = (10 - $r);
-		}
+		}else{
+			#code
+		  }
 		return $r;
 	}
 	
@@ -759,7 +771,9 @@ class PDFBarcode {
 		if((strlen($code) % 2) != 0) {
 			// add leading zero if code-length is odd
 			$code = '0'.$code;
-		}
+		}else{
+			#code
+		  }
 		$seq = '11011010';
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
@@ -826,7 +840,9 @@ class PDFBarcode {
 		if((strlen($code) % 2) != 0) {
 			// add leading zero if code-length is odd
 			$code = '0'.$code;
-		}
+		}else{
+			#code
+		  }
 		// add start and stop codes
 		$code = 'AA'.strtolower($code).'ZA';
 			
@@ -839,7 +855,9 @@ class PDFBarcode {
 			if((!isset($chr[$char_bar])) OR (!isset($chr[$char_space]))) {
 				// invalid character
 				return false;
-			}
+			}else{
+				#code
+			  }
 			// create a bar-space sequence
 			$seq = '';
 			$chrlen = strlen($chr[$char_bar]);
@@ -1097,7 +1115,9 @@ class PDFBarcode {
 		$r = ($sum_a + $sum_b) % 10;
 		if($r > 0) {
 			$r = (10 - $r);
-		}
+		}else{
+			#code
+		  }
 		if ($code_len == $data_len) {
 			// add check digit
 			$code .= $r;
@@ -1380,7 +1400,9 @@ class PDFBarcode {
 		$chkd = ($sum % 10);
 		if($chkd > 0) {
 			$chkd = (10 - $chkd);
-		}
+		}else{
+			#code
+		  }
 		$code .= $chkd;
 		$checkdigit = $chkd;
 		$len = strlen($code);
@@ -1850,7 +1872,9 @@ class PDFBarcode {
 		$hex = array();
 		if($number == 0) {
 			return '00';
-		}
+		}else{
+			#code
+		  }
 		while($number > 0) {
 			if($number == 0) {
 				array_push($hex, '0');

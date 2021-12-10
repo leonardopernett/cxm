@@ -272,6 +272,8 @@ class ControlprocesosController extends \yii\web\Controller {
 																								if ($arregloText == "122237 L�NEA ESPECIALIZADA DE QyR") {
 																									$arbol_id = 480;
 																									die(json_encode($arbol_id));
+																								}else{
+																									#code
 																								}
 				}
 				else

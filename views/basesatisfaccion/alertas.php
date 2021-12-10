@@ -51,7 +51,12 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
         <div class="col-md-offset-2 col-sm-8 alert alert-success">Alerta Guardada Satisfactoriamente</div>
     <?php }elseif ($listo == 2) { ?>
         <div class="col-md-offset-2 col-sm-8 alert alert-danger">Ocurrio un Error al Guardar la Alerta, Recuerda que el archivo debe ser .pdf - .jpg o .png</div>
-    <?php } ?>
+    <?php }else ?>
+
+    <?php {?>
+        <!--code-->
+        <?php } ?>
+
         <div id="datosGenerales" class="col-md-offset-2 col-sm-8">
             <table class="table table-striped table-bordered detail-view formDinamico">
             <caption>Tabla alerta</caption>

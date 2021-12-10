@@ -53,6 +53,8 @@ use app\models\ControlProcesosEquipos;
 
     if(!isset($accessToken) || !is_string($accessToken) || empty($accessToken)){
       die( json_encode( array("status"=>"0","data"=>"Error al intentar obtener la lista de espacios de trabajo") ) );
+    }else{
+      #code
     }
     
     // CONSEGUIR LISTA DE TODOS LOS WORKSPACES
@@ -63,6 +65,8 @@ use app\models\ControlProcesosEquipos;
         die( json_encode( array("status"=>"0","data"=>$listWorkspaces) ) );
       }
       die( json_encode( array("status"=>"0","data"=>"Error al intentar obtener la lista de espacios de trabajo") ) );
+    }else{
+      #code
     }
 
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
@@ -178,6 +182,8 @@ use app\models\ControlProcesosEquipos;
 
     if(!isset($accessToken) || !is_string($accessToken) || empty($accessToken)){
       die( json_encode( array("status"=>"0","data"=>"Error al intentar obtener la lista de espacios de trabajo") ) );
+    }else{
+      #code
     }
     
     // CONSEGUIR LISTA DE TODOS LOS WORKSPACES
@@ -186,8 +192,12 @@ use app\models\ControlProcesosEquipos;
     if(!is_array($listWorkspaces)){
       if(is_string($listWorkspaces)){
         die( json_encode( array("status"=>"0","data"=>$listWorkspaces) ) );
+      }else{
+        #code
       }
       die( json_encode( array("status"=>"0","data"=>"Error al intentar obtener la lista de espacios de trabajo") ) );
+    }else{
+      #code
     }
 
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
@@ -209,12 +219,16 @@ use app\models\ControlProcesosEquipos;
 
     if(!isset($accessToken) || !is_string($accessToken) || empty($accessToken)){
       die( json_encode( array("status"=>"0","data"=>"No se ha logrado autenticar con Azure AD. Contacte un administrador") ) );
+    }else{
+      #code
     }
 
     $result = $model->create_workspace($accessToken, $workspace_name);
     $res= 0;
     if($result !== TRUE){
       die( json_encode( $res));
+    }else{
+      #code
     }
     
     $res=1;
@@ -235,6 +249,8 @@ use app\models\ControlProcesosEquipos;
     // Validar ID del workspace indicado por el cliente
     if(!isset($workspace_id) || empty($workspace_id)){
       json_encode( array("status"=>"0","data"=>"Workspace no especificado") );
+    }else{
+      #code
     }
 
     // Obtener un access token de azure AD para consumir API
@@ -242,6 +258,8 @@ use app\models\ControlProcesosEquipos;
 
     if(!isset($accessToken) || !is_string($accessToken) || empty($accessToken)){
       json_encode( array("status"=>"0","data"=>"No se ha logrado autenticar con Azure AD. Contacte un administrado") );
+    }else{
+      #code
     }
 
     // Obtener reportes
@@ -267,10 +285,14 @@ use app\models\ControlProcesosEquipos;
     // Validar ID del workspace indicado por el cliente
     if(!isset($workspace_id) || empty($workspace_id)){
       die( json_encode( array("status"=>"0","data"=>"No se especifico un ID de workspace") ) );
+    }else{
+      #code
     }
     // Validar ID del reporte indicado por el cliente
     if(!isset($report_id) || empty($report_id)){
       die( json_encode( array("status"=>"0","data"=>"No se especifico un ID de reporte") ) );
+    }else{
+      #code
     }
 
     // Obtener un access token de azure AD para consumir API
@@ -278,6 +300,8 @@ use app\models\ControlProcesosEquipos;
 
     if(!isset($accessToken) || !is_string($accessToken) || empty($accessToken)){
       die( json_encode( array("status"=>"0","No se ha logrado autenticar con Azure AD. Contacte un administrador") ) );
+    }else{
+      #code
     }
     
     // Obtener embed token
@@ -295,6 +319,8 @@ use app\models\ControlProcesosEquipos;
     $get_users = $model->search_user_permits($reporte);
     if(!$get_users){
       die( json_encode( array("status"=>"0","data"=>"Error al buscar los usuarios") ) );
+    }else{
+      #code
     }
     die( json_encode( array("status"=>"1","data"=>$get_users->result_array()) ) );
   }
@@ -313,6 +339,8 @@ use app\models\ControlProcesosEquipos;
     $save_permits = $model->save_report_user_permits($list_users,$reporte,$workspace);
     if(!$save_permits){
       die( json_encode( array("status"=>"0","data"=>"Error al guardar los permisos") ) );
+    }else{
+      #code
     }
     $log_data = array( 
       "id_logs_grupos"=> 74,"id_usuario" => $sessiones,"ip" => $_SERVER["REMOTE_ADDR"], 
@@ -349,17 +377,23 @@ use app\models\ControlProcesosEquipos;
 
     if(!isset($accessToken) || !is_string($accessToken) || empty($accessToken)){
       die( json_encode( array("status"=>"0","No se ha logrado autenticar con Azure AD. Contacte un administrador") ) );
+    }else{
+      #code
     }
 
     if($tipo == 1){ // ELIMINAR REPORTE
       //$info_log["id_logs_grupo"]  = 71; // LOG GRUPO
       //$info_log["data"] = array("workspace"=> array("nombre"=>$workspace["name"],"id"=>$workspace["id"]),"reporte"=>array("name"=>$reporte["name"],"id"=>$reporte["id"]));
       $alter_report = $model->delete_report($reporte,$workspace,$accessToken);
+    }else{
+      #code
     }
     if($tipo == 2){ // DUPLICAR REPORTE EN UN AREA DE TRABAJO
       //$info_log["id_logs_grupo"]  = 73; // LOG GRUPO
       //$info_log["data"] = array("workspace"=>array("nombre"=>$workspace["name"],"id"=>$workspace["id"]),"reporte"=>array("name"=>$reporte["name"],"id"=>$reporte["id"]),"Nombre_del_duplicado"=>$new_name_report);
       $alter_report = $model->duplicate_report($reporte,$workspace,$new_name_report,$accessToken);
+    }else{
+      #code
     }
 
     if(!$alter_report){
@@ -386,7 +420,9 @@ use app\models\ControlProcesosEquipos;
     if(!$delete_workspace){
       die(json_encode($res));
     }
-
+    else{
+      #code
+    }
     $res=1;
     die( json_encode($res) );
   }
@@ -401,6 +437,8 @@ use app\models\ControlProcesosEquipos;
    $search_workspace_contributors = $model->search_workspace_contributors($workspace,$accessToken);
     if(!$search_workspace_contributors){
       die(json_encode( array("status"=>"0","data"=>"Error al buscar la lista de colaboradores en este workspace") ));
+    }else{
+      #code
     }
     die( json_encode($search_workspace_contributors));
   }
@@ -418,6 +456,8 @@ use app\models\ControlProcesosEquipos;
     $res=0;
     if(!$delete_workspace_colaborator){
       die(json_encode( $res));
+    }else{
+      #code
     }
 
     $res=1;    
@@ -438,6 +478,8 @@ use app\models\ControlProcesosEquipos;
     $res=0;
     if(!$add_workspace_colaborator){
       die(json_encode( $res));
+    }else{
+      #code
     }
 
     $res=1;

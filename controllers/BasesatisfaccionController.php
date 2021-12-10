@@ -513,11 +513,20 @@ class BasesatisfaccionController extends Controller {
                                     if($varPregunta1 >= 0 && $varPregunta1 <=6) {
                                         $varTipologia = 'CRITICA';
                                     }
+                                    else{
+                                        #code
+                                    }
                                     if($varPregunta1 > 6 && $varPregunta1 < 9) {
                                         $varTipologia = 'NEUTRO';
                                     }
+                                    else{
+                                        #code
+                                    }
                                     if($varPregunta1 > 8) {
                                         $varTipologia = 'FELICITACION';
+                                    }
+                                    else{
+                                        #code
                                     }
                                     $varEstado = 'Abierto';
                                     $varUsado = 'NO';
@@ -1035,6 +1044,8 @@ class BasesatisfaccionController extends Controller {
                 //if($validRn[0]['pcrc'] == "694" || $validRn[0]['pcrc'] == "1024"){
         if($validRn[0]['pcrc'] == "694"){
                     $model->agente = "NULL";
+                }else{
+                    #code
                 }
                 $model->created = date('Y-m-d H:i:s');
 
@@ -1076,6 +1087,9 @@ class BasesatisfaccionController extends Controller {
                     $model->llamada = $datosClaro['url_llamada'];
                     $model->modalidad_encuesta = $datosClaro['modalidad_encuesta'];
                     $this->flagServer = true;
+                }
+                else{
+                    #code
                 }
                 if (!$model->save()) {
                     //SI HAY ERROR DEVUELVO LA RESPUESTA -1 CON LOS ERRORES
@@ -1259,6 +1273,8 @@ class BasesatisfaccionController extends Controller {
                     if(isset($agenteCL->usua_id))
                     {
                         $equipoCL = Equipos::find()->where(['usua_id'=> $agenteCL->usua_id])->all();
+                    }else{
+                        #code
                     }
                     $nModel->pcrc = $validRn[0]['pcrc'];
                     $nModel->cliente = $validRn[0]['cliente'];
@@ -1319,6 +1335,9 @@ class BasesatisfaccionController extends Controller {
                             }
                         }
                     }
+                }
+                else{
+                    #code
                 }
 
             }
@@ -2315,6 +2334,8 @@ class BasesatisfaccionController extends Controller {
                     }
 
                     $data->minutes = $hour . ":" . $minute . ":" . $seconds;
+                }else{
+                    #code
                 }
 
                 if (empty($form_val)) {
@@ -3242,6 +3263,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                     $base->tipo_inbox = 'NORMAL';
                                     $base->update();
                             }
+                        }else{
+                            #code
                         }
                                                         
                     }
@@ -3926,6 +3949,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     if($row == 1){
                         continue;
                     }
+                    else{
+                        #code
+                    }
 
 
                     $desempeno= new Desempeno();
@@ -3948,6 +3974,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 if ($desempenoValidar->save()){
                                 Yii::$app->session->setFlash('success', \Yii::t('app', 'Guardado con exito'));
                             }
+                }
+                else{
+                    #code
                 }
             }
 
@@ -4033,6 +4062,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     if(count($totNomalHoy2) == 0){
                         $alert = 1;
                         $this->alertadesempeno($alert, $value1->usuario_red, $separar1[1], $separar1[0]);
+                    }
+                    else{
+                        #code
                     }
 
                     foreach ($totNomalHoy2 as $value2) {
@@ -4127,6 +4159,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         //$this->enviarcorreo($usuario, $lider, $url);
                     }
 
+                }else{
+                    #code
                 }
 
             }
@@ -4425,6 +4459,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                     $model->save();
 
+                }else{
+                    #code
                 }
             }
 
@@ -4450,6 +4486,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     $model->solicitud_permanencia = "si";
 
                     $model->save();
+                }else{
+                    #code
                 }
             }
 
@@ -4513,6 +4551,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                     $dataProvider = $model->all($fecha1, $fecha2, $asesor, $tipo);
                     
+                }else{
+                    #code
                 }
 
                 return $this->render('listadesempenoasesor', ['model' => $model, 'dataProvider' => $dataProvider]);
@@ -4557,6 +4597,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                     $dataProvider = $model->all($fecha1, $fecha2, $asesor, $tipo, $lider, $identificacion);
                     
+                }else{
+                    #code
                 }
                 return $this->render('listadesempenocompleto', ['model' => $model, 'dataProvider' => $dataProvider]);
 
@@ -4621,6 +4663,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                     $dataProvider = $model->coordinador($lodeinArr, $fecha1, $fecha2, $asesor);
 
+                }else{
+                    #code
                 }
 
                 return $this->render('listadesempenojefeop', ['model' => $model, 'dataProvider' => $dataProvider]);
@@ -4691,6 +4735,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     }
 
                     
+                }else{
+                    #code
                 }
 
 
@@ -4925,6 +4971,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->all();
 
 
+                }else{
+                    #code
                 }
                 $showGrid = true;
                 return $this->render('alertasview', [

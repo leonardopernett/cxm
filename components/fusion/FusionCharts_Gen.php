@@ -321,6 +321,8 @@ class FusionCharts {
                 # add category
                 $this->addCategory($row[$categoryColumn], "", "");
             }
+        }else{
+            #code
         }
     }
 
@@ -443,6 +445,8 @@ class FusionCharts {
         } elseif (($this->seriesType == 4)) {
 
             $strSetXML = $this->setSSMSDataArray($value, $setParam, $vlineParam);
+        }else{
+            #code
         }
 
         # Adding xml set to dataset array and Increase set counter
@@ -455,6 +459,8 @@ class FusionCharts {
         } elseif ($this->seriesType == 4) {
             $this->MSSDataset[$this->MSSDatasetCounter][$this->MSSSubDatasetCounter][$this->MSSSetCounter] = $strSetXML;
             $this->MSSSetCounter++;
+        }else{
+            #code
         }
     }
 
@@ -570,6 +576,8 @@ class FusionCharts {
                 # add value to dataset
                 $this->addChartData($row[$valueField], $paramset, "");
             }
+        }else{
+            #code
         }
     }
 
@@ -639,6 +647,8 @@ class FusionCharts {
                     $this->addChartData($this->encodeSpecialChars($data), "name=" . $this->encodeSpecialChars($label) . ";" . $strParam, "");
                 }
             }
+        }else{
+            #code
         }
     }
 
@@ -748,6 +758,8 @@ class FusionCharts {
             # calling getStylesXML function for Styles element
             $this->strXML .= $this->getStylesXML();
             $this->strXML .= $this->getLegendXML();
+        }else{
+            #code
         }
 
         # Closing Chart element

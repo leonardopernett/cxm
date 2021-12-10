@@ -212,8 +212,12 @@ class TmptiposllamadaController extends Controller {
                     $html .= "<option value='" . $value['id'] . "'>" 
                             . $value['name'] . "</option>";
                 }
-            }            
-        }
+            }else{
+                #code
+              }         
+        }else{
+            #code
+          }
         
         echo $html;        
     }

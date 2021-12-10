@@ -60,7 +60,9 @@ class CGIFLZW
 
 		if($iIndex != -2) {
 			return false;
-		}
+		}else{
+			#code
+		  }
 
 		return $ret;
 	}
@@ -105,12 +107,16 @@ class CGIFLZW
 			while($this->FirstCode == $this->ClearCode);
 
 			return $this->FirstCode;
-		}
+		}else{
+			#code
+		  }
 
 		if($this->sp > 0) {
 			$this->sp--;
 			return $this->Stack[$this->sp];
-		}
+		}else{
+			#code
+		  }
 
 		while(($Code = $this->GetCode($data, $dp)) >= 0) {
 			if($Code == $this->ClearCode) {
@@ -132,17 +138,23 @@ class CGIFLZW
 				$this->OldCode     = $this->FirstCode;
 
 				return $this->FirstCode;
-			}
+			}else{
+				#code
+			  }
 
 			if($Code == $this->EndCode) {
 				return -2;
-			}
+			}else{
+				#code
+			  }
 
 			$InCode = $Code;
 			if($Code >= $this->MaxCode) {
 				$this->Stack[$this->sp++] = $this->FirstCode;
 				$Code = $this->OldCode;
-			}
+			}else{
+				#code
+			  }
 
 			while($Code >= $this->ClearCode) {
 				$this->Stack[$this->sp++] = $this->Vals[$Code];
@@ -164,14 +176,20 @@ class CGIFLZW
 				if(($this->MaxCode >= $this->MaxCodeSize) && ($this->MaxCodeSize < (1 << $this->MAX_LZW_BITS))) {
 					$this->MaxCodeSize *= 2;
 					$this->CodeSize++;
-				}
-			}
+				}else{
+					#code
+				  }
+			}else{
+				#code
+			  }
 
 			$this->OldCode = $InCode;
 			if($this->sp > 0) {
 				$this->sp--;
 				return $this->Stack[$this->sp];
-			}
+			}else{
+				#code
+			  }
 		}
 
 		return $Code;
@@ -195,9 +213,13 @@ class CGIFLZW
 				if($this->CurBit >= $this->LastBit) {
 					// Ran off the end of my bits
 					return 0;
-				}
+				}else{
+					#code
+				  }
 				return -1;
-			}
+			}else{
+				#code
+			  }
 
 			$this->Buf[0] = $this->Buf[$this->LastByte - 2];
 			$this->Buf[1] = $this->Buf[$this->LastByte - 1];
@@ -218,7 +240,9 @@ class CGIFLZW
 			$this->LastByte = 2 + $Count;
 			$this->CurBit   = ($this->CurBit - $this->LastBit) + 16;
 			$this->LastBit  = (2 + $Count) << 3;
-		}
+		}else{
+			#code
+		  }
 
 		$iRet = 0;
 		for($i = $this->CurBit, $j = 0; $j < $this->CodeSize; $i++, $j++) {
@@ -257,7 +281,9 @@ class CGIFCOLORTABLE
 			$rgb = substr($lpData, $i * 3, 3);
 			if(strlen($rgb) < 3) {
 				return false;
-			}
+			}else{
+				#code
+			  }
 
 			$this->m_arColors[] = (ord($rgb[2]) << 16) + (ord($rgb[1]) << 8) + ord($rgb[0]);
 			$this->m_nColors++;
@@ -302,7 +328,9 @@ class CGIFCOLORTABLE
 			if(($idx == -1) || ($d < $dif)) {
 				$idx = $i;
 				$dif = $d;
-			}
+			}else{
+				#code
+			  }
 		}
 
 		return $idx;
@@ -350,13 +378,17 @@ class CGIFFILEHEADER
 		$this->m_lpVer = substr($lpData, 0, 6);
 		if(($this->m_lpVer <> "GIF87a") && ($this->m_lpVer <> "GIF89a")) {
 			return false;
-		}
+		}else{
+			#code
+		  }
 
 		$this->m_nWidth  = $this->w2i(substr($lpData, 6, 2));
 		$this->m_nHeight = $this->w2i(substr($lpData, 8, 2));
 		if(!$this->m_nWidth || !$this->m_nHeight) {
 			return false;
-		}
+		}else{
+			#code
+		  }
 
 		$b = ord(substr($lpData, 10, 1));
 		$this->m_bGlobalClr  = ($b & 0x80) ? true : false;
@@ -371,9 +403,13 @@ class CGIFFILEHEADER
 			$this->m_colorTable = new CGIFCOLORTABLE();
 			if(!$this->m_colorTable->load(substr($lpData, $hdrLen), $this->m_nTableSize)) {
 				return false;
-			}
+			}else{
+				#code
+			  }
 			$hdrLen += 3 * $this->m_nTableSize;
-		}
+		}else{
+			#code
+		  }
 
 		return true;
 	}
@@ -429,7 +465,9 @@ class CGIFIMAGEHEADER
 
 		if(!$this->m_nWidth || !$this->m_nHeight) {
 			return false;
-		}
+		}else{
+			#code
+		  }
 
 		$b = ord($lpData{8});
 		$this->m_bLocalClr  = ($b & 0x80) ? true : false;
@@ -442,9 +480,13 @@ class CGIFIMAGEHEADER
 			$this->m_colorTable = new CGIFCOLORTABLE();
 			if(!$this->m_colorTable->load(substr($lpData, $hdrLen), $this->m_nTableSize)) {
 				return false;
-			}
+			}else{
+				#code
+			  }
 			$hdrLen += 3 * $this->m_nTableSize;
-		}
+		}else{
+			#code
+		  }
 
 		return true;
 	}
@@ -502,7 +544,9 @@ class CGIFIMAGE
 				$len = 0;
 				if(!$this->skipExt($data, $len)) {
 					return false;
-				}
+				}else{
+					#code
+				  }
 				$datLen += $len;
 				break;
 
@@ -511,7 +555,9 @@ class CGIFIMAGE
 				$len = 0;
 				if(!$this->m_gih->load($data, $len)) {
 					return false;
-				}
+				}else{
+					#code
+				  }
 				$data = substr($data, $len);
 				$datLen += $len;
 
@@ -520,14 +566,18 @@ class CGIFIMAGE
 
 				if(!($this->m_data = $this->m_lzw->deCompress($data, $len))) {
 					return false;
-				}
+				}else{
+					#code
+				  }
 
 				$data = substr($data, $len);
 				$datLen += $len;
 
 				if($this->m_gih->m_bInterlace) {
 					$this->deInterlace();
-				}
+				}else{
+					#code
+				  }
 
 				return true;
 
@@ -669,14 +719,18 @@ class CGIF
 	{
 		if($iIndex < 0) {
 			return false;
-		}
+		}else{
+			#code
+		  }
 		$this->m_lpData = $data;
 
 		// GET FILE HEADER
 		$len = 0;
 		if(!$this->m_gfh->load($this->m_lpData, $len)) {
 			return false;
-		}
+		}else{
+			#code
+		  }
 
 		$this->m_lpData = substr($this->m_lpData, $len);
 
@@ -684,7 +738,9 @@ class CGIF
 			$imgLen = 0;
 			if(!$this->m_img->load($this->m_lpData, $imgLen)) {
 				return false;
-			}
+			}else{
+				#code
+			  }
 			$this->m_lpData = substr($this->m_lpData, $imgLen);
 		}
 		while($iIndex-- > 0);

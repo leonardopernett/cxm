@@ -906,6 +906,8 @@ use Exception;
             
             
           }
+        }else{
+          #code
         }
     
     // fin Diego
@@ -941,7 +943,9 @@ use Exception;
               $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
               $lastColumn++;
             }
-          }  
+          }  else{
+            #code
+          }
           
         }
 
@@ -985,7 +989,9 @@ use Exception;
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
               $lastColumn++;
             }
-          } 
+          }else{
+            #code
+          }
           
         }
 
@@ -1225,12 +1231,20 @@ use Exception;
                   if ($varlistaresponsable[$cuentavari - ($vartotalindica + 1)] == 'Agente'){
                       if($varlistasigno[$cuentavari - 1] == 'Positivo'){
                         $sumapositivoR = $sumapositivoR + $varConteo;
+                      }else{
+                        #code
                       }
                       if($varlistasigno[$cuentavari - 1] == 'Negativo'){
                         $sumanegativoR = $sumanegativoR + $varConteo;
                         $cuentanegativoR++;
+                      }else{
+                        #code
                       }
+                  }else{
+                    #code
                   }
+                }else{
+                  #code
                 }
 
                 //imprime total porcentaje Agente po callid
@@ -1238,16 +1252,24 @@ use Exception;
                 if($cuentavari == ($vartotalrespo)) {
                   if($cuentanegativoR == 0) {
                     $totalpondeR = round((($sumapositivoR / $varTotalvariables) * 100),2);
+                  }else{
+                    #code
                   }
                   if($cuentanegativoR == $varTotalvariables) {
                     $totalpondeR = round(((($cuentanegativoR - $sumanegativoR) / $varTotalvariables) * 100),2);
+                  }else{
+                    #code
                   }
                   if($cuentanegativoR != $varTotalvariables && $cuentanegativoR > 0) {
                     $totalpondeR = round(((($sumapositivoR + ($cuentanegativoR - $sumanegativoR)) / $varTotalvariables) * 100),2);
-                  }              
+                  }  else{
+                    #code
+                  }            
                   $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $totalpondeR); 
                 $lastColumn++;
                 }
+            }else{
+              #code
             }
             
           }
@@ -2187,6 +2209,8 @@ use Exception;
                 $varcanti = $value2['cantidad'];
                 if(!$varcanti ) {
                    $varcanti = 0;
+                }else{
+                  #code
                 }
                 $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcanti);
         }
@@ -2342,6 +2366,8 @@ $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboar
                 $txtDocument = $model->documento_director;
 
                 return $this->redirect(array('registrarcategorias','txtCityP'=>$txtCity,'txtRadicadoP'=>$txtDocument));
+            }else{
+              #code
             }
 
       return $this->renderAjax('seleccionservicio',[
@@ -4938,6 +4964,9 @@ public function actionCantidadentto(){
               
               
             }
+            }else{
+              #code
+            }
           }
 
       // fin Diego
@@ -5186,12 +5215,20 @@ public function actionCantidadentto(){
                     
                         if($varlistasigno[$cuentavari - 1] == 'Positivo'){
                           $sumapositivoR = $sumapositivoR + $varConteo;
+                        }else{
+                          #code
                         }
                         if($varlistasigno[$cuentavari - 1] == 'Negativo'){
                           $sumanegativoR = $sumanegativoR + $varConteo;
                           $cuentanegativoR++;
+                        }else{
+                          #code
                         }
+                    }else{
+                      #code
                     }
+                  }else{
+                    #code
                   }
       
       
@@ -5220,6 +5257,8 @@ public function actionCantidadentto(){
                       'usuario_id' => $sessiones,
                     ])->execute();
                   }
+              }else{
+                #code
               }
              
             }
@@ -5578,6 +5617,8 @@ public function actionCantidadentto(){
                     $data->fecha_inicial = $data->tmp_formulario->hora_inicial;
                     $data->fecha_final = $data->tmp_formulario->hora_final;
                     $data->minutes = $dteDiff1->h . ":" . $dteDiff1->i . ":" . $dteDiff1->s;
+                }else{
+                  #code
                 }
 
                 $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$formulario_id'")->queryScalar();
