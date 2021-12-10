@@ -5331,10 +5331,12 @@ public function actionCantidadentto(){
      
 
       if (isset($_POST) && !empty($_POST)) {
-        $arbol_id = $_POST["Arboles"]["arbol_id"];
+        $arboles = Yii::$app->request->post('Arboles');
+        $arbol_id = $arboles["arbol_id"];
         $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
         $formulario_id = $infoArbol->formulario_id;
-        $dimension_id = $_POST["Dimensiones"]["dimension_id"];
+        $dimensiones = Yii::$app->request->post('Dimensiones');
+        $dimension_id = $dimensiones["dimension_id"];
         $evaluado_id = Yii::$app->request->post("evaluado_id");
         $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? Yii::$app->request->post("tipo_interaccion") : 1;
         $usua_id = Yii::$app->user->identity->id;
