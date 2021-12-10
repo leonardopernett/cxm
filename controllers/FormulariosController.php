@@ -224,10 +224,11 @@ class FormulariosController extends Controller {
                 $modelE->scenario = "monitoreo";
 
                 if (isset($_POST) && !empty($_POST)) {
-
-                    $arbol_id = $_POST["Arboles"]["arbol_id"];
+                    $arboles = Yii::$app->request->post('Arboles');
+                    $arbol_id = $arboles["arbol_id"];
                     $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
-                    $dimension_id = $_POST["Dimensiones"]["dimension_id"];
+                    $dimensiones = Yii::$app->request->post('Dimensiones');
+                    $dimension_id = $dimensiones["dimension_id"];
                     $nmArbol = \app\models\Arboles::findOne($arbol_id);
                     $nmDimension = \app\models\Dimensiones::findOne($dimension_id);
                     $formulario_id = $infoArbol->formulario_id;

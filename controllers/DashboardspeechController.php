@@ -62,7 +62,7 @@ use yii\base\Exception;
       $model3 = new SpeechCategorias();
       $txtvarNew = null;     
 
-      $data = Yii::$app->request->post();     
+      $data = Yii::$app->request->post();
       if ($model3->load($data)) {
         $txtPcrc = $model3->clientecategoria;
         $txtPruebas = $model3->pcrc;
@@ -4888,16 +4888,22 @@ public function actionCantidadentto(){
       $modelE->scenario = "monitoreo";
 
       if (isset($_POST) && !empty($_POST)) {
-        $arbol_id = $_POST["Arboles"]["arbol_id"];
+        $arboles = Yii::$app->request->post('Arboles');
+        $arbol_id = $arboles["arbol_id"];
         $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
         $formulario_id = $infoArbol->formulario_id;
-        $dimension_id = $_POST["Dimensiones"]["dimension_id"];
-        $evaluado_id = $_POST["evaluado_id"];
-        $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? $_POST["tipo_interaccion"] : 1;
+        $dimensiones = Yii::$app->request->post('Dimensiones');
+        $dimension_id = $dimensiones["dimension_id"];
+        $evaluado_id = Yii::$app->request->post("evaluado_id");
+        if(Yii::$app->request->post('tipo_interaccion') != null){
+          $tipoInteraccion = Yii::$app->request->post('tipo_interaccion');
+        } else {
+          $tipoInteraccion = 1;
+        }
         $usua_id = Yii::$app->user->identity->id;
         $created = ($preview == 1) ? 0 : date("Y-m-d H:i:s");
         $sneditable = 1;
-        $dsfuente_encuesta = $_POST["dsfuente_encuesta"];
+        $dsfuente_encuesta = Yii::$app->request->post("dsfuente_encuesta");
 
         //CONSULTO SI YA EXISTE LA EVALUACION
         $condition = [
