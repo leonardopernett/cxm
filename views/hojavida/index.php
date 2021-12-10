@@ -333,7 +333,7 @@ $this->params['breadcrumbs'][] = $this->title;
       </div>
       <div class="modal-body body">
           
-            <?php $form = ActiveForm::begin
+            <?php $form = ActiveForm::begin([
             'action'=>['hojavida/export'],
             'method'=>'POST',
             'options'=>['enctype'=>'multipart/form-data'],
