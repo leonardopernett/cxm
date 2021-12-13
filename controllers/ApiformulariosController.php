@@ -391,7 +391,8 @@ use GuzzleHttp;
           
           where
             ef.arbol_id IN  (:Arbol_id)
-              AND ef.created >= DATE_SUB(NOW(), INTERVAL 1 DAY)')->bindValues($paramsBusqueda)->queryAll();
+              AND ef.created >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+              GROUP BY ef.id, tbl_tipificaciondetalles.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatapi = array();
       foreach ($varListTipificaciones as $key => $value) {
