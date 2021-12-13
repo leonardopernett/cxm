@@ -29,7 +29,8 @@
         "nirvana-msu/yii2-showloading": "dev-master",
         "mongosoft/yii2-soap-server": "*",
         "miloschuman/yii2-highcharts-widget": "dev-master",
-        "guzzlehttp/guzzle": "~6.0"       
+        "guzzlehttp/guzzle": "~6.0",
+        "hyperia/yii2-secure-headers": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

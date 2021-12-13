@@ -30,12 +30,47 @@ $config = [
         ]
     ],
     'components' => [
-        'response' => [
+        'headers' => [
+            'class' => '\hyperia\security\Headers',
+            'strictTransportSecurity' => [
+                'max-age' => 15552000,
+                'includeSubDomains' => true,
+                'preload' => false
+            ],
+            'xssProtection' => true,
+            'contentTypeOptions' => 'nosniff',
+            'xFrameOptions' => 'DENY',
+            'xPoweredBy' => 'Hyperia',
+            'referrerPolicy' => 'no-referrer',
+            'cacheControl' => ['no-cache', 'no-store', 'must-revalidate'],
+            'pragma' => 'no-cache',
+            'featurePolicyDirectives' => [
+                'camera' => "'none'",
+                'geolocation' => "'none'",
+                'microphone' => "'none'",
+                'payment' => "'none'",
+                'usb' => "'none'",
+            ],
+            'cspDirectives' => [
+                'script-src' => "'self' 'unsafe-inline'",
+                'style-src' => "'self' 'unsafe-inline'",
+                'img-src' => "'self' data:",
+                'connect-src' => "'self'",
+                'font-src' => "'self'",
+                'object-src' => "'self'",
+                'media-src' => "'self'",
+                'form-action' => "'self'",
+                'frame-src' => "'self'",
+                'child-src' => "'self'"
+            ],
+        ],
+        /* 'response' => [
+            //'Strict-Transport-Security' => 'max-age=31536000',
             'on beforeSend' => function ($event) {
                 $event->sender->headers->add('X-Frame-Options', 'DENY');
                 $event->sender->headers->add('X-Content-Type-Options', 'nosniff');
-            }
-        ],
+            },
+        ], */
         'urlManager' => [
             'enablePrettyUrl' => true,
 //            'enableStrictParsing' => true,

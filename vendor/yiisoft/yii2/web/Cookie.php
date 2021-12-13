@@ -39,13 +39,15 @@ class Cookie extends \yii\base\Object
     /**
      * @var boolean whether cookie should be sent via secure connection
      */
-    public $secure = false;
+    public $secure = true;
     /**
      * @var boolean whether the cookie should be accessible only through the HTTP protocol.
      * By setting this property to true, the cookie will not be accessible by scripting languages,
      * such as JavaScript, which can effectively help to reduce identity theft through XSS attacks.
      */
     public $httpOnly = true;
+
+    public $sameSite = 'Strict';
 
 
     /**
