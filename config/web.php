@@ -13,10 +13,6 @@ $config = [
             'controllerMap' => [
                 'assignment' => [
                     'class' => 'mdm\admin\controllers\AssignmentController',
-                //'userClassName' => 'app\models\Usuarios',
-                //'userClassName' => 'dektrium\user\models\User',
-                //'idField' => 'usua_id', // id field of model User
-                //'usernameField' => 'usua_usuario', // id field of model User
                 ]
             ],
         ],
@@ -64,17 +60,8 @@ $config = [
                 'child-src' => "'self'"
             ],
         ],
-        /* 'response' => [
-            //'Strict-Transport-Security' => 'max-age=31536000',
-            'on beforeSend' => function ($event) {
-                $event->sender->headers->add('X-Frame-Options', 'DENY');
-                $event->sender->headers->add('X-Content-Type-Options', 'nosniff');
-            },
-        ], */
         'urlManager' => [
             'enablePrettyUrl' => true,
-//            'enableStrictParsing' => true,
-//            'showScriptName' => false,
             'rules' => [
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
@@ -97,12 +84,6 @@ $config = [
             'translations' => [
                 'app*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                //'basePath' => '@app/messages',
-                //'sourceLanguage' => 'en-US',
-//                    'fileMap' => [
-//                        'app' => 'app.php',
-//                        'app/error' => 'error.php',
-//                    ],
                 ],
             ],
         ],
@@ -116,9 +97,6 @@ $config = [
                 'secure' => true,
     
             ],
-//            'parsers' => [
-//                'application/json' => 'yii\web\JsonParser',
-//            ]
         ],
         'session' => [
 
@@ -157,9 +135,7 @@ $config = [
             // for the mailer to send real emails.
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                // 'host' => '172.102.100.31',
                 'host' => '172.23.1.100',
-		//'host' => 'localhost',
                 'username' => 'Nombre de usuario',
                 'password' => 'xxxxxxxxx',
                 'port' => '25',
@@ -230,17 +206,6 @@ $config = [
             'class' => 'yii\rbac\DbManager',
         ]
     ],
-//    'as access' => [
-//        'class' => 'mdm\admin\components\AccessControl',
-//        'allowActions' => [
-//            //'admin/*', // add or remove allowed actions to this list            
-//            'site/login',
-//            'site/contact',
-//            'site/login',
-//            'site/index',
-//            'site/about',            
-//        ]
-//    ],
     'params' => $params,
     'language' => 'es',
 ];
