@@ -88,9 +88,8 @@ use yii\widgets\Pjax;
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <?=
-                Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+                Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'send_button'])
                 ?>
-
                 <?php
                     if ($query != 0) {
                         echo "<script>
@@ -108,3 +107,26 @@ use yii\widgets\Pjax;
 
     </div>
 <?php endif; ?>
+
+<script type="text/javascript">
+    $(function(){
+        $('#send_button').on("click", function(e){
+            e.preventDefault()
+            
+            var email = document.getElementById("usuarios-usua_email").value
+            var allus = "allus"
+            var multienlace = "multienlace"
+            var grupokonecta = "grupokonecta"
+
+            var numeroAllus = email.includes(allus)
+            var numeroMultienlace = email.includes(multienlace)
+            var numeroGrupokonecta = email.includes(grupokonecta)
+
+            if (numeroAllus != false || numeroMultienlace != false || numeroGrupokonecta != false){
+                $('#w0').submit()
+            } else {
+                Swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar un email corporativo.','warning')
+            } 
+        })
+    })
+</script>
