@@ -396,7 +396,7 @@ use GuzzleHttp;
       $arraydatapi = array();
       foreach ($varListTipificaciones as $key => $value) {
 
-        array_push($arraydatapi, array("Id_Formulario "=>$value['Id_Formulario'],"Id_Tipificacion "=>$value['id_Tipificacion'],"Tipificaciones "=>$value['Tipificaciones'],'RespuestaTipificacion'=>$value['Rtatipi'])); 
+        array_push($arraydatapi, array("Id_Formulario "=>$value['Id_Formulario'],"Id_Tipificacion "=>$value['id_Tipificacion'],"Tipificaciones "=>$value['Tipificaciones'],'RespuestaTipificacion'=>$value['Rtatipi'],'Fechavaloracion'=>$value['FechaValoracion'])); 
       }
 
       die(json_encode(array("status"=>"1","data"=>$arraydatapi)));
