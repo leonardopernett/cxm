@@ -6,28 +6,28 @@ return [
     /* MODO DE CONEXIÓN */
     'auth_mode' => 'LDAP', /* LDAP o DATABASE */
     /* PARAMETROS LDAP */
-    'LDAP_SERVER1' => "172.20.88.250", //"172.20.1.220",
+    'LDAP_SERVER1' => LDAP_SERVER1, //"172.20.1.220",
     'LDAP_accsufix' => '@multienlace.com.co',
     /* VALORACIONES POR MES */
     'valoracionesMes' => 5,
     /* URL WS REDBOX MEDELLIN */
-    'wsdl_redbox' => 'http://172.20.212.12/ASULWSRedboxReproducirAudio/ASULWSREDBOXReproducirAudioPantalla.asmx?wsdl',
+    'wsdl_redbox' => WSDL_REDBOX,
     /* URL WS REDBOX BOGOTA */
-    'wsdl_redbox_bogota' => 'http://172.20.12.31/ASULWSRedboxReproducirAudio/ASULWSREDBOXReproducirAudioPantalla.asmx?wsdl',
+    'wsdl_redbox_bogota' => WSDL_REDBOX_BOG,
     /* VALIDAR URL DE WEB SERVICES */
     'validate_url_ws' => true,
     /* NUMERO DE DIAS ATRAS PARA CONSULTA EN REDBOX */
     'dias_llamadas' => 5,
     /* CONEXION REDBOX MEDELLIN*/
-    'server' => "172.20.212.14\REDBOXSIAR",
-    'user' => "consultaqa",
-    'pass' => "Allus2015",
-    'db' => "REDBOX-SIAR",
+    'server' => SERVER,
+    'user' => USER,
+    'pass' => PASSWORD,
+    'db' => DATA_BASE,
     /* CONEXION REDBOX BOGOTA */
-    'serverBog' => "172.20.12.32",
-    'userBog' => "consultaqa",
-    'passBog' => "Allus2015",
-    'dbBog' => "REDBOX-SIAR",
+    'serverBog' => SERVER_BOG,
+    'userBog' => USER_BOG,
+    'passBog' => PASSWORD_BOG,
+    'dbBog' => DATA_BASE_BOG,
     /* ID DE USUARIOS QUE PUEDEN ELIMINAR VALORACIONES */
      'idUsersDelete' => [
         70, //Luisa.londono
@@ -54,7 +54,7 @@ return [
     /* IDS DE FORMULARIOS DE ENCUESTAS TELEFÓNICAS */
     'IdFormEncuestaTele' => 676,
    /*RUTA PARA CONSULA DE BUZON*/
-	'ruta_buzon' => '/srv/www/htdocs/qa_managementv2/web/buzones_qa',
+	'ruta_buzon' => RUTA_BUZON,
 	'email_satu_from' => 'QA@grupokonecta.com.co',
     'email_satu_to' => 'gmejiav@grupokonecta.com',
     'email_reporte_desempeno' => 'paazcarate@grupokonecta.co',

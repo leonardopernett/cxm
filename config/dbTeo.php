@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=172.20.1.223;port=3306;dbname=teo',
-    'username' => 'CONS_EXPERIENCIA',
-    'password' => '8*1PyDm2',
+    'dsn' => 'mysql:host='.MY_SQL_HOST_TEO.';port='.MY_SQL_PORT_TEO.';dbname='.MY_SQL_DB_NAME_TEO,
+    'username' => USER_DB_TEO,
+    'password' => PASSWORD_DB_TEO,
     'charset' => 'utf8',
 
     'on afterOpen' =>function ($event) {

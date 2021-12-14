@@ -3,8 +3,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'sqlsrv:Server=172.20.12.32;Database=REDBOX-SIAR',
-    'username' => 'consultaqa',
-    'password' => 'Allus2015',
+    'dsn' => 'sqlsrv:Server='.SERVER_BOG.';Database='.DATA_BASE_BOG,
+    'username' => USER_BOG,
+    'password' => PASSWORD_BOG,
     'charset' => 'utf8',
 ];
