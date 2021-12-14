@@ -1666,7 +1666,7 @@ function cargarlista(){
             var tmp_form = $("#tmp_formulario_id").val();
             var escalado = '<?php 
                 if (isset($_GET["escalado"])){
-                    echo $_GET["escalado"];
+                    echo Yii::$app->request->get("escalado");
                     
                 } ?>';
             if ($(this).is(":checked") == true) {

@@ -304,6 +304,10 @@ use app\models\ControlProcesosEquipos;
   public function save_report_user_permits (){
     $model = new ReportesAdministracion();
     $sessiones = Yii::$app->user->identity->id;
+    foreach ($_SERVER as $key => $value)
+    {
+        $_SERVER[$key] = filter_input(INPUT_SERVER, $key, FILTER_SANITIZE_STRING);
+    }
 
     $list_users = json_decode((Yii::$app->request->post("list_users")),true);
     $reporte = Yii::$app->request->post("reporte");
@@ -366,6 +370,10 @@ use app\models\ControlProcesosEquipos;
       die( json_encode( array("status"=>"0","data"=>"Error al ejecutar esta accion") ) );
     }
     else{
+      foreach ($_SERVER as $key => $value)
+      {
+          $_SERVER[$key] = filter_input(INPUT_SERVER, $key, FILTER_SANITIZE_STRING);
+      }
       $log_data = array( "id_logs_grupos"=> $info_log["id_logs_grupo"] , "id_usuario" => $info_log["id_user"], "datos" => json_encode( $info_log["data"] ),  "ip" => $_SERVER["REMOTE_ADDR"] );
       add_log($log_data);
       die( json_encode( array("status"=>"1","data"=>"Accion ejecutada correctamente") ) );

@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     $sesiones =Yii::$app->user->identity->id;  
     $varconteo = 0; 
-    $varpcrc = $_GET["pcrc"];
+    $varpcrc = Yii::$app->request->get("pcrc");
 
 ?>
 <style>

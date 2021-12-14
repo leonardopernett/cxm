@@ -224,10 +224,11 @@ class FormulariosController extends Controller {
                 $modelE->scenario = "monitoreo";
 
                 if (isset($_POST) && !empty($_POST)) {
-
-                    $arbol_id = $_POST["Arboles"]["arbol_id"];
+                    $arboles = Yii::$app->request->post('Arboles');
+                    $arbol_id = $arboles["arbol_id"];
                     $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
-                    $dimension_id = $_POST["Dimensiones"]["dimension_id"];
+                    $dimensiones = Yii::$app->request->post('Dimensiones');
+                    $dimension_id = $dimensiones["dimension_id"];
                     $nmArbol = \app\models\Arboles::findOne($arbol_id);
                     $nmDimension = \app\models\Dimensiones::findOne($dimension_id);
                     $formulario_id = $infoArbol->formulario_id;
@@ -270,7 +271,8 @@ class FormulariosController extends Controller {
                     $arbol_id = Yii::$app->request->post("arbol_id");
                     $dimension_id = Yii::$app->request->post("dimension_id");
                     $formulario_id = Yii::$app->request->post("formulario_id");
-                    $evaluado_id = $_POST["Evaluados"]["evaluado_id"];
+                    $evaluados = Yii::$app->request->post("Evaluados");
+                    $evaluado_id = $evaluados["evaluado_id"];
                     $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? Yii::$app->request->post("tipo_interaccion") : 1;
                     $usua_id = ($preview == 1) ? 0 : Yii::$app->user->identity->id;
                     $created = date("Y-m-d H:i:s");

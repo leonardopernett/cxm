@@ -2045,7 +2045,7 @@ $banderaSaltoComentario = true;
                 var tmp_form = $("#tmp_formulario_id").val();
                 var banderaescalado = '<?php 
                 if (isset($_GET["banderaescalado"])){
-                    echo $_GET["banderaescalado"];
+                    echo Yii::$app->request->get("banderaescalado");
                 } ?>';
                 if ($(this).is(":checked") == true) {
                     ruta = '<?php echo Url::to(['formularios/escalarform']); ?>?&tmp_form=' + tmp_form + '&banderaescalado=' + banderaescalado;
@@ -2065,7 +2065,7 @@ $banderaSaltoComentario = true;
                 var tmp_form = $("#tmp_formulario_id").val();
                 var banderaescalado = '<?php 
                 if (isset($_GET["banderaescalado"])){
-                    echo $_GET["banderaescalado"];
+                    echo Yii::$app->request->get("banderaescalado");
                 } ?>';
                 if ($(this).is(":checked") == true) {
                     ruta = '<?php echo Url::to(['formularios/escalarform']); ?>?&tmp_form=' + tmp_form + '&banderaescalado=' + banderaescalado;
