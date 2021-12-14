@@ -14,7 +14,7 @@ use kartik\daterange\DateRangePicker;
 
 $this->title = Yii::t('app', 'valoracion escaladas');
 
-//$this->params['breadcrumbs'][] = $this->title;
+
 $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         . ' {input}{error}{hint}</div>';
         
@@ -29,9 +29,7 @@ if (!isset($aleatorio) || !$aleatorio) {
     }
     ?>
 
-    <!--<div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
+    <?= Html::encode($this->title) ?>
 
     <?php $form = ActiveForm::begin([
         'layout' => 'horizontal',
@@ -252,13 +250,13 @@ if (!isset($aleatorio) || !$aleatorio) {
                                                                     'target' => "_blank"
                                                         ]);
                                                     } else {
-                                                        //if ($modelBase->estado == "Cerrado") {
+                                                        
                                                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['basesatisfaccion/showformulariogestion'
                                                                             , 'basesatisfaccion_id' => $modelBase->id, 'preview' => 1, 'fill_values' => true,'view' => 'formularios/indexescaladosenviados', 'banderaescalado' => true, 'idtmp' => $model["id"], 'aleatorio'=> $aleatorio]), [
                                                                     'title' => Yii::t('yii', 'ver formulario'),
                                                                     'target' => "_blank"
                                                         ]);
-                                                        //}
+                                                        
                                                     }
                                                 }
                                             },

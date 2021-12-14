@@ -336,6 +336,7 @@ if ($data->ppregunta8 != "") {
                                     <?php elseif ($data->respuesta_lider != "" or isset($jefeop) or $_GET['lider'] == "no") : ?>
 
                                         <?= $form->field($data, 'respuesta_lider')->textArea(['rows' => 6, 'maxlength' => 200, 'disabled' => true])->label('Feedback Lider:') ?>
+                                        <?php else :?>
 
                                     <?php endif; ?>
                                 </td>
@@ -352,6 +353,7 @@ if ($data->ppregunta8 != "") {
                                     </td>
                                 </tr>
                             <?php elseif ($lider != "no" or ($data->puntovista_lider != "" and isset($jefeop))) : ?>
+                                <?php else :?>
 
                                 <tr>
                                     <td>
@@ -373,6 +375,7 @@ if ($data->ppregunta8 != "") {
                                         <?= $form->field($data, 'respuesta_asesor')->textArea(['rows' => 6, 'disabled' => true, 'maxlength' => 200])->label('Compromisos de Gestion del Asesor:') ?>
                                     <?php elseif ($data->respuesta_lider == "") : ?>
                                         <?= $form->field($data, 'respuesta_asesor')->textArea(['rows' => 6, 'maxlength' => 200])->label('Compromisos de Gestion del Asesor:') ?>
+                                        <?php else :?>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -1056,6 +1059,8 @@ if ($data->ppregunta8 != "") {
 
                     if ($("notificaciones-apregunta1").val() == "" || $("notificaciones-apregunta2").val() == "" || $("notificaciones-apregunta3").val() == "" || $("notificaciones-apregunta4").val() == "" || $("notificaciones-apregunta5").val() == "" || $("notificaciones-apregunta6").val() == "" || $("notificaciones-apregunta7").val() == "" || $("notificaciones-apregunta8").val() == "") {
                         e.preventDefault();
+                    }else{
+                        //code
                     }
 
                 });

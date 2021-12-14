@@ -377,7 +377,9 @@ use app\models\IdaGeneral;
         }
 
         return $this->redirect('index');
-      }
+      }else{
+        #code
+    }
 
       return $this->render('index',[
         'model' => $model,
@@ -558,7 +560,9 @@ use app\models\IdaGeneral;
           return $this->redirect('index');
         }
 
-
+      }else{
+        #code
+      }
       return $this->renderAjax('enviararchivo',[
         'model' => $model,
       ]);

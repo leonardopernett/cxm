@@ -37,17 +37,14 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+     
       </div>
     </div>
   </div>
 </header>
 <br><br>
 
-<!--<div class="page-header">
-    <h3><?php // $this->title ?></h3>
-</div>-->
+
 
 <div class="equipos-evaluados-form">    
 
@@ -226,10 +223,10 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             foreach ($textoss as $key => $value) {
                 $textoss2 = $value['pcrc'];
             }
-            //var_dump($textoss2);
+            
 
             $textoss3 = $model->pcrc;
-            //var_dump($textoss3);
+           
 
             if ($textoss2 != $textoss3) {
                 echo "<script>

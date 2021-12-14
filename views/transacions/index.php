@@ -27,8 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
  <div class="container h-100">
    <div class="row h-100 align-items-center">
      <div class="col-12 text-center">
-       <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-       <p class="lead">A great starter layout for a landing page</p> -->
+      
      </div>
    </div>
  </div>
@@ -37,9 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="transacions-index">
     
-<!--<div class="page-header">
-    <h3><?= Html::encode($this->title) ?></h3>
-</div>-->
+<?= Html::encode($this->title) ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Transacions'), ['create'], ['class' => 'btn btn-success']) ?>

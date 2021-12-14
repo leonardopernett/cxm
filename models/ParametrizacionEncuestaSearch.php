@@ -39,7 +39,7 @@ class ParametrizacionEncuestaSearch extends ParametrizacionEncuesta {
      */
     public function search($params) {
         $query = ParametrizacionEncuesta::find();
-        //$query->joinWith(['cliente0']);
+        
         $query->joinWith(['programa0']);
 
         $dataProvider = new ActiveDataProvider([

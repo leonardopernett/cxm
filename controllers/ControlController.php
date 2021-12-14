@@ -713,6 +713,8 @@ class ControlController extends \yii\web\Controller {
                             $idMetrica = NULL;
                             if($volumenes){
                                 $idMetrica = $metrica[$i];
+                            }else{
+                                #code
                             }                            
                     
                             if ($control == "proceso") {
@@ -1225,7 +1227,9 @@ class ControlController extends \yii\web\Controller {
                                                 $arrayTabla[$dimensiones[$index]['id']]['total'][$arrayMetrica[$key]][$datoDimension['arbol_id']][$datoDimension['usua_usuario']][] = $datoDimension['total'];
                                             }
                                             
-                                        }                                        
+                                        }                                     
+                                    }else{
+                                        #code
                                     }
                                 }
                             }
@@ -1255,6 +1259,9 @@ class ControlController extends \yii\web\Controller {
                 foreach ($tablaExcel as $key => $value) {
                     if(!isset($value['total'])){
                         unset($tablaExcel[$key]);
+                    }
+                    else{
+                        #code
                     }
                 }
                 
@@ -2963,6 +2970,8 @@ class ControlController extends \yii\web\Controller {
                     $joinVolumen = $whereVolumen = "";
                     if($volumenes){
                         $joinVolumen = "INNER JOIN tbl_base_satisfaccion satu ON satu.id = e.basesatisfaccion_id";
+                    }else{
+                        #code
                     }
                     //WHERE VOLUMEN
                     switch ($metrica) {

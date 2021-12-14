@@ -162,17 +162,7 @@ class SegundoCalificador extends \yii\db\ActiveRecord {
             'query' => $query,
         ]);
 
-        /*$query->andFilterWhere([
-            'tbl_ejecucionfeedbacks.evaluado_id' => $this->evaluado_id,
-            'tbl_ejecucionfeedbacks.usua_id' => $this->usua_id,
-            'tbl_ejecucionfeedbacks.usua_id_lider' => $this->usua_id_lider,
-            'tbl_ejecucionfeedbacks.snaviso_revisado' => $this->snaviso_revisado,
-        ]);
-        if ($this->arbol_id != '') {
-            $query->andWhere('e.arbol_id IN (' . $this->arbol_id . ')');
-        }
-        $query->andFilterWhere(['between', 'DATE(tbl_ejecucionfeedbacks.created)',
-            $this->startDate, $this->endDate]);*/
+        
         
         $query->orderBy('id_caso DESC');
         return $dataProvider;

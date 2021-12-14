@@ -11,8 +11,7 @@ ShowLoadingAsset::register($this);
 /* @var $model app\models\DeclinacionesUsuarios */
 
 $this->title = Yii::t('app', 'Create Declinaciones Usuarios');
-//$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Declinaciones Usuarios'), 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $this->title;
+
 
 $this->registerJs(
    "      

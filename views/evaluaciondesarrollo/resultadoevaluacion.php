@@ -552,7 +552,10 @@ if($txtvalidadocumento != 0) {
                 $tipocoaching = 'Obligatorio';
             } else if($txtProcentaje <= 85 && $varmenorcompetencia == 1) {
                 $tipocoaching = 'Obligatorio';
+                }else{
+                    #code
                 }
+
 
         $txtNotasFinal = round($txtProcentaje,2);
         array_push($titulos, $txtProcentaje);

@@ -72,9 +72,7 @@ class GruposusuariosSearch extends Gruposusuarios
      */
     public function searchAjax($params) {
         
-        /*if (!($this->load($params))) {
-            return false;
-        }*/
+        
        
         $query = Gruposusuarios::find();
         $query->select('gu.*,u.usua_id AS usuario,u.usua_nombre AS usuarioname');
@@ -82,12 +80,7 @@ class GruposusuariosSearch extends Gruposusuarios
         $query->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id = u.usua_id');
         $query->join('INNER JOIN', 'tbl_grupos_usuarios gu', 'gu.grupos_id = rgu.grupo_id');
         $query->andWhere('u.usua_id = ' . $params);
-        /*$query->andFilterWhere(['like', 'u.usua_usuario', $this->usua_usuario])
-                ->andFilterWhere(['like', 'u.usua_nombre', $this->usua_nombre])
-                ->andFilterWhere(['like', 'u.usua_email', $this->usua_email])
-                ->andFilterWhere(['like', 'u.usua_identificacion', $this->usua_identificacion])
-                ->andFilterWhere(['like', 'u.usua_activo', $this->usua_activo])
-                ->andFilterWhere(['like', 'u.usua_estado', $this->usua_estado]);*/
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

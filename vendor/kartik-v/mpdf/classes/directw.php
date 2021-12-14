@@ -54,10 +54,14 @@ function Write($h,$txt,$currentx=0,$link='',$directionality='ltr',$align='') {
 					else $this->mpdf->x=$this->mpdf->lMargin;
 					$w = $this->mpdf->w - $this->mpdf->rMargin - $this->mpdf->x;
 					$wmax = ($w - ($this->mpdf->cMarginL+$this->mpdf->cMarginR));
-				}
+				}else{
+					#code
+				  }
 				$nl++;
 				continue;
-			}
+			}else{
+				#code
+			  }
 			if($c == " ") { $sep= $i; }
 			$l += $this->mpdf->GetCharWidthNonCore($c);	// mPDF 5.3.04
 			if($l > $wmax) {
@@ -75,7 +79,9 @@ function Write($h,$txt,$currentx=0,$link='',$directionality='ltr',$align='') {
 						$i++;
 						$nl++;
 						continue;
-					}
+					}else{
+						#code
+					  }
 					if($i==$j) { $i++; }
 					$tmp = rtrim(mb_substr($s,$j,$i-$j,$this->mpdf->mb_enc));
 					$this->mpdf->Cell($w, $h, $tmp, 0, 2, $align, $fill, $link);
@@ -99,7 +105,9 @@ function Write($h,$txt,$currentx=0,$link='',$directionality='ltr',$align='') {
 						list($charspacing,$ws) = $this->mpdf->GetJspacing($nb_carac,$nb_spaces,((($w-2) - $len_ligne) * _MPDFK),$inclCursive);
 						$this->mpdf->SetSpacing($charspacing,$ws);
 						//////////////////////////////////////////
-					}
+					}else{
+						#code
+					  }
 					$this->mpdf->Cell($w, $h, $tmp, 0, 2, $align, $fill, $link);
 					$i=$sep+1;
 				}
@@ -111,7 +119,9 @@ function Write($h,$txt,$currentx=0,$link='',$directionality='ltr',$align='') {
 					else $this->mpdf->x=$this->mpdf->lMargin;
 					$w=$this->mpdf->w-$this->mpdf->rMargin-$this->mpdf->x;
 					$wmax = ($w - ($this->mpdf->cMarginL+$this->mpdf->cMarginR));
-				}
+				}else{
+					#code
+				  }
 				$nl++;
 			}
 			else { $i++; }
@@ -138,10 +148,14 @@ function Write($h,$txt,$currentx=0,$link='',$directionality='ltr',$align='') {
 					else $this->mpdf->x=$this->mpdf->lMargin;
 					$w = $this->mpdf->w - $this->mpdf->rMargin - $this->mpdf->x;
 					$wmax=$w-($this->mpdf->cMarginL+$this->mpdf->cMarginR);
-				}
+				}else{
+					#code
+				  }
 				$nl++;
 				continue;
-			}
+			}else{
+				#code
+			  }
 			if($c == " ") { $sep= $i; }
 			$l += $this->mpdf->GetCharWidthCore($c);	// mPDF 5.3.04
 			if($l > $wmax) {
@@ -159,7 +173,9 @@ function Write($h,$txt,$currentx=0,$link='',$directionality='ltr',$align='') {
 						$i++;
 						$nl++;
 						continue;
-					}
+					}else{
+						#code
+					  }
 					if($i==$j) { $i++; }
 					$this->mpdf->Cell($w, $h, substr($s, $j, $i-$j), 0, 2, $align, $fill, $link);
 				}
@@ -189,7 +205,9 @@ function Write($h,$txt,$currentx=0,$link='',$directionality='ltr',$align='') {
 					else $this->mpdf->x=$this->mpdf->lMargin;
 					$w=$this->mpdf->w-$this->mpdf->rMargin-$this->mpdf->x;
 					$wmax=$w-($this->mpdf->cMarginL+$this->mpdf->cMarginR);
-				}
+				}else{
+					#code
+				  }
 				$nl++;
 			}
 			else {
@@ -206,7 +224,9 @@ function Write($h,$txt,$currentx=0,$link='',$directionality='ltr',$align='') {
 		if ($this->mpdf->usingCoreFont) { $tmp = substr($s,$j,$i-$j); }
 		else { $tmp = mb_substr($s,$j,$i-$j,$this->mpdf->mb_enc); }
 		$this->mpdf->Cell($w,$h,$tmp,0,0,$align,$fill,$link);
-	}
+	}else{
+		#code
+	  }
 }
 
 
@@ -307,7 +327,9 @@ function CircularText($x, $y, $r, $text, $align='top', $fontfamily='', $fontsize
 			if($fontwidth!=1){
 				$this->mpdf->StartTransform();
 				$this->mpdf->transformScale($fontwidth*100, 100, $x, $y);
-			}
+			}else{
+				#code
+			  }
 			$this->mpdf->SetXY($x-$w[$i]/2, $y+$r-($this->mpdf->FontSize));
 		}
 		if ($this->mpdf->usingCoreFont) { $c=$text[$i]; }
@@ -315,7 +337,9 @@ function CircularText($x, $y, $r, $text, $align='top', $fontfamily='', $fontsize
 		$this->mpdf->Cell(($w[$i]),$this->mpdf->FontSize,$c,0,0,'C');	// mPDF 5.3.53
 		if($fontwidth!=1){
 			$this->mpdf->StopTransform();
-		}
+		}else{
+			#code
+		  }
 	}
 	$this->mpdf->StopTransform();
 
@@ -335,7 +359,9 @@ function CircularText($x, $y, $r, $text, $align='top', $fontfamily='', $fontsize
 		$this->mpdf->SetXY($x-$wc/2, $y-$r);
 		$this->mpdf->Cell(($wc),$this->mpdf->FontSize,$divider,0,0,'C');
 		$this->mpdf->StopTransform();
-	}
+	}else{
+		#code
+	  }
 }
 
 function Shaded_box( $text,$font='',$fontstyle='B',$szfont='',$width='70%',$style='DF',$radius=2.5,$fill='#FFFFFF',$color='#000000',$pad=2 ) {

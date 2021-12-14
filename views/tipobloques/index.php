@@ -12,9 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tipobloques-index">
     
-<!--<div class="page-header">
-    <h3><?= Html::encode($this->title) ?></h3>
-</div>-->
+<?= Html::encode($this->title) ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Tipobloques'), ['create'], ['class' => 'btn btn-success']) ?>

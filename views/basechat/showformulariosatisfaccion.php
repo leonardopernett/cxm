@@ -504,16 +504,6 @@ $banderaSaltoComentario = true;
                                                 , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => ($data->preview) ? true : false]);
                                         ?></td>
                                 </tr>
-                                <?php //else:   ?>
-                                
-                                    <?php //echo Yii::t("app", "Dimension");        ?><?php
-                                /*                                 * echo Html::dropDownList("dimension"
-                                  , $data->tmp_formulario->dimension_id
-                                  , $data->dimension
-                                  , ["id" => "dimension", "class" => "form-control", 'prompt' => 'Seleccione ...', "disabled" => true, "readonly" => true]); */
-                                ?>
-                                    
-                                <?php //endif;   ?>
                                <?php echo Yii::t("app", "Fuente"); ?>
                                         <?php if ($data->preview) : ?>
                                             <?=

@@ -88,15 +88,15 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             'buttons' => [
                 'preview' => function ($url, $model) {
                         $cliente = \app\models\Arboles::findOne(["id" => $model["cliente"]]);
-                        //print_r($cliente->name);
+                        
                         $ejecucion = base64_encode($model["fid"]);
-                        //if ($modelBase->estado == "Cerrado") {'basesatisfaccion_id' => $modelBase->id,
+                       
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['basesatisfaccion/showencuestaamigo'
                                             , 'form_id' => $ejecucion]), [
                                     'title' => Yii::t('yii', 'ver formulario'),
                                     'target' => "_blank"
                         ]);
-                        //}
+                      
                 },
                     ]
                 ],

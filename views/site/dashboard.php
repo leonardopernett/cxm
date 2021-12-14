@@ -7,7 +7,7 @@ use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 $this->title = Yii::t('app', 'Resumen Graficado');
-//$this->params['breadcrumbs'][] = $this->title;
+
 
 $this->registerJsFile(Url::to("@web/js/FusionCharts.js"), ['position' => \yii\web\View::POS_HEAD]);
 $this->registerJsFile(Url::to("@web/js/jquery.bonsai.js"));
@@ -34,7 +34,7 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js");
+
 ?>
 <style>
   .masthead {
@@ -53,8 +53,7 @@ $this->registerJs($js);
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+      
       </div>
     </div>
   </div>

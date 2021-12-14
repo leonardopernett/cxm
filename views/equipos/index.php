@@ -61,34 +61,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="equipos-index">
 
-<!--    <div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
+
+
+    <?= Html::encode($this->title) ?>
 
     <p>
         <?php
         echo Html::a(Yii::t('app', 'Create Equipos'), ['create'],
                 ['class' => 'btn btn-success']);
         echo "&nbsp;";
-
-        // $permisos = array("santiago.manrique", "jonathan.arroyave", "ruben.figueroa.o", "maciel.guerrero","andersson.moreno","diego.montoya.o");
-        // if(isset($_SESSION['fnIdentity']['username']) && in_array($_SESSION['fnIdentity']['username'], $permisos))
-        // {
-            // echo Html::button('Crear Equipos Automatizado', ['onclick' => 'execAuto()', 'class' => 'btn btn-success', 'id'=>'botonAuxiliar']);
-
-            // echo "&nbsp;";
-
-            // echo Html::button('Simulacion Automatizacion', ['onclick' => 'execAutoSimu()', 'class' => 'btn btn-success', 'id'=>'botonAuxiliarSimu']);
-          
-            /*echo Html::a(Yii::t('app', 'Automatizacion'), ['#'],
-                    ['id' => 'automatizacion','class' => 'btn btn-success']);*/
-
-	   // echo Html::a(Yii::t('app', 'Automatizacion'), ['automatizacionteo/index'],
-                    // ['id' => 'botonReal','class' => 'btn btn-success invisible']);
-
-	   // echo Html::a(Yii::t('app', 'Automatizacion'), ['automatizacionteo/simulacion'],
-                    // ['id' => 'botonRealSimu','class' => 'btn btn-success invisible']);       
-        // }
         ?>
 <script>
 function execAuto() 

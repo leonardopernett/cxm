@@ -158,8 +158,7 @@ $sessiones1 = Yii::$app->user->identity->id;
             ],
         ],
     ]);   
-        //$fechainiC = date('2018-08-22');
-        //$fechafinC = date('2018-08-30');
+        
 
         $sumatoria1 = null;
         $variablesId1 = $dataProvider->getModels();
@@ -190,7 +189,7 @@ $sessiones1 = Yii::$app->user->identity->id;
 
              	$fechafinC = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
 
-                // $varRealizadas = Yii::$app->db->createCommand('select distinct col5 from tbl_tmpreportes where col4  like "%Total Monitoreos%" and usua_id ='.$textoss2.'')->queryScalar();
+                
 
                 $querys =  new Query;
                 $querys     ->select(['tbl_ejecucionformularios.created', 'tbl_usuarios.usua_nombre'])->distinct()

@@ -26,13 +26,6 @@ class UploadForm extends Model
             foreach ($this->archivo_adjunto as $file) {
                 $user = Yii::$app->user->identity->username;
                 $cadena = date("YmdHis") . $user . str_replace(' ', '', $file->name);
-                //print_r($cadena); die;
-
-                // try {
-                //     $file->saveAs('alertas/' . $cadena . '.' . $file->extension)
-                // } catch (\Exception $e) {
-                //     ...
-                // }
                 $file->saveAs('alertas/' . $cadena);
             }
             return true;

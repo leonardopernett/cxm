@@ -89,6 +89,8 @@ use yii\bootstrap\Modal;
                            }else {
                              $vardocumento3 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
                            } 
+                         }else{
+                             #code
                          }
                          $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua_feedback WHERE documento_jefe = $vardocumentojefe")->queryScalar();
                         
@@ -143,50 +145,82 @@ use yii\bootstrap\Modal;
 
                                         $evaluacompe1 = $evaluacompe1 + ($value['%Competencia'] * 40) / 100;
                                         $bloque1 = $bloque1 + 1;
+                                        }else{
+                                            #code
                                         }
                                         if($value['idevaluacionbloques'] == 2){
 
                                         $evaluaorgan1 = $evaluaorgan1 + ($value['%Competencia'] * 20) / 100;                        
                                         $bloque2 = $bloque2 + 1;
+                                        }else{
+                                            #code
                                         }
                                         if($value['idevaluacionbloques'] == 3){
 
                                         $evaluadese1 = $evaluadese1 + ($value['%Competencia'] * 40) / 100;
                                         $bloque3 = $bloque3 + 1;
+                                        }else{
+                                            #code
                                         }                 
+                                    }else{
+                                        #code
                                     }
                                     if($i == 3){
                                         if($value['idevaluacionbloques'] == 1){
                                         $evaluacompe2 = $evaluacompe2 + ($value['%Competencia'] * 40) / 100;
+                                        }else{
+                                            #code
                                         }
                                         if($value['idevaluacionbloques'] == 2){
                                         $evaluaorgan2 = $evaluaorgan2 + ($value['%Competencia'] * 20) / 100;
+                                        }else{
+                                            #code
                                         }
                                         if($value['idevaluacionbloques'] == 3){
                                         $evaluadese2 = $evaluadese2 + ($value['%Competencia'] * 40) / 100;
+                                        }else{
+                                            #code
                                         }                 
+                                    }else{
+                                        #code
                                     }
                                     if($i == 4){
                                         if($value['idevaluacionbloques'] == 1){
                                         $evaluacompe3 = $evaluacompe3 + ($value['%Competencia'] * 40) / 100;
+                                        }else{
+                                            #code
                                         }
                                         if($value['idevaluacionbloques'] == 2){
                                         $evaluaorgan3 = $evaluaorgan3 + ($value['%Competencia'] * 20) / 100;
+                                        }else{
+                                            #code
                                         }
                                         if($value['idevaluacionbloques'] == 3){
                                         $evaluadese3 = $evaluadese3 + ($value['%Competencia'] * 40) / 100;
+                                        }else{
+                                            #code
                                         }                 
+                                    }else{
+                                        #code
                                     }
                                     if($i == 2){
                                         if($value['idevaluacionbloques'] == 1){
                                         $evaluacompe4 = $evaluacompe4 + ($value['%Competencia'] * 40) / 100;
+                                        }else{
+                                            #code
                                         }
                                         if($value['idevaluacionbloques'] == 2){
                                         $evaluaorgan4 = $evaluaorgan4 + ($value['%Competencia'] * 20) / 100;
+                                        }else{
+                                            #code
                                         }
                                         if($value['idevaluacionbloques'] == 3){
                                         $evaluadese4 = $evaluadese4 + ($value['%Competencia'] * 40) / 100;
-                                        }                 
+                                        } else{
+                                            #code
+                                        }                
+                                    }else{
+                                        #code
                                     }
                                 }            
                             }
@@ -196,43 +230,60 @@ use yii\bootstrap\Modal;
                                 $evaluacompe1 = $evaluacompe1 / $bloque1;
                                 $evaluaorgan1 = $evaluaorgan1 / $bloque2; 
                                 $evaluadese1 = $evaluadese1 / $bloque3;
+                                }else{
+                                    #code
                                 }
                                 if($evaluacompe2 > 0){
                                 $evaluacompe2 = $evaluacompe2 / $bloque1;
                                 $evaluaorgan2 = $evaluaorgan2 / $bloque2;
                                 $evaluadese2 = $evaluadese2 / $bloque3;
+                                }else{
+                                    #code
                                 }
                                 if($evaluacompe3 > 0){
                                 $evaluacompe3 = $evaluacompe3 / $bloque1;
                                 $evaluaorgan3 = $evaluaorgan3 / $bloque2;
                                 $evaluadese3 = $evaluadese3 / $bloque3;
+                                }else{
+                                    #code
                                 }
                                 if($evaluacompe4 > 0){
                                 $evaluacompe4 = $evaluacompe4 / $bloque1;
                                 $evaluaorgan4 = $evaluaorgan4 / $bloque2;
                                 $evaluadese4 = $evaluadese4 / $bloque3;
+                                }else{
+                                    #code
                                 }
+                            }else{
+                                #code
                             }
 
                             $txtevalua1 = $evaluacompe1 + $evaluaorgan1 + $evaluadese1;
                             $txtevalua2 = $evaluacompe2 + $evaluaorgan2 + $evaluadese2;
                             $txtevalua3 = $evaluacompe3 + $evaluaorgan3 + $evaluadese3;
                             $txtevalua4 = $evaluacompe4 + $evaluaorgan4 + $evaluadese4;
-                            //var_dump($txtevalua1 );
-                            //var_dump($txtevalua2);
+                           
                             $txtnotafinal = null;
                             if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 == 0 && $txtevalua4 == 0) {
                             $txtnotafinal = (($txtevalua1 * 20)/100) + (($txtevalua2 * 80) /100);
+                            }else{
+                                #code
                             }
                             if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 == 0 && $txtevalua4 != 0) {
                             $txtnotafinal = (($txtevalua1 * 15)/100) + (($txtevalua2 * 70) /100) + (($txtevalua4 * 15) /100);             
+                            }else{
+                                #code
                             }
                             if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 != 0 && $txtevalua4 == 0) {
                             $txtnotafinal = (($txtevalua1 * 10)/100) + (($txtevalua2 * 60) /100) + (($txtevalua3 * 30) /100);            
+                            }else{
+                                #code
                             }
                             if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 != 0 && $txtevalua4 != 0) {
                             $txtnotafinal = (($txtevalua1 * 5)/100) + (($txtevalua2 * 60) /100) + (($txtevalua3 * 5) /100) + (($txtevalua4 * 30) /100);
 
+                            }else{
+                                #code
                             }
 
                             $txtProcentaje = $txtnotafinal;
@@ -242,6 +293,8 @@ use yii\bootstrap\Modal;
                             $tipocoaching = 'Obligatorio';
                             } else if($txtProcentaje <= 85 && $varmenorcompetencia == 1) {
                             $tipocoaching = 'Obligatorio';
+                            }else{
+                                #code
                             }
                             $txtnotafinal = number_format($txtnotafinal,2);
                         } else {

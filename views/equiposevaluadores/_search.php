@@ -22,17 +22,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <!--<?= $form->field($model, 'nmumbral_verde') ?>-_>
-
-    <!--<?= $form->field($model, 'nmumbral_amarillo') ?>-_>
-
+    
     <?= $form->field($model, 'usua_id') ?>
 
-    <div class="form-group">
+  
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
-    </div>
+   
 
     <?php ActiveForm::end(); ?>
 
-</div>
+

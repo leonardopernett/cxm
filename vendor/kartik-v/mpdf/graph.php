@@ -121,7 +121,9 @@ function print_graph($g,$pgwidth) {
 	if($type=='scatter' || $type=='xy') { 
 		if ($dataseries == 'rows') { $rowbegin = 1; }
 		else { $colbegin = 1; }
-	}
+	}else{
+		#code
+	  }
 	$rowend = 0;
 	$colend = 0;
 

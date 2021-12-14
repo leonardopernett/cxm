@@ -116,7 +116,7 @@ class FormvocBloque1 extends \yii\db\ActiveRecord
                  if ($txtcanti > 1) {
                     $txtfechaini = $txtFecha[0];
                     $txtfechafin = $txtFecha[2];
-                    //var_dump($txtfechafin);
+                    
                     $query->andFilterWhere(['like','idpcrcspeech',$this->idpcrcspeech])
                     ->andFilterWhere(['like','cod_pcrc',$this->cod_pcrc])
                     ->andFilterWhere(['like','idvalorado',$this->idvalorado])

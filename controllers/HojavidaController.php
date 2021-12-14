@@ -190,7 +190,9 @@ use Exception;
                 ])->execute();
 
         return $this->redirect('eventos',['model'=>$model]);
-      }
+      }else{
+        #code
+    }
 
       $dataProvider = Yii::$app->db->createCommand("
         SELECT e.hv_ideventos, e.nombre_evento, e.tipo_evento, e.fecha_evento_inicio, e.fecha_evento_fin, c.ciudad, e.asistencia 
@@ -246,7 +248,9 @@ use Exception;
                 ])->execute();
 
         return $this->redirect('paisciudad');
-      }
+      }else{
+        #code
+    }
 
       return $this->renderAjax('creapais',[
         'modelpais' => $modelpais,
@@ -279,7 +283,9 @@ use Exception;
                 ])->execute();
 
         return $this->redirect('paisciudad');
-      }
+      }else{
+        #code
+    }
 
       return $this->renderAjax('creaciudad',[
         'modelciudad' => $modelciudad,
@@ -808,7 +814,9 @@ use Exception;
             WHERE usua_id = :documento
             ')->bindValues($paramsdocumento)->queryScalar();
           
-      }
+      }else{
+        #code
+    }
 
       return $this->render('permisoshv',[
         'model' => $model,
@@ -980,7 +988,9 @@ use Exception;
         }    
 
         return $this->redirect(array('editarpermisos','id'=>$idaccion));
-      }
+      }else{
+        #code
+    }
 
       return $this->renderAjax('createdservicio',[
         'model2' => $model2,
@@ -1304,7 +1314,9 @@ use Exception;
          ])->execute();
  
        return $this->redirect(['eventos']);
-     }
+     }else{
+      #code
+  }
  
      return $this->renderAjax('tiposeventos',[
        'model' => $model,
@@ -2791,7 +2803,9 @@ $modelos = new HojavidaDatapersonal();
         $ruta = 'archivos/'.time()."_".$modelos->file->baseName. ".".$modelos->file->extension;
         $modelos->file->saveAs( $ruta ); 
          $this->Importexcel($ruta);  
-    }
+    }else{
+      #code
+  }
 
     Yii::$app->session->setFlash('file','archivo cargado exitosamente');
     unlink($ruta);
@@ -2996,7 +3010,9 @@ $modelos = new HojavidaDatapersonal();
                   'anulado' => 0,
                   'usua_id' => Yii::$app->user->identity->id,                                       
               ])->execute(); 
-      } 
+      } else{
+        #code
+    }
 
 
       $arrayPcrc = count($varListPcrcs);

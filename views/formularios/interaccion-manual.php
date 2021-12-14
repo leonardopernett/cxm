@@ -41,16 +41,13 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
 </header>
 <br><br>
-<!--<div class="page-header">
-    <h3><?= Yii::t('app', 'Realizar monitoreo') ?></h3>
-</div>-->
+<?= Yii::t('app', 'Realizar monitoreo') ?>
 
 <div class="formularios-form">
 

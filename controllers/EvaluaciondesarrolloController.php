@@ -1322,6 +1322,8 @@ use app\models\EvaluacionDesarrollo;
       }else {
         $vardocumento3 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
       } 
+    }else{
+      #code
     }
     $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua WHERE documento_jefe = $vardocumentojefe")->queryScalar();
     if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
@@ -1461,17 +1463,27 @@ use app\models\EvaluacionDesarrollo;
             if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
               $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
             }
+            else{
+              #code
+            }
 
             if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
               $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2); 
             }
+            else{
+              #code
+            }
 
             if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
               $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2);
+            }else{
+              #code
             }
 
             if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
               $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal4Pares * 5) /100) + (($valortotal3Cargo * 30) /100),2);                            
+            }else{
+              #code
             }
 
             Yii::$app->db->createCommand()->insert('tbl_evaluacion_rtafeedback_detalle',[
@@ -2175,15 +2187,23 @@ use app\models\EvaluacionDesarrollo;
               $txtnotafinal1 = null;
               if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo == 0) {
                 $txtnotafinal1 = number_format((($valortotal1Auto * 20)/100) + (($valortotal2Jefe * 80) /100),2);
+              }else{
+                #code
               }
               if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo == 0) {
                 $txtnotafinal1 = number_format((($valortotal1Auto * 15)/100) + (($valortotal2Jefe * 70) /100) + (($valortotal4Pares * 15) /100),2);  
+              }else{
+                #code
               }
               if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares == 0 && $valortotal3Cargo != 0) {
                 $txtnotafinal1 = number_format((($valortotal1Auto * 10)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 30) /100),2); 
+              }else{
+                #code
               }
               if($valortotal1Auto != 0 && $valortotal2Jefe != 0 && $valortotal4Pares != 0 && $valortotal3Cargo != 0) {
                 $txtnotafinal1 = number_format((($valortotal1Auto * 5)/100) + (($valortotal2Jefe * 60) /100) + (($valortotal3Cargo * 5) /100) + (($valortotal4Pares * 30) /100),2);    
+              }else{
+                #code
               }
 
               $totalcomp = $totalcomp + 1;
@@ -2211,6 +2231,8 @@ use app\models\EvaluacionDesarrollo;
           }
 
           $txtProcentaje =  round(array_sum($varArraySumaB),2);
+        }else{
+          #code
         }
 
         return $this->render('exportarrtadashboard',[
@@ -2610,6 +2632,8 @@ use app\models\EvaluacionDesarrollo;
                 'txtProcentaje' => $txtProcentaje,
                 'vardocumento' => $vardocumento,
               ]);
+        }else{
+          #code
         }
 
         return $this->renderAjax('enviararchivouno',[
@@ -3020,6 +3044,8 @@ use app\models\EvaluacionDesarrollo;
                 'txtProcentaje' => $txtProcentaje,
                 'vardocumento' => $vardocumento,
               ]);
+        }else{
+          #code
         }
 
         return $this->renderAjax('enviararchivodos',[
@@ -3676,6 +3702,8 @@ use app\models\EvaluacionDesarrollo;
                 'model' => $model,
           ]);
 
+        }else{
+          #code
         }
 
         return $this->renderAjax('enviargeneral',[
@@ -4236,6 +4264,8 @@ use app\models\EvaluacionDesarrollo;
                 'model' => $model,
           ]);
 
+        }else{
+          #code
         }
 
 

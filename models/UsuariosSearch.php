@@ -102,9 +102,7 @@ class UsuariosSearch extends Usuarios {
 
         $dataProvider = $query->asArray()->all();
 
-        return $dataProvider;
-    }
-
+        return $dataProvide
     /**
      * Creates data provider instance with search query applied
      *
@@ -114,9 +112,7 @@ class UsuariosSearch extends Usuarios {
      */
     public function searchAjax($params) {
         
-        /*if (!($this->load($params))) {
-            return false;
-        }*/
+        
        
         $query = Usuarios::find();
         $query->select('u.*,gu.grupos_id AS grupo,gu.nombre_grupo AS nombregrupo');
@@ -124,12 +120,6 @@ class UsuariosSearch extends Usuarios {
         $query->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id = u.usua_id');
         $query->join('INNER JOIN', 'tbl_grupos_usuarios gu', 'gu.grupos_id = rgu.grupo_id');
         $query->andWhere('gu.grupos_id = ' . $params);
-        /*$query->andFilterWhere(['like', 'u.usua_usuario', $this->usua_usuario])
-                ->andFilterWhere(['like', 'u.usua_nombre', $this->usua_nombre])
-                ->andFilterWhere(['like', 'u.usua_email', $this->usua_email])
-                ->andFilterWhere(['like', 'u.usua_identificacion', $this->usua_identificacion])
-                ->andFilterWhere(['like', 'u.usua_activo', $this->usua_activo])
-                ->andFilterWhere(['like', 'u.usua_estado', $this->usua_estado]);*/
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

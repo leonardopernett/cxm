@@ -559,6 +559,36 @@ $varMedellin = "Medellín";
                 </div>
             </div>
 
+    <div class="row" style="margin-top:20px">
+       <div class="col-md-6">
+           <div class="card1">
+              <canvas id="myChartAdmin"></canvas>
+           </div>
+       </div>
+       
+       <div class="col-md-6">
+           <div class="card1">
+              <canvas id="myChartAdmin2"></canvas>
+           </div>
+       </div>
+
+   
+            
+                            <?php foreach($totalDecisorEstrategico as $total1): ?>
+                                 <?php echo $total1['total'] ?>
+                            <?php endforeach ?>
+                       
+                            <?php foreach($totalDecisorOperativo as $total2): ?>
+                                 <?php echo $total2['total'] ?>
+                             <?php endforeach ?>
+                       
+                            <?php foreach($totalNoDecisorEstrategico as $total3): ?>
+                                 <?php echo $total3['total'] ?>
+                            <?php endforeach ?>
+                      
+                            <?php foreach($totalNoDecisorOperativo as $total4): ?>
+                                 <?php echo  $total4['total'] ?>
+                             <?php endforeach ?>
     </div>
 </div>
 

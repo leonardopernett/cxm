@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;

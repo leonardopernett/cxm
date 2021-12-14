@@ -91,8 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
@@ -112,8 +111,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-12">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-clock" style="font-size: 15px; color: #559FFF;"></em> Generar acciones: </label>
-                        <!-- La fecha se inhabilita para hacer el proceso solo con el tipo, ya que en la tabla del ida de Experience esta la fecha -->
-                        <!-- <?=
+                        
+                        <?=
                             $form->field($model, 'fechacreacion', [
                                 'labelOptions' => ['class' => 'col-md-12'],
                                 'template' => 
@@ -135,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'endDate' => date("Y-m-d"),
                                     'opens' => 'right',
                             ]]);
-                        ?> -->
+                        ?> 
 
                         <?= $form->field($model, 'servicio')->dropDownList($varlistarbols, ['prompt' => 'Seleccionar Servicio...', 'id'=>'idarbols']) ?>
                         <?= $form->field($model, 'tipoproceso')->dropDownList($vartipo, ['prompt' => 'Seleccione Proceso...', 'id'=>"txtidtipo" ])->label('') ?>

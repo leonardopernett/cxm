@@ -129,6 +129,8 @@ use app\models\DistribucionAsesores;
         $this->Guardarcantidades();
 
         return $this->redirect('procesaasesores');
+      }else{
+        #code
       }
       
 
@@ -194,6 +196,8 @@ use app\models\DistribucionAsesores;
         }
 
         return $this->redirect('procesalideres');
+      }else{
+        #code
       }      
 
       return $this->render('procesaasesores',[
@@ -317,6 +321,8 @@ use app\models\DistribucionAsesores;
 
         return $this->redirect('procesaequipos');
 
+      }else{
+        #code
       }
 
       return $this->render('procesalideres',[
@@ -361,6 +367,8 @@ use app\models\DistribucionAsesores;
         }
 
         return $this->redirect('index');
+      }else{
+        #code
       }
 
       return $this->render('procesaequipos',[

@@ -56,11 +56,8 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta accion");
         echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
     }
     ?>
-<!--    <div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
+   <?= Html::encode($this->title) ?>
     <?php
-    //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
     $form = ActiveForm::begin([
         'options' => ["id" => "permisosMasivos"],
         'layout' => 'horizontal',

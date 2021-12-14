@@ -502,7 +502,9 @@ use yii\base\Exception;
                                       ],'iddashboardservicios ='.$txtIdServicio.'')->execute();   
 
         return $this->redirect('index');      
-      }
+      }else{
+        #code
+    }
 
           return $this->renderAjax('asignararbol',[
             'model' => $model,
@@ -909,7 +911,9 @@ use yii\base\Exception;
             
             
           }
-        }
+        }else{
+          #code
+      }
     
     // fin Diego
 
@@ -944,7 +948,9 @@ use yii\base\Exception;
               $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
               $lastColumn++;
             }
-          }  
+          }else{
+            #code
+        }
           
         }
 
@@ -988,7 +994,9 @@ use yii\base\Exception;
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
               $lastColumn++;
             }
-          } 
+          }else{
+            #code
+        }
           
         }
 
@@ -1250,7 +1258,9 @@ use yii\base\Exception;
                   $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $totalpondeR); 
                 $lastColumn++;
                 }
-            }
+            }else{
+              #code
+          }
             
           }
           $numCell++;
@@ -2191,7 +2201,10 @@ use yii\base\Exception;
               	$varcanti = $value2['cantidad'];
               	if(!$varcanti ) {
                    $varcanti = 0;
-              	}
+              	}else
+                {
+                  #code
+                }
               	$phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcanti);
 	      }
               $lastColumn++;
@@ -2237,6 +2250,8 @@ use yii\base\Exception;
                 $txtDocument = $model->documento_director;
 
                 return $this->redirect(array('registrarcategorias','txtCityP'=>$txtCity,'txtRadicadoP'=>$txtDocument));
+            }else{
+              #code
             }
 
       return $this->renderAjax('seleccionservicio',[
@@ -2713,6 +2728,8 @@ use yii\base\Exception;
                   array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['ext']));
               }elseif($value['usuared']!=""){
                   array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['usuared']));
+              }else{
+                #code
               }
             }
 
@@ -4498,6 +4515,8 @@ public function actionCantidadentto(){
               }
               
               
+            }else{
+              #code
             }
           }
 
@@ -4779,6 +4798,8 @@ public function actionCantidadentto(){
                       'usuario_id' => $sessiones,
                     ])->execute();
                   }
+              }else{
+                #code
               }
              
             }
@@ -5105,7 +5126,7 @@ public function actionCantidadentto(){
                 //en 1 por defecto
                 $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
                 if (!isset($TmpForm->subi_calculo)) {
-                    //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                    
                     if (isset($data->formulario->subi_calculo)) {
                         $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                         $TmpForm->save();
@@ -5139,56 +5160,24 @@ public function actionCantidadentto(){
 
                     $dteDiff1->format("Y-m-d H:i:s");
 
-                    //print_r($dteDiff1); die;
+                    
 
                     $data->fecha_inicial = $data->tmp_formulario->hora_inicial;
                     $data->fecha_final = $data->tmp_formulario->hora_final;
                     $data->minutes = $dteDiff1->h . ":" . $dteDiff1->i . ":" . $dteDiff1->s;
+                }else{
+                  #code
                 }
 
-                /*$data->mod_fecha_inicial = "";
-                $data->mod_fecha_final = "";
-                $data->mod_minutes = "";
-
-                if($data->tmp_formulario->mod_hora_inicial != "" AND $data->tmp_formulario->mod_hora_final != ""){
-                    $inicial = new DateTime($data->tmp_formulario->mod_hora_inicial);
-                    $final = new DateTime($data->tmp_formulario->mod_hora_final);
-
-                    $dteDiff2  = $inicial->diff($final);
-
-                    $dteDiff2->format("Y-m-d H:i:s");
-
-                    //print_r($dteDiff2); die;
-
-                    $data->mod_fecha_inicial = $data->tmp_formulario->mod_hora_inicial;
-                    $data->mod_fecha_final = $data->tmp_formulario->mod_hora_final;
-                    $data->mod_minutes = $dteDiff2->h . ":" . $dteDiff2->i . ":" . $dteDiff2->s . " Segundos ";
-
-                    $uno = $dteDiff1->h + $dteDiff2->h;
-                    $dos = $dteDiff1->i + $dteDiff2->i;
-                    $tres = $dteDiff1->s + $dteDiff2->s;
-
-                    $data->tiempototal = $uno . ":" . $dos . ":" . $tres . " Segundos ";
-                    
-                }*/
-
                 $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$formulario_id'")->queryScalar();
-             
-            //DATOS GENERALES
-               /* $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
-                $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
-                $data->idcliente =  $varIdcliente;
-                $data->codpcrc =  $varCodpcrc;*/
-    
+            
+               
         //DATOS GENERALES
 
                 $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = '$TmpForm->arbol_id'")->queryScalar();
 
                  $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = '$TmpForm->arbol_id'")->queryScalar();
-               //$varIdclienteSel = Yii::$app->db->createCommand("select id_dp_clientes FROM tbl_speech_servicios WHERE arbol_id = '$varidarbol'")->queryScalar();
 
-                //SELECT * FROM tbl_speech_servicios WHERE arbol_id = 17
-                 //SELECT a.id, a.name FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = 2559
 
                 $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
                 $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
@@ -5202,21 +5191,13 @@ public function actionCantidadentto(){
                 }else{
                     $data->idcliente =  $varIdcliente;
                 }
-                //$data->idcliente =  $varIdcliente;
+               
                 $data->varidarbol =  $varidarbol;
                 $data->codpcrc =  $varCodpcrc;
                 $data->IdclienteSel =$varIdclienteSel;
                 $data->varIdformu =  $varIdformu;
 
 
-                //$data->indices_calcular = call_user_func_array('array_merge', $data->indices_calcular);
-                /* if (!isset($data->formulario)) {
-                  $data->formulario = new Formularios();
-                  $data->formulario->id_plantilla_form = 1;
-                  } */
-
-                // echo "<pre>";
-                // print_r($data); die;
                 return $this->render('show-formulario', [
                                                         'data' => $data,                            
                                                         'model' => $model,
@@ -5262,6 +5243,8 @@ public function actionCantidadentto(){
                 if (isset($_POST['subi_calculo']) AND $_POST['subi_calculo'] != '') {
                     $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
                     $data->save();
+                }else{
+                  #code
                 }
                 /* EDITO EL TMP FORMULARIO  GERMAN*/
                 $model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
@@ -5275,6 +5258,9 @@ public function actionCantidadentto(){
                     $modelRegistro = new \app\models\RegistroEjec();
                     $modelRegistro->ejec_form_id = $tmp_id;
                     $modelRegistro->descripcion = 'Primera valoración';
+                }
+                else{
+                  #code
                 }
                 $modelRegistro->dimension_id = Yii::$app->request->post('dimension_id');
                 $modelRegistro->valorado_id = $data->evaluado_id;
@@ -5308,6 +5294,9 @@ public function actionCantidadentto(){
                         if (isset($arrCheckPits[$form_detalle_id])) {
                             $arrDetalleForm["c_pits"] = $arrCheckPits[$form_detalle_id];
                         }
+                    }
+                    else{
+                      #code
                     }
                     if (empty($calif_detalle_id)) {
                         $arrDetalleForm["calificaciondetalle_id"] = -1;
@@ -5360,6 +5349,8 @@ public function actionCantidadentto(){
                         if ($bloquessnna[0]['conteo'] == $totalBloques[0]['conteo']) {
                             \app\models\Tmpejecucionsecciones::updateAll(['snna' => 1], ['tmpejecucionformulario_id' => $tmp_id, 'seccion_id' => ($seccion->seccion_id)]);
                         }
+                    }else{
+                      #code
                     }
                 }
                 /* GUARDO TIPIFICACIONES */
@@ -5373,6 +5364,8 @@ public function actionCantidadentto(){
                     \app\models\TmpejecucionbloquedetallesTipificaciones::updateAll(["sncheck" => 1]
                             , "tmpejecucionbloquedetalle_id = '" . $form_detalle_id . "' "
                             . "AND tipificaciondetalle_id IN(" . implode(",", $tipif_array) . ")");
+                }else{
+                  #code
                 }
 
                 /* GUARDO SUBTIPIFICACIONES */
@@ -5618,5 +5611,3 @@ public function actionCantidadentto(){
 
 
   }
-
-?>

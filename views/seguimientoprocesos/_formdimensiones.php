@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -147,8 +146,7 @@ $sessiones1 = Yii::$app->user->identity->id;
 
     $fechainicio1 = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
     $fechafin1 = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-    //$fechainicio = date('2018-08-22');
-    //$fechafin = date('2018-08-30');  
+ 
 
     $varGrid = $dataProvider->getModels();
     
@@ -156,7 +154,7 @@ $sessiones1 = Yii::$app->user->identity->id;
     foreach ($varGrid as $key => $value) {
         $varTxt = $value['dimensions'];
 
-        // $varRta = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and dimensions like '%$varTxt%' and fechacreacion between '$fechainicio1' and '$fechafin1'")->queryScalar();
+        
 
         $querys =  new Query;
         $querys     ->select(['sum(cant_valor)'])
@@ -198,7 +196,7 @@ $sessiones1 = Yii::$app->user->identity->id;
 
 
 
-    //$totalCumpli = round(($totalRealizadas / $totalMeta) * 100);
+    
 
         if($totalMeta!= 0 || $totalRealizadas != 0){
 	        $totalCumpli = round(($totalRealizadas / $totalMeta) * 100);

@@ -27,16 +27,14 @@ use yii\web\JsExpression;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
 </header>
 <br><br>
-<!-- <div class="page-header">
-    <h3><?= Yii::t('app', 'Realizar monitoreo') ?></h3>
-</div> --!>
+
+    <?= Yii::t('app', 'Realizar monitoreo') ?>
 
 <div class="formularios-form">
     <?php $form = ActiveForm::begin([
@@ -52,19 +50,13 @@ use yii\web\JsExpression;
   </div>
 </div>
 
-    <div class="form-group">
-        <label class="control-label col-sm-3"><?php echo Yii::t('app', 'Arbol ID'); ?></label>
-        <div class="col-sm-6">
+    <?php echo Yii::t('app', 'Arbol ID'); ?>
             <?php echo $nmArbol->dsname_full; ?>
-        </div>          
-    </div> 
+        
 
-    <div class="form-group">
-        <label class="control-label col-sm-3"><?php echo Yii::t('app', 'Dimension'); ?></label>
-        <div class="col-sm-6">
+    <?php echo Yii::t('app', 'Dimension'); ?>
             <?php echo $nmDimension->name; ?>
-        </div>          
-    </div>
+        
     
     <?=
         $form->field($modelE, 'evaluado_id')
@@ -81,34 +73,26 @@ use yii\web\JsExpression;
                     'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                     'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
                 ],
-            //'initSelection' => new JsExpression($initScript)
+            
             ]
                 ]
         );
     ?>
     
-    <div class="form-group">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-6">
+    
             <?= Html::radioList('tipo_interaccion', 1, 
                 ['Interacción Automática', 'Interacción Manual'], 
                 ['separator'=>'&nbsp;&nbsp;&nbsp;&nbsp;']) ?>
-        </div>
-    </div>        
-    
+      
     <?= Html::input("hidden", "arbol_id", $arbol_id); ?>
     <?= Html::input("hidden", "dimension_id", $dimension_id); ?>
     <?= Html::input("hidden", "nmArbol", $nmArbol->dsname_full); ?>
     <?= Html::input("hidden", "nmDimension", $nmDimension->name); ?>
     <?= Html::input("hidden", "formulario_id", $formulario_id); ?>
     
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
             <?=
             Html::submitButton(Yii::t('app', 'Buscar'), ['class' => 'btn btn-success'])
             ?>            
-        </div>        
-    </div>
+        
 
     <?php ActiveForm::end(); ?>
-</div>

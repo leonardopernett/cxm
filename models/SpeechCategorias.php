@@ -104,14 +104,7 @@ class SpeechCategorias extends \yii\db\ActiveRecord
                 ->where("anulado = 0")
                 ->andwhere("cod_pcrc like '$varOpcion2'")
                 ->andwhere("fechacreacion > '2020-01-01'");
-        // }else{
-        //     $query = Dashboardcategorias::find()
-        //         ->select('clientecategoria')->distinct()
-        //         ->joinWith('permisos')
-        //         ->andwhere('usuaid  ='.$params.'')
-        //         ->andwhere("anulado = 0")
-        //         ->andwhere("fechacreacion > '2020-01-01'");
-        // }
+      
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

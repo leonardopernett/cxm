@@ -50,8 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -60,9 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="control-procesos-index">
 
 <br>
-<!-- <div class="page-header" >
-    <h3><center>Visual Plan de Valoracion</center></h3>
-</div> --!> 
+
 
 
 <?php if ($roles == "272") { ?>
@@ -98,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'buttons' => 
                     [
                         'view' => function ($url, $model) {
-                            //return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, ['Ver'=>Yii::t('app','view'),]);
+                           
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',  ['view', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                                 'class' => '',
                                 'data' => [

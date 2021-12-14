@@ -1,9 +1,7 @@
 <?php
 include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
 
-//echo "<pre>";
-//print_r($data);
-//echo "</pre>";
+
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -44,7 +42,7 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js");
+
 ?>
 <?php
 $prev_bloque_descripcion = $prev_seccion = $prev_bloque = '';
@@ -816,7 +814,7 @@ $contadorSecciones = 0;
                                 'style' => 'cursor:pointer;'
                             ]);
                             ?>
-                            <?php //echo $detalle->pregunta;    ?>
+                            
                         </label>
                         <div class="col-sm-4">
                             <?php if ($data->fill_values == true): ?>
@@ -1115,14 +1113,6 @@ $contadorSecciones = 0;
         }
         ?>
     </div>
-    <!--<div class="row seccion" <?php
-    /* if ($data->info_adicional['problemas'] == 0 &&
-      $data->info_adicional['tipo_llamada'] == 0)
-      echo "style='display: none'"; */
-    ?>>
-    <?php //echo Yii::t("app", "Informacion adicional");     ?>
-    </div>-->
-    <?php
     if (($contadorSecciones % $cantDivs) == 0) {
         echo $varRow;
     }

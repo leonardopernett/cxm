@@ -198,7 +198,9 @@ use app\models\Controldimensionamiento;
 				}
 
 				return $this->redirect('index');
-			}	
+			}else{
+				#code
+			}
 			
 			return $this->renderAjax('creardimensionamiento',[
 				'model' => $model,
@@ -221,6 +223,8 @@ use app\models\Controldimensionamiento;
 				}else{
 					return $this->redirect('index');
 				}				
+			}else{
+				#code
 			}
 
 			return $this->renderAjax('updatedimensionar',[
@@ -319,6 +323,8 @@ use app\models\Controldimensionamiento;
 
 				return $this->redirect('index');
 
+			}else{
+				#code
 			}
 
 
@@ -608,6 +614,8 @@ use app\models\Controldimensionamiento;
 	                          ->send();
 
 	            return $this->redirect('index');
+			}else{
+				#code
 			}
 
 			return $this->renderAjax('enviararchivo',[

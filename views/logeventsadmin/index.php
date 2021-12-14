@@ -52,9 +52,9 @@ $this->params['breadcrumbs'][] = $this->title;
         echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
     }
     ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    
     <?php
-    //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
+
     $form = ActiveForm::begin([
         'options' => ["id" => "formLogaadmin"],
         'layout' => 'horizontal',
@@ -153,32 +153,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 </div>
 
-<?php //if ($showGrid):   ?>
-<?php /* echo ExportMenu::widget([
-  'dataProvider' => $dataProvider,
-  'columns' => $gridColumns,
-  'columnSelectorOptions' => [
-  'label' => Yii::t('app', 'Columns'),
-  ],
-  'dropdownOptions' => [
-  'label' => Yii::t('app', 'Export All'),
-  'class' => 'btn btn-default'
-  ],
-  //'fontAwesome' => true,
-  'showConfirmAlert' => false,
-  'target' => '_blank',
-  'filename' => Yii::t('app', 'Reporte_logAdmin') . '_' . date('Ymd'),
-  'exportRequestParam' => 'exportLog',
-  'columnBatchToggleSettings' => [
-  'label' => Yii::t('app', 'All')
-  ],
-  'exportConfig' => [
-  ExportMenu::FORMAT_TEXT => false,
-  ExportMenu::FORMAT_PDF => false,
-  ExportMenu::FORMAT_HTML => false,
-  ]
-  ]); */
-?>
+
 <br/><br/>
 <?php //endif;   ?>
 <script type="text/javascript">

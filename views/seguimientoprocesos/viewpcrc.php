@@ -55,4 +55,4 @@ $this->params['breadcrumbs'][] = $this->title;
 	    ]); 
 	?>
 	<br>
-	<!-- <button type="submit" id="export_data" name="export_data" value="Export to excel" class="btn btn-info" style="background-color: #4298B4">Exrpotar a Excel</button> -->
+	

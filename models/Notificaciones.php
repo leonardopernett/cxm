@@ -57,6 +57,7 @@ IF(b.desempeno = "4", CONCAT(DATE_FORMAT(CONCAT(a.ano,  "-", a.mes, "-", "00"), 
 
         if($tipo == "asesor"){
 
+            #code
         }else{
             $query->andWhere("a.lider = '".Yii::$app->user->identity->username."'");
         }

@@ -366,10 +366,16 @@ class FuenteinformacionController extends Controller {
                                         'evaluado_id' => $varidasesor,
                                         'equipo_id' => $varidliderequipo,                            
                                     ])->execute();
+                                }else{
+                                    #code
                                 }
 
                             }
+                        }else{
+                            #code
                         }
+                    }else{
+                        #code
                     }
                 }              
                 return $this->redirect('index');
@@ -402,11 +408,19 @@ class FuenteinformacionController extends Controller {
                                             'arbol_id' => $varidarbols,
                                             'equipo_id' => $varidequipo,                            
                                         ])->execute();
+                                    }else{
+                                        #code
                                     }
 
                                 }
+                            }else{
+                                #code
                             }
+                        }else{
+                            #code
                         }
+                    }else{
+                        #code
                     }
                 }
               
@@ -767,7 +781,11 @@ class FuenteinformacionController extends Controller {
                                                 'usua_estado' => $varestado,
                                                 'fechacreacion' => $txtfechacreacion,
                                             ])->execute();                          
+                                    }else{
+                                        #code
                                     }
+                                }else{
+                                    #code
                                 }    
                             }
                         $varrolid = 273;
@@ -796,7 +814,11 @@ class FuenteinformacionController extends Controller {
                                                             'rel_usua_id' => intval($varidusua),
                                                             'rel_role_id' => $varrolid,
                                         ])->execute(); 
+                                    }else{
+                                        #code
                                     }
+                                }else{
+                                    #code
                                 }
                             }
                         
@@ -827,7 +849,11 @@ class FuenteinformacionController extends Controller {
                                             'nmumbral_amarillo' => $varamarillo,
                                             'usua_id' => $varidusua,
                                         ])->execute();
+                                    }else{
+                                        #code
                                     }
+                                }else{
+                                    #code
                                 }
                             }
   //crear evaluados  
@@ -870,12 +896,22 @@ class FuenteinformacionController extends Controller {
                                                                         'arbol_id' => $varidarbols,
                                                                         'equipo_id' => $varidequipo,                            
                                                                     ])->execute();
+                                                                }else{
+                                                                    #code
                                                                 }
                             
                                                             }
+                                                        }else{
+                                                            #code
                                                         }
+                                                    }else{
+                                                        #code
                                                     }
+                                                }else{
+                                                    #code
                                                 }
+                                            }else{
+                                                #code
                                             }
                                         }
             // fin importe           

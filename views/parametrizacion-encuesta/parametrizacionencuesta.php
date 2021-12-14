@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th scope="col"></th>
                 <th scope="col">Categorías</th>
                 <th scope="col">Nombre de la Pregunta</th> 
-                <!--<th>Tipo de recomendación</th> -->
+               
             </tr>
             <tr>
                 <th scope="row">Pregunta 1</th>
@@ -115,14 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td> 
-                <!-- <td>
-                    <?php /* echo Html::dropDownList('metrica1', (isset($modelPregunta[0])) ? $modelPregunta[0]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica1",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td> -->
+               
             </tr>
             <tr>
                 <th scope="row">Pregunta 2</th>
@@ -144,14 +137,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td>
-                <!--<td>
-                    <?php /*echo Html::dropDownList('metrica2', (isset($modelPregunta[1])) ? $modelPregunta[1]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica2",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td>-->
+               
             </tr>
             <tr>
                 <th scope="row">Pregunta 3</th>
@@ -173,14 +159,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td>
-                <!--<td>
-                    <?php /*echo Html::dropDownList('metrica3', (isset($modelPregunta[2])) ? $modelPregunta[2]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica3",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td>-->
+               
+
             </tr>
             <tr>
                 <th scope="row">Pregunta 4</th>
@@ -202,14 +182,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td> 
-                <!--<td>
-                    <?php /*echo Html::dropDownList('metrica4', (isset($modelPregunta[3])) ? $modelPregunta[3]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica4",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td>-->
+                
             </tr>
             <tr>
                 <th scope="row">Pregunta 5</th>
@@ -252,14 +225,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td> 
-                <!--<td>
-                    <?php /*echo Html::dropDownList('metrica6', (isset($modelPregunta[5])) ? $modelPregunta[5]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica6",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td>-->
+                
             </tr>
             <tr>
                 <th scope="row">Pregunta 7</th>
@@ -281,14 +247,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td>
-                <!--<td>
-                    <?php /*echo Html::dropDownList('metrica7', (isset($modelPregunta[6])) ? $modelPregunta[6]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica7",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td>-->
+                
             </tr>
             <tr>
                 <th scope="row">Pregunta 8</th>
@@ -310,14 +269,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td>
-                <!--<td>
-                    <?php /*echo Html::dropDownList('metrica8', (isset($modelPregunta[7])) ? $modelPregunta[7]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica8",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td>-->
+               
             </tr>
             <tr>
                 <th scope="row">Pregunta 9</th>
@@ -339,14 +291,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td>
-                <!--<td>
-                    <?php /*echo Html::dropDownList('metrica9', (isset($modelPregunta[8])) ? $modelPregunta[8]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica9",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td>-->
+                
             </tr>
             <tr>
                 <th scope="row">Pregunta 10</th>
@@ -368,14 +313,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                     ?>
                 </td>
-                <!--<td>
-                    <?php /*echo Html::dropDownList('metrica10', (isset($modelPregunta[9])) ? $modelPregunta[9]->metrica : $modelPreguntaBase->metrica, ['2' => 'Recomendación de 0/9', '1' => 'Recomendación de 1/5'],
-                            [
-                        "id" => "metrica10",
-                        "class" => "form-control",
-                        "prompt" => Yii::t("app", "Seleccione la metrica..")
-                    ])*/?>
-                </td>-->
+               
             </tr>
         </table>
     </div>
