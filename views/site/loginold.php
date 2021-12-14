@@ -16,12 +16,7 @@ $this->title = 'Login';
     <div class="login-box">
         <div class="login-box-body">
             <h4>QA Management</h4>            
-            <!--
-            <?php //= Html::img(Url::to("@web/images/login-qa.jpg"), ["class" => "img-responsive"]); ?>
-            <div class="page-header qa-header">
-                <h4><?php //echo Yii::t("app", "Bienvenido");      ?></h4>
-            </div>
-            -->
+            
             <?php
             $form = ActiveForm::begin([
                         'id' => 'login-form',
@@ -35,7 +30,7 @@ $this->title = 'Login';
             ]);
             ?>
 
-            <?php //echo $form->errorSummary($model); ?>
+          
 
             <div class="form-group">
 

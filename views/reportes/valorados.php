@@ -45,17 +45,13 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
 </header>
 <br><br>
 
-<!--<div class="page-header">
-    <h3><?php // Yii::t('app', 'Reporte Valorados') ?></h3>
-</div>-->
 
 <div>    
 
@@ -186,9 +182,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 
 <?php if ($showGrid): ?>
 <br>
-    <!--<div class="page-header">
-        <h3><?= Yii::t('app', 'Resultados') ?></h3>
-    </div>-->
+    <?= Yii::t('app', 'Resultados') ?>
     <?php
     
     $gridColumns = [
@@ -227,7 +221,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col6'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -240,7 +234,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col7'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -253,7 +247,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col8'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -266,7 +260,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col10'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -279,7 +273,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col11'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+               
             }
         ],
         [
@@ -292,7 +286,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col12'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+             
             }
         ],
         [
@@ -305,7 +299,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col13'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -318,7 +312,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col14'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -331,7 +325,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col15'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+               
             }
         ],
         [
@@ -344,14 +338,10 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }else{
                   return $data['col16'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
-        /*[
-            'attribute' => 'Mensaje de alerta por nota muy baja',
-            'value' => 'col17'
-        ],*/
-        //['class' => 'yii\grid\ActionColumn'],
+        
     ];
 
     echo ExportMenu::widget([

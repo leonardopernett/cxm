@@ -39,9 +39,7 @@ $sessiones1 = Yii::$app->user->identity->id;
     $variables = Yii::$app->get('dbslave')->createCommand("select * from tbl_tipos_cortes where idtc = $varIdtc")->queryAll();
     $listData = ArrayHelper::map($variables, 'idtcs', 'diastcs');
 
-    // $varfechaactual = date("Y-m-d");
-    // $variables = Yii::$app->get('dbslave')->createCommand("select * from tbl_tipos_cortes where idtc = $varIdtc and fechafintcs >= '$varfechaactual'")->queryAll();
-    // $listData = ArrayHelper::map($variables, 'idtcs', 'diastcs');
+    
 
     $vararboles = Yii::$app->get('dbslave')->createCommand("select tbl_control_params.arbol_id,  tbl_arbols.name from tbl_arbols inner join tbl_control_params on tbl_arbols.id = tbl_control_params.arbol_id inner join tbl_control_procesos on tbl_control_params.evaluados_id = tbl_control_procesos.evaluados_id and tbl_control_params.fechacreacion = tbl_control_procesos.fechacreacion where tbl_control_procesos.id = $varids order by tbl_arbols.name asc")->queryAll();
     $varlistarbols = ArrayHelper::map($vararboles, 'arbol_id', 'name');
@@ -93,8 +91,7 @@ $sessiones1 = Yii::$app->user->identity->id;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+       
       </div>
     </div>
   </div>

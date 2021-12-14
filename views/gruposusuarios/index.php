@@ -59,14 +59,12 @@ $this->params['breadcrumbs'][] = $this->title;
         Pjax::begin(['id' => 'grupos-usuarios-pj', 'timeout' => false,
             'enablePushState' => false]);
         ?>  
-        <!--        <div class="page-header">
-                    <h3><?= Html::encode($this->title) ?></h3>
-                </div>-->
+       <?= Html::encode($this->title) ?>
         <?php echo $this->render('_formGrupos', ['model' => $model, 'usuario_id' => $usuario_id]); ?>
-        <?php // echo $this->render('_search', ['model' => $searchModel]);   ?>
+        
 
         <p>
-            <?php //echo Html::a(Yii::t('app', 'Create Gruposusuarios'), ['create', 'usuario_id' => $usuario_id], ['class' => 'btn btn-success']) ?>
+        
         </p>
 
         <?=
@@ -150,13 +148,11 @@ echo Yii::t("app", "Seleccione los Grupos de usuarios");
         echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
     }
     ?>
-                <!--                <div class="page-header">
-                                    <h3><?= Html::encode($this->title) ?></h3>
-                                </div>-->
+                                <?= Html::encode($this->title) ?>
 
-                <?php // echo $this->render('_search', ['model' => $searchModel]);   ?>
+                
 <?php
-    //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
+    
     $form = ActiveForm::begin(['options' => ["id" => "permisosMasivos"], 'layout' => 'horizontal'])
     ?>
                 <p>

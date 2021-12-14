@@ -33,9 +33,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 }
 ?>
 
-<!--<div class="page-header">
-    <h3><?= Yii::t('app', 'Realizar monitoreo') ?></h3>
-</div>-->
+<?= Yii::t('app', 'Realizar monitoreo') ?>
 
 <div class="formularios-form">
 

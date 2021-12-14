@@ -126,20 +126,8 @@ $txtcontar = count($txtidbloque);
                 $txtfechavaloracion = $value['fechacreacion'];
             }
 
-            /*$varcodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_formvoc_bloque1 where idformvocbloque1 = $idform and anulado = 0")->queryScalar();
-            $varpcrc = Yii::$app->db->createCommand("select pcrc from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtServicio = $varcodpcrc.' - '.$varpcrc;
-            $txtSpeech = Yii::$app->db->createCommand("select idspeech from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtFechaHor = Yii::$app->db->createCommand("select fechahora from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtUsers = Yii::$app->db->createCommand("select usuarioagente from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
             
-            $txtextension = Yii::$app->db->createCommand("select extension from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtDuraciones = Yii::$app->db->createCommand("select duracions from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtDimensiones = Yii::$app->db->createCommand("select dimensionform from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtfechavaloracion = Yii::$app->db->createCommand("select fechacreacion from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            */
 
-            // Segundo Bloque
 
 
             $varIndicador = null;
@@ -164,7 +152,7 @@ $txtcontar = count($txtidbloque);
             }
             $txtIndicador = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varIndicador")->queryScalar();
 
-            //$varVariable = Yii::$app->db->createCommand("select variable from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            
             if($varVariable) {
                 $varVariable = $varVariable ;
             } else {
@@ -173,26 +161,26 @@ $txtcontar = count($txtidbloque);
 
             $txtVariable = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varVariable")->queryScalar();
 
-            //$txtatributos = Yii::$app->db->createCommand("select puntodolor from tbl_formvoc_bloque2 fb2  where fb2.anulado = 0 and fb2.idformvocbloque1 = $idform")->queryScalar();
+            
             if ($txtatributos == null) {
                 $txtatributos = "Sin registros";
             }
 
-            //$varMotivo = Yii::$app->db->createCommand("select moticocontacto from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            
             if ($varMotivo != null) {
                 $txtMotivos = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varMotivo")->queryScalar();
             }else{
                 $txtMotivos = "Sin registro";
             }            
 
-            //$varDetalle = Yii::$app->db->createCommand("select motivollamadas from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            
             if ($varDetalle != null) {
                 $txtDetalles = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varDetalle")->queryScalar();
             }else{
                 $txtDetalles = "Sin registro";
             }
 
-            //$varCategoria = Yii::$app->db->createCommand("select categoria from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            
            if ($varCategoria == 1) {
                 $txtCategoria = "Si esta categorizada";
             }else{

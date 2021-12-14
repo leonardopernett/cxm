@@ -33,8 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -44,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
 
         <div class="col-lg-12">
-            <h4><?php //echo Yii::t("app", "Feedback express"); ?></h4>
+            <h4></h4>
             <table class="table table-striped table-bordered">
             <caption>Tabla datos</caption>
                 <thead>                    
@@ -54,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <th scope="col"><?= Yii::t('app', 'Tipo de notificación') ?></th>
                         <th scope="col"><?= Yii::t('app', 'Id Solicitante') ?></th>
                         <th scope="col"><?= Yii::t('app', 'Lider') ?></th>
-                        <!--<th><?php //Yii::t('app', 'Formulario') ?></th>-->
+                        
                         <th scope="col"><?= Yii::t('app', 'Id Evaluador') ?></th>
                     </tr>
                 </thead>
@@ -62,34 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php foreach ($data->alertasList as $alerta): ?>                                                                     
                         <tr>
                             <td>
-                                <?php
-                                /*
-                                $id = $alerta['idForm'];
-                                $eje = \app\models\Ejecucionformularios::findOne(['id' => $id]);
-                                if (isset($eje->basesatisfaccion_id)) {
-
-                                    $modelBase = app\models\BaseSatisfaccion::findOne($eje->basesatisfaccion_id);
-                                }
-                                if (!isset($eje->basesatisfaccion_id)) {
-
-                                    echo Html::a('<span class="glyphicon glyphicon-eye-open">'
-                                            . '</span>'
-                                            , Url::to(['formularios/showformulariodiligenciado'
-                                                , 'feedback_id' => $alerta["id"],'view'=>"segundocalificador"]), [
-                                        'title' => Yii::t('yii', 'ver formulario'),
-                                        'target' => "_blank"
-                                    ]);
-                                } else {
-
-                                    //if ($modelBase->estado == "Cerrado") {
-                                    echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['basesatisfaccion/showformulariogestion'
-                                                , 'basesatisfaccion_id' => $modelBase->id, 'preview' => 1, 'fill_values' => true,'view'=>"segundocalificador"]), [
-                                        'title' => Yii::t('yii', 'ver formulario'),
-                                        'target' => "_blank"
-                                    ]);
-                                    //}
-                                }*/
-                                ?>
                                 <?=
                                 Html::a('<span class="glyphicon glyphicon-pencil"></span>', '', [
                                     'title' => Yii::t('yii', 'Update'),
@@ -107,29 +77,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                return false;",
                                 ]);
                                 ?>
-                                <?php
-                                /*echo Html::a('<span class="glyphicon glyphicon-stats"></span>', '', [
-                                    'title' => Yii::t('yii', 'Calculos'),
-                                    'data-pjax' => 'w0',
-                                    'onclick' => "                                    
-                                $.ajax({
-                                type     :'POST',
-                                cache    : false,
-                                url  : '" . Url::to(['reportes/calculatefeedback'
-                                        , 'formulario_id' => $alerta["idForm"]]) . "',
-                                success  : function(response) {
-                                    $('#ajax_result').html(response);
-                                }
-                               });
-                               return false;",
-                                ]);*/
-                                ?>
                             </td>
                             <td><?php echo $alerta["created"] ?></td>
                             <td><?= Yii::t('app', 'Alerta resumen') ?></td>
                             <td><?php echo $alerta["evaluado"] ?></td>
                             <td><?php echo $alerta["lider"] ?></td>
-                            <!--<td><?php //echo $alerta["formulario"] ?></td>-->
+                       
                             <td><?php echo $alerta["usuario"] ?></td>
                         </tr>
                     <?php endforeach; ?>

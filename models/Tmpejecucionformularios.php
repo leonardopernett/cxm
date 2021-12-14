@@ -332,8 +332,7 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
         $query->andWhere("tmpeje.estado = 'Abierto'");
         $query->andWhere("tmpeje.usua_id = ".Yii::$app->user->identity->id."");
         $query->orderBy("tmpeje.created Desc");
-        //$query->andWhere('tmpeje.usua_id = '.Yii::$app->user->identity->id);
-        //$query->orderBy("tmpeje.created DESC");
+       
         return $dataProvider;
     }
 
@@ -383,8 +382,7 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
         $query->andWhere("tmpeje.estado = 'Abierto'");
         $query->andWhere("c.valorador_inicial_id = ".Yii::$app->user->identity->id."");
         $query->orderBy("tmpeje.created Desc");
-        //$query->andWhere('tmpeje.usua_id = '.Yii::$app->user->identity->id);
-        //$query->orderBy("tmpeje.created DESC");
+        
         return $dataProvider;
     }
     
@@ -495,9 +493,7 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
         //$this->load($params);
         
         $query = Tmpejecucionformularios::find();
-        /*$dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);*/
+        
         $query->andWhere('tmpeje.arbol_id IN (' . $cadenaIdarboles . ')');
         $query->select("tmpeje.*, b.*, b.agente agente,tmpeje.id id,tmpeje.created created, tmpeje.estado estado, c.descripcion descripcion, c.valorador_inicial_id valorador_inicial_id")->from("tbl_tmpejecucionformularios tmpeje");
         //se realiza un join para tener los datos de las valoraciones que estan atadas
@@ -518,8 +514,7 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
         $query->andWhere("tmpeje.estado = 'Abierto'");
         $query->andWhere("tmpeje.usua_id = ".Yii::$app->user->identity->id."");
         $query->orderBy("tmpeje.created Desc");
-        //$query->andWhere('tmpeje.usua_id = '.Yii::$app->user->identity->id);
-        //$query->orderBy("tmpeje.created DESC");
+        
         return $query->count();
     }
 }

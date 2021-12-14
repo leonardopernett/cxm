@@ -5124,7 +5124,7 @@ public function actionCantidadentto(){
                 //en 1 por defecto
                 $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
                 if (!isset($TmpForm->subi_calculo)) {
-                    //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                    
                     if (isset($data->formulario->subi_calculo)) {
                         $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                         $TmpForm->save();
@@ -5158,7 +5158,7 @@ public function actionCantidadentto(){
 
                     $dteDiff1->format("Y-m-d H:i:s");
 
-                    //print_r($dteDiff1); die;
+                    
 
                     $data->fecha_inicial = $data->tmp_formulario->hora_inicial;
                     $data->fecha_final = $data->tmp_formulario->hora_final;
@@ -5167,49 +5167,15 @@ public function actionCantidadentto(){
                   #code
                 }
 
-                /*$data->mod_fecha_inicial = "";
-                $data->mod_fecha_final = "";
-                $data->mod_minutes = "";
-
-                if($data->tmp_formulario->mod_hora_inicial != "" AND $data->tmp_formulario->mod_hora_final != ""){
-                    $inicial = new DateTime($data->tmp_formulario->mod_hora_inicial);
-                    $final = new DateTime($data->tmp_formulario->mod_hora_final);
-
-                    $dteDiff2  = $inicial->diff($final);
-
-                    $dteDiff2->format("Y-m-d H:i:s");
-
-                    //print_r($dteDiff2); die;
-
-                    $data->mod_fecha_inicial = $data->tmp_formulario->mod_hora_inicial;
-                    $data->mod_fecha_final = $data->tmp_formulario->mod_hora_final;
-                    $data->mod_minutes = $dteDiff2->h . ":" . $dteDiff2->i . ":" . $dteDiff2->s . " Segundos ";
-
-                    $uno = $dteDiff1->h + $dteDiff2->h;
-                    $dos = $dteDiff1->i + $dteDiff2->i;
-                    $tres = $dteDiff1->s + $dteDiff2->s;
-
-                    $data->tiempototal = $uno . ":" . $dos . ":" . $tres . " Segundos ";
-                    
-                }*/
-
                 $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$formulario_id'")->queryScalar();
-             
-            //DATOS GENERALES
-               /* $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
-                $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
-                $data->idcliente =  $varIdcliente;
-                $data->codpcrc =  $varCodpcrc;*/
-    
+            
+               
         //DATOS GENERALES
 
                 $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = '$TmpForm->arbol_id'")->queryScalar();
 
                  $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = '$TmpForm->arbol_id'")->queryScalar();
-               //$varIdclienteSel = Yii::$app->db->createCommand("select id_dp_clientes FROM tbl_speech_servicios WHERE arbol_id = '$varidarbol'")->queryScalar();
 
-                //SELECT * FROM tbl_speech_servicios WHERE arbol_id = 17
-                 //SELECT a.id, a.name FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = 2559
 
                 $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
                 $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
@@ -5223,21 +5189,13 @@ public function actionCantidadentto(){
                 }else{
                     $data->idcliente =  $varIdcliente;
                 }
-                //$data->idcliente =  $varIdcliente;
+               
                 $data->varidarbol =  $varidarbol;
                 $data->codpcrc =  $varCodpcrc;
                 $data->IdclienteSel =$varIdclienteSel;
                 $data->varIdformu =  $varIdformu;
 
 
-                //$data->indices_calcular = call_user_func_array('array_merge', $data->indices_calcular);
-                /* if (!isset($data->formulario)) {
-                  $data->formulario = new Formularios();
-                  $data->formulario->id_plantilla_form = 1;
-                  } */
-
-                // echo "<pre>";
-                // print_r($data); die;
                 return $this->render('show-formulario', [
                                                         'data' => $data,                            
                                                         'model' => $model,

@@ -262,8 +262,7 @@ use yii\bootstrap\Modal;
                             $txtevalua2 = $evaluacompe2 + $evaluaorgan2 + $evaluadese2;
                             $txtevalua3 = $evaluacompe3 + $evaluaorgan3 + $evaluadese3;
                             $txtevalua4 = $evaluacompe4 + $evaluaorgan4 + $evaluadese4;
-                            //var_dump($txtevalua1 );
-                            //var_dump($txtevalua2);
+                           
                             $txtnotafinal = null;
                             if($txtevalua1 != 0 && $txtevalua2 != 0 && $txtevalua3 == 0 && $txtevalua4 == 0) {
                             $txtnotafinal = (($txtevalua1 * 20)/100) + (($txtevalua2 * 80) /100);

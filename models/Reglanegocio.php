@@ -54,19 +54,12 @@ class Reglanegocio extends \yii\db\ActiveRecord {
         ];
     }
 
-    // public function checkDateFormat($attribute, $params)
-    // {
-    //     $suma = $this->tramo1 + $this->tramo2 + $this->tramo3 + $this->tramo4 + $this->tramo5 + $this->tramo6 + $this->tramo7 + $this->tramo8 + $this->tramo9 + $this->tramo10 + $this->tramo11 + $this->tramo12 + $this->tramo13 + $this->tramo14 + $this->tramo15 + $this->tramo16 + $this->tramo17 + $this->tramo18 + $this->tramo19 + $this->tramo20 + $this->tramo21 + $this->tramo22 + $this->tramo23 + $this->tramo24;
+   
 
-    //     if ($attribute == $suma){
-    //         $this->addError($attribute, 'ENTRO IGUALES');
-    //     }else{
-    //         $this->addError($attribute, 'ENTRO DIFERENTES');
-    //     }
+    
 
 
-    // }
-
+    
     /**
      * @inheritdoc
      */

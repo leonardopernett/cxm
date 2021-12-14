@@ -93,13 +93,13 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                                     'target' => "_blank"
                         ]);
                     } else {
-                        //if ($modelBase->estado == "Cerrado") {
+                        
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['basesatisfaccion/showformulariogestionamigo'
                                             , 'basesatisfaccion_id' => base64_encode($modelBase->id), 'preview' => 1, 'fill_values' => true]), [
                                     'title' => Yii::t('yii', 'ver formulario'),
                                     'target' => "_blank"
                         ]);
-                        //}
+                        
                     }
                 },
                         'update' => function ($url, $model) {

@@ -47,16 +47,14 @@ $rolId = Yii::$app->db->createCommand("select rel_role_id from rel_usuarios_role
 
 <div class="evaluados-index">
 
-<!--    <div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
+<?= Html::encode($this->title) ?>
     <?php
     foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
         echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
     }
     ?>
     <?php
-    //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
+    
     $form = ActiveForm::begin(['options' => ["id" => "formEvaluados"], 'layout' => 'horizontal'])
     ?>
     <p>

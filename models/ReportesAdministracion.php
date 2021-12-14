@@ -323,7 +323,7 @@ class ReportesAdministracion extends Model
     // WORKSPACE
     // REPORT
 
-    //$id_user = $this->session->userdata("id");
+    
     $id_user = $sessiones;
     /*$admin_permit = Yii::$app->db->createCommand("select azure_content from tbl_config_powerbi")->queryAll();
     $admin_permit = $this->db->get_where('permisos_usuarios', array('permiso' => 88,"id_usuario"=>$id_user));
@@ -344,30 +344,11 @@ class ReportesAdministracion extends Model
       $final_data = array();
 
       // BUSCAR LOS WORKSPACE Y REPORTES QUE EL USUARIO TIENE PERMISO ACTUALMENTE
-      /*$this->db->select("id_usuario,id_reporte,id_workspace");
-      $this->db->where("id_usuario",$id_user);
-      $reports_permits = $this->db->get("permisos_reportes_powerbi");*/
+      
       $reports_permits = Yii::$app->db->createCommand("select id_usuario,id_reporte,id_workspace from tbl_permisos_reportes_powerbi where id_usuario = $id_user")->queryAll();
       if(!$reports_permits){
         die( json_encode( array("status"=>"0","data"=>"Error al buscar los permisos del usuario ".$id_user) ) );
       }
-      /*
-      $reports_permits = $reports_permits->result_array();
-
-      if($type == "workspace"){
-        $reports_permits = array_column($reports_permits,"id_workspace");
-      }
-      if($type == "report"){
-        $reports_permits = array_column($reports_permits,"id_reporte");
-      }
-      $data = array_values($data);
-      for($i = 0; $i < count($data); $i++ ){
-        $data[$i] = (array)$data[$i];
-        if( in_array($data[$i]["id"], $reports_permits ) ){
-          array_push($final_data,$data[$i]);
-        }
-      }
-      return $final_data;*/
       if($type == "workspace"){
         foreach ($reports_permits as $key => $value) {
           $txtworkspace = $value['id_workspace'];
@@ -473,9 +454,7 @@ class ReportesAdministracion extends Model
     
     $delete_old_permits = Yii::$app->db->createCommand("delete from tbl_permisos_reportes_powerbi where id_workspace = '$id_wordspace' ")->execute();    
 
-    //if(!$delete_old_permits){
-      //return false;
-    //}
+    
 
     $client = new GuzzleHttp\Client([
       'verify' => false

@@ -663,11 +663,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
 
         // Generar los tituloos
         $filecontent = "";
-        /* foreach ($titulos as $value) {
-          $filecontent .= $value['header'] . "|";
-          }
-          $filecontent .= "\n";
-          fwrite($handleFile, $filecontent); */
+       
 
         //QUERY COMPLETO SIN PARTIR POR LIMITES
         $sql = "SELECT f.created 'Fecha' ,f.id fid ,s.id 'sid' , xb.id 'did', xd.id 'cdPregunta', xd.tipificacion_id 'idTipi', 
@@ -978,15 +974,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
 
 
 
-        /* $downloadfile = Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . ".csv";
-          header("Content-Disposition: attachment; filename=" . $downloadfile);
-          header("Content-Type: application/force-download");
-          header("Content-Transfer-Encoding: binary");
-          header("Content-Length: " . strlen($filecontent));
-          header("Pragma: no-cache");
-          header("Expires: 0");
-          echo $filecontent;
-          exit; */
+        
 
 
         return $export;
@@ -1023,7 +1011,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
                 . Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . "_" .
                 Yii::$app->user->identity->id . ".xlsx";
 
-        //$handleFile = fopen($fileName, 'w');
         /* Titulos */
         $titulos[0] = ['header' => 'Fecha y Hora', 'value' => '0'];
         $titulos[1] = ['header' => 'Dimension', 'value' => '1'];
@@ -1053,11 +1040,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
 
         // Generar los tituloos
         $filecontent = "";
-        /* foreach ($titulos as $value) {
-          $filecontent .= $value['header'] . "|";
-          }
-          $filecontent .= "\n";
-          fwrite($handleFile, $filecontent); */
+        
 
         //QUERY COMPLETO SIN PARTIR POR LIMITES
         $sql = "SELECT f.created 'Fecha' ,f.id fid ,s.id 'sid' , xb.id 'did', xd.id 'cdPregunta', xd.tipificacion_id 'idTipi', 
@@ -1166,14 +1149,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
                             $filecontent = "";
 
                             //MUESTRO LOS ENCABEZADO SOLO UNA VEZ
-                            /*
-                              if ($printTitle) {
-                              foreach ($titulos as $value) {
-                              $filecontent .= utf8_decode($value['header']) . "|";
-                              }
-                              //$filecontent .= "\n";
-                              //fwrite($handleFile, $filecontent);
-                              } */
+                           
                             $filecontent = "";
                             $printTitle = false;
 
@@ -1182,8 +1158,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
                                 $tmpCont = implode("|", $value);
                                 $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
                                 $objPHPexcel->getActiveSheet()->setCellValue('A' . $fila, $filecontent);
-                                //$filecontent .= "\n";
-                                //fwrite($handleFile, utf8_decode($filecontent));
+                                
                                 $fila++;
                             }
                             // Ya se escribio - Lo puedo liberar
@@ -1359,14 +1334,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
             } // Fin se hay registros
         } while (count($data) > 0);
         //SI SOLO HABIA UNA VALORACIÓN PINTO LOS TITULOS
-        /*
-          if ($printTitle) {
-          foreach ($titulos as $value) {
-          $filecontent .= utf8_decode($value['header']) . "|";
-          }
-          //$filecontent .= "\n";
-          //fwrite($handleFile, $filecontent);
-          } */
+        
         $filecontent = "";
         $printTitle = false;
         //IMPRIMO EL ULTIMO REGISTRO
@@ -1375,11 +1343,10 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
                 $tmpCont = implode("|", $value);
                 $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);
                 $objPHPexcel->getActiveSheet()->setCellValue('A' . $fila, $filecontent);
-                //$filecontent .= "\n";
-                //fwrite($handleFile, $filecontent);
+               
                 $fila++;
             }
-            //fclose($handleFile);
+           
         } else {
             $export = false;
         }
@@ -1397,15 +1364,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
         $objWriter->save($fileName);
 
 
-        /* $downloadfile = Yii::t('app', 'Reporte_extractar') . '_' . date('Ymd') . ".csv";
-          header("Content-Disposition: attachment; filename=" . $downloadfile);
-          header("Content-Type: application/force-download");
-          header("Content-Transfer-Encoding: binary");
-          header("Content-Length: " . strlen($filecontent));
-          header("Pragma: no-cache");
-          header("Expires: 0");
-          echo $filecontent;
-          exit; */
+       
 
 
         return $export;
@@ -1984,9 +1943,7 @@ FORCE INDEX(created_idx)
             $sql->andWhere("rr.rel_role_id IN (" . $model->rol . ")");
         }
         if ($model->equiposvalorador != '') {
-           /* $sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->addSelect('rr.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
+          
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();
             $arrayIdsusuarios = [];
             foreach ($modelequipoValoradores as $key => $value) {
@@ -1999,7 +1956,7 @@ FORCE INDEX(created_idx)
             }else{
                 $wherePersonas .= " AND e.usua_id IN (" . $idsUsuarios . ") ";
             }
-            //$sql->andWhere("je.usua_id IN (" . $idsUsuarios . ")");
+           
         }
         //DATOS DE VOLUMENES
         if($volumenes){
@@ -2037,7 +1994,7 @@ FORCE INDEX(created_idx)
             default:
                 break;
         }
-        //var_dump($sql);exit;
+        
         return $sql->asArray()->all();
     }
 
@@ -2059,7 +2016,7 @@ FORCE INDEX(created_idx)
                 ->groupBy($groupBy)
                 ->orderBy($groupBy . " ASC ");
         if ($model->valorador != '') {
-            //$sql->addSelect('rr.*');
+            
             $sql->andWhere("je.usua_id IN (" . $model->valorador . ")");
         }
         if ($model->rol != '') {
@@ -2068,9 +2025,7 @@ FORCE INDEX(created_idx)
             $sql->andWhere("rr.rel_role_id IN (" . $model->rol . ")");
         }
         if ($model->equiposvalorador != '') {
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->addSelect('rr.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
+            
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();
             $arrayIdsusuarios = [];
             foreach ($modelequipoValoradores as $key => $value) {
@@ -2099,7 +2054,7 @@ FORCE INDEX(created_idx)
                 ->groupBy($groupBy)
                 ->orderBy($groupBy . " ASC ");
         if ($model->valorador != '') {
-            //$sql->addSelect('rr.*');
+           
             $sql->andWhere("je.usua_id IN (" . $model->valorador . ")");
         }
         if ($model->rol != '') {
@@ -2108,9 +2063,7 @@ FORCE INDEX(created_idx)
             $sql->andWhere("rr.rel_role_id IN (" . $model->rol . ")");
         }
         if ($model->equiposvalorador != '') {
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->addSelect('rr.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
+            
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();
             $arrayIdsusuarios = [];
             foreach ($modelequipoValoradores as $key => $value) {
@@ -2152,9 +2105,7 @@ FORCE INDEX(created_idx)
             $sql->andWhere("rr.rel_role_id IN (" . $model->rol . ")");
         }
         if ($model->equiposvalorador != '') {
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->addSelect('rr.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
+            
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();
             $arrayIdsusuarios = [];
             foreach ($modelequipoValoradores as $key => $value) {
@@ -2214,9 +2165,7 @@ FORCE INDEX(created_idx)
             }
             $idsUsuarios = implode(',', $arrayIdsusuarios);
             $sql->andWhere("je.usua_id IN (" . $idsUsuarios . ")");
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->addSelect('rr.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
+            
         }
         //DATOS DE VOLUMENES
         if($volumenes){
@@ -2275,7 +2224,7 @@ FORCE INDEX(created_idx)
         $fechaIni = $fechas[0] . " 00:00:00";
         $fechaFin = $fechas[1] . " 23:59:59";
         $baseConsulta = $metrica;
-        //$groupBy = ($banderaGrafica) ? 'je.arbol_id' : 'je.dimension_id';
+       
         $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio,je.arbol_id, je.id, je.dimension_id, COUNT(je.id) total,je.*")
                 ->from('`tbl_ejecucionformularios` je')
                 ->where("je.dimension_id IN (" . $dimension_id . ") AND je.created BETWEEN '" . $fechaIni . "' AND '" . $fechaFin . "' AND je.arbol_id IN (" . $arbol_id . ")");
@@ -2286,8 +2235,7 @@ FORCE INDEX(created_idx)
                 ->where("je.dimension_id IN (" . $dimension_id . ") AND sc.s_fecha BETWEEN '" . $fechaIni . "' AND '" . $fechaFin . "' AND je.arbol_id IN (" . $arbol_id . ")");            
             $sql->join('INNER JOIN', 'tbl_segundo_calificador sc', 'je.id = sc.id_ejecucion_formulario');
         }
-        
-        //->groupBy($groupBy)->asArray()  
+    
         $sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
         $sql->addSelect('u.*');
         $sql->groupBy('je.usua_id,je.arbol_id,je.dimension_id');
@@ -2300,26 +2248,20 @@ FORCE INDEX(created_idx)
         }
         if ($model->rol != '') {
             $sql->join('INNER JOIN', 'rel_usuarios_roles rr', 'rr.rel_usua_id = je.usua_id');
-            //$sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
+            
             $sql->addSelect('rr.*');
             $sql->andWhere("rr.rel_role_id IN (" . $model->rol . ")");
-           // $sql->groupBy('je.usua_id,je.arbol_id,je.dimension_id');
+           
         }
         if ($model->equiposvalorador != '') {
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
-            $sql->addSelect('rr.*, u.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
-           //$sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
-            //$sql->addSelect('u.*');
-            //$sql->groupBy('je.usua_id,je.arbol_id,je.dimension_id');
+           
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();
             $arrayIdsusuarios = [];
             foreach ($modelequipoValoradores as $key => $value) {
                 $arrayIdsusuarios[]=$value['evaluadores_id'];
             }
             $idsUsuarios = implode(',', $arrayIdsusuarios);
-            //$sql->andWhere("je.usua_id IN (" . $idsUsuarios . ")");
+           
             if($baseConsulta == 'usua_id'){
                 $sql->andWhere("sc.id_responsable IN (" . $idsUsuarios . ")");
             }else{
@@ -2345,7 +2287,7 @@ FORCE INDEX(created_idx)
         $fechaIni = $fechas[0] . " 00:00:00";
         $fechaFin = $fechas[1] . " 23:59:59";
         $baseConsulta = $metrica;       
-        //$groupBy = 'je.dimension_id';
+        
         $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio, je.dimension_id, COUNT(je.id) total,je.*")
                 ->from('`tbl_ejecucionformularios` je')
                 ->where("je.dimension_id IN (" . $dimension_id . ") AND je.created BETWEEN '" . $fechaIni . "' AND '" . $fechaFin . "' AND je.arbol_id IN (" . $arbol . ")");
@@ -2357,7 +2299,7 @@ FORCE INDEX(created_idx)
             $sql->join('INNER JOIN', 'tbl_segundo_calificador sc', 'je.id = sc.id_ejecucion_formulario');
         }
         
-        //$sql->orderBy('je.usua_id,je.arbol_id,je.dimension_id Asc');
+        
         $sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
         $sql->addSelect('u.*');
         $sql->groupBy('je.usua_id,je.arbol_id,je.dimension_id');
@@ -2370,17 +2312,13 @@ FORCE INDEX(created_idx)
         }
         if ($model->rol != '') {
             $sql->join('INNER JOIN', 'rel_usuarios_roles rr', 'rr.rel_usua_id = je.usua_id');
-            //$sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
+            
             $sql->addSelect('rr.*');
             $sql->andWhere("rr.rel_role_id IN (" . $model->rol . ")");
-            //$sql->groupBy('je.usua_id,je.arbol_id,je.dimension_id');
+           
         }
         if ($model->equiposvalorador != '') {
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->addSelect('rr.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
-            //$sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
-            //$sql->addSelect('u.*');
+           
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();
             $arrayIdsusuarios = [];
             foreach ($modelequipoValoradores as $key => $value) {
@@ -2392,7 +2330,7 @@ FORCE INDEX(created_idx)
             }else{
                 $sql->andWhere("je.usua_id IN (" . $idsUsuarios . ")");
             }            
-            //$sql->groupBy('je.usua_id,je.arbol_id,je.dimension_id');
+            
         }
         return $sql->asArray()->all();
     }
@@ -2427,9 +2365,7 @@ FORCE INDEX(created_idx)
             $sql->andWhere("rr.rel_role_id IN (" . $model->rol . ")");
         }
         if ($model->equiposvalorador != '') {
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->addSelect('rr.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
+            
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();
             $arrayIdsusuarios = [];
             foreach ($modelequipoValoradores as $key => $value) {
@@ -2478,38 +2414,7 @@ FORCE INDEX(created_idx)
             }
         }
         //WHERE VOLUMEN
-        /*var_dump($baseConsulta);exit;
-        switch ($metrica) {
-            case 13:
-                $sql->andWhere("satu.tipologia = 'FELICITACION'");
-                break;
-            case 14:
-                $sql->andWhere("satu.tipologia = 'FELICITACIÓN CON BUZÓN'");
-                break;
-            case 15:
-                $sql->andWhere("AND satu.tipologia = 'CRITICA'");
-                break;
-            case 16:
-                $sql->andWhere("AND satu.tipologia = 'CRITICA POR BUZÓN'");
-                break;
-            case 17:
-                $sql->andWhere("AND satu.tipologia = 'CRITICA PENALIZABLE'");
-                break;                        
-            case 19:
-                $sql->andWhere("AND satu.responsabilidad = 'MARCA'");
-                break;
-            case 20:
-                $sql->andWhere("AND satu.responsabilidad = 'CANAL'");
-                break;
-            case 21:
-                $sql->andWhere("AND satu.responsabilidad = 'COMPARTIDA'");
-                break;
-            case 22:
-                $sql->andWhere("AND satu.responsabilidad = 'EQUIVOCACION'");
-                break;
-            default:
-                break;
-        }*/
+        
         
         return $sql->asArray()->all();
     }
@@ -2532,7 +2437,7 @@ FORCE INDEX(created_idx)
                 ->groupBy($groupBy)
                 ->orderBy($groupBy . " ASC ");
         if ($model->valorador != '') {
-            //$sql->addSelect('rr.*');
+           
             $sql->andWhere("je.usua_id IN (" . $model->valorador . ")");
         }
         if ($model->rol != '') {
@@ -2541,9 +2446,7 @@ FORCE INDEX(created_idx)
             $sql->andWhere("rr.rel_role_id IN (" . $model->rol . ")");
         }
         if ($model->equiposvalorador != '') {
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->addSelect('rr.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
+            
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();
             $arrayIdsusuarios = [];
             foreach ($modelequipoValoradores as $key => $value) {
@@ -2611,12 +2514,11 @@ FORCE INDEX(created_idx)
         $fechaIni = $fechas[0] . " 00:00:00";
         $fechaFin = $fechas[1] . " 23:59:59";
         $baseConsulta = $metrica;
-        //$groupBy = ($banderaGrafica) ? 'je.arbol_id' : 'je.dimension_id';
+       
         $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio,je.arbol_id, je.id, je.dimension_id, COUNT(je.id) total,je.*")
                 ->from('`tbl_ejecucionformularios` je')
                 ->where("je.dimension_id IN (" . $dimension_id . ") AND je.created BETWEEN '" . $fechaIni . "' AND '" . $fechaFin . "' AND je.arbol_id IN (" . $arbol_id . ")");
-        //->groupBy($groupBy)->asArray()  
-
+      
         if ($model->valorador != '') {
             $sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
             $sql->addSelect('u.*');
@@ -2631,10 +2533,7 @@ FORCE INDEX(created_idx)
             $sql->groupBy('je.usua_id,je.arbol_id,je.dimension_id');
         }
         if ($model->equiposvalorador != '') {
-            /*$sql->join('INNER JOIN', 'rel_grupos_usuarios rr', 'rr.usuario_id = je.usua_id');
-            $sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
-            $sql->addSelect('rr.*, u.*');
-            $sql->andWhere("rr.grupo_id IN (" . $model->equiposvalorador . ")");*/
+            
             $sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
             $sql->addSelect('u.*');
             $modelequipoValoradores = RelEquiposEvaluadores::find()->where('equipo_id IN ('.$model->equiposvalorador.')')->asArray()->all();

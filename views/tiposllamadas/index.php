@@ -13,9 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tiposllamadas-index">
     
-<!--<div class="page-header">
-    <h3><?= Html::encode($this->title) ?></h3>
-</div>-->
+<?= Html::encode($this->title) ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Tiposllamadas'), ['create'], ['class' => 'btn btn-success']) ?>

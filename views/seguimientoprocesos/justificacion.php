@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -26,7 +25,7 @@ $this->title = 'Justificar Rendimiento';
     				->all();
     $listData = ArrayHelper::map($variables, 'idtcs', 'diastcs');
 
-    //$nameVar = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id ='.$idvar.'')->queryScalar();
+    
 
     $fechaactual = date("Y-m-d");
 ?>

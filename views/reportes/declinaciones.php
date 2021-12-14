@@ -42,17 +42,14 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+    
       </div>
     </div>
   </div>
 </header>
 <br><br>
 
-<!--<div class="page-header">
-    <h3><?php //$this->title ?></h3>      
-</div>-->
+
 <div class="row">
 
     <div class="col-lg-4 col-xs-12">
@@ -302,9 +299,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 
 <?php if ($showGrid): ?>
 <br>
-    <!--<div class="page-header">
-        <h3><?= Yii::t('app', 'Resultados') ?></h3>
-    </div>-->
+    <?= Yii::t('app', 'Resultados') ?>
     <?php
     $gridColumns = [
         //['class' => 'yii\grid\SerialColumn'],

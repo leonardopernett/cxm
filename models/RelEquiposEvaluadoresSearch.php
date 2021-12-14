@@ -52,7 +52,7 @@ class RelEquiposEvaluadoresSearch extends RelEquiposEvaluadores {
             'asc' => ['tbl_usuarios.usua_nombre' => SORT_ASC],
             'desc' => ['tbl_usuarios.usua_nombre' => SORT_DESC],
         ];
-        //$this->load($params);
+        
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }

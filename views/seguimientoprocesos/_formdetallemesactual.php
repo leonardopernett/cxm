@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-/*use yii\widgets\ActiveForm;*/
 use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -47,13 +46,12 @@ $this->title = 'Vista Valorador';
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));			
 
-	//$fechainiC = date('2018-08-22 00:00:00');
-        //$fechafinC = date('2018-08-30 23:59:59'); 
+
 
         $fechainiC = date('Y-m-d 00:00:00', mktime(0,0,0, $month, 1, $year));
-        //var_dump($fechainiC);
+        
         $fechafinC = date('Y-m-d 23:59:59', mktime(0,0,0, $month, $day, $year)); 
-        //var_dump($fechafinC);
+        
 
   		$listData = $data;
         foreach ($listData as $key => $value) { 	

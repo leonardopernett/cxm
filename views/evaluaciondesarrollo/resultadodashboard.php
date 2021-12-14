@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
      $vartotalglobal = ($varcantidadrealizada * 100) / $varcantidadglobal;
      $vartotalresta = 100 - $vartotalglobal;
 
-     //$varlistaareas = Yii::$app->db->createCommand("select COUNT(clientearea) totalarea, sum(idresultado) totalevaluado, clientearea FROM tbl_evaluacion_cumplimiento WHERE clientearea IS NOT NULL AND idresultado IN(0,1) GROUP BY clientearea order by COUNT(clientearea) desc limit 40")->queryAll();
+     
      $varlistaareas = Yii::$app->db->createCommand("select COUNT(directorarea)totalarea, sum(idresultado) totalevaluado, directorarea FROM tbl_evaluacion_cumplimiento WHERE directorarea IS NOT NULL AND idresultado IN(0,1) and idtipoevalua NOT IN(4) GROUP BY directorarea order by COUNT(directorarea) desc ")->queryAll();
 
       
@@ -235,8 +235,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>

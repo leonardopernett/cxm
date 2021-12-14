@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     $varTipos = ['Eliminar evaluación' => 'Eliminar evaluación'];
 
-    // $varidlistC = Yii::$app->db->createCommand("select ue.nombre_completo, ue.documento from tbl_usuarios_evalua ue where ue.documento_jefe in ('$vardocumentjefe','$vardocument') and ue.documento != '$vardocument' order by ue.nombre_completo asc")->queryAll();
+    
     $varidlistC = Yii::$app->db->createCommand("select ue.nombre_completo, ue.documento from tbl_usuarios_evalua ue 
     inner join tbl_evaluacion_solucionado es on ue.documento = es.documentoevaluado where es.documento = $vardocument and es.anulado = 0 group by ue.documento")->queryAll();
     $listDataC = ArrayHelper::map($varidlistC, 'documento', 'nombre_completo');
@@ -146,8 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>

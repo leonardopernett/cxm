@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $sesiones =Yii::$app->user->identity->id;
 
 
-// $varidgrupos = Yii::$app->get('dbslave')->createCommand("select gu.grupos_id from tbl_grupos_usuarios gu inner join rel_grupos_usuarios r on gu.grupos_id = r.grupo_id inner join tbl_usuarios u on r.usuario_id = u.usua_id where u.usua_id = $sesiones  group by gu.grupos_id")->queryScalar();
+
 
 $varidgrupos = Yii::$app->get('dbslave')->createCommand("select count(1) from tbl_permisosfeedback where anulado = 0 and idusuarios = $sesiones")->queryScalar();
 
@@ -51,16 +51,13 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
 </header>
 <br><br>
-<!--<div class="page-header">
-    <h3><?php //$this->title ?></h3>
-</div>-->
+
 
 <div class="equipos-evaluados-form">    
 
@@ -367,13 +364,13 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                                             'target' => "_blank"
                                         ]) : false;
                             } else {
-                                //if ($modelBase->estado == "Cerrado") {
+                               
                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['basesatisfaccion/showformulariogestion'
                                                     , 'basesatisfaccion_id' => $modelBase->id, 'preview' => 1, 'fill_values' => true,'view'=>"reportes/feedbackexpress", 'aleatorio' => 1,]), [
                                             'title' => Yii::t('yii', 'ver formulario'),
                                             'target' => "_blank"
                                 ]);
-                                //}
+                                
                             }
                         }
                     },

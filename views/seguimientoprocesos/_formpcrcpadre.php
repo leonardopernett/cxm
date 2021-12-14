@@ -179,8 +179,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     $fechainicio1 = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
     $fechafin1 = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-    //$fechainicio = date('2018-08-22');
-    //$fechafin = date('2018-08-30');  
+    
 
     $varGrid = $dataProvider->getModels();
 

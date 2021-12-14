@@ -16,9 +16,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 ?>
 <div class="informe-inbox-aleatorio-index">
 
-<!--    <div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
+<?= Html::encode($this->title) ?>
 
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <div class="col-md-6">  

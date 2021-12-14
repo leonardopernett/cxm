@@ -5,7 +5,7 @@ namespace app\models;
 class permanencia extends \yii\db\ActiveRecord
 {
 
-	//public $usuario_red;
+	
 
 
 	public static function tableName() {

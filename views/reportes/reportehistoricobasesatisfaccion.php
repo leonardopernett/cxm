@@ -66,16 +66,13 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+        
       </div>
     </div>
   </div>
 </header>
 <br><br>
-<!--<div class="page-header">
-    <h3><?php // $this->title ?></h3>
-</div>-->
+
 
 <div class="equipos-evaluados-form">    
 
@@ -180,30 +177,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             $fileName = Yii::t('app', 'Reporte_Gestion') . '_' . date('Ymd') . "_" .
                 Yii::$app->user->identity->id . ".xlsx";
         echo Html::a("Descargar " . $fileName, Url::to("@web/files/" . $fileName));
-        /*           
-        echo ExportMenu::widget([
-            'dataProvider' => $dataProvider,
-            'columns' => $titulos,
-            'columnSelectorOptions' => [
-                'label' => Yii::t('app', 'Columns'),
-            ],
-            'dropdownOptions' => [
-                'label' => Yii::t('app', 'Export All'),
-                'class' => 'btn btn-default'
-            ],
-            'showConfirmAlert' => false,
-            'target' => '_blank',
-            'filename' => Yii::t('app', 'Reporte_historicobase') . '_' . date('Ymd'),
-            'exportRequestParam' => 'exporthistorico',
-            'columnBatchToggleSettings' => [
-                'label' => Yii::t('app', 'All')
-            ],
-            'exportConfig' => [
-                ExportMenu::FORMAT_TEXT => false,
-                ExportMenu::FORMAT_PDF => false,
-                ExportMenu::FORMAT_HTML => false,
-            ]
-        ]);*/
+        
         ?>
     <?php else: ?>
         <div class="alert alert-warning" role="alert">

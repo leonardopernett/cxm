@@ -178,20 +178,7 @@ if ($novedad >= $varmeta) {
                             $varCero = 0;
                             
 
-                            /*$txtidtc = Yii::$app->db->createCommand('select idtc from tbl_control_procesos where evaluados_id ='.$varidevaluado.' and tipo_corte like "%'.$txtMes.'%" and anulado ='.$varCero.'')->queryScalar();
-                            $txtlistidtcs = Yii::$app->db->createCommand("select idtcs FROM tbl_tipos_cortes WHERE idtc = $txtidtc")->queryAll();
-                            $vararrayidtcs = Array();
-                                foreach ($txtlistidtcs as $key => $value){
-                                array_push($vararrayidtcs, $value['idtcs']);
-                            }
                             
-                            
-                            $txtlistacortes = implode("', '", $vararrayidtcs);
-                            
-                            $varsumagestion = Yii::$app->db->createCommand("SELECT SUM(estado) FROM tbl_plan_escalamientos WHERE tecnicolider = $varidevaluado AND estado = 1 AND idtcs in ('$txtlistacortes')")->queryScalar();
-                            if ($varsumagestion == null){
-                                $varsumagestion = 0;
-                            }*/
 
                         
                     ?>

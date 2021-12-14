@@ -23,9 +23,6 @@ $template = '<div class="col-md-3">{label}</div><div class="col-md-9">'
         . ' {input}{error}{hint}</div>';
 ?>
 
-<!--<div class="page-header">
-    <h3><?php //echo $this->title     ?></h3>
-</div>-->
 
 <?php
 foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
@@ -57,8 +54,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
+       
       </div>
     </div>
   </div>
@@ -315,9 +311,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 </div>
 
 <?php if ($showGrid): ?>
-<!--    <div class="page-header">
-        <h3><?= Yii::t('app', 'Resultados') ?></h3>
-    </div>-->
+    <?= Yii::t('app', 'Resultados') ?>
     <?php
     $text = app\models\Textos::find()->asArray()->all();
     $gridColumns = [
@@ -341,13 +335,13 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                                         'target' => "_blank"
                             ]);
                         } else {
-                            //if ($modelBase->estado == "Cerrado") {
+                          
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['basesatisfaccion/showformulariogestion'
                                                 , 'basesatisfaccion_id' => $modelBase->id, 'banderaescalado'=> 0, 'aleatorio' => false ,'preview' => 1, 'fill_values' => true,'view'=>"reportes/historicoformularios"]), [
                                         'title' => Yii::t('yii', 'ver formulario'),
                                         'target' => "_blank"
                             ]);
-                            //}
+                           
                         }
                     }
                 },
@@ -508,7 +502,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['codcliente'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
             
         ],
@@ -521,7 +515,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['centrocosto'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+               
             }
             
         ],
@@ -534,7 +528,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['ciudad'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
             
         ],
@@ -547,7 +541,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['director'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
             
         ],
@@ -560,7 +554,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                } else {
                    return $data['gerente'];
                }
-               //return $data->getGestionado($data->snaviso_revisado);
+               
            }
            
        ],
@@ -582,7 +576,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['score'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         //'pec_rac',
@@ -595,7 +589,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['pec_rac'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+               
             }
         ],
         [
@@ -607,7 +601,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i1_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+               
             }
         ],
         [
@@ -619,7 +613,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i2_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -631,7 +625,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i3_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+               
             }
         ],
         [
@@ -643,7 +637,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i4_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+               
             }
         ],
         [
@@ -655,7 +649,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i5_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -667,7 +661,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i6_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         [
@@ -679,7 +673,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i7_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+               
             }
         ],
         [
@@ -691,7 +685,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i8_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+              
             }
         ],
         [
@@ -703,7 +697,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i9_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+             
             }
         ],
         [
@@ -715,7 +709,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 } else {
                     return $data['i10_nmcalculo'];
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
+              
             }
         ],
         [
@@ -758,7 +752,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                     }                    
                 }
                 return 'N/A';
-                //return $data->getGestionado($data->snaviso_revisado);
+                
             }
         ],
         
@@ -784,31 +778,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                     'label' => Yii::t('app', 'Columns'),
                 ],
 ]);
-           /* echo ExportMenu::widget([
-                'dataProvider' => $dataProvider,
-                'columns' => $gridColumns,
-                'columnSelectorOptions' => [
-                    'label' => Yii::t('app', 'Columns'),
-                ],
-                'dropdownOptions' => [
-                    'label' => Yii::t('app', 'Export All'),
-                    'class' => 'btn btn-default'
-                ],
-                //'fontAwesome' => true,
-                'showConfirmAlert' => false,
-                'target' => '_blank',
-                'filename' => Yii::t('app', 'Reporte_formularios') . '_' . date('Ymd'),
-                'exportRequestParam' => 'exportformularios',
-                'columnBatchToggleSettings' => [
-                    'label' => Yii::t('app', 'All')
-                ],
-                'exportConfig' => [
-                    ExportMenu::FORMAT_TEXT => false,
-                    ExportMenu::FORMAT_PDF => false,
-                    ExportMenu::FORMAT_HTML => false,
-                ]
-
-            ]);*/
+          
             ?>
             <br/><br/>
             <?php

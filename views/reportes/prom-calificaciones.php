@@ -16,9 +16,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reportes'), 'url' =>
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<!--<div class="page-header">
-    <h3><?php // Yii::t('app', 'Prom de Calificaciones')  ?></h3>
-</div>-->
+
 <?php
 $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         . ' {input}{error}{hint}</div>';
@@ -145,9 +143,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 
 <?php if ($showGrid): ?>
 <br>
-    <!--<div class="page-header">
-        <h3><?= Yii::t('app', 'Resultados') ?></h3>
-    </div>-->
+    <?= Yii::t('app', 'Resultados') ?>
     <?php
     $text = app\models\Textos::find()->asArray()->all();
     $gridColumns = [
