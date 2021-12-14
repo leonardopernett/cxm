@@ -355,11 +355,7 @@ use GuzzleHttp;
   
       if (
            !isset($data_post["idarbol"]) 
-        || !isset($data_post["fechaInicio"]) 
-        || !isset($data_post["fechaFin"]) 
         || empty($data_post["idarbol"]) 
-        || empty($data_post["fechaInicio"]) 
-        || empty($data_post["fechaFin"]) 
       ) {
         die(json_encode(array("status"=>"0","data"=>"Algunos de los campos obligatorios no se enviaron correctamente")));
       }
