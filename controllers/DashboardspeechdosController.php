@@ -4965,9 +4965,6 @@ public function actionCantidadentto(){
               
               
             }
-            }else{
-              #code
-            }
           }
 
       // fin Diego

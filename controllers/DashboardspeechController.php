@@ -4499,12 +4499,18 @@ public function actionCantidadentto(){
               $varidcategoria1 = $value['idcategorias'];
               if ($varresponsable == 1){
                 $varnomresponsable = 'Agente';
+              }else{
+                #code
               }
               if ($varresponsable == 2){
                 $varnomresponsable = 'Canal';
+              }else{
+                #code
               }
               if ($varresponsable == 3){
                 $varnomresponsable = 'Marca';
+              }else{
+                #code
               }
   
               if ($varidcategoria1 == 2) {
@@ -4512,12 +4518,14 @@ public function actionCantidadentto(){
                 
                 
 
+              }else{
+                #code
               }
               
               
-            }else{
-              #code
             }
+          }else{
+            #code
           }
 
       // fin Diego
@@ -5364,8 +5372,6 @@ public function actionCantidadentto(){
                     \app\models\TmpejecucionbloquedetallesTipificaciones::updateAll(["sncheck" => 1]
                             , "tmpejecucionbloquedetalle_id = '" . $form_detalle_id . "' "
                             . "AND tipificaciondetalle_id IN(" . implode(",", $tipif_array) . ")");
-                }else{
-                  #code
                 }
 
                 /* GUARDO SUBTIPIFICACIONES */
