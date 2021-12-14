@@ -1,6 +1,4 @@
-//echo "<pre>";
-//print_r($data);
-//echo "</pre>";<?php
+<?php
 include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
 
 
