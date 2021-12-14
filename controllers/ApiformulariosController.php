@@ -368,7 +368,7 @@ use GuzzleHttp;
 
       $paramsBusqueda = [':Arbol_id' => $varIdArbol];
       $varListTipificaciones = Yii::$app->db->createCommand('
-      SELECT ef.id AS Id_Formulario, tbl_seccions.id AS Id_sesiones, tbl_bloques.id AS Id_Blopues,
+      SELECT ef.id AS Id_Formulario, tbl_seccions.id AS Id_sesiones, tbl_bloques.id AS Id_Bloques,
       b.id AS Id_Preguntas, tbl_tipificaciondetalles.id AS id_Tipificacion,  
       tbl_tipificaciondetalles.name AS Tipificaciones, if(t.tipificaciondetalle_id IS NULL, 0,1) AS Rtatipi, ef.created AS FechaValoracion
                 FROM tbl_tipificaciondetalles
