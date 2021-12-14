@@ -368,36 +368,38 @@ use GuzzleHttp;
 
       $paramsBusqueda = [':Arbol_id' => $varIdArbol];
       $varListTipificaciones = Yii::$app->db->createCommand('
-        SELECT ef.id AS Id_Formulario, tbl_tipificaciondetalles.id AS id_Tipificacion,  tbl_tipificaciondetalles.name AS Tipificaciones, if(t.tipificaciondetalle_id IS NULL, 0,1) AS Rtatipi, ef.created AS FechaValoracion
-          FROM tbl_tipificaciondetalles
-          INNER JOIN tbl_bloquedetalles b ON 
-          b.tipificacion_id = tbl_tipificaciondetalles.tipificacion_id
-          inner join tbl_bloques on
-          tbl_bloques.id = b.bloque_id
-          inner join tbl_ejecucionbloques on
-          tbl_bloques.id = tbl_ejecucionbloques.bloque_id
-          inner join tbl_ejecucionbloquedetalles ON 
-          tbl_ejecucionbloquedetalles.ejecucionbloque_id = tbl_ejecucionbloques.id 
-          AND tbl_ejecucionbloquedetalles.bloquedetalle_id = b.id
-          left JOIN tbl_tipificaciondetalles xtd ON b.tipificacion_id = xtd.tipificacion_id 
-          left JOIN tbl_ejecucionbloquedetalles_tipificaciones t 
-          ON xtd.id = t.tipificaciondetalle_id AND t.ejecucionbloquedetalle_id = tbl_ejecucionbloquedetalles.id
-          inner join tbl_ejecucionseccions on
-          tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
-          inner join tbl_seccions on
-          tbl_seccions.id = tbl_ejecucionseccions.seccion_id
-          INNER JOIN tbl_ejecucionformularios ef ON 
-            tbl_ejecucionseccions.ejecucionformulario_id = ef.id
-          
-          where
-            ef.arbol_id IN  (:Arbol_id)
-              AND ef.created >= DATE_SUB(NOW(), INTERVAL 1 DAY)
-              GROUP BY ef.id, tbl_tipificaciondetalles.id')->bindValues($paramsBusqueda)->queryAll();
+      SELECT ef.id AS Id_Formulario, tbl_seccions.id AS Id_sesiones, tbl_bloques.id AS Id_Blopues,
+      b.id AS Id_Preguntas, tbl_tipificaciondetalles.id AS id_Tipificacion,  
+      tbl_tipificaciondetalles.name AS Tipificaciones, if(t.tipificaciondetalle_id IS NULL, 0,1) AS Rtatipi, ef.created AS FechaValoracion
+                FROM tbl_tipificaciondetalles
+                INNER JOIN tbl_bloquedetalles b ON 
+                b.tipificacion_id = tbl_tipificaciondetalles.tipificacion_id
+                inner join tbl_bloques on
+                tbl_bloques.id = b.bloque_id
+                inner join tbl_ejecucionbloques on
+                tbl_bloques.id = tbl_ejecucionbloques.bloque_id
+                inner join tbl_ejecucionbloquedetalles ON 
+                tbl_ejecucionbloquedetalles.ejecucionbloque_id = tbl_ejecucionbloques.id 
+                AND tbl_ejecucionbloquedetalles.bloquedetalle_id = b.id
+                left JOIN tbl_tipificaciondetalles xtd ON b.tipificacion_id = xtd.tipificacion_id 
+                left JOIN tbl_ejecucionbloquedetalles_tipificaciones t 
+                ON xtd.id = t.tipificaciondetalle_id AND t.ejecucionbloquedetalle_id = tbl_ejecucionbloquedetalles.id
+                inner join tbl_ejecucionseccions on
+                tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
+                inner join tbl_seccions on
+                tbl_seccions.id = tbl_ejecucionseccions.seccion_id
+                INNER JOIN tbl_ejecucionformularios ef ON 
+                  tbl_ejecucionseccions.ejecucionformulario_id = ef.id
+                
+                where
+                  ef.arbol_id IN  (:Arbol_id)
+                    AND ef.created >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+                    GROUP BY ef.id, tbl_tipificaciondetalles.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatapi = array();
       foreach ($varListTipificaciones as $key => $value) {
 
-        array_push($arraydatapi, array("Id_Formulario "=>$value['Id_Formulario'],"Id_Tipificacion "=>$value['id_Tipificacion'],"Tipificaciones "=>$value['Tipificaciones'],'RespuestaTipificacion'=>$value['Rtatipi'],'Fechavaloracion'=>$value['FechaValoracion'])); 
+        array_push($arraydatapi, array("Id_Formulario "=>$value['Id_Formulario'],"Id_sesiones"=>$value['Id_sesiones'],"Id_Bloques"=>$value['Id_Bloques'],"Id_Preguntas"=>$value['Id_Preguntas'],"Id_Tipificacion "=>$value['id_Tipificacion'],"Tipificaciones "=>$value['Tipificaciones'],'RespuestaTipificacion'=>$value['Rtatipi'])); 
       }
 
       die(json_encode(array("status"=>"1","data"=>$arraydatapi)));
