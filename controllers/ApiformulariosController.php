@@ -365,6 +365,8 @@ use GuzzleHttp;
       }
 
       $varIdArbol = $data_post["idarbol"];   
+      $varFechaInicio = $data_post["fechaInicio"];
+      $varFechaFin = $data_post["fechaFin"]; 
 
       $paramsBusqueda = [':Arbol_id' => $varIdArbol, ':Fecha_inicio' => $varFechaInicio.' 00:00:00', ':Fecha_Fin' => $varFechaFin.' 23:59:59'];
       $varListTipificaciones = Yii::$app->db->createCommand('
