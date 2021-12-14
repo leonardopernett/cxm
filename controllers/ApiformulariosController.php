@@ -355,14 +355,18 @@ use GuzzleHttp;
   
       if (
            !isset($data_post["idarbol"]) 
+        || !isset($data_post["fechaInicio"]) 
+        || !isset($data_post["fechaFin"]) 
         || empty($data_post["idarbol"]) 
+        || empty($data_post["fechaInicio"]) 
+        || empty($data_post["fechaFin"]) 
       ) {
         die(json_encode(array("status"=>"0","data"=>"Algunos de los campos obligatorios no se enviaron correctamente")));
       }
 
       $varIdArbol = $data_post["idarbol"];   
 
-      $paramsBusqueda = [':Arbol_id' => $varIdArbol];
+      $paramsBusqueda = [':Arbol_id' => $varIdArbol, ':Fecha_inicio' => $varFechaInicio.' 00:00:00', ':Fecha_Fin' => $varFechaFin.' 23:59:59'];
       $varListTipificaciones = Yii::$app->db->createCommand('
       SELECT ef.id AS Id_Formulario, tbl_seccions.id AS Id_sesiones, tbl_bloques.id AS Id_Bloques,
       b.id AS Id_Preguntas, tbl_tipificaciondetalles.id AS id_Tipificacion,  
@@ -388,8 +392,8 @@ use GuzzleHttp;
                   tbl_ejecucionseccions.ejecucionformulario_id = ef.id
                 
                 where
-                  ef.arbol_id IN  (:Arbol_id)
-                    AND ef.created >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+                  ef.formulario_id IN  (:Arbol_id)
+                    AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
                     GROUP BY ef.id, tbl_tipificaciondetalles.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatapi = array();
