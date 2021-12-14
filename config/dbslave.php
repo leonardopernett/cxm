@@ -5,9 +5,9 @@ return [
     // 'dsn' => 'mysql:host=localhost;dbname=nuevo_qa',
     // 'username' => 'root',
     // 'password' => '',
-    'dsn' => 'mysql:host=172.20.100.192;port=3390;dbname=ci_monitoreov2',
-    'username' => 'root',
-    'password' => 'allus2016*',
+    'dsn' => 'mysql:host='.MY_SQL_HOST_SLAVE.';port='.MY_SQL_PORT_SLAVE.';dbname='.MY_SQL_DB_NAME_SLAVE,
+    'username' => USER_DB_SLAVE,
+    'password' => PASSWORD_DB_SLAVE,
     'charset' => 'utf8',
 
     'on afterOpen' =>function ($event) {
