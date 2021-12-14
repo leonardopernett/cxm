@@ -917,6 +917,11 @@ class FusionCharts {
 
         $strHTML .= "\n<!-- START Code Block for Chart $chartId -->\n\n";
 
+        foreach ($_SERVER as $key => $value)
+        {
+            $_SERVER[$key] = filter_input(INPUT_SERVER, $key, FILTER_SANITIZE_STRING);
+        }
+
         $HTTP = "http";
         if (strtolower($_SERVER['HTTPS']) == "on") {
             $HTTP = "https";

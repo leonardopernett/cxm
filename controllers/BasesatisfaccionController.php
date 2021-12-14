@@ -2489,15 +2489,8 @@ class BasesatisfaccionController extends Controller {
 
                         $data->cant_modificaciones = $data->cant_modificaciones + 1;
 
-                        // $suma = strtotime($data->tiempo_modificaciones) + strtotime($tiempo_modificacion_actual);
-
-                        // $suma1 = date("h:i:s", $suma); //01:57:48
                         $date = new DateTime($tiempo_modificacion_actual);
-                        //print_r($data); die;
                         $suma2 = $this->sumarhoras($data->tiempo_modificaciones, $date->format('H:i:s'));
-                        // //$data->tiempo_modificaciones = $dt->format('H:i:s');
-                        // print_r("este: " . $data->tiempo_modificaciones . " mas : " . $tiempo_modificacion_actual . " es igual a : " .  $suma2); die;
-
                         $data->tiempo_modificaciones = $suma2;
 
                         $data->save();
@@ -2506,9 +2499,6 @@ class BasesatisfaccionController extends Controller {
                     $data->hora_final = $pruebafecha;
                     $data->save();
                 }
-                /*                 * if ($modelBase->tipo_inbox != 'NORMAL') {
-                  $arrFormulario["dimension_id"] = 1;
-                  } */
                 //IF TODOS LOS BLOQUES ESTAN USADOS SETEO ARRAY VACIO
                 if (!isset($arrayForm['bloque'])) {
                     $arrayForm['bloque'] = [];
@@ -2574,7 +2564,6 @@ class BasesatisfaccionController extends Controller {
                             }
                         }
                     }
-                    //$arrayCountBloques = call_user_func_array('array_merge', $arrayCountBloques);
                     //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
                     foreach ($arrayCountBloques as $dato) {
                         $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
@@ -2650,10 +2639,10 @@ class BasesatisfaccionController extends Controller {
                             'basesatisfaccion_id' => $modelBase->id, 'preview' => 0, 'fill_values' => false, 'aleatorio' => 3, 'banderaescalado' => false]);
                     }
                     $modelBase->comentario = $arrFormulario["dscomentario"];
-                    $modelBase->tipologia = $_POST['categoria'];
-                    $modelBase->estado = $_POST['estado'];
+                    $modelBase->tipologia = Yii::$app->request->post('categoria');
+                    $modelBase->estado = Yii::$app->request->post('estado');
                     $modelBase->usado = "NO";
-                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? $_POST['responsabilidad'] : "";
+                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? Yii::$app->request->post('responsabilidad') : "";
                     $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", $_POST['canal']) : "";
                     $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", $_POST['marca']) : "";
                     $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", $_POST['equivocacion']) : "";
@@ -2676,7 +2665,6 @@ class BasesatisfaccionController extends Controller {
                       $params['plataforma'] = 'QA';
                       $params['url'] = '' . Url::to(['formularios/showformulariodiligenciadoamigo']) . '?form_id=' . base64_encode($ejecucion[0]->id);
                       //Se comenta webservicesresponse  para QA por caida de Amigo - 13-02-2019 -
-                      //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
                       $webservicesresponse = null;
                       $tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                       if (!$webservicesresponse && $tmp_ejecucion == '') {
@@ -3122,7 +3110,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     if(count($tot) >= $tramo || $tramo == 0){
 
                         if($pcrc['pcrc'] != "18" ||  $pcrc['pcrc'] != '49' || $pcrc['pcrc'] != '190' || $pcrc['pcrc'] != '181' || $pcrc['pcrc'] != '179' || $pcrc['pcrc'] != '1673' || $pcrc['pcrc'] != '29' || $pcrc['pcrc'] != '2408' || $pcrc['pcrc'] != '198' || $pcrc['pcrc'] != '34' || $pcrc['pcrc'] != '1927' || $pcrc['pcrc'] != '1868' || $pcrc['pcrc'] != '2450' || $pcrc['pcrc'] != '2424' || $pcrc['pcrc'] != '2320' || $pcrc['pcrc'] != '119' || $pcrc['pcrc'] != '335' || $pcrc['pcrc'] != '1623' || $pcrc['pcrc'] != '137' || $pcrc['pcrc'] != '1971' || $pcrc['pcrc'] != '289' || $pcrc['pcrc'] != '287' || $pcrc['pcrc'] != '2092' || $pcrc['pcrc'] != '119' || $pcrc['pcrc'] != '179' || $pcrc['pcrc'] != '2327' || $pcrc['pcrc'] != '2320' || $pcrc['pcrc'] != '2328' || $pcrc['pcrc'] != '293' || $pcrc['pcrc'] != '153' || $pcrc['pcrc'] != '2728' || $pcrc['pcrc'] != '2727' || $pcrc['pcrc'] != '2696' || $pcrc['pcrc'] != '1716' || $pcrc['pcrc'] != '192' || $pcrc['pcrc'] != '2853'){
-                            //print_r($pcrc); die;
                             
                             if ($pcrc['cliente'] == "17" || $pcrc['cliente'] == "118"){
                                 $totNomalHoy2 = BaseSatisfaccion::find()
@@ -3135,7 +3122,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                 ])
                                 ->andWhere("`hora`>='".$inihoratramo."' AND `hora`<='".$finhoratramo."'")
                                 ->andWhere("pregunta1 != 'NO APLICA'")
-                                // ->andWhere("pregunta2 != 'NO APLICA'")
                                 ->all(); 
                             }else{
                                 $totNomalHoy2 = BaseSatisfaccion::find()
@@ -3150,7 +3136,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                 ->all(); 
                             }
                         }else{
-                            //print_r("2"); die;
                                 $totNomalHoy2 = BaseSatisfaccion::find()
                                 ->where([
                                     'pcrc' => $pcrc['pcrc'],
@@ -3191,8 +3176,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                 if($pcrc['pcrc'] != "18" || $pcrc['pcrc'] != '49' || $pcrc['pcrc'] != '190' || $pcrc['pcrc'] != '181' || $pcrc['pcrc'] != '179' || $pcrc['pcrc'] != '1673' || $pcrc['pcrc'] != '29' || $pcrc['pcrc'] != '2408' || $pcrc['pcrc'] != '198' || $pcrc['pcrc'] != '34' || $pcrc['pcrc'] != '1927' || $pcrc['pcrc'] != '1868' || $pcrc['pcrc'] != '2450' || $pcrc['pcrc'] != '2424' || $pcrc['pcrc'] != '2320' || $pcrc['pcrc'] != '119' || $pcrc['pcrc'] != '335' || $pcrc['pcrc'] != '1623' || $pcrc['pcrc'] != '137' || $pcrc['pcrc'] != '1971' || $pcrc['pcrc'] != '289' || $pcrc['pcrc'] != '287' || $pcrc['pcrc'] != '2092' || $pcrc['pcrc'] != '119' || $pcrc['pcrc'] != '179' || $pcrc['pcrc'] != '2327' || $pcrc['pcrc'] != '2320' || $pcrc['pcrc'] != '2328' || $pcrc['pcrc'] != '293' || $pcrc['pcrc'] != '153'){
 
                                     if ($pcrc['cliente'] == "17" || $pcrc['cliente'] == "118"){
-                                        // $where = " AND pregunta1 != 'NO APLICA' and pregunta2 !='NO APLICA' ";
-                                        // $where2 = "pregunta1 != 'NO APLICA' and pregunta2 !='NO APLICA' ";
                                         $where = " AND pregunta1 != 'NO APLICA' ";
                                         $where2 = "pregunta1 != 'NO APLICA' ";
                                     }else{
@@ -3230,7 +3213,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                     ])
                                     ->andWhere("`hora`>='".$inihoratramo."' AND `hora`<='".$finhoratramo."'")
                                     ->andWhere("pregunta1 != 'NO APLICA'")
-                                    // ->andWhere("pregunta2 != 'NO APLICA'")
                                     ->all(); 
                                 }else{
                                     $totNomalHoy2 = BaseSatisfaccion::find()
@@ -4156,7 +4138,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         $titulo = 'Un asesor de tu grupo ha recibido un pliego de cargos';
                         $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
                         $this->notificar($lider, $titulo, $url); // Notificar Lider
-                        //$this->enviarcorreo($usuario, $lider, $url);
                     }
 
                 }else{
@@ -4182,7 +4163,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $params['plataforma'] = 'QA';
                 $params['url'] = $url;
                 //Se comenta webservicesresponse para QA por caida de Amigo - 13-02-2019 -
-                //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
                 $webservicesresponse = null;
                 if (!$webservicesresponse) {
                     Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));                  
@@ -4742,13 +4722,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 return $this->render('gestionpreguntas', ['model' => $model]);
             }
-
-
-
-
-
-
-
             /** Desempeño German Mejia Vieco **/
 
 
@@ -4816,8 +4789,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
             public function enviarcorreoalertas($fecha, $pcrc, $valorador, $tipo_alerta, $archivo_adjunto, $remitentes, $asunto, $comentario){
 
-                //$fecha, $pcrc, $valorador, $tipo_alerta, $archivo_adjunto, $remitentes, $asunto, $comentario
-
                 $equipos = \app\models\Arboles::find()->where(['id' => $pcrc])->all();
                 $usuario = \app\models\Usuarios::find()->where(['usua_id' => $valorador])->all();
                 $destinatario = explode(",", $remitentes); 
@@ -4880,7 +4851,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->from('tbl_alertascx a')
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            //->andWhere('valorador ="' . $responsable . '"')
                 ->orderBy(['fecha' => SORT_DESC])
                             ->all();
 
@@ -4900,7 +4870,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->join('INNER JOIN', 'tbl_arbols c', 'b.arbol_id = c.id')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
                             ->groupBy('a.valorador, a.pcrc')
-                            //->andWhere('valorador ="' . $responsable . '"')
                             ->all();
 
 
@@ -4942,7 +4911,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->andWhere($xpcrc)
                             ->andWhere($xresponsable)
                             ->groupBy('a.valorador, a.pcrc')
-                            //->andWhere('valorador ="' . $responsable . '"')
                             ->all();
 
 
@@ -4955,7 +4923,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->andWhere($xpcrc)
                             ->andWhere($xresponsable)
                             ->groupBy('a.pcrc')
-                            //->andWhere('valorador ="' . $responsable . '"')
                             ->all();
 
                     $dataProvider = (new \yii\db\Query())
@@ -4963,7 +4930,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->from('tbl_alertascx a')
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            //->andWhere('valorador ="' . $responsable . '"')
                             ->andWhere($xfecha)
                             ->andWhere($xpcrc)
                             ->andWhere($xresponsable)
@@ -5067,9 +5033,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
                     $data->save();
                 }
-                /*                 * if ($modelBase->tipo_inbox != 'NORMAL') {
-                  $arrFormulario["dimension_id"] = 1;
-                  } */
                 //IF TODOS LOS BLOQUES ESTAN USADOS SETEO ARRAY VACIO
                 if (!isset($arrayForm['bloque'])) {
                     $arrayForm['bloque'] = [];
@@ -5134,7 +5097,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             }
                         }
                     }
-                    //$arrayCountBloques = call_user_func_array('array_merge', $arrayCountBloques);
                     //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
                     foreach ($arrayCountBloques as $dato) {
                         $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
@@ -5197,7 +5159,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         ]);
                     }
                     //TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
-                    //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                     /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
                     \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
                     $modelBase->comentario = $arrFormulario["dscomentario"];

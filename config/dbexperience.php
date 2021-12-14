@@ -2,9 +2,9 @@
 
 return [
   'class'        => 'yii\db\Connection',
-  'dsn'          => 'mysql:host=172.102.100.140;port=3306;dbname=experience',
-  'username'     => 'cdg',
-  'password'     => 'Konecta2020*',
+  'dsn'          => 'mysql:host='.MY_SQL_HOST_EXPERIENCE.';port='.MY_SQL_PORT_EXPERIENCE.';dbname='.MY_SQL_DB_NAME_EXPERIENCE,
+  'username'     => USER_DB_EXPERIENCE,
+  'password'     => PASSWORD_DB_EXPERIENCE,
   'charset'      => 'utf8',
 
   'on afterOpen' => function ($event) {

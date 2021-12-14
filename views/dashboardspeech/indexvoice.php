@@ -334,7 +334,7 @@ $this->title = 'Dashboard Voz del Cliente';
   }
 
 </style>
-<script src="../../js_extensions/jquery-2.1.1.min.js"></script>
+<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
 <script src="../../js_extensions/highcharts/highcharts.js"></script>
 <script src="../../js_extensions/chart.min.js"></script>
 <script src="../../js_extensions/highcharts/exporting.js"></script>

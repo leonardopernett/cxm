@@ -86,6 +86,10 @@ class AutomatizacionteoController extends Controller {
 
             public function actionExecutefromserver()
             {
+                foreach ($_SERVER as $key => $value)
+                {
+                    $_SERVER[$key] = filter_input(INPUT_SERVER, $key, FILTER_SANITIZE_STRING);
+                }
                 if($_SERVER['REMOTE_ADDR'] == "172.20.73.184" ){
                       $this->actionIndex();
                 }else{

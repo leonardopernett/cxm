@@ -16,7 +16,7 @@ class UploadForm extends Model
     public function rules()
     {
         return [
-            [['archivo_adjunto'], 'file', 'skipOnEmpty' => false, 'extensions' => 'PNG, JPG, PDF', 'maxFiles' => 4],
+            [['archivo_adjunto'], 'file', 'skipOnEmpty' => false, 'extensions' => 'PNG, JPG, PDF', 'maxFiles' => 4, 'maxSize'=> 1024 * 1024 * 50],
         ];
     }
     

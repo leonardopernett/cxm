@@ -490,7 +490,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                     break;
                 case 49:
                     $error->hasError = true;
-                    $error->msgError = \Yii::t("app", "Usuario o contrase�a no valida");
+                    $error->msgError = \Yii::t("app", "Usuario o contraseña no valida");
                     break;
 
                 default:

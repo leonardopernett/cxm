@@ -366,7 +366,7 @@ use GuzzleHttp;
 
       $varIdArbol = $data_post["idarbol"];   
 
-      $paramsBusqueda = [':Arbol_id' => $varIdArbol];
+      $paramsBusqueda = [':Arbol_id' => $varIdArbol, ':Fecha_inicio' => $varFechaInicio.' 00:00:00', ':Fecha_Fin' => $varFechaFin.' 23:59:59'];
       $varListTipificaciones = Yii::$app->db->createCommand('
       SELECT ef.id AS Id_Formulario, tbl_seccions.id AS Id_sesiones, tbl_bloques.id AS Id_Bloques,
       b.id AS Id_Preguntas, tbl_tipificaciondetalles.id AS id_Tipificacion,  
@@ -392,14 +392,14 @@ use GuzzleHttp;
                   tbl_ejecucionseccions.ejecucionformulario_id = ef.id
                 
                 where
-                  ef.arbol_id IN  (:Arbol_id)
-                    AND ef.created >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+                  ef.formulario_id IN  (:Arbol_id)
+                    AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
                     GROUP BY ef.id, tbl_tipificaciondetalles.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatapi = array();
       foreach ($varListTipificaciones as $key => $value) {
 
-        array_push($arraydatapi, array("Id_Formulario "=>$value['Id_Formulario'],"Id_sesiones"=>$value['Id_sesiones'],"Id_Bloques"=>$value['Id_Bloques'],"Id_Preguntas"=>$value['Id_Preguntas'],"Id_Tipificacion "=>$value['id_Tipificacion'],"Tipificaciones "=>$value['Tipificaciones'],'RespuestaTipificacion'=>$value['Rtatipi'])); 
+        array_push($arraydatapi, array("Id_Formulario "=>$value['Id_Formulario'],"Id_sesiones"=>$value['Id_sesiones'],"Id_Bloques"=>$value['Id_Bloques'],"Id_Preguntas"=>$value['Id_Preguntas'],"Id_Tipificacion "=>$value['id_Tipificacion'],"Tipificaciones "=>$value['Tipificaciones'],'RespuestaTipificacion'=>$value['Rtatipi'],"Fechavaloracion"=>$value['FechaValoracion'])); 
       }
 
       die(json_encode(array("status"=>"1","data"=>$arraydatapi)));
