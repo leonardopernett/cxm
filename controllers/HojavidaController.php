@@ -96,7 +96,7 @@ use Exception;
 
         if ($varidclientes != null) {
           $dataProviderhv = Yii::$app->db->createCommand("
-          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'EstrÃƒÂ¡tegico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrategico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
           INNER JOIN tbl_hojavida_datalaboral dl ON 
             dl.hv_idpersonal = dp.hv_idpersonal
           LEFT JOIN tbl_hv_pais hp ON 

@@ -41,7 +41,13 @@ Modal::begin([
 
 
             <?php
-            $form = ActiveForm::begin(['options' => ['data-pjax' => true, "id" => "formCortes"], 'layout' => 'horizontal'])
+            $form = ActiveForm::begin([
+                'options' => ['data-pjax' => true, "id" => "formCortes"],
+                'layout' => 'horizontal',
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ])
             ?>
             <div class="col-sm-12">            
                 <?php echo $form->field($modelCorte, 'band_repetir')->checkbox(); ?>
@@ -236,7 +242,13 @@ HTML;
 
 
             <?php
-            $form = ActiveForm::begin(['options' => ['data-pjax' => true, "id" => "formCortes"], 'layout' => 'horizontal'])
+            $form = ActiveForm::begin([
+                'options' => ['data-pjax' => true, "id" => "formCortes"],
+                'layout' => 'horizontal',
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ])
             ?>
             <div class="col-sm-12">            
                 <?php echo $form->field($modelCorte, 'band_repetir')->checkbox(); ?>

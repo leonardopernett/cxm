@@ -110,7 +110,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2915" || $sessiones == "2953" || $sessiones == "57" || $sessiones == "4043" || $sessiones == "611" || $sessiones == "4040" || $sessiones == "4090" || $sessiones == "4045" || $sessiones == "4039" || $sessiones == "4041" || $sessiones == "4443" || $sessiones == "4458" || $sessiones == "6544" || $sessiones == "6706"){ ?>
 <div class="capaCinco">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+      'layout' => 'horizontal',
+      'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+      ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
@@ -154,7 +159,12 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
 </div>
 <hr>
 <div class="capaUno">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+      'layout' => 'horizontal',
+      'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+      ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
@@ -262,7 +272,12 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
 <hr>
 
 <div class="capaDos">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+      'layout' => 'horizontal',
+      'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+      ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
@@ -365,7 +380,12 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
 <hr>
 
 <div class="capaTres">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+      'layout' => 'horizontal',
+      'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+      ]); ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">

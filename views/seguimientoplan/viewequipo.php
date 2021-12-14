@@ -103,7 +103,12 @@ if ($varusuar != null) {
         <div class="col-md-12">
             <div class="card1 mb">            	
             	<label><em class="fas fa-id-card" style="font-size: 20px; color: #ff2c2c;"></em> </label>
-            	<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+            	<?php $form = ActiveForm::begin([
+                    'options' => ['enctype' => 'multipart/form-data'],
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]) ?>
             		<div class="row">
                     	<div class="col-md-6">
                     	<label style="font-size: 15px;">* Seleccionar Coordinador... </label>

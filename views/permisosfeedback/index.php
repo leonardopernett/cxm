@@ -145,7 +145,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-md-12">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #C178;"></em> Buscar Permisos: </label>
-                        <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+                        <?php $form = ActiveForm::begin([
+                            'options' => ["id" => "buscarMasivos"],
+                            'layout' => 'horizontal',
+                            'fieldConfig' => [
+                                'inputOptions' => ['autocomplete' => 'off']
+                              ]
+                            ]); ?>
                             <div class="row">
                                 <div class="col-md-8">
                                     <?= $form->field($model, 'idusuarios')->textInput(['maxlength' => 300, 'id'=>'txtidusuario', 'placeholder'=>'Usuario de red'])?>

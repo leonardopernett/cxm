@@ -14,9 +14,20 @@ use yii\bootstrap\ActiveForm;
     <?php
     if ($isAjax) {
         yii\widgets\Pjax::begin(['id' => 'form_bloques']);
-        $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]);
+        $form = ActiveForm::begin([
+                'layout' => 'horizontal',
+                'options' => ['data-pjax' => true],
+                'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                ]
+        ]);
     } else {
-        $form = ActiveForm::begin(['layout' => 'horizontal']);
+        $form = ActiveForm::begin([
+                'layout' => 'horizontal',
+                'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                ]
+        ]);
     }
     ?>
 

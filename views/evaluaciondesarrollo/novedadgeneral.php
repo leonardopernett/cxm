@@ -67,7 +67,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
         	<div class="col-md-12">
                 <div class="card1 mb">
-                    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+                    <?php $form = ActiveForm::begin([
+                        'layout' => 'horizontal',
+                        'fieldConfig' => [
+                            'inputOptions' => ['autocomplete' => 'off']
+                          ]
+                        ]); ?> 
                     <label style="font-size: 20px;"><em class="fas fa-search" style="font-size: 20px; color: #C148D0;"></em></em> Seleccionar tipo evaluación para verificar novedades:</label>
                     <?= $form->field($model, "tipoevaluacion")->dropDownList($varTipos, ['prompt' => 'Seleccionar evaluaciones', 'id'=>"idtipoeva"]) ?>
                     <div align="center">

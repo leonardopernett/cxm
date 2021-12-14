@@ -23,6 +23,9 @@ $this->title = 'Login';
                         //'options' => ['class' => 'form-horizontal'],
                         'options' => ['class' => 'form-group'],
                         'errorSummaryCssClass' => 'alert alert-danger',
+                        'fieldConfig' => [
+                            'inputOptions' => ['autocomplete' => 'off']
+                          ]
                             /* 'fieldConfig' => [
                               'template' => "{label}\n<div class=\"col-lg-4\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
                               'labelOptions' => ['class' => 'col-lg-4 control-label'],

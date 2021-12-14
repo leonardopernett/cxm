@@ -33,7 +33,12 @@ $this->title = 'Agregar Corte General';
 </div>
 
 <div class="formularios-form">
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		]
+		]); ?>
 
 		<?= $form->field($model, 'tipocortetc')->textInput(['maxlength' => 150, 'id'=>'txttipoCorte', 'class' => 'hidden'])?>
 

@@ -15,7 +15,13 @@ $url = \yii\helpers\Url::to(['roleslist', 'arbol_id' => $model->arbol_id]);
 
 <div class="equipos-evaluados-form">
     <?php
-    $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true]]);
+    $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+    ]);
     ?>
 
     <?=

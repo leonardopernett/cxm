@@ -42,7 +42,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <br>
 
-    <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ["id" => "buscarMasivos"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     
 	    <div class="text-center" style="text-align:left;">
 		 

@@ -159,7 +159,12 @@ $this->title = 'Dashboard Escuchar + 2.0';
 </header>
 <br>
 <br>
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
 <div class="capaPone" style="display: inline;">
     <div class="row">
         <div class="col-md-12">

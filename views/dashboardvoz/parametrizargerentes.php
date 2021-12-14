@@ -43,7 +43,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="form" style="display: inline" id="IdCapaCero">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
         <?=  $form->field($model, 'ciudad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->distinct()->where("id in (2, 98)")->all(), 'name', 'name'),
                         [

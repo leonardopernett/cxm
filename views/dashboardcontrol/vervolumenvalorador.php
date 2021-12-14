@@ -98,7 +98,12 @@ use yii\bootstrap\modal;
     <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div>
 <div class="CapaUno" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ],
+        'layout' => 'horizontal'
+        ]); ?>
 
         <?= $form->field($model, 'idservicio')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'TipoArbol'])->label('Servicio/PCRC') ?> 
 

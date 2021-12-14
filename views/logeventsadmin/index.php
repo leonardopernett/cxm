@@ -54,8 +54,14 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
     
     <?php
-    
-    $form = ActiveForm::begin(['options' => ["id" => "formLogaadmin"], 'layout' => 'horizontal'])
+
+    $form = ActiveForm::begin([
+        'options' => ["id" => "formLogaadmin"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ])
     ?>
 
     <div class="row">

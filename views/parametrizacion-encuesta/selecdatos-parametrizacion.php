@@ -54,7 +54,12 @@ $template = '<label for="pcrc" class="control-label col-sm-3">{label}</label><di
 
 <div class="formularios-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?=
             $form->field($model, 'programa', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])

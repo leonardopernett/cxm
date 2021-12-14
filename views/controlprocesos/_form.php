@@ -88,7 +88,12 @@ $this->title = 'Agregar Valorador';
         <div class="col-md-12">
             <div class="card1 mb">
                 <label style="font-size: 20px;"><em class="fas fa-address-card" style="font-size: 20px; color: #2CA5FF;"></em> Informacion del plan: </label>
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?>
                 <div class="row">
                     <div class="col-md-6">
                         <label style="font-size: 15px;"> Nombre del tecnico: </label>

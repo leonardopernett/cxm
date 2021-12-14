@@ -527,6 +527,26 @@ $varMedellin = "Medellín";
 <div class="container" style="margin-top:20px">
       
         <div class="row">
+
+
+            <div class="col-md-6">
+                <div class="card1">
+                    <canvas id="myChartAdmin"></canvas>
+                </div>
+            </div>
+       
+            <div class="col-md-6">
+                <div class="card1">
+                    <canvas id="myChartAdmin2"></canvas>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    <div class="row" style="margin-top:20px">
+
             <div class="col-md-6 ">
                 <div class="card1">
                     <canvas id="myChartDirector"></canvas>
@@ -538,8 +558,6 @@ $varMedellin = "Medellín";
                     <canvas id="myChartCliente"></canvas>
                 </div>
             </div>
-        </div>
-
 
     <div class="row" style="margin-top:20px">
        <div class="col-md-6">
@@ -571,7 +589,6 @@ $varMedellin = "Medellín";
                             <?php foreach($totalNoDecisorOperativo as $total4): ?>
                                  <?php echo  $total4['total'] ?>
                              <?php endforeach ?>
-                         
     </div>
 </div>
 
@@ -612,8 +629,6 @@ var options ={
 
   const bogota = document.getElementById('bogota').innerHTML
   const medellin = document.getElementById('medellin').innerHTML
-
-
 
 fetch('<?php echo Url::to(['/hojavida/resumenapi']) ?>')
     .then(res  => res.json())

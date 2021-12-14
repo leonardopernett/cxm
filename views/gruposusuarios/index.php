@@ -152,8 +152,14 @@ echo Yii::t("app", "Seleccione los Grupos de usuarios");
 
                 
 <?php
-    
-    $form = ActiveForm::begin(['options' => ["id" => "permisosMasivos"], 'layout' => 'horizontal'])
+
+    $form = ActiveForm::begin([
+        'options' => ["id" => "permisosMasivos"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ])
     ?>
                 <p>
                     <?= Html::a(Yii::t('app', 'Create Gruposusuarios'), ['create'], ['class' => 'btn btn-success']) ?>

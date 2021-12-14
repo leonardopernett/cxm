@@ -138,7 +138,13 @@ if ($varidtc != null) {
         <div class="col-md-6">
             <div class="card1 mb">
                 <label><em class="fas fa-search" style="font-size: 20px; color: #2CA5FF;"></em> Corte a seleccionar:</label>
-                <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+                <?php $form = ActiveForm::begin([
+                    'options' => ["id" => "buscarMasivos"],
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?>
         			<?= $form->field($model, 'idtc')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'idtcs']) ?> 
         			<br>
         			<div class="row" align="center">  

@@ -14,7 +14,13 @@ $cadenaDiv = explode("||", $preCadenaDiv[0]);
 <?php yii\widgets\Pjax::begin(['id' => 'form_detalle']); ?>  
 <div class="detalleparametrizacion-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true, 'id' => 'formConfiguracion']]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true, 'id' => 'formConfiguracion'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     <?= $form->field($model, 'id')->hiddenInput(['id' => 'id'])->label(false) ?>
     <?= $form->field($model, 'categoria')->dropDownList($model->getCategorias(), ['id' => 'categoria', 'prompt' => 'Seleccione ...']) ?>
     <?= $form->field($model, 'configuracion')->radioList(['Y' => 'Y(AND)', 'O' => 'O(OR)'], ["id" => "operadores"]); ?>

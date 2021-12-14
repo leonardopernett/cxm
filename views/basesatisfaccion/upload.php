@@ -12,6 +12,9 @@ use yii\base\model;
      "method" => "post",
      "enableClientValidation" => true,
      "options" => ["enctype" => "multipart/form-data"],
+     'fieldConfig' => [
+          'inputOptions' => ['autocomplete' => 'off']
+     ]
      ]);
 ?>
 

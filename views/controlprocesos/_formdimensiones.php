@@ -77,7 +77,12 @@ $fechaActual = Yii::$app->db->createCommand("select distinct fechacreacion from 
   </div>
 </header>
 <br><br>
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+    ]
+    ]); ?>
 <div class="capaUno" style="display: inline;">
     <div class="row">
         <div class="col-md-12">

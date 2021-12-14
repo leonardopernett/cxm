@@ -26,7 +26,12 @@ $numdias  = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos
     <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <div class="control-procesos-index">
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		  ]
+		]); ?>
 
 		<?= $form->field($model, "tipocortetc")->textInput(['readonly' => 'readonly', 'id' => 'txttipo_id'])->label('Tipo de corte') ?> 
 

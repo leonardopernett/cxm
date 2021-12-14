@@ -10,7 +10,12 @@ use yii\bootstrap\ActiveForm;
 
 <div class="tbl-tableroenfoques-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 45]) ?>
 

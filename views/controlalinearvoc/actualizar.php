@@ -41,7 +41,12 @@ $this->title = 'Actualización del Listado Instrumento Alinear + VOC';
 </div> 
 <br>
 <div id="dtbloque1" class="col-sm-12">
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		  ]
+		]); ?> 
     <select id="txtTipo_accion" class ='form-control'>
                   <option value="" disabled selected>Seleccione...</option>
                   <option value="1">Categorias</option>

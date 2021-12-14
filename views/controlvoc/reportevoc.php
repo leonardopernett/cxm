@@ -55,7 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= Html::encode($this->title) ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
         
                 <?=
                     $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label('Programa/PCRC')->widget(Select2::classname(), [

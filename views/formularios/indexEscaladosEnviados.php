@@ -31,7 +31,12 @@ if (!isset($aleatorio) || !$aleatorio) {
 
     <?= Html::encode($this->title) ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <div class="row">
         <div class="col-md-6">

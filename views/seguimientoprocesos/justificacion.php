@@ -45,7 +45,12 @@ $this->title = 'Justificar Rendimiento';
     <hr>
     <br>
 
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		  ]
+		]); ?>
 
 		<?= $form->field($model, 'idtiposcortes')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'idtcs'])->label('Tipos de Cortes') ?> 
 

@@ -18,7 +18,12 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 
 <?= Html::encode($this->title) ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
     <div class="col-md-6">  
         <?=
         $form->field($searchModel, 'fecha_creacion', [

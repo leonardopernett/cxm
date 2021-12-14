@@ -63,7 +63,12 @@ $this->title = 'DashBoard Voz del Cliente';
 
 ?>
 <div class="formularios-form" style="display: inline" id="dtbloque1">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
         <?php  echo $form->field($model, 'arbol_id')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'TipoArbol'])->label('PCRC') ?> 
         <br>

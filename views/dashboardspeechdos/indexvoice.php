@@ -1367,7 +1367,12 @@ $varColorM = null;
         
         <div class="row">
           <div class="col-md-12">
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+            <?php $form = ActiveForm::begin([
+              'layout' => 'horizontal',
+              'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+              ]); ?>
             <div class="row">
               <div class="col-md-10">
                 <?= $form->field($model, 'idcategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listData, ['prompt' => 'Seleccionar Indicador...', 'id'=>'indicadorID'])->label('Seleccionar Indicador...') ?>
@@ -1681,7 +1686,12 @@ $varColorM = null;
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+        <?php $form = ActiveForm::begin([
+          'layout' => 'horizontal',
+          'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+          ]); ?> 
           <div class="row">
             <div class="col-md-5">
               <select class ='form-control' id="txtIndicadores" data-toggle="tooltip" title="Indicadores" onchange="listai();" class ='form-control'>
@@ -1817,7 +1827,12 @@ $varColorM = null;
     <div class="col-md-12">
       <div class="card1 mb">
         
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+        <?php $form = ActiveForm::begin([
+          'layout' => 'horizontal',
+          'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+          ]); ?> 
               <div class="row">
                 <div class="col-sm-5">
                   <select class ='form-control' id="txtIndicadores1" data-toggle="tooltip" title="Indicadores" onchange="listai1();" class ='form-control'>

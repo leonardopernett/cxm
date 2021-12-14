@@ -126,7 +126,13 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </header>
 <br><br>
-<?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'options' => ["id" => "buscarMasivos"],
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
 <div class="capaPrincipal" style="display: inline;">
     <div class="row">
         <div class="col-md-12">

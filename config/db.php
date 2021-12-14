@@ -6,11 +6,11 @@ return [
     // 'username' => 'root',
     // 'password' => '',
 
-    /*'dsn' => 'mysql:host=172.20.1.36;dbname=ci_monitoreov2',
+  /*   'dsn' => 'mysql:host=172.20.1.36;dbname=ci_monitoreov2',
     'username' => 'leonardo.pernett',
     'password' => 'Kcolombia123*',
-    'charset' => 'utf8', */
-
+    'charset' => 'utf8',
+ */
     'dsn' => 'mysql:host=172.20.1.36;dbname=ci_monitoreov2',
     'username' => 'ci_monitoreo',
     'password' => 'monit000r300',

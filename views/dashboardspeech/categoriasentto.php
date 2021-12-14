@@ -39,7 +39,12 @@ if ($txtservicio != null) {
     Procesando datos, por favor espere, gracias...
 </div>
 <div class="capaUno" id="capaunoid" style="display: inline; text-align: center">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]); ?>
     <div class="row"> 
         <div class="col-md-12">
             

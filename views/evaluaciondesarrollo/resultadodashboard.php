@@ -334,7 +334,12 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+                        <?php $form = ActiveForm::begin([
+                            'layout' => 'horizontal',
+                            'fieldConfig' => [
+                                'inputOptions' => ['autocomplete' => 'off']
+                              ]
+                            ]); ?> 
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="txtCompetencias">Competencias</label>

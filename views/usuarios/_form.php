@@ -15,7 +15,13 @@ use yii\widgets\Pjax;
     <div class="usuarios-form">
         <?php Pjax::begin(['id' => 'form_usuarios-pj']);
         ?> 
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => [ 'data-pjax' => true]]); ?>
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'options' => [ 'data-pjax' => true],
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
 
         <?= $form->field($model, 'usua_usuario')->textInput(['maxlength' => 50]) ?>
 
@@ -56,7 +62,12 @@ use yii\widgets\Pjax;
 <?php else: ?>
     <div class="usuarios-form">
 
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+        <?php $form = ActiveForm::begin([
+            'layout' => 'horizontal',
+            'fieldConfig' => [
+                'inputOptions' => ['autocomplete' => 'off']
+              ]
+            ]); ?>
 
         <?= $form->field($model, 'usua_usuario')->textInput(['maxlength' => 50]) ?>
 

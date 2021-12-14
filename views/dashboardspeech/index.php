@@ -109,7 +109,12 @@ $this->title = 'Dashboard Voz del Cliente';
   </table>
 </div>
 <div class="formularios-form" id="idCapa0" style="display: inline">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin([
+      'layout' => 'horizontal',
+      'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+      ]); ?>
         <div class="row" style="text-align: center;">
             &nbsp; 
           <?= Html::a('Recargar',  ['index'], ['class' => 'btn btn-success',
@@ -134,7 +139,7 @@ $this->title = 'Dashboard Voz del Cliente';
           ?>
             </div>
              <?php
-            if ($sessiones == '2953' || $sessiones == '7' || $sessiones == '3205' || $sessiones == '1525') {
+            if ($sessiones == '2953' || $sessiones == '7' || $sessiones == '3205' || $sessiones == '1525' || $sessiones == '6777' || $sessiones == '6747') {
                 
              ?>
              <?= Html::button('Importar Llamadas', ['value' => url::to('importarexcel2'), 'class' => 'btn btn-success', 'id'=>'modalButton3',

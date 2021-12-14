@@ -1231,7 +1231,12 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                         <div class="card1 mb">
                             <div class="datakonecta">
                                 <em class="fas fa-search" style="font-size: 20px; color: #C148D0;"></em><strong> Búsqueda por servicio:</strong> 
-                                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                                <?php $form = ActiveForm::begin([
+                                    'layout' => 'horizontal',
+                                    'fieldConfig' => [
+                                        'inputOptions' => ['autocomplete' => 'off']
+                                      ]
+                                    ]); ?>
                                 <div class="row">
                                     <div class="col-mod-6">
                                         <?=  $form->field($model, 'arbol_id')->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->distinct()->where("arbol_id in (2, 98)")->andwhere("activo = 0")->orderBy(['name'=> SORT_ASC])->all(), 'id', 'name'),
@@ -1268,7 +1273,12 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
         <div class="col-md-12">
             <div class="card1 mb">
                 <label><em class="fas fa-wrench" style="font-size: 20px; color: #15aabf;"></em> Configuraciones Generales: </label>
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?> 
                 <div class="row">
                                     
                     <div class="col-md-3">

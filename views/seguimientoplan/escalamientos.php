@@ -120,7 +120,13 @@ $sessiones1 = Yii::$app->user->identity->id;
     </div> 
 </div>
 <hr>
-<?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'options' => ["id" => "buscarMasivos"],
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+      ]
+    ]); ?>
 <div id="capaDos" style="display: inline">
     <div class="row">
         <div class="col-md-12">

@@ -301,7 +301,11 @@ if ($data->ppregunta8 != "") {
                 <table class="table table-striped table-bordered detail-view formDinamico">
                     <caption>Tabla datos generales</caption>
                     <tbody>
-                        <?php $form = ActiveForm::begin(); ?>
+                        <?php $form = ActiveForm::begin([
+                            'fieldConfig' => [
+                                'inputOptions' => ['autocomplete' => 'off']
+                              ]
+                        ]); ?>
 
                         <?php if ($data->notificacion == "3") : ?>
 

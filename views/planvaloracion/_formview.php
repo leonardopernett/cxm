@@ -26,7 +26,12 @@ $this->title = 'Ver la Valoración';
     <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
 </div> 
 <div class="control-procesos-index">
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
 		<?= $form->field($model, "evaluados_id")->textInput(['readonly' => 'readonly', 'id' => 'txtevaluados_id'])->label('Valorado') ?> 
 

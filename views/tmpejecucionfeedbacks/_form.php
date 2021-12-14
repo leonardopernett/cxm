@@ -13,7 +13,13 @@ use yii\helpers\Url;
 
     <?php yii\widgets\Pjax::begin(['id' => 'form_tmpejecucionfeedbacks']); ?>
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['data-pjax' => true, 'id' => 'formFeedback']]); ?>
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'options' => ['data-pjax' => true, 'id' => 'formFeedback'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]); ?>
 
     <?php
     if (isset($model->tipofeedback_id)) {

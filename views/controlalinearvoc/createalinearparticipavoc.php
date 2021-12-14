@@ -23,7 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <br>
 <div class="formularios-form" style="display: inline">
-	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+	<?php $form = ActiveForm::begin([
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+			'inputOptions' => ['autocomplete' => 'off']
+		  ]
+		]); ?>
 		<?php 
 			echo $form->field($model3, 'participan_nombre')->textInput(['maxlength' => 200, 'id'=>"nomSesionId1"])->label("Nombre del Participante")
 		?>

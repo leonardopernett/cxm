@@ -136,7 +136,13 @@ $this->registerJs($js);
 <div class="capaPP" style="display: inline;">
   <div class="row">
     <div class="col-md-3">
-            <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+            <?php $form = ActiveForm::begin([
+                'options' => ["id" => "buscarMasivos"],
+                'layout' => 'horizontal',
+                'fieldConfig' => [
+                    'inputOptions' => ['autocomplete' => 'off']
+                  ]
+                ]); ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">

@@ -49,7 +49,13 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
     <?php
     
-    $form = ActiveForm::begin(['options' => ["id" => "formErroressatu"], 'layout' => 'horizontal'])
+    $form = ActiveForm::begin([
+        'options' => ["id" => "formErroressatu"],
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ])
     ?>
     <div class="row">
         <div class="col-md-6">  

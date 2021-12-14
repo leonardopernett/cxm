@@ -21,7 +21,12 @@ $fechaActual = date('Y-m-d');
     <h3 class="text-center">Actualizar Correos</h3>
 </div> 
 <div class="control-procesos-index">
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'inputOptions' => ['autocomplete' => 'off']
+    ]
+    ]); ?>
 	<div class="row">
         <?php
                     echo    $form->field($model, 'usua_id')->label(Yii::t('app','Valorador'))

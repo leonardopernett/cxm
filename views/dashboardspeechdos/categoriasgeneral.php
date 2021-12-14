@@ -42,7 +42,12 @@ $this->title = 'DashBoard Voz del Cliente';
 ?>
 <script src="../../js/bootstrap.min.js"></script>
 <div class="control-procesos-index" style="display: inline" id="IdCapaCero">
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+        ]) ?>
          <div class="form-group">
             <label class="control-label col-xs-3">Destinatario:</label>
                 <div class="col-xs-9">

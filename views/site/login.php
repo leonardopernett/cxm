@@ -205,18 +205,21 @@ $this->title = 'CX-Management';
   <div class="container">
     <div class="row">
       <div class="col-md-4 login-sec input-lg">
-        <div>
-          <img src="../../images/cx.png" class="brand_logo_login" alt="logo_login">
-
-        </div>
-
-        <?php
-        $form = ActiveForm::begin([
-          'id' => 'login-form',
-          //'options' => ['class' => 'form-horizontal'],
-          'options' => ['class' => 'form-group '],
-          'errorSummaryCssClass' => 'alert alert-danger',
-          /* 'fieldConfig' => [
+          <div >
+                  <img src="../../images/cx.png" class="brand_logo_login" alt="logo_login">
+		  
+          </div>
+          
+          <?php
+                  $form = ActiveForm::begin([
+                              'id' => 'login-form',
+                              //'options' => ['class' => 'form-horizontal'],
+                              'options' => ['class' => 'form-group '],
+                              'errorSummaryCssClass' => 'alert alert-danger',
+                              'fieldConfig' => [
+                                'inputOptions' => ['autocomplete' => 'off']
+                              ]
+                                  /* 'fieldConfig' => [
                                   'template' => "{label}\n<div class=\"col-lg-4\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
                                   'labelOptions' => ['class' => 'col-lg-4 control-label'],
                                   ], */

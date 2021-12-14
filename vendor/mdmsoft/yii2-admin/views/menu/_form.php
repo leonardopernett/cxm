@@ -12,7 +12,11 @@ use mdm\admin\models\Menu;
 
 <div class="menu-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+          ]
+    ]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 128]) ?>
 

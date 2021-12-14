@@ -170,7 +170,12 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
             <div class="card1 mb">
                 <label><em class="fas fa-wrench" style="font-size: 20px; color: #15aabf;"></em> Configuraciones Generales: </label>
                 <div class="row">
-                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
+                <?php $form = ActiveForm::begin([
+                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+                        'inputOptions' => ['autocomplete' => 'off']
+                      ]
+                    ]); ?> 
                 	<?= $form->field($model, 'fechacreacion')->textInput(['maxlength' => 250, 'class'=>'hidden', 'id'=>'IdFechaN', 'value'=> date("Y-m-d")]) ?>
                 	<div class="col-md-3">
                         <div class="card1 mb">
