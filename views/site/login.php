@@ -20,7 +20,7 @@ $this->title = 'CX-Management';
 ?>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="../../js_extensions/bootstrap.min.js"></script>
-<script src="../../js_extensions/jquery-1.11.1.min.js"></script>
+<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
 <script src="../../js_extensions/mijs.js"> </script>
 <?php AppAsset::register($this);
 ?>
