@@ -3924,14 +3924,12 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $highestRow = $sheet->getHighestRow();
                 $highestcolumn = $sheet->getHighestColumn();
 
-                for( $row = 1; $row <= $highestRow; $row++)
-                {
+                for ( $row = 1; $row <= $highestRow; $row++) {
                     $rowData = $sheet -> rangeToArray('A'.$row.':'.$highestcolumn.$row,NULL,TRUE,FALSE);
 
-                    if($row == 1){
+                    if ($row == 1) {
                         continue;
-                    }
-                    else{
+                    }else{
                         #code
                     }
 
@@ -3941,24 +3939,25 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     $ano = $rowData[0][1];
                     $usuario_red = $rowData[0][2];
 
-                $desempenoValidar = $desempeno->validarExistencia($mes, $ano, $usuario_red);
-                if(is_null($desempenoValidar)){
-                    $desempenoValidar = new Desempeno();
-                    $desempenoValidar->mes = $mes;
-                    $desempenoValidar->ano = $ano;
-                    $desempenoValidar->usuario_red = $usuario_red;
-                    $desempenoValidar->usuario_carga = Yii::$app->user->identity->id;
-                    $desempenoValidar->desempeno = $rowData[0][3];
-                } else {
-                    $desempenoValidar->usuario_carga = Yii::$app->user->identity->id;
-                    $desempenoValidar->desempeno = $rowData[0][3];
-                }
-                if ($desempenoValidar->save()){
-                    Yii::$app->session->setFlash('success', \Yii::t('app', 'Guardado con exito'));
-                            
-                }
-                else{
-                    #code
+                    $desempenoValidar = $desempeno->validarExistencia($mes, $ano, $usuario_red);
+                
+                    if (is_null($desempenoValidar)) {
+                        $desempenoValidar = new Desempeno();
+                        $desempenoValidar->mes = $mes;
+                        $desempenoValidar->ano = $ano;
+                        $desempenoValidar->usuario_red = $usuario_red;
+                        $desempenoValidar->usuario_carga = Yii::$app->user->identity->id;
+                        $desempenoValidar->desempeno = $rowData[0][3];
+                    }else{
+                        $desempenoValidar->usuario_carga = Yii::$app->user->identity->id;
+                        $desempenoValidar->desempeno = $rowData[0][3];
+                    }
+
+                    if ($desempenoValidar->save()) {
+                        Yii::$app->session->setFlash('success', \Yii::t('app', 'Guardado con exito'));
+                    }else{
+                        #code
+                    }
                 }
             }
 
