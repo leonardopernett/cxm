@@ -4317,7 +4317,6 @@ use app\models\FormUploadtigo;
 
         $sheet = $objPHPExcel->getSheet(0);
         $highestRow = $sheet->getHighestRow();
-        $highestcolumn = $sheet->getHighestColumn();
 
         for ($row = 1; $row <= $highestRow; $row++) { 
 
