@@ -107,7 +107,29 @@ $this->registerJs($js);
 
                 <div class="col-md-8">
                     <div class="card1 mb">
-                        
+                        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #981F40;"></em> Datos Registrados: </label>
+                        <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                            <caption><?= Yii::t('app', 'Datos...') ?></caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Documentos') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha de Ingreso') ?></label></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    foreach ($dataList as $key => $value) {
+                                        
+                                ?>
+                                    <tr>
+                                        <td><label style="font-size: 10px;"><?php echo  $value['documentosna']; ?></label></td>
+                                        <td><label style="font-size: 10px;"><?php echo  $value['fechacreacion']; ?></label></td>
+                                    </tr>
+                                <?php
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
