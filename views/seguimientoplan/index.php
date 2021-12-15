@@ -67,14 +67,11 @@ $this->params['breadcrumbs'][] = $this->title;
         foreach ($variablesId2 as $key => $value) {
                 $textoss2 = $value['evaluados_id'];
 
-                // $varRealizadas = Yii::$app->db->createCommand('select distinct col5 from tbl_tmpreportes where col4  like "%Total Monitoreos%" and usua_id ='.$textoss2.'')->queryScalar();
-
                 $querys =  new Query;
                 $querys     ->select(['tbl_ejecucionformularios.created', 'tbl_usuarios.usua_nombre'])->distinct()
                                 ->from('tbl_ejecucionformularios')
                                 ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                                         'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
-                                //->where(['between','tbl_ejecucionformularios.created', $fechainiC, $fechafinC])
                                 ->where("tbl_ejecucionformularios.created between '$varfechainicio 00:00:00' and '$varfechafin 23:59:59'")
                                 ->andwhere('tbl_usuarios.usua_id = '.$textoss2.'');
                                 
@@ -122,7 +119,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ->from('tbl_ejecucionformularios')
                     ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                             'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
-                    //->where(['between','tbl_ejecucionformularios.created', $fechainiC, $fechafinC])
                     ->where("tbl_ejecucionformularios.created between '$fechainiC 00:00:00' and '$fechafinC 23:59:59'")
                     ->andwhere('tbl_usuarios.usua_id = '.$textoss2.'');
                     
@@ -204,8 +200,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-        <p class="lead">A great starter layout for a landing page</p> -->
       </div>
     </div>
   </div>
@@ -457,7 +451,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                                 }
                             }else{
-                                 // $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 1 days"));
                                 $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']));
                             }                                                        
                 ?>
@@ -482,7 +475,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }
                                     }
                                 }else{
-                                     // $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']."+ 1 days"));
                                     $txtfechas = date("d-m-Y", strtotime($value['fechafintcs']));
                                 }                                
                 ?> 

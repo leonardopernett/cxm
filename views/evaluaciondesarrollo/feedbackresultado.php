@@ -130,7 +130,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <label><em class="fas fa-table" style="font-size: 20px; color: #D8E1D9;"></em> Evaluaciones: </label> 
                     <br>
                     <div class="row">
-                        <div class="col-md-12" align="center">                            
+                        <div class="col-md-12" class="text-center">                            
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <label style="font-size: 20px;"> ¡Te damos la bienvenida!</label>

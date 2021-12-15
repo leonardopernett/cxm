@@ -50,10 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 
-    .content {
-       
-         
-    }
     .mb{
    margin-top:25px;
     }

@@ -210,16 +210,10 @@ use app\models\Formularios;
         curl_close($curl);
         ob_clean();
 
-        if (!$response) {
-          $vartexto = "Error al buscar transcipcion";
-          $varvalencia = "Error al buscar valencia emocioanl";
-        }
-
         $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
 
         if (count($response) == 0) {
-          $vartexto = "Transcripcion no encontrada";
-          $varvalencia = "Valencia emocional no encontrada";
+          #
         }else{
           $vartexto = $response[0]['transcription'];
           $varvalencia = $response[0]['valencia'];

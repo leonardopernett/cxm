@@ -33,8 +33,6 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                 ->where('tbl_usuarios.usua_id = '.$sessiones.'');                    
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
-
-    //$txtnombre = Yii::$app->db->createCommand("select director_programa from tbl_procesos_directores where iddirectores = '$txtRadicado' and anulado = 0")->queryScalar();
 ?>
 &nbsp; 
   <?= Html::a('Regresar',  ['categoriasconfig'], ['class' => 'btn btn-success',
@@ -212,7 +210,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                               
                         </div>
                     </div>
-                    <div id="idbtnG" class="form-group" align="center"  >
+                    <div id="idbtnG" class="form-group" class="text-center">
                         <?= Html::submitButton(Yii::t('app', 'Guardar Categoria'),
                                 ['class' => $model3->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                     'data-toggle' => 'tooltip',

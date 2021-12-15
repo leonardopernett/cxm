@@ -32,7 +32,7 @@ $this->title = 'Vista Valorador';
 
 <div class="control-procesos-index">
 <br>
-    <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+    <table class="text-center" border="1" class="egt table table-hover table-striped table-bordered">
 	<caption>Detalle</caption>
         <tr style="font-size:16px;">
             <th scope="col" class="text-center" ><strong>-- Detalle del Equipo - Mes Actual --</strong></th>

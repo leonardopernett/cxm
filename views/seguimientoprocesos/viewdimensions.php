@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="page-header" >
     <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
 </div> 
-    <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+    <table class="text-center" border="1" class="egt table table-hover table-striped table-bordered">
 	<caption>Tabla datos</caption>
         <tr>
             <th scope="col"><p>Dimension: </p><?php echo $varNomDimens; ?></th>

@@ -98,7 +98,7 @@ if ($roles == "276") {
 
   ?>
 
-  <div align="center">
+  <div class="text-center">
     <h6><strong><p style="color:red;">!!! Advertencia !!! </p></strong></h6>
     <h7><strong>Si no se visualiza la grafica, por favor habilitar los scribpts en la pagina actual.</strong></h7>
   </div>

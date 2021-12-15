@@ -1632,8 +1632,6 @@ use app\models\Controlvolumenxvalorador;
                                     $varArbol = null;
                                     $varSpeech = null;
                                     foreach ($varListData as $key => $value) {
-                                        $varArbol = $value['id'];
-                                        $varSpeech = $value['id_dp_clientes'];
 
                                         array_push($varArrayProgram, $value['programacategoria']);
                                         array_push($varArrayparams, $value['rn'], $value['ext'], $value['usuared'], $value['comentarios']);

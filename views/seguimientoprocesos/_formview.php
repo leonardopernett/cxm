@@ -42,7 +42,7 @@ $fechaActual = date("Y-m-d");
     <h3 style="text-align: center;"><?= Html::encode($this->title) ?></h3>
 </div>
 
-<table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+<table class="text-center" border="1" class="egt table table-hover table-striped table-bordered">
     <caption>Tabla datos</caption>
     <tr>
         <th scope="col"
@@ -108,7 +108,7 @@ $txtfechaini4 = $txtfechasini4 . " 00:00:00";
 $txtfechasfin4 = Yii::$app->db->createCommand("select fechafintcs from tbl_tipos_cortes where idtc = '$txtcorte' and diastcs like '%$txtcorte4%'")->queryScalar();
 $txtfechafin4 = $txtfechasfin4 . " 23:59:59";
 ?>
-<table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+<table class="text-center" border="1" class="egt table table-hover table-striped table-bordered">
     <caption>Tabla datos</caption>
     <thead>
         <tr>

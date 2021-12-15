@@ -1129,9 +1129,6 @@ use yii\base\Exception;
                     
                     $vartotalrespo = count($varlistarespo);
                     $vartotalindica = count($varlistaindica);
-                      //Positivo
-                      $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMasR') and idvariable in ('$arrayVariableMasR')")->queryScalar();
-
                     // fin Diego
 
                   }else{
@@ -1142,10 +1139,6 @@ use yii\base\Exception;
                     }else{                            
                       $varConteo = 0;
                     }
-
-                    //Negativo
-                    $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenosR') and idvariable in ('$arrayVariableMenosR')")->queryScalar();
-
 
                   }
 
@@ -4670,9 +4663,6 @@ public function actionCantidadentto(){
                       
                       $vartotalrespo = count($varlistarespo);
                       $vartotalindica = count($varlistaindica);
-                        //Positivo
-                        $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMasR') and idvariable in ('$arrayVariableMasR')")->queryScalar();
-  
   
                     }else{
                       $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenos') and idvariable in ('$arrayVariableMenos')")->queryScalar();
@@ -4682,10 +4672,6 @@ public function actionCantidadentto(){
                       }else{                            
                         $varConteo = 0;
                       }
-  
-                      //Negativo
-                      $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenosR') and idvariable in ('$arrayVariableMenosR')")->queryScalar();
-  
                     }
   
                   }else{

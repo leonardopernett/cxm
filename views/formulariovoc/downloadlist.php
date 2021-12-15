@@ -143,8 +143,6 @@ $txtcontar = count($txtidbloque);
                 $varCategoria = $value['categoria'];
                 $txtPorcentaje = $value['indicadorvar'];
             }
-
-            //$varIndicador = Yii::$app->db->createCommand("select indicadorglobal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
             if($varIndicador) {
                 $varIndicador = $varIndicador;
             } else {

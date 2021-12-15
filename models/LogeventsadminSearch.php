@@ -84,10 +84,6 @@ class LogeventsadminSearch extends Logeventsadmin {
     public function searchExport($params) {
         $query = Logeventsadmin::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
         if (!($this->load($params) && $this->validate())) {
             return false;
         }

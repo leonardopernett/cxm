@@ -147,7 +147,6 @@ class Tmpejecucionbloquedetalles extends \yii\db\ActiveRecord {
                 ->all();
 
         $arr = array();
-        $objeto = new \stdClass();
         foreach ($form as $value) {
             $objeto = new \stdClass();
             foreach ($value as $k => $v) {

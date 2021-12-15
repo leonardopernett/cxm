@@ -1,9 +1,4 @@
 <?php
-//include '../views/plantillasForm/plantilla' . $data->formulario->id_plantilla_form . '.php';
-
-//echo "<pre>";
-//print_r($detallesseccion_id);
-//echo "</pre>";
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\select2\Select2;

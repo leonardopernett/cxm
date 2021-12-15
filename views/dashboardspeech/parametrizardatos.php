@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
 
         <br>
-        <div class="form-group" align="center">
+        <div class="form-group" class="text-center">
             <?= Html::submitButton(Yii::t('app', 'Guardar Parametros'),
                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                         'data-toggle' => 'tooltip',

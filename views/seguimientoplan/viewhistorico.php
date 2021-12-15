@@ -147,7 +147,7 @@ if ($varidtc != null) {
                     ]); ?>
         			<?= $form->field($model, 'idtc')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'idtcs']) ?> 
         			<br>
-        			<div class="row" align="center">  
+        			<div class="row" class="text-center">  
 		              <?= Html::submitButton(Yii::t('app', 'Buscar corte'),
 		                        ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
 		                            'data-toggle' => 'tooltip', 'style' => 'height: 37px;',

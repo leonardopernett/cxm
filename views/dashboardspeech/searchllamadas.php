@@ -498,15 +498,6 @@ $this->title = 'Dashboard Voz del Cliente';
                                                         });
                                                     return false;",
                                                 ]);
-
-
-                                            // return Html::a('<i class="fas fa-play-circle" style="font-size: 17px; color: #ff3838;"></i>',  ['viewcalls', 'idredbox' => $model->idredbox, 'idgrabadora' => $model->idgrabadora], [
-                                            //     'class' => '',
-                                            //     'title' => 'Verificar audio',
-                                            //     'data' => [
-                                            //         'method' => 'post',
-                                            //     ],
-                                            // ]);  
                                         }
                                     }
                                 ]                              
@@ -552,9 +543,6 @@ $this->title = 'Dashboard Voz del Cliente';
                                                     $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.usuared IN ('$varextensiones')")->queryScalar();
                                                 }
                                             }
-                                            // $varbasesatis = $model->basesatisfaccion_id;
-                                            // $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = $varticket and basesatisfaccion_id = $varbasesatis ")->queryScalar();
-                                                    // if ($varcomprobacion == 0) {
 
                                                     if ($idbase != "") {
 
@@ -574,15 +562,6 @@ $this->title = 'Dashboard Voz del Cliente';
                                                         );
                                                         }
                                                     }
-                                                        
-
-
-                                                    // }else{
-                                                    //     return Html::a('<span class="fas fa-eye" style="font-size: 20px; color: #4ad427;" ></span>'
-                                                    //                     , Url::to(['showbasechatview',
-                                                    //                         'basechatid' => $model->idbasechat_tigob]), ['title' => Yii::t('yii', 'ver Gestión')]);
-                                                    // }
-                                                // },
                                         }else{
                                             if ($idbase == "") {
                                                 return Html::a('<i id="idimage" class="fas fa-search" style="font-size: 17px; color: #4c6ef5; display: inline;"></i>'

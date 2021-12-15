@@ -44,7 +44,7 @@ $this->title = 'Ver la Valoración';
 		<input value="<?php echo $nameVal ?>" id="txtiddelevaluado"  class="invisible">  
 		&nbsp;&nbsp;
 
-	<div align="center">  
+	<div class="text-center">  
 	&nbsp;&nbsp;
 		    <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
@@ -107,7 +107,7 @@ $this->title = 'Ver la Valoración';
 
     ?>
 
-    <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+    <table class="text-center" border="1" class="egt table table-hover table-striped table-bordered">
         <caption>Tabla datos</caption>
     	<thead>
             <th scope="col" class="text-center" ><?= Yii::t('app', 'Corte 1') ?></th>

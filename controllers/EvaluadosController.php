@@ -24,7 +24,7 @@ class EvaluadosController extends Controller {
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'denyCallback' => function ($rule, $action) {
+                'denyCallback' => function ($action) {
                     $msg = \Yii::t('app', 'The requested Item could not be found.');
                     Yii::$app->session->setFlash('danger', $msg);
                     $url = \yii\helpers\Url::to(['site/index']);

@@ -256,7 +256,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card1 mb">
                     <br>
                     <div class="row">
-                        <div class="col-md-12" align="center">                            
+                        <div class="col-md-12" class="text-center">                            
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <label style="font-size: 20px;"> ¡Te damos la bienvenida!</label>
@@ -366,7 +366,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
                                     <br>
                                     <div class="row">
-                                        <div class="col-md-6" align="right" >
+                                        <div class="col-md-6" class="text-right">
                                             <label style="font-size: 15px; text-align: center;"> Completado </label>
                                         </div>
                                         <div class="col-md-6">
@@ -421,7 +421,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <br>                                                                              
                                              
                                         <div class="row">    
-                                            <div class="col-md-5" align="right">        
+                                            <div class="col-md-5" class="text-right">        
                                                 <label style="font-size: 15px; text-align: center;"> Completado </label>
                                             </div>
                                             <div class="col-md-5">
@@ -447,7 +447,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <br>  
                                         <div class="row">
                                         
-                                            <div class="col-md-7" align="right" >
+                                            <div class="col-md-7"class="text-right">
                                                 <label style="font-size: 15px; text-align: center;"><?php echo 'Evaluaciones: '.$varresulcargo.'%'; ?></label>
                                             </div>
                                             <div class="col-md-5">
@@ -479,7 +479,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php if ($varpar != 0 || $varidconteo == 0 || $varnovedadesg == 1) { ?>
                             <?php if ($varidconteocargo == 0 || $varresulcargo == 100) { ?>
                                 <div class="row">
-                                    <div class="col-md-12" align="center">                            
+                                    <div class="col-md-12" class="text-center">                            
                                         <div class="panel panel-default">
                                             <div class="panel-body" style="background-color: #dfffdc;">
                                                 <label style="font-size: 20px;"><em class="fas fa-check-circle" style="font-size: 25px; color: #64ea57;"></em> ¡Gracias! Has finalizado todas las evaluaciones pendientes.</label>
@@ -512,7 +512,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="col-md-6">
                             <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></em> Eliminar evaluación</label>
                         </div>
-                        <div class="col-md-6" align="right">
+                        <div class="col-md-6" class="text-right">
                             <div onclick="opennovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbn1" >
                                 [ Abrir + ]
                             </div> 

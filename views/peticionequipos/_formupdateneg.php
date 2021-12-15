@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div> 
     <br>
     <br>
-    <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+    <table class="text-center" border="1" class="egt table table-hover table-striped table-bordered">
     <caption style="display: none;">Desvincular</caption>
     	<thead>
     		<tr>
