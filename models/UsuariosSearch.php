@@ -102,7 +102,9 @@ class UsuariosSearch extends Usuarios {
 
         $dataProvider = $query->asArray()->all();
 
-        return $dataProvide
+        return $dataProvider;
+    }
+
     /**
      * Creates data provider instance with search query applied
      *
