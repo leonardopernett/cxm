@@ -130,100 +130,123 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 
-<div class="capaCero" style="display: none;" id="idCapaCero">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card1 mb">
+<?php
+if ($sesiones == "0" || $sesiones == "57" || $sesiones == "3468" || $sesiones == "6747" || $sesiones == "6777") {  
+?>
 
-        <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
-          <caption><?php echo "Actualmente CXM esta procesando los datos de la distribucion en conjunto con Jarvis."; ?></caption>
-          <thead>
-            <tr>
-              <th scope="col" class="text-center"><div class="lds-ring"><div></th>
-            </tr>
-          </thead>
-        </table>
+  <div class="capaCero" style="display: none;" id="idCapaCero">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card1 mb">
 
+          <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+            <caption><?php echo "Actualmente CXM esta procesando los datos de la distribucion en conjunto con Jarvis."; ?></caption>
+            <thead>
+              <tr>
+                <th scope="col" class="text-center"><div class="lds-ring"><div></th>
+              </tr>
+            </thead>
+          </table>
+
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="capaPrincipal" style="display: inline;" id="idCapaPrincipal">
-  <div class="row">
+  <div class="capaPrincipal" style="display: inline;" id="idCapaPrincipal">
+    <div class="row">
 
-    <div class="col-md-6">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-spinner" style="font-size: 15px; color: #FFC72C;"></em> Procesar los datos: </label>
-        <?= Html::a('Procesar',  ['procesadistribucion'], ['class' => 'btn btn-primary',
-                                        'data-toggle' => 'tooltip',
-                                        'onclick' => 'generated();',
-                                        'title' => 'Procesar la Distribucion']) 
-        ?>
+      <div class="col-md-6">
+        <div class="card1 mb">
+          <label style="font-size: 15px;"><em class="fas fa-spinner" style="font-size: 15px; color: #FFC72C;"></em> Procesar los datos: </label>
+          <?= Html::a('Procesar',  ['procesadistribucion'], ['class' => 'btn btn-primary',
+                                          'data-toggle' => 'tooltip',
+                                          'onclick' => 'generated();',
+                                          'title' => 'Procesar la Distribucion']) 
+          ?>
+        </div>
       </div>
-    </div>
 
-    <div class="col-md-6">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Actualizar Usuarios Red: </label>
-        <?= 
-          Html::button('Subir Archivo', ['value' => url::to(['actualizausuarios']), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Subir Archivo'])
-        ?>
-        <?php
-          Modal::begin([
-            'header' => '<h4></h4>',
-            'id' => 'modal1',
-          ]);
+      <div class="col-md-6">
+        <div class="card1 mb">
+          <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> Actualizar Usuarios Red: </label>
+          <?= 
+            Html::button('Subir Archivo', ['value' => url::to(['actualizausuarios']), 'class' => 'btn btn-success', 'style' => 'background-color: #337ab7', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Subir Archivo'])
+          ?>
+          <?php
+            Modal::begin([
+              'header' => '<h4></h4>',
+              'id' => 'modal1',
+            ]);
 
-          echo "<div id='modalContent1'></div>";
-                                                          
-          Modal::end(); 
-        ?> 
+            echo "<div id='modalContent1'></div>";
+                                                            
+            Modal::end(); 
+          ?> 
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
-</div>
-<hr>
-<div class="capaSecundario" style="display: inline;" id="idCapaSecundario">
-  <div class="row">
-    
-    <div class="col-md-4">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 15px; color: #1993a5;"></em> Fecha Ultimo Procesamiento: </label>
+  <hr>
+  <div class="capaSecundario" style="display: inline;" id="idCapaSecundario">
+    <div class="row">
+      
+      <div class="col-md-4">
+        <div class="card1 mb">
+          <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 15px; color: #1993a5;"></em> Fecha Ultimo Procesamiento: </label>
 
-        <div class="text-center">
-          <label style="font-size: 25px;"><?= Yii::t('app', $varUltimaFecha) ?></label>
+          <div class="text-center">
+            <label style="font-size: 25px;"><?= Yii::t('app', $varUltimaFecha) ?></label>
+          </div>
+          
         </div>
-        
       </div>
-    </div>
 
-    <div class="col-md-4">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #1993a5;"></em> Cantidad de Asesores: </label>
+      <div class="col-md-4">
+        <div class="card1 mb">
+          <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #1993a5;"></em> Cantidad de Asesores: </label>
 
-        <div class="text-center">
-          <label style="font-size: 25px;"><?= Yii::t('app', $varCantAsesores) ?></label>
+          <div class="text-center">
+            <label style="font-size: 25px;"><?= Yii::t('app', $varCantAsesores) ?></label>
+          </div>
+          
         </div>
-        
       </div>
-    </div>
 
-    <div class="col-md-4">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #1993a5;"></em> Cantidad de Lideres: </label>
+      <div class="col-md-4">
+        <div class="card1 mb">
+          <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #1993a5;"></em> Cantidad de Lideres: </label>
 
-        <div class="text-center">
-          <label style="font-size: 25px;"><?= Yii::t('app', $varCantLideres) ?></label>
+          <div class="text-center">
+            <label style="font-size: 25px;"><?= Yii::t('app', $varCantLideres) ?></label>
+          </div>
+          
         </div>
-        
       </div>
-    </div>
 
+    </div>
   </div>
-</div>
-<hr>
+  <hr>
+
+<?php
+}else{
+?>
+  
+  <div class="capaNoUsar" style="display: inline;">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card1 mb">
+          <label style="font-size: 20px;"><em class="fas fa-ban" style="font-size: 50px; color: #ff5b5b;"></em> <?= Yii::t('app', 'Actualmente no tiene permitido el acceso a este modulo, por favor contactese con los administradores de la herramienta.') ?></label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+<?php
+}
+?>
 
 <script type="text/javascript">
   function validaprocesar(){
