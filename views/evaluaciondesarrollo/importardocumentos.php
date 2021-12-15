@@ -97,10 +97,10 @@ $this->registerJs($js);
                         <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 15px; color: #981F40;"></em> Seleccionar Archivo: </label>
                         <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
-                            <?= $form->field($model, 'file')->fileInput()->label('') ?>
+                            <?= $form->field($model, "file[]")->fileInput(['multiple' => false]) ?>
                             <br>
                             
-                            <?= Html::submitButton("Subir", ["class" => "btn btn-primary", 'onclick' => 'cargar();']) ?>
+                            <?= Html::submitButton("Subir", ["class" => "btn btn-primary"]) ?>
 
                         <?php ActiveForm::end() ?>
                     </div>
