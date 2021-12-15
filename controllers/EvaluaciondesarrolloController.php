@@ -32,6 +32,7 @@ use app\models\EvaluacionCumplimiento;
 use app\models\EvaluacionNovedadesgeneral;
 use app\models\EvaluacionNovedadespares;
 use app\models\EvaluacionDesarrollo;
+use app\models\FormUploadtigo;
 
   class EvaluacionDesarrolloController extends \yii\web\Controller {
 
@@ -4277,7 +4278,7 @@ use app\models\EvaluacionDesarrollo;
       }
 
       public function actionImportardocumentos(){
-        $model = new UploadForm2();
+        $model = new FormUploadtigo();
 
         if ($model->load(Yii::$app->request->post())) {
 
