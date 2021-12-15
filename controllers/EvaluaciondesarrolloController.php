@@ -4335,9 +4335,15 @@ use app\models\FormUploadtigo;
 
         }
 
+      }      
+
+      public function actionEliminardocumentos($id){
+        Yii::$app->db->createCommand('DELETE FROM tbl_evaluacion_documentosna WHERE idevaldodumentosna=:id')
+          ->bindParam(':id',$id )
+          ->execute();
+        Yii::$app->session->setFlash('list','Lista Eliminada Exitosamente');
+        return $this->redirect(['importardocumentos']);
       }
-
-
 
 
   }
