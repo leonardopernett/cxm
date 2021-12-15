@@ -98,8 +98,7 @@ $this->registerJs($js);
                         <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
                             <?= $form->field($model, "file[]")->fileInput(['multiple' => false]) ?>
-                            <br>
-                            
+                            <br>                            
                             <?= Html::submitButton("Subir", ["class" => "btn btn-primary"]) ?>
 
                         <?php ActiveForm::end() ?>
