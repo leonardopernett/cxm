@@ -39,7 +39,7 @@ use app\models\EvaluacionDesarrollo;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['importarusuarios','parametrizardatos','createnivel','verniveles','createeval','verevaluacion','createtipo','vertipo','createcompetencia','vercompetencia','createpreguntas','vercomportamiento','usuarios_evalua', 'createrespuestas', 'verrespuesta', 'importarcompetencia','importarcomporta', 'createbloque', 'verbloque','evaluacionauto','createautoeva','createautodesarrollo','novedadauto','evaluacionjefe','createjefeeva','novedadjefe','importarusuarioseval','importarmensaje','createmensaje','evaluacionpar','evaluacionpares','createautopares','createpardesarrollo','createjefedesarrollo','restringirevalua','novedadpares','evaluacioncargo','evaluaciondecargos','createautocargos','createcargodesarrollo','novedadcargos','novedadesglobales','novedadgeneral','editarplannovedad','feedbackresultado','gestionnovedades','createnovedadgeneral', 'evaluacionfeedback', 'validaevaluado', 'crearresultadofb', 'resultadoevaluacion','eliminarnovedades','editarnovedaddelete','paramsevaluacion','exportarrtadashboard'],
+            'only' => ['importarusuarios','parametrizardatos','createnivel','verniveles','createeval','verevaluacion','createtipo','vertipo','createcompetencia','vercompetencia','createpreguntas','vercomportamiento','usuarios_evalua', 'createrespuestas', 'verrespuesta', 'importarcompetencia','importarcomporta', 'createbloque', 'verbloque','evaluacionauto','createautoeva','createautodesarrollo','novedadauto','evaluacionjefe','createjefeeva','novedadjefe','importarusuarioseval','importarmensaje','createmensaje','evaluacionpar','evaluacionpares','createautopares','createpardesarrollo','createjefedesarrollo','restringirevalua','novedadpares','evaluacioncargo','evaluaciondecargos','createautocargos','createcargodesarrollo','novedadcargos','novedadesglobales','novedadgeneral','editarplannovedad','feedbackresultado','gestionnovedades','createnovedadgeneral', 'evaluacionfeedback', 'validaevaluado', 'crearresultadofb', 'resultadoevaluacion','eliminarnovedades','editarnovedaddelete','paramsevaluacion','exportarrtadashboard','importardocumentos'],
             'rules' => [
               [
                 'allow' => true,
@@ -4273,6 +4273,61 @@ use app\models\EvaluacionDesarrollo;
           'model' => $model,
         ]);
 
+
+      }
+
+      public function actionImportardocumentos(){
+        $model = new UploadForm2();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+          $model->file = UploadedFile::getInstances($model, 'file');
+
+          if ($model->file && $model->validate()) {
+            foreach ($model->file as $file) {
+              $fecha = date('Y-m-d-h-i-s');
+              $user = Yii::$app->user->identity->username;
+              $name = $fecha . '-' . $user;
+              $file->saveAs('categorias/' . $name . '.' . $file->extension);
+              $this->Importexcelcedulas($name);
+
+              return $this->redirect('importardocumentos');
+            }
+          }
+        }
+
+        return $this->render('importardocumentos',[
+          'model' => $model,
+        ]);
+      }
+
+      public function Importexcelcedulas($name){
+        $inputFile = 'categorias/' . $name . '.xlsx';
+
+        try {
+
+          $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+          $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+          $objPHPExcel = $objReader->load($inputFile);
+
+        } catch (Exception $e) {
+          die('Error');
+        }
+
+        $sheet = $objPHPExcel->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+        $highestcolumn = $sheet->getHighestColumn();
+
+        for ($row = 1; $row <= $highestRow; $row++) { 
+
+          Yii::$app->db->createCommand()->insert('tbl_evaluacion_documentosna',[
+                                        'documentosna' => $sheet->getCell("A".$row)->getValue(),
+                                        'anulado' => 0,
+                                        'usua_id' => Yii::$app->user->identity->id,
+                                        'fechacreacion' => date("Y-m-d"),
+                                        ])->execute(); 
+
+        }
 
       }
 
