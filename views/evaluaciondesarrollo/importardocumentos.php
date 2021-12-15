@@ -122,7 +122,7 @@ $this->registerJs($js);
                         <div class="col-md-12">
                             <div class="card1 mb">
                                 <label style="font-size: 15px;"><em class="fas fa-backward" style="font-size: 15px; color: #981F40;"></em> Regresar: </label>
-                                <?= Html::a('Regresar',  ['importardocumentos'], ['class' => 'btn btn-success',
+                                <?= Html::a('Regresar',  ['exportarrtadashboard'], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #707372',
                                                 'data-toggle' => 'tooltip',
                                                 'title' => 'Regresar']) 
