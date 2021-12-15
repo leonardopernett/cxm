@@ -310,6 +310,18 @@ $this->registerJs($js);
                 </div>
             </div>
 
+        <br>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #5cb85c;"></em> Subir Documentos: </label>
+                        <?= Html::a('Importar',  ['importardocumentos'], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Importar Documentos', 'style' => 'background-color: #5cb85c']) 
+                        ?>
+                    </div>
+                </div>
+            </div>
+
             <?php  ?>
 
             <?php $form->end() ?> 
