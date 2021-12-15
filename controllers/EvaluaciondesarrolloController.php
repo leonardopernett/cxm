@@ -4279,6 +4279,11 @@ use app\models\FormUploadtigo;
 
       public function actionImportardocumentos(){
         $model = new FormUploadtigo();
+        $paramsList = [':Anulado' => 0];
+        $dataList = Yii::$app->db->createCommand('
+          SELECT * FROM tbl_evaluacion_documentosna
+            WHERE 
+              anulado = :Anulado')->bindValues($paramsList)->queryAll();
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -4299,6 +4304,7 @@ use app\models\FormUploadtigo;
 
         return $this->render('importardocumentos',[
           'model' => $model,
+          'dataList' => $dataList,
         ]);
       }
 
