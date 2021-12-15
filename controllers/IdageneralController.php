@@ -558,11 +558,10 @@ use app\models\IdaGeneral;
                           ->send();
 
           return $this->redirect('index');
-        }
-
       }else{
         #code
       }
+      
       return $this->renderAjax('enviararchivo',[
         'model' => $model,
       ]);
