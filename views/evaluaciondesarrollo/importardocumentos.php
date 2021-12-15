@@ -93,17 +93,46 @@ $this->registerJs($js);
 
             <div class="row">
                 <div class="col-md-4">
-                    <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 15px; color: #981F40;"></em> Seleccionar Archivo: </label>
-                        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
-                            <?= $form->field($model, "file[]")->fileInput(['multiple' => false]) ?>
-                            <br>                            
-                            <?= Html::submitButton("Subir", ["class" => "btn btn-primary"]) ?>
+                    <div class="row">                        
+                        <div class="col-md-12">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 15px; color: #981F40;"></em> Seleccionar Archivo: </label>
+                                <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
-                        <?php ActiveForm::end() ?>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <?= $form->field($model, "file[]")->fileInput(['multiple' => false]) ?>
+                                        </div>
+                                    </div>
+                                    <br>       
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <?= Html::submitButton("Subir", ["class" => "btn btn-primary"]) ?>
+                                        </div>
+                                    </div>                     
+                                    
+
+                                <?php ActiveForm::end() ?>
+                            </div>
+                        </div>
                     </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;"><em class="fas fa-backward" style="font-size: 15px; color: #981F40;"></em> Regresar: </label>
+                                <?= Html::a('Regresar',  ['importardocumentos'], ['class' => 'btn btn-success',
+                                                'style' => 'background-color: #707372',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Regresar']) 
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+                
 
                 <div class="col-md-8">
                     <div class="card1 mb">
