@@ -143,6 +143,7 @@ $this->registerJs($js);
                                 <tr>
                                     <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Documentos') ?></label></th>
                                     <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha de Ingreso') ?></label></th>
+                                    <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -153,6 +154,9 @@ $this->registerJs($js);
                                     <tr>
                                         <td><label style="font-size: 10px;"><?php echo  $value['documentosna']; ?></label></td>
                                         <td><label style="font-size: 10px;"><?php echo  $value['fechacreacion']; ?></label></td>
+                                        <td class="text-center">
+                                          <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminardocumentos','id'=> $value['idevaldodumentosna']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                                        </td>
                                     </tr>
                                 <?php
                                     }
