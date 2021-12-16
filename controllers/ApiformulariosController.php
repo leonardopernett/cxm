@@ -43,7 +43,7 @@ use GuzzleHttp;
             
             'rules' => [
               [
-                'actions' => ['index','apisesiones','apibloques','apiformularios','apipreguntas','apitipificaciones'],
+                'actions' => ['index','apisesiones','apibloques','apiformularios','apipreguntas','apitipificaciones','apitipificacionescontiene'],
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
@@ -51,7 +51,7 @@ use GuzzleHttp;
                         },
               ],
               [
-                'actions' => ['apisesiones','apibloques','apiformularios','apipreguntas','apitipificaciones'],
+                'actions' => ['apisesiones','apibloques','apiformularios','apipreguntas','apitipificaciones','apitipificacionescontiene'],
                 'allow' => true,
 
               ],
