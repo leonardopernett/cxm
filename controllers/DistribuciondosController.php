@@ -301,12 +301,14 @@ use app\models\DistribucionAsesores;
           $varUsuaNombreLider = Yii::$app->db->createCommand("
           SELECT u.usua_nombre FROM tbl_usuarios u
             WHERE 
-              u.usua_identificacion IN ($varCCLider)")->queryScalar();
+              u.usua_identificacion IN ($varCCLider)")->queryScalar();          
 
           $varContarEquipos = Yii::$app->db->createCommand("
-          SELECT COUNT(eq.id) FROM tbl_equipos eq 
-            WHERE 
-              eq.usua_id IN ($varUsuaIdLider)")->queryScalar();
+              SELECT COUNT(eq.id) FROM tbl_equipos eq
+                INNER JOIN tbl_usuarios u ON 
+                  eq.usua_id = u.usua_id 
+                          WHERE 
+                            u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
           if ($varContarEquipos == 0 && $varUsuaIdLider != 0) {
             Yii::$app->db->createCommand()->insert('tbl_equipos',[
