@@ -306,7 +306,7 @@ use app\models\DistribucionAsesores;
           $varContarEquipos = Yii::$app->db->createCommand("
           SELECT COUNT(eq.id) FROM tbl_equipos eq 
             WHERE 
-              eq.usua_id IN ($varCCLider)")->queryScalar();
+              eq.usua_id IN ($varUsuaIdLider)")->queryScalar();
 
           if ($varContarEquipos == 0 && $varUsuaIdLider != 0) {
             Yii::$app->db->createCommand()->insert('tbl_equipos',[
