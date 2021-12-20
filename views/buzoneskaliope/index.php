@@ -285,7 +285,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 <hr>
-<?php if ($sessiones == '2953' || $sessiones == '2911') { ?>
+<?php if ($sessiones == '2953' || $sessiones == '2911' || $sessiones == '57' || $sessiones == '6777') { ?>
 <div class="capaCuatro" id="capaidcuatro" style="display: inline">
     <div class="row">
         <div class="col-md-12">
