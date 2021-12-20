@@ -137,7 +137,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         $sumaRealizadas = $sumatoria2;
 
-        if($sumaMetas != 0 || $sumaRealizadas != 0){
+        if($sumaMetas != 0 && $sumaRealizadas != 0){
             $sumaCumplimiento = round(($sumaRealizadas / $sumaMetas) * 100);
         }else{
             $sumaCumplimiento = 0;
