@@ -119,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </header>
 <br><br>
-<?php if ($sessiones == '2953' || $sessiones == '2911' || $sessiones == '3205' || $sessiones == '3229') { ?>
+<?php if ($sessiones == '2953' || $sessiones == '2911' || $sessiones == '3205' || $sessiones == '3229' || $sessiones == '57' || $sessiones == '6777') { ?>
 <div class="capaUno" style="display: inline">
 <?php $form = ActiveForm::begin([
     'layout' => 'horizontal',
