@@ -125,7 +125,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     }
 
     $varMesYearActual = date('Y').'-'.date('m').'-01';
-    
+
 
     $varControlManual = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = '$txtCodigo' and anuladovxc = 0   group by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
 
@@ -621,54 +621,98 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     .w3-border-pale-red,.w3-hover-border-pale-red:hover{border-color:#ffe7e7!important}.w3-border-pale-green,.w3-hover-border-pale-green:hover{border-color:#e7ffe7!important}
     .w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffffcc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}
 
-  .masthead {
-    height: 25vh;
-    min-height: 100px;
-    background-image: url('../../images/ADMINISTRADOR-GENERAL.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    /*background: #fff;*/
-    border-radius: 5px;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-  }
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
 <script src="../../js_extensions/highcharts/highcharts.js"></script>
 <script src="../../js_extensions/highcharts/exporting.js"></script>
+<?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                        'style' => 'background-color: #707372',
+                        'data-toggle' => 'tooltip',
+                        'title' => 'Regresar']) 
+?>
+&nbsp; 
+<?= Html::button('Exportar Archivo', ['value' => url::to(['enviarcorreo', 'nomPCRC' => $txtCodigo]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
+                        'data-toggle' => 'tooltip',
+                        'title' => 'Exportar Archivo', 'style' => 'background-color: #337ab7']) ?> 
 
-<header class="masthead">
-  <div class="container h-100">
-    <div class="row h-100 align-items-center">
-      <div class="col-12 text-center">
-      
-      </div>
-    </div>
-  </div>
-</header>
-<br><br>
-  
- <div class="page-header" >
-    <?= Html::encode($this->title) ?>
+<?php
+    Modal::begin([
+      'header' => '<h4>Procesando datos en archivo de excel...</h4>',
+      'id' => 'modal1',
+      // 'size' => 'modal-lg',
+    ]);
 
-
-                    <?php echo $txtArbol; ?>
-               
+    echo "<div id='modalContent1'></div>";
+                                  
+    Modal::end(); 
+?>   
+<div class="page-header" >
+    <h3><center><?= Html::encode($this->title) ?></center></h3>
+</div> 
+<div class="Principal">
+    <div id="capaUno" style="display: inline">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card mb">
+                    <label><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em> Cliente/Servicio:</label>
+                    <label><?php echo $txtArbol; ?></label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb">
+                    <label><em class="fas fa-map-marker-alt" style="font-size: 20px; color: #ff8080;"></em> Dimensiones:</label>
                     <?php 
                         if ($txtCodigo == '237' || $txtCodigo == '1358' || $txtCodigo == '105' || $txtCodigo == '8' || $txtCodigo == '99') {
                             
                     ?>
-                        <?php echo 'Agentes - Alto valor - Proceso'; ?>>
+                        <label><?php echo 'Agentes - Alto valor - Proceso'; ?></label>
                     <?php }else{ ?>
-                       <?php echo 'Alto valor - Proceso'; ?>
-                    <?php  ?>
-                
-                    <?php echo $txtDirector; ?>
-               
-                    <?php echo $txtGerentes; ?>
-              
-                                            <?= Yii::t('app', '') ?>
+                        <label><?php echo 'Alto valor - Proceso'; ?></label>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb">
+                    <label><em class="fas fa-bookmark" style="font-size: 20px; color: #C148D0;"></em> Director:</label>
+                    <label><?php echo $txtDirector; ?></label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb">
+                    <label><em class="fas fa-address-book" style="font-size: 20px; color: #f55050;"></em> Gerente:</label>
+                    <label><?php echo $txtGerentes; ?></label>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <hr>
+    <div id="capaDos" style="display: inline">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    <label><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em> MÃ©tricas de experiencia:</label>
+
+                    <div class="w3-container">
+                        <div class="w3-row">
+                            <a href="javascript:void(0)" onclick="openCity(event, 'Emitida');">
+                                <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #559FFF;"></em><strong> Experiencia emitida - <?php echo $txtArbol; ?></strong></div>
+                            </a>
+                            <a href="javascript:void(0)" onclick="openCity(event, 'Percibida');">
+                                <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #827DF9;"></em><strong> Experiencia percibida - <?php echo $txtArbol; ?></strong></div>
+                            </a>
+                        </div>
+
+                        <div id="Emitida" class="w3-container city" style="display:inline">
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card2 mb">
+                                        <label style="font-size: 15px;">Experiencia emitida </label>
+                                        <table class="table table-striped table-bordered detail-view formDinamico">
+                                            <thead>
+                                                    <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                     <?php
 
                                                         $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
@@ -680,11 +724,14 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             $txtTMes = $varMonth.'- '.$varYear;
                                                             $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                     ?>
-                                                       <?php echo $varTMes; ?>
+                                                        <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                     <?php
-                                                       
+                                                        }
                                                     ?>           
-                                                <?= Yii::t('app', 'Manual y Autmatica') ?>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center"><?= Yii::t('app', 'Manual y Autmatica') ?></td>
                                                         <?php 
                                                             $varControlUnion = Yii::$app->db->createCommand("select sum(sumar) as sumar, mesyear from ((select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = '$txtCodigo' and anuladovxcs = 0 group by mesyear desc limit 6) a order by a.mesyear asc) union all (select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = '$txtCodigo' and anuladovxc = 0  group by mesyear desc limit 6) a order by a.mesyear asc ) ) unidaTables group by mesyear ")->queryAll();
 
@@ -692,42 +739,66 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             foreach ($varControlUnion as $key => $value) {
                                                                 $txtTotalidad4 = $value['sumar'];
                                                         ?>
-                                                           <?php echo $txtTotalidad4; ?>
+                                                            <td class="text-center"><?php echo $txtTotalidad4; ?></td>
                                                             
                                                         <?php
                                                             }
                                                         ?>
-                                                  <?= Yii::t('app', 'Manual') ?>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center"><?= Yii::t('app', 'Manual') ?></td>
                                                         <?php
                                                             $varControlManual = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = '$txtCodigo' and anuladovxc = 0 group by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                             foreach ($varControlManual as $key => $value) {
                                                                 $txtTotalidad = $value['cantidadvalor'];
                                                         ?>
-                                                            <?php echo $txtTotalidad; ?>
+                                                            <td class="text-center"><?php echo $txtTotalidad; ?></td>
                                                         <?php
                                                             }
                                                         ?>
-                                                  
-                                                        <?= Yii::t('app', 'Automaticas') ?>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center"><?= Yii::t('app', 'Automaticas') ?></td>
                                                         <?php
                                                             $varControlSpeech = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = '$txtCodigo' and anuladovxcs = 0  group by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
                                                             
                                                             foreach ($varControlSpeech as $key => $value) {
                                                                 $txtTotalidad2 = $value['cantidadvalor'];
                                                         ?>
-                                                            <?php echo $txtTotalidad2; ?>
+                                                            <td class="text-center"><?php echo $txtTotalidad2; ?></td>
                                                         <?php
                                                             }
                                                         ?>
-                                               
+                                                    </tr>
+                                                </tbody>
+                                        </table> 
+                                        <br>
                                         <?= Html::a('Ver Detalle',  ['graficaindividual','varServicio' => $txtCodigo], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #337ab7',
                                             'data-toggle' => 'tooltip',
                                             'title' => 'Ver Detalle Experiencia']) 
                                         ?> 
-                                   
-                                                <?= Yii::t('app', '') ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card2 mb">
+                                        <label style="font-size: 15px;">Experiencia emitida </label>
+                                        <div id="containerUnion" class="highcharts-container" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="Percibida" class="w3-container city" style="display: none;">
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card2 mb">
+                                        <label style="font-size: 15px;">Experiencia percibida </label>
+                                        <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+                                            <thead>
+                                                <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                 <?php
                                                     $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
@@ -738,28 +809,71 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                         $txtTMes = $varMonth.'- '.$varYear;
                                                         $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                 ?>
-                                                    <?php echo $varTMes; ?>
+                                                    <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                 <?php
-                                                  
+                                                    }
                                                 ?>           
-                                            <<?php echo "Cantidad Encuestas"; ?>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center"><?php echo "Cantidad Encuestas"; ?></td>
                                                     <?php
                                                         foreach ($varMonthYear as $key => $value) {
                                                             $varListYear = $value['mesyear'];                                        
 
                                                             $txtTotalMonth = Yii::$app->db->createCommand("select sum(cantidadvalor) from tbl_control_volumenxencuestasdq where anuladovxedq = 0 and idservicio = '$txtCodigo' and mesyear = '$varListYear'")->queryScalar();
                                                     ?>
-                                                       <?php echo round($txtTotalMonth); ?>
+                                                        <td class="text-center"><?php echo round($txtTotalMonth); ?></td>
                                                     <?php
-                                                        
+                                                        }
                                                     ?>
-                                                
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
                                         <?= Html::a('Ver Detalle',  ['graficaindividual','varServicio' => $txtCodigo], ['class' => 'btn btn-success',
                                             'style' => 'background-color: #337ab7',
                                             'data-toggle' => 'tooltip',
                                             'title' => 'Ver Detalle Experiencia']) 
                                         ?>
-                                    
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card2 mb">
+                                        <label style="font-size: 15px;">Experiencia percibida </label>
+                                        <div id="containerEncuesta" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div id="capaTres" style="display: inline">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    <label><em class="fas fa-list-alt" style="font-size: 20px; color: #C148D0;"></em> Métricas de indicador:</label>
+
+                    <div class="w3-container">
+                        <div class="w3-row">
+                            <a href="javascript:void(0)" onclick="openCity(event, 'EmitidaI');">
+                                <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #547fb7;"></em><strong> Indicador emitida - <?php echo $txtArbol; ?></strong></div>
+                            </a>
+                            <a href="javascript:void(0)" onclick="openCity(event, 'PercibidaI');">
+                                <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"><em class="fas fa-chart-bar" style="font-size: 25px; color: #da3131;"></em><strong> Indicador percibida - <?php echo $txtArbol; ?></strong></div>
+                            </a>
+                        </div>
+
+                        <div id="EmitidaI" class="w3-container city" style="display:inline">
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card2 mb">
+                                        <label style="font-size: 15px;">Programa VOC: indicador de satisfacción 
 
                                             <?php
                                                 echo Html::tag('span', Html::img(Url::to("@web/images/Question.png")), [
@@ -768,7 +882,13 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                     'style' => 'cursor:pointer;'
                                                 ]);
                                             ?>
-                                        
+                                        </label>
+                                        <div id="containerSatu" class="highcharts-container" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card2 mb">
+                                        <label style="font-size: 15px;">Programa VOC: indicador de solución
                                           <?php
                                             echo Html::tag('span', Html::img(Url::to("@web/images/Question.png")), [
                                                 'data-title' => Yii::t("app", "Esta información se debe tomar de los resultados de los dashboard del Programa VOC, se toma la información del indicador No Solución."),
@@ -776,7 +896,19 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                 'style' => 'cursor:pointer;'
                                             ]);
                                           ?>
-                                      
+                                        </label>
+                                         <div id="containerSolucion" class="highcharts-container" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="PercibidaI" class="w3-container city" style="display: none;">
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card2 mb">
+                                    <label style="font-size: 15px;">Programa encuestas: indicador de satisfacción
                                           <?php
                                             echo Html::tag('span', Html::img(Url::to("@web/images/Question.png")), [
                                                 'data-title' => Yii::t("app", "Esta información se debe tomar de los resultados de las encuestas."),
@@ -784,7 +916,13 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                 'style' => 'cursor:pointer;'
                                             ]);
                                           ?>
-                                       
+                                        </label>
+                                        <div id="containerSatuE" class="highcharts-container" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card2 mb">
+                                        <label style="font-size: 15px;">Programa encuestas: indicador de solución
                                           <?php
                                             echo Html::tag('span', Html::img(Url::to("@web/images/Question.png")), [
                                                 'data-title' => Yii::t("app", "Esta información se debe tomar de los resultados de las encuestas. El % de la solución."),
@@ -792,28 +930,19 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                 'style' => 'cursor:pointer;'
                                             ]);
                                           ?>
-                                        
-<?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
-                        'style' => 'background-color: #707372',
-                        'data-toggle' => 'tooltip',
-                        'title' => 'Regresar']) 
-?>
-
-<?= Html::button('Exportar Archivo', ['value' => url::to(['enviarcorreo', 'nomPCRC' => $txtCodigo]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
-                        'data-toggle' => 'tooltip',
-                        'title' => 'Exportar Archivo', 'style' => 'background-color: #337ab7']) ?> 
-
-<?php
-    Modal::begin([
-      'header' => '<h4>Procesando datos en archivo de excel...</h4>',
-      'id' => 'modal1',
-
-    ]);
-
-    echo "<div id='modalContent1'></div>";
-                                  
-    Modal::end(); 
-?> 
+                                        </label>
+                                        <div id="containerSolucionE" class="highcharts-container" style="height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
 
 <script type="text/javascript">
     function openCity(evt, cityName) {
