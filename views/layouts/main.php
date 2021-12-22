@@ -412,7 +412,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Escuchar + 2.0&nbsp;&nbsp;'),
                                                     'url' => ['/dashboardspeechdos/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo()|| Yii::$app->user->identity->isVerexterno(),
                                                 ],
 
                                                 '<br>',
