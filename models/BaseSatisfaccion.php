@@ -89,6 +89,7 @@ class BaseSatisfaccion extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['identificacion', 'nombre', 'ani', 'agente', 'ano', 'mes', 'dia', 'hora', 'rn', 'industria', 'institucion', 'connid'], 'required', 'on' => 'webservice'],
+            [['identificacion', 'nombre', 'ani', 'ano', 'mes', 'dia', 'hora', 'rn', 'industria', 'institucion', 'connid'],'required'],
             [['identificacion', 'nombre', 'ani', 'agente', 'ano', 'mes', 'dia', 'hora', 'rn', 'pcrc', 'industria', 'institucion', 'connid'], 'required', 'on' => 'encuestamanual'],
             [['ano', 'mes', 'dia', 'hora', 'pcrc', 'cliente', 'id_lider_equipo', 'dimension', 'escalado'], 'integer'],
             [['comentario', 'estado', 'llamada', 'buzon', 'usado', 'lider_equipo', 'cc_lider', 'tipo_inbox', 'responsabilidad'

@@ -141,27 +141,27 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
           <div class="row">
             <div class="col-md-6">
               <label for="txtIDExtSp" style="font-size: 14px;">ID Externo Speech</label>
-              <input type="text" class="form-control" id="txtIDExtSp" data-toggle="tooltip" title="Id Externo Speech.">   
+              <input type="text" class="form-control" id="txtIDExtSp" maxlength="50" data-toggle="tooltip" title="Id Externo Speech.">   
             </div>
             <div class="col-md-6">
                <label for="txtFechaHora" style="font-size: 14px;">Fecha y Hora</label>
-                <input type="datetime-local" id="txtFechaHora" name="datetimes" class="form-control" data-toggle="tooltip" title="Fecha & Hora">
+                <input type="datetime-local" id="txtFechaHora" name="datetimes"  class="form-control" data-toggle="tooltip" title="Fecha & Hora">
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="txtUsuAge" style="font-size: 14px;">Usuario de Agente</label>
-              <input type="text" class="form-control" id="txtUsuAge" data-toggle="tooltip" title="Usuario de Agente">    
+              <input type="text" class="form-control" id="txtUsuAge" maxlength="100" data-toggle="tooltip" title="Usuario de Agente">    
             </div>
             <div class="col-md-6">
                <label for="txtDuracion" style="font-size: 14px;">Duración en segundos</label>                    
-                    <input type="text" class="form-control" id="txtDuracion" data-toggle="tooltip" title="Duracion de la llamada" onkeypress="return valida(event)">
+                    <input type="text" class="form-control" id="txtDuracion" maxlength="100" data-toggle="tooltip" title="Duracion de la llamada" onkeypress="return valida(event)">
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="txtExtencion" style="font-size: 14px;">Extensión</label>
-              <input type="text" class="form-control" id="txtExtencion" onkeypress="return valida(event)" data-toggle="tooltip" title="Extensión">    
+              <input type="text" class="form-control" id="txtExtencion" maxlength="100" onkeypress="return valida(event)" data-toggle="tooltip" title="Extensión">    
             </div>
             <div class="col-md-6">
                <label for="txtDimension" style="font-size: 14px;">Dimensión</label>
@@ -353,7 +353,7 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
                 <div class="row">
                     <div class="col-md-12">
                         <label for="txtIndiGlo" style="font-size: 14px;">Detalle cualitativo (Detalle de Responsabilidad)</label>
-                        <?= $form->field($model, 'extension', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500,  'id'=>'txtDcualitativo', 'placeholder'=>'Ingresar el detalle del proceso']) ?> 
+                        <?= $form->field($model, 'extension', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput([['maxlength' => 500,'id'=>'txtDcualitativo', 'placeholder'=>'Ingresar el detalle del proceso']) ?> 
                     </div>
                 </div>
             </div>
@@ -515,6 +515,12 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
     var vartxtMapa2 = document.getElementById("txtMapa2").value;
     var vartxtMapa3 = document.getElementById("txtMapa3").value;
 
+
+    if (vartxtDcualitativo.length>500) {
+        event.preventDefault();
+        swal.fire("!!! Advertencia !!!","No se pueden mas de 500 caracteres","warning");
+        document.getElementById("txtDcualitativo").style.border = '1px solid #ff2e2e';
+        return; }
     if (vartxtPcrc == "") {
       event.preventDefault();
       swal.fire("!!! Advertencia !!!","Falta el campo programa o PCRC.","warning");          

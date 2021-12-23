@@ -20,7 +20,7 @@ use yii\helpers\Url;
           ]
         ]); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => 150]) ?>
+    <?= $form->field($model, 'name')->textInput(['id'=>'idname']) ?>
     <?= $form->field($model, 'id_plantilla_form')->dropDownList(Yii::$app->params["lista_plantilla"]) ?>
 
     <?php
@@ -129,7 +129,8 @@ use yii\helpers\Url;
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <?=
-            Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+            Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+            'onclick' => 'validar()'])
             ?>
             <?=
             Html::a(Yii::t('app', 'Cancel'), ['index'], ['class' => 'btn btn-default'])
@@ -138,5 +139,29 @@ use yii\helpers\Url;
     </div>
 
 <?php ActiveForm::end(); ?>
+
+<script>
+
+function validar(){
+    var varidname = document.getElementById("idname").value;
+
+
+   if(varidname === ""){
+       
+    swal.fire("Nombre no puede estar vacio")
+    return;
+   }else if(varidname.length>100){
+       
+       swal.fire("Solo se permiten 100 caracteres")
+       return;
+      }
+
+
+
+}
+
+
+</script>
+
 
 </div>

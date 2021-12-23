@@ -128,19 +128,19 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
                         <div class="form-group">
                             <label class="control-label col-xs-3">Destinatario:</label>
                             <div class="col-xs-9">
-                                <input type="email" id="destino" name="remitentes" class="form-control" placeholder="Destinatario" multiple required>
+                                <input type="email" id="destino" name="remitentes" maxlength="100" class="form-control" placeholder="Destinatario" multiple required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-xs-3">Asunto:</label>
                             <div class="col-xs-9">
-                                <input type="text" name="asunto" class="form-control" placeholder="Asunto" required>
+                                <input type="text" name="asunto" class="form-control" maxlength="200" placeholder="Asunto" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-xs-3">Comentario:</label>
                             <div class="col-xs-9">
-                                <textarea rows="3" name="comentario" class="form-control" placeholder="Comentario" required></textarea>
+                                <textarea rows="3" name="comentario" class="form-control" maxlength="500" placeholder="Comentario" required></textarea>
                             </div>
                         </div>
                         <br>

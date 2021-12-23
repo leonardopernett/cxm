@@ -1,0 +1,118 @@
+2021-12-21 10:29:09 [::1][6643][-][error][exception] SQLSTATE[42000]: Syntax error or access violation: 1142 UPDATE command denied to user 'ci_monitoreo'@'%' for table 'tbl_arbols'
+The SQL being executed was: CALL sp_arbols_actualiza_orden()
+    in C:\wamp64\www\qa_managementv2\models\Arboles.php:359
+    in C:\wamp64\www\qa_managementv2\controllers\ArbolesController.php:118
+2021-12-21 10:29:08 [::1][6643][-][info][application] $_POST = [
+    '_csrf' => 'ZXhtdmlJdWUsICNFXTssLi4XWR8OMD06ESsdPTokICxQSkBFWy1MLw=='
+    'Arboles' => [
+        'name' => 'pruebascmx'
+        'arbol_id' => '1839'
+        'snhoja' => '0'
+        'formulario_id' => ''
+        'bloquedetalle_id' => ''
+        'equipos' => ''
+        'nmumbral_verde' => '111111111111111'
+        'nmumbral_amarillo' => '1'
+        'nmumbral_positivo' => '1'
+        'snactivar_problemas' => '0'
+        'tableroproblema_id' => '30'
+        'snactivar_tipo_llamada' => '0'
+        'tiposllamada_id' => '27'
+        'responsables' => '2234'
+        'activo' => '0'
+    ]
+]
+
+$_COOKIE = [
+    '_csrf' => '182d36af9237bf0a47f858b5309246e20ea6905510156d609d2180a86a9adfffs:32:\"IXN34rYKKo4igyH_tSpKSmUI52-32d9J\";'
+    'PHPSESSID' => '54rm1hjo65e8u2vur1e68dq9n4'
+    '_identity' => '70e3fc19ad5d9ed1b1e054da2ff33d9349199964ff2adbd054c4d987db6957ccs:32:\"[\"6643\",\"sary.sanabria\",2592000]\";'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '6643'
+    'fnIdentity' => [
+        'id' => '6643'
+        'username' => 'sary.sanabria'
+        'authKey' => 'sary.sanabria'
+        'accessToken' => 'sary.sanabria'
+        'fullName' => 'Sanabria Valencia Sary Esneider'
+        'rolId' => '270'
+        'cuadroMando' => '1'
+        'estadisticasPersonas' => '1'
+        'hacerMonitoreo' => '1'
+        'reportes' => '1'
+        'modificarMonitoreo' => '1'
+        'adminSistema' => '1'
+        'verDesempeno' => '1'
+        'verAbogado' => '1'
+        'jefeOP' => '1'
+        'verTecDesempeno' => '1'
+        'verAlertas' => '1'
+        'verEvaluacion' => '1'
+        'verExterno' => '0'
+        'verBA' => '0'
+        'verDirectivo' => '0'
+        'verAsesormas' => '0'
+        'adminProcesos' => '1'
+        'edEqipoValorado' => '1'
+        'verInboxAleatorio' => '1'
+        'hacerValoracion' => '1'
+        'grupousuarioid' => '1'
+    ]
+]
+
+$_SERVER = [
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '1869'
+    'HTTP_SEC_CH_UA' => '\"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"'
+    'HTTP_X_CSRF_TOKEN' => 'eFUzRFg0VTQxDX13bEYMfzM6By0/TR1rDAZDDwtZAH1NZx53alBsfg=='
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
+    'CONTENT_TYPE' => 'multipart/form-data; boundary=----WebKitFormBoundaryyOAbb8LTbcDLw8dK'
+    'HTTP_ACCEPT' => 'text/html, */*; q=0.01'
+    'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+    'HTTP_X_PJAX' => 'true'
+    'HTTP_X_PJAX_CONTAINER' => '#form_arboles'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'cors'
+    'HTTP_SEC_FETCH_DEST' => 'empty'
+    'HTTP_REFERER' => 'http://localhost/qa_managementv2/web/index.php/arboles/index'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br'
+    'HTTP_ACCEPT_LANGUAGE' => 'es-419,es;q=0.9'
+    'HTTP_COOKIE' => '_csrf=182d36af9237bf0a47f858b5309246e20ea6905510156d609d2180a86a9adfffs%3A32%3A%22IXN34rYKKo4igyH_tSpKSmUI52-32d9J%22%3B; PHPSESSID=54rm1hjo65e8u2vur1e68dq9n4; _identity=70e3fc19ad5d9ed1b1e054da2ff33d9349199964ff2adbd054c4d987db6957ccs%3A32%3A%22%5B%226643%22%2C%22sary.sanabria%22%2C2592000%5D%22%3B'
+    'PATH' => 'C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\Sennheiser\\SoftphoneSDK\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\PuTTY\\;C:\\windows\\system32\\config\\systemprofile\\AppData\\Local\\Microsoft\\WindowsApps'
+    'SystemRoot' => 'C:\\windows'
+    'COMSPEC' => 'C:\\windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.41 (Win64) PHP/5.6.40 Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.41 (Win64) PHP/5.6.40'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => 'C:/wamp64/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'C:/wamp64/www'
+    'SERVER_ADMIN' => 'wampserver@wampserver.invalid'
+    'SCRIPT_FILENAME' => 'C:/wamp64/www/qa_managementv2/web/index.php'
+    'REMOTE_PORT' => '49997'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/qa_managementv2/web/index.php/arboles/create'
+    'SCRIPT_NAME' => '/qa_managementv2/web/index.php'
+    'PATH_INFO' => '/arboles/create'
+    'PATH_TRANSLATED' => 'C:\\wamp64\\www\\arboles\\create'
+    'PHP_SELF' => '/qa_managementv2/web/index.php/arboles/create'
+    'REQUEST_TIME_FLOAT' => 1640100548.846
+    'REQUEST_TIME' => 1640100548
+]

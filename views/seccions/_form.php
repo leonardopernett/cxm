@@ -10,6 +10,7 @@ use yii\bootstrap\ActiveForm;
 
 
 <div class="seccions-form">
+
     <?php
     if ($isAjax) {
         yii\widgets\Pjax::begin(['id' => 'form_seccions']);
@@ -34,7 +35,7 @@ use yii\bootstrap\ActiveForm;
         <div class="col-md-6">        
             <?=
             $form->field($model, 'name',
-                    ['labelOptions' => ['class' => 'col-md-6']])->textInput(['maxlength' => 100])
+                    ['labelOptions' => ['class' => 'col-md-6']])->textInput(['id'=>'idname','maxlength' => 100])
             ?>
 
             <?=
@@ -201,7 +202,8 @@ use yii\bootstrap\ActiveForm;
             <?=
             Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app',
                                     'Update'),
-                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                    'onclick' => 'validar()'])
             ?>
             <?php if ($isAjax) : ?>
                 <?=
@@ -220,6 +222,26 @@ use yii\bootstrap\ActiveForm;
         yii\widgets\Pjax::end();
     }
     ?>
+    <script>
+
+function validar(){
+    var varidname = document.getElementById("idname").value;
+
+
+   if(varidname === ""){
+    swal.fire("Nombre no puede estar vacio")
+    return;
+   }else if(varidname.length>100){
+       swal.fire("Solo se permiten 100 caracteres")
+       return;
+      }
+
+
+
+}
+
+
+</script>
 </div>
 
 
