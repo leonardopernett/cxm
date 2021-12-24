@@ -22,7 +22,7 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'categoriaFeedName')->textInput(['value'=>$model->getCategoriafeedback()->one()->name, 'disabled'=>true]) ?>
     
-    <?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'name')->textInput(['id' => 'idnombre','maxlength' => 255]) ?>
 
     <?= $form->field($model, 'snaccion_correctiva')->checkbox() ?>
 
@@ -38,7 +38,8 @@ use yii\bootstrap\ActiveForm;
             <?=
             Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app',
                                     'Update'),
-                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                    'onclick' => 'validacion();'])
             ?>
             <?=
             Html::a(Yii::t('app', 'Cancel'),
@@ -51,3 +52,22 @@ use yii\bootstrap\ActiveForm;
     <?php ActiveForm::end(); ?>
     <?php yii\widgets\Pjax::end(); ?>
 </div>
+<script type="text/javascript">
+    function validacion() {
+
+        var varidnombre = document.getElementById("idnombre").value;
+       
+
+        if (varidnombre === '') {
+
+            event.preventDefault();
+            swal.fire("!!! Warning !!!"," Nombre no puede estar vacío","warning");
+            return;
+        }else if (varidnombre.length > 255) {
+
+            event.preventDefault();
+            swal.fire("!!! Warning !!!","Nombre solo puede contener 0 - 255 caracteres","warning");
+            return;
+        }
+    }
+</script>

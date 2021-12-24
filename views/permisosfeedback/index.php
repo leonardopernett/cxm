@@ -195,7 +195,7 @@ $this->params['breadcrumbs'][] = $this->title;
             varcapaDos.style.display = 'none';
             varcapaTres.style.display = 'inline';
             event.preventDefault();
-            swal.fire("��� Advertencia !!!","Debe de ingresar un usuario de red","warning");
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un usuario de red","warning");
             return;
             
         }else{
