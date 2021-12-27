@@ -648,7 +648,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     Modal::end(); 
 ?>   
 <div class="page-header" >
-    <h3><center><?= Html::encode($this->title) ?></center></h3>
+    <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
 </div> 
 <div class="Principal">
     <div id="capaUno" style="display: inline">
@@ -711,8 +711,9 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                     <div class="card2 mb">
                                         <label style="font-size: 15px;">Experiencia emitida </label>
                                         <table class="table table-striped table-bordered detail-view formDinamico">
+                                        <caption style="display: none;">...</caption>
                                             <thead>
-                                                    <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
+                                                    <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                     <?php
 
                                                         $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
@@ -724,7 +725,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             $txtTMes = $varMonth.'- '.$varYear;
                                                             $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                     ?>
-                                                        <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
+                                                        <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                     <?php
                                                         }
                                                     ?>           
@@ -796,9 +797,10 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                 <div class="col-md-6">
                                     <div class="card2 mb">
                                         <label style="font-size: 15px;">Experiencia percibida </label>
-                                        <table class="table table-striped table-bordered detail-view formDinamico" border="0">
+                                        <table class="table table-striped table-bordered detail-view formDinamico">
+                                        <caption style="display: none;">...</caption>
                                             <thead>
-                                                <th class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
+                                                <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                 <?php
                                                     $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
@@ -809,7 +811,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                         $txtTMes = $varMonth.'- '.$varYear;
                                                         $varTMes = Yii::$app->db->createCommand("select vozfecha from tbl_voz_fecha where anulado = 0 and cortefecha in ('$txtTMes')")->queryScalar();
                                                 ?>
-                                                    <th class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
+                                                    <th scope="col" class="text-center" style="font-size: 15px; background-color: #EEEEEE"><?php echo $varTMes; ?></th>
                                                 <?php
                                                     }
                                                 ?>           
