@@ -173,10 +173,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <br>
             <div style="display:none">
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption style="display: none;">...</caption>
                     <thead>
-                        <th class="text-center" ><?= Yii::t('app', 'Tecnico/Lider') ?></th>
-                        <th class="text-center" ><?= Yii::t('app', 'Cantidad de del Plan') ?></th>
-                        <th class="text-center" ><?= Yii::t('app', 'Tipo de Corte') ?></th>
+                        <th scope="col" class="text-center" ><?= Yii::t('app', 'Tecnico/Lider') ?></th>
+                        <th scope="col" class="text-center" ><?= Yii::t('app', 'Cantidad de del Plan') ?></th>
+                        <th scope="col" class="text-center" ><?= Yii::t('app', 'Tipo de Corte') ?></th>
                     </thead>
                     <tbody>
                         <?php
