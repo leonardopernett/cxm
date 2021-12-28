@@ -58,9 +58,9 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
         ]
         ]); ?>
 
-    <?= $form->field($model, 'identificacion')->textInput(['maxlength' => 45]) ?>
+    <?= $form->field($model, 'identificacion')->textInput(['id'=>'ididentificacion','maxlength' => 45]) ?>
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => 200]) ?>
+    <?= $form->field($model, 'nombre')->textInput(['id'=>'idnombre','maxlength' => 200]) ?>
 
     <?=
             $form->field($model, 'pcrc')
@@ -164,7 +164,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     );
     ?>
 
-    <?= $form->field($model, 'ani')->textInput(['maxlength' => 100]) ?>
+    <?= $form->field($model, 'ani')->textInput(['id'=>'idani','maxlength' => 200]) ?>
     
     <?= $form->field($model, 'tipo_inbox')->dropDownList(['NORMAL' => 'NORMAL', 'ALEATORIO' => 'ALEATORIO']) ?>
     <?php //= $form->field($model, 'industria')->textInput(['maxlength' => 3]) ?>
@@ -173,7 +173,8 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <?=
-            Html::submitButton(Yii::t('app', 'Guardar'), ['class' => 'btn btn-success'])
+            Html::submitButton(Yii::t('app', 'Guardar'), ['class' => 'btn btn-success',
+            'onclick' => 'validacion();'])
             ?>     
 
 
@@ -200,6 +201,30 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     </div>
 
     <?php ActiveForm::end(); ?>
+    <script>
+
+      function validacion(){
+        var varididentificacion = document.getElementById("ididentificacion").value;
+        var varidnombre = document.getElementById("idnombre").value;
+        var varidani = document.getElementById("idani").value;
+
+        if (varididentificacion.length>45) {
+            swal.fire(" identificacion " + " Solo se permiten 0 - 45 caracteres") ;
+      return;
+    }else if(varidnombre.length>200)
+    {
+        alert(" nombre " + " Solo se permiten 0 - 200 caracteres") ;
+      return;
+
+    }else if(varidani.length>200)
+    {
+        alert(" ani " + " Solo se permiten 0 - 200 caracteres") ;
+      return;
+
+    }
+    }
+    </script>
+    
 
 </div>
 

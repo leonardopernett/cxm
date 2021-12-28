@@ -5,6 +5,7 @@ use yii\bootstrap\ActiveForm;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
 
 $variables = Yii::$app->user->identity->rolId;
 
@@ -84,7 +85,8 @@ SCRIPT;
                 ]
                 ]); ?>
 
-            <?= $form->field($model, 'name')->textInput(['maxlength' => 100]) ?>  
+            <?= $form->field($model, 'name')->textInput(['maxlength' => 100,
+            'id'=>'idname']) ?>  
             
             <?= $form->field($model, 'arbol_id')->dropDownList($model->getArbolPadreList()) ?>
 
@@ -122,11 +124,11 @@ SCRIPT;
                 );?>
             </div>                    
 
-            <?= $form->field($model, 'nmumbral_verde')->textInput() ?>
+            <?= $form->field($model, 'nmumbral_verde')->textInput(['id'=>'idnmumbral_verde']) ?>
 
-            <?= $form->field($model, 'nmumbral_amarillo')->textInput() ?>
+            <?= $form->field($model, 'nmumbral_amarillo')->textInput(['id'=>'idnmumbral_amarillo']) ?>
 
-            <?= $form->field($model, 'nmumbral_positivo')->textInput() ?>
+            <?= $form->field($model, 'nmumbral_positivo')->textInput(['id'=>'idnmumbral_positivo']) ?>
             
             <?= $form->field($model, 'snactivar_problemas')->checkBox() ?>
             
@@ -153,6 +155,7 @@ SCRIPT;
                         'dataType' => 'json',
                         'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                         'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+    
                     ],
                     'initSelection' => new JsExpression('function (element, callback) {
                                         var id=$(element).val();
@@ -163,8 +166,10 @@ SCRIPT;
                                             }).done(function(data) { callback(data.results);});
                                         }
                                     }')
+                                    
                     ]
                 ]
+
             );?>
 
             <?php $var2 = ['0' => 'Si', '1' => 'No']; ?>
@@ -174,13 +179,18 @@ SCRIPT;
             <hr>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>            
+                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), 
+                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                    'onclick' => 'validacion();']) ?>            
                 </div>        
             </div>
 
+            
             <?php ActiveForm::end(); ?>
             <?php yii\widgets\Pjax::end(); ?>
         </div>
+        
+
 <?php
     }
     else
@@ -305,3 +315,37 @@ SCRIPT;
         }
     }
 ?>
+<script type="text/javascript">
+function validacion(){
+    var varidname = document.getElementById("idname").value;
+    var varidnmumbral_verde = document.getElementById("idnmumbral_verde").value;
+    var varidnmumbral_amarillo = document.getElementById("idnmumbral_amarillo").value;
+    var varidnmumbral_positivo = document.getElementById("idnmumbral_positivo").value;
+    
+    if ( varidname.length>100) {
+      swal.fire("Advertencia Nombre muy largo") ;
+      return;
+    }
+
+    if (varidname === '') {
+      document.getElementById("idname");
+      event.preventDefault();
+              swal.fire("Advertencia " + " Ingresar Nombre");
+      return;
+    }
+    
+    if (isNaN(varidnmumbral_verde)) {
+              swal.fire("Advertencia " + " Ingresar Solo Numeros" + " en umbral verde");
+      return;
+    }
+    if (isNaN(varidnmumbral_amarillo)) {
+              swal.fire("Advertencia " + " Ingresar Solo Numeros" + " en umbral amarillo");
+      return;
+    }
+    if (isNaN(varidnmumbral_positivo)) {
+              swal.fire("Advertencia " + " Ingresar Solo Numeros" + " en umbral positivo");
+      return;
+    }
+
+}
+    </script>

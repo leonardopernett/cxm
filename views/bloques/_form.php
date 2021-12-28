@@ -31,11 +31,11 @@ use yii\bootstrap\ActiveForm;
     }
     ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => 100]) ?>
+    <?= $form->field($model, 'name')->textInput(['id'=>'idname','maxlength' => 100]) ?>
                       
     <?= $form->field($model, 'tipobloque_id')->dropDownList($model->getTipoBloquesList()) ?>
 
-    <?= $form->field($model, 'nmorden')->textInput() ?>    
+    <?= $form->field($model, 'nmorden')->textInput(['id'=>'idnmorden','maxlength' => 4]) ?>    
 
     <?= $form->field($model, 'dsdescripcion')->textInput(['maxlength' => 550]) ?>
 
@@ -174,7 +174,8 @@ use yii\bootstrap\ActiveForm;
             <?=
             Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app',
                                     'Update'),
-                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                    'onclick' => 'validar()'])
             ?>
             <?php if ($isAjax || (isset($filterSeccion) && $filterSeccion)) : ?>
                 <?=
@@ -196,3 +197,29 @@ use yii\bootstrap\ActiveForm;
     }
     ?>
 </div>
+<script>
+
+function validar(){
+    var varidname = document.getElementById("idname").value;
+    var idnmorden = document.getElementById("idnmorden").value;
+
+   if(varidname === ""){
+    swal.fire("Bloque no puede estar vacio")
+    return;
+   }else if(varidname.length>100){
+       swal.fire("Solo se permiten 100 caracteres")
+       return;
+      }else if (idnmorden === ""){
+        swal.fire("Orden no puede estar vacio")
+        return;
+      }else if (isNaN(idnmorden)){
+        swal.fire("Solo Ingresar Numeros Enteros")
+        return;
+      }else if (idnmorden.length>4){
+        swal.fire("Solo Ingresar 0 - 4 numeros")
+        return;
+      }
+}
+
+
+</script>

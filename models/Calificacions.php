@@ -26,13 +26,14 @@ class Calificacions extends \yii\db\ActiveRecord {
      * @inheritdoc
      */
     public function rules() {
-        return array(
-            array('name', 'required'),
-            /*array(
-                'name',
-                'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/',
-            ),*/
-        );
+        return [
+            
+            [['name'],'required'],
+            [['name'], 'string', 'max' => 100,]
+
+        ];
+            
+    
     }
 
     /**

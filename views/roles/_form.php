@@ -17,9 +17,9 @@ use yii\bootstrap\ActiveForm;
           ]
         ]); ?>
 
-    <?= $form->field($model, 'role_nombre')->textInput(['maxlength' => 50]) ?>
+    <?= $form->field($model, 'role_nombre')->textInput(['id'=>'idrole_nombre','maxlength' => 50]) ?>
 
-    <?= $form->field($model, 'role_descripcion')->textInput(['maxlength' => 50]) ?>
+    <?= $form->field($model, 'role_descripcion')->textInput(['id'=>'idrole_descripcion','maxlength' => 50]) ?>
 
     <?= $form->field($model, 'per_cuadrodemando')->checkbox() ?>
 
@@ -63,11 +63,28 @@ use yii\bootstrap\ActiveForm;
     
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+            'onclick' => 'validacion();']) ?>
             <?= Html::a(Yii::t('app', 'Cancel'), Yii::$app->session['rolPage'] , ['class' => 'btn btn-default']) ?>
         </div>        
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <script type="text/javascript">
+
+function validacion(){
+    var varidrole_nombre = document.getElementById("idrole_nombre").value;
+    var varidrole_descripcion = document.getElementById("idrole_descripcion").value;
+   
+
+    if (varidrole_nombre.length>50) {
+      swal.fire(" Advertencia ","Por favor ingrese caracteres 0 - 50");
+      return;
+    }
+
+}
+    </script>
+
 
 </div>

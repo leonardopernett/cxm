@@ -69,11 +69,11 @@ use yii\widgets\Pjax;
               ]
             ]); ?>
 
-        <?= $form->field($model, 'usua_usuario')->textInput(['maxlength' => 50]) ?>
+        <?= $form->field($model, 'usua_usuario')->textInput(['id'=>'idusua_usuario','maxlength'=>50]) ?>
 
-        <?= $form->field($model, 'usua_nombre')->textInput(['maxlength' => 150]) ?>
+        <?= $form->field($model, 'usua_nombre')->textInput(['id'=>'idusua_nombre','maxlength'=>150]) ?>
 
-        <?= $form->field($model, 'usua_identificacion')->textInput(['maxlength' => 30]) ?>
+        <?= $form->field($model, 'usua_identificacion')->textInput(['id'=>'idusua_identificacion','maxlength'=>30]) ?>
 
         <?= $form->field($model, 'usua_activo')->dropDownList(['S' => 'Si', 'N' => 'No'], ['prompt' => ''])
         ?>
@@ -88,7 +88,8 @@ use yii\widgets\Pjax;
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <?=
-                Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'send_button'])
+                Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'id' => 'send_button',
+                'onclick'=>'validacion()'])
                 ?>
                 <?php
                     if ($query != 0) {
@@ -113,6 +114,7 @@ use yii\widgets\Pjax;
         $('#send_button').on("click", function(e){
             e.preventDefault()
             
+            
             var email = document.getElementById("usuarios-usua_email").value
             var allus = "allus"
             var multienlace = "multienlace"
@@ -126,7 +128,37 @@ use yii\widgets\Pjax;
                 $('#w0').submit()
             } else {
                 Swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar un email corporativo.','warning')
-            } 
+            }
+           
         })
     })
+
+    function validacion(){
+           var varidusua_usuario = document.getElementById("idusua_usuario").value
+           var varidusua_nombre = document.getElementById("idusua_nombre").value
+           var varidusua_identificacion = document.getElementById("idusua_identificacion").value
+
+           if (varidusua_usuario === '') {
+               swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar un Usuario')
+               return;
+           }else if (varidusua_usuario.length>50) {
+               swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar en Usuario caracteres 0 - 50')
+               return;
+           }
+           if (varidusua_nombre === '') {
+               swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar un Apellido y Nombres')
+               return;
+           }else if (varidusua_nombre.length>150) {
+               swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar en Apellido y Nombres caracteres 0 - 150')
+               return;
+           }
+           if (varidusua_identificacion === '') {
+               swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar una identificación')
+               return;
+           }else if (varidusua_identificacion.length>30){
+            swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar en identificación caracteres 0 - 30')
+               return;
+           }
+
+    }
 </script>

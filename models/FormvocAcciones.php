@@ -34,6 +34,7 @@ class FormvocAcciones extends \yii\db\ActiveRecord
             [['idacciones', 'iddetalle', 'anulado', 'usua_id'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['acciones'], 'string', 'max' => 100]
+            
         ];
     }
 

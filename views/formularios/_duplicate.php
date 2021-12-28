@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 use yii\bootstrap\ActiveForm;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Formularios */
 /* @var $form yii\widgets\ActiveForm */
@@ -28,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
               ]
             ]); ?>
 
-        <?= $form->field($model, 'name')->textInput(['maxlength' => 100]) ?>    
+        <?= $form->field($model, 'name')->textInput(['id'=>'idname','maxlength' => 100]) ?>    
 
         <?php //$form->field($model, 'nmorden')->textInput()  ?>
 
@@ -36,7 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-sm-offset-2 col-sm-10">
                 <?=
                 Html::submitButton(Yii::t('app', 'Duplicate'),
-                        ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+                        ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                        'onclick' => 'validar()'])
                 ?>
                 <?=
                 Html::a(Yii::t('app', 'Cancel'), ['index'],
@@ -48,5 +50,28 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php ActiveForm::end(); ?>
 
     </div>
+
+    <script>
+
+function validar(){
+    var varidname = document.getElementById("idname").value;
+
+
+   if(varidname === ""){
+       
+    swal.fire("Nombre no puede estar vacio")
+    return;
+   }else if(varidname.length>100){
+       
+       swal.fire("Solo se permiten 100 caracteres")
+       return;
+      }
+
+
+
+}
+
+
+</script>
 
 </div>
