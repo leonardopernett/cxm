@@ -216,7 +216,7 @@ class Equipos extends \yii\db\ActiveRecord {
                         ->select("*")
                         ->from("tbl_equipos")
                         ->innerJoinWith('usua', 'usua_id = tbl_equipos.usua_id')
-                        ->where("tbl_equipos.usua_id <> 1 and tbl_equipos.name <> 'vac�o'")
+                        ->where("tbl_equipos.usua_id <> 1 and tbl_equipos.name <> 'vacío'")
                         ->asArray()
                         ->all();
     }
