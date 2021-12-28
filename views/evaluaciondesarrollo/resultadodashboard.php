@@ -360,7 +360,7 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                             <?= $form->field($model, 'idevaluacionnivel')->textInput(['class'=>'hidden','maxlength' => true, 'id'=>'idbloque'])  ?>
                             <?= $form->field($model, 'namecompetencia')->textInput(['class'=>'hidden','maxlength' => true, 'id'=>'idnombre'])  ?>
                                 
-                                <div class="row" align="center">  
+                                <div class="row" class="text-center">  
                                         <?= Html::submitButton(Yii::t('app', 'Generar Grafica'),
                                                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                                         'data-toggle' => 'tooltip', 'onclick' => 'openview();',

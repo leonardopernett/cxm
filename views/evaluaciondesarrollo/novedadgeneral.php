@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]); ?> 
                     <label style="font-size: 20px;"><em class="fas fa-search" style="font-size: 20px; color: #C148D0;"></em></em> Seleccionar tipo evaluación para verificar novedades:</label>
                     <?= $form->field($model, "tipoevaluacion")->dropDownList($varTipos, ['prompt' => 'Seleccionar evaluaciones', 'id'=>"idtipoeva"]) ?>
-                    <div align="center">
+                    <div class="text-center">
                         <?= Html::submitButton(Yii::t('app', 'Realizar Búsqueda'),
                                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',                
                                     'data-toggle' => 'tooltip',

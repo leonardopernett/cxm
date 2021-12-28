@@ -41,7 +41,7 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 					</div>
 					<div class="col-md-6">						
 						<div class="row">
-							<div class="col-md-12" align="center">
+							<div class="col-md-12" class="text-center">
 	  							<div onclick="generated();" class="btn btn-primary" style="display:inline;background-color: #c5cbd0;color: black;" method='post' id="botones2"><em class="fas fa-play-circle" style="font-size: 17px; color: #ff3838;"></em>
 				                  Copiar Url Llamada
 				                </div> 
@@ -63,7 +63,7 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 					<div class="card1 mb">
 						<label style="font-size: 18px;"><em class="fas fa-key" style="font-size: 25px; color: #827DF9;"></em> Instructivo de uso</label>
 						<div class="row">
-							<div class="col-md-12" align="center">
+							<div class="col-md-12" class="text-center">
 								<em class="fas fa-download" style="font-size: 60px; color: #ceabab; align-self: center;"></em>
 							
 								<a style="font-size: 13px;" rel="stylesheet" type="text/css" href="/qa_managementv2/web/downloadfiles/Manual Configuración Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>

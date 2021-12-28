@@ -2854,7 +2854,6 @@ use yii\base\Exception;
             $vartipoevaluacion = $value['idevaluaciontipo'];
 
             $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
-            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
 
             $varrtaA = '--';
             $varrtaJ = $varevaluador;

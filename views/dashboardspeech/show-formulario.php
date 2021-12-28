@@ -464,11 +464,9 @@ $contadorSecciones = 0;
                                         <td>
                                             <?php
                                             $max = 5 - count($data->indices_calcular);
-                                            //echo $max;
                                             echo Select2::widget([
                                                 'language' => 'es',
                                                 'name' => 'subi_calculo',
-                                                //'value' =>  $data->tmp_formulario->attributes['subi_calculo'],
                                                 'options' => [
                                                     'placeholder' => Yii::t('app', 'Select ...'),
                                                     'id' => 'subi_calculo'

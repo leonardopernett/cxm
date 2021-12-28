@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="col-md-6">
                             <label style="font-size: 16px;"><em class="fas fa-plus-square" style="font-size: 20px; color: #4D83FE;"></em> Ingresar novedad </label>
                         </div>
-                        <div class="col-md-6" align="right">
+                        <div class="col-md-6" class="text-right">
                             <div onclick="opennovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbn1" >
                                   [ + ]
                             </div> 
@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="col-md-9" id="idbotones" style="display: none">
                                         <?= $form->field($model2, 'cambios')->textInput(['maxlength' => 250,  'id'=>'IdcambiosNcargo', 'placeholder' => 'Digite documento de la persona']) ?>
                                     </div>
-                                    <div class="col-md-3" align="left" id="idbotones1" style="display: none">
+                                    <div class="col-md-3" class="text-left" id="idbotones1" style="display: none">
                                         <div onclick="novedadsearch();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbnsearch" >
                                             [ Buscar ] 
                                         </div> 
@@ -110,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="col-md-6">
                             <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #FF6522;"></em> Eliminar persona </label>
                         </div>
-                        <div class="col-md-6" align="right">
+                        <div class="col-md-6" class="text-right">
                             <div onclick="opennovedads();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbns1" >
                                   [ + ]
                             </div> 

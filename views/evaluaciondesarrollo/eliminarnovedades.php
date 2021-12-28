@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							<label><em class="fas fa-square" style="font-size: 20px; color: #f7b9b9;"></em></em> No elimanadas</label>
 							<label><em class="fas fa-square" style="font-size: 20px; color: #FFC251;"></em></em> En espera de eliminar</label>
 						</div>
-						<div class="col-md-8" align="center">
+						<div class="col-md-8" class="text-center">
 							<div id="containerE" class="highcharts-container" style="height: 120px;"></div> 
 						</div>
 					</div>

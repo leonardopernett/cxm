@@ -85,7 +85,7 @@ $numdias  = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos
     <?php $form->end() ?>
 </div>
 &nbsp;&nbsp;
-<div align="center">
+<div class="text-center">
 		<label>Dias festivos existentes entre la fecha inicio y fecha fin: </label><label id="resultId"> </label>
 </div>
 

@@ -24,7 +24,6 @@ $sessiones = Yii::$app->user->identity->id;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 
@@ -65,16 +64,12 @@ $sessiones = Yii::$app->user->identity->id;
         Pjax::begin(['id' => 'bloques-pj', 'timeout' => false,
             'enablePushState' => false]);
         ?> 
-<!--        <div class="page-header">
-            <h3><?= Html::encode($this->title) ?></h3>
-        </div>-->
         <?php
         foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
         }
         ?>
         <?php
-        //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
         $form = ActiveForm::begin([
             'options' => ["id" => "formUsuarios"],
             'layout' => 'horizontal',
@@ -123,15 +118,11 @@ $sessiones = Yii::$app->user->identity->id;
                     'filter' => false,
                     'value' => 'usua_activo'
                 ],
-                //'usua_estado',
                 [
                     'attribute' => 'rol',
                     'filter' => false,
                     'value' => 'relUsuariosRoles.roles.role_descripcion'
                 ],
-                // 'usua_fechhoratimeout',
-                /* ['class' => 'yii\grid\ActionColumn',
-                  'template' => '{view}{update}'], */
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{view}{update}{delete}',
                     'buttons' => [
@@ -193,16 +184,12 @@ $sessiones = Yii::$app->user->identity->id;
         <?php else: ?>
             <div class="usuarios-index">
 
-<!--                <div class="page-header">
-                    <h3><?= Html::encode($this->title) ?></h3>
-                </div>-->
             <?php
             foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
             }
             ?>
                 <?php
-                //Html::beginForm(Url::to(['roles/index']), "post", ["class" => "form-horizontal", "id" => "permisosMasivos"]);
                 $form = ActiveForm::begin([
                     'options' => ["id" => "formUsuarios"],
                     'layout' => 'horizontal',

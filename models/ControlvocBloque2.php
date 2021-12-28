@@ -75,6 +75,6 @@ class ControlvocBloque2 extends \yii\db\ActiveRecord
             'responsabilidad' => Yii::t('app', ''),
             'fechacreacion' => Yii::t('app', ''),
             'anulado' => Yii::t('app', ''),
-        ]
+        ];
     }
 }

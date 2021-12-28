@@ -61,18 +61,10 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                             ]
             );
             ?>
-            <?php /* =
-              $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($model->getArbolesByRoles(), ['id' => 'arbol_id', 'prompt' => 'Seleccione ...'])
-             */ ?>
         </div>
         <div class="col-md-6">  
             <?=
             $form->field($model, 'created', [
-                //'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],                 
-//                'inputTemplate' => '<div class="input-group col-md-12">'
-//                . '<span class="input-group-addon">'
-//                . '<i class="glyphicon glyphicon-calendar"></i>'
-//                . '</span>{input}{error}{hint}</div>',
                 'labelOptions' => ['class' => 'col-md-12'],
                 'template' => '<div class="col-md-4">{label}</div>'
                 . '<div class="col-md-8"><div class="input-group">'
@@ -128,9 +120,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                             ]
             );
             ?>
-            <?php /* =
-              $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($model->getArbolesByRoles(), ['id' => 'arbol_id', 'prompt' => 'Seleccione ...'])
-             */ ?>
         </div>
     </div>
     <div class="row">
@@ -138,7 +127,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             <?=
             Html::submitButton(Yii::t('app', 'Buscar'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
             ?>
-            <?php //Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default'])      ?>
         </div>  
 
 
@@ -152,7 +140,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     <?php
     $text = app\models\Textos::find()->asArray()->all();
     $gridColumns = [
-        //['class' => 'yii\grid\SerialColumn'],
         [
             'attribute' => 'Programa/PCRC',
             'value' => 'arbol'
@@ -171,125 +158,104 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         ],
         [
             'attribute' => $text[0]['detexto'],
-            //'value' => 'i1',
             'value' => function($data) {
                 if($data['i1'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i1'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[1]['detexto'],
-            //'value' => 'i2',
             'value' => function($data) {
                 if($data['i2'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i2'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[2]['detexto'],
-            //'value' => 'i3',
             'value' => function($data) {
                 if($data['i3'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i3'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[3]['detexto'],
-            //'value' => 'i4',
             'value' => function($data) {
                 if($data['i4'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i4'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[4]['detexto'],
-            //'value' => 'i5',
             'value' => function($data) {
                 if($data['i5'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i5'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[5]['detexto'],
-            //'value' => 'i6',
             'value' => function($data) {
                 if($data['i6'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i6'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[6]['detexto'],
-            //'value' => 'i7',
             'value' => function($data) {
                 if($data['i7'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i7'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[7]['detexto'],
-            //'value' => 'i8',
             'value' => function($data) {
                 if($data['i8'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i8'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[8]['detexto'],
-            //'value' => 'i9',
             'value' => function($data) {
                 if($data['i9'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i9'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
         [
             'attribute' => $text[9]['detexto'],
-            //'value' => 'i10',
             'value' => function($data) {
                 if($data['i10'] == '0.00') {
                     return '-';
                 }else{
                   return $data['i10'];  
                 }
-                //return $data->getGestionado($data->snaviso_revisado);
             }
         ],
-            //['class' => 'yii\grid\ActionColumn'],
     ];
 
     echo ExportMenu::widget([
@@ -302,7 +268,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             'label' => Yii::t('app', 'Export All'),
             'class' => 'btn btn-default'
         ],
-        //'fontAwesome' => true,
         'showConfirmAlert' => false,
         'target' => '_blank',
         'filename' => Yii::t('app', 'Reporte_calificaciones') . '_' . date('Ymd'),

@@ -36,7 +36,7 @@ $this->title = 'Justificar Rendimiento';
 <br>
 <div class="control-procesos-index">
 
-    <table align="center" border="1" class="egt table table-hover table-striped table-bordered">
+    <table class="text-center" border="1" class="egt table table-hover table-striped table-bordered">
 	<caption>Tabla datos</caption>
         <tr>
             <th scope="col"><p>Valorador: </p><?php echo $nameVar; ?></th>
@@ -66,7 +66,7 @@ $this->title = 'Justificar Rendimiento';
 
 		<?= $form->field($model, 'responsable')->textInput(['class' => 'hidden', 'id'=>'txtevaluadoid','value' => $sessiones])?>
 
-		<div align="center">
+		<div class="text-center">
 			<?= Html::submitButton(Yii::t('app', 'Enviar Correo'),
 	                ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',                
 	                'data-toggle' => 'tooltip',
