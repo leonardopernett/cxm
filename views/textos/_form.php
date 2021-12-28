@@ -17,12 +17,13 @@ use yii\bootstrap\ActiveForm;
           ]
         ]); ?>
 
-    <?= $form->field($model, 'detexto')->textInput(['maxlength' => 500]) ?>
+    <?= $form->field($model, 'detexto')->textInput(['id'=>'iddetexto','maxlength'=>500]) ?>
 
     
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+            'onclick' => 'validacion();']) ?>
             <?= Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default']) ?>
         </div>        
     </div>
@@ -30,3 +31,32 @@ use yii\bootstrap\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+<script type="text/javascript">
+
+
+
+function validacion(){
+
+    var variddetexto = document.getElementById("iddetexto").value;
+
+    if (variddetexto === '') {
+        
+    event.preventDefault();
+    swal.fire("!!! Warning !!!"," Nombre no puede estar vacío ","warning");
+    return;
+    }
+
+    if (variddetexto.length>500) {
+
+      event.preventDefault();
+      swal.fire("Advertencia Nombre solo puede contener 0 - 500 caracteres") ;
+      return;
+    }
+
+}
+
+
+
+
+
+</script>
