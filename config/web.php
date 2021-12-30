@@ -100,6 +100,8 @@ $config = [
         ],
         'session' => [
 
+            'class' => 'yii\web\Session',
+            
             'cookieParams' => [
     
                 'httpOnly' => true,
@@ -107,6 +109,7 @@ $config = [
                 'secure' => true,
     
             ],
+            
     
         ],
         'cache' => [
@@ -114,7 +117,11 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+
+            'autoRenewCookie' => true,
+
+            'authTimeout' => 300,
+
             'identityCookie' => [
 
                 'name' => '_identity',
@@ -122,6 +129,8 @@ $config = [
                 'httpOnly' => true,
     
                 'secure' => true,
+
+               
     
             ],
         ],

@@ -55,7 +55,7 @@ class Formularios extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['name'],'maxlength' => 100],
+            [['name'],'string','max' => 100],
             [['nmorden'], 'integer'],
             [['name', 'i1_cdtipo_eval', 'i2_cdtipo_eval', 'i3_cdtipo_eval',
             'i4_cdtipo_eval', 'i5_cdtipo_eval', 'i6_cdtipo_eval',

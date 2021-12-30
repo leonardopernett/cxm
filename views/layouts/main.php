@@ -706,21 +706,7 @@ AppAsset::register($this);
             </div>
         </footer>
 
-        <script>
-            timer = setInterval("logout()", 300000);
-            $('#body').mousemove(function(e){
-                clearInterval(timer);
-                timer = setInterval("logout()", 300000);
-            })
-            $('#body').keypress(function(e){
-                clearInterval(timer);
-                timer = setInterval("logout()", 300000);
-            })
-            
-            function logout() {
-                $.post('/qa_managementv2/web/index.php/site/logout')
-            }
-        </script>
+        
         <?php $this->endBody() ?>
     </body>    
 

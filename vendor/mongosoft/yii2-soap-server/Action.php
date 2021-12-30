@@ -80,7 +80,7 @@ class Action extends \yii\base\Action
         }
 
         // Disable CSRF (Cross-Site Request Forgery) validation for this action.
-        Yii::$app->getRequest()->enableCsrfValidation = false;
+        Yii::$app->getRequest()->enableCsrfValidation = true;
     }
 
     /**

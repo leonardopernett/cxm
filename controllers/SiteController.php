@@ -90,6 +90,7 @@ class SiteController extends Controller {
     }
 
     public function actionLogin() {
+        
         $this->layout = "login";
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -103,6 +104,7 @@ class SiteController extends Controller {
                         'model' => $model,
             ]);
         }
+      
     }
 
     public function actionLogout() {
