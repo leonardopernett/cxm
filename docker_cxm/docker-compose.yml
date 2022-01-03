@@ -1,0 +1,37 @@
+version: '3.4'
+services:
+
+  apache:
+    network_mode: bridge
+    restart: always
+    image: httpd:2.4.48
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - $PWD/apache_data/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - $PWD/apache_data/cxm.cer:/usr/local/apache2/conf/cxm.cer
+      - $PWD/apache_data/cxm.key:/usr/local/apache2/conf/cxm.key
+      - $PWD/apache_data/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+      - $PWD/apache_data/httpd-mpm.conf:/usr/local/apache2/conf/extra/httpd-mpm.conf
+      - $PWD/apache_data/intermedia.cer:/usr/local/apache2/conf/intermedia.cer
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
+
+  app:
+    ports:
+     - "5000:80"
+    volumes:
+      - "$PWD/../:/var/www/html/qa_managementv2"
+      - "$PWD/cxm_docker/volume/php.ini:/usr/local/etc/php/conf.d/php.ini"
+      - "$PWD/cxm_docker/volume/index.php:/var/www/html/index.php"
+    image: "titodelta/cxm_v1:latest"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
