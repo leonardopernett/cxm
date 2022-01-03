@@ -71,14 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
-<script src="../../js_extensions/mijs.js"> </script>
 <script src="../../js_extensions/highcharts/highcharts.js"></script>
 <script src="../../js_extensions/highcharts/exporting.js"></script>
-<script>
-    $(document).ready(function(){
-        $.fn.snow();
-    });
-</script>
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">

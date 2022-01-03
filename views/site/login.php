@@ -21,19 +21,10 @@ $this->title = 'CX-Management';
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="../../js_extensions/bootstrap.min.js"></script>
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
-<script src="../../js_extensions/mijs.js"> </script>
 <?php AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <style>
-  .luces {
-    background-image: url(https://lh4.googleusercontent.com/-T2mr4hYEJt8/TuuwZfwTgvI/AAAAAAAAB_Y/oZAKIIvxRa0/s435/luces%2525209.gif);
-    background-repeat: repeat-x;
-    height: 50px;
-    width: 100%;
-    top: 0;
-    left: 0;
-  }
 
   .login-block {
     /*background: #4298B5;*/
@@ -187,11 +178,6 @@ $this->title = 'CX-Management';
     font-size: 16px;
   }
 </style>
-<script>
-    $(document).ready(function(){
-        $.fn.snow();
-    });
-</script>
 
 
 

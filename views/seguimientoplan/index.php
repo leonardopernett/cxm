@@ -192,7 +192,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
-<script src="../../js_extensions/mijs.js"> </script>
 <script src="../../js_extensions/highcharts/highcharts.js"></script>
 <script src="../../js_extensions/highcharts/exporting.js"></script>
 <!-- Full Page Image Header with Vertically Centered Content -->
@@ -204,11 +203,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
   </div>
 </header>
-<script>
-    $(document).ready(function(){
-        $.fn.snow();
-    });
-</script>
 <br><br>
 <div class="CapaUno" style="display: inline;">
     <div class="row">
