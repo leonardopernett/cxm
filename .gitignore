@@ -16,3 +16,4 @@ web/assets/*
 !.gitkeep
 !runtime/debug/mail
 env.php
+runtime/exception/exc.log
