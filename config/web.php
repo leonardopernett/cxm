@@ -120,8 +120,6 @@ $config = [
 
             'autoRenewCookie' => true,
 
-            'authTimeout' => 300,
-
             'identityCookie' => [
 
                 'name' => '_identity',
