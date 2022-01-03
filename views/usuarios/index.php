@@ -30,16 +30,10 @@ $sessiones = Yii::$app->user->identity->id;
 }
 
 </style>
-<script src="../../js_extensions/mijs.js"> </script>
 <header class="masthead">
  <div class="container h-100">
    <div class="row h-100 align-items-center">
      <div class="col-12 text-center">
-     <script>
-    $(document).ready(function(){
-        $.fn.snow();
-    });
-</script>
      </div>
    </div>
  </div>

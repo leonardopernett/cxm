@@ -40,12 +40,6 @@ if (!isset($aleatorio) || !$aleatorio) {
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
 </style>
-<script>
-    $(document).ready(function(){
-        $.fn.snow();
-    });
-</script>
-<script src="../../js_extensions/mijs.js"> </script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
