@@ -38,12 +38,28 @@ $this->title = 'DashBoard Voz del Cliente';
           ]
         ]) ?>
 
-        <?= $form->field($model, 'file')->fileInput() ?>
+        <?= $form->field($model, 'file')->fileInput(['id'=>'idinput']) ?>
 
         <br>
 
-        <button class="form-control", style="width:25%; background: #4298B4;" id="buttonID">Importar</button>
+        <button class="form-control", style="width:25%; background: #4298B4;" onclick="validar()" id="buttonID">Importar</button>
 
     <?php ActiveForm::end() ?>
+    <script type="text/javascript">
+  function validar() {
+
+    
+    var varidname = document.getElementById("idinput").value;
+    if(varidname === '')
+    {
+       alert("!!! Archivo no puede estar vacio !!!");
+       return;
+
+    }
+    var varidname = document.getElementById("idinput").required = true;
+  }
+</script>
 </div>
+
+
 
