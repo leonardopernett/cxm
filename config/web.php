@@ -118,7 +118,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
 
-            'autoRenewCookie' => true,
+            'enableAutoLogin' => true,
 
             'identityCookie' => [
 
