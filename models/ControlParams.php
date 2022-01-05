@@ -159,11 +159,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));   */
-
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));  
         $txtvarBanco = 'Bancolombia';
         $txtvarDirectv = 'Directv';
         $txtFechaIniBank = Yii::$app->db->createCommand('select fechainiciotc from tbl_tipocortes where anulado = 0 and tipocortetc like "%'.$txtvarBanco.'%"')->queryScalar();
@@ -651,12 +648,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));   */
-
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';
-
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));  
         $querys =  new Query;
         $querys     ->select(['sum(tbl_control_params.cant_valor)'])
                     ->from('tbl_control_params')
@@ -677,12 +670,9 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); */
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
         
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
-
         $querys =  new Query;
         $querys     ->select(['tbl_ejecucionformularios.created', 'tbl_arbols.name'])->distinct()
                     ->from('tbl_ejecucionformularios')
@@ -704,11 +694,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));  */
-
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); 
 
         $querys =  new Query;
         $querys     ->select(['tbl_ejecucionformularios.created', 'tbl_arbols.name'])->distinct()
@@ -746,11 +733,9 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); */
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
         $query = ControlParams::find()
                     ->joinWith('arboles')
                     ->where(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC])
@@ -824,11 +809,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-       /*  $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); */
-
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
         $query = ControlParams::find()->distinct()
                     ->select(['tbl_control_params.dimensions'])                    
@@ -863,11 +845,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); */ 
-
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); 
 
         $querys =  new Query;
         $querys     ->select(['sum(tbl_control_params.cant_valor) as metas'])
@@ -889,12 +868,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); */
-        
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
-
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
         $querys =  new Query;
         $querys     ->select(['tbl_ejecucionformularios.created', 'tbl_dimensions.name'])->distinct()
                     ->from('tbl_ejecucionformularios')
@@ -916,11 +891,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));  */
-
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); 
 
         $querys =  new Query;
         $querys     ->select(['tbl_ejecucionformularios.created', 'tbl_dimensions.name'])->distinct()
@@ -959,11 +931,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-/*         $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); */
-
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
         $query = ControlParams::find()
                     ->where(['anulado' => 'null'])
@@ -990,11 +959,8 @@ class ControlParams extends \yii\db\ActiveRecord
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 
-        /* $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year)); */
-        
-        $fechainiC = '2021-12-01';
-        $fechafinC = '2022-01-05';  
+        $fechainiC = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+        $fechafinC = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
                     
         $query = ControlParams::find()->distinct()
                         ->select(['tbl_control_params.arbol_id','tbl_arbols.name'])
