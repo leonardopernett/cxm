@@ -118,7 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <label><em class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></em> Importar archivos</label>
                     <div class="row">                        
                         <div class="col-md-6">
-                            <?= $form->field($model, "file[]")->fileInput(['multiple' => false]) ?>
+                            <?= $form->field($model, "file[]")->fileInput(['id'=>'idinput','multiple' => false]) ?>
                         </div>
                     </div>
                     <br>
@@ -166,7 +166,17 @@ $this->params['breadcrumbs'][] = $this->title;
 	function cargar(){
 		var varcapaIniID = document.getElementById("capaIniID");
 		var varcapaOneID = document.getElementById("capaOneID");
+        var varidinput = document.getElementById("idinput").value;
 
+        if(varidinput === '')
+        {
+
+            event.preventDefault();
+            swal.fire("!!! Warning !!!"," Archivo no puede estar vacío","warning");
+            return;
+
+        }
+        
 		varcapaIniID.style.display = 'none';
 		varcapaOneID.style.display = 'inline';
 	};
