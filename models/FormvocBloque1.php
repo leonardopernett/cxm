@@ -44,7 +44,7 @@ class FormvocBloque1 extends \yii\db\ActiveRecord
             [['idpcrccxm', 'idpcrcspeech', 'idvalorado', 'anulado', 'usua_id'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['cod_pcrc'], 'string', 'max' => 20],
-            [['pcrc', 'fechahora', 'usuarioagente', 'extension', 'dimensionform'], 'string', 'max' => 100]
+            [['pcrc', 'fechahora', 'usuarioagente', 'extension', 'dimensionform'], 'string', 'max' => 100],
             [['idspeech', 'duracions'], 'string', 'max' => 50]
         ];
         
