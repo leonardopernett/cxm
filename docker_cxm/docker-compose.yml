@@ -1,13 +1,14 @@
 version: '3.4'
 services:
 
-  apache:
-    network_mode: bridge
+  apache_cxm:
+    networks:
+      - konecta_network
     restart: always
     image: httpd:2.4.48
     ports:
-      - 80:80
-      - 443:443
+      - 5002:80
+      - 5001:443
     volumes:
       - $PWD/apache_data/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - $PWD/apache_data/cxm.cer:/usr/local/apache2/conf/cxm.cer
@@ -21,7 +22,9 @@ services:
         max-size: "1024m"
         max-file: "3"
 
-  app:
+  app_cxm:
+    networks:
+      - konecta_network
     ports:
      - "5000:80"
     volumes:
@@ -35,3 +38,7 @@ services:
       options:
         max-size: "1024m"
         max-file: "3"
+
+networks:
+  konecta_network:
+    external: true
