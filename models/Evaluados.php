@@ -53,7 +53,13 @@ class Evaluados extends \yii\db\ActiveRecord {
             [['cdestatus'], 'string', 'max' => 1],
             [['identificacion'], 'string', 'max' => 30],
             //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/'],
-            [['identificacion'], 'match', 'not' => true, 'pattern' => '/[^0-9]/']
+            [['identificacion'], 'match', 'not' => true, 'pattern' => '/[^0-9]/'],
+            [['name','telefono','dsusuario_red','identificacion'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
+             [['email'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_EMAIL) ;
+             }]
         ];
     }
 

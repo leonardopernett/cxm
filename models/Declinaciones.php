@@ -29,7 +29,10 @@ class Declinaciones extends \yii\db\ActiveRecord
         return [
             [['nombre'], 'required'],
             [['estado'], 'integer'],
-            [['nombre'], 'string', 'max' => 300]
+            [['nombre'], 'string', 'max' => 300],
+            [['nombre'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }]
         ];
     }
 

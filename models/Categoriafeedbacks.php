@@ -28,6 +28,8 @@ class Categoriafeedbacks extends \yii\db\ActiveRecord {
     public function rules() {
         return array(
             array('name', 'required'),
+            array('name','filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING);}),
             /*array(
                 'name',
                 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/',

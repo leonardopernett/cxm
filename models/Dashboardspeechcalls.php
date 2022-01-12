@@ -44,7 +44,10 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
             [['callId', 'idcategoria', 'callduracion', 'anulado'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['nombreCategoria', 'extension', 'fechallamada', 'servicio', 'fechareal', 'idredbox'], 'string', 'max' => 80],
-            [['login_id'], 'string', 'max' => 100]
+            [['login_id'], 'string', 'max' => 100],
+            [['nombreCategoria', 'extension', 'fechallamada', 'servicio', 'fechareal', 'idredbox'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 

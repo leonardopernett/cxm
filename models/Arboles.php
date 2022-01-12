@@ -68,6 +68,9 @@ class Arboles extends \yii\db\ActiveRecord {
             [['dsname_full'], 'string', 'max' => 2000],
             //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\s()_-]/'],
             [['equipos'], 'safe'],
+            [['name', 'dsorden','dsname_full'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 

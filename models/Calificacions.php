@@ -29,7 +29,10 @@ class Calificacions extends \yii\db\ActiveRecord {
         return [
             
             [['name'],'required'],
-            [['name'], 'string', 'max' => 100,]
+            [['name'], 'string', 'max' => 100,],
+            [['name'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
 
         ];
             

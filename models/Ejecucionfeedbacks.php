@@ -57,8 +57,10 @@ class Ejecucionfeedbacks extends \yii\db\ActiveRecord {
             [['tipofeedback_id', 'ejecucionformulario_id', 'usua_id', 'usua_id_lider',
             'evaluado_id', 'snavisar', 'snaviso_revisado', 'nmescalamiento', 'basessatisfaccion_id', 'dimension_id'], 'integer'],
             [['created', 'feaccion_correctiva', 'feescalamiento', 'arbol_id'], 'safe'],
-            [['dsaccion_correctiva', 'dscausa_raiz', 'dscompromiso', 'dscomentario'],
-                'string']
+            [['dsaccion_correctiva', 'dscausa_raiz', 'dscompromiso', 'dscomentario'],'string'],
+            [['dsaccion_correctiva', 'dscausa_raiz', 'dscompromiso', 'dscomentario'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 

@@ -19,7 +19,10 @@ class Alertas extends \yii\db\ActiveRecord
     public function rules() {
         return [
             [['fecha', 'pcrc', 'valorador', 'tipo_alerta', 'archivo_adjunto', 'remitentes', 'asunto', 'comentario'], 'required'],
-            [['remitentes'], 'string', 'max' => 500]
+            [['remitentes'], 'string', 'max' => 500],
+            [[,'asunto','remitentes','comentario'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
             
         ];
     }

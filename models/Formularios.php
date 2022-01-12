@@ -66,6 +66,10 @@ class Formularios extends \yii\db\ActiveRecord {
             [['name'], function ($attribute) {
             $this->$attribute = \yii\helpers\HtmlPurifier::process($this->$attribute);
         }],
+        [['name'], 'filter', 'filter' => function($value){
+            return filter_var($value,FILTER_SANITIZE_STRING) ;
+         }],
+
             [['i1_nmfactor', 'i2_nmfactor', 'i3_nmfactor', 'i4_nmfactor',
             'i5_nmfactor', 'i6_nmfactor', 'i7_nmfactor', 'i8_nmfactor',
             'i9_nmfactor', 'i10_nmfactor'], 'number'],

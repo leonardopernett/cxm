@@ -51,7 +51,10 @@ class Reglanegocio extends \yii\db\ActiveRecord {
             [['rn', 'correos_notificacion'], 'string', 'max' => 255],
             [['tipo_regla'], 'string', 'max' => 100],
             [['promotores', 'neutros', 'detractores'], 'string', 'max' => 100],
-        ];
+            [['promotores', 'neutros', 'detractores','tipo_regla','rn', 'correos_notificacion'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
+            ];
     }
 
    

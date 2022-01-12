@@ -38,7 +38,10 @@ class GruposUsuarios extends \yii\db\ActiveRecord
         return [
             [['nombre_grupo'], 'required'],
             [['per_realizar_valoracion', 'usua_id_responsable'], 'integer'],
-            [['nombre_grupo', 'grupo_descripcion'], 'string', 'max' => 300]
+            [['nombre_grupo', 'grupo_descripcion'], 'string', 'max' => 300],
+            [['nombre_grupo', 'grupo_descripcion'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 
