@@ -42,7 +42,14 @@ class Equipos extends \yii\db\ActiveRecord {
             [['nmumbral_verde', 'nmumbral_amarillo'], 'number'],
             [['usua_id', 'name', 'nmumbral_verde', 'nmumbral_amarillo'], 'required'],
             [['usua_id'], 'integer'],
-            [['name'], 'string', 'max' => 100]
+            [['name'], 'string', 'max' => 100],
+            [['name'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
+             [['nmumbral_verde', 'nmumbral_amarillo'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_NUMBER_INT) ;
+             }],
+             
         ];
     }
 

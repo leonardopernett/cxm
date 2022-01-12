@@ -52,7 +52,20 @@ class Usuarios extends \yii\db\ActiveRecord {
             [['usua_usuario'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\s.()_-]/'],
             [['usua_email'], 'match', 'pattern' => '/[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/'],
             [['grupo'],'integer'],
-            [['fechacreacion'], 'safe']
+            [['fechacreacion'], 'safe'],
+            ['usua_nombre','filter', 'filter' => function($value){
+               return filter_var($value,FILTER_SANITIZE_STRING) ;
+            } ],
+            ['usua_email','filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_EMAIL) ;
+             } ], 
+            ['usua_identificacion','filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_NUMBER_FLOAT) ;
+             } ],
+             ['usua_usuario','filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             } ]
+            
         ];
     }
 

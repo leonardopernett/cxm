@@ -75,6 +75,9 @@ class Bloques extends \yii\db\ActiveRecord {
             'i7_cdtipo_eval', 'i8_cdtipo_eval', 'i9_cdtipo_eval',
             'i10_cdtipo_eval'], 'string', 'max' => 3],
             [['dstitulo', 'dsdescripcion'], 'string', 'max' => 550],
+            [['name','dstitulo', 'dsdescripcion'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
                 //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s?()_-]/'],
         ];
     }

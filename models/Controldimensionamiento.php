@@ -41,7 +41,10 @@ class Controldimensionamiento extends \yii\db\ActiveRecord
             [['usua_id', 'cant_valor', 'anulado'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['year'], 'string', 'max' => 5],
-            [['month', 'tiempo_llamada', 'tiempoadicional', 'actuales', 'otras_actividad', 'turno_promedio', 'ausentismo', 'vaca_permi_licen'], 'string', 'max' => 20]
+            [['year','month', 'tiempo_llamada', 'tiempoadicional', 'actuales', 'otras_actividad', 'turno_promedio', 'ausentismo', 'vaca_permi_licen'], 'string', 'max' => 20],
+            [['month', 'tiempo_llamada', 'tiempoadicional', 'actuales', 'otras_actividad', 'turno_promedio', 'ausentismo', 'vaca_permi_licen'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 

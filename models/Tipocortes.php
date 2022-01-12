@@ -38,7 +38,10 @@ class Tipocortes extends \yii\db\ActiveRecord
         return [
             [['fechainiciotc', 'fechafintc', 'fechacreacion', 'mesyear'], 'safe'],
             [['cantdiastc', 'incluir', 'anulado', 'idgrupocorte'], 'integer'],
-            [['tipocortetc', 'diastc'], 'string', 'max' => 250]
+            [['tipocortetc', 'diastc'], 'string', 'max' => 250],
+            [['tipocortetc', 'diastc'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 

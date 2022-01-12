@@ -41,7 +41,10 @@ class Roles extends \yii\db\ActiveRecord {
             'per_adminsistema', 'per_adminprocesos',
             'per_editarequiposvalorados', 'per_inboxaleatorio', 'per_desempeno', 'per_abogado', 'per_jefeop', 'per_tecdesempeno', 'per_alertas', 'per_evaluacion','per_externo','per_directivo','per_asesormas'], 'integer'],
             [['role_nombre', 'role_descripcion'], 'string', 'max' => 50],
-            [['role_nombre', 'role_descripcion'], 'required']
+            [['role_nombre', 'role_descripcion'], 'required'],
+            [['role_nombre', 'role_descripcion'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 

@@ -40,6 +40,8 @@ class Dimensiones extends \yii\db\ActiveRecord {
                 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/',
             ),*/
             array('name', 'string', 'min' => 2, 'max' => 30),
+            array('name','filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING);}),
         );
     }
 

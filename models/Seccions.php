@@ -77,7 +77,10 @@ class Seccions extends \yii\db\ActiveRecord {
             'i9_cdtipo_eval', 'i10_cdtipo_eval'], 'string', 'max' => 3],
             [['i1_cdtipo_eval', 'i2_cdtipo_eval', 'i3_cdtipo_eval', 'i4_cdtipo_eval',
             'i5_cdtipo_eval', 'i6_cdtipo_eval', 'i7_cdtipo_eval', 'i8_cdtipo_eval',
-            'i9_cdtipo_eval', 'i10_cdtipo_eval', 'is_pits', 'sdescripcion'], 'safe']
+            'i9_cdtipo_eval', 'i10_cdtipo_eval', 'is_pits', 'sdescripcion'], 'safe'],
+            [['name','sdescripcion'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 

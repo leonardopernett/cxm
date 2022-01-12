@@ -38,7 +38,10 @@ class Tiposdecortes extends \yii\db\ActiveRecord
         return [
             [['fechainiciotcs', 'fechafintcs', 'fechacreacion'], 'safe'],
             [['cantdiastcs', 'idtc'], 'integer'],
-            [['cortetcs', 'diastcs'], 'string', 'max' => 150]
+            [['cortetcs', 'diastcs'], 'string', 'max' => 150],
+            [['cortetcs', 'diastcs'], 'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
         ];
     }
 

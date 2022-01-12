@@ -21,6 +21,10 @@ class ControlTipoCortes extends Tiposdecortes
         return [
             [['idtc'], 'integer'],
             [['tipocortetc', 'fechainiciotc', 'fechafintc', 'cortetcs', 'diastc', 'cantdiastcs'], 'safe'],
+            [['diastc'],'filter', 'filter' => function($value){
+                return filter_var($value,FILTER_SANITIZE_STRING) ;
+             }],
+
         ];
     }
 
