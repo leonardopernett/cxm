@@ -93,8 +93,22 @@ class LoginForm extends Model {
      */
     public function login() {
         if ($this->validate()) {
+            \Yii::$app->db->createCommand()->insert('tbl_usuarioslog', [
+                'uslg_usuario' => $this->username,
+                'uslg_fechahora' => date('Y-m-d h:i:s'),
+                'uslg_ip' => Yii::$app->getRequest()->getUserIP(),
+                'uslg_accion' => 'Conexion',
+                'uslg_estado' => 'Exitoso'
+            ])->execute();
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         } else {
+            \Yii::$app->db->createCommand()->insert('tbl_usuarioslog', [
+                'uslg_usuario' => $this->username,
+                'uslg_fechahora' => date('Y-m-d h:i:s'),
+                'uslg_ip' => Yii::$app->getRequest()->getUserIP(),
+                'uslg_accion' => 'Conexion',
+                'uslg_estado' => 'Fallido'
+            ])->execute();
             return false;
         }
     }
