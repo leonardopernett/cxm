@@ -20,13 +20,14 @@ class Alertas extends \yii\db\ActiveRecord
         return [
             [['fecha', 'pcrc', 'valorador', 'tipo_alerta', 'archivo_adjunto', 'remitentes', 'asunto', 'comentario'], 'required'],
             [['remitentes'], 'string', 'max' => 500],
-            [[,'asunto','remitentes','comentario'], 'filter', 'filter' => function($value){
+            [['asunto','remitentes','comentario'], 'filter', 'filter' => function($value){
                 return filter_var($value,FILTER_SANITIZE_STRING) ;
              }],
             
         ];
     }
 
+ 
     public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
