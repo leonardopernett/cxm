@@ -43,7 +43,7 @@ $varmes = date('m') - 2;
 
 $varlistcortes = null;
 if ($roles == "270" || $roles == "309") {
-	$varlistcortes = Yii::$app->get('dbslave')->createCommand("select idtc, tipocortetc 'tipo' from tbl_tipocortes where mesyear between '$year-$varmes-01' and '$year-$month-01' group by tipocortetc order by idtc asc")->queryAll();	
+	$varlistcortes = Yii::$app->get('dbslave')->createCommand("select idtc, tipocortetc 'tipo' from tbl_tipocortes where mesyear between '2021-12-01' and '$year-$month-01' group by tipocortetc order by idtc asc")->queryAll();	
 }else{
 	if ($roles == "274" || $roles == "276") {
 		$varlistcortes = Yii::$app->get('dbslave')->createCommand("select tipo_corte 'tipo', idtc from tbl_control_procesos where responsable = $sesiones  and anulado = 0  group by idtc order by idtc desc limit 2")->queryAll();	
