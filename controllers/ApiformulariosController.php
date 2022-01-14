@@ -370,33 +370,30 @@ use GuzzleHttp;
 
       $paramsBusqueda = [':Arbol_id' => $varIdArbol, ':Fecha_inicio' => $varFechaInicio.' 00:00:00', ':Fecha_Fin' => $varFechaFin.' 23:59:59'];
       $varListTipificaciones = Yii::$app->db->createCommand('
-      SELECT ef.id AS Id_Formulario, tbl_seccions.id AS Id_sesiones, tbl_bloques.id AS Id_Bloques,
-      b.id AS Id_Preguntas, tbl_tipificaciondetalles.id AS id_Tipificacion,  
-      tbl_tipificaciondetalles.name AS Tipificaciones, if(t.tipificaciondetalle_id IS NULL, 0,1) AS Rtatipi, ef.created AS FechaValoracion
-                FROM tbl_tipificaciondetalles
-                INNER JOIN tbl_bloquedetalles b ON 
-                b.tipificacion_id = tbl_tipificaciondetalles.tipificacion_id
-                inner join tbl_bloques on
-                tbl_bloques.id = b.bloque_id
-                inner join tbl_ejecucionbloques on
-                tbl_bloques.id = tbl_ejecucionbloques.bloque_id
-                inner join tbl_ejecucionbloquedetalles ON 
-                tbl_ejecucionbloquedetalles.ejecucionbloque_id = tbl_ejecucionbloques.id 
-                AND tbl_ejecucionbloquedetalles.bloquedetalle_id = b.id
-                left JOIN tbl_tipificaciondetalles xtd ON b.tipificacion_id = xtd.tipificacion_id 
-                left JOIN tbl_ejecucionbloquedetalles_tipificaciones t 
-                ON xtd.id = t.tipificaciondetalle_id AND t.ejecucionbloquedetalle_id = tbl_ejecucionbloquedetalles.id
-                inner join tbl_ejecucionseccions on
-                tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
-                inner join tbl_seccions on
-                tbl_seccions.id = tbl_ejecucionseccions.seccion_id
-                INNER JOIN tbl_ejecucionformularios ef ON 
-                  tbl_ejecucionseccions.ejecucionformulario_id = ef.id
+      SELECT ef.id AS Id_Formulario, es.seccion_id AS Id_sesiones, b.id AS Id_Bloques,
+      b.id AS Id_Preguntas, td.id AS id_Tipificacion,  
+      td.name AS Tipificaciones,  if(ebt.tipificaciondetalle_id IS NULL, 0,1) AS Rtatipi, ef.created AS FechaValoracion
                 
-                where
-                  ef.formulario_id IN  (:Arbol_id)
-                    AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
-                    GROUP BY ef.id, tbl_tipificaciondetalles.id')->bindValues($paramsBusqueda)->queryAll();
+        FROM tbl_tipificaciondetalles td
+            INNER JOIN tbl_bloquedetalles bd ON 
+              td.tipificacion_id = bd.tipificacion_id
+            INNER JOIN tbl_bloques b ON 
+              bd.bloque_id = b.id
+            INNER JOIN tbl_ejecucionbloques eb ON
+              b.id = eb.bloque_id         
+            INNER JOIN tbl_ejecucionbloquedetalles ebd ON 
+              ebd.ejecucionbloque_id = eb.id
+            LEFT JOIN tbl_ejecucionbloquedetalles_tipificaciones ebt ON 
+              ebt.tipificaciondetalle_id = td.id AND ebt.ejecucionbloquedetalle_id = ebd.id
+            INNER JOIN tbl_ejecucionseccions es ON
+              eb.ejecucionseccion_id = es.id
+            INNER JOIN tbl_ejecucionformularios ef ON 
+              es.ejecucionformulario_id = ef.id
+                
+        WHERE
+          ef.formulario_id IN  (:Arbol_id)
+            AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
+        GROUP BY ef.id, td.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatapi = array();
       foreach ($varListTipificaciones as $key => $value) {
@@ -430,34 +427,31 @@ use GuzzleHttp;
 
       $paramsBusqueda = [':Arbol_id' => $varIdArbol, ':Fecha_inicio' => $varFechaInicio.' 00:00:00', ':Fecha_Fin' => $varFechaFin.' 23:59:59'];
       $varListTipificaciones = Yii::$app->db->createCommand('
-      SELECT ef.id AS Id_Formulario, tbl_seccions.id AS Id_sesiones, tbl_bloques.id AS Id_Bloques,
-      b.id AS Id_Preguntas, tbl_tipificaciondetalles.id AS id_Tipificacion,  
-      tbl_tipificaciondetalles.name AS Tipificaciones, "1" AS Rtatipi, ef.created AS FechaValoracion
-                FROM tbl_tipificaciondetalles
-                INNER JOIN tbl_bloquedetalles b ON 
-                b.tipificacion_id = tbl_tipificaciondetalles.tipificacion_id
-                inner join tbl_bloques on
-                tbl_bloques.id = b.bloque_id
-                inner join tbl_ejecucionbloques on
-                tbl_bloques.id = tbl_ejecucionbloques.bloque_id
-                inner join tbl_ejecucionbloquedetalles ON 
-                tbl_ejecucionbloquedetalles.ejecucionbloque_id = tbl_ejecucionbloques.id 
-                AND tbl_ejecucionbloquedetalles.bloquedetalle_id = b.id
-                left JOIN tbl_tipificaciondetalles xtd ON b.tipificacion_id = xtd.tipificacion_id 
-                left JOIN tbl_ejecucionbloquedetalles_tipificaciones t 
-                ON xtd.id = t.tipificaciondetalle_id AND t.ejecucionbloquedetalle_id = tbl_ejecucionbloquedetalles.id
-                inner join tbl_ejecucionseccions on
-                tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id
-                inner join tbl_seccions on
-                tbl_seccions.id = tbl_ejecucionseccions.seccion_id
-                INNER JOIN tbl_ejecucionformularios ef ON 
-                  tbl_ejecucionseccions.ejecucionformulario_id = ef.id
+      SELECT ef.id AS Id_Formulario, es.seccion_id AS Id_sesiones, b.id AS Id_Bloques,
+      b.id AS Id_Preguntas, td.id AS id_Tipificacion,  
+      td.name AS Tipificaciones,  "1" AS Rtatipi, ef.created AS FechaValoracion
                 
-                where
-                  ef.formulario_id IN  (:Arbol_id)
-                    AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
-                      AND t.tipificaciondetalle_id IS NOT NULL
-                    GROUP BY ef.id, tbl_tipificaciondetalles.id')->bindValues($paramsBusqueda)->queryAll();
+        FROM tbl_tipificaciondetalles td
+            INNER JOIN tbl_bloquedetalles bd ON 
+              td.tipificacion_id = bd.tipificacion_id
+            INNER JOIN tbl_bloques b ON 
+              bd.bloque_id = b.id
+            INNER JOIN tbl_ejecucionbloques eb ON
+              b.id = eb.bloque_id         
+            INNER JOIN tbl_ejecucionbloquedetalles ebd ON 
+              ebd.ejecucionbloque_id = eb.id
+            LEFT JOIN tbl_ejecucionbloquedetalles_tipificaciones ebt ON 
+              ebt.tipificaciondetalle_id = td.id AND ebt.ejecucionbloquedetalle_id = ebd.id
+            INNER JOIN tbl_ejecucionseccions es ON
+              eb.ejecucionseccion_id = es.id
+            INNER JOIN tbl_ejecucionformularios ef ON 
+              es.ejecucionformulario_id = ef.id
+                
+        WHERE
+          ef.formulario_id IN  (:Arbol_id)
+            AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin
+              AND ebt.tipificaciondetalle_id IS NOT NULL 
+        GROUP BY ef.id, td.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatapi = array();
       foreach ($varListTipificaciones as $key => $value) {
