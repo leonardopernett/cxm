@@ -8,6 +8,8 @@ use yii\helpers\Html;
 /* @var $exception Exception */
 
 $this->title = $name;
+
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-error">
 

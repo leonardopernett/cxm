@@ -46,6 +46,42 @@ class TmpejecucionfeedbacksController extends Controller {
                 ];
             }
 
+            public function actions() {
+                return [
+                    'error' => [
+                      'class' => 'yii\web\ErrorAction',
+                    ]
+                ];
+            }
+        
+            public function actionError() {
+        
+                //ERROR PRESENTADO
+                $exception = Yii::$app->errorHandler->exception;
+        
+                if ($exception !== null) {
+                    //VARIABLES PARA LA VISTA ERROR
+                    $code = $exception->statusCode;
+                    $name = $exception->getName() . " (#$code)";
+                    $message = $exception->getMessage();
+                    //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
+                    // PARA LOS ERRORES 400
+                    $request = \Yii::$app->request->pathInfo;
+                    if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
+                            400) {
+                        //GUARDO EN EL ERROR DE SATU
+                        $baseSat = new BasesatisfaccionController();
+                        $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
+                    }
+                    //RENDERIZO LA VISTA
+                    return $this->render('error', [
+                                'name' => $name,
+                                'message' => $message,
+                                'exception' => $exception,
+                    ]);
+                }
+            }
+
             /**
              * Lists all Tmpejecucionfeedbacks models.
              * @return mixed

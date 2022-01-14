@@ -133,6 +133,7 @@ $config = [
             ],
         ],
         'errorHandler' => [
+            'maxSourceLines' => 20,
             'errorAction' => 'site/error',
         ],
         'mailer' => [
