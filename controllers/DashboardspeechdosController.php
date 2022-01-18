@@ -42,7 +42,7 @@ use Exception;
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno();
+                            return Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                         },
               ],
             ]
