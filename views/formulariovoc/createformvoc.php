@@ -353,7 +353,7 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
                 <div class="row">
                     <div class="col-md-12">
                         <label for="txtIndiGlo" style="font-size: 14px;">Detalle cualitativo (Detalle de Responsabilidad)</label>
-                        <?= $form->field($model, 'extension', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput([['maxlength' => 500,'id'=>'txtDcualitativo', 'placeholder'=>'Ingresar el detalle del proceso']) ?> 
+                        <?= $form->field($model, 'extension', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500,'id'=>'txtDcualitativo', 'placeholder'=>'Ingresar el detalle del proceso']) ?> 
                     </div>
                 </div>
             </div>
