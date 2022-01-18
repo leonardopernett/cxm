@@ -174,10 +174,29 @@ $roles = $command->queryScalar();
                         <caption>...</caption>
                         <thead>
                             <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Servicio"; ?></label></th>
-                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Permisos"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Usuario"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Acciones"; ?></label></th>
                         </thead>
                         <tbody>
-                            
+                            <?php
+                                $varLista = Yii::$app->db->createCommand('
+                                SELECT d.iddashboardpermisos AS Id, d.nombreservicio AS Servicios, u.usua_nombre AS Usuarios  FROM tbl_usuarios u
+                                    INNER JOIN tbl_dashboardpermisos d ON 
+                                        u.usua_id = d.usuaid')->queryAll();
+                                
+                                foreach ($varLista as $key => $value) {
+                                    
+                            ?>
+                            <tr>
+                                <td><label style="font-size: 12px;"><?php echo $value['Servicios']; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo $value['Usuarios']; ?></label></td>
+                                <td class="text-center">
+                                    <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletepermisos','id'=> $value['Id']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                                </td>
+                            </tr>
+                            <?php
+                                }
+                            ?>
                         </tbody>
                     </table>
 

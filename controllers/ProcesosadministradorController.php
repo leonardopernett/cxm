@@ -32,7 +32,7 @@ use app\models\Dashboardpermisos;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos'],
             'rules' => [
               [
                 'allow' => true,
@@ -225,6 +225,16 @@ use app\models\Dashboardpermisos;
       return $this->render('viewescucharmas',[
           'model' => $model,
       ]);
+    }
+
+    public function actionDeletepermisos($id){
+        Dashboardpermisos::findOne($id)->delete();
+
+        $model = new Dashboardpermisos();
+
+        return $this->redirect('viewescucharmas',[
+            'model' => $model,
+        ]);
     }
     
 
