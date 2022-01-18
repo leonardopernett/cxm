@@ -23,6 +23,7 @@ use GuzzleHttp;
 use app\models\ProcesosAdministrador;
 use app\models\Categoriafeedbacks;
 use app\models\Tipofeedbacks;
+use app\models\Dashboardpermisos;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
