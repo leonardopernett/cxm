@@ -39,6 +39,22 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
     $varextensiones = ['3' => 'Todos', '0' => 'Procesos', '1' => 'Calidad de entrenamiento', '2' => 'Ojt'];
 
+    $paramsBusqueda = [':varSesion' => $sessiones, ':anulado' => 0];
+
+    $varConteoExist = Yii::$app->db->createCommand('
+      SELECT d.iddashservicio FROM tbl_dashboardpermisos d 
+        WHERE d.usuaid = :varSesion 
+          AND anulado = :anulado
+        GROUP BY d.iddashservicio')->bindValues($paramsBusqueda)->queryAll();
+
+    $varlistiddpclientes = array();
+    $varservicios = null;
+    if (count($varConteoExist) != 0) {
+      foreach ($varConteoExist as $key => $value) {
+        array_push($varlistiddpclientes, $value['iddashservicio']);
+      }
+      $varservicios = implode(", ", $varlistiddpclientes);
+    }
 ?>
 <style>
     .lds-ring {
@@ -214,7 +230,34 @@ $this->title = 'Dashboard Escuchar + 2.0';
           <div class="row">
             <div class="col-md-4">
               <label><em class="fas fa-check" style="font-size: 20px; color: #559FFF;"></em> Seleccionar cliente: </label>
-              <?=  $form->field($model3, 'clientecategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+              
+              <?php
+                if (count($varConteoExist) != 0) {
+                  
+              ?>
+
+                <?=  $form->field($model3, 'clientecategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes in ($varservicios)")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                          [
+                                              'prompt'=>'Seleccione Cliente Speech...',
+                                              'onchange' => '
+                                                  $.post(
+                                                      "' . Url::toRoute('dashboardspeech/listarpcrcindex') . '", 
+                                                      {id: $(this).val()}, 
+                                                      function(res){
+                                                          $("#requester").html(res);
+                                                      }
+                                                  );
+                                              ',
+
+                                          ]
+                                  )->label(''); 
+                ?>
+
+              <?php
+                }else{
+              ?>
+
+                <?=  $form->field($model3, 'clientecategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                         [
                                             'prompt'=>'Seleccione Cliente Speech...',
                                             'onchange' => '
@@ -230,6 +273,11 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                         ]
                                 )->label(''); 
                 ?>
+
+              <?php
+                }
+              ?>
+
                 <br>
                 <label ><em class="fas fa-check-square" style="font-size: 20px; color: #559FFF;"></em> Seleccionar centro de costos: </label>
                 <?=
