@@ -73,7 +73,7 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         ];
     }
 
-    public function buscarsllamadas($params1,$params2,$params3,$params4,$varcategoriass,$varidloginid,$paramscalls,$varlider,$varasesor){
+    public function buscarsllamadas($params1,$params2,$params3,$params4,$varcategoriass,$varidloginid,$paramscalls,$varlider,$varasesor,$vartipologia){
         $txtprograma = $params1;
         $txtextension = $params2;
         $txtfechainicio = $params3;
@@ -83,6 +83,9 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         $txtllamadas = $paramscalls;
         $txtlideres = $varlider;
         $txtasesores = $varasesor;
+        $txttipologias = $vartipologia;
+        // $txtresultadoasesor = null;
+        // $txtarrayasesores = null;
 
         if ($txtasesores == "") {
             $txtresultadoasesor = Yii::$app->db->createCommand("select distinct e.dsusuario_red from tbl_evaluados e     inner join tbl_equipos_evaluados ee on e.id = ee.evaluado_id where ee.equipo_id in ('$txtlideres') and e.dsusuario_red not like '%usar%'")->queryAll();
@@ -100,28 +103,134 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         if ($txtcontieneno == "1") {
             if ($txtlideres == "" && $txtasesores == "") {
 
-                $query = Dashboardspeechcalls::find()
-                    ->where("anulado = 0")
-                    ->andwhere("servicio in ('$txtprograma')")
-                    ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
-                    ->andwhere("extension in ('$txtextension')")
-                    ->andwhere("idcategoria in ($txtcategoria)")
-                    ->groupBy("callId")
-                    ->orderBy([
-                              'fechallamada' => SORT_DESC
-                            ]);
+                if ($txttipologias != null) {
+
+                    $queryCallid = Yii::$app->db->createCommand("
+                        SELECT d.callId FROM  tbl_dashboardspeechcalls d
+                            INNER JOIN tbl_base_satisfaccion b ON 
+                                b.connid = d.connid
+                            WHERE 
+                                d.anulado = 0 AND d.servicio IN ('$txtprograma')
+                                    AND d.fechallamada BETWEEN '$txtfechainicio' AND '$txtfechafin'
+                                        AND d.extension IN ('$txtextension')
+                                            AND d.idcategoria IN ($txtcategoria)
+                                                AND b.tipologia IN ('$txttipologias')
+                            GROUP BY d.callId
+                                ORDER BY d.fechallamada DESC ")->queryAll();
+
+                    if (count($queryCallid) != 0) {
+                        $arrayListcallids = array();
+                        foreach ($queryCallid as $key => $value) {
+                            array_push($arrayListcallids, $value['callId']);
+                        }
+                        $textCallid = implode(", ", $arrayListcallids);
+
+                        $query = Dashboardspeechcalls::find()
+                            ->where("anulado = 0")
+                            ->andwhere("servicio in ('$txtprograma')")
+                            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                            ->andwhere("extension in ('$txtextension')")
+                            ->andwhere("idcategoria in ($txtcategoria)")
+                            ->andwhere("callId in ($textCallid)")
+                            ->groupBy("callId")
+                            ->orderBy([
+                                      'fechallamada' => SORT_DESC
+                                    ]);
+                    }else{
+                        $query = Dashboardspeechcalls::find()
+                            ->where("anulado = 0")
+                            ->andwhere("servicio in ('$txtprograma')")
+                            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                            ->andwhere("extension in ('$txtextension')")
+                            ->andwhere("idcategoria in ($txtcategoria)")
+                            ->andwhere("callId in (0)")
+                            ->groupBy("callId")
+                            ->orderBy([
+                                      'fechallamada' => SORT_DESC
+                                    ]);
+                    }
+                    
+
+                }else{
+                    $query = Dashboardspeechcalls::find()
+                        ->where("anulado = 0")
+                        ->andwhere("servicio in ('$txtprograma')")
+                        ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                        ->andwhere("extension in ('$txtextension')")
+                        ->andwhere("idcategoria in ($txtcategoria)")
+                        ->groupBy("callId")
+                        ->orderBy([
+                                  'fechallamada' => SORT_DESC
+                                ]);
+                }
+                
             }else{
-                $query = Dashboardspeechcalls::find()
-                    ->where("anulado = 0")
-                    ->andwhere("servicio in ('$txtprograma')")
-                    ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
-                    ->andwhere("extension in ('$txtextension')")
-                    ->andwhere("idcategoria in ($txtcategoria)")
-                    ->andwhere("login_id in ('$txtarrayasesores')")
-                    ->groupBy("callId")
-                    ->orderBy([
-                              'fechallamada' => SORT_DESC
-                            ]);
+
+                if ($txttipologias != null) {
+
+                    $queryCallid = Yii::$app->db->createCommand("
+                        SELECT d.callId FROM  tbl_dashboardspeechcalls d
+                            INNER JOIN tbl_base_satisfaccion b ON 
+                                b.connid = d.connid
+                            WHERE 
+                                d.anulado = 0 AND d.servicio IN ('$txtprograma')
+                                    AND d.fechallamada BETWEEN '$txtfechainicio' AND '$txtfechafin'
+                                        AND d.extension IN ('$txtextension')
+                                            AND d.idcategoria IN ($txtcategoria)
+                                                AND b.tipologia IN ('$txttipologias')
+                            GROUP BY d.callId
+                                ORDER BY d.fechallamada DESC ")->queryAll();
+
+                    if (count($queryCallid) != 0) {
+                        $arrayListcallids = array();
+                        foreach ($queryCallid as $key => $value) {
+                            array_push($arrayListcallids, $value['callId']);
+                        }
+                        $textCallid = implode(", ", $arrayListcallids);
+
+                        $query = Dashboardspeechcalls::find()
+                            ->where("anulado = 0")
+                            ->andwhere("servicio in ('$txtprograma')")
+                            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                            ->andwhere("extension in ('$txtextension')")
+                            ->andwhere("idcategoria in ($txtcategoria)")
+                            ->andwhere("login_id in ('$txtarrayasesores')")
+                            ->andwhere("callId in ($textCallid)")
+                            ->groupBy("callId")
+                            ->orderBy([
+                                      'fechallamada' => SORT_DESC
+                                    ]);
+
+                    }else{
+                        $query = Dashboardspeechcalls::find()
+                            ->where("anulado = 0")
+                            ->andwhere("servicio in ('$txtprograma')")
+                            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                            ->andwhere("extension in ('$txtextension')")
+                            ->andwhere("idcategoria in ($txtcategoria)")
+                            ->andwhere("login_id in ('$txtarrayasesores')")                            
+                            ->andwhere("callId in (0)")
+                            ->groupBy("callId")
+                            ->orderBy([
+                                      'fechallamada' => SORT_DESC
+                                    ]);
+                    }
+
+                    
+                }else{
+                    $query = Dashboardspeechcalls::find()
+                        ->where("anulado = 0")
+                        ->andwhere("servicio in ('$txtprograma')")
+                        ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                        ->andwhere("extension in ('$txtextension')")
+                        ->andwhere("idcategoria in ($txtcategoria)")
+                        ->andwhere("login_id in ('$txtarrayasesores')")
+                        ->groupBy("callId")
+                        ->orderBy([
+                                  'fechallamada' => SORT_DESC
+                                ]);
+                }
+                
             }
         }else{
             $varlistcallid = Yii::$app->db->createCommand("select callId from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtprograma') and fechallamada between '$txtfechainicio' and '$txtfechafin' and extension in ('$txtextension') and idcategoria in ($txtcategoria) group by callId")->queryAll();
@@ -132,30 +241,142 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
             $arraycallids = implode(", ", $txtarraylistcallid);
 
             if ($txtlideres == "" && $txtasesores == "") {
-                $query = Dashboardspeechcalls::find()
-                    ->where("anulado = 0")
-                    ->andwhere("servicio in ('$txtprograma')")
-                    ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
-                    ->andwhere("extension in ('$txtextension')")
-                    ->andwhere("idcategoria in ($txtllamadas)")
-                    ->andwhere("callId not in ($arraycallids)")
-                    ->groupBy("callId")
-                    ->orderBy([
-                              'fechallamada' => SORT_DESC
-                            ]);
+
+                if ($txttipologias != null) {
+
+                    $queryCallid = Yii::$app->db->createCommand("
+                        SELECT d.callId FROM  tbl_dashboardspeechcalls d
+                            INNER JOIN tbl_base_satisfaccion b ON 
+                                b.connid = d.connid
+                            WHERE 
+                                d.anulado = 0 AND d.servicio IN ('$txtprograma')
+                                    AND d.fechallamada BETWEEN '$txtfechainicio' AND '$txtfechafin'
+                                        AND d.extension IN ('$txtextension')
+                                            AND d.idcategoria IN ($txtcategoria)
+                                                AND b.tipologia IN ('$txttipologias')
+                            GROUP BY d.callId
+                                ORDER BY d.fechallamada DESC ")->queryAll();
+
+                    if (count($queryCallid) != 0) {
+                        $arrayListcallids = array();
+                        foreach ($queryCallid as $key => $value) {
+                            array_push($arrayListcallids, $value['callId']);
+                        }
+                        $textCallid = implode(", ", $arrayListcallids);
+
+                        $query = Dashboardspeechcalls::find()
+                            ->where("anulado = 0")
+                            ->andwhere("servicio in ('$txtprograma')")
+                            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                            ->andwhere("extension in ('$txtextension')")
+                            ->andwhere("idcategoria in ($txtllamadas)")
+                            ->andwhere("callId not in ($arraycallids)")
+                            ->andwhere("callId in ($textCallid)")
+                            ->groupBy("callId")
+                            ->orderBy([
+                                      'fechallamada' => SORT_DESC
+                                    ]);
+                    }else{
+                        $query = Dashboardspeechcalls::find()
+                            ->where("anulado = 0")
+                            ->andwhere("servicio in ('$txtprograma')")
+                            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                            ->andwhere("extension in ('$txtextension')")
+                            ->andwhere("idcategoria in ($txtllamadas)")
+                            ->andwhere("callId not in ($arraycallids)")                            
+                            ->andwhere("callId in (0)")
+                            ->groupBy("callId")
+                            ->orderBy([
+                                      'fechallamada' => SORT_DESC
+                                    ]);
+                    }
+
+                    
+
+                }else{
+                    $query = Dashboardspeechcalls::find()
+                        ->where("anulado = 0")
+                        ->andwhere("servicio in ('$txtprograma')")
+                        ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                        ->andwhere("extension in ('$txtextension')")
+                        ->andwhere("idcategoria in ($txtllamadas)")
+                        ->andwhere("callId not in ($arraycallids)")
+                        ->groupBy("callId")
+                        ->orderBy([
+                                  'fechallamada' => SORT_DESC
+                                ]);
+                }
+                
             }else{
-                $query = Dashboardspeechcalls::find()
-                    ->where("anulado = 0")
-                    ->andwhere("servicio in ('$txtprograma')")
-                    ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
-                    ->andwhere("extension in ('$txtextension')")
-                    ->andwhere("idcategoria in ($txtllamadas)")
-                    ->andwhere("callId not in ($arraycallids)")
-                    ->andwhere("login_id in ('$txtarrayasesores')")
-                    ->groupBy("callId")
-                    ->orderBy([
-                              'fechallamada' => SORT_DESC
-                            ]);
+
+                if ($txttipologias != null) {
+
+                    $queryCallid = Yii::$app->db->createCommand("
+                        SELECT d.callId FROM  tbl_dashboardspeechcalls d
+                            INNER JOIN tbl_base_satisfaccion b ON 
+                                b.connid = d.connid
+                            WHERE 
+                                d.anulado = 0 AND d.servicio IN ('$txtprograma')
+                                    AND d.fechallamada BETWEEN '$txtfechainicio' AND '$txtfechafin'
+                                        AND d.extension IN ('$txtextension')
+                                            AND d.idcategoria IN ($txtcategoria)
+                                                AND b.tipologia IN ('$txttipologias')
+                            GROUP BY d.callId
+                                ORDER BY d.fechallamada DESC ")->queryAll();
+
+                    if (count($queryCallid) != 0) {
+                        $arrayListcallids = array();
+                        foreach ($queryCallid as $key => $value) {
+                            array_push($arrayListcallids, $value['callId']);
+                        }
+                        $textCallid = implode(", ", $arrayListcallids);
+
+                        $query = Dashboardspeechcalls::find()
+                            ->where("anulado = 0")
+                            ->andwhere("servicio in ('$txtprograma')")
+                            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                            ->andwhere("extension in ('$txtextension')")
+                            ->andwhere("idcategoria in ($txtllamadas)")
+                            ->andwhere("callId not in ($arraycallids)")
+                            ->andwhere("login_id in ('$txtarrayasesores')")
+                            ->andwhere("callId in ($textCallid)")
+                            ->groupBy("callId")
+                            ->orderBy([
+                                      'fechallamada' => SORT_DESC
+                                    ]);
+                    }else{
+                        $query = Dashboardspeechcalls::find()
+                            ->where("anulado = 0")
+                            ->andwhere("servicio in ('$txtprograma')")
+                            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                            ->andwhere("extension in ('$txtextension')")
+                            ->andwhere("idcategoria in ($txtllamadas)")
+                            ->andwhere("callId not in ($arraycallids)")
+                            ->andwhere("login_id in ('$txtarrayasesores')")
+                            ->andwhere("callId in (0)")
+                            ->groupBy("callId")
+                            ->orderBy([
+                                      'fechallamada' => SORT_DESC
+                                    ]);
+                    }
+
+                    
+
+                }else{
+                    $query = Dashboardspeechcalls::find()
+                        ->where("anulado = 0")
+                        ->andwhere("servicio in ('$txtprograma')")
+                        ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                        ->andwhere("extension in ('$txtextension')")
+                        ->andwhere("idcategoria in ($txtllamadas)")
+                        ->andwhere("callId not in ($arraycallids)")
+                        ->andwhere("login_id in ('$txtarrayasesores')")
+                        ->groupBy("callId")
+                        ->orderBy([
+                                  'fechallamada' => SORT_DESC
+                                ]);
+                }
+                
             }
             
         }
@@ -227,7 +448,6 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         }else{
             $data = "--";
         }
-        
 
         return $data;
     }
@@ -248,28 +468,28 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
             $data = "--";
         }
         
-
         return $data;
     }
 
-    public function getsestado($opcion){
-        $idspeech = $opcion;
+    public function getsestado($opcion,$opcion2,$opcion3){        
         $data = null;
 
+        $concatenarspeech = $opcion.'; '.$opcion3;
 
-	$concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$idspeech')")->queryScalar();
+        $txttempejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_tmpejecucionformularios te WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
 
-        $txttempejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_tmpejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
-
-        $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
+        $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
 
         if ($txttempejecucion == 0 && $txtejecucion == 0) {
+            
             $data = "Abierto";
         }else{
             if ($txttempejecucion == 1 && $txtejecucion == 0) {
+                
                 $data = "En Proceso";
             }else{
                 if ($txttempejecucion == 0 && $txtejecucion == 1) {
+                    
                     $data = "Cerrado";
                 }
             }
@@ -278,24 +498,25 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         return $data;
     }
 
-    public function getsresposanble($opcion){
-        $idspeech = $opcion;
+    public function getsresposanble($opcion,$opcion2,$opcion3){        
         $data = null;
+        
+        $concatenarspeech = $opcion.'; '.$opcion3;
 
-        $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$idspeech')")->queryScalar();
+        $txttempejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_tmpejecucionformularios te WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
 
-        $txttempejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_tmpejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
-
-        $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
+        $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
 
         if ($txttempejecucion == 0 && $txtejecucion == 0) {
+            
+
             $data = "--";
         }else{
             if ($txttempejecucion == 1 && $txtejecucion == 0) {
-                $data = Yii::$app->db->createCommand("SELECT DISTINCT u.usua_nombre FROM tbl_usuarios u INNER JOIN tbl_tmpejecucionformularios te ON u.usua_id = te.usua_id WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
+                $data = Yii::$app->db->createCommand("SELECT DISTINCT u.usua_nombre FROM tbl_usuarios u INNER JOIN tbl_tmpejecucionformularios te ON u.usua_id = te.usua_id WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
             }else{
                 if ($txttempejecucion == 0 && $txtejecucion == 1) {
-                    $data = Yii::$app->db->createCommand("SELECT DISTINCT u.usua_nombre FROM tbl_usuarios u INNER JOIN tbl_ejecucionformularios te ON u.usua_id = te.usua_id WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
+                    $data = Yii::$app->db->createCommand("SELECT DISTINCT u.usua_nombre FROM tbl_usuarios u INNER JOIN tbl_ejecucionformularios te ON u.usua_id = te.usua_id WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
                 }
             }
         }
@@ -303,119 +524,177 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         return $data;
     }
 
-    public function getsmarca($opcion){
-        $idspeech = $opcion;
+    public function getsmarca($opcion,$opcion2,$opcion3){
+        $idcallid = $opcion;
+        $servicio = $opcion2;
+        $extension = $opcion3;        
         $data = null;
 
-        $varcategorias = Yii::$app->db->createCommand("SELECT d.idcategoria FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $idspeech")->queryScalar();
-        
-        if ($varcategorias == '1114' || $varcategorias == '1105') {
-            $data = '--';
-        }else{
-            $varcallid = Yii::$app->db->createCommand("SELECT d.callId FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $idspeech")->queryScalar();
+        $varStrinConteo = strlen($extension);
+        if ($varStrinConteo <= 3) {
+            $varExtension = " AND sp.rn IN ('$extension')";
+        }
+        if ($varStrinConteo == 5 || $varStrinConteo == 6) {
+            $varExtension = " AND sp.ext IN ('$extension')";
+        }
+        if ($varStrinConteo > 6) {
+            $varExtension = " AND sp.usuared IN ('$extension')";
+        }
 
-            $varlistone = Yii::$app->db->createCommand("SELECT sg.idvariable FROM tbl_speech_general sg WHERE sg.anulado = 0 AND sg.callid = $varcallid")->queryAll();
+        $varCodPcrc = Yii::$app->db->createCommand("
+            SELECT sp.cod_pcrc FROM tbl_speech_parametrizar sp
+                INNER JOIN tbl_speech_categorias sc ON 
+                    sp.cod_pcrc = sc.cod_pcrc
+                WHERE 
+                    sc.programacategoria IN ('$servicio')".$varExtension." GROUP BY sp.cod_pcrc")->queryScalar();
 
-            $varprograma = Yii::$app->db->createCommand("SELECT sg.programacliente FROM tbl_speech_general sg WHERE sg.anulado = 0 AND sg.callid = $varcallid")->queryScalar();
+        $varlistone = Yii::$app->db->createCommand("
+            SELECT d.idvariable FROM tbl_speech_general d 
+                WHERE d.anulado = 0 AND d.callId in ($idcallid)
+                        AND d.programacliente IN ('$servicio')")->queryAll();
 
-            $vararraycategoria = array();
-            foreach ($varlistone as $key => $value) {
-                array_push($vararraycategoria, $value['idvariable']);
-            }
-            $varscategorias = implode(", ", $vararraycategoria);
+        $vararraycategoria = array();
+        foreach ($varlistone as $key => $value) {
+            array_push($vararraycategoria, $value['idvariable']);
+        }
+        $varscategorias = implode(", ", $vararraycategoria);
 
-            if ($varscategorias != "") {
-                $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 3 AND sc.componentes = 1")->queryScalar();
+        if ($varscategorias != "") {
+            $varcount = Yii::$app->db->createCommand("
+                SELECT GROUP_CONCAT(sc.nombre SEPARATOR', ') AS nombre  FROM tbl_speech_categorias sc WHERE sc.anulado = 0 
+                    AND sc.programacategoria IN ('$servicio')  
+                        AND sc.idcategoria IN ($varscategorias  ) AND sc.responsable = 3
+                            AND sc.cod_pcrc IN ('$varCodPcrc')")->queryScalar();
 
-                if ($varcount == "") {
-                    $data = "--";
-                }else{
-                    $data = $varcount;
-                }
-            }else{
+            if ($varcount == "") {
                 $data = "--";
+            }else{
+                $data = $varcount;
             }
-            
-            
+        }else{
+            $data = "--";
         }
 
         return $data;
     }
 
-    public function getscanal($opcion){
-        $idspeech = $opcion;
+    public function getscanal($opcion,$opcion2,$opcion3){
+        $idcallid = $opcion;
+        $servicio = $opcion2;
+        $extension = $opcion3;        
         $data = null;
 
-        $varcategorias = Yii::$app->db->createCommand("SELECT d.idcategoria FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $idspeech")->queryScalar();
-        
-        if ($varcategorias == '1114' || $varcategorias == '1105') {
-            $data = '--';
-        }else{
-            $varcallid = Yii::$app->db->createCommand("SELECT d.callId FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $idspeech")->queryScalar();
+        $varStrinConteo = strlen($extension);
+        if ($varStrinConteo <= 3) {
+            $varExtension = " AND sp.rn IN ('$extension')";
+        }
+        if ($varStrinConteo == 5 || $varStrinConteo == 6) {
+            $varExtension = " AND sp.ext IN ('$extension')";
+        }
+        if ($varStrinConteo > 6) {
+            $varExtension = " AND sp.usuared IN ('$extension')";
+        }
 
-            $varlistone = Yii::$app->db->createCommand("SELECT sg.idvariable FROM tbl_speech_general sg WHERE sg.anulado = 0 AND sg.callid = $varcallid")->queryAll();
+        $varCodPcrc = Yii::$app->db->createCommand("
+            SELECT sp.cod_pcrc FROM tbl_speech_parametrizar sp
+                INNER JOIN tbl_speech_categorias sc ON 
+                    sp.cod_pcrc = sc.cod_pcrc
+                WHERE 
+                    sc.programacategoria IN ('$servicio')".$varExtension." GROUP BY sp.cod_pcrc")->queryScalar();
 
-            $varprograma = Yii::$app->db->createCommand("SELECT sg.programacliente FROM tbl_speech_general sg WHERE sg.anulado = 0 AND sg.callid = $varcallid")->queryScalar();
+        $varlistone = Yii::$app->db->createCommand("
+            SELECT d.idvariable FROM tbl_speech_general d 
+                WHERE d.anulado = 0 AND d.callId in ($idcallid)
+                        AND d.programacliente IN ('$servicio')")->queryAll();
 
-            $vararraycategoria = array();
-            foreach ($varlistone as $key => $value) {
-                array_push($vararraycategoria, $value['idvariable']);
-            }
-            $varscategorias = implode(", ", $vararraycategoria);
+        $vararraycategoria = array();
+        foreach ($varlistone as $key => $value) {
+            array_push($vararraycategoria, $value['idvariable']);
+        }
+        $varscategorias = implode(", ", $vararraycategoria);
 
-            if ($varscategorias != "") {
-                $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 2 AND sc.componentes = 1")->queryScalar();
+        if ($varscategorias != "") {
+            $varcount = Yii::$app->db->createCommand("
+                SELECT GROUP_CONCAT(sc.nombre SEPARATOR', ') AS nombre  FROM tbl_speech_categorias sc WHERE sc.anulado = 0 
+                    AND sc.programacategoria IN ('$servicio')  
+                        AND sc.idcategoria IN ($varscategorias  ) AND sc.responsable = 2
+                            AND sc.cod_pcrc IN ('$varCodPcrc')")->queryScalar();
 
-                if ($varcount == "") {
-                    $data = "--";
-                }else{
-                    $data = $varcount;
-                }
-            }else{
+            if ($varcount == "") {
                 $data = "--";
+            }else{
+                $data = $varcount;
             }
-            
+        }else{
+            $data = "--";
         }
 
         return $data;
     }
 
-    public function getsagente($opcion){
-        $idspeech = $opcion;
+    public function getsagente($opcion,$opcion2,$opcion3){
+        $idcallid = $opcion;
+        $servicio = $opcion2;
+        $extension = $opcion3;        
         $data = null;
 
-        $varcategorias = Yii::$app->db->createCommand("SELECT d.idcategoria FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $idspeech")->queryScalar();
-        
-        if ($varcategorias == '1114' || $varcategorias == '1105') {
-            $data = '--';
-        }else{
-            $varcallid = Yii::$app->db->createCommand("SELECT d.callId FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $idspeech")->queryScalar();
+        $varStrinConteo = strlen($extension);
+        if ($varStrinConteo <= 3) {
+            $varExtension = " AND sp.rn IN ('$extension')";
+        }
+        if ($varStrinConteo == 5 || $varStrinConteo == 6) {
+            $varExtension = " AND sp.ext IN ('$extension')";
+        }
+        if ($varStrinConteo > 6) {
+            $varExtension = " AND sp.usuared IN ('$extension')";
+        }
 
-            $varlistone = Yii::$app->db->createCommand("SELECT sg.idvariable FROM tbl_speech_general sg WHERE sg.anulado = 0 AND sg.callid = $varcallid")->queryAll();
+        $varCodPcrc = Yii::$app->db->createCommand("
+            SELECT sp.cod_pcrc FROM tbl_speech_parametrizar sp
+                INNER JOIN tbl_speech_categorias sc ON 
+                    sp.cod_pcrc = sc.cod_pcrc
+                WHERE 
+                    sc.programacategoria IN ('$servicio')".$varExtension." GROUP BY sp.cod_pcrc")->queryScalar();
 
-            $varprograma = Yii::$app->db->createCommand("SELECT sg.programacliente FROM tbl_speech_general sg WHERE sg.anulado = 0 AND sg.callid = $varcallid")->queryScalar();
+        $varlistone = Yii::$app->db->createCommand("
+            SELECT d.idvariable FROM tbl_speech_general d 
+                WHERE d.anulado = 0 AND d.callId in ($idcallid)
+                        AND d.programacliente IN ('$servicio')")->queryAll();
 
-            $vararraycategoria = array();
-            foreach ($varlistone as $key => $value) {
-                array_push($vararraycategoria, $value['idvariable']);
-            }
-            $varscategorias = implode(", ", $vararraycategoria);
+        $vararraycategoria = array();
+        foreach ($varlistone as $key => $value) {
+            array_push($vararraycategoria, $value['idvariable']);
+        }
+        $varscategorias = implode(", ", $vararraycategoria);
 
-            if ($varscategorias != "") {
-                $varcount = Yii::$app->db->createCommand("SELECT distinct sc.nombre FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.programacategoria IN ('$varprograma')  AND sc.idcategoria IN ($varscategorias) AND sc.responsable = 1 AND sc.componentes = 1")->queryScalar();
+        if ($varscategorias != "") {
+            $varcount = Yii::$app->db->createCommand("
+                SELECT GROUP_CONCAT(sc.nombre SEPARATOR', ') AS nombre  FROM tbl_speech_categorias sc WHERE sc.anulado = 0 
+                    AND sc.programacategoria IN ('$servicio')  
+                        AND sc.idcategoria IN ($varscategorias  ) AND sc.responsable = 1
+                            AND sc.cod_pcrc IN ('$varCodPcrc')")->queryScalar();
 
-                if ($varcount == "") {
-                    $data = "--";
-                }else{
-                    $data = $varcount;
-                }
-            }else{
+            if ($varcount == "") {
                 $data = "--";
+            }else{
+                $data = $varcount;
             }
-            
+        }else{
+            $data = "--";
         }
 
         return $data;
+    }
+
+    /**
+     * Retorna el listado de estados
+     * @return array
+     */
+    public function tipologiasList() {
+        return \yii\helpers\ArrayHelper::map(
+                        BaseSatisfaccion::find()
+                                ->groupBy(['tipologia'])
+                                ->all(), 'tipologia', 'tipologia');
     }
 
 }
