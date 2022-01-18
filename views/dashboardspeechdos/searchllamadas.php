@@ -248,6 +248,15 @@ $this->title = 'Dashboard Escuchar + 2.0';
                     ?>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label><?= Yii::t('app', 'Seleccionar Tipologias') ?></label>
+                    <?=
+                        $form->field($model, 'idredbox', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($model->tipologiasList(), ['prompt' => Yii::t('app', 'Seleccionar tipologia...')]);
+                    ?>
+                </div>
+            </div>
             <br>
             <div class="row">
                 <div class="col-md-3">
@@ -331,13 +340,13 @@ $this->title = 'Dashboard Escuchar + 2.0';
         </div>        
         <div class="col-md-2">
           <div class="card mb">
-            <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Llamadas general:</label>
+            <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Interacciones General:</label>
             <label  style="font-size: 15px; text-align: center;"><?php echo $txttxtvarcantllamadas; ?></label>
           </div>
         </div>
         <div class="col-md-2">
           <div class="card mb">
-            <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Llamadas buscadas:</label>
+            <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Interacciones Buscadas:</label>
             <label  style="font-size: 15px; text-align: center;"><?php echo $txttxtvarcantllamadasb; ?></label>
           </div>
         </div>
@@ -390,31 +399,31 @@ $this->title = 'Dashboard Escuchar + 2.0';
                     [
                         'attribute' => 'Estado',
                         'value' => function($data){
-                            return $data->getsestado($data->iddashboardspeechcalls);
+                            return $data->getsestado($data->callId,$data->servicio,$data->fechareal);
                         }
                     ],                                         
                     [
                         'attribute' => 'Valorador',
                         'value' => function($data){
-                            return $data->getsresposanble($data->iddashboardspeechcalls);
+                            return $data->getsresposanble($data->callId,$data->servicio,$data->fechareal);
                         }
                     ],
                     [
                         'attribute' => 'Marca',
                         'value' => function($data){
-                            return $data->getsmarca($data->iddashboardspeechcalls);
+                            return $data->getsmarca($data->callId,$data->servicio,$data->extension);
                         }
                     ],
                     [
                         'attribute' => 'Canal',
                         'value' => function($data){
-                            return $data->getscanal($data->iddashboardspeechcalls);
+                            return $data->getscanal($data->callId,$data->servicio,$data->extension);
                         }
                     ],
                     [
                         'attribute' => 'Agente',
                         'value' => function($data){
-                            return $data->getsagente($data->iddashboardspeechcalls);
+                            return $data->getsagente($data->callId,$data->servicio,$data->extension);
                         }
                     ], 
                     [
