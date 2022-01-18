@@ -31,7 +31,7 @@ use app\models\Tipofeedbacks;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas'],
             'rules' => [
               [
                 'allow' => true,
@@ -192,6 +192,37 @@ use app\models\Tipofeedbacks;
         'modelpadre' => $modelpadre,
         'dataProvider' => $dataProvider,
         'modelhijo' => $modelhijo,
+      ]);
+    }
+
+    public function actionViewescucharmas(){
+      $model = new Dashboardpermisos();
+
+      $form = Yii::$app->request->post();
+      if ($model->load($form)) {
+          $paramsBusqueda = [':varid_dp_clientes' => $model->iddashservicio, ':anulado' => 0];
+
+          $varNombreservicio = Yii::$app->db->createCommand('
+            SELECT p.cliente FROM tbl_procesos_volumendirector p 
+              WHERE p.id_dp_clientes = :varid_dp_clientes
+                  AND p.anulado = :anulado
+                  GROUP BY p.id_dp_clientes')->bindValues($paramsBusqueda)->queryScalar();
+
+          Yii::$app->db->createCommand()->insert('tbl_dashboardpermisos',[
+                                           'iddashservicio' => $model->iddashservicio,
+                                           'usuaid' => $model->usuaid,
+                                           'nombreservicio' => $varNombreservicio,
+                                           'fechacreacion' => date("Y-m-d"),
+                                           'anulado' => 0,
+                                       ])->execute(); 
+
+          return $this->redirect('viewescucharmas',[
+              'model' => $model,
+          ]);
+      }
+
+      return $this->render('viewescucharmas',[
+          'model' => $model,
       ]);
     }
     

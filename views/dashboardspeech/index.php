@@ -39,6 +39,23 @@ $this->title = 'Dashboard Voz del Cliente';
     $FechaActual = date("Y-m-d");
     $MesAnterior = date("m") - 1;
 
+    $paramsBusqueda = [':varSesion' => $sessiones, ':anulado' => 0];
+
+    $varConteoExist = Yii::$app->db->createCommand('
+      SELECT d.iddashservicio FROM tbl_dashboardpermisos d 
+        WHERE d.usuaid = :varSesion 
+          AND anulado = :anulado
+        GROUP BY d.iddashservicio')->bindValues($paramsBusqueda)->queryAll();
+
+    $varlistiddpclientes = array();
+    $varservicios = null;
+    if (count($varConteoExist) != 0) {
+      foreach ($varConteoExist as $key => $value) {
+        array_push($varlistiddpclientes, $value['iddashservicio']);
+      }
+      $varservicios = implode(", ", $varlistiddpclientes);
+    }
+
 ?>
 <?php
   if ($txtvarNew == null) {
@@ -164,23 +181,49 @@ $this->title = 'Dashboard Voz del Cliente';
         </div>
         <br>
         <div class="row">
-            <div class="col-md-6">                        
-                <?=  $form->field($model3, 'clientecategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
-                                        [
-                                            'prompt'=>'Seleccione Cliente Speech...',
-                                            'onchange' => '
-                                                $.post(
-                                                    "' . Url::toRoute('dashboardspeech/listarpcrcindex') . '", 
-                                                    {id: $(this).val()}, 
-                                                    function(res){
-                                                        $("#requester").html(res);
-                                                    }
-                                                );
-                                            ',
+            <div class="col-md-6">              
+                <?php
+                  if (count($varConteoExist) != 0) {
+                ?>          
+                  <?=  $form->field($model3, 'clientecategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes in ($varservicios)")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                          [
+                                              'prompt'=>'Seleccione Cliente Speech...',
+                                              'onchange' => '
+                                                  $.post(
+                                                      "' . Url::toRoute('dashboardspeech/listarpcrcindex') . '", 
+                                                      {id: $(this).val()}, 
+                                                      function(res){
+                                                          $("#requester").html(res);
+                                                      }
+                                                  );
+                                              ',
 
-                                        ]
-                                )->label('Cliente Speech'); 
+                                          ]
+                                  )->label('Cliente Speech'); 
+                  ?>
+                <?php
+                  }else{
                 ?>
+                  <?=  $form->field($model3, 'clientecategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                          [
+                                              'prompt'=>'Seleccione Cliente Speech...',
+                                              'onchange' => '
+                                                  $.post(
+                                                      "' . Url::toRoute('dashboardspeech/listarpcrcindex') . '", 
+                                                      {id: $(this).val()}, 
+                                                      function(res){
+                                                          $("#requester").html(res);
+                                                      }
+                                                  );
+                                              ',
+
+                                          ]
+                                  )->label('Cliente Speech'); 
+                  ?>
+                <?php
+                  }
+                ?>
+
                 <br>
                 <?=
                     $form->field($model3, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->checkboxList(

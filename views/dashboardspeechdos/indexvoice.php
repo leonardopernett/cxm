@@ -458,7 +458,7 @@ $varColorM = null;
 
     <div class="col-md-3">
       <div class="card mb">
-        <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Cantidad de Llamadas:</label>
+        <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Cantidad de Interacciones:</label>
         <label  style="font-size: 90px; text-align: center;"><?php echo $txtTotalLlamadas; ?></label>
       </div>
     </div>
@@ -1411,7 +1411,7 @@ $varColorM = null;
                   <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Responsable'; ?></label></th>
                   <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'C&oacute;digo Pcrc'; ?></label></th>
                   <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Variables'; ?></label></th>
-                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo ' Llamadas'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo ' Interacciones'; ?></label></th>
                   <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo ' % de Participaci&oacute;n'; ?></label></th>
                 </thead>
                 <tbody>
@@ -1736,11 +1736,11 @@ $varColorM = null;
                     <th scope="col" class="text-center" colspan="2"><label style="font-size: 13px;"><?= Yii::t('app', 'Por Variable '.$varName2) ?></th>
                   </tr>
                   <tr>
-                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Motivos de Llamada') ?></label></th>
-                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', '% de Llamadas') ?></label></th>
-                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad de Llamadas') ?></label></th>
-                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', '% de llamadas') ?></label></th>
-                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad de llamadas') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Motivos de Interacciones') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', '% de Interacciones') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad de Interacciones') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', '% de Interacciones') ?></label></th>
+                    <th scope="col" class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad de Interacciones') ?></label></th>
                   </tr>           
                 </thead>
                 <tbody>
@@ -1963,11 +1963,11 @@ $varColorM = null;
     
     <div class="col-md-2">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Escucha Focalizada: </label>
-        <?= Html::a('Llamadas',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
+        <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Análisis Focalizada: </label>
+        <?= Html::a('Interacciones',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
                           'style' => 'background-color: #337ab7', 'target' => "_blank",
                           'data-toggle' => 'tooltip',
-                          'title' => 'Buscar llamadas']) 
+                          'title' => 'Buscar Interacciones']) 
             ?>
       </div>
     </div>
@@ -2228,11 +2228,11 @@ $varColorM = null;
 
             yAxis: [{
               title: {
-                text: 'Cantidad de Llamadas'
+                text: 'Cantidad de Interacciones'
               }
             },{
               title: {
-                text: 'Duracion de Llamadas'
+                text: 'Duracion de Interacciones'
               },
               opposite: true
             }],  
@@ -2253,11 +2253,11 @@ $varColorM = null;
                 },
 
             series: [{
-              name: 'Cantidad de llamadas',
+              name: 'Cantidad de Interacciones',
               data: [<?= implode($varListCantidad, ',')?>],
               color: '#4298B5'
             },{
-              name: 'Duración de llamadas',
+              name: 'Duración de Interacciones',
               data: [<?= implode($varListDuracion, ',')?>],
               color: '#FFc72C',
               type: 'line',
@@ -2293,7 +2293,7 @@ $varColorM = null;
 
             yAxis: {
               title: {
-                text: 'Cantidad de Llamadas'
+                text: 'Cantidad de Interacciones'
               }
             }, 
 
@@ -2313,7 +2313,7 @@ $varColorM = null;
                 },
 
             series: [{
-              name: 'Cantidad de llamadas',
+              name: 'Cantidad de Interacciones',
               data: [<?= implode($varListCantiVar5, ',')?>],
               color: '#4298B5'
             }],
@@ -2345,7 +2345,7 @@ $varColorM = null;
 
             yAxis: {
               title: {
-                text: 'Cantidad de Llamadas'
+                text: 'Cantidad de Interacciones'
               }
             }, 
 
@@ -2365,7 +2365,7 @@ $varColorM = null;
                 },
 
             series: [{
-              name: 'Cantidad de llamadas',
+              name: 'Cantidad de Interacciones',
               data: [<?= implode($varListCantiVar, ',')?>],
               color: '#ffa126'
             }],
@@ -2398,7 +2398,7 @@ $varColorM = null;
 
             yAxis: {
               title: {
-                text: 'Cantidad de Llamadas'
+                text: 'Cantidad de Interacciones'
               }
             }, 
 
@@ -2418,7 +2418,7 @@ $varColorM = null;
                 },
 
             series: [{
-              name: 'Cantidad de llamadas',
+              name: 'Cantidad de Interacciones',
               data: [<?= implode($varListCantiVar0, ',')?>],
               color: '#ffa126'
             }],

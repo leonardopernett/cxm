@@ -133,6 +133,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
 
+            <br>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-key" style="font-size: 15px; color: #ffc034;"></em> Permisos Servicios Escuchar +</label>
+                        <?= Html::a('Aceptar',  ['viewescucharmas'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Permisos Escuchar +']) 
+                        ?>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

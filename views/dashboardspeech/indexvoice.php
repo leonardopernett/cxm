@@ -414,7 +414,7 @@ $this->title = 'Dashboard Voz del Cliente';
           </div>
           <div class="col-md-3">
               <div class="card mb">
-                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Cantidad de Llamadas:</label>
+                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> Cantidad de Interacciones:</label>
                 <label  style="font-size: 90px; text-align: center;"><?php echo $txtTotalLlamadas; ?></label>
               </div>
           </div>
@@ -1368,7 +1368,7 @@ $this->title = 'Dashboard Voz del Cliente';
                             <tr>
                               <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(4, 'str')"><?= Yii::t('app', 'Código Pcrc ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
                               <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(0, 'str')"><?= Yii::t('app', 'Variables ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>                  
-                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'cantidad Llamadas ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                              <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable1(2, 'int')"><?= Yii::t('app', 'Cantidad de Interacciones ') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1548,9 +1548,9 @@ $this->title = 'Dashboard Voz del Cliente';
                     <caption>...</caption>
                         <thead>
                           <tr>
-                            <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable(0, 'str')"><?= Yii::t('app', 'Motivos de Llamada') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                            <th scope="col" class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(1, 'int')"><?= Yii::t('app', '% de Llamadas') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
-                            <th scope="col" class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(4, 'int')"><?= Yii::t('app', ' '.$varName2.' Por Motivo Llamada') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                            <th scope="col" class="text-center" style="font-size: 15px; cursor: pointer" onclick="sortTable(0, 'str')"><?= Yii::t('app', 'Motivos de Interacciones') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                            <th scope="col" class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(1, 'int')"><?= Yii::t('app', '% de Interacciones') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
+                            <th scope="col" class="text-center"  style="font-size: 15px; cursor: pointer" onclick="sortTable(4, 'int')"><?= Yii::t('app', ' '.$varName2.' Por Motivo Interacciones') ?><span class="glyphicon glyphicon-chevron-down"></span></th>
                             
                           </tr>           
                         </thead>
@@ -1789,11 +1789,11 @@ $this->title = 'Dashboard Voz del Cliente';
       </div>
         <div class="col-md-3">
           <div class="card1 mb">
-            <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Buscar llamadas: </label>
-            <?= Html::a('Llamadas',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
+            <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Análisis Focalizada: </label>
+            <?= Html::a('Interacciones',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
                           'style' => 'background-color: #337ab7', 'target' => "_blank",
                           'data-toggle' => 'tooltip',
-                          'title' => 'Buscar llamadas']) 
+                          'title' => 'Buscar Interacciones']) 
             ?>
           </div>
         </div>
@@ -2253,11 +2253,11 @@ function sortTable(n,type) {
 
             yAxis: [{
               title: {
-                text: 'Cantidad de Llamadas'
+                text: 'Cantidad de Interacciones'
               }
             },{
               title: {
-                text: 'Duracion de Llamadas'
+                text: 'Duracion de Interacciones'
               },
               opposite: true
             }],  
@@ -2278,11 +2278,11 @@ function sortTable(n,type) {
                 },
 
             series: [{
-              name: 'Cantidad de llamadas',
+              name: 'Cantidad de Interacciones',
               data: [<?= implode($varListCantidad, ',')?>],
               color: '#4298B5'
             },{
-              name: 'Duración de llamadas',
+              name: 'Duración de Interacciones',
               data: [<?= implode($varListDuracion, ',')?>],
               color: '#FFc72C',
               type: 'line',
@@ -2317,7 +2317,7 @@ function sortTable(n,type) {
 
             yAxis: {
               title: {
-                text: 'Cantidad de Llamadas'
+                text: 'Cantidad de Interacciones'
               }
             }, 
 
@@ -2337,7 +2337,7 @@ function sortTable(n,type) {
                 },
 
             series: [{
-              name: 'Cantidad de llamadas',
+              name: 'Cantidad de Interacciones',
               data: [<?= implode($varListCantiVar5, ',')?>],
               color: '#4298B5'
             }],
@@ -2369,7 +2369,7 @@ function sortTable(n,type) {
 
             yAxis: {
               title: {
-                text: 'Cantidad de Llamadas'
+                text: 'Cantidad de Interacciones'
               }
             }, 
 
@@ -2389,7 +2389,7 @@ function sortTable(n,type) {
                 },
 
             series: [{
-              name: 'Cantidad de llamadas',
+              name: 'Cantidad de Interacciones',
               data: [<?= implode($varListCantiVar, ',')?>],
               color: '#ffa126'
             }],
@@ -2422,7 +2422,7 @@ function sortTable(n,type) {
 
             yAxis: {
               title: {
-                text: 'Cantidad de Llamadas'
+                text: 'Cantidad de Interacciones'
               }
             }, 
 
@@ -2442,7 +2442,7 @@ function sortTable(n,type) {
                 },
 
             series: [{
-              name: 'Cantidad de llamadas',
+              name: 'Cantidad de Interacciones',
               data: [<?= implode($varListCantiVar0, ',')?>],
               color: '#ffa126'
             }],
