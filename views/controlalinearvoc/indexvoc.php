@@ -270,6 +270,7 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                               foreach ($dataSesiones as $key => $value) {
                                 $varIdSesiones = $value['idsessionvoc'];
                                 $varTitulos = $value['nombresession'];
+                              }
                             ?>
                             <?php echo $varTitulos; ?>
                               <?php
@@ -277,6 +278,7 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
 
                                 foreach ($dataListaP as $key => $value) {
                                   $varNombre = $value['nombrelistap'];
+                                }
                               ?>
                                 <?php echo $varNombre; ?>
                               <?php 
