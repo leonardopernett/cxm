@@ -37,6 +37,7 @@ Modal::begin([
         'varResultado' => $varResultado,
         'vartexto' => $vartexto,
         'varvalencia' => $varvalencia,
+        'varextensionnum' => $varextensionnum,
         ])
     ?>
 

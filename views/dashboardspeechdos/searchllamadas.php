@@ -518,7 +518,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                             type     :'get',
                                                             cache    : false,
                                                             url  : '" . Url::to(['viewcalls',
-                                                            'idlogin' => $model->login_id, 'idredbox' => $model->idredbox, 'idgrabadora' => $model->idgrabadora, 'idconnid' => $model->connid]) . "',
+                                                            'idlogin' => $model->login_id, 'idredbox' => $model->idredbox, 'idgrabadora' => $model->idgrabadora, 'idconnid' => $model->connid, 'idcallids' => $model->callId, 'varfechareal' => $model->fechareal,'varcategolias' => $model->idcategoria]) . "',
                                                             success  : function(response) {
                                                                 $('#ajax_result').html(response);
                                                             }
