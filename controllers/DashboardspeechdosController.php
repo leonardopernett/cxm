@@ -6114,6 +6114,42 @@ public function actionCantidadentto(){
       ]);
     }
 
+    public function actionViewcallids($idcallids,$varfechareal,$varconnid,$varcategolias){
+
+      $paramsBusqueda = [':varCallid' => $idcallids, ':varFecha' => $varfechareal, ':varConnid' => $varconnid, ':varCategoria' => $varcategolias, ':varAnulado' => 0];
+
+      $varextension = Yii::$app->db->createCommand('
+        SELECT d.extensiones FROM tbl_dashboardspeechcalls d
+          WHERE d.anulado = :varAnulado 
+            AND d.callId = :varCallid
+              AND d.fechareal = :varFecha AND connid = :varConnid
+                AND d.idcategoria = :varCategoria
+          GROUP BY d.extensiones
+      ')->bindValues($paramsBusqueda)->queryScalar();
+
+      $paramsBusquedaConnid = [':varConnid' => $varconnid];
+
+      $varencuestaid = Yii::$app->db->createCommand('
+        SELECT b.id FROM tbl_base_satisfaccion b 
+          WHERE 
+            b.connid = :varConnid
+      ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+      $varbuzones = Yii::$app->db->createCommand('
+        SELECT b.buzon FROM tbl_base_satisfaccion b 
+          WHERE 
+            b.connid = :varConnid
+      ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+      return $this->render('viewcallids',[
+        'varextension' => $varextension,
+        'idcallids' => $idcallids,
+        'varconnid' => $varconnid,
+        'varencuestaid' => $varencuestaid,
+        'varbuzones' => $varbuzones,
+      ]);
+    }
+
 
   }
 
