@@ -423,7 +423,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                         if ($varsConnid == "") {
                                             $varsConnid = 0;
                                         }
-                                        
+
                                         return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-paperclip" style="font-size: 17px; color: #495057; display: inline;"></i>'),'javascript:void(0)',
                                         [
                                             'title' => Yii::t('app', 'Datos de las Interacciones'),
@@ -432,7 +432,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                     type     :'get',
                                                     cache    : false,
                                                     url  : '" . Url::to(['viewcallids',
-                                                        'idcallids' => $model->callId,'varfechareal' => $model->fechareal, 'varconnid'=>$model->connid, 'varcategolias' => $model->idcategoria]) . "',
+                                                        'idcallids' => $model->callId,'varfechareal' => $model->fechareal, 'varconnid'=>$varsConnid, 'varcategolias' => $model->idcategoria]) . "',
                                                         success  : function(response) {
                                                             $('#ajax_result').html(response);
                                                         }
