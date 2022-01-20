@@ -995,9 +995,16 @@ $varColorM = null;
                           if ($txtTipoFormIndicador == 0) {
                            
                             if ($txtrtaidaA != 0) {
-                              $txttotalidadA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1)).'%';
-                              $varrtacolorA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
-                              $varrtaA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                              $txttotalidadA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1)).'%';                              
+                              
+                              if ($txtNombreCategoria == "Insatisfacción") {
+                                $varrtacolorA = (round(100 - ($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                                $varrtaA = (round(100 - ($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                              }else{
+                                $varrtacolorA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                                $varrtaA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                              }
+
                               $cantidadAgenda = $cantidadAgenda + 1;
 
                               if ($varrtacolorA > '20') {
@@ -1018,8 +1025,15 @@ $varColorM = null;
 
                             if ($txtrtaidaC != 0) {
                               $txttotalidadC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1)).'%';
-                              $varrtacolorC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
-                              $varrtaC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                              
+                              if ($txtNombreCategoria == "Insatisfacción") {
+                                $varrtacolorC = (round(100 - ($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                                $varrtaC = (round(100 - ($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                              }else{
+                                $varrtacolorC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                                $varrtaC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                              }
+
                               $cantidadCanal = $cantidadCanal + 1;
 
                               if ($varrtacolorC > '20') {
@@ -1040,8 +1054,15 @@ $varColorM = null;
 
                             if ($txtrtaidaM != 0) {
                               $txttotalidadM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1)).'%';
-                              $varrtacolorM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
-                              $varrtaM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                              
+                              if ($txtNombreCategoria == "Insatisfacción") {
+                                $varrtacolorM = (round(100 - ($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                                $varrtaM = (round(100 - ($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                              }else{
+                                $varrtacolorM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                                $varrtaM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                              }
+
                               $cantidadMarca = $cantidadMarca + 1;
 
                               if ($varrtacolorM > '20') {

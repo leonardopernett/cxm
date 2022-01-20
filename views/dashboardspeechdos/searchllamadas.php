@@ -363,10 +363,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 'dataProvider' => $dataProvider,
                 'columns' => [
                     [
-                        'attribute' => 'Id llamada',
-                        'value' => 'callId',
-                    ],
-                    [
                         'attribute' => 'Fecha',
                         'value' => 'fechareal',
                     ],
@@ -377,23 +373,11 @@ $this->title = 'Dashboard Escuchar + 2.0';
                     [
                         'attribute' => 'redbox',
                         'value' => 'idredbox',
-                    ],  
+                    ],                   
                     [
-                        'attribute' => 'Encuesta',
-                        'value' => function($data){
-                            return $data->getsencuestas($data->connid);
-                        }
-                    ],                      
-                    [
-                        'attribute' => 'Tipologia',
+                        'attribute' => 'Tipologia Encuesta',
                         'value' => function($data){
                             return $data->getstipologia($data->connid);
-                        }
-                    ],                                         
-                    [
-                        'attribute' => 'Buzon',
-                        'value' => function($data){
-                            return $data->getsbuzon($data->connid);
                         }
                     ],                                                             
                     [
@@ -430,12 +414,38 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7;',],
                         'contentOptions' => ['style' => 'text-align: center;',],
+                        'template' => '{update}',
+                        'buttons' => 
+                                [
+                                   'update' => function ($url, $model) {
+                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-paperclip" style="font-size: 17px; color: #495057; display: inline;"></i>'),'javascript:void(0)',
+                                        [
+                                            'title' => Yii::t('app', 'Datos de las Interacciones'),
+                                            'onclick' => "                       
+                                                $.ajax({
+                                                    type     :'get',
+                                                    cache    : false,
+                                                    url  : '" . Url::to(['viewcallids',
+                                                        'idcallids' => $model->callId,'varfechareal' => $model->fechareal, 'varconnid'=>$model->connid, 'varcategolias' => $model->idcategoria]) . "',
+                                                        success  : function(response) {
+                                                            $('#ajax_result').html(response);
+                                                        }
+                                                });
+                                            return false;",
+                                        ]);
+                                                                               
+                                    }
+                                ]                              
+                    ], 
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'headerOptions' => ['style' => 'color:#337ab7;',],
+                        'contentOptions' => ['style' => 'text-align: center;',],
                         //'template' => '{view}{update}{delete}',
                         'template' => '{update}',
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
-                                       $idspeech = $model->iddashboardspeechcalls;
                                                                                 
                                             $varextensiones = $model->extension;
                                             $varservicios = $model->servicio;
@@ -444,7 +454,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
                                                 
                                             }else{
-                                                if (strlen($varextensiones) == 6 || strlen($varextensiones) == 6) {
+                                                if (strlen($varextensiones) >= 4 || strlen($varextensiones) <= 6) {
                                                     $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct sc.cod_pcrc FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
 
                                                 }else{
@@ -525,9 +535,8 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
-                                        $idspeech = $model->iddashboardspeechcalls;
                                         $idloginid = $model->login_id;
-                                        $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT d.callId FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$idspeech')")->queryScalar();
+                                        $concatenarspeech = $model->callId.'; '.$model->fechareal;
                                         $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
                                         $txttmpejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_tmpejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
                                         $txtidejecucion = Yii::$app->db->createCommand("SELECT te.id FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
@@ -548,7 +557,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
                                                 $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.rn IN ('$varextensiones')")->queryScalar();
                                             }else{
-                                                if (strlen($varextensiones) == 6 || strlen($varextensiones) == 6) {
+                                                if (strlen($varextensiones) >= 4 || strlen($varextensiones) <= 6) {
                                                     $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct CONCAT(sc.cod_pcrc,' - ',sc.pcrc) FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
 
                                                     $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
@@ -558,9 +567,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                     $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.usuared IN ('$varextensiones')")->queryScalar();
                                                 }
                                             }
-                                            // $varbasesatis = $model->basesatisfaccion_id;
-                                            // $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = $varticket and basesatisfaccion_id = $varbasesatis ")->queryScalar();
-                                                    // if ($varcomprobacion == 0) {
 
                                                     if ($idbase != "") {
 
