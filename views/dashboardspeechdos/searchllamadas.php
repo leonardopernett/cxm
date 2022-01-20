@@ -418,6 +418,12 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
+                                       
+                                        $varsConnid = $model->connid;
+                                        if ($varsConnid == "") {
+                                            $varsConnid = 0;
+                                        }
+                                        
                                         return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-paperclip" style="font-size: 17px; color: #495057; display: inline;"></i>'),'javascript:void(0)',
                                         [
                                             'title' => Yii::t('app', 'Datos de las Interacciones'),
