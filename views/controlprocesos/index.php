@@ -210,7 +210,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
 
-                    <?php   if($sessiones == 0) { ?>
+                    <?php   if($sessiones != 0) { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;">remover técnico/lider: </label>
@@ -232,7 +232,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php   } ?>
 		
                     <?php if($txtConteo == "0") { ?>
-                    <?php     if($sessiones == 0) { ?>
+                    <?php     if($sessiones != 0) { ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"> clonar plan: </label>                            
