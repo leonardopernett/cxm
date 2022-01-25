@@ -21,7 +21,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
   .masthead {
     height: 25vh;
     min-height: 100px;
-    background-image: url('../../images/Valorar-Interacción.png');
+    background-image: url('../../images/Valorar_Interaccion.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
