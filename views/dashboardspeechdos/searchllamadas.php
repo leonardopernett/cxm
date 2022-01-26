@@ -661,8 +661,8 @@ $this->title = 'Dashboard Escuchar + 2.0';
     };
 
     function varAleatorio(){
-        var varidcontact = document.getElementById("dashboardspeechcalls-idcategoria").value;
-        var varidindicador = document.getElementById("idtxtcategoria").value;
+        var varidcontact = document.getElementById("idcontact").value;
+        var varidindicador = document.getElementById("dashboardspeechcalls-idcategoria").value;
         var varidvariables = document.getElementById("requester").value;
         var varidmotivos = document.getElementById("dashboardspeechcalls-extension").value;
         var varservicios = document.getElementById("dashboardspeechcalls-servicio").value;
