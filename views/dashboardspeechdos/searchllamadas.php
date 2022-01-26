@@ -259,7 +259,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
             </div>
             <br>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #827DF9;"></em> Buscar llamadas: </label> 
                         <?= Html::submitButton(Yii::t('app', 'Buscar'),
@@ -270,7 +270,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         ?>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></em> Buscar general: </label> 
                         <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos], ['class' => 'btn btn-success',
@@ -280,7 +280,18 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         ?>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-random" style="font-size: 15px; color: #827DF9;"></em> Buscar Aleatorio: </label> 
+                        <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos, 'varaleatorios' => 1], ['class' => 'btn btn-success',
+                            'style' => 'background-color: #337ab7',
+                            'data-toggle' => 'tooltip',
+                            'onclick' => 'varAleatorio();',
+                            'title' => 'Buscar llamadas']) 
+                        ?>
+                    </div>
+                </div>
+                <div class="col-md-2">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-backward" style="font-size: 15px; color: #827DF9;"></em> Regresar: </label> 
                         <?= Html::a('Regresar',  ['indexvoice','arbol_idV'=>$txtvarprograma,'codpcrc'=>$txtvarcodigopcrc,'parametros_idV'=>$txtvarextension,'codparametrizar'=>$txtvarcodigos,'dateini'=>$txtvarfechainireal,'datefin'=>$txtvarfechafinreal], ['class' => 'btn btn-success',
@@ -292,7 +303,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 </div>
 
                 <?php if ($txttxtvarcantllamadasb != 0) {  ?>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #827DF9;"></em> Descargar gestiones: </label> 
                         <?= Html::button('Descargar', ['value' => url::to(['descargarcalls','varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$varcategoriass, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'consinmotivos'=>$varidloginid]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 

@@ -390,14 +390,47 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         return $dataProvider;
     }
 
-    public function buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls){
+    public function buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls,$params5,$params6){
         $txtprograma = $params1;
         $txtextension = $params2;
         $txtfechainicio = $params3;
         $txtfechafin = $params4;
         $txtllamadas = $paramscalls;
 
-        $query = Dashboardspeechcalls::find()
+        $paramsBusqueda = [':varcodpcrcs' => $params5, ':anulado' => 0];
+
+        $varcantidad = Yii::$app->db->createCommand('
+          SELECT sa.cantidad FROM tbl_speech_aleatoridad sa
+            WHERE sa.anulado = :anulado
+              AND sa.cod_pcrc IN (:varcodpcrcs)')->bindValues($paramsBusqueda)->queryScalar();
+        
+        $Listadosid = Dashboardspeechcalls::find()
+            ->select("iddashboardspeechcalls")
+            ->where("anulado = 0")
+            ->andwhere("servicio in ('$txtprograma')")
+            ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+            ->andwhere("extension in ('$txtextension')")
+            ->orderBy([
+                    'rand()' => SORT_DESC
+                ])
+            ->limit($varcantidad)
+            ->all();
+        
+        $arrayidspeech = array();
+        foreach ($Listadosid as $key => $value) {
+            array_push($arrayidspeech, $value['iddashboardspeechcalls']);
+        }
+        $arralistaidspeech = implode(", ", $arrayidspeech);
+
+        if ($params6 == 1 && $varcantidad != "") {
+            $query = Dashboardspeechcalls::find()
+                    ->where("anulado = 0")
+                    ->andwhere("servicio in ('$txtprograma')")
+                    ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
+                    ->andwhere("extension in ('$txtextension')")
+                    ->andwhere("iddashboardspeechcalls IN ($arralistaidspeech)");
+        }else{
+            $query = Dashboardspeechcalls::find()
                     ->where("anulado = 0")
                     ->andwhere("servicio in ('$txtprograma')")
                     ->andwhere("fechallamada between '$txtfechainicio' and '$txtfechafin'")
@@ -405,7 +438,8 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
                     ->andwhere("idcategoria in ('$txtllamadas')")
                     ->orderBy([
                               'fechallamada' => SORT_DESC
-                            ]);
+                        ]);
+        }        
         
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

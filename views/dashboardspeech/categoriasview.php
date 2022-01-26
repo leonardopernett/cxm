@@ -91,11 +91,11 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7'],
-                        'template' => '{view} {btnida} {btnhalla} {btndefin}',
+                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio}',
                         'buttons' => 
                         [ 
                             'view' => function ($url, $model) {
-                                return Html::a('<i class="fas fa-search"  style="font-size: 18px;"></i>',['categoriasverificar', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                return Html::a('<em class="fas fa-search"  style="font-size: 18px;"></em>',['categoriasverificar', 'txtServicioCategorias' => $model->cod_pcrc], [
                                         'class' => '',
                                         'data-toggle' => 'tooltip',
 	                                    'title' => 'Buscar',
@@ -105,7 +105,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                                 ]);                                
                             },
                             'btnida' => function($url, $model) {
-                                return Html::a('<i class="far fa-list-alt" style="font-size: 18px;"></i>',['categoriasida', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                return Html::a('<em class="far fa-list-alt" style="font-size: 18px;"></em>',['categoriasida', 'txtServicioCategorias' => $model->cod_pcrc], [
                                         'class' => '',
                                         'data-toggle' => 'tooltip',
 	                                'title' => 'Dashboard IDA',
@@ -115,7 +115,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                                 ]);                                
                             },
                             'btnhalla' => function($url, $model) {
-                                return Html::a('<i class="far fa-check-circle"" style="font-size: 18px;"></i>',['categoriashalla', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                return Html::a('<em class="far fa-check-circle"" style="font-size: 18px;"></em>',['categoriashalla', 'txtServicioCategorias' => $model->cod_pcrc], [
                                         'class' => '',
                                         'data-toggle' => 'tooltip',
 	                                    'title' => 'Hallazgos',
@@ -125,10 +125,20 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                                 ]);          
                             },
                             'btndefin' => function($url, $model) {
-                                return Html::a('<i class="far fa-edit"" style="font-size: 18px;"></i>',['categoriasdefinicion', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                return Html::a('<em class="far fa-edit"" style="font-size: 18px;"></em>',['categoriasdefinicion', 'txtServicioCategorias' => $model->cod_pcrc], [
                                         'class' => '',
                                         'data-toggle' => 'tooltip',
 	                                    'title' => 'Definicion',
+                                        'data' => [
+                                            'method' => 'post',
+                                        ],
+                                ]);          
+                            },
+                            'btnaleatorio' => function($url, $model) {
+                                return Html::a('<em class="fas fa-random"" style="font-size: 18px;"></em>',['paramsaleatorio', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                        'class' => '',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Programar Aleatorio',
                                         'data' => [
                                             'method' => 'post',
                                         ],
