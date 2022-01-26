@@ -660,6 +660,63 @@ $this->title = 'Dashboard Escuchar + 2.0';
         }
     };
 
+    function varAleatorio(){
+        var varidcontact = document.getElementById("idcontact").value;
+        var varidindicador = document.getElementById("idtxtcategoria").value;
+        var varidvariables = document.getElementById("requester").value;
+        var varidmotivos = document.getElementById("dashboardspeechcalls-extension").value;
+        var varservicios = document.getElementById("dashboardspeechcalls-servicio").value;
+        var varrequester2 = document.getElementById("requester2").value;
+        var varidredbox = document.getElementById("dashboardspeechcalls-idredbox").value;
+
+        var varaleatorio = document.getElementById("idaleatorio").value;
+
+        if (varaleatorio == "1") {
+            
+            if (varidcontact != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varidindicador != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varidvariables != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varidmotivos != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varservicios != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varrequester2 != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varidredbox != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+        }
+    };
+
     function generarcarga(){
         Swal.fire({
           position: 'top-end',
