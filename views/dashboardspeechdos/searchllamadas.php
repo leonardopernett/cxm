@@ -661,17 +661,13 @@ $this->title = 'Dashboard Escuchar + 2.0';
     };
 
     function varAleatorio(){
-        var varidcontact = document.getElementById("idcontact").value;
+        var varidcontact = document.getElementById("dashboardspeechcalls-idcategoria").value;
         var varidindicador = document.getElementById("idtxtcategoria").value;
         var varidvariables = document.getElementById("requester").value;
         var varidmotivos = document.getElementById("dashboardspeechcalls-extension").value;
         var varservicios = document.getElementById("dashboardspeechcalls-servicio").value;
         var varrequester2 = document.getElementById("requester2").value;
         var varidredbox = document.getElementById("dashboardspeechcalls-idredbox").value;
-
-        var varaleatorio = document.getElementById("idaleatorio").value;
-
-        if (varaleatorio == "1") {
             
             if (varidcontact != "") {
                 event.preventDefault();
@@ -714,7 +710,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
                 return; 
             }
-        }
+        
     };
 
     function generarcarga(){
