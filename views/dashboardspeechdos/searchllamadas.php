@@ -273,7 +273,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 <div class="col-md-2">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></em> Buscar general: </label> 
-                        <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos], ['class' => 'btn btn-success',
+                        <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos, 'varaleatorios' => 0], ['class' => 'btn btn-success',
                             'style' => 'background-color: #337ab7',
                             'data-toggle' => 'tooltip',
                             'title' => 'Buscar llamadas']) 
