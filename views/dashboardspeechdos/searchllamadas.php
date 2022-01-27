@@ -261,7 +261,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
             <div class="row">
                 <div class="col-md-2">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #827DF9;"></em> Buscar llamadas: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #827DF9;"></em> Buscar Interacciones: </label> 
                         <?= Html::submitButton(Yii::t('app', 'Buscar'),
                             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                 'data-toggle' => 'tooltip',

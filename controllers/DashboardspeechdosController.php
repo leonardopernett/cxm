@@ -4335,6 +4335,10 @@ public function actionCantidadentto(){
 
             $dataProvider = $model->buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls,$params5,$params6);
 
+            if ($params6 == "1") {
+              $txttxtvarcantllamadasb = $dataProvider->getTotalCount();
+            }
+
             $varcategoriass = 0;
             $varidloginid = 0;
           }
