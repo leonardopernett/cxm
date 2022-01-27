@@ -6,9 +6,9 @@ services:
       - konecta_network
     restart: always
     image: httpd:2.4.48
-    ports:
-      - 5002:80
-      - 5001:443
+#    ports:
+#      - 5002:80
+#      - 5001:443
     volumes:
       - $PWD/apache_data/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - $PWD/apache_data/cxm.cer:/usr/local/apache2/conf/cxm.cer
@@ -25,8 +25,8 @@ services:
   app_cxm:
     networks:
       - konecta_network
-    ports:
-     - "5000:80"
+#    ports:
+#     - "5000:80"
     volumes:
       - "$PWD/../:/var/www/html/qa_managementv2"
       - "$PWD/cxm_docker/volume/php.ini:/usr/local/etc/php/conf.d/php.ini"
