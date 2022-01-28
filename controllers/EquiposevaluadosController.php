@@ -117,8 +117,10 @@ class EquiposEvaluadosController extends Controller {
                     ->where('tbl_evaluados.id NOT IN ( '
                             . 'SELECT tbl_equipos_evaluados.evaluado_id AS id '
                             . 'FROM tbl_equipos_evaluados '
-                            . 'WHERE equipo_id = ' . $equipoId . ') ' 
-                            . 'AND name LIKE "%' . $search . '%"')
+                            . 'WHERE equipo_id = :equipoId )' 
+                            . 'AND name LIKE "%":search"%"')
+                    ->addParams([':equipoId' => $equipoId])
+                    ->addParams([':search' => $search])
                     ->groupBy('tbl_evaluados.id')
                     ->orderBy('name')
                     ->asArray()
@@ -129,7 +131,8 @@ class EquiposEvaluadosController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Evaluados::find()
                         ->select(['id', 'text' => 'name'])
-                        ->where('id IN (' . $id . ')')
+                        ->where('id IN (:id)')
+                        ->addParams([':id' => $id])
                         ->orderBy('name')
                         ->asArray()
                         ->all();
@@ -290,8 +293,10 @@ class EquiposEvaluadosController extends Controller {
                     ->where('tbl_equipos.id NOT IN ( '
                             . 'SELECT tbl_equipos_evaluados.equipo_id AS id '
                             . 'FROM tbl_equipos_evaluados '
-                            . 'WHERE evaluado_id = ' . $evaluadoId . ') ' 
-                            . 'AND name LIKE "%' . $search . '%"')
+                            . 'WHERE evaluado_id = :evaluadoId ) ' 
+                            . 'AND name LIKE "%":search"%"')
+                    ->addParams([':evaluadoId' => $evaluadoId])
+                    ->addParams([':search' => $search])
                     ->groupBy('tbl_equipos.id')
                     ->orderBy('name')
                     ->asArray()
@@ -302,7 +307,8 @@ class EquiposEvaluadosController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Equipos::find()
                         ->select(['id', 'text' => 'name'])
-                        ->where('id IN (' . $id . ')')
+                        ->where('id IN (:id)')
+                        ->addParams([':id' => $id])
                         ->orderBy('name')
                         ->asArray()
                         ->all();

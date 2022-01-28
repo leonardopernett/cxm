@@ -145,7 +145,8 @@ use app\models\Controlvolumenxvalorador;
                                 ->join('LEFT OUTER JOIN', 'tbl_grupo_cortes',
                                         'tbl_tipocortes.idgrupocorte = tbl_grupo_cortes.idgrupocorte')
                                 ->where('tbl_grupo_cortes.idgrupocorte = 1')
-                                ->andwhere(['not like', 'tbl_tipocortes.tipocortetc', $txtMes]);                    
+                                ->andwhere(['not like', 'tbl_tipocortes.tipocortetc', ':txtMes'])
+                                ->addParams([':txtMes' => $txtMes]);                    
                     $command = $querys->createCommand();
                     $query = $command->queryAll();
 
@@ -168,17 +169,23 @@ use app\models\Controlvolumenxvalorador;
                                                 'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                     ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                 'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                    ->where(['between','tbl_ejecucionformularios.created', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                    ->andwhere('tbl_arbols.arbol_id = '.$varIdServicios.'')
+                                    ->where(['between','tbl_ejecucionformularios.created', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                    ->andwhere('tbl_arbols.arbol_id = :varIdServicios')
                                     ->andwhere(['in','tbl_dimensions.id',[1, 11]])
-                ->andwhere(['in','tbl_roles.role_id',[272, 291]]);
+                                    ->andwhere(['in','tbl_roles.role_id',[272, 291]])
+                                    ->addParams([':varDateBegin' => $varDateBegin])
+                                    ->addParams([':varDateLast' => $varDateLast])
+                                    ->addParams([':varIdServicios' => $varIdServicios]);
                                     
                         $command = $querys->createCommand();
                         $queryss = $command->queryAll(); 
 
                         $query = count($queryss);  
 
-                        $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxcliente where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and anuladovxc = 0")->queryScalar();
+                        $varService = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxcliente where idservicio = :varIdServicios and idtc = :varIdCorte and anuladovxc = 0')
+                        ->addParams([':varIdServicios' => $varIdServicios])
+                        ->addParams([':varIdCorte' => $varIdCorte])
+                        ->queryScalar();
 
                         if ($varService == 0) {
                             Yii::$app->db->createCommand()->insert('tbl_control_volumenxcliente',[
@@ -191,7 +198,9 @@ use app\models\Controlvolumenxvalorador;
                                 ])->execute();  
                         }
 
-                            $varFormularios2 = Yii::$app->db->createCommand("select id from tbl_arbols where arbol_id = '$varIdServicios' and activo = 0")->queryAll();
+                            $varFormularios2 = Yii::$app->db->createCommand('select id from tbl_arbols where arbol_id = :varIdServicios and activo = 0')
+                            ->addParams([':varIdServicios' => $varIdServicios])
+                            ->queryAll();
 
                             foreach ($varFormularios2 as $key => $value) {
                                 $txtIdPcrc = $value['id'];
@@ -209,17 +218,22 @@ use app\models\Controlvolumenxvalorador;
                                                 'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                         ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                 'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                        ->where(['between','tbl_ejecucionformularios.created', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
+                                        ->where(['between','tbl_ejecucionformularios.created', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
                                         ->andwhere('tbl_arbols.id = '.$txtIdPcrc.'')
                                         ->andwhere(['in','tbl_dimensions.id',[1, 11]])
-                    ->andwhere(['in','tbl_roles.role_id',[272, 291]]);
+                                        ->andwhere(['in','tbl_roles.role_id',[272, 291]])
+                                        ->addParams([':varDateBegin' => $varDateBegin])
+                                        ->addParams([':varDateLast' => $varDateLast]);
                                             
                                 $command = $querys->createCommand();
                                 $queryss = $command->queryAll(); 
 
                                 $query = count($queryss);   
 
-                                $varService1 = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxformulario where arbol_id = '$txtIdPcrc' and idtc = '$varIdCorte' and anuladovxf = 0")->queryScalar();
+                                $varService1 = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxformulario where arbol_id = :txtIdPcrc and idtc = :varIdCorte and anuladovxf = 0')
+                                ->bindValue(':txtIdPcrc', $txtIdPcrc)
+                                ->bindValue(':varIdCorte', $varIdCorte)
+                                ->queryScalar();
 
                                 if ($varService1 == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_control_volumenxformulario',[
@@ -243,7 +257,8 @@ use app\models\Controlvolumenxvalorador;
                                     ->join('LEFT OUTER JOIN', 'tbl_grupo_cortes',
                                             'tbl_tipocortes.idgrupocorte = tbl_grupo_cortes.idgrupocorte')
                                     ->where('tbl_grupo_cortes.idgrupocorte = 2')
-                                    ->andwhere(['not like', 'tbl_tipocortes.tipocortetc', $txtMes]);                    
+                                    ->andwhere(['not like', 'tbl_tipocortes.tipocortetc', ':txtMes'])
+                                    ->addParams([':txtMes' => $txtMes]);
                         $command = $querys->createCommand();
                         $query = $command->queryAll();
                        
@@ -267,17 +282,23 @@ use app\models\Controlvolumenxvalorador;
                                                     'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                         ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                     'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                        ->where(['between','tbl_ejecucionformularios.created', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                        ->andwhere('tbl_arbols.arbol_id = '.$varIdServicios.'')
+                                        ->where(['between','tbl_ejecucionformularios.created', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                        ->andwhere('tbl_arbols.arbol_id = :varIdServicios')
                                         ->andwhere(['in','tbl_dimensions.id',[1, 11, 2]])
-                    ->andwhere(['in','tbl_roles.role_id',[272, 291]]);
+                                        ->andwhere(['in','tbl_roles.role_id',[272, 291]])
+                                        ->addParams([':varDateBegin' => $varDateBegin])
+                                        ->addParams([':varDateLast' => $varDateLast])
+                                        ->addParams([':varIdServicios' => $varIdServicios]);
                                         
                             $command = $querys->createCommand();
                             $queryss = $command->queryAll(); 
 
                             $query = count($queryss);  
 
-                            $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxcliente where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and anuladovxc = 0")->queryScalar();
+                            $varService = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxcliente where idservicio = :varIdServicios and idtc = :varIdCorte and anuladovxc = 0')
+                            ->bindValue(':varIdServicios', $varIdServicios)
+                            ->bindValue(':varIdCorte', $varIdCorte)
+                            ->queryScalar();
 
                             if ($varService == 0) {
                                 Yii::$app->db->createCommand()->insert('tbl_control_volumenxcliente',[
@@ -290,7 +311,9 @@ use app\models\Controlvolumenxvalorador;
                                     ])->execute();  
                             }
 
-                            $varFormularios2 = Yii::$app->db->createCommand("select id from tbl_arbols where arbol_id = '$varIdServicios' and activo = 0")->queryAll();
+                            $varFormularios2 = Yii::$app->db->createCommand('select id from tbl_arbols where arbol_id = :varIdServicios and activo = 0')
+                            ->bindValue(':varIdServicios', $varIdServicios)
+                            ->queryAll();
 
                             foreach ($varFormularios2 as $key => $value) {
                                 $txtIdPcrc = $value['id'];
@@ -308,17 +331,23 @@ use app\models\Controlvolumenxvalorador;
                                                     'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                             ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                     'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                            ->where(['between','tbl_ejecucionformularios.created', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                            ->andwhere('tbl_arbols.id = '.$txtIdPcrc.'')
+                                            ->where(['between','tbl_ejecucionformularios.created', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                            ->andwhere('tbl_arbols.id = :txtIdPcrc')
                                             ->andwhere(['in','tbl_dimensions.id',[1, 11, 2]])
-                        ->andwhere(['in','tbl_roles.role_id',[272, 291]]);
+                                            ->andwhere(['in','tbl_roles.role_id',[272, 291]])
+                                            ->addParams([':varDateBegin' => $varDateBegin])
+                                            ->addParams([':varDateLast' => $varDateLast])
+                                            ->addParams([':txtIdPcrc' => $txtIdPcrc]);
                                             
                                 $command = $querys->createCommand();
                                 $queryss = $command->queryAll(); 
 
                                 $query = count($queryss);   
 
-                                $varService1 = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxformulario where arbol_id = '$txtIdPcrc' and idtc = '$varIdCorte' and anuladovxf = 0")->queryScalar();
+                                $varService1 = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxformulario where arbol_id = :txtIdPcrc and idtc = :varIdCorte and anuladovxf = 0')
+                                ->bindValue(':txtIdPcrc', $txtIdPcrc)
+                                ->bindValue(':varIdCorte', $varIdCorte)
+                                ->queryScalar();
 
                                 if ($varService1 == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_control_volumenxformulario',[
@@ -343,7 +372,8 @@ use app\models\Controlvolumenxvalorador;
                                     ->join('LEFT OUTER JOIN', 'tbl_grupo_cortes',
                                             'tbl_tipocortes.idgrupocorte = tbl_grupo_cortes.idgrupocorte')
                                     ->where('tbl_grupo_cortes.idgrupocorte = 3')
-                                    ->andwhere(['not like', 'tbl_tipocortes.tipocortetc', $txtMes]);                    
+                                    ->andwhere(['not like', 'tbl_tipocortes.tipocortetc', ':txtMes'])
+                                    ->addParams([':txtMes' => $txtMes]);
                         $command = $querys->createCommand();
                         $query = $command->queryAll();
                        
@@ -367,17 +397,23 @@ use app\models\Controlvolumenxvalorador;
                                                         'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                         ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                         'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                        ->where(['between','tbl_ejecucionformularios.created', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                        ->andwhere('tbl_arbols.arbol_id = '.$varIdServicios.'')
+                                        ->where(['between','tbl_ejecucionformularios.created', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                        ->andwhere('tbl_arbols.arbol_id = :varIdServicios')
                                         ->andwhere(['in','tbl_dimensions.id',[1, 11]])
-                    ->andwhere(['in','tbl_roles.role_id',[272, 291]]);
+                                        ->andwhere(['in','tbl_roles.role_id',[272, 291]])
+                                        ->addParams([':varDateBegin' => $varDateBegin])
+                                        ->addParams([':varDateLast' => $varDateLast])
+                                        ->addParams([':varIdServicios' => $varIdServicios]);
                                         
                             $command = $querys->createCommand();
                             $queryss = $command->queryAll(); 
 
                             $query = count($queryss);  
 
-                            $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxcliente where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and anuladovxc = 0")->queryScalar();
+                            $varService = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxcliente where idservicio = :varIdServicios and idtc = :varIdCorte and anuladovxc = 0')
+                            ->bindValue(':varIdServicios', $varIdServicios)
+                            ->bindValue(':varIdCorte', $varIdCorte)
+                            ->queryScalar();
 
                             if ($varService == 0) {
                                 Yii::$app->db->createCommand()->insert('tbl_control_volumenxcliente',[
@@ -390,7 +426,9 @@ use app\models\Controlvolumenxvalorador;
                                     ])->execute();  
                             } 
 
-                            $varFormularios2 = Yii::$app->db->createCommand("select id from tbl_arbols where arbol_id = '$varIdServicios' and activo = 0")->queryAll();
+                            $varFormularios2 = Yii::$app->db->createCommand('select id from tbl_arbols where arbol_id = :varIdServicios and activo = 0')
+                            ->bindValue(':varIdServicios', $varIdServicios)
+                            ->queryAll();
 
                             foreach ($varFormularios2 as $key => $value) {
                                 $txtIdPcrc = $value['id'];
@@ -408,17 +446,23 @@ use app\models\Controlvolumenxvalorador;
                                                         'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                             ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                         'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                            ->where(['between','tbl_ejecucionformularios.created', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                            ->andwhere('tbl_arbols.id = '.$txtIdPcrc.'')
+                                            ->where(['between','tbl_ejecucionformularios.created', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                            ->andwhere('tbl_arbols.id = :txtIdPcrc')
                                             ->andwhere(['in','tbl_dimensions.id',[1, 11]])
-                        ->andwhere(['in','tbl_roles.role_id',[272, 291]]);
+                                            ->andwhere(['in','tbl_roles.role_id',[272, 291]])
+                                            ->addParams([':varDateBegin' => $varDateBegin])
+                                            ->addParams([':varDateLast' => $varDateLast])
+                                            ->addParams([':txtIdPcrc' => $txtIdPcrc]);
                                             
                                 $command = $querys->createCommand();
                                 $queryss = $command->queryAll(); 
 
                                 $query = count($queryss);   
 
-                                $varService1 = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxformulario where arbol_id = '$txtIdPcrc' and idtc = '$varIdCorte' and anuladovxf = 0")->queryScalar();
+                                $varService1 = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxformulario where arbol_id = :txtIdPcrc and idtc = :varIdCorte and anuladovxf = 0')
+                                ->bindValue(':txtIdPcrc', $txtIdPcrc)
+                                ->bindValue(':varIdCorte', $varIdCorte)
+                                ->queryScalar();
 
                                 if ($varService1 == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_control_volumenxformulario',[
@@ -461,7 +505,10 @@ use app\models\Controlvolumenxvalorador;
                 $varCorteId = $value['CorteID'];
 
 
-                $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxvalorador where idservicio = '$varServicio' and mesyear = '$varMesYear' and anuladovxv = 0")->queryScalar();
+                $varService = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxvalorador where idservicio = :varServicio and mesyear = :varMesYear and anuladovxv = 0')
+                ->bindValue(':varServicio', $varServicio)
+                ->bindValue(':varMesYear', $varMesYear)
+                ->queryScalar();
 
                 if ($varServicio == '17' || $varServicio == '118' ) {                    
 
@@ -479,10 +526,13 @@ use app\models\Controlvolumenxvalorador;
                                             'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                     ->join('LEFT OUTER JOIN', 'tbl_roles',
                                             'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                    ->where(['between','tbl_ejecucionformularios.created', $varFechaInicio.' 00:00:00', $varFechaFin.' 23:59:59'])
-                                    ->andwhere('tbl_arbols.arbol_id = '.$varServicio.'')
+                                    ->where(['between','tbl_ejecucionformularios.created', ':varFechaInicio 00:00:00', ':varFechaFin 23:59:59'])
+                                    ->andwhere('tbl_arbols.arbol_id = :varServicio')
                                     ->andwhere(['in','tbl_roles.role_id',[272, 291]])
                                     ->andwhere(['in','tbl_dimensions.id',[1, 11]])
+                                    ->addParams([':varFechaInicio' => $varFechaInicio])
+                                    ->addParams([':varFechaFin' => $varFechaFin])
+                                    ->addParams([':varServicio' => $varServicio])
                                     ->groupby('tbl_usuarios.usua_id');                    
                         $command2 = $querys2->createCommand();
                         $query2 = $command2->queryAll();
@@ -523,11 +573,14 @@ use app\models\Controlvolumenxvalorador;
                                                 'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                         ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                 'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                        ->where(['between','tbl_ejecucionformularios.created', $varFechaInicio.' 00:00:00', $varFechaFin.' 23:59:59'])
-                                        ->andwhere('tbl_arbols.arbol_id = '.$varServicio.'')
+                                        ->where(['between','tbl_ejecucionformularios.created', ':varFechaInicio 00:00:00', ':varFechaFin 23:59:59'])
+                                        ->andwhere('tbl_arbols.arbol_id = :varServicio')
                                         ->andwhere(['in','tbl_roles.role_id',[272, 291]])
                                         ->andwhere(['in','tbl_dimensions.id',[1, 11, 2]])
-                                        ->groupby('tbl_usuarios.usua_id');                    
+                                        ->addParams([':varFechaInicio' => $varFechaInicio])
+                                        ->addParams([':varFechaFin' => $varFechaFin])
+                                        ->addParams([':varServicio' => $varServicio])
+                                        ->groupby('tbl_usuarios.usua_id');
                             $command2 = $querys2->createCommand();
                             $query2 = $command2->queryAll();
 
@@ -566,10 +619,13 @@ use app\models\Controlvolumenxvalorador;
                                                 'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                         ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                 'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                        ->where(['between','tbl_ejecucionformularios.created', $varFechaInicio.' 00:00:00', $varFechaFin.' 23:59:59'])
-                                        ->andwhere('tbl_arbols.arbol_id = '.$varServicio.'')
+                                        ->where(['between','tbl_ejecucionformularios.created', ':varFechaInicio 00:00:00', ':varFechaFin 23:59:59'])
+                                        ->andwhere('tbl_arbols.arbol_id = :varServicio')
                                         ->andwhere(['in','tbl_roles.role_id',[272, 291]])
                                         ->andwhere(['in','tbl_dimensions.id',[1, 11]])
+                                        ->addParams([':varFechaInicio' => $varFechaInicio])
+                                        ->addParams([':varFechaFin' => $varFechaFin])
+                                        ->addParams([':varServicio' => $varServicio])
                                         ->groupby('tbl_usuarios.usua_id');                    
                             $command2 = $querys2->createCommand();
                             $query2 = $command2->queryAll();
@@ -611,13 +667,19 @@ use app\models\Controlvolumenxvalorador;
                 $varIdcorte = $value['idtc'];
                 $varMesYear = $value['mesyear'];
 
-                $txtValoradores = Yii::$app->db->createCommand("select * from tbl_control_volumenxvalorador where  idservicio = '$varIdservicios' and idtc = '$varIdcorte' and anuladovxv = 0")->queryAll();
+                $txtValoradores = Yii::$app->db->createCommand('select * from tbl_control_volumenxvalorador where  idservicio = :varIdservicios and idtc = :varIdcorte and anuladovxv = 0')
+                ->bindValue(':varIdservicios', $varIdservicios)
+                ->bindValue(':varIdcorte', $varIdcorte)
+                ->queryAll();
 
                 foreach ($txtValoradores as $key => $value) {
                     $varIdentificacion = $value['identificacion'];
                     $varNombres = $value['nombres'];
 
-                    $txtSalarioConCarga = Yii::$app->get('dbTeo')->createCommand("select round((sum(importe) * 1.3833)) as SalarioConCargas from teo.teo_nomina_efectiva where documento = '$varIdentificacion' and fecha_Periodo between '$varMesYear' AND last_day('$varMesYear') and (codConcepNomina = 100 || codConcepNomina  = 1000)")->queryScalar();
+                    $txtSalarioConCarga = Yii::$app->get('dbTeo')->createCommand("select round((sum(importe) * 1.3833)) as SalarioConCargas from teo.teo_nomina_efectiva where documento = :varIdentificacion and fecha_Periodo between :varMesYear AND last_day(:varMesYear) and (codConcepNomina = 100 || codConcepNomina  = 1000)")
+                    ->bindValue(':varIdentificacion', $varIdentificacion)
+                    ->bindValue(':varMesYear', $varMesYear)
+                    ->queryScalar();
 
                     Yii::$app->db->createCommand()->insert('tbl_control_volumenxcostos',[
                                         'idservicio' => $varIdservicios,
@@ -733,7 +795,9 @@ use app\models\Controlvolumenxvalorador;
                         $varDateLast1 = date('Y-m-d',strtotime($varMesYear."+ 1 month"));
                         $varDateLast = $varDateLast1.' 05:00:00';
 
-                        $txtListService = Yii::$app->db->createCommand("select * from tbl_dashboardservicios where arbol_id = '$txtArbolId' and anulado = 0")->queryAll();
+                        $txtListService = Yii::$app->db->createCommand('select * from tbl_dashboardservicios where arbol_id = :txtArbolId and anulado = 0')
+                        ->bindValue(':txtArbolId', $txtArbolId)
+                        ->queryAll();
 
                         $txtSumCount = 0;
                         foreach ($txtListService as $key => $value) {
@@ -745,8 +809,11 @@ use app\models\Controlvolumenxvalorador;
                                             ->from('tbl_dashboardspeechcalls')
                                             ->where(['like','tbl_dashboardspeechcalls.servicio',$vartxtService])
                                             ->andwhere('tbl_dashboardspeechcalls.idcategoria ='.$txtCategoria.'')
-                                            ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                            ->andwhere('tbl_dashboardspeechcalls.anulado = '.$txtanulado.'');
+                                            ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                            ->andwhere('tbl_dashboardspeechcalls.anulado = :txtanulado')
+                                            ->addParams([':varDateBegin' => $varDateBegin])
+                                            ->addParams([':varDateLast' => $varDateLast])
+                                            ->addParams([':txtanulado' => $txtanulado]);
                                 $command11 = $querys11->createCommand();
                                 $query11 = $command11->queryAll();  
 
@@ -757,10 +824,15 @@ use app\models\Controlvolumenxvalorador;
                                 $querys11 = new Query;
                                 $querys11   ->select(['tbl_dashboardspeechcalls.idcategoria'])
                                             ->from('tbl_dashboardspeechcalls')
-                                            ->where(['like','tbl_dashboardspeechcalls.servicio',$vartxtService])
-                                            ->andwhere('tbl_dashboardspeechcalls.idcategoria ='.$txtCategoria1.'')
-                                            ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                            ->andwhere('tbl_dashboardspeechcalls.anulado = '.$txtanulado.'');
+                                            ->where(['like','tbl_dashboardspeechcalls.servicio',':vartxtService'])
+                                            ->andwhere('tbl_dashboardspeechcalls.idcategoria = :txtCategoria1')
+                                            ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                            ->andwhere('tbl_dashboardspeechcalls.anulado = :txtanulado')
+                                            ->addParams([':vartxtService' => $vartxtService])
+                                            ->addParams([':txtCategoria1' => $txtCategoria1])
+                                            ->addParams([':varDateBegin' => $varDateBegin])
+                                            ->addParams([':varDateLast' => $varDateLast])
+                                            ->addParams([':txtanulado' => $txtanulado]);
                                 $command11 = $querys11->createCommand();
                                 $query11 = $command11->queryAll();  
 
@@ -770,7 +842,10 @@ use app\models\Controlvolumenxvalorador;
                             }                      
                         }
 
-                        $verContarList = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxclienteS where idservicio = '$txtArbolId' and idtc = '$varIdCorte' and anuladovxcS = 0")->queryScalar();
+                        $verContarList = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxclienteS where idservicio = :txtArbolId and idtc = :varIdCorte and anuladovxcS = 0')
+                        ->bindValue(':txtArbolId', $txtArbolId)
+                        ->bindValue(':varIdCorte', $varIdCorte)
+                        ->queryScalar();
 
                         if ($verContarList == 0) {
                             Yii::$app->db->createCommand()->insert('tbl_control_volumenxclienteS',[
@@ -805,7 +880,9 @@ use app\models\Controlvolumenxvalorador;
                             $varDateLast1 = date('Y-m-d',strtotime($varMesYear."+ 1 month"));
                             $varDateLast = $varDateLast1.' 05:00:00';
 
-                            $txtListService = Yii::$app->db->createCommand("select * from tbl_dashboardservicios where arbol_id = '$txtArbolId' and anulado = 0")->queryAll();
+                            $txtListService = Yii::$app->db->createCommand('select * from tbl_dashboardservicios where arbol_id = :txtArbolId and anulado = 0')
+                            ->bindValue(':txtArbolId', $txtArbolId)
+                            ->queryAll();
 
                             $txtSumCount = 0;
                             foreach ($txtListService as $key => $value) {
@@ -815,10 +892,15 @@ use app\models\Controlvolumenxvalorador;
                                     $querys22 = new Query;
                                     $querys22   ->select(['tbl_dashboardspeechcalls.idcategoria'])
                                                 ->from('tbl_dashboardspeechcalls')
-                                                ->where(['like','tbl_dashboardspeechcalls.servicio',$vartxtService])
-                                                ->andwhere('tbl_dashboardspeechcalls.idcategoria ='.$txtCategoria.'')
-                                                ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                                ->andwhere('tbl_dashboardspeechcalls.anulado = '.$txtanulado.'');
+                                                ->where(['like','tbl_dashboardspeechcalls.servicio', ':vartxtService'])
+                                                ->andwhere('tbl_dashboardspeechcalls.idcategoria = :txtCategoria')
+                                                ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                                ->andwhere('tbl_dashboardspeechcalls.anulado = :txtanulado')
+                                                ->addParams([':vartxtService' => $vartxtService])
+                                                ->addParams([':txtCategoria' => $txtCategoria])
+                                                ->addParams([':varDateBegin' => $varDateBegin])
+                                                ->addParams([':varDateLast' => $varDateLast])
+                                                ->addParams([':txtanulado' => $txtanulado]);
                                     $command22 = $querys22->createCommand();
                                     $query22 = $command22->queryAll();  
 
@@ -829,10 +911,15 @@ use app\models\Controlvolumenxvalorador;
                                     $querys22 = new Query;
                                     $querys22   ->select(['tbl_dashboardspeechcalls.idcategoria'])
                                                 ->from('tbl_dashboardspeechcalls')
-                                                ->where(['like','tbl_dashboardspeechcalls.servicio',$vartxtService])
-                                                ->andwhere('tbl_dashboardspeechcalls.idcategoria ='.$txtCategoria1.'')
-                                                ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                                ->andwhere('tbl_dashboardspeechcalls.anulado = '.$txtanulado.'');
+                                                ->where(['like','tbl_dashboardspeechcalls.servicio',':vartxtService'])
+                                                ->andwhere('tbl_dashboardspeechcalls.idcategoria = :txtCategoria1')
+                                                ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                                ->andwhere('tbl_dashboardspeechcalls.anulado = :txtanulado')
+                                                ->addParams([':vartxtService' => $vartxtService])
+                                                ->addParams([':txtCategoria1' => $txtCategoria1])
+                                                ->addParams([':varDateBegin' => $varDateBegin])
+                                                ->addParams([':varDateLast' => $varDateLast])
+                                                ->addParams([':txtanulado' => $txtanulado]);
                                     $command22 = $querys22->createCommand();
                                     $query22 = $command22->queryAll();  
 
@@ -842,7 +929,10 @@ use app\models\Controlvolumenxvalorador;
                                 }                               
                             }
 
-                            $verContarList2 = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxclienteS where idservicio = '$txtArbolId' and idtc = '$varIdCorte' and anuladovxcS = 0")->queryScalar();
+                            $verContarList2 = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxclienteS where idservicio = :txtArbolId and idtc = :varIdCorte and anuladovxcS = 0')
+                            ->bindValue(':txtArbolId', $txtArbolId)
+                            ->bindValue(':varIdCorte', $varIdCorte)
+                            ->queryScalar();
 
                             if ($verContarList2 == 0) {
                                 Yii::$app->db->createCommand()->insert('tbl_control_volumenxclienteS',[
@@ -876,7 +966,9 @@ use app\models\Controlvolumenxvalorador;
                             $varDateLast1 = date('Y-m-d',strtotime($varMesYear."+ 1 month"));
                             $varDateLast = $varDateLast1.' 05:00:00';
 
-                            $txtListService = Yii::$app->db->createCommand("select * from tbl_dashboardservicios where arbol_id = '$txtArbolId' and anulado = 0")->queryAll();
+                            $txtListService = Yii::$app->db->createCommand("select * from tbl_dashboardservicios where arbol_id = :txtArbolId and anulado = 0")
+                            ->bindValue(':txtArbolId', $txtArbolId)
+                            ->queryAll();
 
                             $txtSumCount = 0;
                             foreach ($txtListService as $key => $value) {
@@ -886,10 +978,15 @@ use app\models\Controlvolumenxvalorador;
                                     $querys33 = new Query;
                                     $querys33   ->select(['tbl_dashboardspeechcalls.idcategoria'])
                                                 ->from('tbl_dashboardspeechcalls')
-                                                ->where(['like','tbl_dashboardspeechcalls.servicio',$vartxtService])
-                                                ->andwhere('tbl_dashboardspeechcalls.idcategoria ='.$txtCategoria.'')
-                                                ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                                ->andwhere('tbl_dashboardspeechcalls.anulado = '.$txtanulado.'');
+                                                ->where(['like','tbl_dashboardspeechcalls.servicio',':vartxtService'])
+                                                ->andwhere('tbl_dashboardspeechcalls.idcategoria = :txtCategoria')
+                                                ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                                ->andwhere('tbl_dashboardspeechcalls.anulado = :txtanulado')
+                                                ->addParams([':vartxtService' => $vartxtService])
+                                                ->addParams([':txtCategoria' => $txtCategoria])
+                                                ->addParams([':varDateBegin' => $varDateBegin])
+                                                ->addParams([':varDateLast' => $varDateLast])
+                                                ->addParams([':txtanulado' => $txtanulado]);
                                     $command33 = $querys33->createCommand();
                                     $query33 = $command33->queryAll();  
 
@@ -900,10 +997,15 @@ use app\models\Controlvolumenxvalorador;
                                     $querys33 = new Query;
                                     $querys33   ->select(['tbl_dashboardspeechcalls.idcategoria'])
                                                 ->from('tbl_dashboardspeechcalls')
-                                                ->where(['like','tbl_dashboardspeechcalls.servicio',$vartxtService])
-                                                ->andwhere('tbl_dashboardspeechcalls.idcategoria ='.$txtCategoria2.'')
-                                                ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', $varDateBegin.' 00:00:00', $varDateLast. ' 23:59:59'])
-                                                ->andwhere('tbl_dashboardspeechcalls.anulado = '.$txtanulado.'');
+                                                ->where(['like','tbl_dashboardspeechcalls.servicio',':vartxtService'])
+                                                ->andwhere('tbl_dashboardspeechcalls.idcategoria = :txtCategoria2 ')
+                                                ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada', ':varDateBegin 00:00:00', ':varDateLast 23:59:59'])
+                                                ->andwhere('tbl_dashboardspeechcalls.anulado = :txtanulado')
+                                                ->addParams([':vartxtService' => $vartxtService])
+                                                ->addParams([':txtCategoria2' => $txtCategoria2])
+                                                ->addParams([':varDateBegin' => $varDateBegin])
+                                                ->addParams([':varDateLast' => $varDateLast])
+                                                ->addParams([':txtanulado' => $txtanulado]);
                                     $command33 = $querys33->createCommand();
                                     $query33 = $command33->queryAll();  
 
@@ -913,7 +1015,10 @@ use app\models\Controlvolumenxvalorador;
                                 }
                             }
 
-                            $verContarList3 = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxclienteS where idservicio = '$txtArbolId' and idtc = '$varIdCorte' and anuladovxcS = 0")->queryScalar();
+                            $verContarList3 = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxclienteS where idservicio = :txtArbolId and idtc = :varIdCorte and anuladovxcS = 0')
+                            ->bindValue(':txtArbolId', $txtArbolId)
+                            ->bindValue(':varIdCorte', $varIdCorte)
+                            ->queryScalar();
 
                             if ($verContarList3 == 0) {
                                 Yii::$app->db->createCommand()->insert('tbl_control_volumenxclienteS',[
@@ -952,9 +1057,13 @@ use app\models\Controlvolumenxvalorador;
         public function actionVerclienteqa($idservicio){       
             $txtIdSevicio = $idservicio;
 
-            $varServicio = Yii::$app->db->createCommand("select name from tbl_arbols where id = '$txtIdSevicio' and activo = 0")->queryScalar();
+            $varServicio = Yii::$app->db->createCommand('select name from tbl_arbols where id = :txtIdSevicio and activo = 0')
+            ->bindValue(':txtIdSevicio', $txtIdSevicio)
+            ->queryScalar();
 
-            $varFormularios = Yii::$app->db->createCommand("select id, name from tbl_arbols where arbol_id = '$txtIdSevicio' and activo = 0")->queryAll();
+            $varFormularios = Yii::$app->db->createCommand('select id, name from tbl_arbols where arbol_id = :txtIdSevicio and activo = 0')
+            ->bindValue(':txtIdSevicio', $txtIdSevicio)
+            ->queryAll();
   
 
             return $this->render('verclienteqa',[
@@ -967,9 +1076,13 @@ use app\models\Controlvolumenxvalorador;
         public function actionVerclientesp($idservicio){      
             $txtIdSevicio = $idservicio;
 
-            $varServicio = Yii::$app->db->createCommand("select name from tbl_arbols where id = '$txtIdSevicio' and activo = 0")->queryScalar();
+            $varServicio = Yii::$app->db->createCommand('select name from tbl_arbols where id = :txtIdSevicio and activo = 0')
+            ->bindValue(':txtIdSevicio', $txtIdSevicio)
+            ->queryScalar();
 
-        $varFormularios = Yii::$app->db->createCommand("select nombreservicio, clientecategoria from tbl_dashboardservicios where arbol_id ='$txtIdSevicio' and anulado = 0")->queryAll();
+        $varFormularios = Yii::$app->db->createCommand('select nombreservicio, clientecategoria from tbl_dashboardservicios where arbol_id = :txtIdSevicio and anulado = 0')
+        ->bindValue(':txtIdSevicio', $txtIdSevicio)
+        ->queryAll();
   
 
             return $this->render('verclientesp',[
@@ -982,7 +1095,9 @@ use app\models\Controlvolumenxvalorador;
         public function actionDatosformularios($idPcrc){
             $txtIdSevicio = $idPcrc; 
 
-            $varFormularios = Yii::$app->db->createCommand("select id, name from tbl_arbols where arbol_id = '$txtIdSevicio' and activo = 0")->queryAll();
+            $varFormularios = Yii::$app->db->createCommand('select id, name from tbl_arbols where arbol_id = :txtIdSevicio and activo = 0')
+            ->bindValue(':txtIdSevicio', $txtIdSevicio)
+            ->queryAll();
 
             return $this->renderAjax('datosformularios',[
                 'txtIdSevicio' => $txtIdSevicio,
@@ -993,7 +1108,9 @@ use app\models\Controlvolumenxvalorador;
         public function actionDatosformularios1($idPcrc){
             $txtIdSevicio = $idPcrc;
 
-            $varFormularios = Yii::$app->db->createCommand("select nombreservicio, clientecategoria from tbl_dashboardservicios where arbol_id ='$txtIdSevicio' and anulado = 0")->queryAll();
+            $varFormularios = Yii::$app->db->createCommand('select nombreservicio, clientecategoria from tbl_dashboardservicios where arbol_id = :txtIdSevicio and anulado = 0')
+            ->bindValue(':txtIdSevicio', $txtIdSevicio)
+            ->queryAll();
   
 
             return $this->renderAjax('datosformularios1',[
@@ -1100,10 +1217,12 @@ use app\models\Controlvolumenxvalorador;
                                                 'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                         ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                 'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                        ->where(['between','tbl_ejecucionformularios.created', $varFecha.' 00:00:00', $varFecha. ' 23:59:59'])
-                                        ->andwhere('tbl_arbols.arbol_id = '.$varIdServicios.'')
+                                        ->where(['between','tbl_ejecucionformularios.created', ':varFecha 00:00:00', ':varFecha 23:59:59'])
+                                        ->andwhere('tbl_arbols.arbol_id = :varIdServicios')
                                         ->andwhere(['in','tbl_dimensions.id',[1, 11]])
-                                        ->andwhere(['in','tbl_roles.role_id',[272]]);                                    
+                                        ->andwhere(['in','tbl_roles.role_id',[272]])
+                                        ->addParams([':varFecha' => $varFecha])
+                                        ->addParams([':varIdServicios' => $varIdServicios]);                                    
                             $command = $querys->createCommand();
                             $queryss = $command->queryAll(); 
 
@@ -1113,7 +1232,11 @@ use app\models\Controlvolumenxvalorador;
 
                             if ($varFecha < $varFechaActual) {
                                 
-                                $varVerificar = Yii::$app->db->createCommand("select * from tbl_control_volumenxclientedq where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechavaloracion = '$varFecha' and anuladovxc = 0")->queryScalar();
+                                $varVerificar = Yii::$app->db->createCommand('select * from tbl_control_volumenxclientedq where idservicio = :varIdServicios and idtc = :varIdCorte and fechavaloracion = :varFecha and anuladovxc = 0')
+                                ->bindValue(':varIdServicios', $varIdServicios)
+                                ->bindValue(':varIdCorte', $varIdCorte)
+                                ->bindValue(':varFecha', $varFecha)
+                                ->queryScalar();
 
                                 if ($varVerificar == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_control_volumenxclientedq',[
@@ -1177,10 +1300,12 @@ use app\models\Controlvolumenxvalorador;
                                                         'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                             ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                         'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                            ->where(['between','tbl_ejecucionformularios.created', $varFecha.' 00:00:00', $varFecha. ' 23:59:59'])
-                                            ->andwhere('tbl_arbols.arbol_id = '.$varIdServicios.'')
+                                            ->where(['between','tbl_ejecucionformularios.created', ':varFecha 00:00:00', ':varFecha 23:59:59'])
+                                            ->andwhere('tbl_arbols.arbol_id = :varIdServicios')
                                             ->andwhere(['in','tbl_dimensions.id',[1, 11, 2]])
-                                            ->andwhere(['in','tbl_roles.role_id',[272]]);
+                                            ->andwhere(['in','tbl_roles.role_id',[272]])
+                                            ->addParams([':varFecha' => $varFecha])
+                                            ->addParams([':varIdServicios' => $varIdServicios]);
                                 $command = $querys->createCommand();
                                 $queryss = $command->queryAll(); 
 
@@ -1189,7 +1314,11 @@ use app\models\Controlvolumenxvalorador;
                                 $varFechaActual = $varYearActual.'-'.$varMesActual.'-'.$varDiaActual;
 
                                 if ($varFecha < $varFechaActual) {
-                                    $varVerificar = Yii::$app->db->createCommand("select * from tbl_control_volumenxclientedq where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechavaloracion = '$varFecha' and anuladovxc = 0")->queryScalar();
+                                    $varVerificar = Yii::$app->db->createCommand('select * from tbl_control_volumenxclientedq where idservicio = :varIdServicios and idtc = :varIdCorte and fechavaloracion = :varFecha and anuladovxc = 0')
+                                    ->bindValue(':varIdServicios', $varIdServicios)
+                                    ->bindValue(':varIdCorte', $varIdCorte)
+                                    ->bindValue(':varFecha', $varFecha)
+                                    ->queryScalar();
 
                                     if ($varVerificar == 0) {
                                         Yii::$app->db->createCommand()->insert('tbl_control_volumenxclientedq',[
@@ -1254,10 +1383,12 @@ use app\models\Controlvolumenxvalorador;
                                                             'tbl_ejecucionformularios.usua_id = rel_usuarios_roles.rel_usua_id')
                                             ->join('LEFT OUTER JOIN', 'tbl_roles',
                                                             'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-                                            ->where(['between','tbl_ejecucionformularios.created', $varFecha.' 00:00:00', $varFecha. ' 23:59:59'])
-                                            ->andwhere('tbl_arbols.arbol_id = '.$varIdServicios.'')
+                                            ->where(['between','tbl_ejecucionformularios.created', ':varFecha 00:00:00', ':varFecha 23:59:59'])
+                                            ->andwhere('tbl_arbols.arbol_id = :varIdServicios')
                                             ->andwhere(['in','tbl_dimensions.id',[1, 11]])
-                                            ->andwhere(['in','tbl_roles.role_id',[272]]);
+                                            ->andwhere(['in','tbl_roles.role_id',[272]])
+                                            ->addParams([':varFecha' => $varFecha])
+                                            ->addParams([':varIdServicios' => $varIdServicios]);
                                 $command = $querys->createCommand();
                                 $queryss = $command->queryAll(); 
 
@@ -1266,7 +1397,11 @@ use app\models\Controlvolumenxvalorador;
                                 $varFechaActual = $varYearActual.'-'.$varMesActual.'-'.$varDiaActual;
 
                                 if ($varFecha < $varFechaActual) {
-                                    $varVerificar = Yii::$app->db->createCommand("select * from tbl_control_volumenxclientedq where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechavaloracion = '$varFecha' and anuladovxc = 0")->queryScalar();
+                                    $varVerificar = Yii::$app->db->createCommand("select * from tbl_control_volumenxclientedq where idservicio = :varIdServicios and idtc = :varIdCorte and fechavaloracion = :varFecha and anuladovxc = 0")
+                                    ->bindValue(':varIdServicios', $varIdServicios)
+                                    ->bindValue(':varIdCorte', $varIdCorte)
+                                    ->bindValue(':varFecha', $varFecha)
+                                    ->queryScalar();
 
                                     if ($varVerificar == 0) {
                                         Yii::$app->db->createCommand()->insert('tbl_control_volumenxclientedq',[
@@ -1376,10 +1511,12 @@ use app\models\Controlvolumenxvalorador;
 
                             $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
                             $querys = new Query;
-                            $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varFecha 00:00:00' and '$varFecha 23:59:59' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
+                            $querys     ->select(['sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varFecha 00:00:00 and :varFecha 23:59:59 and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in (NORMAL))) as Sumatotal'])->distinct()
                                         ->from('tbl_arbols')
-                                        ->where('tbl_arbols.arbol_id = '.$varIdServicios.'')
-                                        ->andwhere("tbl_arbols.activo = 0");                                    
+                                        ->where('tbl_arbols.arbol_id = :varIdServicios')
+                                        ->andwhere("tbl_arbols.activo = 0")
+                                        ->addParams([':varFecha' => $varFecha])
+                                        ->addParams([':varIdServicios' => $varIdServicios]);                                    
                             $command = $querys->createCommand();
                             $queryss = $command->queryScalar(); 
 
@@ -1387,7 +1524,11 @@ use app\models\Controlvolumenxvalorador;
 
                             if ($varFecha < $varFechaActual) {
 
-                                $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestasdq where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechaencuesta = '$varFecha' and anuladovxedq = 0")->queryScalar();
+                                $varService = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxencuestasdq where idservicio = :varIdServicios and idtc = :varIdCorte and fechaencuesta = :varFecha and anuladovxedq = 0')
+                                ->bindValue(':varIdServicios', $varIdServicios)
+                                ->bindValue(':varIdCorte', $varIdCorte)
+                                ->bindValue(':varFecha', $varFecha)
+                                ->queryScalar();
 
                                 if ($varService == 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_control_volumenxencuestasdq',[
@@ -1440,10 +1581,12 @@ use app\models\Controlvolumenxvalorador;
                                 $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
 
                                 $querys = new Query;
-                                $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varFecha 00:00:00' and '$varFecha 23:59:59' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
+                                $querys     ->select(['sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varFecha 00:00:00 and :varFecha 23:59:59 and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in (NORMAL))) as Sumatotal'])->distinct()
                                             ->from('tbl_arbols')
-                                            ->where('tbl_arbols.arbol_id = '.$varIdServicios.'')
-                                            ->andwhere("tbl_arbols.activo = 0");                                    
+                                            ->where('tbl_arbols.arbol_id = :varIdServicios')
+                                            ->andwhere("tbl_arbols.activo = 0")
+                                            ->addParams([':varFecha' => $varFecha])
+                                            ->addParams([':varIdServicios' => $varIdServicios]);
                                 $command = $querys->createCommand();
                                 $queryss = $command->queryScalar();
 
@@ -1451,7 +1594,11 @@ use app\models\Controlvolumenxvalorador;
 
                                 if ($varFecha < $varFechaActual) {
 
-                                    $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestasdq where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechaencuesta = '$varFecha' and anuladovxedq = 0")->queryScalar();
+                                    $varService = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxencuestasdq where idservicio = :varIdServicios and idtc = :varIdCorte and fechaencuesta = :varFecha and anuladovxedq = 0')
+                                    ->bindValue(':varIdServicios', $varIdServicios)
+                                    ->bindValue(':varIdCorte', $varIdCorte)
+                                    ->bindValue(':varFecha', $varFecha)
+                                    ->queryScalar();
 
                                     if ($varService == 0) {
                                         Yii::$app->db->createCommand()->insert('tbl_control_volumenxencuestasdq',[
@@ -1501,10 +1648,12 @@ use app\models\Controlvolumenxvalorador;
 
                                 $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
                                 $querys = new Query;
-                                $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varFecha 00:00:00' and '$varFecha 23:59:59' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
+                                $querys     ->select(['sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varFecha 00:00:00 and :varFecha 23:59:59 and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in (NORMAL))) as Sumatotal'])->distinct()
                                             ->from('tbl_arbols')
-                                            ->where('tbl_arbols.arbol_id = '.$varIdServicios.'')
-                                            ->andwhere("tbl_arbols.activo = 0");                                    
+                                            ->where('tbl_arbols.arbol_id = :varIdServicios')
+                                            ->andwhere("tbl_arbols.activo = 0")
+                                            ->addParams([':varFecha' => $varFecha])
+                                            ->addParams([':varIdServicios' => $varIdServicios]);                                    
                                 $command = $querys->createCommand();
                                 $queryss = $command->queryScalar();
 
@@ -1512,7 +1661,11 @@ use app\models\Controlvolumenxvalorador;
 
                                 if ($varFecha < $varFechaActual) {
 
-                                    $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestasdq where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechaencuesta = '$varFecha' and anuladovxedq = 0")->queryScalar();
+                                    $varService = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxencuestasdq where idservicio = :varIdServicios and idtc = :varIdCorte and fechaencuesta = :varFecha and anuladovxedq = 0')
+                                    ->bindValue(':varIdServicios', $varIdServicios)
+                                    ->bindValue(':varIdCorte', $varIdCorte)
+                                    ->bindValue(':varFecha', $varFecha)
+                                    ->queryScalar();
 
                                     if ($varService == 0) {
                                         Yii::$app->db->createCommand()->insert('tbl_control_volumenxencuestasdq',[
@@ -1624,7 +1777,9 @@ use app\models\Controlvolumenxvalorador;
                                 $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
                                 $varFinFecha = date('Y-m-d',strtotime($varFecha."+ 1 days"));
 
-                                $varListData = Yii::$app->db->createCommand("select distinct a.id, sp.id_dp_clientes, sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.comentarios from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc inner join tbl_speech_servicios ss on sp.id_dp_clientes = ss.id_dp_clientes inner join tbl_arbols a on ss.arbol_id = a.id where a.id = '$varIdServicios' and a.activo = 0")->queryAll();
+                                $varListData = Yii::$app->db->createCommand("select distinct a.id, sp.id_dp_clientes, sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.comentarios from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc inner join tbl_speech_servicios ss on sp.id_dp_clientes = ss.id_dp_clientes inner join tbl_arbols a on ss.arbol_id = a.id where a.id = :varIdServicios and a.activo = 0")
+                                ->bindValue(':varIdServicios', $varIdServicios)
+                                ->queryAll();
 
                                 if ($varListData != null) {
                                     $varArrayProgram = array();
@@ -1639,12 +1794,21 @@ use app\models\Controlvolumenxvalorador;
                                     $txtSerivicios = implode("', '", $varArrayProgram);
                                     $txtExtensiones = implode("', '", $varArrayparams);
 
-                                    $txtTotalLlamadas = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtSerivicios') and fechallamada between '$varFecha 05:00:00' and '$varFinFecha 05:00:00' and idcategoria = 1105 and extension in ('$txtExtensiones')")->queryScalar();
+                                    $txtTotalLlamadas = Yii::$app->db->createCommand('select count(*) from tbl_dashboardspeechcalls where anulado = 0 and servicio in (:txtSerivicios) and fechallamada between :varFecha 05:00:00 and :varFinFecha 05:00:00 and idcategoria = 1105 and extension in (:txtExtensiones)')
+                                    ->bindValue(':txtSerivicios', $txtSerivicios)
+                                    ->bindValue(':varFecha', $varFecha)
+                                    ->bindValue(':varFinFecha', $varFinFecha)
+                                    ->bindValue(':txtExtensiones', $txtExtensiones)
+                                    ->queryScalar();
 
                                     $varFechaActual = $varYearActual.'-'.$varMesActual.'-'.$varDiaActual;
 
                                     if ($varFecha < $varFechaActual) {
-                                        $verContarList = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxclienteds where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechavaloracion = '$varFecha' and anuladovxcs = 0")->queryScalar();
+                                        $verContarList = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxclienteds where idservicio = :varIdServicios and idtc = :varIdCorte and fechavaloracion = :varFecha and anuladovxcs = 0")
+                                        ->bindValue(':varIdServicios', $varIdServicios)
+                                        ->bindValue(':varIdCorte', $varIdCorte)
+                                        ->bindValue(':varFecha', $varFecha)
+                                        ->queryScalar();
 
                                         if ($verContarList == 0) {
                                             Yii::$app->db->createCommand()->insert('tbl_control_volumenxclienteds',[
@@ -1701,7 +1865,9 @@ use app\models\Controlvolumenxvalorador;
                                 $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
                                 $varFinFecha = date('Y-m-d',strtotime($varFecha."+ 1 days"));
 
-                                $varListData = Yii::$app->db->createCommand("select distinct a.id, sp.id_dp_clientes, sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.comentarios from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc inner join tbl_speech_servicios ss on sp.id_dp_clientes = ss.id_dp_clientes inner join tbl_arbols a on ss.arbol_id = a.id where a.id = '$varIdServicios' and a.activo = 0")->queryAll();
+                                $varListData = Yii::$app->db->createCommand("select distinct a.id, sp.id_dp_clientes, sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.comentarios from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc inner join tbl_speech_servicios ss on sp.id_dp_clientes = ss.id_dp_clientes inner join tbl_arbols a on ss.arbol_id = a.id where a.id = :varIdServicios and a.activo = 0")
+                                ->bindValue(':varIdServicios', $varIdServicios)
+                                ->queryAll();
 
                                 if ($varListData != null) {
                                     $varArrayProgram = array();
@@ -1724,12 +1890,21 @@ use app\models\Controlvolumenxvalorador;
                                     $txtSerivicios = implode("', '", $varArrayProgram);
                                     $txtExtensiones = implode("', '", $varArrayparams);
 
-                                    $txtTotalLlamadas = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtSerivicios') and fechallamada between '$varFecha 05:00:00' and '$varFinFecha 05:00:00' and idcategoria = 1105 and extension in ('$txtExtensiones')")->queryScalar();
+                                    $txtTotalLlamadas = Yii::$app->db->createCommand('select count(*) from tbl_dashboardspeechcalls where anulado = 0 and servicio in (:txtSerivicios) and fechallamada between :varFecha 05:00:00 and :varFinFecha 05:00:00 and idcategoria = 1105 and extension in (:txtExtensiones)')
+                                    ->bindValue(':txtSerivicios', $txtSerivicios)
+                                    ->bindValue(':varFecha', $varFecha)
+                                    ->bindValue(':varFinFecha', $varFinFecha)
+                                    ->bindValue(':txtExtensiones', $txtExtensiones)
+                                    ->queryScalar();
 
                                     $varFechaActual = $varYearActual.'-'.$varMesActual.'-'.$varDiaActual;
 
                                     if ($varFecha < $varFechaActual) {
-                                        $verContarList = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxclienteds where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechavaloracion = '$varFecha' and anuladovxcs = 0")->queryScalar();
+                                        $verContarList = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxclienteds where idservicio = :varIdServicios and idtc = :varIdCorte and fechavaloracion = :varFecha and anuladovxcs = 0')
+                                        ->bindValue(':varIdServicios', $varIdServicios)
+                                        ->bindValue(':varIdCorte', $varIdCorte)
+                                        ->bindValue(':varFecha', $varFecha)
+                                        ->queryScalar();
 
                                         if ($verContarList == 0) {
                                             Yii::$app->db->createCommand()->insert('tbl_control_volumenxclienteds',[
@@ -1783,7 +1958,9 @@ use app\models\Controlvolumenxvalorador;
                                 $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
                                 $varFinFecha = date('Y-m-d',strtotime($varFecha."+ 1 days"));
 
-                                $varListData = Yii::$app->db->createCommand("select distinct a.id, sp.id_dp_clientes, sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.comentarios from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc inner join tbl_speech_servicios ss on sp.id_dp_clientes = ss.id_dp_clientes inner join tbl_arbols a on ss.arbol_id = a.id where a.id = '$varIdServicios' and a.activo = 0")->queryAll();
+                                $varListData = Yii::$app->db->createCommand('select distinct a.id, sp.id_dp_clientes, sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.comentarios from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc inner join tbl_speech_servicios ss on sp.id_dp_clientes = ss.id_dp_clientes inner join tbl_arbols a on ss.arbol_id = a.id where a.id = :varIdServicios and a.activo = 0')
+                                ->bindValue(':varIdServicios', $varIdServicios)
+                                ->queryAll();
 
                                 if ($varListData != null) {
                                     $varArrayProgram = array();
@@ -1807,12 +1984,21 @@ use app\models\Controlvolumenxvalorador;
 				
                                     $txtExtensiones = implode("', '", $varArrayparams);
 
-                                    $txtTotalLlamadas = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtSerivicios') and fechallamada between '$varFecha 05:00:00' and '$varFinFecha 05:00:00' and idcategoria = 1114 and extension in ('$txtExtensiones')")->queryScalar();
+                                    $txtTotalLlamadas = Yii::$app->db->createCommand('select count(*) from tbl_dashboardspeechcalls where anulado = 0 and servicio in (:txtSerivicios) and fechallamada between :varFecha 05:00:00 and :varFinFecha 05:00:00 and idcategoria = 1114 and extension in (:txtExtensiones)')
+                                    ->bindValue(':txtSerivicios', $txtSerivicios)
+                                    ->bindValue(':varFecha', $varFecha)
+                                    ->bindValue(':varFinFecha', $varFinFecha)
+                                    ->bindValue(':txtExtensiones', $txtExtensiones)
+                                    ->queryScalar();
 
                                     $varFechaActual = $varYearActual.'-'.$varMesActual.'-'.$varDiaActual;
 
                                     if ($varFecha < $varFechaActual) {
-                                        $verContarList = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxclienteds where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and fechavaloracion = '$varFecha' and anuladovxcs = 0")->queryScalar();
+                                        $verContarList = Yii::$app->db->createCommand('select count(*) from tbl_control_volumenxclienteds where idservicio = :varIdServicios and idtc = :varIdCorte and fechavaloracion = :varFecha and anuladovxcs = 0')
+                                        ->bindValue(':varIdServicios', $varIdServicios)
+                                        ->bindValue(':varIdCorte', $varIdCorte)
+                                        ->bindValue(':varFecha', $varFecha)
+                                        ->queryScalar();
 
                                         if ($verContarList == 0) {
                                             Yii::$app->db->createCommand()->insert('tbl_control_volumenxclienteds',[

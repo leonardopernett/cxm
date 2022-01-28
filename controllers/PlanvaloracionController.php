@@ -79,20 +79,39 @@ class PlanvaloracionController extends \yii\web\Controller {
 					$table = ControlProcesos::findOne($id_params);
 
 					if ($table) {
-						$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$evaluados_id.' and id ='.$id.'')->queryScalar();
-				        $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
-				        $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar(); 
+						$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id = :evaluados_id and id = :id')
+						->bindValue(':evaluados_id', $evaluados_id)
+						->bindValue(':id', $id)
+						->queryScalar();
+				        $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like ':txtcorte'")
+						->bindValue(':txtcorte', $txtcorte)
+						->queryScalar();
+				        $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like ':txtcorte'")
+						->bindValue(':txtcorte', $txtcorte)
+						->queryScalar(); 
 
 						$model->id = $table->id;
 						$nameVal = $table->evaluados_id;
-						$model->evaluados_id = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id ='.$nameVal.'')->queryScalar();
-						$varName = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id ='.$nameVal.'')->queryScalar();
+						$model->evaluados_id = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id = :nameVal')
+						->bindValue(':nameVal', $nameVal)
+						->queryScalar();
+						$varName = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id = :nameVal')
+						->bindValue(':nameVal', $nameVal)
+						->queryScalar();
 						$model->salario = $table->salario;
 						$model->tipo_corte = $table->tipo_corte;
 						$txtNametc = $table->tipo_corte;
 						$model->responsable = $table->responsable;
-						$model->cant_valor = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = $nameVal and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
-						$varTotal = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = $nameVal and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
+						$model->cant_valor = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = ':nameVal' and fechacreacion between ':fechainiC' and ':fechafinC'")
+						->bindValue(':nameVal', $nameVal)
+						->bindValue(':fechainiC', $fechainiC)
+						->bindValue(':fechafinC', $fechafinC)
+						->queryScalar();
+						$varTotal = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = ':nameVal' and fechacreacion between ':fechainiC' and ':fechafinC'")
+						->bindValue(':nameVal', $nameVal)
+						->bindValue(':fechainiC', $fechainiC)
+						->bindValue(':fechafinC', $fechafinC)
+						->queryScalar();
 						$model->Dedic_valora = $table->Dedic_valora;
 						$varCant = $table->Dedic_valora;
 

@@ -104,7 +104,8 @@ class TmptableroexperienciasController extends Controller {
                     //CONSULTO EL PROBLEMA ID
                     $problema_id = \app\models\Arboles::find()
                             ->select("tableroproblema_id")
-                            ->where(["id" => Yii::$app->request->get('arbol_id')])
+                            ->where(["id" => ':arbol_id'])
+                            ->addParams([':arbol_id' => Yii::$app->request->get('arbol_id')])
                             ->all();
                     $model->tmpejecucionformulario_id = $tmp_formulario_id;
                     if ($model->load(Yii::$app->request->post()) && $model->save()) {

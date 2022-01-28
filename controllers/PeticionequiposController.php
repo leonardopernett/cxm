@@ -60,11 +60,17 @@ use yii\db\Query;
 		public function actionUpdate($iddesvincular){
 			$txtIdDesvin = $iddesvincular;
 
-			$txtvalorador = Yii::$app->db->createCommand("select evaluados_id from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
+			$txtvalorador = Yii::$app->db->createCommand("select evaluados_id from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
+			->bindValue(':txtIdDesvin', $txtIdDesvin)
+			->queryScalar(); 
 
-			$txtCoordinador = Yii::$app->db->createCommand("select responsable from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
+			$txtCoordinador = Yii::$app->db->createCommand("select responsable from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
+			->bindValue(':txtIdDesvin', $txtIdDesvin)
+			->queryScalar(); 
 
-			$txtCorreo = Yii::$app->db->createCommand("select correo from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
+			$txtCorreo = Yii::$app->db->createCommand("select correo from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
+			->bindValue(':txtIdDesvin', $txtIdDesvin)
+			->queryScalar(); 
 
 			return $this->render('_formupdate',[
 					'txtIdDesvin' => $txtIdDesvin,
@@ -76,11 +82,17 @@ use yii\db\Query;
 		public function actionUpdate2($iddesvincular){
 			$txtIdDesvin = $iddesvincular;
 
-			$txtvalorador = Yii::$app->db->createCommand("select evaluados_id from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
+			$txtvalorador = Yii::$app->db->createCommand("select evaluados_id from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
+			->bindValue(':txtIdDesvin', $txtIdDesvin)
+			->queryScalar(); 
 
-			$txtCoordinador = Yii::$app->db->createCommand("select responsable from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
+			$txtCoordinador = Yii::$app->db->createCommand("select responsable from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
+			->bindValue(':txtIdDesvin', $txtIdDesvin)
+			->queryScalar(); 
 
-			$txtCorreo = Yii::$app->db->createCommand("select correo from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
+			$txtCorreo = Yii::$app->db->createCommand("select correo from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
+			->bindValue(':txtIdDesvin', $txtIdDesvin)
+			->queryScalar(); 
 
 			return $this->render('_formupdateneg',[
 					'txtIdDesvin' => $txtIdDesvin,
@@ -98,7 +110,10 @@ use yii\db\Query;
 			$varResultados = null;
 			$varResultados1 = 1;
 			
-			$data = Yii::$app->db->createCommand("select * from tbl_control_procesos where evaluados_id = $txtidEvalua and  responsable = $txtidCoordi")->queryAll(); 
+			$data = Yii::$app->db->createCommand("select * from tbl_control_procesos where evaluados_id = ':txtidEvalua' and  responsable = ':txtidCoordi'")
+			->bindValue(':txtidEvalua', $txtidEvalua)
+			->bindValue(':txtidCoordi', $txtidCoordi)
+			->queryAll(); 
 
 
 			foreach ($data as $key => $value) {
@@ -115,7 +130,9 @@ use yii\db\Query;
 					                                'anulado' => 1,
 					                            ],'iddesvincular ='.$txtDesvin.'')->execute(); 
 
-			$data2 = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = $txtidEvalua and  anulado = 0")->queryAll();
+			$data2 = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = ':txtidEvalua' and  anulado = 0")
+			->bindValue(':txtidEvalua', $txtidEvalua)
+			->queryAll();
 
 			foreach ($data2 as $key => $value) {
 				$varId2 = $value['id'];
@@ -146,7 +163,9 @@ use yii\db\Query;
 			$txtEmail = Yii::$app->request->post("txtEmail");
 			$varResultados1 = 1;
 
-			$txtmotivo = Yii::$app->db->createCommand("select motivo from tbl_control_desvincular where iddesvincular = $txtiddesvin")->queryScalar(); 
+			$txtmotivo = Yii::$app->db->createCommand("select motivo from tbl_control_desvincular where iddesvincular = ':txtiddesvin'")
+			->bindValue(':txtiddesvin', $txtiddesvin)
+			->queryScalar(); 
             
 			Yii::$app->db->createCommand()->update('tbl_control_desvincular',[
 					                                'anulado' => 1,

@@ -118,8 +118,10 @@ class RelEquiposEvaluadoresController extends Controller {
                     ->where('tbl_usuarios.usua_id NOT IN ( '
                             . 'SELECT tbl_rel_equipos_evaluadores.evaluadores_id AS id '
                             . 'FROM tbl_rel_equipos_evaluadores '
-                            . 'WHERE equipo_id = ' . $equipoId . ') ' 
-                            . 'AND usua_nombre LIKE "%' . $search . '%"')
+                            . 'WHERE equipo_id = :equipoId) ' 
+                            . 'AND usua_nombre LIKE "%":search"%"')
+                    ->bindValue([':equipoId' => $equipoId])
+                    ->addParams([':search' => $search])
                     ->groupBy('tbl_usuarios.usua_id')
                     ->orderBy('usua_nombre')
                     ->asArray()
@@ -130,7 +132,8 @@ class RelEquiposEvaluadoresController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Usuarios::find()
                         ->select(['usua_id', 'text' => 'usua_nombre'])
-                        ->where('usua_id IN (' . $id . ')')
+                        ->where('usua_id IN (:id)')
+                        ->addParams([':id' => $id])
                         ->orderBy('usua_nombre')
                         ->asArray()
                         ->all();
@@ -291,8 +294,10 @@ class RelEquiposEvaluadoresController extends Controller {
                     ->where('tbl_equipos_evaluadores.id NOT IN ( '
                             . 'SELECT tbl_rel_equipos_evaluadores.equipo_id AS id '
                             . 'FROM tbl_rel_equipos_evaluadores '
-                            . 'WHERE evaluadores_id = ' . $evaluadorId . ') ' 
-                            . 'AND name LIKE "%' . $search . '%"')
+                            . 'WHERE evaluadores_id = :evaluadorId) ' 
+                            . 'AND name LIKE "%":search"%"')
+                    ->addParams([':evaluadorId' => $evaluadorId])
+                    ->addParams([':search' => $search])
                     ->groupBy('tbl_equipos_evaluadores.id')
                     ->orderBy('name')
                     ->asArray()
@@ -303,7 +308,8 @@ class RelEquiposEvaluadoresController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Equiposvaloradores::find()
                         ->select(['id', 'text' => 'name'])
-                        ->where('id IN (' . $id . ')')
+                        ->where('id IN (:id)')
+                        ->addParams([':id' => $id])
                         ->orderBy('name')
                         ->asArray()
                         ->all();

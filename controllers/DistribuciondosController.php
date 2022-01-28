@@ -162,7 +162,9 @@ use app\models\DistribucionAsesores;
           $VarExisteAsesor = Yii::$app->db->createCommand("
           SELECT COUNT(*) FROM tbl_evaluados e 
             WHERE 
-              e.identificacion IN ($varDocumentoAsesor)")->queryScalar();
+              e.identificacion IN (':varDocumentoAsesor')")
+              ->bindValue(':varDocumentoAsesor', $varDocumentoAsesor)
+              ->queryScalar();
 
           if ($VarExisteAsesor == 0) {
             $varListDatosAsesor = Yii::$app->dbjarvis2->createCommand("
@@ -172,7 +174,9 @@ use app\models\DistribucionAsesores;
                 INNER JOIN dp_usuarios_red ur ON 
                   dg.documento = ur.documento
                 WHERE 
-                  ur.documento IN ($varDocumentoAsesor) AND ur.dominio = 'multienlace.com.co'")->queryAll();
+                  ur.documento IN (':varDocumentoAsesor') AND ur.dominio = 'multienlace.com.co'")
+                  ->bindValue(':varDocumentoAsesor', $varDocumentoAsesor)
+                  ->queryAll();
 
 
             foreach ($varListDatosAsesor as $key => $value) {
@@ -224,13 +228,17 @@ use app\models\DistribucionAsesores;
           $varNombreCliente = Yii::$app->db->createCommand("
           SELECT pc.cliente FROM tbl_proceso_cliente_centrocosto pc 
           WHERE 
-            pc.id_dp_clientes IN ($varCliente)
-          GROUP BY pc.id_dp_clientes")->queryScalar();
+            pc.id_dp_clientes IN (':varCliente')
+          GROUP BY pc.id_dp_clientes")
+          ->bindValue(':varCliente', $varCliente)
+          ->queryScalar();
 
           $varExisteLider = Yii::$app->db->createCommand("
           SELECT COUNT(u.usua_id) FROM tbl_usuarios u
             WHERE 
-              u.usua_identificacion IN ($varCCLider)")->queryScalar();
+              u.usua_identificacion IN (':varCCLider')")
+              ->bindValue(':varCCLider', $varCCLider)
+              ->queryScalar();
 
           if ($varExisteLider == 0) {
             
@@ -241,7 +249,9 @@ use app\models\DistribucionAsesores;
                 INNER JOIN dp_usuarios_red ur ON 
                   dg.documento = ur.documento
                 WHERE 
-                  ur.documento IN ($varCCLider) AND ur.dominio = 'multienlace.com.co'")->queryAll();
+                  ur.documento IN (':varCCLider') AND ur.dominio = 'multienlace.com.co'")
+                  ->bindValue(':varCCLider', $varCCLider)
+                  ->queryAll();
 
             foreach ($varListDatosLideres as $key => $value) {
               
@@ -261,14 +271,18 @@ use app\models\DistribucionAsesores;
             $varUsuarioLider = Yii::$app->db->createCommand("
               SELECT u.usua_id FROM tbl_usuarios u
                 WHERE 
-                  u.usua_identificacion IN ('$varCCLider')")->queryScalar();
+                  u.usua_identificacion IN (':varCCLider')")
+                  ->bindValue(':varCCLider', $varCCLider)
+                  ->queryScalar();
 
             if (COUNT($varUsuarioLider) != 0) {
 
                 $varValidadosrol = Yii::$app->db->createCommand("
                 SELECT COUNT(u.rel_usua_id) FROM rel_usuarios_roles u
                   WHERE 
-                    u.rel_usua_id IN ('$varUsuarioLider')")->queryScalar();
+                    u.rel_usua_id IN (':varUsuarioLider')")
+                    ->bindValue(':varUsuarioLider', $varUsuarioLider)
+                    ->queryScalar();
 
                 if ($varValidadosrol == 0) {
                     Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
@@ -280,7 +294,9 @@ use app\models\DistribucionAsesores;
                 $varValidadosgrupo = Yii::$app->db->createCommand("
                         SELECT COUNT(u.usuario_id) FROM rel_grupos_usuarios u
                         WHERE 
-                            u.usuario_id IN ('$varUsuarioLider')")->queryScalar();
+                            u.usuario_id IN (':varUsuarioLider')")
+                            ->bindValue(':varUsuarioLider', $varUsuarioLider)
+                            ->queryScalar();
 
                 if ($varValidadosgrupo == 0) {
                     Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
@@ -296,19 +312,25 @@ use app\models\DistribucionAsesores;
           $varUsuaIdLider = Yii::$app->db->createCommand("
           SELECT u.usua_id FROM tbl_usuarios u
             WHERE 
-              u.usua_identificacion IN ($varCCLider)")->queryScalar();
+              u.usua_identificacion IN (':varCCLider')")
+              ->bindValue(':varCCLider', $varCCLider)
+              ->queryScalar();
 
           $varUsuaNombreLider = Yii::$app->db->createCommand("
           SELECT u.usua_nombre FROM tbl_usuarios u
             WHERE 
-              u.usua_identificacion IN ($varCCLider)")->queryScalar();          
+              u.usua_identificacion IN (':varCCLider')")
+              ->bindValue(':varCCLider', $varCCLider)
+              ->queryScalar();          
 
           $varContarEquipos = Yii::$app->db->createCommand("
               SELECT COUNT(eq.id) FROM tbl_equipos eq
                 INNER JOIN tbl_usuarios u ON 
                   eq.usua_id = u.usua_id 
                           WHERE 
-                            u.usua_identificacion IN ($varCCLider)")->queryScalar();
+                            u.usua_identificacion IN (':varCCLider')")
+                            ->bindValue(':varCCLider', $varCCLider)
+                            ->queryScalar();
 
           if ($varContarEquipos == 0 && $varUsuaIdLider != 0) {
             Yii::$app->db->createCommand()->insert('tbl_equipos',[
@@ -358,7 +380,9 @@ use app\models\DistribucionAsesores;
             INNER JOIN tbl_distribucion_asesores da ON 
               e.identificacion = da.cedulaasesor
             WHERE 
-              da.cedulalider = $varCcLideres")->queryAll();
+              da.cedulalider = ':varCcLideres'")
+              ->bindValue(':varCcLideres', $varCcLideres)
+              ->queryAll();
 
           foreach ($varListAsesores as $key => $value) {
             Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[

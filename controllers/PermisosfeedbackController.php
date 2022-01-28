@@ -75,11 +75,15 @@ use app\models\Permisosfeedback;
     public function actionGenerarregistro(){
       $varusuario = Yii::$app->request->get('txtusuarios');
       $txtvalida = null;
-      $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = '$varusuario'")->queryScalar();
+      $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = ':varusuario'")
+      ->bindValue(':varusuario', $varusuario)
+      ->queryScalar();
       $txtrta = 0;
 
       if ($txtidusuario != "") {
-        $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = $txtidusuario")->queryScalar();
+        $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = ':txtidusuario'")
+        ->bindValue(':txtidusuario', $txtidusuario)
+        ->queryScalar();
 
         if ($txtvalida != 0) {
           $txtrta = 1;
@@ -102,10 +106,14 @@ use app\models\Permisosfeedback;
     public function actionValidarregistro(){
       $varusuario = Yii::$app->request->get('txtusuarios');
       $txtvalida = null;
-      $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = '$varusuario'")->queryScalar();
+      $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = ':varusuario'")
+      ->bindValue(':varusuario', $varusuario)
+      ->queryScalar();
 
       if ($txtidusuario != "") {
-        $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = $txtidusuario")->queryScalar();
+        $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = ':txtidusuario'")
+        ->bindValue(':txtidusuario', $txtidusuario)
+        ->queryScalar();
       }
 
       die(json_encode($txtvalida));

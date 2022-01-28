@@ -181,7 +181,8 @@ class ReglanegocioController extends Controller {
             $data = \app\models\Arboles::find()
                     ->select(['id', 'text' => 'UPPER(name)'])
                     ->where(["snhoja" => 1])
-                    ->andWhere('name LIKE "%' . $search . '%"')
+                    ->andWhere('name LIKE "%":search"%"')
+                    ->addParams([':search' => $search])
                     ->orderBy('name')
                     ->asArray()
                     ->all();
@@ -192,7 +193,8 @@ class ReglanegocioController extends Controller {
                 $data = \app\models\Arboles::find()
                         ->select(['id', 'text' => 'UPPER(name)'])
                         ->where(["snhoja" => 1])
-                        ->andWhere('id = ' . $id)
+                        ->andWhere('id = :id')
+                        ->addParams([':id' => $id])
                         ->orderBy('name')
                         ->asArray()
                         ->all();
@@ -317,7 +319,8 @@ class ReglanegocioController extends Controller {
         if (!is_null($search)) {
             $data = \app\models\Formularios::find()
                     ->select(['id', 'text' => 'UPPER(name)'])
-                    ->where('name LIKE "%' . $search . '%"')
+                    ->where('name LIKE "%":search"%"')
+                    ->addParams([':search' => $search])
                     ->orderBy('name')
                     ->asArray()
                     ->all();
@@ -327,7 +330,8 @@ class ReglanegocioController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Formularios::find()
                         ->select(['id', 'text' => 'UPPER(name)'])
-                        ->where('id = ' . $id)
+                        ->where('id = :id')
+                        ->addParams([':id' => $id])
                         ->orderBy('name')
                         ->asArray()
                         ->all();

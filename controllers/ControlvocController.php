@@ -84,9 +84,13 @@ use app\models\ControlProcesosVOC;
             $txtValoradorS = $tecnico_idV;
             $txtDimensionS = $dimensionsV;
 
-            $txtNomPcrc = Yii::$app->db->createCommand("select name from tbl_arbols where id = '$txtPcrcS'")->queryScalar();
+            $txtNomPcrc = Yii::$app->db->createCommand('select name from tbl_arbols where id = :txtPcrcS')
+            ->bindValue(':txtPcrcS', $txtPcrcS)
+            ->queryScalar();
 
-            $txtNomValora = Yii::$app->db->createCommand("select name from tbl_evaluados where id = '$txtValoradorS'")->queryScalar();
+            $txtNomValora = Yii::$app->db->createCommand('select name from tbl_evaluados where id = :txtValoradorS')
+            ->bindValue(':txtValoradorS', $txtValoradorS)
+            ->queryScalar();
 
             return $this->render('createvoc', [
                 'model' => $model,
@@ -113,15 +117,17 @@ use app\models\ControlProcesosVOC;
                 if (!is_null($search)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('name LIKE "%' . $search . '%"')
+                            ->where('name LIKE "%":search"%"')
                             ->orderBy('name')
                             ->asArray()
+                            ->addParams([':search' => $search])
                             ->all();
                     $out['results'] = array_values($data);
                 } elseif (!empty($id)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('tbl_evaluados.id IN (' . $id . ')')
+                            ->where('tbl_evaluados.id IN (:id)')
+                            ->addParams([':id' => $id])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -156,9 +162,13 @@ use app\models\ControlProcesosVOC;
                 $txtvartipo_id = 0;
             }
 
-            $txtRta = Yii::$app->db->createCommand("select equipo_id from tbl_equipos_evaluados where evaluado_id = '$txtvarvalorado'")->queryScalar();
+            $txtRta = Yii::$app->db->createCommand('select equipo_id from tbl_equipos_evaluados where evaluado_id = :txtvarvalorado')
+            ->bindValue(':txtvarvalorado', $txtvarvalorado)
+            ->queryScalar();
 
-            $txtLider = Yii::$app->db->createCommand("select usua_id from tbl_equipos where id = '$txtRta'")->queryScalar();
+            $txtLider = Yii::$app->db->createCommand('select usua_id from tbl_equipos where id = :txtRta')
+            ->bindValue(':txtRta', $txtRta)
+            ->queryScalar();
 
             Yii::$app->db->createCommand()->insert('tbl_ejecucionfeedbacks',[
                                 'tipofeedback_id' => $txtvartipo_id,
@@ -261,7 +271,9 @@ use app\models\ControlProcesosVOC;
         public function actionListashijo(){
             $txttxtvmotivo = Yii::$app->request->post("txtvmotivo");
 
-            $txtRta = Yii::$app->db->createCommand("select idlistahijovoc, nombrelistah from tbl_controlvoc_listadohijo where anulado = 0 and idlistapadrevoc = '$txttxtvmotivo'")->queryAll();
+            $txtRta = Yii::$app->db->createCommand('select idlistahijovoc, nombrelistah from tbl_controlvoc_listadohijo where anulado = 0 and idlistapadrevoc = :txttxtvmotivo')
+            ->bindValue(':txttxtvmotivo', $txttxtvmotivo)
+            ->queryAll();
 
             $arrayUsu = array();
             foreach ($txtRta as $key => $value) {
@@ -322,9 +334,17 @@ use app\models\ControlProcesosVOC;
                                 'anulado' => $txtanulado,
                             ])->execute();
 
-            $txtVRta = Yii::$app->db->createCommand("select count(*) from tbl_controlvoc_bloque1 where valorador_id = '$txtvaloradorID' and arbol_id = '$txtvArbol' and tecnico_id = '$txtvValorado' and anulado = 0")->queryScalar();
+            $txtVRta = Yii::$app->db->createCommand('select count(*) from tbl_controlvoc_bloque1 where valorador_id = :txtvaloradorID and arbol_id = :txtvArbol and tecnico_id = :txtvValorado and anulado = 0')
+            ->bindValue(':txtvaloradorID', $txtvaloradorID)
+            ->bindValue(':txtvArbol', $txtvArbol)
+            ->bindValue(':txtvValorado', $txtvValorado)
+            ->queryScalar();
 
-            $txtvIdBloque = Yii::$app->db->createCommand("select idbloque1 from tbl_controlvoc_bloque1 where valorador_id = '$txtvaloradorID' and arbol_id = '$txtvArbol' and tecnico_id = '$txtvValorado' and anulado = 0")->queryScalar();
+            $txtvIdBloque = Yii::$app->db->createCommand('select idbloque1 from tbl_controlvoc_bloque1 where valorador_id = :txtvaloradorID and arbol_id = :txtvArbol and tecnico_id = :txtvValorado and anulado = 0')
+            ->bindValue(':txtvaloradorID', $txtvaloradorID)
+            ->bindValue(':txtvArbol', $txtvArbol)
+            ->bindValue(':txtvValorado', $txtvValorado)
+            ->queryScalar();
 
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_bloque2',[
                                 'idbloque1' => $txtvIdBloque,
@@ -398,8 +418,9 @@ use app\models\ControlProcesosVOC;
                                 "tbl_permisos_grupos_arbols.snver_grafica" => 1])
                             ->andWhere("rel_grupos_usuarios.grupo_id = tbl_permisos_grupos_arbols.grupousuario_id")
                             ->andWhere("tbl_tmpreportes_arbol.seleccion_arbol_id = tbl_tmpreportes_arbol.arbol_id")
-                            ->andWhere('tbl_tmpreportes_arbol.dsruta_arbol LIKE "%' . $search . '%" ')
+                            ->andWhere('tbl_tmpreportes_arbol.dsruta_arbol LIKE "%":search"%" ')
                             ->orderBy("tbl_tmpreportes_arbol.dsruta_arbol ASC")
+                            ->addParams([':search' => $search])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -414,8 +435,9 @@ use app\models\ControlProcesosVOC;
                                 "tbl_permisos_grupos_arbols.snver_grafica" => 1])
                             ->andWhere("rel_grupos_usuarios.grupo_id = tbl_permisos_grupos_arbols.grupousuario_id")
                             ->andWhere("tbl_tmpreportes_arbol.seleccion_arbol_id = tbl_tmpreportes_arbol.arbol_id")
-                            ->andWhere('tbl_tmpreportes_arbol.seleccion_arbol_id IN (' . $id . ')')
+                            ->andWhere('tbl_tmpreportes_arbol.seleccion_arbol_id IN (:id)')
                             ->orderBy("tbl_tmpreportes_arbol.dsruta_arbol ASC")
+                            ->addParams([':id' => $id])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -435,9 +457,10 @@ use app\models\ControlProcesosVOC;
                     $data = \app\models\Equipos::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
                             ->join('JOIN', 'tbl_usuarios', 'tbl_usuarios.usua_id = tbl_equipos.usua_id')
-                            ->where('usua_nombre LIKE "%' . $search . '%"')
+                            ->where('usua_nombre LIKE "%":search"%"')
                             ->groupBy('id')
                             ->orderBy('usua_nombre')
+                            ->addParams([':search' => $search])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -445,7 +468,8 @@ use app\models\ControlProcesosVOC;
                     $data = \app\models\Equipos::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
                             ->join('JOIN', 'tbl_usuarios', 'tbl_usuarios.usua_id = tbl_equipos.usua_id')
-                            ->where('tbl_usuarios.usua_id = ' . $id)
+                            ->where('tbl_usuarios.usua_id = :id')
+                            ->addParams([':id' => $id])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -464,15 +488,17 @@ use app\models\ControlProcesosVOC;
                 if (!is_null($search)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_nombre LIKE "%' . $search . '%"')
+                            ->where('usua_nombre LIKE "%":search"%"')
                             ->orderBy('usua_nombre')
+                            ->addParams([':search' => $search])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
                 } elseif (!empty($id)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_id IN (' . $id . ')')
+                            ->where('usua_id IN (:id)')
+                            ->addParams([':id' => $id])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -485,44 +511,88 @@ use app\models\ControlProcesosVOC;
         public function actionVerlistasvoc($id){
             $txtIdVoc = $id;
 
-            $varValorador = Yii::$app->db->createCommand("select valorador_id from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtNomvalorador = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = $varValorador")->queryScalar(); 
-            $varArbol = Yii::$app->db->createCommand("select arbol_id from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtArbol = Yii::$app->db->createCommand("select name from tbl_arbols where id = $varArbol and activo = 0")->queryScalar(); 
-            $varTecnico = Yii::$app->db->createCommand("select tecnico_id from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtNombreTecnico = Yii::$app->db->createCommand("select name from tbl_evaluados where id = $varTecnico")->queryScalar(); 
-            $txtDimensiones = Yii::$app->db->createCommand("select dimensions from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtFecha = Yii::$app->db->createCommand("select fechahora from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtDureacion = Yii::$app->db->createCommand("select duracion from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtExtension = Yii::$app->db->createCommand("select extencion from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtSpeech = Yii::$app->db->createCommand("select numidextsp from tbl_controlvoc_bloque1 where idbloque1 = '$txtIdVoc'")->queryScalar();
+            $varValorador = Yii::$app->db->createCommand('select valorador_id from tbl_controlvoc_bloque1 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtNomvalorador = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id = :varValorador')
+            ->bindValue(':varValorador', $varValorador)
+            ->queryScalar(); 
+            $varArbol = Yii::$app->db->createCommand('select arbol_id from tbl_controlvoc_bloque1 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtArbol = Yii::$app->db->createCommand('select name from tbl_arbols where id = :varArbol and activo = 0')
+            ->bindValue(':varArbol', $varArbol)
+            ->queryScalar(); 
+            $varTecnico = Yii::$app->db->createCommand('select tecnico_id from tbl_controlvoc_bloque1 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtNombreTecnico = Yii::$app->db->createCommand('select name from tbl_evaluados where id = :varTecnico')
+            ->bindValue(':varTecnico', $varTecnico)
+            ->queryScalar(); 
+            $txtDimensiones = Yii::$app->db->createCommand('select dimensions from tbl_controlvoc_bloque1 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtFecha = Yii::$app->db->createCommand('select fechahora from tbl_controlvoc_bloque1 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtDureacion = Yii::$app->db->createCommand('select duracion from tbl_controlvoc_bloque1 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtExtension = Yii::$app->db->createCommand('select extencion from tbl_controlvoc_bloque1 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtSpeech = Yii::$app->db->createCommand('select numidextsp from tbl_controlvoc_bloque1 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
 
-            $varIndiGlo = Yii::$app->db->createCommand("select indicadorglobal from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtIndiGlo = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varIndiGlo'")->queryScalar();
+            $varIndiGlo = Yii::$app->db->createCommand('select indicadorglobal from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtIndiGlo = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varIndiGlo')
+            ->bindValue(':varIndiGlo', $varIndiGlo)
+            ->queryScalar();
             if ($varIndiGlo == 0){
             $txtIndiGlo = 'N/A';
             }
-            $varVariable = Yii::$app->db->createCommand("select variable from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar();
-            $txtVariable = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varVariable'")->queryScalar();
+            $varVariable = Yii::$app->db->createCommand('select variable from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();
+            $txtVariable = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varVariable')
+            ->bindValue(':varVariable', $varVariable)
+            ->queryScalar();
             if ($varVariable == 0){
             $txtVariable = 'N/A';
             }
-            $varMotivoContacto = Yii::$app->db->createCommand("select moticocontacto from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar();  
-            $txtMotivoContacto = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varMotivoContacto'")->queryScalar();
+            $varMotivoContacto = Yii::$app->db->createCommand('select moticocontacto from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar();  
+            $txtMotivoContacto = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varMotivoContacto')
+            ->bindValue(':varMotivoContacto', $varMotivoContacto)
+            ->queryScalar();
             if ($varMotivoContacto == 0){
             $txtMotivoContacto = 'N/A';
             }            
-            $varMotivoLlamada = Yii::$app->db->createCommand("select motivollamadas from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $txtMotivoLlamada = Yii::$app->db->createCommand("select nombrelistah from tbl_controlvoc_listadohijo where idlistahijovoc = '$varMotivoLlamada'")->queryScalar();
+            $varMotivoLlamada = Yii::$app->db->createCommand('select motivollamadas from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $txtMotivoLlamada = Yii::$app->db->createCommand('select nombrelistah from tbl_controlvoc_listadohijo where idlistahijovoc = :varMotivoLlamada')
+            ->bindValue(':varMotivoLlamada', $varMotivoLlamada)
+            ->queryScalar();
             if ($varMotivoLlamada == 0){
             $txtMotivoLlamada = 'N/A';
             }
-            $varPuntoDolor = Yii::$app->db->createCommand("select puntodolor from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $txtPuntoDolor = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varPuntoDolor'")->queryScalar();
+            $varPuntoDolor = Yii::$app->db->createCommand('select puntodolor from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $txtPuntoDolor = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varPuntoDolor')
+            ->bindValue(':varPuntoDolor', $varPuntoDolor)
+            ->queryScalar();
             if ($varPuntoDolor == 0){
             $txtPuntoDolor = 'N/A';
             }
-            $varLlamadaCategorizada = Yii::$app->db->createCommand("select categoria from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
+            $varLlamadaCategorizada = Yii::$app->db->createCommand('select categoria from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
             if ($varLlamadaCategorizada != '1') {
                 $txtLlamadaCategorizada = "Si";
             }else{
@@ -532,36 +602,64 @@ use app\models\ControlProcesosVOC;
             $txtLlamadaCategorizada = 'N/A';
             }
 
-            $txtPorcentaje = Yii::$app->db->createCommand("select indicadorvar from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $varAgente = Yii::$app->db->createCommand("select agente from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $txtAgente = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varAgente'")->queryScalar();
+            $txtPorcentaje = Yii::$app->db->createCommand('select indicadorvar from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $varAgente = Yii::$app->db->createCommand('select agente from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $txtAgente = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varAgente')
+            ->bindValue(':varAgente', $varAgente)
+            ->queryScalar();
             if ($varAgente == 0){
             $txtAgente = 'N/A';
             }
-            $varMarca = Yii::$app->db->createCommand("select marca from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $txtMarca = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varMarca'")->queryScalar(); 
+            $varMarca = Yii::$app->db->createCommand('select marca from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $txtMarca = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varMarca')
+            ->bindValue(':varMarca', $varMarca)
+            ->queryScalar(); 
             if ($varMarca == 0){
             $txtMarca = 'N/A';
             }
-            $varCanal = Yii::$app->db->createCommand("select canal from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $txtCanal = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varCanal'")->queryScalar(); 
+            $varCanal = Yii::$app->db->createCommand('select canal from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $txtCanal = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varCanal')
+            ->bindValue(':varCanal', $varCanal)
+            ->queryScalar(); 
             if ($varCanal == 0){
             $txtCanal = 'N/A';
             }
-            $txtDcualitativos = Yii::$app->db->createCommand("select detalle from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
+            $txtDcualitativos = Yii::$app->db->createCommand('select detalle from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
             
-            $varMapaInteresados1 = Yii::$app->db->createCommand("select mapa1 from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $txtMapaInteresados1 = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varMapaInteresados1'")->queryScalar(); 
+            $varMapaInteresados1 = Yii::$app->db->createCommand('select mapa1 from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $txtMapaInteresados1 = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varMapaInteresados1')
+            ->bindValue(':varMapaInteresados1', $varMapaInteresados1)
+            ->queryScalar(); 
             if ($varMapaInteresados1 == 0){
             $txtMapaInteresados1 = 'N/A';
             }
-            $varMapaInteresados2 = Yii::$app->db->createCommand("select mapa2 from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $txtMapaInteresados2 = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varMapaInteresados2'")->queryScalar();
+            $varMapaInteresados2 = Yii::$app->db->createCommand('select mapa2 from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $txtMapaInteresados2 = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varMapaInteresados2')
+            ->bindValue(':varMapaInteresados2', $varMapaInteresados2)
+            ->queryScalar();
             if ($varMapaInteresados2 == 0){
             $txtMapaInteresados2 = 'N/A';
             }
-            $varatributos = Yii::$app->db->createCommand("select interesados from tbl_controlvoc_bloque2 where idbloque1 = '$txtIdVoc'")->queryScalar(); 
-            $txtatributos = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$varatributos'")->queryScalar();  
+            $varatributos = Yii::$app->db->createCommand('select interesados from tbl_controlvoc_bloque2 where idbloque1 = :txtIdVoc')
+            ->bindValue(':txtIdVoc', $txtIdVoc)
+            ->queryScalar(); 
+            $txtatributos = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :varatributos')
+            ->bindValue(':varatributos', $varatributos)
+            ->queryScalar();  
             if ($varatributos == 0){
             $txtatributos = 'N/A';
             }
@@ -628,9 +726,16 @@ use app\models\ControlProcesosVOC;
             $varPCRC = Yii::$app->request->post("var_Pcrc");
             
             if ($varSesiones != '4') {		
-                Yii::$app->db->createCommand("delete from tbl_controlvoc_listadopadre where idsessionvoc = '$varSesiones' and arbol_id = '$varPCRC' and anulado = 0 and idlistapadrevoc = '$varIdList'")->execute();
+                Yii::$app->db->createCommand('delete from tbl_controlvoc_listadopadre where idsessionvoc = :varSesiones and arbol_id = :varPCRC and anulado = 0 and idlistapadrevoc = :varIdList')
+                ->bindValue(':varSesiones', $varSesiones)
+                ->bindValue(':varPCRC', $varPCRC)
+                ->bindValue(':varIdList', $varIdList)
+                ->execute();
             }else{
-                Yii::$app->db->createCommand("delete from tbl_controlvoc_listadohijo where idsessionvoc = '$varSesiones' and anulado = 0 and idlistahijovoc = '$varIdList'")->execute();
+                Yii::$app->db->createCommand('delete from tbl_controlvoc_listadohijo where idsessionvoc = :varSesiones and anulado = 0 and idlistahijovoc = :varIdList')
+                ->bindValue(':varSesiones', $varSesiones)
+                ->bindValue(':varIdList', $varIdList)
+                ->execute();
             }
 
             $rta = 1;
@@ -641,7 +746,9 @@ use app\models\ControlProcesosVOC;
             $txtIdList = $var_IdList;
             $txtPcrc = $var_pcrc;
 
-            $txtNombreList = Yii::$app->db->createCommand("select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = '$txtIdList' and anulado = 0")->queryScalar(); 
+            $txtNombreList = Yii::$app->db->createCommand('select nombrelistap from tbl_controlvoc_listadopadre where idlistapadrevoc = :txtIdList and anulado = 0')
+            ->bindValue(':txtIdList', $txtIdList)
+            ->queryScalar(); 
 
             $model = $this->findModel($var_IdList);
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -669,7 +776,9 @@ use app\models\ControlProcesosVOC;
             $txtPcrc = $var_pcrc;
 
 
-            $txtNombreList = Yii::$app->db->createCommand("select nombrelistah from tbl_controlvoc_listadohijo where idlistahijovoc = '$txtIdList' and anulado = 0")->queryScalar(); 
+            $txtNombreList = Yii::$app->db->createCommand('select nombrelistah from tbl_controlvoc_listadohijo where idlistahijovoc = :txtIdList and anulado = 0')
+            ->bindValue(':txtIdList', $txtIdList)
+            ->queryScalar(); 
 
 
             $model = $this->findModel2($var_IdList);
