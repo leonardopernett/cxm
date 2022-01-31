@@ -145,6 +145,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #ffc034;"></em> Procesos Usuarios .sip (Encuestas)</label>
+                        <?= Html::a('Aceptar',  ['viewusuariosencuestas'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Procesos Usuarios .sip']) 
+                        ?>
+                    </div>
+                </div>
             </div>
 
         </div>
