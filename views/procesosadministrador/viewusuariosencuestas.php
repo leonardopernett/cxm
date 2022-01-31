@@ -82,6 +82,7 @@ $roles = $command->queryScalar();
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css">
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
 <script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/chart.min.js"></script>
 <script src="../../js_extensions/highcharts/exporting.js"></script>
 <header class="masthead">
   <div class="container h-100">
@@ -237,7 +238,7 @@ $roles = $command->queryScalar();
                             </tr>
                         </tbody>
                     </table>
-                    
+
                 </div>
             </div>
 
