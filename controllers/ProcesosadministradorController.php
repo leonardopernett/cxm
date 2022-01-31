@@ -327,25 +327,33 @@ use app\models\FormUploadtigo;
             
             if ($sheet->getCell("A".$row)->getValue() != null) {
 
-                $paramsBusqueda = [':varAsesorCC' => $sheet->getCell("A".$row)->getValue()];
+              $paramsBusqueda = [':varAsesorCC' => $sheet->getCell("A".$row)->getValue()];
 
-                $varExisteUsuario = Yii::$app->db->createCommand('
+              $varExisteUsuario = Yii::$app->db->createCommand('
                   SELECT if(COUNT(e.id)=0,0,1) AS rta FROM tbl_evaluados e 
                     WHERE 
                         e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
 
-                Yii::$app->db->createCommand()->insert('tbl_base_usuariosip',[
-                                    'usuariored' => $sheet->getCell("D".$row)->getValue(),
-                                    'usuariosip' => $sheet->getCell("C".$row)->getValue(),
-                                    'identificacion' => $sheet->getCell("A".$row)->getValue(),
-                                    'comentarios' => $sheet->getCell("B".$row)->getValue(),
-                                    'existeusuario' => $varExisteUsuario,
-                                    'fechacreacion' => date("Y-m-d"),
-                                    'anulado' => 0,
-                                    'usua_id' => Yii::$app->user->identity->id,
-                                    ])->execute(); 
+              $varIdEvalua = 0;
+              if ($varExisteUsuario != 0) {
+                $varIdEvalua = Yii::$app->db->createCommand('
+                  SELECT e.id FROM tbl_evaluados e 
+                    WHERE 
+                      e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+              }                      
+        
+              Yii::$app->db->createCommand()->insert('tbl_base_usuariosip',[
+                                            'usuariored' => $sheet->getCell("D".$row)->getValue(),
+                                            'usuariosip' => $sheet->getCell("C".$row)->getValue(),
+                                            'evaluados_id' => $varIdEvalua,
+                                            'identificacion' => $sheet->getCell("A".$row)->getValue(),
+                                            'comentarios' => $sheet->getCell("B".$row)->getValue(),
+                                            'existeusuario' => $varExisteUsuario,
+                                            'fechacreacion' => date("Y-m-d"),
+                                            'anulado' => 0,
+                                            'usua_id' => Yii::$app->user->identity->id,
+                                            ])->execute(); 
             }
-
         }
 
     }
