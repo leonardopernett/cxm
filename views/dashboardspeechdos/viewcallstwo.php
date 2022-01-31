@@ -37,6 +37,10 @@ if ($varidredbox != "" && $varidgrabadora != "") {
 								<th scope="row"><label style="font-size: 15px;"><?php echo "Grabadora:"; ?></label></th>
 								<td><label style="font-size: 15px;"><?php echo $varidgrabadora; ?></label></td>
 							</tr>
+							<tr>
+								<td><label style="font-size: 15px;"><?php echo "Extension:"; ?></label></td>
+								<td><label style="font-size: 15px;"><?php echo $varextensionnum; ?></label></td>
+							</tr>
 						</table>
 					</div>
 					<div class="col-md-6">						

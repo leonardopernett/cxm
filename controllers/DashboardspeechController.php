@@ -29,6 +29,7 @@ use app\models\SpeechParametrizar;
 use app\models\Dashboardspeechcalls;
 use app\models\Formularios;
 use yii\base\Exception;
+use app\models\SpeechAleatoridad;
 
   class DashboardspeechController extends \yii\web\Controller {
 
@@ -55,6 +56,42 @@ use yii\base\Exception;
         ],
       ];
     }
+
+    public function actions() {
+      return [
+          'error' => [
+            'class' => 'yii\web\ErrorAction',
+          ]
+      ];
+  }
+
+  public function actionError() {
+
+      //ERROR PRESENTADO
+      $exception = Yii::$app->errorHandler->exception;
+
+      if ($exception !== null) {
+          //VARIABLES PARA LA VISTA ERROR
+          $code = $exception->statusCode;
+          $name = $exception->getName() . " (#$code)";
+          $message = $exception->getMessage();
+          //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
+          // PARA LOS ERRORES 400
+          $request = \Yii::$app->request->pathInfo;
+          if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
+                  400) {
+              //GUARDO EN EL ERROR DE SATU
+              $baseSat = new BasesatisfaccionController();
+              $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
+          }
+          //RENDERIZO LA VISTA
+          return $this->render('error', [
+                      'name' => $name,
+                      'message' => $message,
+                      'exception' => $exception,
+          ]);
+      }
+  }
     
     public function actionIndex(){
       $model = new Dashboardcategorias(); 
@@ -1654,7 +1691,7 @@ use yii\base\Exception;
         if ($fechaIniCat < '2020-01-01') {
           $txtIdCatagoria1 = 2681;
         }else{
-          if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '485' || $idArbol == '2575' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3263' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436' || $idArbol == '3410' || $idArbol == '678') {
+          if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '485' || $idArbol == '2575' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3263' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436' || $idArbol == '3410' || $idArbol == '678' || $idArbol == '2919') {
             $txtIdCatagoria1 = 1105;
           }else{
             $txtIdCatagoria1 = 1114;
@@ -6717,6 +6754,49 @@ public function actionCantidadentto(){
         'txtvarhoras' => $txtvarhoras,
         'txtusuarios' => $txtusuarios,
       ]);
+    }
+
+    public function actionParamsaleatorio($txtServicioCategorias){
+      $model = new SpeechAleatoridad();
+
+      $paramsBusqueda = [':varcodpcrcs' => $txtServicioCategorias, ':anulado' => 0];
+
+      $variddpcliente = Yii::$app->db->createCommand('
+          SELECT sp.id_dp_clientes FROM tbl_speech_parametrizar sp
+            WHERE sp.anulado = :anulado
+              AND sp.cod_pcrc IN (:varcodpcrcs) 
+            GROUP BY sp.id_dp_clientes')->bindValues($paramsBusqueda)->queryScalar();
+      
+      $form = Yii::$app->request->post();
+      if ($model->load($form)) {
+
+        Yii::$app->db->createCommand()->insert('tbl_speech_aleatoridad',[
+            'cantidad' => $model->cantidad,
+            'id_dp_clientes' => $variddpcliente,
+            'cod_pcrc' => $txtServicioCategorias,
+            'comentarios' => $model->comentarios,
+            'usua_id' => Yii::$app->user->identity->id,
+            'fechacreacion' => date("Y-m-d"),
+            'anulado' => 0,
+        ])->execute(); 
+
+        return $this->redirect(array('categoriasview',
+          'txtServicioCategorias' => $variddpcliente
+        ));
+
+      }
+
+      return $this->render('paramsaleatorio',[
+        'txtServicioCategorias' => $txtServicioCategorias,
+        'variddpcliente' => $variddpcliente,
+        'model' => $model,
+      ]);
+    }
+
+    public function actionDeletepermisos($id,$codpcrc){
+      SpeechAleatoridad::findOne($id)->delete();
+      
+      return $this->redirect(array('paramsaleatorio','txtServicioCategorias'=>$codpcrc));
     }
 
 

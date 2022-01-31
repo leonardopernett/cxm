@@ -24,6 +24,8 @@ use app\models\ProcesosAdministrador;
 use app\models\Categoriafeedbacks;
 use app\models\Tipofeedbacks;
 use app\models\Dashboardpermisos;
+use app\models\BaseUsuariosip;
+use app\models\FormUploadtigo;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
@@ -32,7 +34,7 @@ use app\models\Dashboardpermisos;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios'],
             'rules' => [
               [
                 'allow' => true,
@@ -51,6 +53,42 @@ use app\models\Dashboardpermisos;
         ],
       ];
     }
+
+    public function actions() {
+      return [
+          'error' => [
+            'class' => 'yii\web\ErrorAction',
+          ]
+      ];
+  }
+
+  public function actionError() {
+
+      //ERROR PRESENTADO
+      $exception = Yii::$app->errorHandler->exception;
+
+      if ($exception !== null) {
+          //VARIABLES PARA LA VISTA ERROR
+          $code = $exception->statusCode;
+          $name = $exception->getName() . " (#$code)";
+          $message = $exception->getMessage();
+          //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
+          // PARA LOS ERRORES 400
+          $request = \Yii::$app->request->pathInfo;
+          if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
+                  400) {
+              //GUARDO EN EL ERROR DE SATU
+              $baseSat = new BasesatisfaccionController();
+              $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
+          }
+          //RENDERIZO LA VISTA
+          return $this->render('error', [
+                      'name' => $name,
+                      'message' => $message,
+                      'exception' => $exception,
+          ]);
+      }
+  }
     
 
     public function actionIndex(){ 
@@ -245,6 +283,191 @@ use app\models\Dashboardpermisos;
         return $this->redirect('viewescucharmas',[
             'model' => $model,
         ]);
+    }
+
+    public function actionViewusuariosencuestas(){
+        $model = new BaseUsuariosip();
+        $dataList = 0;
+        $ListaRegistro = null;
+
+        $paramsBusquedaCambiado = [':varCambiado' => 1];
+
+        $varCambiado = Yii::$app->db->createCommand('
+            SELECT COUNT(bu.idusuariossip) AS Cambiados FROM tbl_base_usuariosip bu
+                WHERE 
+                    bu.cambios = :varCambiado')->bindValues($paramsBusquedaCambiado)->queryScalar();
+
+        
+        $varNoCambiado = Yii::$app->db->createCommand('
+            SELECT COUNT(bu.idusuariossip) AS Cambiados FROM tbl_base_usuariosip bu
+                WHERE 
+                    bu.cambios IS NULL')->queryScalar();
+
+        $varTotalAsesores = Yii::$app->db->createCommand('
+            SELECT COUNT(bu.idusuariossip) AS TotalAsesores FROM tbl_base_usuariosip bu')->queryScalar();
+
+        $varFechaMax = Yii::$app->db->createCommand('
+            SELECT MAX(bu.fechacreacion) AS FechaMax FROM tbl_base_usuariosip bu')->queryScalar();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $paramsBusquedaEval = [':varIdEval' => $model->evaluados_id];
+
+            $ListaRegistro = Yii::$app->db->createCommand('
+            SELECT bu.idusuariossip, bu.comentarios, bu.identificacion, bu.usuariored, bu.usuariosip,  
+                if(bu.cambios = 1,"Si","No") AS cambios, bu.fechacambios FROM tbl_base_usuariosip bu
+                WHERE 
+                    bu.evaluados_id IN (:varIdEval)')->bindValues($paramsBusquedaEval)->queryAll();
+
+            $dataList = count($ListaRegistro);
+        }
+
+        return $this->render('viewusuariosencuestas',[
+            'model' => $model,
+            'dataList' => $dataList,
+            'ListaRegistro' => $ListaRegistro,
+            'varCambiado' => $varCambiado,
+            'varNoCambiado' => $varNoCambiado,
+            'varTotalAsesores' => $varTotalAsesores,
+            'varFechaMax' => $varFechaMax,
+        ]);
+    }    
+
+    public function actionDeletesip($id){
+      BaseUsuariosip::findOne($id)->delete();
+
+      return $this->redirect('viewusuariosencuestas');
+    }
+
+    public function actionActualizaprocesos(){
+        $paramsBusqueda = [':varAnulado' => 0];
+
+        $varListSip = Yii::$app->db->createCommand('
+            SELECT bu.idusuariossip, bu.usuariored, bu.usuariosip, bu.cambios FROM tbl_base_usuariosip bu
+                WHERE 
+                    bu.anulado = :varAnulado
+                GROUP BY bu.usuariosip')->bindValues($paramsBusqueda)->queryAll();
+
+        foreach ($varListSip as $key => $value) {
+            $paramsBusquedaSip = [':varUsarioSip' => $value['usuariosip']];
+            $varUsariosRed = $value['usuariored'];
+            $varIdSip = $value['idusuariossip'];
+            
+                $varListBaseSip = Yii::$app->db->createCommand('
+                SELECT b.id FROM tbl_base_satisfaccion b
+                    WHERE 
+                     b.agente IN (:varUsarioSip)')->bindValues($paramsBusquedaSip)->queryAll();
+
+                if (count($varListBaseSip) != 0) {
+                    foreach ($varListBaseSip as $key => $value) {
+                        Yii::$app->db->createCommand('
+                            UPDATE tbl_base_satisfaccion 
+                                SET agente = :varAgente
+                                    WHERE 
+                                        id = :VarId')
+                            ->bindValue(':VarId', $value['id'])
+                            ->bindValue(':varAgente', $varUsariosRed)
+                            ->execute(); 
+                    }
+
+                    Yii::$app->db->createCommand('
+                            UPDATE tbl_base_usuariosip 
+                                SET fechacambios = :varFecha, cambios = :varCambios
+                                    WHERE 
+                                        idusuariossip = :VarIdSip')
+                            ->bindValue(':VarIdSip', $varIdSip)
+                            ->bindValue(':varFecha', date("Y-m-d"))
+                            ->bindValue(':varCambios', 1)
+                            ->execute(); 
+                }
+                       
+        }
+
+        return $this->redirect('viewusuariosencuestas');
+    }
+
+    public function actionImportarusuarios(){
+        $model = new FormUploadtigo();
+
+            if ($model->load(Yii::$app->request->post()))
+            {
+                $model->file = UploadedFile::getInstances($model, 'file');
+
+                if ($model->file && $model->validate()) {
+                    foreach ($model->file as $file) {
+                        $fecha = date('Y-m-d-h-i-s');
+                        $user = Yii::$app->user->identity->username;
+                        $name = $fecha . '-' . $user;
+                        $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                        $this->Importexcelusuarios($name);
+
+                        return $this->redirect('viewusuariosencuestas');
+                    }
+                }
+           }
+
+        return $this->renderAjax('importarusuarios',[
+            'model' => $model,
+        ]);
+    }
+
+    public function Importexcelusuarios($name){
+      $inputFile = 'categorias/' . $name . '.xlsx';
+
+      try {
+        $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+        $objPHPExcel = $objReader->load($inputFile);
+      } catch (Exception $e) {
+        die('Error');
+      }
+
+      $sheet = $objPHPExcel->getSheet(0);
+      $highestRow = $sheet->getHighestRow();
+
+      for ($row = 2; $row <= $highestRow; $row++) { 
+            
+        if ($sheet->getCell("A".$row)->getValue() != null) {
+
+          $paramsBusqueda = [':varAsesorCC' => $sheet->getCell("A".$row)->getValue()];
+
+          $varListaSip = Yii::$app->db->createCommand('
+            SELECT COUNT(bu.idusuariossip) FROM tbl_base_usuariosip bu
+              WHERE 
+                bu.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+
+          if ($varListaSip == "0") {
+            
+            $varExisteUsuario = Yii::$app->db->createCommand('
+              SELECT if(COUNT(e.id)=0,0,1) AS rta FROM tbl_evaluados e 
+                WHERE 
+                  e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+
+            $varIdEvalua = 0;
+            if ($varExisteUsuario != 0) {
+                
+              $varIdEvalua = Yii::$app->db->createCommand('
+                SELECT e.id FROM tbl_evaluados e 
+                  WHERE 
+                    e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+            }                
+
+            Yii::$app->db->createCommand()->insert('tbl_base_usuariosip',[
+                                      'usuariored' => $sheet->getCell("D".$row)->getValue(),
+                                      'usuariosip' => $sheet->getCell("C".$row)->getValue(),
+                                      'evaluados_id' => $varIdEvalua,
+                                      'identificacion' => $sheet->getCell("A".$row)->getValue(),
+                                      'comentarios' => $sheet->getCell("B".$row)->getValue(),
+                                      'existeusuario' => $varExisteUsuario,
+                                      'fechacreacion' => date("Y-m-d"),
+                                      'anulado' => 0,
+                                      'usua_id' => Yii::$app->user->identity->id,
+                                      ])->execute();
+          }
+               
+        }
+      }
+
     }
     
 

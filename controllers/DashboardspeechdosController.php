@@ -55,6 +55,42 @@ use Exception;
         ],
       ];
     }
+
+    public function actions() {
+      return [
+          'error' => [
+            'class' => 'yii\web\ErrorAction',
+          ]
+      ];
+  }
+
+  public function actionError() {
+
+      //ERROR PRESENTADO
+      $exception = Yii::$app->errorHandler->exception;
+
+      if ($exception !== null) {
+          //VARIABLES PARA LA VISTA ERROR
+          $code = $exception->statusCode;
+          $name = $exception->getName() . " (#$code)";
+          $message = $exception->getMessage();
+          //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
+          // PARA LOS ERRORES 400
+          $request = \Yii::$app->request->pathInfo;
+          if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
+                  400) {
+              //GUARDO EN EL ERROR DE SATU
+              $baseSat = new BasesatisfaccionController();
+              $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
+          }
+          //RENDERIZO LA VISTA
+          return $this->render('error', [
+                      'name' => $name,
+                      'message' => $message,
+                      'exception' => $exception,
+          ]);
+      }
+  }
     
     public function actionIndex(){
       $model = new Dashboardcategorias(); 
@@ -1411,7 +1447,7 @@ use Exception;
         if ($fechaIniCat < '2020-01-01') {
           $txtIdCatagoria1 = 2681;
         }else{
-          if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '485' || $idArbol == '2575' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3263' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436' || $idArbol == '485' || $idArbol == '3410' || $idArbol == '678') {
+          if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '485' || $idArbol == '2575' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3263' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436' || $idArbol == '485' || $idArbol == '3410' || $idArbol == '678' || $idArbol == '2919') {
             $txtIdCatagoria1 = 1105;
           }else{
             $txtIdCatagoria1 = 1114;
@@ -4075,7 +4111,7 @@ public function actionCantidadentto(){
       die(json_encode(0));
     }
 
-        public function actionSearchllamadas($varprograma,$varcodigopcrc,$varidcategoria,$varextension,$varfechasinicio,$varfechasfin,$varcantllamadas,$varfechainireal,$varfechafinreal,$varcodigos){
+        public function actionSearchllamadas($varprograma,$varcodigopcrc,$varidcategoria,$varextension,$varfechasinicio,$varfechasfin,$varcantllamadas,$varfechainireal,$varfechafinreal,$varcodigos,$varaleatorios){
           $model = new Dashboardspeechcalls();
           $txtvarprograma = $varprograma;
           $txtvarcodigopcrc = $varcodigopcrc;
@@ -4092,6 +4128,7 @@ public function actionCantidadentto(){
           $varidloginid = null;       
           $varconeto = 0;
           $vartipologia = null;
+          $varAelatorio = $varaleatorios;
 
           $paramscalls = Yii::$app->db->createCommand("select ss.idllamada from tbl_speech_servicios ss  inner join tbl_speech_parametrizar sp on ss.id_dp_clientes = sp.id_dp_clientes where sp.anulado = 0 and sp.cod_pcrc in ('$txtvarcodigopcrc') group by sp.cod_pcrc")->queryScalar(); 
 
@@ -4292,9 +4329,15 @@ public function actionCantidadentto(){
             $params1 = $txtvarprograma;
             $params2 = $txtvarextension;
             $params3 = $txtvarfechasinicio;
-            $params4 = $txtvarfechasfin;                       
+            $params4 = $txtvarfechasfin;  
+            $params5 = $txtvarcodigopcrc;
+            $params6 = $varAelatorio;                     
 
-            $dataProvider = $model->buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls);
+            $dataProvider = $model->buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls,$params5,$params6);
+
+            if ($params6 == "1") {
+              $txttxtvarcantllamadasb = $dataProvider->getTotalCount();
+            }
 
             $varcategoriass = 0;
             $varidloginid = 0;
@@ -4759,6 +4802,11 @@ public function actionCantidadentto(){
       $varidredbox = Yii::$app->request->get('idredbox');  
       $varidgrabadora = Yii::$app->request->get('idgrabadora');
       $varidconnid = Yii::$app->request->get('idconnid');
+
+      $varidcallids = Yii::$app->request->get('idcallids');
+      $varvarfechareal = Yii::$app->request->get('varfechareal');
+      $varvarcategolias = Yii::$app->request->get('varcategolias');
+
       $varResultado = null;
       $varvalencia = null;
 
@@ -4845,6 +4893,18 @@ public function actionCantidadentto(){
         $varvalencia = "No aplica";
       }      
 
+      $paramsBusquedaExtension = [':varCallid' => $varidcallids, ':varFecha' => $varvarfechareal, ':varCategoria' => $varvarcategolias, ':varAnulado' => 0];
+
+      $varextensionnum = Yii::$app->db->createCommand('
+        SELECT d.extensiones FROM tbl_dashboardspeechcalls d
+          WHERE d.anulado = :varAnulado 
+            AND d.callId = :varCallid
+              AND d.fechareal = :varFecha 
+                AND d.idcategoria = :varCategoria
+          GROUP BY d.extensiones
+      ')->bindValues($paramsBusquedaExtension)->queryScalar();
+
+
       return $this->renderAjax('viewcalls',[
         'varidlogin' => $varidlogin,
         'varidredbox' => $varidredbox,
@@ -4852,6 +4912,7 @@ public function actionCantidadentto(){
         'varResultado' => $varResultado,
         'vartexto' => $vartexto,
         'varvalencia' => $varvalencia,
+        'varextensionnum' => $varextensionnum,
         ]);
     }
 
@@ -6111,6 +6172,42 @@ public function actionCantidadentto(){
         'txtvarcallid' => $txtvarcallid,
         'txtvarhoras' => $txtvarhoras,
         'txtusuarios' => $txtusuarios,
+      ]);
+    }
+
+    public function actionViewcallids($idcallids,$varfechareal,$varconnid,$varcategolias){
+
+      $paramsBusqueda = [':varCallid' => $idcallids, ':varFecha' => $varfechareal, ':varConnid' => $varconnid, ':varCategoria' => $varcategolias, ':varAnulado' => 0];
+
+      $varextension = Yii::$app->db->createCommand('
+        SELECT d.extensiones FROM tbl_dashboardspeechcalls d
+          WHERE d.anulado = :varAnulado 
+            AND d.callId = :varCallid
+              AND d.fechareal = :varFecha AND connid = :varConnid
+                AND d.idcategoria = :varCategoria
+          GROUP BY d.extensiones
+      ')->bindValues($paramsBusqueda)->queryScalar();
+
+      $paramsBusquedaConnid = [':varConnid' => $varconnid];
+
+      $varencuestaid = Yii::$app->db->createCommand('
+        SELECT b.id FROM tbl_base_satisfaccion b 
+          WHERE 
+            b.connid = :varConnid
+      ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+      $varbuzones = Yii::$app->db->createCommand('
+        SELECT b.buzon FROM tbl_base_satisfaccion b 
+          WHERE 
+            b.connid = :varConnid
+      ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+      return $this->render('viewcallids',[
+        'varextension' => $varextension,
+        'idcallids' => $idcallids,
+        'varconnid' => $varconnid,
+        'varencuestaid' => $varencuestaid,
+        'varbuzones' => $varbuzones,
       ]);
     }
 

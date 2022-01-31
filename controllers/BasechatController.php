@@ -55,6 +55,32 @@ use yii\base\Exception;
                 ],
             ];
         }
+        public function actions() {
+			return [
+				'error' => [
+				  'class' => 'yii\web\ErrorAction',
+				]
+			];
+		}
+	
+		public function actionError() {
+	
+			//ERROR PRESENTADO
+			$exception = Yii::$app->errorHandler->exception;
+	
+			if ($exception !== null) {
+				//VARIABLES PARA LA VISTA ERROR
+				$code = $exception->statusCode;
+				$name = $exception->getName() . " (#$code)";
+				$message = $exception->getMessage();
+				//RENDERIZO LA VISTA
+				return $this->render('error', [
+							'name' => $name,
+							'message' => $message,
+							'exception' => $exception,
+				]);
+			}
+		}
         
         public function actionIndex(){
             $model = new BasechatTigo();

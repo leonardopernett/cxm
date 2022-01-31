@@ -21,23 +21,21 @@ $this->registerJs(
 Modal::begin([
     'header' => Yii::t('app', ''),
     'id' => 'modal',
-    'size' => Modal::SIZE_LARGE,
+    // 'size' => Modal::SIZE_LARGE,
     'clientOptions' => [
         'show' => true,
     ],
 ]);
 ?>
-<div class="dashboardspeech-viewcallstwo">    
+<div class="dashboardspeech-viewcallidstwo">    
 
     <?=
-    $this->render('viewcallstwo',[
-        'varidlogin' => $varidlogin,
-        'varidredbox' => $varidredbox,
-        'varidgrabadora' => $varidgrabadora,        
-        'varResultado' => $varResultado,
-        'vartexto' => $vartexto,
-        'varvalencia' => $varvalencia,
-        'varextensionnum' => $varextensionnum,
+    $this->render('viewcallidstwo',[
+        'varextension' => $varextension,
+        'idcallids' => $idcallids,
+        'varconnid' => $varconnid,
+        'varencuestaid' => $varencuestaid,
+        'varbuzones' => $varbuzones,
         ])
     ?>
 

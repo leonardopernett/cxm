@@ -259,9 +259,9 @@ $this->title = 'Dashboard Escuchar + 2.0';
             </div>
             <br>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #827DF9;"></em> Buscar llamadas: </label> 
+                        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 15px; color: #827DF9;"></em> Buscar Interacciones: </label> 
                         <?= Html::submitButton(Yii::t('app', 'Buscar'),
                             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                 'data-toggle' => 'tooltip',
@@ -270,17 +270,28 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         ?>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-globe" style="font-size: 15px; color: #827DF9;"></em> Buscar general: </label> 
-                        <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos], ['class' => 'btn btn-success',
+                        <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos, 'varaleatorios' => 0], ['class' => 'btn btn-success',
                             'style' => 'background-color: #337ab7',
                             'data-toggle' => 'tooltip',
                             'title' => 'Buscar llamadas']) 
                         ?>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-random" style="font-size: 15px; color: #827DF9;"></em> Buscar Aleatorio: </label> 
+                        <?= Html::a('Buscar',  ['searchllamadas', 'varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$txtvaridcategoria, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'varcodigos'=>$txtvarcodigos, 'varaleatorios' => 1], ['class' => 'btn btn-success',
+                            'style' => 'background-color: #337ab7',
+                            'data-toggle' => 'tooltip',
+                            'onclick' => 'varAleatorio();',
+                            'title' => 'Buscar llamadas']) 
+                        ?>
+                    </div>
+                </div>
+                <div class="col-md-2">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-backward" style="font-size: 15px; color: #827DF9;"></em> Regresar: </label> 
                         <?= Html::a('Regresar',  ['indexvoice','arbol_idV'=>$txtvarprograma,'codpcrc'=>$txtvarcodigopcrc,'parametros_idV'=>$txtvarextension,'codparametrizar'=>$txtvarcodigos,'dateini'=>$txtvarfechainireal,'datefin'=>$txtvarfechafinreal], ['class' => 'btn btn-success',
@@ -292,7 +303,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 </div>
 
                 <?php if ($txttxtvarcantllamadasb != 0) {  ?>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="card1 mb">
                         <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #827DF9;"></em> Descargar gestiones: </label> 
                         <?= Html::button('Descargar', ['value' => url::to(['descargarcalls','varprograma'=>$txtvarprograma, 'varcodigopcrc'=>$txtvarcodigopcrc, 'varidcategoria'=>$varcategoriass, 'varextension'=>$txtvarextension, 'varfechasinicio'=>$txtvarfechasinicio, 'varfechasfin'=>$txtvarfechasfin, 'varcantllamadas'=>$txtvarcantllamadas, 'varfechainireal'=>$txtvarfechainireal, 'varfechafinreal'=>$txtvarfechafinreal,'consinmotivos'=>$varidloginid]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
@@ -363,10 +374,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 'dataProvider' => $dataProvider,
                 'columns' => [
                     [
-                        'attribute' => 'Id llamada',
-                        'value' => 'callId',
-                    ],
-                    [
                         'attribute' => 'Fecha',
                         'value' => 'fechareal',
                     ],
@@ -377,23 +384,11 @@ $this->title = 'Dashboard Escuchar + 2.0';
                     [
                         'attribute' => 'redbox',
                         'value' => 'idredbox',
-                    ],  
+                    ],                   
                     [
-                        'attribute' => 'Encuesta',
-                        'value' => function($data){
-                            return $data->getsencuestas($data->connid);
-                        }
-                    ],                      
-                    [
-                        'attribute' => 'Tipologia',
+                        'attribute' => 'Tipologia Encuesta',
                         'value' => function($data){
                             return $data->getstipologia($data->connid);
-                        }
-                    ],                                         
-                    [
-                        'attribute' => 'Buzon',
-                        'value' => function($data){
-                            return $data->getsbuzon($data->connid);
                         }
                     ],                                                             
                     [
@@ -430,12 +425,44 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7;',],
                         'contentOptions' => ['style' => 'text-align: center;',],
+                        'template' => '{update}',
+                        'buttons' => 
+                                [
+                                   'update' => function ($url, $model) {
+                                       
+                                        $varsConnid = $model->connid;
+                                        if ($varsConnid == "") {
+                                            $varsConnid = 0;
+                                        }
+
+                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-paperclip" style="font-size: 17px; color: #495057; display: inline;"></i>'),'javascript:void(0)',
+                                        [
+                                            'title' => Yii::t('app', 'Datos de las Interacciones'),
+                                            'onclick' => "                       
+                                                $.ajax({
+                                                    type     :'get',
+                                                    cache    : false,
+                                                    url  : '" . Url::to(['viewcallids',
+                                                        'idcallids' => $model->callId,'varfechareal' => $model->fechareal, 'varconnid'=>$varsConnid, 'varcategolias' => $model->idcategoria]) . "',
+                                                        success  : function(response) {
+                                                            $('#ajax_result').html(response);
+                                                        }
+                                                });
+                                            return false;",
+                                        ]);
+                                                                               
+                                    }
+                                ]                              
+                    ], 
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'headerOptions' => ['style' => 'color:#337ab7;',],
+                        'contentOptions' => ['style' => 'text-align: center;',],
                         //'template' => '{view}{update}{delete}',
                         'template' => '{update}',
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
-                                       $idspeech = $model->iddashboardspeechcalls;
                                                                                 
                                             $varextensiones = $model->extension;
                                             $varservicios = $model->servicio;
@@ -444,7 +471,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
                                                 
                                             }else{
-                                                if (strlen($varextensiones) == 6 || strlen($varextensiones) == 6) {
+                                                if (strlen($varextensiones) >= 4 || strlen($varextensiones) <= 6) {
                                                     $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct sc.cod_pcrc FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
 
                                                 }else{
@@ -502,7 +529,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                             type     :'get',
                                                             cache    : false,
                                                             url  : '" . Url::to(['viewcalls',
-                                                            'idlogin' => $model->login_id, 'idredbox' => $model->idredbox, 'idgrabadora' => $model->idgrabadora, 'idconnid' => $model->connid]) . "',
+                                                            'idlogin' => $model->login_id, 'idredbox' => $model->idredbox, 'idgrabadora' => $model->idgrabadora, 'idconnid' => $model->connid, 'idcallids' => $model->callId, 'varfechareal' => $model->fechareal,'varcategolias' => $model->idcategoria]) . "',
                                                             success  : function(response) {
                                                                 $('#ajax_result').html(response);
                                                             }
@@ -525,9 +552,8 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
-                                        $idspeech = $model->iddashboardspeechcalls;
                                         $idloginid = $model->login_id;
-                                        $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT d.callId FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$idspeech')")->queryScalar();
+                                        $concatenarspeech = $model->callId.'; '.$model->fechareal;
                                         $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
                                         $txttmpejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_tmpejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
                                         $txtidejecucion = Yii::$app->db->createCommand("SELECT te.id FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();
@@ -548,7 +574,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
                                                 $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.rn IN ('$varextensiones')")->queryScalar();
                                             }else{
-                                                if (strlen($varextensiones) == 6 || strlen($varextensiones) == 6) {
+                                                if (strlen($varextensiones) >= 4 || strlen($varextensiones) <= 6) {
                                                     $varcomprobacion = Yii::$app->db->createCommand("SELECT distinct CONCAT(sc.cod_pcrc,' - ',sc.pcrc) FROM tbl_speech_parametrizar sp INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
 
                                                     $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.ext IN ('$varextensiones')")->queryScalar();
@@ -558,9 +584,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                     $varnombreservicio = Yii::$app->db->createCommand("SELECT DISTINCT ss.nameArbol FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes INNER JOIN tbl_speech_categorias sc ON sp.cod_pcrc = sc.cod_pcrc  WHERE sc.programacategoria IN ('$varservicios') AND sp.usuared IN ('$varextensiones')")->queryScalar();
                                                 }
                                             }
-                                            // $varbasesatis = $model->basesatisfaccion_id;
-                                            // $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = $varticket and basesatisfaccion_id = $varbasesatis ")->queryScalar();
-                                                    // if ($varcomprobacion == 0) {
 
                                                     if ($idbase != "") {
 
@@ -635,6 +658,59 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 return;
             }
         }
+    };
+
+    function varAleatorio(){
+        var varidcontact = document.getElementById("idcontact").value;
+        var varidindicador = document.getElementById("dashboardspeechcalls-idcategoria").value;
+        var varidvariables = document.getElementById("requester").value;
+        var varidmotivos = document.getElementById("dashboardspeechcalls-extension").value;
+        var varservicios = document.getElementById("dashboardspeechcalls-servicio").value;
+        var varrequester2 = document.getElementById("requester2").value;
+        var varidredbox = document.getElementById("dashboardspeechcalls-idredbox").value;
+            
+            if (varidcontact != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varidindicador != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varidvariables != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varidmotivos != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varservicios != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varrequester2 != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+
+            if (varidredbox != "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Para utilizar la función aleatorio, es necesario que no tenga ningún filtro seleccionado.","warning");
+                return; 
+            }
+        
     };
 
     function generarcarga(){

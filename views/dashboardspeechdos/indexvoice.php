@@ -124,7 +124,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
     if ($fechaIniCat < '2020-01-01') {
       $txtIdCatagoria1 = 2681;
     }else{
-      if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '3263' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436' || $idArbol == '485'  || $idArbol == '3410' || $idArbol == '678') {
+      if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '3263' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436' || $idArbol == '485'  || $idArbol == '3410' || $idArbol == '678' || $idArbol == '2919') {
         $txtIdCatagoria1 = 1105;
       }else{
         $txtIdCatagoria1 = 1114;
@@ -995,9 +995,16 @@ $varColorM = null;
                           if ($txtTipoFormIndicador == 0) {
                            
                             if ($txtrtaidaA != 0) {
-                              $txttotalidadA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1)).'%';
-                              $varrtacolorA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
-                              $varrtaA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                              $txttotalidadA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1)).'%';                              
+                              
+                              if ($txtNombreCategoria == "Insatisfacción") {
+                                $varrtacolorA = (round(100 - ($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                                $varrtaA = (round(100 - ($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                              }else{
+                                $varrtacolorA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                                $varrtaA = (round(($txtrtaidaA / $txtTotalLlamadas) * 100, 1));
+                              }
+
                               $cantidadAgenda = $cantidadAgenda + 1;
 
                               if ($varrtacolorA > '20') {
@@ -1018,8 +1025,15 @@ $varColorM = null;
 
                             if ($txtrtaidaC != 0) {
                               $txttotalidadC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1)).'%';
-                              $varrtacolorC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
-                              $varrtaC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                              
+                              if ($txtNombreCategoria == "Insatisfacción") {
+                                $varrtacolorC = (round(100 - ($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                                $varrtaC = (round(100 - ($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                              }else{
+                                $varrtacolorC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                                $varrtaC = (round(($txtrtaidaC / $txtTotalLlamadas) * 100, 1));
+                              }
+
                               $cantidadCanal = $cantidadCanal + 1;
 
                               if ($varrtacolorC > '20') {
@@ -1040,8 +1054,15 @@ $varColorM = null;
 
                             if ($txtrtaidaM != 0) {
                               $txttotalidadM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1)).'%';
-                              $varrtacolorM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
-                              $varrtaM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                              
+                              if ($txtNombreCategoria == "Insatisfacción") {
+                                $varrtacolorM = (round(100 - ($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                                $varrtaM = (round(100 - ($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                              }else{
+                                $varrtacolorM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                                $varrtaM = (round(($txtrtaidaM / $txtTotalLlamadas) * 100, 1));
+                              }
+
                               $cantidadMarca = $cantidadMarca + 1;
 
                               if ($varrtacolorM > '20') {
@@ -1963,8 +1984,8 @@ $varColorM = null;
     
     <div class="col-md-2">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Análisis Focalizada: </label>
-        <?= Html::a('Interacciones',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
+        <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Análisis Focalizado: </label>
+        <?= Html::a('Interacciones',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo,'varaleatorios' => 0], ['class' => 'btn btn-success',
                           'style' => 'background-color: #337ab7', 'target' => "_blank",
                           'data-toggle' => 'tooltip',
                           'title' => 'Buscar Interacciones']) 
