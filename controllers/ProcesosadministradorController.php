@@ -280,6 +280,25 @@ use app\models\FormUploadtigo;
         $dataList = 0;
         $ListaRegistro = null;
 
+        $paramsBusquedaCambiado = [':varCambiado' => 1];
+
+        $varCambiado = Yii::$app->db->createCommand('
+            SELECT COUNT(bu.idusuariossip) AS Cambiados FROM tbl_base_usuariosip bu
+                WHERE 
+                    bu.cambios = :varCambiado')->bindValues($paramsBusquedaCambiado)->queryScalar();
+
+        
+        $varNoCambiado = Yii::$app->db->createCommand('
+            SELECT COUNT(bu.idusuariossip) AS Cambiados FROM tbl_base_usuariosip bu
+                WHERE 
+                    bu.cambios IS NULL')->queryScalar();
+
+        $varTotalAsesores = Yii::$app->db->createCommand('
+            SELECT COUNT(bu.idusuariossip) AS TotalAsesores FROM tbl_base_usuariosip bu')->queryScalar();
+
+        $varFechaMax = Yii::$app->db->createCommand('
+            SELECT MAX(bu.fechacreacion) AS FechaMax FROM tbl_base_usuariosip bu')->queryScalar();
+
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
             $paramsBusquedaEval = [':varIdEval' => $model->evaluados_id];
@@ -297,6 +316,10 @@ use app\models\FormUploadtigo;
             'model' => $model,
             'dataList' => $dataList,
             'ListaRegistro' => $ListaRegistro,
+            'varCambiado' => $varCambiado,
+            'varNoCambiado' => $varNoCambiado,
+            'varTotalAsesores' => $varTotalAsesores,
+            'varFechaMax' => $varFechaMax,
         ]);
     }    
 

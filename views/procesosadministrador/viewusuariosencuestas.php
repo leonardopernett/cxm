@@ -217,7 +217,27 @@ $roles = $command->queryScalar();
                             ?>
                         </tbody>
                     </table>
-                    <br>
+
+                    <hr>
+
+                    <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #ffc034;"></em> Estadísticas...</label>
+
+                    <table id="tblDatasEstadistico" class="table table-striped table-bordered tblResDetFreed">
+                        <caption>...</caption>
+                        <thead>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Porcentaje Asesores Modificados"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Asesores Ingresados"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Última Fecha Archivo Importado"; ?></label></th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><label style="font-size: 12px;"><div id="container" class="highcharts-container" style="height: 150px; width: 250px"></div></label></td>
+                                <td class="text-center"><label style="font-size: 20px;"><?php echo $varTotalAsesores; ?></label></td>
+                                <td class="text-center"><label style="font-size: 20px;"><?php echo $varFechaMax; ?></label></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
                 </div>
             </div>
 
