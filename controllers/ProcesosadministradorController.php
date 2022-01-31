@@ -284,6 +284,55 @@ use app\models\FormUploadtigo;
         ]);
     }
 
+    public function actionActualizaprocesos(){
+        $paramsBusqueda = [':varAnulado' => 0];
+
+        $varListSip = Yii::$app->db->createCommand('
+            SELECT bu.idusuariossip, bu.usuariored, bu.usuariosip, bu.cambios FROM tbl_base_usuariosip bu
+                WHERE 
+                    bu.anulado = :varAnulado
+                GROUP BY bu.usuariosip')->bindValues($paramsBusqueda)->queryAll();
+
+        foreach ($varListSip as $key => $value) {
+            $paramsBusquedaSip = [':varUsarioSip' => $value['usuariosip']];
+            $varUsariosRed = $value['usuariored'];
+            $varIdSip = $value['idusuariossip'];
+            $varCambios = $value['cambios'];
+
+            if ($varCambios == "") {
+                $varListBaseSip = Yii::$app->db->createCommand('
+                SELECT b.id FROM tbl_base_satisfaccion b
+                    WHERE 
+                     b.agente IN (:varUsarioSip)')->bindValues($paramsBusquedaSip)->queryAll();
+
+                if (count($varListBaseSip) != 0) {
+                    foreach ($varListBaseSip as $key => $value) {
+                        Yii::$app->db->createCommand('
+                            UPDATE tbl_base_satisfaccion 
+                                SET agente = :varAgente
+                                    WHERE 
+                                        id = :VarId')
+                            ->bindValue(':VarId', $value['id'])
+                            ->bindValue(':varAgente', $varUsariosRed)
+                            ->execute(); 
+                    }
+
+                    Yii::$app->db->createCommand('
+                            UPDATE tbl_base_usuariosip 
+                                SET fechacambios = :varFecha, cambios = :varCambios
+                                    WHERE 
+                                        idusuariossip = :VarIdSip')
+                            ->bindValue(':VarIdSip', $varIdSip)
+                            ->bindValue(':varFecha', date("Y-m-d"))
+                            ->bindValue(':varCambios', 1)
+                            ->execute(); 
+                }
+            }            
+        }
+
+        return $this->redirect('viewusuariosencuestas');
+    }
+
     public function actionImportarusuarios(){
         $model = new FormUploadtigo();
 
@@ -310,51 +359,61 @@ use app\models\FormUploadtigo;
     }
 
     public function Importexcelusuarios($name){
-        $inputFile = 'categorias/' . $name . '.xlsx';
+      $inputFile = 'categorias/' . $name . '.xlsx';
 
-        try {
-            $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
-            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
-            $objPHPExcel = $objReader->load($inputFile);
-        } catch (Exception $e) {
-            die('Error');
-        }
+      try {
+        $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+        $objPHPExcel = $objReader->load($inputFile);
+      } catch (Exception $e) {
+        die('Error');
+      }
 
-        $sheet = $objPHPExcel->getSheet(0);
-        $highestRow = $sheet->getHighestRow();
+      $sheet = $objPHPExcel->getSheet(0);
+      $highestRow = $sheet->getHighestRow();
 
-        for ($row = 2; $row <= $highestRow; $row++) { 
+      for ($row = 2; $row <= $highestRow; $row++) { 
             
-            if ($sheet->getCell("A".$row)->getValue() != null) {
+        if ($sheet->getCell("A".$row)->getValue() != null) {
 
-              $paramsBusqueda = [':varAsesorCC' => $sheet->getCell("A".$row)->getValue()];
+          $paramsBusqueda = [':varAsesorCC' => $sheet->getCell("A".$row)->getValue()];
 
-              $varExisteUsuario = Yii::$app->db->createCommand('
-                  SELECT if(COUNT(e.id)=0,0,1) AS rta FROM tbl_evaluados e 
-                    WHERE 
-                        e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+          $varListaSip = Yii::$app->db->createCommand('
+            SELECT COUNT(bu.idusuariossip) FROM tbl_base_usuariosip bu
+              WHERE 
+                bu.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
 
-              $varIdEvalua = 0;
-              if ($varExisteUsuario != 0) {
-                $varIdEvalua = Yii::$app->db->createCommand('
-                  SELECT e.id FROM tbl_evaluados e 
-                    WHERE 
-                      e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
-              }                      
-        
-              Yii::$app->db->createCommand()->insert('tbl_base_usuariosip',[
-                                            'usuariored' => $sheet->getCell("D".$row)->getValue(),
-                                            'usuariosip' => $sheet->getCell("C".$row)->getValue(),
-                                            'evaluados_id' => $varIdEvalua,
-                                            'identificacion' => $sheet->getCell("A".$row)->getValue(),
-                                            'comentarios' => $sheet->getCell("B".$row)->getValue(),
-                                            'existeusuario' => $varExisteUsuario,
-                                            'fechacreacion' => date("Y-m-d"),
-                                            'anulado' => 0,
-                                            'usua_id' => Yii::$app->user->identity->id,
-                                            ])->execute(); 
-            }
+          if ($varListaSip == "0") {
+            
+            $varExisteUsuario = Yii::$app->db->createCommand('
+              SELECT if(COUNT(e.id)=0,0,1) AS rta FROM tbl_evaluados e 
+                WHERE 
+                  e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+
+            $varIdEvalua = 0;
+            if ($varExisteUsuario != 0) {
+                
+              $varIdEvalua = Yii::$app->db->createCommand('
+                SELECT e.id FROM tbl_evaluados e 
+                  WHERE 
+                    e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+            }                
+
+            Yii::$app->db->createCommand()->insert('tbl_base_usuariosip',[
+                                      'usuariored' => $sheet->getCell("D".$row)->getValue(),
+                                      'usuariosip' => $sheet->getCell("C".$row)->getValue(),
+                                      'evaluados_id' => $varIdEvalua,
+                                      'identificacion' => $sheet->getCell("A".$row)->getValue(),
+                                      'comentarios' => $sheet->getCell("B".$row)->getValue(),
+                                      'existeusuario' => $varExisteUsuario,
+                                      'fechacreacion' => date("Y-m-d"),
+                                      'anulado' => 0,
+                                      'usua_id' => Yii::$app->user->identity->id,
+                                      ])->execute();
+          }
+               
         }
+      }
 
     }
     
