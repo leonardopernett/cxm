@@ -277,11 +277,33 @@ use app\models\FormUploadtigo;
 
     public function actionViewusuariosencuestas(){
         $model = new BaseUsuariosip();
+        $dataList = 0;
+        $ListaRegistro = null;
 
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $paramsBusquedaEval = [':varIdEval' => $model->evaluados_id];
+
+            $ListaRegistro = Yii::$app->db->createCommand('
+            SELECT bu.idusuariossip, bu.comentarios, bu.identificacion, bu.usuariored, bu.usuariosip,  
+                if(bu.cambios = 1,"Si","No") AS cambios, bu.fechacambios FROM tbl_base_usuariosip bu
+                WHERE 
+                    bu.evaluados_id IN (:varIdEval)')->bindValues($paramsBusquedaEval)->queryAll();
+
+            $dataList = count($ListaRegistro);
+        }
 
         return $this->render('viewusuariosencuestas',[
             'model' => $model,
+            'dataList' => $dataList,
+            'ListaRegistro' => $ListaRegistro,
         ]);
+    }    
+
+    public function actionDeletesip($id){
+      BaseUsuariosip::findOne($id)->delete();
+
+      return $this->redirect('viewusuariosencuestas');
     }
 
     public function actionActualizaprocesos(){

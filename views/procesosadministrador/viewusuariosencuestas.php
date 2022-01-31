@@ -118,6 +118,41 @@ $roles = $command->queryScalar();
 
                 <div class="card1 mb">
                     <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #ffc034;"></em> Buscar Usuario...</label>
+                    <?=
+                        $form->field($model, 'evaluados_id')->label(Yii::t('app','Valorado'))
+                                ->widget(Select2::classname(), [
+                                    'language' => 'es',
+                                    'options' => ['placeholder' => Yii::t('app', 'Seleccionar asesor...')],
+                                    'pluginOptions' => [
+                                        'allowClear' => true,
+                                        'minimumInputLength' => 4,
+                                        'ajax' => [
+                                            'url' => \yii\helpers\Url::to(['reportes/evaluadolist']),
+                                            'dataType' => 'json',
+                                            'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                            'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                                        ],
+                                        'initSelection' => new JsExpression('function (element, callback) {
+                                                    var id=$(element).val();
+                                                    if (id !== "") {
+                                                        $.ajax("' . Url::to(['reportes/evaluadolist']) . '?id=" + id, {
+                                                            dataType: "json",
+                                                            type: "post"
+                                                        }).done(function(data) { callback(data.results[0]);});
+                                                    }
+                                                }')
+                                    ]
+                                ] 
+                        )->label('');
+                    ?> 
+
+                    <br>
+
+                    <?= Html::submitButton(Yii::t('app', 'Buscar'),
+                            ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                                'data-toggle' => 'tooltip',
+                                'title' => 'Buscar Asesor']) 
+                    ?> 
                 </div>
 
                 <br>
@@ -146,11 +181,75 @@ $roles = $command->queryScalar();
 
             <div class="col-md-8">
                 <div class="card1 mb">
-                    
+                    <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #ffc034;"></em> Datos del Asesor...</label>
+
+                    <table id="tblDatas" class="table table-striped table-bordered tblResDetFreed">
+                        <caption>...</caption>
+                        <thead>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Asesor"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Identificación"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Usuario de Red"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Usuario .Sip"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Modificado Encuestas"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Fecha Modificado"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Acción"; ?></label></th>
+                        </thead>
+                        <tbody>
+                            <?php
+
+                                if ($dataList != 0) {
+                                    
+                                    foreach ($ListaRegistro as $key => $value) {
+                                        
+                            ?>
+                                    <td><label style="font-size: 12px;"><?php echo $value['comentarios']; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo $value['identificacion']; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo $value['usuariored']; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo $value['usuariosip']; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo $value['cambios']; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo $value['fechacambios']; ?></label></td>
+                                    <td class="text-center">
+                                        <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletesip','id'=> $value['idusuariossip']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                                    </td>
+                            <?php 
+                                    }
+                                }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
         </div>
     <?php $form->end() ?>
 </div>
+
+<div id="capaSecundaria" class="capaSecundaria" style="display: none;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <label><em class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></em> Actualizar Datos...</label>
+                <div class="col-md-12">
+                    <table>
+                    <caption>...</caption>
+                        <tr>
+                            <th scope="col" class="text-center"><div class="loader"> </div></th>
+                            <th scope="col" class="text-center"><label><?= Yii::t('app', ' Actualizando los usuarios de red de los asesores en las encuestas, por favor esperar a que termine el proceso.') ?></label></th>
+                        </tr>
+                    </table>                                       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <hr>
+
+<script type="text/javascript">
+    function cargar(){
+        var varcapaIniID = document.getElementById("capaPrincipal");
+        var varcapaOneID = document.getElementById("capaSecundaria");
+        
+        varcapaIniID.style.display = 'none';
+        varcapaOneID.style.display = 'inline';
+    };
+</script>
