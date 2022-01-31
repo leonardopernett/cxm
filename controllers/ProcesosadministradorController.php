@@ -24,6 +24,8 @@ use app\models\ProcesosAdministrador;
 use app\models\Categoriafeedbacks;
 use app\models\Tipofeedbacks;
 use app\models\Dashboardpermisos;
+use app\models\BaseUsuariosip;
+use app\models\FormUploadtigo;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
@@ -32,7 +34,7 @@ use app\models\Dashboardpermisos;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios'],
             'rules' => [
               [
                 'allow' => true,
@@ -271,6 +273,81 @@ use app\models\Dashboardpermisos;
         return $this->redirect('viewescucharmas',[
             'model' => $model,
         ]);
+    }
+
+    public function actionViewusuariosencuestas(){
+        $model = new BaseUsuariosip();
+
+
+        return $this->render('viewusuariosencuestas',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionImportarusuarios(){
+        $model = new FormUploadtigo();
+
+            if ($model->load(Yii::$app->request->post()))
+            {
+                $model->file = UploadedFile::getInstances($model, 'file');
+
+                if ($model->file && $model->validate()) {
+                    foreach ($model->file as $file) {
+                        $fecha = date('Y-m-d-h-i-s');
+                        $user = Yii::$app->user->identity->username;
+                        $name = $fecha . '-' . $user;
+                        $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                        $this->Importexcelusuarios($name);
+
+                        return $this->redirect('viewusuariosencuestas');
+                    }
+                }
+           }
+
+        return $this->renderAjax('importarusuarios',[
+            'model' => $model,
+        ]);
+    }
+
+    public function Importexcelusuarios($name){
+        $inputFile = 'categorias/' . $name . '.xlsx';
+
+        try {
+            $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($inputFile);
+        } catch (Exception $e) {
+            die('Error');
+        }
+
+        $sheet = $objPHPExcel->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+
+        for ($row = 2; $row <= $highestRow; $row++) { 
+            
+            if ($sheet->getCell("A".$row)->getValue() != null) {
+
+                $paramsBusqueda = [':varAsesorCC' => $sheet->getCell("A".$row)->getValue()];
+
+                $varExisteUsuario = Yii::$app->db->createCommand('
+                  SELECT if(COUNT(e.id)=0,0,1) AS rta FROM tbl_evaluados e 
+                    WHERE 
+                        e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+
+                Yii::$app->db->createCommand()->insert('tbl_base_usuariosip',[
+                                    'usuariored' => $sheet->getCell("D".$row)->getValue(),
+                                    'usuariosip' => $sheet->getCell("C".$row)->getValue(),
+                                    'identificacion' => $sheet->getCell("A".$row)->getValue(),
+                                    'comentarios' => $sheet->getCell("B".$row)->getValue(),
+                                    'existeusuario' => $varExisteUsuario,
+                                    'fechacreacion' => date("Y-m-d"),
+                                    'anulado' => 0,
+                                    'usua_id' => Yii::$app->user->identity->id,
+                                    ])->execute(); 
+            }
+
+        }
+
     }
     
 
