@@ -55,7 +55,6 @@ $roles = $command->queryScalar();
             text-align: left;    
     }
 
-
     .col-sm-6 {
         width: 100%;
     }
@@ -77,12 +76,32 @@ $roles = $command->queryScalar();
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 
+    .loader {
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 80px;
+      height: 80px;
+      -webkit-animation: spin 2s linear infinite; /* Safari */
+      animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
 </style>
 
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css">
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
 <script src="../../js_extensions/highcharts/highcharts.js"></script>
-<script src="../../js_extensions/chart.min.js"></script>
 <script src="../../js_extensions/highcharts/exporting.js"></script>
 <header class="masthead">
   <div class="container h-100">
@@ -93,7 +112,7 @@ $roles = $command->queryScalar();
   </div>
 </header>
 <br><br>
-<div class="capaPrincipal" style="display: inline;">
+<div id="capaPrincipal" class="capaPrincipal" style="display: inline;">
     <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
         <div class="row">
 
@@ -118,7 +137,7 @@ $roles = $command->queryScalar();
                 <br>
 
                 <div class="card1 mb">
-                    <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #ffc034;"></em> Buscar Usuario...</label>
+                    <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #ffc034;"></em> Buscar Asesor...</label>
                     <?=
                         $form->field($model, 'evaluados_id')->label(Yii::t('app','Valorado'))
                                 ->widget(Select2::classname(), [
@@ -158,12 +177,12 @@ $roles = $command->queryScalar();
 
                 <br>
 
-
                 <div class="card1 mb">
                     <label style="font-size: 15px;"><em class="fas fa-spinner" style="font-size: 15px; color: #ffc034;"></em> Actualizar Procesos...</label>
                     <?= Html::a('Procesar',  ['actualizaprocesos'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
                                         'data-toggle' => 'tooltip',
+                                        "onclick" => "cargar();",
                                         'title' => 'Regresar']) 
                     ?>
                 </div>
@@ -203,6 +222,7 @@ $roles = $command->queryScalar();
                                     foreach ($ListaRegistro as $key => $value) {
                                         
                             ?>
+                                <tr>
                                     <td><label style="font-size: 12px;"><?php echo $value['comentarios']; ?></label></td>
                                     <td><label style="font-size: 12px;"><?php echo $value['identificacion']; ?></label></td>
                                     <td><label style="font-size: 12px;"><?php echo $value['usuariored']; ?></label></td>
@@ -212,6 +232,7 @@ $roles = $command->queryScalar();
                                     <td class="text-center">
                                         <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletesip','id'=> $value['idusuariossip']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                                     </td>
+                                </tr>
                             <?php 
                                     }
                                 }
@@ -226,13 +247,15 @@ $roles = $command->queryScalar();
                     <table id="tblDatasEstadistico" class="table table-striped table-bordered tblResDetFreed">
                         <caption>...</caption>
                         <thead>
-                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Porcentaje Asesores Modificados"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Asesores Modificados"; ?></label></th>
+                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Asesores No Modificados"; ?></label></th>
                             <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Cantidad Asesores Ingresados"; ?></label></th>
                             <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Última Fecha Archivo Importado"; ?></label></th>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><label style="font-size: 12px;"><div id="container" class="highcharts-container" style="height: 150px; width: 250px"></div></label></td>
+                                <td class="text-center"><label style="font-size: 20px;"><?php echo $varCambiado; ?></label></td>
+                                <td class="text-center"><label style="font-size: 20px;"><?php echo $varNoCambiado; ?></label></td>
                                 <td class="text-center"><label style="font-size: 20px;"><?php echo $varTotalAsesores; ?></label></td>
                                 <td class="text-center"><label style="font-size: 20px;"><?php echo $varFechaMax; ?></label></td>
                             </tr>
@@ -274,4 +297,5 @@ $roles = $command->queryScalar();
         varcapaIniID.style.display = 'none';
         varcapaOneID.style.display = 'inline';
     };
+
 </script>
