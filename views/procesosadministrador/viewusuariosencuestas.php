@@ -117,7 +117,19 @@ $roles = $command->queryScalar();
                 <br>
 
                 <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #ffc034;"></em> Buscar Usuario...</label>
+                </div>
+
+                <br>
+
+
+                <div class="card1 mb">
                     <label style="font-size: 15px;"><em class="fas fa-spinner" style="font-size: 15px; color: #ffc034;"></em> Actualizar Procesos...</label>
+                    <?= Html::a('Procesar',  ['actualizaprocesos'], ['class' => 'btn btn-success',
+                                        'style' => 'background-color: #337ab7',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Regresar']) 
+                    ?>
                 </div>
 
                 <br>
