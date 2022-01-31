@@ -319,9 +319,7 @@ use app\models\FormUploadtigo;
             $paramsBusquedaSip = [':varUsarioSip' => $value['usuariosip']];
             $varUsariosRed = $value['usuariored'];
             $varIdSip = $value['idusuariossip'];
-            $varCambios = $value['cambios'];
-
-            if ($varCambios == "") {
+            
                 $varListBaseSip = Yii::$app->db->createCommand('
                 SELECT b.id FROM tbl_base_satisfaccion b
                     WHERE 
@@ -349,7 +347,7 @@ use app\models\FormUploadtigo;
                             ->bindValue(':varCambios', 1)
                             ->execute(); 
                 }
-            }            
+                       
         }
 
         return $this->redirect('viewusuariosencuestas');

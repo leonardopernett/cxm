@@ -217,6 +217,7 @@ $roles = $command->queryScalar();
                             ?>
                         </tbody>
                     </table>
+                    <br>
                 </div>
             </div>
 
