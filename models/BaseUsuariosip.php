@@ -34,7 +34,7 @@ class BaseUsuariosip extends \yii\db\ActiveRecord
     {
         return [
             [['fechacambios', 'fechacreacion'], 'safe'],
-            [['cambios', 'anulado', 'usua_id', 'existeusuario'], 'integer'],
+            [['cambios', 'anulado', 'usua_id', 'existeusuario', 'evaluados_id'], 'integer'],
             [['usuariored', 'identificacion', 'usuariosip'], 'string', 'max' => 50],
             [['comentarios'], 'string', 'max' => 300],
             [['usuariored', 'identificacion', 'usuariosip', 'comentarios'], 'filter', 'filter' => function($value){
@@ -53,6 +53,7 @@ class BaseUsuariosip extends \yii\db\ActiveRecord
             'usuariored' => Yii::t('app', ''),
             'usuariosip' => Yii::t('app', ''),
             'identificacion' => Yii::t('app', ''),
+            'evaluados_id' => Yii::t('app', ''),
             'comentarios' => Yii::t('app', ''),
             'fechacambios' => Yii::t('app', ''),
             'cambios' => Yii::t('app', ''),
