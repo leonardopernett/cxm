@@ -33,8 +33,10 @@ $month = date('m');
 $year = date('Y');
 $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
-$varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-$varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+// $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+$varfechainicio = '2022-01-01';
+// $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+$varfechafin = "2022-02-05";
 
 ?>
 <style>
