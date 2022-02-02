@@ -121,18 +121,27 @@ $sessiones = Yii::$app->user->identity->id;
                     'template' => '{view}{update}{delete}',
                     'buttons' => [
                         'view' => function ($url, $model) {
+                            if ($url == "asda") {
+                                #code...
+                            }
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['view', 'id' => $model->usua_id, 'grupo_id' => $model->grupo]), [
                                         'title' => Yii::t('yii', 'view'),
                                         'data-pjax' => 'w0',
                             ]);
                         },
                                 'update' => function ($url, $model) {
+                                    if ($url == "asda") {
+                                        #code...
+                                    }
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::to(['update', 'id' => $model->usua_id, 'grupo_id' => $model->grupo]), [
                                         'title' => Yii::t('yii', 'update'),
                                         'data-pjax' => 'w0',
                             ]);
                         },
                                 'delete' => function ($url, $model) {
+                                    if ($url == "asda") {
+                                        #code...
+                                    }
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>',
                                     Url::to(['deleterel', 
                                         'usuario_id' => $model->usua_id, 'grupo_id' => $model->grupo]),

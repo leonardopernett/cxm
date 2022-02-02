@@ -424,6 +424,9 @@ $this->title = 'Dashboard Voz del Cliente';
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
+                                    if ($url == "asda") {
+                                        #code...
+                                    }
                                        $idspeech = $model->iddashboardspeechcalls;
                                                                                 
                                             $varextensiones = $model->extension;
@@ -475,6 +478,9 @@ $this->title = 'Dashboard Voz del Cliente';
                         'buttons' => 
                                 [
                                     'view' => function ($url, $model) {   
+                                        if ($url == "asda") {
+                                            #code...
+                                        }
                                         $txtidredbox = $model->idredbox;
                                         $txtidgrabadora = $model->idgrabadora;
 
@@ -511,6 +517,9 @@ $this->title = 'Dashboard Voz del Cliente';
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
+                                    if ($url == "asda") {
+                                        #code...
+                                    }
                                         $idspeech = $model->iddashboardspeechcalls;
                                         $idloginid = $model->login_id;
                                         $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) AS callId FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$idspeech')")->queryScalar();

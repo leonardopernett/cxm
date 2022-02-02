@@ -143,6 +143,9 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             'template' => '{preview}',
             'buttons' => [
                 'preview' => function ($url, $model) {
+                    if ($url == "asda") {
+                        #code...
+                    }
                     $ejecucion = \app\models\Ejecucionformularios::findOne(["id"=>$model->ejecucionformulario_id]);
                     if (isset($ejecucion->basesatisfaccion_id)) {
                         $modelBase = app\models\BaseSatisfaccion::findOne($ejecucion->basesatisfaccion_id);

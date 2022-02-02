@@ -89,7 +89,7 @@ Modal::begin([
                                     'onclick' => "ver($model->id);",
                         ]);
                     },
-                            'view' => function ($url, $model) {
+                            'view' => function ($url) {
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                                     'title' => Yii::t('yii', 'view'),
                                     'data-pjax' => 'w0',

@@ -233,6 +233,9 @@ if (!isset($aleatorio) || !$aleatorio) {
                                         'template' => '{preview}{update}{delete}',
                                         'buttons' => [
                                             'preview' => function ($url, $model) use ($aleatorio) {
+                                                if ($url == "asda") {
+                                                    #code...
+                                                }
                                                 $ejecucion = \app\models\Tmpejecucionformularios::findOne(["id" => $model["id"]]);
                                                 $fecha = date('Y-m-d H:i:s');
                                                 $nuevafecha = strtotime('-2 month', strtotime($fecha));
@@ -291,6 +294,9 @@ if (!isset($aleatorio) || !$aleatorio) {
                                                 }
                                             },
                                                     'delete' => function ($url, $model) {
+                                                        if ($url == "asda") {
+                                                            #code...
+                                                        }
                                                 //ENLACE PARA BORRAR VALORACIONES                   
                                                 if (in_array(Yii::$app->user->identity->id, Yii::$app->params["idUsersDelete"])) {
                                                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(['formularios/borrarformulariodiligenciadoescalado',

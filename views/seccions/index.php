@@ -78,6 +78,9 @@ $this->registerJs(
                 ['class' => 'yii\grid\ActionColumn',
                     'buttons' => [
                         'view' => function ($url, $model) {
+                            if ($url == "asda") {
+                                #code...
+                            }
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
                                             $url,
                                             [
@@ -85,7 +88,7 @@ $this->registerJs(
                                         'data-pjax' => 'w0',
                             ]);
                         },
-                                'update' => function ($url, $model) {
+                                'update' => function ($url) {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>',
                                             $url,
                                             [
@@ -95,6 +98,9 @@ $this->registerJs(
                             ]);
                         },
                         'delete' => function ($url, $model) {
+                            if ($url == "asda") {
+                                #code...
+                            }
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>',
                                     Url::to(['delete', 'id'=>$model->id, 'formulario_id'=>$model->formulario_id]),
                                             [

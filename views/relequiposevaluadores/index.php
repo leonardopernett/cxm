@@ -64,6 +64,9 @@ Modal::begin([
                 'template' => '{delete}',
                 'buttons' => [
                     'delete' => function ($url, $model) {
+                        if ($url == "asda") {
+                            #code...
+                        }
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>',
                         Url::to(['delete', 'id'=>$model->id, 'equipo_id'=>$model->equipo_id]),
                                         [

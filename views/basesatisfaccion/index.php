@@ -348,6 +348,9 @@ if (!isset($aleatorio) || !$aleatorio) {
                                         'template' => '{vergestion} {gestion} {block}{delete}',
                                         'buttons' => [
                                             'vergestion' => function ($url, $model) use ($aleatorio) {
+                                                    if ($url == "asda") {
+                                                        #code...
+                                                    }
                                                     $a = "";
                                                     if (Yii::$app->user->identity->isAdminSistema() && $model->estado == 'Cerrado') {
                                                         $a = Html::a('<span class="glyphicon glyphicon-pencil"></span>'
@@ -360,6 +363,9 @@ if (!isset($aleatorio) || !$aleatorio) {
 
                                             },
                                                     'gestion' => function ($url, $model) use ($aleatorio) {
+                                                        if ($url == "asda") {
+                                                            #code...
+                                                        }
                                                 if (($model->usado == 'NO' || $model->responsable == Yii::$app->user->identity->username) && $model->estado != 'Cerrado') {
                                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>'
                                                                     , Url::to(['basesatisfaccion/showformulariogestion',
@@ -369,6 +375,9 @@ if (!isset($aleatorio) || !$aleatorio) {
                                                 }
                                             },
                                                     'block' => function ($url, $model) {
+                                                        if ($url == "asda") {
+                                                            #code...
+                                                        }
                                                 if ($model->usado != 'NO') {
                                                     return '<span class="glyphicon glyphicon-asterisk" '
                                                             . 'data-toggle="tooltip" data-placement="top" '
@@ -377,6 +386,9 @@ if (!isset($aleatorio) || !$aleatorio) {
                                                     return '';
                                                 }
                                             }, 'delete' => function ($url, $model) {
+                                                if ($url == "asda") {
+                                                    #code...
+                                                }
                                                 if (in_array(Yii::$app->user->identity->id, Yii::$app->params["idUsersDelete"])) {
                                                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(['delete',
                                                                         'id' => $model["id"]]), [
