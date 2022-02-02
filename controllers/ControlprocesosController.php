@@ -208,7 +208,9 @@ class ControlprocesosController extends \yii\web\Controller {
 					|| $cCO == "124213" || $cCO == "181211" || $cCO == "181215" || $cCO == "181216" || $cCO == "181411"
 					|| $cCO == "232211" || $cCO == "232411") {
 
-					$arregloText = Yii::$app->db->createCommand("select name from tbl_arbols where dsname_full = '$pcrcTxt'")->queryScalar();
+					$arregloText = Yii::$app->db->createCommand("select name from tbl_arbols where dsname_full = :pcrcTxt")
+					->bindValue(':pcrcTxt',$pcrcTxt)
+					->queryScalar();
 
 					if ($arregloText == "122230 CLIENTE PREFERENCIAL WEB CALLBACK" || $arregloText == "122230 CLIENTE PREFERENCIAL CLIC TO CALL") {
 						$arbol_id = 10;
@@ -314,9 +316,17 @@ class ControlprocesosController extends \yii\web\Controller {
 				}
 				else
 				{
-					$contestadas = Yii::$app->get('dbTeo2')->createCommand("Select Sum(contestadas) from reporting_rgd.v_consolidado_experiencias Where centro_costos = '$cCO' AND fecha between '$rtaFecha' AND '$rtaFecha2' ")->queryScalar();	
+					$contestadas = Yii::$app->get('dbTeo2')->createCommand("Select Sum(contestadas) from reporting_rgd.v_consolidado_experiencias Where centro_costos = :cCO AND fecha between :rtaFecha AND :rtaFecha2 ")
+					->bindValue(':cCO',$cCO)
+					->bindValue(':rtaFecha',$rtaFecha)
+					->bindValue(':rtaFecha2',$rtaFecha2)
+					->queryScalar();	
 
-					$salidas = Yii::$app->get('dbTeo2')->createCommand("Select Sum(salida) from reporting_rgd.v_consolidado_experiencias Where centro_costos = '$cCO' AND fecha between '$rtaFecha' AND '$rtaFecha2' ")->queryScalar();		
+					$salidas = Yii::$app->get('dbTeo2')->createCommand("Select Sum(salida) from reporting_rgd.v_consolidado_experiencias Where centro_costos = :cCO AND fecha between :rtaFecha AND :rtaFecha2 ")
+					->bindValue(':cCO',$cCO)
+					->bindValue(':rtaFecha',$rtaFecha)
+					->bindValue(':rtaFecha2',$rtaFecha2)
+					->queryScalar();		
 
 					if ($contestadas <= $rtaNull || $salidas <= $rtaNull) {
 							$arbol_id = $rtaNull;
@@ -441,11 +451,18 @@ class ControlprocesosController extends \yii\web\Controller {
 			else
 			{
 				
-				$txtfechaCreacion = Yii::$app->db->createCommand("select distinct fechacreacion from tbl_control_params where anulado = 0 and id = $id")->queryScalar();
+				$txtfechaCreacion = Yii::$app->db->createCommand("select distinct fechacreacion from tbl_control_params where anulado = 0 and id = :id")
+				->bindValue(':id',$id)
+				->queryScalar();
 
-			    	$txtevaluados = Yii::$app->db->createCommand("select distinct evaluados_id from tbl_control_params where anulado = 0 and id = $id")->queryScalar();
+			    	$txtevaluados = Yii::$app->db->createCommand("select distinct evaluados_id from tbl_control_params where anulado = 0 and id = :id")
+					->bindValue(':id',$id)
+					->queryScalar();
 
-			    	$txtidprocesos = Yii::$app->db->createCommand("select distinct id from tbl_control_procesos where anulado = 0 and fechacreacion between '$txtfechaCreacion' and '$txtfechaCreacion' and evaluados_id = $txtevaluados")->queryScalar();
+			    	$txtidprocesos = Yii::$app->db->createCommand("select distinct id from tbl_control_procesos where anulado = 0 and fechacreacion between txtfechaCreacion and txtfechaCreacion and evaluados_id = :txtevaluados")
+					->bindValue(':txtfechaCreacion',$txtfechaCreacion)
+					->bindValue(':txtevaluados',$txtevaluados)
+					->queryScalar();
 				$model->delete();
 			    	return $this->redirect(array('update2','id'=>$txtidprocesos,'evaluados_id'=>$txtevaluados));
 			}
@@ -473,11 +490,16 @@ class ControlprocesosController extends \yii\web\Controller {
 			else
 			{
 				
-				$varidtc = Yii::$app->db->createCommand("select idtc from tbl_control_procesos where anulado = 0 and id = $varId")->queryScalar();
-				$varDate = Yii::$app->db->createCommand("select mesyear from tbl_tipocortes where anulado = 0 and idtc = $varidtc")->queryScalar();
+				$varidtc = Yii::$app->db->createCommand("select idtc from tbl_control_procesos where anulado = 0 and id = :varId")
+				->bindValue(':varId',$varId)
+				->queryScalar();
+				$varDate = Yii::$app->db->createCommand("select mesyear from tbl_tipocortes where anulado = 0 and idtc = :varidtc")
+				->bindValue(':varidtc',$varidtc)
+				->queryScalar();
 				$varEndDate = date("Y-m-t", strtotime($varDate));
 
-				Yii::$app->db->createCommand()->delete('tbl_control_params', 'anulado = :param1 AND evaluados_id = :param2 AND fechacreacion >= :param3 AND fechacreacion <= :param4', array(':param2' => $varEvaluados, ':param1'=>0, ':param3' => $varDate, ':param4' => $varEndDate))->execute();
+				Yii::$app->db->createCommand()->delete('tbl_control_params', 'anulado = :param1 AND evaluados_id = :param2 AND fechacreacion >= :param3 AND fechacreacion <= :param4', array(':param2' => $varEvaluados, ':param1'=>0, ':param3' => $varDate, ':param4' => $varEndDate))
+				->execute();
 
 				$model->delete();
 				return $this->redirect(['index']);
@@ -509,17 +531,30 @@ class ControlprocesosController extends \yii\web\Controller {
 					$table = ControlProcesos::findOne($id_params);
 
 					if ($table) {
-						$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$evaluados_id.' and id ='.$id.'')->queryScalar();
-				        	$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
-				        	$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar(); 
+						$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id = :evaluados_id and id = :id ')
+						->bindValue(':evaluados_id',$evaluados_id)
+						->bindValue(':id',$id)
+						->queryScalar();
+				        	$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like :txtcorte")
+							->bindValue(':txtcorte',$txtcorte)
+							->queryScalar();
+				        	$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like :txtcorte")
+							->bindValue(':txtcorte',$txtcorte)
+							->queryScalar(); 
 
 						$model->id = $table->id;
 						$nameVal = $table->evaluados_id;
-						$model->evaluados_id = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id ='.$nameVal.'')->queryScalar();
+						$model->evaluados_id = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id = :nameVal ')
+						->bindValue(':nameVal',$nameVal)
+						->queryScalar();
 						$model->salario = $table->salario;
 						$model->tipo_corte = $table->tipo_corte;
 						$model->responsable = $table->responsable;
-						$model->cant_valor = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = $nameVal and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
+						$model->cant_valor = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = :nameVal and fechacreacion between :fechainiC and :fechafinC")
+						->bindValue(':nameVal',$nameVal)
+						->bindValue(':fechainiC',$fechainiC)
+						->bindValue(':fechafinC',$fechafinC)
+						->queryScalar();
 						$model->Dedic_valora = $table->Dedic_valora;
 
 						$dataProvider = $model2->Obtener2($id, $evaluados_id);
@@ -560,7 +595,9 @@ class ControlprocesosController extends \yii\web\Controller {
 			$varIdusua = $evaluados_id;
 			$varCortes = null;
 			$txtProcesos = $id;
-			$varName = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id ='.$varIdusua.'')->queryScalar();
+			$varName = Yii::$app->db->createCommand('select usua_nombre from tbl_usuarios where usua_id = :varIdusua')
+			->bindValue(':varIdusua',$varIdusua)
+			->queryScalar();
 			$fechaActual = date("Y-m-d");
 			$anulados = 0;			
 
@@ -570,15 +607,23 @@ class ControlprocesosController extends \yii\web\Controller {
 	            if ($model->load($formData)) {
 	                if ($model->save()) {
 
-	                	$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$evaluados_id.' and id ='.$id.'')->queryScalar();
-				        $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
-				        $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();  
+	                	$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id = :evaluados_id and id = :id')
+						->bindValue(':evaluados_id',$evaluados_id)
+						->bindValue(':id',$id)
+						->queryScalar();
+				        $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like :txtcorte")
+						->bindValue(':txtcorte',$txtcorte)
+						->queryScalar();
+				        $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like :txtcorte")
+						->bindValue(':txtcorte',$txtcorte)
+						->queryScalar();  
 
 	                	$querys =  new Query;
 				        $querys     ->select('*')
 				                    ->from('tbl_control_params')
 				                    ->where(['tbl_control_params.anulado' => 0])
-				                    ->andwhere('tbl_control_params.evaluados_id ='.$varIdusua.'')
+				                    ->andwhere('tbl_control_params.evaluados_id = :varIdusua')
+									->addParams([':varIdusua' => $varIdusua])
 				                    ->andwhere(['between','tbl_control_params.fechacreacion',$fechainiC, $fechafinC]);                    
 				        $command = $querys->createCommand();
 				        $query = $command->queryAll();
@@ -620,17 +665,30 @@ class ControlprocesosController extends \yii\web\Controller {
 					$table = ControlProcesos::findOne($id_params);
 
 					if ($table) {
-						$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id ='.$evaluados_id.' and id ='.$id.'')->queryScalar();
-				        	$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar();
-				        	$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte'")->queryScalar(); 
+						$txtcorte = Yii::$app->db->createCommand('select tipo_corte from tbl_control_procesos where evaluados_id = :evaluados_id and id = :id ')
+						->bindValue(':evaluados_id',$evaluados_id)
+						->bindValue(':id',$id)
+						->queryScalar();
+				        	$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like :txtcorte")
+							->bindValue(':txtcorte',$txtcorte)
+							->queryScalar();
+				        	$fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like :txtcorte")
+							->bindValue(':txtcorte',$txtcorte)
+							->queryScalar(); 
 
 						$model->id = $table->id;
 						$nameVal = $table->evaluados_id;
-						$model->evaluados_id = Yii::$app->db->createCommand('select name from tbl_evaluados where id ='.$nameVal.'')->queryScalar();
+						$model->evaluados_id = Yii::$app->db->createCommand('select name from tbl_evaluados where id = :nameVal')
+						->bindValue(':nameVal',$nameVal)
+						->queryScalar();
 						$model->salario = $table->salario;
 						$model->tipo_corte = $table->tipo_corte;
 						$varCortes = $table->tipo_corte;
-						$model->cant_valor = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = $nameVal and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
+						$model->cant_valor = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = :nameVal and fechacreacion between :fechainiC and :fechafinC")
+						->bindValue(':nameVal',$nameVal)
+						->bindValue(':fechainiC',$fechainiC)
+						->bindValue(':fechafinC',$fechafinC)
+						->queryScalar();
 						$model->Dedic_valora = $table->Dedic_valora;
 
 						$dataProvider = $model2->Obtener2($id, $evaluados_id);
@@ -684,25 +742,51 @@ class ControlprocesosController extends \yii\web\Controller {
 			$var_bicontrol = Yii::$app->request->post("var_bicontrol");
 
 
-			$varnombrevalorador = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios u 	inner join tbl_control_procesos cp on u.usua_id = cp.evaluados_id where cp.id = '$var_bicontrol'")->queryScalar();
+			$varnombrevalorador = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios u 	inner join tbl_control_procesos cp on u.usua_id = cp.evaluados_id where cp.id = :var_bicontrol")
+			->bindValue(':var_bicontrol',$var_bicontrol)
+			->queryScalar();
 
-			$vardedicadion = Yii::$app->db->createCommand("select Dedic_valora from tbl_control_procesos where id = '$var_bicontrol'")->queryScalar();
+			$vardedicadion = Yii::$app->db->createCommand("select Dedic_valora from tbl_control_procesos where id = :var_bicontrol")
+			->bindValue(':var_bicontrol',$var_bicontrol)
+			->queryScalar();
 
-			 $txtcorte = Yii::$app->db->createCommand("select idtc from tbl_control_procesos where id = '$var_bicontrol'")->queryScalar();
-			 $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = '$txtcorte'")->queryScalar();
-			 $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = '$txtcorte'")->queryScalar(); 
+			 $txtcorte = Yii::$app->db->createCommand("select idtc from tbl_control_procesos where id = :var_bicontrol")
+			 ->bindValue(':var_bicontrol',$var_bicontrol)
+			 ->queryScalar();
+			 $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = :vtxtcorte")
+			 ->bindValue(':vtxtcorte',$txtcorte)
+			 ->queryScalar();
+			 $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = ':vtxtcorte'")
+			 ->bindValue(':vtxtcorte',$txtcorte)
+			 ->queryScalar(); 
 
-			 $varcantidadvalora = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where evaluados_id = '$varId' and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
+			 $varcantidadvalora = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where evaluados_id = :varId and fechacreacion between :fechainiC and :fechafinC")
+			 ->bindValue(':varId',$varId)
+			 ->bindValue(':fechainiC',$fechainiC)
+			 ->bindValue(':fechafinC',$fechafinC)
+			 ->queryScalar();
 
-			 $vartipocorte = Yii::$app->db->createCommand("select tipo_corte from tbl_control_procesos where id ='$var_bicontrol'")->queryScalar();
+			 $vartipocorte = Yii::$app->db->createCommand("select tipo_corte from tbl_control_procesos where id = :var_bicontrol")
+			 ->bindValue(':var_bicontrol',$var_bicontrol)
+			 ->queryScalar();
 
-			 $varlistparame = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = '$varId' and fechacreacion between '$fechainiC' and '$fechafinC'")->queryAll();
+			 $varlistparame = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = :varId and fechacreacion between :fechainiC and :fechafinC")
+			 ->bindValue(':varId',$varId)
+			 ->bindValue(':fechainiC',$fechainiC)
+			 ->bindValue(':fechafinC',$fechafinC)
+			 ->queryAll();
 
-			 $vardiascorte = Yii::$app->db->createCommand("select diastc from tbl_tipocortes where idtc = '$txtcorte'")->queryScalar();
+			 $vardiascorte = Yii::$app->db->createCommand("select diastc from tbl_tipocortes where idtc = :txtcorte")
+			 ->bindValue(':txtcorte',$txtcorte)
+			 ->queryScalar();
 
-			 $vardiashabiles = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '$txtcorte'")->queryScalar(); 
+			 $vardiashabiles = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos_cortes where idtc = :txtcorte")
+			 ->bindValue(':txtcorte',$txtcorte)
+			 ->queryScalar(); 
 
-			 $varlistcortes = Yii::$app->db->createCommand("select * from tbl_tipos_cortes where idtc = '$txtcorte'")->queryAll(); 
+			 $varlistcortes = Yii::$app->db->createCommand("select * from tbl_tipos_cortes where idtc = :txtcorte")
+			 ->bindValue(':txtcorte',$txtcorte)
+			 ->queryAll(); 
 
 			 $phpExc = new \PHPExcel();
 
@@ -734,7 +818,9 @@ class ControlprocesosController extends \yii\web\Controller {
 
              foreach ($varlistparame as $key => $value) {
              	$vararbolid = $value['arbol_id'];
-             	$varnombre = Yii::$app->db->createCommand("select name from tbl_arbols where id = $vararbolid")->queryScalar(); 
+             	$varnombre = Yii::$app->db->createCommand("select name from tbl_arbols where id = :vararbolid")
+				 ->bindValue(':vararbolid',$vararbolid)
+				 ->queryScalar(); 
 
              	$phpExc->getActiveSheet()->setCellValue('A'.$numCell, $varnombre);
                  $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['dimensions']);
@@ -837,8 +923,12 @@ class ControlprocesosController extends \yii\web\Controller {
 						$model->diastc = $table->diastc;
 						$model->fechainiciotc = $table->fechainiciotc;
 						$model->fechafintc = $table->fechafintc;
-						$model->cantdiastc = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '.$idtc.'')->queryScalar();
-						$numdias = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '.$idtc.'')->queryScalar();
+						$model->cantdiastc = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = :idtc')
+						->bindValue(':idtc',$idtc)
+						->queryScalar();
+						$numdias = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = :idtc')
+						->bindValue(':idtc',$idtc)
+						->queryScalar();
 
 						$dataProvider = $model2->ObtenerCorte2($idtc);
 					}
@@ -877,11 +967,18 @@ class ControlprocesosController extends \yii\web\Controller {
 			if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			    Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!')); 
 
-			    $txtfechaCreacion = Yii::$app->db->createCommand("select distinct fechacreacion from tbl_control_params where anulado = 0 and id = $id")->queryScalar();
+			    $txtfechaCreacion = Yii::$app->db->createCommand("select distinct fechacreacion from tbl_control_params where anulado = 0 and id = :id")
+				->bindValue(':id',$id)
+				->queryScalar();
 
-			    $txtevaluados = Yii::$app->db->createCommand("select distinct evaluados_id from tbl_control_params where anulado = 0 and id = $id")->queryScalar();
+			    $txtevaluados = Yii::$app->db->createCommand("select distinct evaluados_id from tbl_control_params where anulado = 0 and id = :id")
+				->bindValue(':id',$id)
+				->queryScalar();
 
-			    $txtidprocesos = Yii::$app->db->createCommand("select distinct id from tbl_control_procesos where anulado = 0 and fechacreacion between '$txtfechaCreacion' and '$txtfechaCreacion' and evaluados_id = $txtevaluados")->queryScalar();
+			    $txtidprocesos = Yii::$app->db->createCommand("select distinct id from tbl_control_procesos where anulado = 0 and fechacreacion between :txtfechaCreacion and :txtfechaCreacion and evaluados_id = :txtevaluados")
+				->bindValue(':txtfechaCreacion',$txtfechaCreacion)
+				->bindValue(':txtevaluados',$txtevaluados)
+				->queryScalar();
 
 			    return $this->redirect(array('update2','id'=>$txtidprocesos,'evaluados_id'=>$txtevaluados));            
 			    
@@ -970,7 +1067,10 @@ class ControlprocesosController extends \yii\web\Controller {
 					break;
 			}  
 
-			$data =  Yii::$app->db->createCommand("select * from tbl_control_procesos where responsable = $sessiones and anulado = 0 and tipo_corte like '%$txtMes%'")->queryAll();
+			$data =  Yii::$app->db->createCommand("select * from tbl_control_procesos where responsable = :sessiones and anulado = 0 and tipo_corte like '%:txtMes%'")
+			->bindValue(':sessiones',$sessiones)
+			->bindValue(':txtMes',$txtMes)
+			->queryAll();
 
 			$varFecha = date("Y-m-d");
 
@@ -999,16 +1099,28 @@ class ControlprocesosController extends \yii\web\Controller {
                 
 
                         if ($txtWord1 == true) {
-                            $varRespuesta = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where tipocortetc like '%$varBancolombia%' and anulado = 0")->queryScalar(); 
-                            $varIdCorte = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where tipocortetc like '%$varBancolombia%' and anulado = 0")->queryScalar(); 
+                            $varRespuesta = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where tipocortetc like '%:varBancolombia%' and anulado = 0")
+							->bindValue(':varBancolombia',$varBancolombia)
+							->queryScalar(); 
+                            $varIdCorte = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where tipocortetc like '%:varBancolombia%' and anulado = 0")
+							->bindValue(':varBancolombia',$varBancolombia)
+							->queryScalar(); 
                         }else{
                             if ($txtWord2 == true) {
-                                $varRespuesta = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where tipocortetc like '%$varDirectv%' and anulado = 0")->queryScalar(); 
-                                $varIdCorte = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where tipocortetc like '%$varDirectv%' and anulado = 0")->queryScalar(); 
+                                $varRespuesta = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where tipocortetc like '%:varDirectv%' and anulado = 0")
+								->bindValue(':varDirectv',$varDirectv)
+								->queryScalar(); 
+                                $varIdCorte = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where tipocortetc like '%:varDirectv%' and anulado = 0")
+								->bindValue(':varDirectv',$varDirectv)
+								->queryScalar(); 
                             }else{
                                 if ($txtWord3 == true) {
-                                    $varRespuesta = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where tipocortetc like '%$varGeneral%' and anulado = 0")->queryScalar(); 
-                                    $varIdCorte = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where tipocortetc like '%$varGeneral%' and anulado = 0")->queryScalar();
+                                    $varRespuesta = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where tipocortetc like '%:varGeneral%' and anulado = 0")
+									->bindValue(':varGeneral',$varGeneral)
+									->queryScalar(); 
+                                    $varIdCorte = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where tipocortetc like '%:varGeneral%' and anulado = 0")
+									->bindValue(':varGeneral',$varGeneral)
+									->queryScalar();
                                 }
                             }
                         }
@@ -1025,11 +1137,19 @@ class ControlprocesosController extends \yii\web\Controller {
 				        			'anulado' => 0,
 				        		])->execute();
 
-				$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$varTipoCorte'")->queryScalar();
-				$fechafinC = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$varTipoCorte'")->queryScalar(); 
+				$fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like :varTipoCorte")
+				->bindValue(':varTipoCorte',$varTipoCorte)
+				->queryScalar();
+				$fechafinC = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like :varTipoCorte")
+				->bindValue(':varTipoCorte',$varTipoCorte)
+				->queryScalar(); 
 
 
-				$query = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = $varEvaluadosId and anulado = 0 and fechacreacion between '$fechainiC' and '$fechafinC'")->queryAll();
+				$query = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = :varEvaluadosId and anulado = 0 and fechacreacion between :fechainiC and :fechafinC")
+				->bindValue(':varEvaluadosId',$varEvaluadosId)
+				->bindValue(':fechainiC',$fechainiC)
+				->bindValue(':fechafinC',$fechafinC)
+				->queryAll();
 
 
 					   	foreach ($query as $key => $value) {
@@ -1069,7 +1189,8 @@ class ControlprocesosController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_nombre LIKE "%' . $search . '%"')
+                            ->where('usua_nombre LIKE "%":search"%"')
+							->addParams([':search'=>$search])
                             ->orderBy('usua_nombre')
                             ->asArray()
                             ->all();
@@ -1079,7 +1200,8 @@ class ControlprocesosController extends \yii\web\Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_usuario = "' . $id . '"')
+                            ->where('usua_usuario = :id')
+							->addParams([':id'=>$id])
                             ->asArray()
                             ->all();
 
@@ -1103,7 +1225,9 @@ class ControlprocesosController extends \yii\web\Controller {
          		$varsolicitante_id = $model->solicitante_id;
          		$varfechacreacion = $model->fechacreacion;
 
-         		$varCoordinador = Yii::$app->db->createCommand("select distinct responsable from tbl_control_procesos where evaluados_id = $varevaluados_id and responsable is not null")->queryScalar();
+         		$varCoordinador = Yii::$app->db->createCommand("select distinct responsable from tbl_control_procesos where evaluados_id = :varevaluados_id and responsable is not null")
+				->bindValue(':varevaluados_id',$varevaluados_id)
+				->queryScalar();
 
          		Yii::$app->db->createCommand()->insert('tbl_control_desvincular',[
                                 'solicitante_id' => $varsolicitante_id,
@@ -1141,12 +1265,16 @@ class ControlprocesosController extends \yii\web\Controller {
 			$txtvarlider = Yii::$app->request->get("txtvarlider");
 			$txtrta = 0;
 
-			$varResponsable = Yii::$app->db->createCommand("select distinct responsable from tbl_control_procesos where evaluados_id = $txtvarid")->queryScalar();
+			$varResponsable = Yii::$app->db->createCommand("select distinct responsable from tbl_control_procesos where evaluados_id = :txtvarid")
+			->bindValue(':txtvarid',$txtvarid)
+			->queryScalar();
 
 			if ($varResponsable == $txtvarlider) {
 				$txtrta = 2;
 			}else{
-				$varCountRespon = Yii::$app->db->createCommand("select count(responsable) from tbl_control_procesos where evaluados_id = $txtvarid")->queryScalar();
+				$varCountRespon = Yii::$app->db->createCommand("select count(responsable) from tbl_control_procesos where evaluados_id = :txtvarid")
+				->bindValue(':txtvarid',$txtvarid)
+				->queryScalar();
 
 				if ($varCountRespon != 0) {
 					$txtrta = 1;
@@ -1161,7 +1289,9 @@ class ControlprocesosController extends \yii\web\Controller {
 		public function actionLideruser(){
 			$txtvarid = Yii::$app->request->get("txtvarid");
 
-			$txtrta = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_nombre from tbl_usuarios inner join tbl_control_procesos on tbl_usuarios.usua_id = tbl_control_procesos.responsable where 		tbl_control_procesos.evaluados_id = $txtvarid")->queryScalar();
+			$txtrta = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_nombre from tbl_usuarios inner join tbl_control_procesos on tbl_usuarios.usua_id = tbl_control_procesos.responsable where 		tbl_control_procesos.evaluados_id = :txtvarid")
+			->bindValue(':txtvarid',$txtvarid)
+			->queryScalar();
 
 			die(json_encode($txtrta));
 		}
@@ -1169,7 +1299,9 @@ class ControlprocesosController extends \yii\web\Controller {
 		public function actionBuscaridtc(){
 			$txtvarTipoCort2 = Yii::$app->request->get("txtvarTipoCort2");
 
-			$txtrta = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where anulado = 0 and idtc = $txtvarTipoCort2")->queryScalar();
+			$txtrta = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where anulado = 0 and idtc = :txtvarTipoCort2")
+			->bindValue(':txtvarTipoCort2',$txtvarTipoCort2)
+			->queryScalar();
 
 			die(json_encode($txtrta));
 		}
@@ -1209,19 +1341,31 @@ class ControlprocesosController extends \yii\web\Controller {
             $txtGrupo = 0;
             $txtGrupoNombre = 0;
 
-			$txtrta = Yii::$app->db->createCommand("select count(evaluados_id) from tbl_control_procesos where anulado = 0 and responsable = $txtvarCoordi")->queryScalar();
+			$txtrta = Yii::$app->db->createCommand("select count(evaluados_id) from tbl_control_procesos where anulado = 0 and responsable = :txtvarCoordi")
+			->bindValue(':txtvarCoordi',$txtvarCoordi)
+			->queryScalar();
 
 			if ($txtrta != 0) {
-				$txtIdtc = Yii::$app->db->createCommand("select count(idtc) from tbl_control_procesos where anulado = 0 and responsable = $txtvarCoordi")->queryScalar();
+				$txtIdtc = Yii::$app->db->createCommand("select count(idtc) from tbl_control_procesos where anulado = 0 and responsable = :txtvarCoordi")
+				->bindValue(':txtvarCoordi',$txtvarCoordi)
+				->queryScalar();
 
 				if ($txtIdtc >= 1) {
-					$txtGrupo = Yii::$app->db->createCommand("select idgrupocorte from tbl_tipocortes t inner join tbl_control_procesos cp on t.idtc = cp.idtc where cp.anulado = 0 and cp.responsable = $txtvarCoordi")->queryScalar();
+					$txtGrupo = Yii::$app->db->createCommand("select idgrupocorte from tbl_tipocortes t inner join tbl_control_procesos cp on t.idtc = cp.idtc where cp.anulado = 0 and cp.responsable = :txtvarCoordi")
+					->bindValue(':txtvarCoordi',$txtvarCoordi)
+					->queryScalar();
 
-					$txtGrupoNombre = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where anulado = 0 and idgrupocorte = $txtGrupo")->queryScalar();
+					$txtGrupoNombre = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where anulado = 0 and idgrupocorte = :txtGrupo")
+					->bindValue(':txtGrupo',$txtGrupo)
+					->queryScalar();
 
-					$txtvaridtc = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where anulado = 0 and idgrupocorte = $txtGrupo")->queryScalar();
+					$txtvaridtc = Yii::$app->db->createCommand("select idtc from tbl_tipocortes where anulado = 0 and idgrupocorte = :txtGrupo")
+					->bindValue(':txtGrupo',$txtGrupo)
+					->queryScalar();
 
-					$varListProcesos = Yii::$app->db->createCommand("select * from tbl_control_procesos where anulado = 0 and responsable = $txtvarCoordi")->queryAll();
+					$varListProcesos = Yii::$app->db->createCommand("select * from tbl_control_procesos where anulado = 0 and responsable = :txtvarCoordi")
+					->bindValue(':txtvarCoordi',$txtvarCoordi)
+					->queryAll();
 
 					foreach ($varListProcesos as $key => $value) {
 						Yii::$app->db->createCommand()->insert('tbl_control_procesos',[
@@ -1237,7 +1381,9 @@ class ControlprocesosController extends \yii\web\Controller {
                             ])->execute(); 
 
 						$txtevaluado = $value['evaluados_id'];
-						$varListParams = Yii::$app->db->createCommand("select * from tbl_control_params where anulado = 0 and evaluados_id = $txtevaluado")->queryAll();
+						$varListParams = Yii::$app->db->createCommand("select * from tbl_control_params where anulado = 0 and evaluados_id = :txtevaluado")
+						->bindValue(':txtevaluado',$txtevaluado)
+						->queryAll();
 
 						foreach ($varListParams as $key => $value) {
 							Yii::$app->db->createCommand()->insert('tbl_control_params',[
@@ -1330,7 +1476,10 @@ class ControlprocesosController extends \yii\web\Controller {
 			$varid = $id;
 			$varselectfecha = $varfecha;
 
-			$varsoluciones = Yii::$app->db->createCommand("select id from tbl_control_procesos where anulado = 0 and evaluados_id = $varevaluadoId and fechacreacion = '$varselectfecha'")->queryScalar();			
+			$varsoluciones = Yii::$app->db->createCommand("select id from tbl_control_procesos where anulado = 0 and evaluados_id = :varevaluadoId and fechacreacion = :varselectfecha")
+			->bindValue(':varevaluadoId',$varevaluadoId)
+			->bindValue(':varselectfecha',$varselectfecha)
+			->queryScalar();			
 
 
 			$model = $this->findModelspeech($varid);
@@ -1358,7 +1507,9 @@ class ControlprocesosController extends \yii\web\Controller {
 	    	$varevaluadoId = $evaluadoId;
 			$varid = $id;
 
-	    	Yii::$app->db->createCommand("delete from tbl_control_focalizada where idcontrolfocalizada = $varid")->execute();
+	    	Yii::$app->db->createCommand("delete from tbl_control_focalizada where idcontrolfocalizada = :varid")
+			->bindValue(':varid',$varid)
+			->execute();
 
 	    	return $this->redirect(array('create','usua_id'=>$varevaluadoId));
 	    }
@@ -1368,9 +1519,14 @@ class ControlprocesosController extends \yii\web\Controller {
 			$varid = $id;
 			$varselectfecha = $varfecha;
 
-			$varsoluciones = Yii::$app->db->createCommand("select id from tbl_control_procesos where anulado = 0 and evaluados_id = $varevaluadoId and fechacreacion = '$varselectfecha'")->queryScalar();	
+			$varsoluciones = Yii::$app->db->createCommand("select id from tbl_control_procesos where anulado = 0 and evaluados_id = :varevaluadoId and fechacreacion = :varselectfecha")
+			->bindValue(':varevaluadoId',$varevaluadoId)
+			->bindValue(':varselectfecha',$varselectfecha)
+			->queryScalar();	
 
-	    	Yii::$app->db->createCommand("delete from tbl_control_focalizada where idcontrolfocalizada = $varid")->execute();
+	    	Yii::$app->db->createCommand("delete from tbl_control_focalizada where idcontrolfocalizada = :varid")
+			->bindValue(':varid',$varid)
+			->execute();
 
 	    	return $this->redirect(array('update2','id'=>$varsoluciones,'evaluados_id'=>$varevaluadoId));
 	    }

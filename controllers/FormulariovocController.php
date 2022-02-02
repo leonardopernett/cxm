@@ -155,12 +155,22 @@ use app\models\FormvocBloque1;
             $txtId = Yii::$app->request->post('id');
 
             if ($txtId) {
-                $txtNombre = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias    where anulado = 0 and idspeechcategoria = $txtId")->queryScalar();
-                $txtCodpcrc = Yii::$app->db->createCommand("select distinct cod_pcrc from tbl_speech_categorias    where anulado = 0 and idspeechcategoria = $txtId")->queryScalar();
-                $txtControl = Yii::$app->db->createCommand("select count(idcategoria) from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and tipoindicador in ('$txtNombre') and cod_pcrc in ('$txtCodpcrc')")->queryScalar();                
+                $txtNombre = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias    where anulado = 0 and idspeechcategoria = :txtId")
+                ->bindValue(':txtId',$txtId)
+                ->queryScalar();
+                $txtCodpcrc = Yii::$app->db->createCommand("select distinct cod_pcrc from tbl_speech_categorias    where anulado = 0 and idspeechcategoria = :txtId")
+                ->bindValue(':txtId',$txtId)
+                ->queryScalar();
+                $txtControl = Yii::$app->db->createCommand("select count(idcategoria) from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and tipoindicador in (:txtNombre) and cod_pcrc in (:txtCodpcrc)")
+                ->bindValue(':txtNombre',$txtNombre)
+                ->bindValue(':txtCodpcrc',$txtCodpcrc)
+                ->queryScalar();                
 
                 if ($txtControl > 0) {
-                    $varListaPcrc =  Yii::$app->db->createCommand("select idspeechcategoria, nombre from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and tipoindicador in ('$txtNombre') and cod_pcrc in ('$txtCodpcrc')")->queryAll();
+                    $varListaPcrc =  Yii::$app->db->createCommand("select idspeechcategoria, nombre from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and tipoindicador in (:txtNombre) and cod_pcrc in (:txtCodpcrc)")
+                    ->bindValue(':txtNombre',$txtNombre)
+                    ->bindValue(':txtCodpcrc',$txtCodpcrc)
+                    ->queryAll();
                     
                     foreach ($varListaPcrc as $key => $value) {
                         echo "<option value='" . $value['idspeechcategoria']. "'>" . $value['nombre'] . "</option>";
@@ -223,9 +233,13 @@ use app\models\FormvocBloque1;
             $txtvaloradorID = Yii::$app->user->identity->id;
 
             $txtPcrc = Yii::$app->request->get("txtPcrc");
-            $txtCXM = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios where anulado = 0 and id_dp_clientes = $txtPcrc")->queryScalar();
+            $txtCXM = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios where anulado = 0 and id_dp_clientes = :txtPcrc")
+            ->bindValue(':txtPcrc',$txtPcrc)
+            ->queryScalar();
             $txtcodpcrc = Yii::$app->request->get("txtcodpcrc");
-            $txtNompcrc = Yii::$app->db->createCommand("select distinct pcrc from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtcodpcrc')")->queryScalar();
+            $txtNompcrc = Yii::$app->db->createCommand("select distinct pcrc from tbl_speech_categorias where anulado = 0 and cod_pcrc in (:txtcodpcrc)")
+            ->bindValue(':txtcodpcrc',$txtcodpcrc)
+            ->queryScalar();
             $txtIDExtSp = Yii::$app->request->get("txtIDExtSp");
             $txtFechaHora = Yii::$app->request->get("txtFechaHora");
             $txtUsuAge = Yii::$app->request->get("txtUsuAge");
@@ -239,7 +253,14 @@ use app\models\FormvocBloque1;
             $txtVRta = null;
             $txthola = 0;
 
-            $txtVRta = Yii::$app->db->createCommand("select count(idpcrccxm) from tbl_formvoc_bloque1 where anulado = 0 and idpcrccxm =  $txtCXM and idpcrcspeech = $txtPcrc and cod_pcrc in ('$txtcodpcrc') and idvalorado = $txtValoraddo and fechahora in ('$txtFechaHora') and fechacreacion = '$txtvFechacreacion'")->queryScalar();
+            $txtVRta = Yii::$app->db->createCommand("select count(idpcrccxm) from tbl_formvoc_bloque1 where anulado = 0 and idpcrccxm =  :txtCXM and idpcrcspeech = :txtPcrc and cod_pcrc in (:txtcodpcrc) and idvalorado = :txtValoraddo and fechahora in (:txtFechaHora) and fechacreacion = :txtvFechacreacion")
+            ->bindValue(':txtCXM',$txtCXM)
+            ->bindValue(':txtPcrc',$txtPcrc)
+            ->bindValue(':txtcodpcrc',$txtcodpcrc)
+            ->bindValue(':txtValoraddo',$txtValoraddo)
+            ->bindValue(':txtFechaHora',$txtFechaHora)
+            ->bindValue(':txtvFechacreacion',$txtvFechacreacion)
+            ->queryScalar();
 
             if ($txtVRta == 0 || $txtVRta == null) {
                 Yii::$app->db->createCommand()->insert('tbl_formvoc_bloque1',[
@@ -267,7 +288,9 @@ use app\models\FormvocBloque1;
         public function actionCreatefocalizadapart2(){
 
             $txtPcrc = Yii::$app->request->get("txtPcrc");
-            $txtCXM = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios where anulado = 0 and id_dp_clientes = $txtPcrc")->queryScalar();
+            $txtCXM = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios where anulado = 0 and id_dp_clientes = :txtPcrc")
+            ->bindValue(':txtPcrc',$txtPcrc)
+            ->queryScalar();
             $txtcodpcrc = Yii::$app->request->get("txtcodpcrc");
             $txtFechaHora = Yii::$app->request->get("txtFechaHora");
             $txtValoraddo = Yii::$app->request->get("txtValoraddo");
@@ -293,7 +316,14 @@ use app\models\FormvocBloque1;
             $txtanulado = 0;
             $txthola = 0;
 
-             $txtvIdBloque = Yii::$app->db->createCommand("select idformvocbloque1 from tbl_formvoc_bloque1 where anulado = 0 and idpcrccxm =  $txtCXM and idpcrcspeech = $txtPcrc and cod_pcrc in ('$txtcodpcrc') and idvalorado = $txtValoraddo and fechahora in ('$txtFechaHora') and fechacreacion = '$txtvFechacreacion'")->queryScalar();
+             $txtvIdBloque = Yii::$app->db->createCommand("select idformvocbloque1 from tbl_formvoc_bloque1 where anulado = 0 and idpcrccxm =  :txtCXM and idpcrcspeech = :txtPcrc and cod_pcrc in (:txtcodpcrc) and idvalorado = :txtValoraddo and fechahora in (:txtFechaHora) and fechacreacion = :txtvFechacreacion")
+             ->bindValue(':txtCXM',$txtCXM)
+             ->bindValue(':txtPcrc',$txtPcrc)
+             ->bindValue(':txtcodpcrc',$txtcodpcrc)
+             ->bindValue(':txtValoraddo',$txtValoraddo)
+             ->bindValue(':txtFechaHora',$txtFechaHora)
+             ->bindValue(':txtvFechacreacion',$txtvFechacreacion)
+             ->queryScalar();
 
             Yii::$app->db->createCommand()->insert('tbl_formvoc_bloque2',[
                                 'idformvocbloque1' => $txtvIdBloque,
@@ -348,98 +378,170 @@ use app\models\FormvocBloque1;
 
         public function actionFormlistavoc($id){
             // Primer Bloque
-            $txtNombreArbol = Yii::$app->db->createCommand("select a.name from tbl_arbols a inner join tbl_formvoc_bloque1 fb1 on a.id = fb1.idpcrccxm where fb1.idformvocbloque1 = $id and fb1.anulado = 0")->queryScalar();
-            $varcodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_formvoc_bloque1 where idformvocbloque1 = $id and anulado = 0")->queryScalar();
-            $varpcrc = Yii::$app->db->createCommand("select pcrc from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $txtNombreArbol = Yii::$app->db->createCommand("select a.name from tbl_arbols a inner join tbl_formvoc_bloque1 fb1 on a.id = fb1.idpcrccxm where fb1.idformvocbloque1 = :id and fb1.anulado = 0")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $varcodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_formvoc_bloque1 where idformvocbloque1 = :id and anulado = 0")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $varpcrc = Yii::$app->db->createCommand("select pcrc from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             $txtServicio = $varcodpcrc.' - '.$varpcrc;
-            $txtNombreValorado = Yii::$app->db->createCommand("select name from tbl_evaluados inner join tbl_formvoc_bloque1 on tbl_evaluados.id = tbl_formvoc_bloque1.idvalorado where         tbl_formvoc_bloque1.idformvocbloque1 =  $id")->queryScalar();
-            $txtSpeech = Yii::$app->db->createCommand("select idspeech from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
-            $txtFechaHor = Yii::$app->db->createCommand("select fechahora from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
-            $txtUsers = Yii::$app->db->createCommand("select usuarioagente from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
-            $txtextension = Yii::$app->db->createCommand("select extension from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
-            $txtDuraciones = Yii::$app->db->createCommand("select duracions from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
-            $txtDimensiones = Yii::$app->db->createCommand("select dimensionform from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $txtNombreValorado = Yii::$app->db->createCommand("select name from tbl_evaluados inner join tbl_formvoc_bloque1 on tbl_evaluados.id = tbl_formvoc_bloque1.idvalorado where         tbl_formvoc_bloque1.idformvocbloque1 =  :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $txtSpeech = Yii::$app->db->createCommand("select idspeech from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $txtFechaHor = Yii::$app->db->createCommand("select fechahora from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $txtUsers = Yii::$app->db->createCommand("select usuarioagente from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $txtextension = Yii::$app->db->createCommand("select extension from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $txtDuraciones = Yii::$app->db->createCommand("select duracions from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $txtDimensiones = Yii::$app->db->createCommand("select dimensionform from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
 
             // Segundo Bloque
-            $varIndicador = Yii::$app->db->createCommand("select indicadorglobal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
-            $txtIndicador = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varIndicador")->queryScalar();
+            $varIndicador = Yii::$app->db->createCommand("select indicadorglobal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $txtIndicador = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = :varIndicador")
+            ->bindValue(':varIndicador',$varIndicador)
+            ->queryScalar();
 
-            $varVariable = Yii::$app->db->createCommand("select variable from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
-            $txtVariable = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varVariable")->queryScalar();
+            $varVariable = Yii::$app->db->createCommand("select variable from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
+            $txtVariable = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = :varVariable")
+            ->bindValue(':varVariable',$varVariable)
+            ->queryScalar();
 
-            $txtatributos = Yii::$app->db->createCommand("select fa.acciones from tbl_formvoc_acciones fa inner join tbl_formvoc_bloque2 fb2  on fa.idformvocacciones = fb2.responsabilidad where fb2.anulado = 0 and fb2.idformvocbloque1 = $id")->queryScalar();
+            $txtatributos = Yii::$app->db->createCommand("select fa.acciones from tbl_formvoc_acciones fa inner join tbl_formvoc_bloque2 fb2  on fa.idformvocacciones = fb2.responsabilidad where fb2.anulado = 0 and fb2.idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($txtatributos == null) {
                 $txtatributos = "Sin registros";
             }
 
-            $varMotivo = Yii::$app->db->createCommand("select moticocontacto from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varMotivo = Yii::$app->db->createCommand("select moticocontacto from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varMotivo != null) {
-                $txtMotivos = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varMotivo")->queryScalar();
+                $txtMotivos = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = :varMotivo")
+                ->bindValue(':varMotivo',$varMotivo)
+                ->queryScalar();
             }else{
                 $txtMotivos = "Sin registro";
             }            
 
-            $varDetalle = Yii::$app->db->createCommand("select motivollamadas from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varDetalle = Yii::$app->db->createCommand("select motivollamadas from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varDetalle != null) {
-                $txtDetalles = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varDetalle")->queryScalar();
+                $txtDetalles = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = :varDetalle")
+                ->bindValue(':varDetalle',$varDetalle)
+                ->queryScalar();
             }else{
                 $txtDetalles = "Sin registro";
             }
             
-            $varCategoria = Yii::$app->db->createCommand("select categoria from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varCategoria = Yii::$app->db->createCommand("select categoria from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varCategoria == 1) {
                 $txtCategoria = "Si esta categorizada";
             }else{
-                $txtCategoria = Yii::$app->db->createCommand("select ajustecategoia from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+                $txtCategoria = Yii::$app->db->createCommand("select ajustecategoia from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+                ->bindValue(':id',$id)
+                ->queryScalar();
             }
 
-            $txtPorcentaje = Yii::$app->db->createCommand("select indicadorvar from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $txtPorcentaje = Yii::$app->db->createCommand("select indicadorvar from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
 
-            $varAgente = Yii::$app->db->createCommand("select agente from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varAgente = Yii::$app->db->createCommand("select agente from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varAgente != null) {
-                $txtAgente = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varAgente")->queryScalar();
+                $txtAgente = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varAgente")
+                ->bindValue(':varAgente',$varAgente)
+                ->queryScalar();
             }else{
                 $txtAgente = "Sin registro";
             }  
 
-            $varMarca = Yii::$app->db->createCommand("select marca from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varMarca = Yii::$app->db->createCommand("select marca from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varMarca != null) {
-                $txtMarca = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varMarca")->queryScalar();
+                $txtMarca = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varMarca")
+                ->bindValue(':varMarca',$varMarca)
+                ->queryScalar();
             }else{
                 $txtMarca = "Sin registro";
             } 
 
-            $varCanal = Yii::$app->db->createCommand("select canal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varCanal = Yii::$app->db->createCommand("select canal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varCanal != null) {
-                $txtCanal = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varCanal")->queryScalar();
+                $txtCanal = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varCanal")
+                ->bindValue(':varCanal',$varCanal)
+                ->queryScalar();
             }else{
                 $txtCanal = "Sin registro";
             }  
 
-            $varMapa1 = Yii::$app->db->createCommand("select mapa1 from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varMapa1 = Yii::$app->db->createCommand("select mapa1 from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varMapa1 != null) {
-                $txtMapa1 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varMapa1")->queryScalar();
+                $txtMapa1 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varMapa1")
+                ->bindValue(':varMapa1',$varMapa1)
+                ->queryScalar();
             }else{
                 $txtMapa1 = "Sin registro";
             }
 
-            $varMapa2 = Yii::$app->db->createCommand("select mapa2 from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varMapa2 = Yii::$app->db->createCommand("select mapa2 from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varMapa2 != null) {
-                $txtMapa2 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varMapa2")->queryScalar();
+                $txtMapa2 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varMapa2")
+                ->bindValue(':varMapa2',$varMapa2)
+                ->queryScalar();
             }else{
                 $txtMapa2 = "Sin registro";
             }
 
-            $varMapa3 = Yii::$app->db->createCommand("select interesados from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $varMapa3 = Yii::$app->db->createCommand("select interesados from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
             if ($varMapa3 != null) {
-                $txtMapa3 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varMapa3")->queryScalar();
+                $txtMapa3 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varMapa3")
+                ->bindValue(':varMapa3',$varMapa3)
+                ->queryScalar();
             }else{
                 $txtMapa3 = "Sin registro";
             }
 
-            $txtDetalleCuali = Yii::$app->db->createCommand("select detalle from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar();
+            $txtDetalleCuali = Yii::$app->db->createCommand("select detalle from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar();
 
-            $txtPuntodDolor = Yii::$app->db->createCommand("select puntodolor from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $id")->queryScalar(); 
+            $txtPuntodDolor = Yii::$app->db->createCommand("select puntodolor from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :id")
+            ->bindValue(':id',$id)
+            ->queryScalar(); 
             if ($txtPuntodDolor == null) {
                 $txtPuntodDolor = "Sin registro";
             }
@@ -482,99 +584,171 @@ use app\models\FormvocBloque1;
 
         public function actionDownloadparameters($idform){
             // Primer Bloque
-            $txtNombreArbol = Yii::$app->db->createCommand("select a.name from tbl_arbols a inner join tbl_formvoc_bloque1 fb1 on a.id = fb1.idpcrccxm where fb1.idformvocbloque1 = $idform and fb1.anulado = 0")->queryScalar();
-            $varcodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_formvoc_bloque1 where idformvocbloque1 = $idform and anulado = 0")->queryScalar();
-            $varpcrc = Yii::$app->db->createCommand("select pcrc from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $txtNombreArbol = Yii::$app->db->createCommand("select a.name from tbl_arbols a inner join tbl_formvoc_bloque1 fb1 on a.id = fb1.idpcrccxm where fb1.idformvocbloque1 = :idform and fb1.anulado = 0")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $varcodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_formvoc_bloque1 where idformvocbloque1 = :idform and anulado = 0")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $varpcrc = Yii::$app->db->createCommand("select pcrc from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             $txtServicio = $varcodpcrc.' - '.$varpcrc;
-            $txtNombreValorador = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios u inner join tbl_formvoc_bloque1 fb on u.usua_id = fb.usua_id where fb.idformvocbloque1 = $idform")->queryScalar();
-            $txtNombreValorado = Yii::$app->db->createCommand("select u.name from tbl_evaluados u inner join tbl_formvoc_bloque1 fb on u.id = fb.idvalorado where fb.idformvocbloque1 = $idform")->queryScalar();
-            $txtSpeech = Yii::$app->db->createCommand("select idspeech from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtFechaHor = Yii::$app->db->createCommand("select fechahora from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtUsers = Yii::$app->db->createCommand("select usuarioagente from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtextension = Yii::$app->db->createCommand("select extension from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtDuraciones = Yii::$app->db->createCommand("select duracions from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtDimensiones = Yii::$app->db->createCommand("select dimensionform from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-	    $txtfechavalora = Yii::$app->db->createCommand("select fechacreacion from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $txtNombreValorador = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios u inner join tbl_formvoc_bloque1 fb on u.usua_id = fb.usua_id where fb.idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtNombreValorado = Yii::$app->db->createCommand("select u.name from tbl_evaluados u inner join tbl_formvoc_bloque1 fb on u.id = fb.idvalorado where fb.idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtSpeech = Yii::$app->db->createCommand("select idspeech from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtFechaHor = Yii::$app->db->createCommand("select fechahora from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtUsers = Yii::$app->db->createCommand("select usuarioagente from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtextension = Yii::$app->db->createCommand("select extension from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtDuraciones = Yii::$app->db->createCommand("select duracions from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtDimensiones = Yii::$app->db->createCommand("select dimensionform from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+	    $txtfechavalora = Yii::$app->db->createCommand("select fechacreacion from tbl_formvoc_bloque1 where anulado = 0 and idformvocbloque1 = :idform")
+        ->bindValue(':idform',$idform)
+        ->queryScalar();
 
 
             // Segundo Bloque
-            $varIndicador = Yii::$app->db->createCommand("select indicadorglobal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtIndicador = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varIndicador")->queryScalar();
+            $varIndicador = Yii::$app->db->createCommand("select indicadorglobal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtIndicador = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = :varIndicador")
+            ->bindValue(':varIndicador',$varIndicador)
+            ->queryScalar();
 
-            $varVariable = Yii::$app->db->createCommand("select variable from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
-            $txtVariable = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varVariable")->queryScalar();
+            $varVariable = Yii::$app->db->createCommand("select variable from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
+            $txtVariable = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = :varVariable")
+            ->bindValue(':varVariable',$varVariable)
+            ->queryScalar();
 
-            $txtatributos = Yii::$app->db->createCommand("select puntodolor from tbl_formvoc_bloque2 fb2  where fb2.anulado = 0 and fb2.idformvocbloque1 = $idform")->queryScalar();
+            $txtatributos = Yii::$app->db->createCommand("select puntodolor from tbl_formvoc_bloque2 fb2  where fb2.anulado = 0 and fb2.idformvocbloque1 = :idform")->queryScalar();
             if ($txtatributos == null) {
                 $txtatributos = "Sin registros";
             }
 
-            $varMotivo = Yii::$app->db->createCommand("select moticocontacto from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varMotivo = Yii::$app->db->createCommand("select moticocontacto from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varMotivo != null) {
-                $txtMotivos = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varMotivo")->queryScalar();
+                $txtMotivos = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = :varMotivo")
+                ->bindValue(':varMotivo',$varMotivo)
+                ->queryScalar();
             }else{
                 $txtMotivos = "Sin registro";
             }            
 
-            $varDetalle = Yii::$app->db->createCommand("select motivollamadas from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varDetalle = Yii::$app->db->createCommand("select motivollamadas from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varDetalle != null) {
-                $txtDetalles = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = $varDetalle")->queryScalar();
+                $txtDetalles = Yii::$app->db->createCommand("select nombre from tbl_speech_categorias where anulado = 0 and idspeechcategoria = :varDetalle")
+                ->bindValue(':varDetalle',$varDetalle)
+                ->queryScalar();
             }else{
                 $txtDetalles = "Sin registro";
             }
             
-            $varCategoria = Yii::$app->db->createCommand("select categoria from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varCategoria = Yii::$app->db->createCommand("select categoria from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varCategoria == 1) {
                 $txtCategoria = "Si esta categorizada";
             }else{
-                $txtCategoria = Yii::$app->db->createCommand("select ajustecategoia from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+                $txtCategoria = Yii::$app->db->createCommand("select ajustecategoia from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+                ->bindValue(':idform',$idform)
+                ->queryScalar();
             }
 
-            $txtPorcentaje = Yii::$app->db->createCommand("select indicadorvar from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $txtPorcentaje = Yii::$app->db->createCommand("select indicadorvar from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
 
-            $varAgente = Yii::$app->db->createCommand("select agente from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varAgente = Yii::$app->db->createCommand("select agente from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varAgente != null) {
-                $txtAgente = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varAgente")->queryScalar();
+                $txtAgente = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varAgente")
+                ->bindValue(':varAgente',$varAgente)
+                ->queryScalar();
             }else{
                 $txtAgente = "Sin registro";
             }  
 
-            $varMarca = Yii::$app->db->createCommand("select marca from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varMarca = Yii::$app->db->createCommand("select marca from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varMarca != null) {
-                $txtMarca = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varMarca")->queryScalar();
+                $txtMarca = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varMarca")
+                ->bindValue(':varMarca',$varMarca)
+                ->queryScalar();
             }else{
                 $txtMarca = "Sin registro";
             } 
 
-            $varCanal = Yii::$app->db->createCommand("select canal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varCanal = Yii::$app->db->createCommand("select canal from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varCanal != null) {
-                $txtCanal = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varCanal")->queryScalar();
+                $txtCanal = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varCanal")
+                ->bindValue(':varCanal',$varCanal)
+                ->queryScalar();
             }else{
                 $txtCanal = "Sin registro";
             }  
 
-            $varMapa1 = Yii::$app->db->createCommand("select mapa1 from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varMapa1 = Yii::$app->db->createCommand("select mapa1 from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varMapa1 != null) {
-                $txtMapa1 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varMapa1")->queryScalar();
+                $txtMapa1 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varMapa1")
+                ->bindValue(':varMapa1',$varMapa1)
+                ->queryScalar();
             }else{
                 $txtMapa1 = "Sin registro";
             }
 
-            $varMapa2 = Yii::$app->db->createCommand("select mapa2 from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varMapa2 = Yii::$app->db->createCommand("select mapa2 from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varMapa2 != null) {
-                $txtMapa2 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varMapa2")->queryScalar();
+                $txtMapa2 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varMapa2")
+                ->bindValue(':varMapa2',$varMapa2)
+                ->queryScalar();
             }else{
                 $txtMapa2 = "Sin registro";
             }
 
-            $varMapa3 = Yii::$app->db->createCommand("select interesados from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $varMapa3 = Yii::$app->db->createCommand("select interesados from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
             if ($varMapa3 != null) {
-                $txtMapa3 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = $varMapa3")->queryScalar();
+                $txtMapa3 = Yii::$app->db->createCommand("select acciones from tbl_formvoc_acciones where idformvocacciones = :varMapa3")
+                ->bindValue(':varMapa3',$varMapa3)
+                ->queryScalar();
             }else{
                 $txtMapa3 = "Sin registro";
             }
 
-            $txtDetalleCuali = Yii::$app->db->createCommand("select detalle from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = $idform")->queryScalar();
+            $txtDetalleCuali = Yii::$app->db->createCommand("select detalle from tbl_formvoc_bloque2 where anulado = 0 and idformvocbloque1 = :idform")
+            ->bindValue(':idform',$idform)
+            ->queryScalar();
 
             return $this->renderAjax('downloadparameters',[
                 'idform' => $idform,

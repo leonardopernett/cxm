@@ -11,6 +11,7 @@ use yii\data\ArrayDataProvider;
 use app\models\Alertas;
 use app\models\UploadForm;
 
+
 class AlertasController extends Controller
 {
 
@@ -207,9 +208,10 @@ class AlertasController extends Controller
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_arbols c', 'b.arbol_id = c.id')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            ->andWhere($xfecha)
-                            ->andWhere($xpcrc)
-                            ->andWhere($xresponsable)
+                            ->andWhere(':xfecha')
+                            ->andWhere(':xpcrc')
+                            ->andWhere(':xresponsable')
+                            ->addParams([':xfecha'=>$xfecha,':xpcrc'=>$xpcrc,':xresponsable'=>$xresponsable])
                             ->groupBy('a.valorador, a.pcrc')
                             ->all();
 
@@ -219,9 +221,10 @@ class AlertasController extends Controller
                             ->from('tbl_alertascx a')
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_arbols c', 'b.arbol_id = c.id')
-                            ->andWhere($xfecha)
-                            ->andWhere($xpcrc)
-                            ->andWhere($xresponsable)
+                            ->andWhere(':xfecha')
+                            ->andWhere(':xpcrc')
+                            ->andWhere(':xresponsable')
+                            ->addParams([':xfecha'=>$xfecha,':xpcrc'=>$xpcrc,':xresponsable'=>$xresponsable])
                             ->groupBy('a.pcrc')
                             ->all();
 
@@ -230,9 +233,10 @@ class AlertasController extends Controller
                             ->from('tbl_alertascx a')
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            ->andWhere($xfecha)
-                            ->andWhere($xpcrc)
-                            ->andWhere($xresponsable)
+                            ->andWhere(':xfecha')
+                            ->andWhere(':xpcrc')
+                            ->andWhere(':xresponsable')
+                            ->addParams([':xfecha'=>$xfecha,':xpcrc'=>$xpcrc,':xresponsable'=>$xresponsable])
 			    ->orderBy('fecha DESC')
                             ->all();
 
@@ -259,7 +263,8 @@ class AlertasController extends Controller
                             ->from('tbl_alertascx a')
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            ->andWhere('a.id ="' . $id . '"')
+                            ->andWhere('a.id = :id')
+                            ->addParams([':id'=>$id])
                             ->all();
 
 

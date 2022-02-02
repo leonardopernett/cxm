@@ -117,7 +117,8 @@ use Exception;
                               'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
                   ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                               'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
-                  ->where('tbl_usuarios.usua_id = '.$sesiones.'');                    
+                  ->where('tbl_usuarios.usua_id = :sesiones')
+                  ->addParams([':sesiones'=>$sesiones]);                    
       $command = $rol->createCommand();
       $roles = $command->queryScalar();
 
@@ -144,10 +145,12 @@ use Exception;
           LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
             pc.id_dp_clientes = dc.id_dp_cliente
           WHERE
-            dc.id_dp_cliente IN ($varidclientes)
+            dc.id_dp_cliente IN (:varidclientes)
               AND dp.anulado = 0
             GROUP BY dp.hv_idpersonal
-          ")->queryAll();
+          ")
+          ->bindValue(':varidclientes',$varidclientes)
+          ->queryAll();
         }else{
           $dataProviderhv = Yii::$app->db->createCommand("
           SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrategico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
@@ -188,10 +191,12 @@ use Exception;
         LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
           pc.id_dp_clientes = dc.id_dp_cliente
         WHERE 
-          dc.id_dp_cliente IN ($varidclientes)
+          dc.id_dp_cliente IN (:varidclientes)
             AND dp.anulado = 0
           GROUP BY dp.hv_idpersonal
-        ")->queryAll();
+        ")
+        ->bindValue(':varidclientes',$varidclientes)
+        ->queryAll();
 
       }
 
@@ -1260,7 +1265,7 @@ use Exception;
     }
 
     public function actionEditcomplementos($id,$idsinfo){
-      $model = HojavidaDatacomplementos::findOne($id);;
+      $model = HojavidaDatacomplementos::findOne($id);
 
       if ($model->load(Yii::$app->request->post()) && $model->save()) {
         
@@ -1433,7 +1438,8 @@ use Exception;
                               'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
                   ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                               'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
-                  ->where('tbl_usuarios.usua_id = '.$sessiones.'');                    
+                  ->where('tbl_usuarios.usua_id = :sessiones')
+                  ->addParams([':sessiones'=>$sessiones]);                    
         $command = $rol->createCommand();
         $roles = $command->queryScalar();
 

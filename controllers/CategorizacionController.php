@@ -85,10 +85,10 @@ use app\models\ControlVolumenxclientedq;
       $data = Yii::$app->request->post();
       if ($model2->load($data)) {
         $varMesyear = $model2->mesyear;
+        $paramsBusqueda = [':v.varMesyear'=>$varMesyear];
+        $varCateI = Yii::$app->db->createCommand("select valorcategorizar from tbl_speech_categorizar where anulado = 0 and idcategorias = 1 and mesyear = :v.varMesyear")->bindValues($paramsBusqueda)->queryScalar();
 
-        $varCateI = Yii::$app->db->createCommand("select valorcategorizar from tbl_speech_categorizar where anulado = 0 and idcategorias = 1 and mesyear = '$varMesyear'")->queryScalar();
-
-        $varCateM = Yii::$app->db->createCommand("select valorcategorizar from tbl_speech_categorizar where anulado = 0 and idcategorias = 2 and mesyear = '$varMesyear'")->queryScalar(); 
+        $varCateM = Yii::$app->db->createCommand("select valorcategorizar from tbl_speech_categorizar where anulado = 0 and idcategorias = 2 and mesyear = v.varMesyear")->bindValues($paramsBusqueda)->queryScalar(); 
       }
 
       return $this->render('index',[
@@ -112,16 +112,19 @@ use app\models\ControlVolumenxclientedq;
       $varFechaF = date('Y-m-d',strtotime($varFechaI."+ 1 day"));
       $varFechaFin = $varFechaF.' 05:00:00';
 
-      $varCountMesI = Yii::$app->db->createCommand("select count(mesyear) from tbl_speech_categorizar where mesyear = '$varMesyear' and idcategorias = 1")->queryScalar();   
+      $paramsBusqueda = [':v.varMesyear'=>$varMesyear,':v.varFechaInicio'=>$varFechaInicio,':v.varFechaFin'=>$varFechaFin];
+      $varCountMesI = Yii::$app->db->createCommand("select count(mesyear) from tbl_speech_categorizar where mesyear = :v.varMesyear and idcategorias = 1")->bindValues($paramsBusqueda)->queryScalar();   
 
       if ($varCountMesI == 0) {
         
-        $txtServicios = Yii::$app->db->createCommand("select servicio from tbl_dashboardspeechcalls where anulado = 0 and fechallamada between '$varFechaInicio' and '$varFechaFin' group by servicio")->queryAll();
+        $txtServicios = Yii::$app->db->createCommand("select servicio from tbl_dashboardspeechcalls where anulado = 0 and fechallamada between :v.varFechaInicio and :v.varFechaFin group by servicio")->bindValues($paramsBusqueda)->queryAll();
 
         foreach ($txtServicios as $value) {
           $varServicio = $value['servicio'];
+          $paramsBusqueda = [':v.varServicio'=>$varServicio,':v.varFechaInicio'=>$varFechaInicio,':v.varFechaFin'=>$varFechaFin];
 
-          $txtVarCallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varServicio') and fechallamada between '$varFechaInicio' and '$varFechaFin' group by callid")->queryAll();
+          $txtVarCallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in (':v.varServicio') and fechallamada between :v.varFechaInicio and :v.varFechaFin  group by callid")->bindValues($paramsBusqueda)
+          ->queryAll();
 
           $arralistCallid = array();
           foreach ($txtVarCallid as $value) {
@@ -129,14 +132,17 @@ use app\models\ControlVolumenxclientedq;
           }
           $arraycallids = implode(", ", $arralistCallid);
 
-          $txtVarIndicadores = Yii::$app->db->createCommand("select distinct idcategoria from tbl_speech_categorias where anulado = 0 and idcategorias = 1 and programacategoria in ('$varServicio') and idcategoria is not null")->queryAll();
+          $txtVarIndicadores = Yii::$app->db->createCommand("select distinct idcategoria from tbl_speech_categorias where anulado = 0 and idcategorias = 1 and programacategoria in (':v.varServicio') and idcategoria is not null")->bindValues($paramsBusqueda)
+          ->queryAll();
 
           $varcountindicador = 0;
           $arraylistindicador = array();
           foreach ($txtVarIndicadores as $value) {
             $vararrayid = $value['idcategoria'];
 
-            $varconteoindicador = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varServicio') and fechallamada between '$varFechaInicio' and '$varFechaFin' and idcategoria = $vararrayid and callid in ($arraycallids)")->queryScalar();
+            $paramsBusqueda = [':v.varServicio'=>$varServicio,':v.varFechaInicio'=>$varFechaInicio,':v.varFechaFin'=>$varFechaFin,':v.vararrayid'=>$vararrayid,':a.arraycallids'=>$arraycallids];
+            $varconteoindicador = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in (':v.varServicio') and fechallamada between :v.varFechaInicio and :v.varFechaFin and idcategoria = :v.vararrayid and callid in (:a.arraycallids)")->bindValues($paramsBusqueda)
+            ->queryScalar();
 
               if ($varconteoindicador > 0) {
                 $varcountindicador = 1;
@@ -166,16 +172,20 @@ use app\models\ControlVolumenxclientedq;
 
 
 
-      $varCountMesM = Yii::$app->db->createCommand("select count(mesyear) from tbl_speech_categorizar where mesyear = '$varMesyear' and idcategorias = 2")->queryScalar();  
+      $varCountMesM = Yii::$app->db->createCommand("select count(mesyear) from tbl_speech_categorizar where mesyear = :v.varMesyear and idcategorias = 2")->bindValues($paramsBusqueda)
+      ->queryScalar();  
 
       if ($varCountMesM == 0) {
         
-        $txtServicios = Yii::$app->db->createCommand("select servicio from tbl_dashboardspeechcalls where anulado = 0 and fechallamada between '$varFechaInicio' and '$varFechaFin' group by servicio")->queryAll();
+        
+        $txtServicios = Yii::$app->db->createCommand("select servicio from tbl_dashboardspeechcalls where anulado = 0 and fechallamada between :v.varFechaInicio and :v.varFechaFin group by servicio")->queryAll();
 
         foreach ($txtServicios as $key => $value) {
           $varServicio = $value['servicio'];
+          $paramsBusqueda = [':v.varServicio'=>$varServicio,':v.varFechaInicio'=>$varFechaInicio,':v.varFechaFin'=>$varFechaFin];
 
-          $txtVarCallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varServicio') and fechallamada between '$varFechaInicio' and '$varFechaFin' group by callid")->queryAll();
+          $txtVarCallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in (':v.varServicio') and fechallamada between :v.varFechaInicio and :v.varFechaFin group by callid")->bindValues($paramsBusqueda)
+          ->queryAll();
 
           $arralistCallid = array();
           foreach ($txtVarCallid as $key => $value) {
@@ -183,14 +193,16 @@ use app\models\ControlVolumenxclientedq;
           }
           $arraycallids = implode(", ", $arralistCallid);
 
-          $txtVarMotivos = Yii::$app->db->createCommand("select distinct idcategoria from tbl_speech_categorias where anulado = 0 and idcategorias = 3 and programacategoria in ('$varServicio') and idcategoria is not null")->queryAll();
+          $txtVarMotivos = Yii::$app->db->createCommand("select distinct idcategoria from tbl_speech_categorias where anulado = 0 and idcategorias = 3 and programacategoria in (':v.varServicio') and idcategoria is not null")->bindValues($paramsBusqueda)
+          ->queryAll();
 
           $varcountmotivo = 0;
           $arraylistmotivoc = array();
           foreach ($txtVarMotivos as $key => $value) {
             $vararrayidm = $value['idcategoria'];
 
-            $varconteomotivo = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varServicio') and fechallamada between '$varFechaInicio' and '$varFechaFin' and idcategoria = $vararrayidm and callid in ($arraycallids)")->queryScalar();
+            $paramsBusqueda = [':v.varServicio'=>$varServicio,':v.varFechaInicio'=>$varFechaInicio,':v.varFechaFin'=>$varFechaFin,':v.vararrayidm'=>$vararrayidm,':a.arraycallids'=>$arraycallids];
+            $varconteomotivo = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in (':v.varServicio') and fechallamada between :v.varFechaInicio and :v.varFechaFin and idcategoria = :v.vararrayidm and callid in (:a.arraycallids)")->bindValues($paramsBusqueda)->queryScalar();
 
             if ($varconteomotivo > 0) {
               $varcountmotivo = 1;

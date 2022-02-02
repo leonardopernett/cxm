@@ -163,13 +163,14 @@ class AdmincortesController extends \yii\web\Controller {
 			$datoscontrol = Yii::$app->request->get('formData');
 
 			$id = $datoscontrol["Tiposdecortes"]["idtc"];
+			$paramsBusqueda = [':idtc'=>$id];
 
-			$nombrecortes = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$nombredias = Yii::$app->db->createCommand("select diastc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$fechai = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$fechaf = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$days = Yii::$app->db->createCommand("select cantdiastc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$incluir = Yii::$app->db->createCommand("select incluir from tbl_tipocortes where idtc = '$id'")->queryScalar();
+			$nombrecortes = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$nombredias = Yii::$app->db->createCommand("select diastc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$fechai = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$fechaf = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$days = Yii::$app->db->createCommand("select cantdiastc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$incluir = Yii::$app->db->createCommand("select incluir from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
 
 
 			$formData = Yii::$app->request->post();		
@@ -203,19 +204,21 @@ class AdmincortesController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionCreatecortes3(){
+			
 			$model = new Tipocortes();
 			$model1 = new Tiposdecortes();			
 
 			$datoscontrol = Yii::$app->request->get('formData');
 
 			$id = $datoscontrol["Tiposdecortes"]["idtc"];
+			$paramsBusqueda = [':idtc'=>$id];
 
-			$nombrecortes = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$nombredias = Yii::$app->db->createCommand("select diastc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$fechai = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$fechaf = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$days = Yii::$app->db->createCommand("select cantdiastc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$incluir = Yii::$app->db->createCommand("select incluir from tbl_tipocortes where idtc = '$id'")->queryScalar();
+			$nombrecortes = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$nombredias = Yii::$app->db->createCommand("select diastc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$fechai = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$fechaf = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$days = Yii::$app->db->createCommand("select cantdiastc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$incluir = Yii::$app->db->createCommand("select incluir from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
 
 
 			$formData = Yii::$app->request->post();		
@@ -255,13 +258,14 @@ class AdmincortesController extends \yii\web\Controller {
 			$datoscontrol = Yii::$app->request->get('formData');
 
 			$id = $datoscontrol["Tiposdecortes"]["idtc"];
+			$paramsBusqueda = [':idtc'=>$id];
 
-			$nombrecortes = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$nombredias = Yii::$app->db->createCommand("select diastc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$fechai = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$fechaf = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$days = Yii::$app->db->createCommand("select cantdiastc from tbl_tipocortes where idtc = '$id'")->queryScalar();
-			$incluir = Yii::$app->db->createCommand("select incluir from tbl_tipocortes where idtc = '$id'")->queryScalar();
+			$nombrecortes = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$nombredias = Yii::$app->db->createCommand("select diastc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$fechai = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$fechaf = Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$days = Yii::$app->db->createCommand("select cantdiastc from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
+			$incluir = Yii::$app->db->createCommand("select incluir from tbl_tipocortes where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
 
 
 			$formData = Yii::$app->request->post();		
@@ -312,7 +316,8 @@ class AdmincortesController extends \yii\web\Controller {
 						$model->diastc = $table->diastc;
 						$model->fechainiciotc = $table->fechainiciotc;
 						$model->fechafintc = $table->fechafintc;
-						$numdias = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '.$idtc.'')->queryScalar();
+						$paramsBusqueda = [':idtc'=>$idtc];
+						$numdias = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos_cortes  where idtc = :idtc")->bindValues($paramsBusqueda)->queryScalar();
 
 						$dataProvider = $model2->ObtenerCorte2($idtc);
 					}
@@ -397,8 +402,8 @@ class AdmincortesController extends \yii\web\Controller {
 						$model->cantdiastc = $table->cantdiastc;
 						$model->fechacreacion = $table->fechacreacion;
 						$model->incluir = $table->incluir;
-
-						$nameVal = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '.$idtc.'')->queryScalar();
+						$paramsBusqueda = [':idtc'=>$idtc];
+						$nameVal = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = :idtc')->bindValues($paramsBusqueda)->queryScalar();
 
 						$dataProvider = $model2->ObtenerCorte2($idtc);
 					}

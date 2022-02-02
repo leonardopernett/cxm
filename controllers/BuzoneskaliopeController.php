@@ -104,7 +104,8 @@ use app\models\Formularios;
           $varFechaInicio = $varfecha[0];
           $varFechaFin = date('Y-m-d',strtotime($varfecha[2]));
 
-          $vardataList = Yii::$app->db->createCommand("select b.ano, b.mes, b.dia, b.pcrc, a.name, b.buzon, b.created, b.connid from tbl_arbols a inner join tbl_base_satisfaccion b on a.id = b.pcrc where b.pcrc = $varpcrc and b.created between '$varFechaInicio 00:00:00' and '$varFechaFin 23:59:59' and b.buzon like '%/srv/www/htdocs/qa_managementv2/web/buzones_qa/%'")->queryAll();
+          $paramsBusqueda = [':v.varpcrc'=>$varpcrc,':v.varFechaInicio'=>$varFechaInicio,':v.varFechaFin'=>$varFechaFin];
+          $vardataList = Yii::$app->db->createCommand("select b.ano, b.mes, b.dia, b.pcrc, a.name, b.buzon, b.created, b.connid from tbl_arbols a inner join tbl_base_satisfaccion b on a.id = b.pcrc where b.pcrc = :v.varpcrc and b.created between ':v.varFechaInicio 00:00:00' and ':v.varFechaFin 23:59:59' and b.buzon like '%/srv/www/htdocs/qa_managementv2/web/buzones_qa/%'")->bindValues($paramsBusqueda)->queryAll();
 
           foreach ($vardataList as $key => $value) {
             $varbuzones = $value['buzon'];
@@ -133,7 +134,9 @@ use app\models\Formularios;
       $txtvarnombrepcrc = Yii::$app->request->get("txtvarnombrepcrc");
       $txtvarrest = Yii::$app->request->get("txtvarrest");
 
-      $varrta = Yii::$app->db->createCommand("select count(1) from tbl_buzones_kaliope bk where bk.arbol_id = $txtvarpcrc and bk.ruta_inicio = '$txtvaridruta' and anulado = 0")->queryScalar();
+      $paramsBusqueda = [':t.txtvarpcrc'=>$txtvarpcrc,':t.txtvaridruta'=>$txtvaridruta];
+      $varrta = Yii::$app->db->createCommand("select count(1) from tbl_buzones_kaliope bk where bk.arbol_id = :t.txtvarpcrc and bk.ruta_inicio = :t.txtvaridruta and anulado = 0")->bindValues($paramsBusqueda)
+      ->queryScalar();
 
       if ($varrta == 0) {
         Yii::$app->db->createCommand()->insert('tbl_buzones_kaliope',[
@@ -211,8 +214,10 @@ use app\models\Formularios;
       $fecha_actual = date("Y-m-d");
 
       $varfechainicial = date("Y-m-d",strtotime($fecha_actual."- 1 days")); 
+      
 
-      $varlista = Yii::$app->db->createCommand("SELECT b.connid, b.created FROM tbl_base_satisfaccion b WHERE b.fecha_satu BETWEEN '$varfechainicial 00:00:00' AND '$varfechainicial 23:59:59' AND b.connid IS NOT NULL AND b.tipo_inbox IN ('ALEATORIO','NORMAL') ")->queryAll();
+      $paramsBusqueda = [':v.varfechainicial'=>$varfechainicial];
+      $varlista = Yii::$app->db->createCommand("SELECT b.connid, b.created FROM tbl_base_satisfaccion b WHERE b.fecha_satu BETWEEN ':v.varfechainicial 00:00:00' AND ':v.varfechainicial 23:59:59' AND b.connid IS NOT NULL AND b.tipo_inbox IN ('ALEATORIO','NORMAL') ")->bindValues($paramsBusqueda)->queryAll();
 
       foreach ($varlista as $key => $value) {
         $txtvaridruta = $value['connid'];
