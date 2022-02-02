@@ -36,7 +36,7 @@ class FileValidator extends Validator
      * @var boolean whether to check file type (extension) with mime-type. If extension produced by
      * file mime-type check differs from uploaded file extension, the file will be considered as invalid.
      */
-    public $checkExtensionByMimeType = true;
+    public $checkExtensionByMimeType = false;
     /**
      * @var array|string a list of file MIME types that are allowed to be uploaded.
      * This can be either an array or a string consisting of file MIME types
