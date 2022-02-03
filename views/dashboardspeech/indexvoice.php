@@ -1787,16 +1787,7 @@ $this->title = 'Dashboard Voz del Cliente';
           ?>
         </div>
       </div>
-        <div class="col-md-3">
-          <div class="card1 mb">
-            <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Análisis Focalizada: </label>
-            <?= Html::a('Interacciones',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
-                          'style' => 'background-color: #337ab7', 'target' => "_blank",
-                          'data-toggle' => 'tooltip',
-                          'title' => 'Buscar Interacciones']) 
-            ?>
-          </div>
-        </div>
+        
     </div>
 
     <?php if ($sessiones == '57' || $sessiones == '2953' || $sessiones == '3229' || $sessiones == '3468' ) { ?>
