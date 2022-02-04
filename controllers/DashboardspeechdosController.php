@@ -6214,7 +6214,7 @@ public function actionCantidadentto(){
     public function actionListarlideresx(){
       $txtidlider = Yii::$app->request->get('id');
 
-      if (txtidlider) {
+      if ($txtidlider) {
         $txtControl = \app\models\Evaluados::find()->distinct()
               ->select(['tbl_evaluados.id'])
               ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
