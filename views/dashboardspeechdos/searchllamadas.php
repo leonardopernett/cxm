@@ -224,7 +224,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                 'prompt'=>'Seleccionar lider...',
                                                 'onchange' => '
                                                     $.get(
-                                                        "' . Url::toRoute('dashboardspeech/listarlideresx') . '", 
+                                                        "' . Url::toRoute('listarlideresx') . '", 
                                                         {id: $(this).val()}, 
                                                         function(res){
                                                             $("#requester2").html(res);
