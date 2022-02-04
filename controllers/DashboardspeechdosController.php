@@ -6211,6 +6211,40 @@ public function actionCantidadentto(){
       ]);
     }
 
+    public function actionListarlideresx(){
+      $txtidlider = Yii::$app->request->get('id');
+
+      if (txtidlider) {
+        $txtControl = \app\models\Evaluados::find()->distinct()
+              ->select(['tbl_evaluados.id'])
+              ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                  'tbl_evaluados.id = tbl_equipos_evaluados.evaluado_id')
+              ->where(['tbl_equipos_evaluados.equipo_id' => $txtidlider])
+              ->count();
+
+        if ($txtControl > 0) {
+          $varListaLideresx = \app\models\Evaluados::find()->distinct()
+              ->select(['tbl_evaluados.id','tbl_evaluados.name'])
+              ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                  'tbl_evaluados.id = tbl_equipos_evaluados.evaluado_id')
+              ->where(['tbl_equipos_evaluados.equipo_id' => $txtidlider]) 
+              ->orderBy(['tbl_evaluados.name' => SORT_DESC])
+              ->all(); 
+          
+          echo "<option value='' disabled selected>Seleccionar Asesor...</option>";
+          foreach ($varListaLideresx as $value) {
+            echo "<option value='" . $value->id. "'>" . $value->name . "</option>";
+          }
+
+        }else{
+          echo "<option>--</option>";
+        }
+
+      }else{
+        echo "<option>Seleccionar variable</option>";
+      }
+    }
+
 
   }
 
