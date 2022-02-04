@@ -6589,11 +6589,11 @@ public function actionTotalagente(){
     ->queryScalar();
 
     $txtConjuntoSpeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in (:txtidspeechcalls)")
-    ->bindValue(':varIdPcrc',$txtidspeechcalls)
+    ->bindValue(':txtidspeechcalls',$txtidspeechcalls)
     ->queryScalar();
 
     $txtconnids = Yii::$app->db->createCommand("SELECT DISTINCT d.connid FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in (:txtidspeechcalls)")
-    ->bindValue(':varIdPcrc',$txtidspeechcalls)
+    ->bindValue(':txtidspeechcalls',$txtidspeechcalls)
     ->queryScalar();
     
 
