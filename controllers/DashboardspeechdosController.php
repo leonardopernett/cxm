@@ -5786,7 +5786,11 @@ public function actionCantidadentto(){
     $varidgrabadora = Yii::$app->request->get('idgrabadora');
     $varidconnid = Yii::$app->request->get('idconnid');
     $varResultado = null;
-    $varvalencia = null;
+    $varvalencia = null;    
+
+    $varidcallids = Yii::$app->request->get('idcallids');
+    $varvarfechareal = Yii::$app->request->get('varfechareal');
+    $varvarcategolias = Yii::$app->request->get('varcategolias');
 
     if ($varidredbox != "" && $varidgrabadora != "") {
       ob_start();
@@ -5873,6 +5877,17 @@ public function actionCantidadentto(){
       $varvalencia = "No aplica";
     }      
 
+    $paramsBusquedaExtension = [':varCallid' => $varidcallids, ':varFecha' => $varvarfechareal, ':varCategoria' => $varvarcategolias, ':varAnulado' => 0];
+
+      $varextensionnum = Yii::$app->db->createCommand('
+        SELECT d.extensiones FROM tbl_dashboardspeechcalls d
+          WHERE d.anulado = :varAnulado 
+            AND d.callId = :varCallid
+              AND d.fechareal = :varFecha 
+                AND d.idcategoria = :varCategoria
+          GROUP BY d.extensiones
+      ')->bindValues($paramsBusquedaExtension)->queryScalar();
+
     return $this->renderAjax('viewcalls',[
       'varidlogin' => $varidlogin,
       'varidredbox' => $varidredbox,
@@ -5880,6 +5895,7 @@ public function actionCantidadentto(){
       'varResultado' => $varResultado,
       'vartexto' => $vartexto,
       'varvalencia' => $varvalencia,
+      'varextensionnum' => $varextensionnum,
       ]);
   }
 
