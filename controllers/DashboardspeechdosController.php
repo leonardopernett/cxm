@@ -7294,42 +7294,41 @@ public function actionTotalagente(){
     }
     
 
-    $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in (:varidspeechcalls)")
-    ->bindValue(':varidspeechcalls',$varidspeechcalls)
-    ->queryScalar();
-    $txtejecucion = Yii::$app->db->createCommand("SELECT DISTINCT round(te.score,2) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta = :concatenarspeech")
-    ->bindValue(':concatenarspeech',$concatenarspeech)
-    ->queryScalar();
-    if ($txtejecucion == '') {
-      $txtejecucion = '--';
-      $txtpromediorta = $resultadosIDA;
-    }else{
-      $txtpromediorta = round(($resultadosIDA + $txtejecucion) / 2,2);
-    }      
+    public function actionListarlideresx(){
+      $txtidlider = Yii::$app->request->get('id');
 
-    $txtvarcallid = Yii::$app->db->createCommand("SELECT DISTINCT d.callId FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in (:varidspeechcalls)")
-    ->bindValue(':varidspeechcalls',$varidspeechcalls)
-    ->queryScalar();
-    $txtvarhoras = Yii::$app->db->createCommand("SELECT DISTINCT d.fechareal FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in (:varidspeechcalls)")
-    ->bindValue(':varidspeechcalls',$varidspeechcalls)
-    ->queryScalar();
-    $txtusuarios = Yii::$app->db->createCommand("SELECT DISTINCT d.login_id FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in (:varidspeechcalls)")
-    ->bindValue(':varidspeechcalls',$varidspeechcalls)
-    ->queryScalar();
+      if ($txtidlider) {
+        $txtControl = \app\models\Evaluados::find()->distinct()
+              ->select(['tbl_evaluados.id'])
+              ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                  'tbl_evaluados.id = tbl_equipos_evaluados.evaluado_id')
+              ->where(['tbl_equipos_evaluados.equipo_id' => $txtidlider])
+              ->count();
 
-    return $this->renderAjax('viewrtas',[
-      'resultadosIDA' => $resultadosIDA,
-      'countpositivas' => $countpositivas,
-      'countnegativas' => $countnegativas,
-      'countpositicasc' => $countpositicasc,
-      'countnegativasc' => $countnegativasc,
-      'totalvariables' => $totalvariables,
-      'txtejecucion' => $txtejecucion,
-      'txtpromediorta' => $txtpromediorta,
-      'txtvarcallid' => $txtvarcallid,
-      'txtvarhoras' => $txtvarhoras,
-      'txtusuarios' => $txtusuarios,
-    ]);
+        if ($txtControl > 0) {
+          $varListaLideresx = \app\models\Evaluados::find()->distinct()
+              ->select(['tbl_evaluados.id','tbl_evaluados.name'])
+              ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                  'tbl_evaluados.id = tbl_equipos_evaluados.evaluado_id')
+              ->where(['tbl_equipos_evaluados.equipo_id' => $txtidlider]) 
+              ->orderBy(['tbl_evaluados.name' => SORT_DESC])
+              ->all(); 
+          
+          echo "<option value='' disabled selected>Seleccionar Asesor...</option>";
+          foreach ($varListaLideresx as $value) {
+            echo "<option value='" . $value->id. "'>" . $value->name . "</option>";
+          }
+
+        }else{
+          echo "<option>--</option>";
+        }
+
+      }else{
+        echo "<option>Seleccionar variable</option>";
+      }
+    }
+
+
   }
 
 

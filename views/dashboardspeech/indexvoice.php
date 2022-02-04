@@ -1737,7 +1737,7 @@ $this->title = 'Dashboard Voz del Cliente';
   <div class="card1 mb">
     <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card1 mb">
           <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar dashboard: </label>
           <?= Html::button('Exportar', ['value' => url::to(['categoriasvoice', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codigoPCRC' => $txtCodPcrcok, 'codparametrizar' => $txtCodParametrizar, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
@@ -1757,7 +1757,7 @@ $this->title = 'Dashboard Voz del Cliente';
           ?>  
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card1 mb">
           <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar general: </label>
           <?= Html::button('Exportar', ['value' => url::to(['categoriasgeneral', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codparametrizar' => $txtCodParametrizar, 'codigoPCRC' => $txtCodPcrcok, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton2',
@@ -1777,7 +1777,7 @@ $this->title = 'Dashboard Voz del Cliente';
           ?>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="card1 mb">
           <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Regresar: </label> 
           <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
@@ -1787,16 +1787,6 @@ $this->title = 'Dashboard Voz del Cliente';
           ?>
         </div>
       </div>
-        <div class="col-md-3">
-          <div class="card1 mb">
-            <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> Análisis Focalizada: </label>
-            <?= Html::a('Interacciones',  ['searchllamadas', 'varprograma'=>$varNamePCRC, 'varcodigopcrc'=>$txtCodPcrcok, 'varidcategoria'=>$txtIdCatagoria1, 'varextension'=>$txtParametros, 'varfechasinicio'=>$varInicioF, 'varfechasfin'=>$varFinF, 'varcantllamadas'=>$txtTotalLlamadas, 'varfechainireal'=>$txtFechaIni, 'varfechafinreal'=>$txtFechaFin,'varcodigos'=>$varCodigo], ['class' => 'btn btn-success',
-                          'style' => 'background-color: #337ab7', 'target' => "_blank",
-                          'data-toggle' => 'tooltip',
-                          'title' => 'Buscar Interacciones']) 
-            ?>
-          </div>
-        </div>
     </div>
 
     <?php if ($sessiones == '57' || $sessiones == '2953' || $sessiones == '3229' || $sessiones == '3468' ) { ?>

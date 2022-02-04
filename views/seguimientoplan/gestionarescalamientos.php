@@ -36,6 +36,7 @@ $day = date("d", mktime(0,0,0, $month+1, 0, $year));
 $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
 $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
+
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito');

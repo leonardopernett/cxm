@@ -139,10 +139,12 @@ use app\models\DistribucionAsesores;
           INNER JOIN dp_estados de ON 
             dp.id_dp_estados = de.id_dp_estados
           WHERE 
-            dc.id_dp_posicion IN (39,18)
-              AND dc.id_dp_funciones IN (322,783,190,909,915)
+            dc.id_dp_posicion IN (39,18,40)
+              AND dc.id_dp_funciones IN (322,783,190,909,915,323,324)
                 AND dp.fecha_actual >= DATE_FORMAT(NOW() ,'%Y-%m-01')
                   AND de.tipo = 'ACTIVO'
+                	  AND dp.cod_pcrc != 0
+                  	  AND de.tipo = 'ACTIVO'
           GROUP BY dp.documento
         ")->queryAll();
 
