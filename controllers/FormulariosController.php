@@ -572,11 +572,11 @@ class FormulariosController extends Controller {
                 ->queryScalar();
 		//DATOS GENERALES
 
-                $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = :TmpForm->arbol_id")
+                $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = ':TmpForm->arbol_id'")
                 ->bindValue(':TmpForm->arbol_id',$TmpForm->arbol_id)
                 ->queryScalar();
 
-                 $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = :TmpForm->arbol_id")
+                 $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = ':TmpForm->arbol_id'")
                  ->bindValue(':TmpForm->arbol_id',$TmpForm->arbol_id)
                  ->queryScalar();
 
