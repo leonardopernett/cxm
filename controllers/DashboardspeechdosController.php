@@ -7292,6 +7292,7 @@ public function actionTotalagente(){
     }else{
       $resultadosIDA = 0;
     }
+  }
     
 
     public function actionListarlideresx(){
