@@ -7330,7 +7330,7 @@ public function actionTotalagente(){
     }
 
 
-  }
+  
 
 
 }
