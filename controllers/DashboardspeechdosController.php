@@ -4976,7 +4976,7 @@ public function actionCantidadentto(){
     die(json_encode(0));
   }
 
-      public function actionSearchllamadas($varprograma,$varcodigopcrc,$varidcategoria,$varextension,$varfechasinicio,$varfechasfin,$varcantllamadas,$varfechainireal,$varfechafinreal,$varcodigos){
+      public function actionSearchllamadas($varprograma,$varcodigopcrc,$varidcategoria,$varextension,$varfechasinicio,$varfechasfin,$varcantllamadas,$varfechainireal,$varfechafinreal,$varcodigos,$varaleatorios){
         $model = new Dashboardspeechcalls();
         $txtvarprograma = $varprograma;
         $txtvarcodigopcrc = $varcodigopcrc;
@@ -4993,6 +4993,7 @@ public function actionCantidadentto(){
         $varidloginid = null;       
         $varconeto = 0;
         $vartipologia = null;
+        $varAelatorio = $varaleatorios; 
 
         $paramscalls = Yii::$app->db->createCommand("select ss.idllamada from tbl_speech_servicios ss  inner join tbl_speech_parametrizar sp on ss.id_dp_clientes = sp.id_dp_clientes where sp.anulado = 0 and sp.cod_pcrc in (:txtvarcodigopcrc) group by sp.cod_pcrc")
         ->bindValue(':txtvarcodigopcrc',$txtvarcodigopcrc)
@@ -5262,9 +5263,15 @@ public function actionCantidadentto(){
           $params1 = $txtvarprograma;
           $params2 = $txtvarextension;
           $params3 = $txtvarfechasinicio;
-          $params4 = $txtvarfechasfin;                       
+          $params4 = $txtvarfechasfin;
+          $params5 = $txtvarcodigopcrc;
+          $params6 = $varAelatorio;                       
 
-          $dataProvider = $model->buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls);
+          $dataProvider = $model->buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls,$params5,$params6);
+
+          if ($params6 == "1") {
+            $txttxtvarcantllamadasb = $dataProvider->getTotalCount();
+          }
 
           $varcategoriass = 0;
           $varidloginid = 0;
