@@ -531,8 +531,7 @@ class FormulariosController extends Controller {
                         $TmpForm->save();
                         $array_indices_TmpForm = \app\models\Textos::find()
                                 ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                ->where('id IN (:TmpForm->subi_calculo)')
-                                ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                 ->asArray()
                                 ->all();
                         foreach ($array_indices_TmpForm as $value) {
@@ -543,8 +542,7 @@ class FormulariosController extends Controller {
                     if (isset($data->formulario->subi_calculo)) {
                         $array_indices_TmpForm = \app\models\Textos::find()
                                 ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                ->where('id IN (:TmpForm->subi_calculo)')
-                                ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                 ->asArray()
                                 ->all();
                         foreach ($array_indices_TmpForm as $value) {
@@ -1283,8 +1281,7 @@ class FormulariosController extends Controller {
                         $TmpForm->save();
                         $array_indices_TmpForm = \app\models\Textos::find()
                                 ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                ->where('id IN (":TmpForm->subi_calculo")')
-                                ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                 ->asArray()
                                 ->all();
                         foreach ($array_indices_TmpForm as $value) {
@@ -1295,8 +1292,7 @@ class FormulariosController extends Controller {
                     if (isset($data->formulario->subi_calculo)) {
                         $array_indices_TmpForm = \app\models\Textos::find()
                                 ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                ->where('id IN (":TmpForm->subi_calculo")')
-                                ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                 ->asArray()
                                 ->all();
                         foreach ($array_indices_TmpForm as $value) {
@@ -1733,8 +1729,7 @@ class FormulariosController extends Controller {
                             $TmpForm->save();
                             $array_indices_TmpForm = \app\models\Textos::find()
                                     ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                    ->where('id IN (:TmpForm->subi_calculo)')
-                                    ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                    ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                     ->asArray()
                                     ->all();
                             foreach ($array_indices_TmpForm as $value) {
@@ -1745,8 +1740,7 @@ class FormulariosController extends Controller {
                         if (isset($data->formulario->subi_calculo)) {
                             $array_indices_TmpForm = \app\models\Textos::find()
                                     ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                    ->where('id IN (:TmpForm->subi_calculo)')
-                                    ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                    ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                     ->asArray()
                                     ->all();
                             foreach ($array_indices_TmpForm as $value) {
