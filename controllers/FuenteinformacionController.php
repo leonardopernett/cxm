@@ -249,9 +249,13 @@ class FuenteinformacionController extends Controller {
                         } 
 
 
-                        $vargrupo_id = Yii::$app->db->createCommand("SELECT grupos_id from tbl_grupos_usuarios g WHERE g.grupo_descripcion LIKE '%$varbuscar%'")->queryScalar();
+                        $vargrupo_id = Yii::$app->db->createCommand("SELECT grupos_id from tbl_grupos_usuarios g WHERE g.grupo_descripcion LIKE '%:varbuscar%'")
+                        ->bindValue(':varbuscar',$varbuscar)
+                        ->queryScalar();
 
-                        $varidusua = Yii::$app->db->createCommand("select max(usua_id) from tbl_usuarios where usua_identificacion = $vardocumento1")->queryScalar();
+                        $varidusua = Yii::$app->db->createCommand("select max(usua_id) from tbl_usuarios where usua_identificacion = :vardocumento1")
+                        ->bindValue(':vardocumento1',$vardocumento1)
+                        ->queryScalar();
             
                         Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
                                             'usuario_id' => intval($varidusua),
@@ -274,7 +278,9 @@ class FuenteinformacionController extends Controller {
                     if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajería') {
                         
                         $varnombreequipo = $varnombre.'_'.$varbuscar;
-                        $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_identificacion = $vardocumento1")->queryScalar();
+                        $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_identificacion = :vardocumento1")
+                        ->bindValue(':vardocumento1',$vardocumento1)
+                        ->queryScalar();
                         Yii::$app->db->createCommand()->insert('tbl_equipos',[
                             'name' => $varnombreequipo,
                             'nmumbral_verde' => $varverde,
@@ -301,7 +307,9 @@ class FuenteinformacionController extends Controller {
                     if ($varbuscar != 'Vodafone Ono Sau' && $varbuscar != 'Enel Chile' && $varbuscar != 'Konecta BTO' && $varbuscar != 'Centro de mensajería') {
                         
                         $varnombreequipo = $varnombre.'_'.$varbuscar;
-                        $varidusua = Yii::$app->db->createCommand("SELECT * FROM tbl_equipos e where e.usua_id =  $varusua_id")->queryScalar();
+                        $varidusua = Yii::$app->db->createCommand("SELECT * FROM tbl_equipos e where e.usua_id =  :varusua_id")
+                        ->bindValue(':varusua_id',$varusua_id)
+                        ->queryScalar();
                         if (!$varidusua) {
                             Yii::$app->db->createCommand()->insert('tbl_equipos',[
                                 'name' => $varnombreequipo,
@@ -386,17 +394,28 @@ class FuenteinformacionController extends Controller {
                 
                 foreach ($varlistaequipos as $key => $value) {
                     $vardocumentojefe = $value['documentojefe'];               
-                    $varidlider = Yii::$app->db->createCommand("SELECT max(usua_id) FROM tbl_usuarios  WHERE usua_identificacion = $vardocumentojefe")->queryScalar();
+                    $varidlider = Yii::$app->db->createCommand("SELECT max(usua_id) FROM tbl_usuarios  WHERE usua_identificacion = :vardocumentojefe")
+                    ->bindValue(':vardocumentojefe',$vardocumentojefe)
+                    ->queryScalar();
                     if($varidlider) {
-                        $varidliderequipo = Yii::$app->db->createCommand("SELECT max(id) FROM tbl_equipos  WHERE usua_id = $varidlider AND NAME not LIKE '%no usar%'")->queryScalar();
+                        $varidliderequipo = Yii::$app->db->createCommand("SELECT max(id) FROM tbl_equipos  WHERE usua_id = :varidlider AND NAME not LIKE '%no usar%'")
+                        ->bindValue(':varidlider',$varidlider)
+                        ->queryScalar();
                         if($varidliderequipo) {
-                            $varlistaasesores = Yii::$app->db->createCommand("SELECT documento, usuario_red FROM tbl_tmpvaloradosdistribucion  WHERE documentojefe = $vardocumentojefe")->queryAll();   
-                            $variddeleteequipo = Yii::$app->db->createCommand("delete from tbl_equipos_evaluados where equipo_id = $varidliderequipo")->execute();
+                            $varlistaasesores = Yii::$app->db->createCommand("SELECT documento, usuario_red FROM tbl_tmpvaloradosdistribucion  WHERE documentojefe = :vardocumentojefe")
+                            ->bindValue(':vardocumentojefe',$vardocumentojefe)
+                            ->queryAll();   
+                            $variddeleteequipo = Yii::$app->db->createCommand("delete from tbl_equipos_evaluados where equipo_id = :varidliderequipo")
+                            ->bindValue(':varidliderequipo',$varidliderequipo)
+                            ->execute();
                             
                             foreach ($varlistaasesores as $key => $value) {
                                 $vardocumento = $value['documento'];
 				$varusuariored = $value['usuario_red'];               
-                                $varidasesor = Yii::$app->db->createCommand("SELECT id FROM tbl_evaluados   WHERE identificacion = $vardocumento AND dsusuario_red = '$varusuariored'")->queryScalar();  
+                                $varidasesor = Yii::$app->db->createCommand("SELECT id FROM tbl_evaluados   WHERE identificacion = :vardocumento AND dsusuario_red = :varusuariored")
+                                ->bindValue(':vardocumento',$vardocumento)
+                                ->bindValue(':varusuariored',$varusuariored)
+                                ->queryScalar();  
                                 if ($varidasesor != 0) {
                                     Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
                                         'evaluado_id' => $varidasesor,
@@ -428,17 +447,28 @@ class FuenteinformacionController extends Controller {
                 foreach ($varlistaequipos as $key => $value) {
                     $vardocumentojefe = $value['documentojefe'];
                     $varnombrepcrc =  $value['nombrepcrc'];              
-                    $varidlider = Yii::$app->db->createCommand("SELECT usua_id FROM tbl_usuarios  WHERE usua_identificacion = $vardocumentojefe")->queryScalar();
+                    $varidlider = Yii::$app->db->createCommand("SELECT usua_id FROM tbl_usuarios  WHERE usua_identificacion = :vardocumentojefe")
+                    ->bindValue(':vardocumentojefe',$vardocumentojefe)
+                    ->queryScalar();
                     if($varidlider) {
-                        $varidequipo = Yii::$app->db->createCommand("SELECT id FROM tbl_equipos  WHERE usua_id = $varidlider")->queryScalar();
-                        $varidarbol = Yii::$app->db->createCommand("SELECT id FROM tbl_arbols  WHERE name = '$varnombrepcrc'")->queryScalar();
+                        $varidequipo = Yii::$app->db->createCommand("SELECT id FROM tbl_equipos  WHERE usua_id = :varidlider")
+                        ->bindValue(':varidlider',$varidlider)
+                        ->queryScalar();
+                        $varidarbol = Yii::$app->db->createCommand("SELECT id FROM tbl_arbols  WHERE name = :varnombrepcrc")
+                        ->bindValue(':varnombrepcrc',$varnombrepcrc)
+                        ->queryScalar();
                         if($varidarbol){
                             if ($varidequipo) {
-                                $varlistaidarbol = Yii::$app->db->createCommand("SELECT id FROM tbl_arbols WHERE arbol_id = $varidarbol")->queryAll();   
+                                $varlistaidarbol = Yii::$app->db->createCommand("SELECT id FROM tbl_arbols WHERE arbol_id = :varidarbol")
+                                ->bindValue(':varidarbol',$varidarbol)
+                                ->queryAll();   
                                 
                                 foreach ($varlistaidarbol as $key => $value) {
                                     $varidarbols = $value['id'];                                       
-                                    $varcanti = Yii::$app->db->createCommand("SELECT COUNT(id) FROM tbl_arbols_equipos  WHERE arbol_id = $varidarbols AND equipo_id = $varidequipo")->queryScalar();  
+                                    $varcanti = Yii::$app->db->createCommand("SELECT COUNT(id) FROM tbl_arbols_equipos  WHERE arbol_id = :varidarbols AND equipo_id = :varidequipo")
+                                    ->bindValue(':varidarbols',$varidarbols)
+                                    ->bindValue(':varidequipo',$varidequipo)
+                                    ->queryScalar();  
                                     if($varcanti == 0) {
                                         Yii::$app->db->createCommand()->insert('tbl_arbols_equipos',[
                                             'arbol_id' => $varidarbols,
@@ -800,7 +830,9 @@ class FuenteinformacionController extends Controller {
                                 $txtfechacreacion = date("Y-m-d");
                                 
 
-                                $varlidernuevo = Yii::$app->db->createCommand("SELECT COUNT(usua_identificacion) FROM tbl_usuarios  WHERE usua_identificacion = $varDatos[6] ")->queryScalar();
+                                $varlidernuevo = Yii::$app->db->createCommand("SELECT COUNT(usua_identificacion) FROM tbl_usuarios  WHERE usua_identificacion = :varDatos[6] ")
+                                ->bindValue(':varDatos[6]',$varDatos[6])
+                                ->queryScalar();
 
                                 if($varlidernuevo == 0){
                                     $varestado = 'D';
@@ -832,15 +864,21 @@ class FuenteinformacionController extends Controller {
                                 $varDatos = explode(";", utf8_encode($varArray));
                                 $varbuscar = $varDatos[3];
                                 $vardocumento1 = $varDatos[6];
-                                $varlidernuevo = Yii::$app->db->createCommand("SELECT COUNT(usua_identificacion) FROM tbl_usuarios  WHERE usua_identificacion = $varDatos[6] ")->queryScalar();
+                                $varlidernuevo = Yii::$app->db->createCommand("SELECT COUNT(usua_identificacion) FROM tbl_usuarios  WHERE usua_identificacion = :varDatos[6] ")
+                                ->bindValue(':varDatos[6]',$varDatos[6])
+                                ->queryScalar();
 
                                 if($varlidernuevo == 0){
                                     if($varDatos[6] != $valicedula) {
                                         $valicedula = $varDatos[6];
                                         
-                                        $vargrupo_id = Yii::$app->db->createCommand("SELECT grupos_id from tbl_grupos_usuarios g WHERE g.grupo_descripcion LIKE '%$varbuscar%'")->queryScalar();
+                                        $vargrupo_id = Yii::$app->db->createCommand("SELECT grupos_id from tbl_grupos_usuarios g WHERE g.grupo_descripcion LIKE '%:varbuscar%'")
+                                        ->bindValue(':varbuscar',$varbuscar)
+                                        ->queryScalar();
 
-                                        $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_identificacion = $vardocumento1")->queryScalar();
+                                        $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_identificacion = :vardocumento1")
+                                        ->bindValue(':vardocumento1',$vardocumento1)
+                                        ->queryScalar();
 
                                         Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
                                                             'usuario_id' => intval($varidusua),
@@ -871,14 +909,18 @@ class FuenteinformacionController extends Controller {
                                 $varbuscar = $varDatos[3];
                                 $vardocumento1 = $varDatos[6];
                                 $varnombre = $varDatos[8];
-                                $varlidernuevo = Yii::$app->db->createCommand("SELECT COUNT(usua_identificacion) FROM tbl_usuarios  WHERE usua_identificacion = $varDatos[6] ")->queryScalar();
+                                $varlidernuevo = Yii::$app->db->createCommand("SELECT COUNT(usua_identificacion) FROM tbl_usuarios  WHERE usua_identificacion = :varDatos[6] ")
+                                ->bindValue(':varDatos[6]',$varDatos[6])
+                                ->queryScalar();
 
                                 if($varlidernuevo == 0){
                                     if($varDatos[6] != $valicedula) {
                                         $valicedula = $varDatos[6];
                                 
                                         $varnombreequipo = $varnombre.'_'.$varbuscar;
-                                        $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_identificacion = $vardocumento1")->queryScalar();
+                                        $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_identificacion = :vardocumento1")
+                                        ->bindValue(':vardocumento1',$vardocumento1)
+                                        ->queryScalar();
                                         Yii::$app->db->createCommand()->insert('tbl_equipos',[
                                             'name' => $varnombreequipo,
                                             'nmumbral_verde' => $varverde,
@@ -916,17 +958,28 @@ class FuenteinformacionController extends Controller {
                                             $vardocumentojefe = $varDatos[6];
                                             if($varDatos[6] != $valicedula) {
                                                 $valicedula = $varDatos[6];          
-                                                $varidlider = Yii::$app->db->createCommand("SELECT usua_id FROM tbl_usuarios  WHERE usua_identificacion = $vardocumentojefe")->queryScalar();
+                                                $varidlider = Yii::$app->db->createCommand("SELECT usua_id FROM tbl_usuarios  WHERE usua_identificacion = :vardocumentojefe")
+                                                ->bindValue(':vardocumentojefe',$vardocumentojefe)
+                                                ->queryScalar();
                                                 if($varidlider) {
-                                                    $varidequipo = Yii::$app->db->createCommand("SELECT id FROM tbl_equipos  WHERE usua_id = $varidlider")->queryScalar();
-                                                    $varidarbol = Yii::$app->db->createCommand("SELECT id FROM tbl_arbols  WHERE name = '$varnombrepcrc'")->queryScalar();
+                                                    $varidequipo = Yii::$app->db->createCommand("SELECT id FROM tbl_equipos  WHERE usua_id = :varidlider")
+                                                    ->bindValue(':varidlider',$varidlider)
+                                                    ->queryScalar();
+                                                    $varidarbol = Yii::$app->db->createCommand("SELECT id FROM tbl_arbols  WHERE name = :varnombrepcrc")
+                                                    ->bindValue(':varnombrepcrc',$varnombrepcrc)
+                                                    ->queryScalar();
                                                     if($varidarbol){
                                                         if ($varidequipo) {
-                                                            $varlistaidarbol = Yii::$app->db->createCommand("SELECT id FROM tbl_arbols WHERE arbol_id = $varidarbol")->queryAll();   
+                                                            $varlistaidarbol = Yii::$app->db->createCommand("SELECT id FROM tbl_arbols WHERE arbol_id = :varidarbol")
+                                                            ->bindValue(':varidarbol',$varidarbol)
+                                                            ->queryAll();   
                                                             
                                                             foreach ($varlistaidarbol as $key => $value) {
                                                                 $varidarbols = $value['id'];                                       
-                                                                $varcanti = Yii::$app->db->createCommand("SELECT COUNT(id) FROM tbl_arbols_equipos  WHERE arbol_id = $varidarbols AND equipo_id = $varidequipo")->queryScalar();  
+                                                                $varcanti = Yii::$app->db->createCommand("SELECT COUNT(id) FROM tbl_arbols_equipos  WHERE arbol_id = :varidarbols AND equipo_id = :varidequipo")
+                                                                ->bindValue(':varidarbols',$varidarbols)
+                                                                ->bindValue(':varidequipo',$varidequipo)
+                                                                ->queryScalar();  
                                                                 if($varcanti = 0) {
                                                                     Yii::$app->db->createCommand()->insert('tbl_arbols_equipos',[
                                                                         'arbol_id' => $varidarbols,

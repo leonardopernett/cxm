@@ -87,7 +87,9 @@ use app\models\ControlVolumenxencuestasdq;
             $formData = Yii::$app->request->post();
             if ($model->load($formData)) {
                 $varArbol = $model->arbol_id;
-                $varCiudad = Yii::$app->db->createCommand("select a.name from tbl_arbols a inner join tbl_arbols aa on aa.arbol_id = a.id where aa.id = '$varArbol' and a.activo = 0")->queryScalar();
+                $varCiudad = Yii::$app->db->createCommand("select a.name from tbl_arbols a inner join tbl_arbols aa on aa.arbol_id = a.id where aa.id = :varArbol and a.activo = 0")
+                ->bindValue(':varArbol',$varArbol)
+                ->queryScalar();
 
                 return $this->redirect(array('detallevoz','varCodificacion'=>$varArbol));
 
@@ -167,7 +169,9 @@ use app\models\ControlVolumenxencuestasdq;
             $txtDirector = "Actualizar información";
             $txtArbol = "Actualizar información";
 
-            $txtGerentes = Yii::$app->db->createCommand("select group_concat(distinct gerentes order by gerentes asc separator ', ') as concatenar from tbl_voz_seleccion vs where arbol_id = '$txtCodigo' and anulado = 0 ")->queryScalar();
+            $txtGerentes = Yii::$app->db->createCommand("select group_concat(distinct gerentes order by gerentes asc separator ', ') as concatenar from tbl_voz_seleccion vs where arbol_id = :txtCodigo and anulado = 0 ")
+            ->bindValue(':txtCodigo',$txtCodigo)
+            ->queryScalar();
 
             $query =  new Query;
             $query      ->select(['tbl_voz_seleccion.ciudad','tbl_procesos_directores.director_programa','tbl_arbols.name'])->distinct()
@@ -246,7 +250,8 @@ use app\models\ControlVolumenxencuestasdq;
                     break;
             }   
 
-            $varServicios = Yii::$app->db->createCommand("select * from tbl_arbols where snhoja = 0 and arbol_id in (98, 2) and activo = 0")->queryAll();
+            $varServicios = Yii::$app->db->createCommand("select * from tbl_arbols where snhoja = 0 and arbol_id in (98, 2) and activo = 0")
+            ->queryAll();
 
             foreach ($varServicios as $key => $value) {
                 $varIdServicios = $value['id'];
@@ -271,14 +276,18 @@ use app\models\ControlVolumenxencuestasdq;
                         $varDateLast = $varMesYear1->format('Y/m/d').' 23:59:59';
 
                         $querys = new Query;
-                        $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
+                        $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin and :varDateLast and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
                                     ->from('tbl_arbols')
-                                    ->where('tbl_arbols.arbol_id = '.$varIdServicios.'')
-                                    ->andwhere("tbl_arbols.activo = 0");                                    
+                                    ->where('tbl_arbols.arbol_id = varIdServicios')
+                                    ->andwhere("tbl_arbols.activo = 0")
+                                    ->addParams([':varDateBegin' => $varDateBegin,':varDateLast' => $varDateLast,':varIdServicios' => $varIdServicios]);                                    
                         $command = $querys->createCommand();
                         $queryss = $command->queryScalar(); 
 
-                        $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestas where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and anuladovxe = 0")->queryScalar();
+                        $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestas where idservicio = :varIdServicios and idtc = :varIdCorte and anuladovxe = 0")
+                        ->bindValue(':varIdServicios',$varIdServicios)
+                        ->bindValue(':varIdCorte',$varIdCorte)
+                        ->queryScalar();
 
                         if ($varService == 0) {
                             Yii::$app->db->createCommand()->insert('tbl_control_volumenxencuestas',[
@@ -313,14 +322,18 @@ use app\models\ControlVolumenxencuestasdq;
 
 
                             $querys = new Query;
-                            $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
+                            $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin and :varDateLast and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
                                         ->from('tbl_arbols')
-                                        ->where('tbl_arbols.arbol_id = '.$varIdServicios.'')
-                                        ->andwhere("tbl_arbols.activo = 0");                                    
+                                        ->where('tbl_arbols.arbol_id = :varIdServicios')
+                                        ->andwhere("tbl_arbols.activo = 0")         
+                                        ->addParams([':varDateBegin' => $varDateBegin,':varDateLast' => $varDateLast,':varIdServicios' => $varIdServicios]);                       
                             $command = $querys->createCommand();
                             $queryss = $command->queryScalar();
 
-                            $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestas where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and anuladovxe = 0")->queryScalar();
+                            $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestas where idservicio = :varIdServicios and idtc = :varIdCorte and anuladovxe = 0")
+                            ->bindValue(':varIdServicios',$varIdServicios)
+                            ->bindValue(':varIdCorte',$varIdCorte)
+                            ->queryScalar();
 
                             if ($varService == 0) {
                                 Yii::$app->db->createCommand()->insert('tbl_control_volumenxencuestas',[
@@ -353,14 +366,18 @@ use app\models\ControlVolumenxencuestasdq;
                             $varDateLast = $varMesYear1->format('Y/m/d').' 23:59:59';
 
                             $querys = new Query;
-                            $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
+                            $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin' and :varDateLast and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
                                         ->from('tbl_arbols')
-                                        ->where('tbl_arbols.arbol_id = '.$varIdServicios.'')
-                                        ->andwhere("tbl_arbols.activo = 0");                                    
+                                        ->where('tbl_arbols.arbol_id = :varIdServicios')
+                                        ->andwhere("tbl_arbols.activo = 0")
+                                        ->addParams([':varDateBegin' => $varDateBegin,':varDateLast' => $varDateLast,':varIdServicios' => $varIdServicios]);                                
                             $command = $querys->createCommand();
                             $queryss = $command->queryScalar();
 
-                            $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestas where idservicio = '$varIdServicios' and idtc = '$varIdCorte' and anuladovxe = 0")->queryScalar();
+                            $varService = Yii::$app->db->createCommand("select count(*) from tbl_control_volumenxencuestas where idservicio = :varIdServicios and idtc = :varIdCorte and anuladovxe = 0")
+                            ->bindValue(':varIdServicios',$varIdServicios)
+                            ->bindValue(':varIdCorte',$varIdCorte)
+                            ->queryScalar();
 
                             if ($varService == 0) {
                                 Yii::$app->db->createCommand()->insert('tbl_control_volumenxencuestas',[
@@ -457,10 +474,11 @@ use app\models\ControlVolumenxencuestasdq;
                                 ->from('tbl_dashboardservicios')
                                 ->join('LEFT OUTER JOIN', 'tbl_dashboardcategorias',
                                         'tbl_dashboardservicios.idservicios = tbl_dashboardcategorias.iddashservicio')
-                                ->where('tbl_dashboardservicios.arbol_id = '.$varIdServicios.'')
+                                ->where('tbl_dashboardservicios.arbol_id = :varIdServicios')
                                 ->andwhere(['tbl_dashboardcategorias.idcategorias' => 1])
                                 ->andwhere(['like','tbl_dashboardcategorias.nombre','Satisfaccion'])
-                                ->andwhere(['tbl_dashboardcategorias.anulado' => 0]);
+                                ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
+                                ->addParams([':varIdServicios'=>$varIdServicios]);
                                 //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                         $command = $querys->createCommand();
                         $query2 = $command->queryAll();
@@ -470,15 +488,29 @@ use app\models\ControlVolumenxencuestasdq;
                             $varNombreCateg = $value['nombre'];
                             $varClienteCate = $value['clientecategoria'];
 
-                            $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and anulado = 0")->queryScalar();
+                            $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = :varIdCategoria and anulado = 0")
+                            ->bindValue(':varIdCategoria',$varIdCategoria)
+                            ->queryScalar();
 
                             if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01') {
-                                $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = :varIdCategoria and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                ->bindValue(':varIdCategoria',$varIdCategoria)
+                                ->bindValue(':varClienteCate',$varClienteCate)
+                                ->bindValue(':varDateBegin',$varDateBegin)
+                                ->bindValue(':varDateLast',$varDateLast)
+                                ->queryScalar();
 
 
-                                $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                ->bindValue(':varClienteCate',$varClienteCate)
+                                ->bindValue(':varDateBegin',$varDateBegin)
+                                ->bindValue(':varDateLast',$varDateLast)
+                                ->queryScalar();
 
-                                $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and clientecategoria like '$varClienteCate' and anulado = 0")->queryScalar();
+                                $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = :varIdCategoria and clientecategoria like :varClienteCate and anulado = 0")
+                                ->bindValue(':varIdCategoria',$varIdCategoria)
+                                ->bindValue(':varClienteCate',$varClienteCate)
+                                ->queryScalar();
 
                                 if ($varNameCiudad == "BOGOTÁ") {
                                     $txtvarCity = 1;
@@ -539,10 +571,12 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->from('tbl_dashboardservicios')
                                     ->join('LEFT OUTER JOIN', 'tbl_dashboardcategorias',
                                             'tbl_dashboardservicios.idservicios = tbl_dashboardcategorias.iddashservicio')
-                                    ->where('tbl_dashboardservicios.arbol_id = '.$varIdServicios.'')
+                                    ->where('tbl_dashboardservicios.arbol_id = :varIdServicios')
                                     ->andwhere(['tbl_dashboardcategorias.idcategorias' => 1])
                                     ->andwhere(['like','tbl_dashboardcategorias.nombre','Satisfaccion'])
-                                    ->andwhere(['tbl_dashboardcategorias.anulado' => 0]);
+                                    ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
+                                    ->addParams([':varIdServicios'=>$varIdServicios]);
+                                    
                                     //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                             $command = $querys->createCommand();
                             $query2 = $command->queryAll();
@@ -552,15 +586,29 @@ use app\models\ControlVolumenxencuestasdq;
                                 $varNombreCateg = $value['nombre'];
                                 $varClienteCate = $value['clientecategoria'];
 
-                                $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and anulado = 0")->queryScalar();
+                                $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = :varIdCategoria and anulado = 0")
+                                ->bindValue(':varIdCategoria',$varIdCategoria)
+                                ->queryScalar();
 
                                 if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
-                                    $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                    $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = :varIdCategoria and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                    ->bindValue(':varIdCategoria',$varIdCategoria)
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->queryScalar();
 
 
-                                    $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                    $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->queryScalar();
 
-                                    $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and clientecategoria like '$varClienteCate' and anulado = 0")->queryScalar();
+                                    $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = :varIdCategoria and clientecategoria like :varClienteCate and anulado = 0")
+                                    ->bindValue(':varIdCategoria',$varIdCategoria)
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->queryScalar();
 
                                     if ($varNameCiudad == "BOGOTÁ") {
                                         $txtvarCity = 1;
@@ -620,10 +668,11 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->from('tbl_dashboardservicios')
                                     ->join('LEFT OUTER JOIN', 'tbl_dashboardcategorias',
                                             'tbl_dashboardservicios.idservicios = tbl_dashboardcategorias.iddashservicio')
-                                    ->where('tbl_dashboardservicios.arbol_id = '.$varIdServicios.'')
+                                    ->where('tbl_dashboardservicios.arbol_id = :varIdServicios')
                                     ->andwhere(['tbl_dashboardcategorias.idcategorias' => 1])
                                     ->andwhere(['like','tbl_dashboardcategorias.nombre','Satisfaccion'])
-                                    ->andwhere(['tbl_dashboardcategorias.anulado' => 0]);
+                                    ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
+                                    ->addParams([':varIdServicios'=>$varIdServicios]);
                                     //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                             $command = $querys->createCommand();
                             $query2 = $command->queryAll();
@@ -633,14 +682,28 @@ use app\models\ControlVolumenxencuestasdq;
                                 $varNombreCateg = $value['nombre'];
                                 $varClienteCate = $value['clientecategoria'];       
 
-                                $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and anulado = 0")->queryScalar();
+                                $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = :varIdCategoria and anulado = 0")
+                                ->bindValue(':varIdCategoria',$varIdCategoria)
+                                ->queryScalar();
 
                                 if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
-                                    $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                    $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = :varIdCategoria and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                    ->bindValue(':varIdCategoria',$varIdCategoria)
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->queryScalar();
 
-                                    $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1114 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                    $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1114 and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->queryScalar();
 
-                                    $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and clientecategoria like '$varClienteCate' and anulado = 0")->queryScalar();
+                                    $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = :varIdCategoria and clientecategoria like :varClienteCate and anulado = 0")
+                                    ->bindValue(':varIdCategoria',$varIdCategoria)
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->queryScalar();
 
                                     if ($varNameCiudad == "BOGOTÁ") {
                                         $txtvarCity = 1;
@@ -760,10 +823,11 @@ use app\models\ControlVolumenxencuestasdq;
                                 ->from('tbl_dashboardservicios')
                                 ->join('LEFT OUTER JOIN', 'tbl_dashboardcategorias',
                                         'tbl_dashboardservicios.idservicios = tbl_dashboardcategorias.iddashservicio')
-                                ->where('tbl_dashboardservicios.arbol_id = '.$varIdServicios.'')
+                                ->where('tbl_dashboardservicios.arbol_id = :varIdServicios')
                                 ->andwhere(['tbl_dashboardcategorias.idcategorias' => 1])
                                 ->andwhere(['like','tbl_dashboardcategorias.nombre','Solución'])
-                                ->andwhere(['tbl_dashboardcategorias.anulado' => 0]);
+                                ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
+                                ->addParams([':varIdServicios'=>$varIdServicios]);
                                 //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                         $command = $querys->createCommand();
                         $query2 = $command->queryAll();
@@ -773,15 +837,29 @@ use app\models\ControlVolumenxencuestasdq;
                             $varNombreCateg = $value['nombre'];
                             $varClienteCate = $value['clientecategoria'];
 
-                            $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and anulado = 0")->queryScalar();
+                            $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = :varIdCategoria and anulado = 0")
+                            ->bindValue(':varIdCategoria',$varIdCategoria)
+                            ->queryScalar();
 
                             if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
-                                $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = :varIdCategoria and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                ->bindValue(':varIdCategoria',$varIdCategoria)
+                                ->bindValue(':varClienteCate',$varClienteCate)
+                                ->bindValue(':varDateBegin',$varDateBegin)
+                                ->bindValue(':varDateLast',$varDateLast)
+                                ->queryScalar();
 
 
-                                $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                ->bindValue(':varClienteCate',$varClienteCate)
+                                ->bindValue(':varDateBegin',$varDateBegin)
+                                ->bindValue(':varDateLast',$varDateLast)
+                                ->queryScalar();
 
-                                $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and clientecategoria like '$varClienteCate' and anulado = 0")->queryScalar();
+                                $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = :varIdCategoria and clientecategoria like :varClienteCate and anulado = 0")
+                                ->bindValue(':varIdCategoria',$varIdCategoria)
+                                ->bindValue(':varClienteCate',$varClienteCate)
+                                ->queryScalar();
 
                                 if ($varNameCiudad == "BOGOTÁ") {
                                     $txtvarCity = 1;
@@ -843,10 +921,11 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->from('tbl_dashboardservicios')
                                     ->join('LEFT OUTER JOIN', 'tbl_dashboardcategorias',
                                             'tbl_dashboardservicios.idservicios = tbl_dashboardcategorias.iddashservicio')
-                                    ->where('tbl_dashboardservicios.arbol_id = '.$varIdServicios.'')
+                                    ->where('tbl_dashboardservicios.arbol_id = :varIdServicios')
                                     ->andwhere(['tbl_dashboardcategorias.idcategorias' => 1])
                                     ->andwhere(['like','tbl_dashboardcategorias.nombre','Solución'])
-                                    ->andwhere(['tbl_dashboardcategorias.anulado' => 0]);
+                                    ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
+                                    ->addParams([':varIdServicios'=>$varIdServicios]);
                                     //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                             $command = $querys->createCommand();
                             $query2 = $command->queryAll();
@@ -856,14 +935,28 @@ use app\models\ControlVolumenxencuestasdq;
                                 $varNombreCateg = $value['nombre'];
                                 $varClienteCate = $value['clientecategoria'];
 
-                                $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and anulado = 0")->queryScalar();
+                                $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = :varIdCategoria and anulado = 0")
+                                ->bindValue(':varIdCategoria',$varIdCategoria)
+                                ->queryScalar();
 
                                 if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
-                                    $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                    $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = :varIdCategoria and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                    ->bindValue(':varIdCategoria',$varIdCategoria)
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->queryScalar();
 
-                                    $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                    $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1105 and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->queryScalar();
 
-                                    $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and clientecategoria like '$varClienteCate' and anulado = 0")->queryScalar();
+                                    $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = :varIdCategoria and clientecategoria like :varClienteCate and anulado = 0")
+                                    ->bindValue(':varIdCategoria',$varIdCategoria)
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->queryScalar();
 
                                     if ($varNameCiudad == "BOGOTÁ") {
                                         $txtvarCity = 1;
@@ -925,10 +1018,11 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->from('tbl_dashboardservicios')
                                     ->join('LEFT OUTER JOIN', 'tbl_dashboardcategorias',
                                             'tbl_dashboardservicios.idservicios = tbl_dashboardcategorias.iddashservicio')
-                                    ->where('tbl_dashboardservicios.arbol_id = '.$varIdServicios.'')
+                                    ->where('tbl_dashboardservicios.arbol_id = :varIdServicios')
                                     ->andwhere(['tbl_dashboardcategorias.idcategorias' => 1])
                                     ->andwhere(['like','tbl_dashboardcategorias.nombre','Solución'])
-                                    ->andwhere(['tbl_dashboardcategorias.anulado' => 0]);
+                                    ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
+                                    ->addParams([':varIdServicios'=>$varIdServicios]);
                                     //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                             $command = $querys->createCommand();
                             $query2 = $command->queryAll();
@@ -938,15 +1032,29 @@ use app\models\ControlVolumenxencuestasdq;
                                 $varNombreCateg = $value['nombre'];
                                 $varClienteCate = $value['clientecategoria'];
 
-                                $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and anulado = 0")->queryScalar();
+                                $varFechas = Yii::$app->db->createCommand("select fechacreacion from tbl_dashboardcategorias where idcategoria = :varIdCategoria and anulado = 0")
+                                ->bindValue(':varIdCategoria',$varIdCategoria)
+                                ->queryScalar();
 
                                 if ($varFechas >= '2020-01-01' && $varMesYear >= '2020-01-01'){
-                                    $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = '$varIdCategoria' and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                    $txtContarCategorias = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = :varIdCategoria and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                    ->bindValue(':varIdCategoria',$varIdCategoria)
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->queryScalar();
 
 
-                                    $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1114 and servicio like '%$varClienteCate%' and fechallamada between '$varDateBegin 05:00:00' and '$varDateLast 05:00:00' and anulado = 0")->queryScalar();
+                                    $txtContarGeneral = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where idcategoria = 1114 and servicio like '%:varClienteCate%' and fechallamada between ':varDateBegin 05:00:00' and ':varDateLast 05:00:00' and anulado = 0")
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->queryScalar();
 
-                                    $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = '$varIdCategoria' and clientecategoria like '$varClienteCate' and anulado = 0")->queryScalar();
+                                    $varNameCiudad = Yii::$app->db->createCommand("select ciudadcategoria from tbl_dashboardcategorias where idcategoria = :varIdCategoria and clientecategoria like :varClienteCate and anulado = 0")
+                                    ->bindValue(':varIdCategoria',$varIdCategoria)
+                                    ->bindValue(':varClienteCate',$varClienteCate)
+                                    ->queryScalar();
 
                                     if ($varNameCiudad == "BOGOTÁ") {
                                         $txtvarCity = 1;
@@ -1068,22 +1176,33 @@ use app\models\ControlVolumenxencuestasdq;
                                             'tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id')
                                     ->join('LEFT OUTER JOIN', 'tbl_categorias',
                                             'tbl_preguntas.categoria = tbl_categorias.id')
-                                    ->where("tbl_parametrizacion_encuesta.cliente = $varIdServicios")
-                                    ->andwhere("tbl_categorias.id = 1");                    
+                                    ->where("tbl_parametrizacion_encuesta.cliente = :varIdServicios")
+                                    ->andwhere("tbl_categorias.id = 1")
+                                    ->addParams([':varIdServicios'=>$varIdServicios]);                    
                         $command1 = $querys1->createCommand();
                         $query1 = $command1->queryAll();
 
                         foreach ($query1 as $key => $value) {
                             $txtIdPrograma = $value['programa'];
 
-                            $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = '$txtIdPrograma'  and activo = 0")->queryScalar();
+                            $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = :txtIdPrograma  and activo = 0")
+                            ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                            ->queryScalar();
 
                             if ($varVerificar != '0') {
-                                $varMax = Yii::$app->db->createCommand("select max(pregunta1) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = '$txtIdPrograma'")->queryScalar();
+                                $varMax = Yii::$app->db->createCommand("select max(pregunta1) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin and :varDateLast and tbl_base_satisfaccion.pcrc = :txtIdPrograma")
+                                ->bindValue(':varDateBegin',$varDateBegin)
+                                ->bindValue(':varDateLast',$varDateLast)
+                                ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                ->queryScalar();
 
 
                                 if ($varMax > 5) {
-                                    $varContarNSatu = Yii::$app->db->createCommand("select (round(((((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (8,9,10)) - (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (0,1,2,3,4,5))) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast'))*100),2)) as VarNSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on  p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where a.id = '$txtIdPrograma' and c.id = 1 and a.activo = 0 ")->queryScalar();
+                                    $varContarNSatu = Yii::$app->db->createCommand("select (round(((((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (8,9,10)) - (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (0,1,2,3,4,5))) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast))*100),2)) as VarNSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on  p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where a.id = :txtIdPrograma and c.id = 1 and a.activo = 0 ")
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
                                     if ($varContarNSatu != null) {
                                         Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1100,7 +1219,11 @@ use app\models\ControlVolumenxencuestasdq;
                                     } 
 
                                 }else{
-                                    $varContarSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (4,5)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 1 and a.activo = 0")->queryScalar();
+                                    $varContarSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (4,5)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 1 and a.activo = 0")
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
                                     if ($varContarSatu != null) {
                                         Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1116,7 +1239,11 @@ use app\models\ControlVolumenxencuestasdq;
                                         ])->execute();
                                     }                                
 
-                                    $varContarInSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (1,2)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 1 and a.activo = 0")->queryScalar();
+                                    $varContarInSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (1,2)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 1 and a.activo = 0")
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
                                     if ($varContarInSatu != null) {
                                         Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1162,22 +1289,33 @@ use app\models\ControlVolumenxencuestasdq;
                                                 'tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id')
                                         ->join('LEFT OUTER JOIN', 'tbl_categorias',
                                                 'tbl_preguntas.categoria = tbl_categorias.id')
-                                        ->where("tbl_parametrizacion_encuesta.cliente = $varIdServicios")
-                                        ->andwhere("tbl_categorias.id = 1");                    
+                                        ->where("tbl_parametrizacion_encuesta.cliente = :varIdServicios")
+                                        ->andwhere("tbl_categorias.id = 1")
+                                        ->addParams([':varIdServicios'=>$varIdServicios]);                    
                             $command1 = $querys1->createCommand();
                             $query1 = $command1->queryAll();
 
                             foreach ($query1 as $key => $value) {
                                 $txtIdPrograma = $value['programa'];
 
-                                $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = '$txtIdPrograma'  and activo = 0")->queryScalar();
+                                $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = :txtIdPrograma  and activo = 0")
+                                ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                ->queryScalar();
 
                                 if ($varVerificar != '0') {
-                                    $varMax = Yii::$app->db->createCommand("select max(pregunta1) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = '$txtIdPrograma'")->queryScalar();
+                                    $varMax = Yii::$app->db->createCommand("select max(pregunta1) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin and :varDateLast and tbl_base_satisfaccion.pcrc = :txtIdPrograma")
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
 
                                     if ($varMax > 5) {
-                                        $varContarNSatu = Yii::$app->db->createCommand("select (round(((((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (8,9,10)) - (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (0,1,2,3,4,5))) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast'))*100),2)) as VarNSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on  p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where a.id = '$txtIdPrograma' and c.id = 1 and a.activo = 0 ")->queryScalar();
+                                        $varContarNSatu = Yii::$app->db->createCommand("select (round(((((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (8,9,10)) - (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (0,1,2,3,4,5))) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast))*100),2)) as VarNSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on  p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where a.id = :txtIdPrograma and c.id = 1 and a.activo = 0 ")
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarNSatu != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1195,7 +1333,11 @@ use app\models\ControlVolumenxencuestasdq;
 
                                     }else{
 
-                                        $varContarSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (4,5)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 1 and a.activo = 0")->queryScalar();
+                                        $varContarSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (4,5)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 1 and a.activo = 0")
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarSatu != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1211,7 +1353,11 @@ use app\models\ControlVolumenxencuestasdq;
                                             ])->execute();
                                         }                                
 
-                                        $varContarInSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (1,2)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 1 and a.activo = 0")->queryScalar();
+                                        $varContarInSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (1,2)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 1 and a.activo = 0")
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarInSatu != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1257,22 +1403,33 @@ use app\models\ControlVolumenxencuestasdq;
                                                 'tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id')
                                         ->join('LEFT OUTER JOIN', 'tbl_categorias',
                                                 'tbl_preguntas.categoria = tbl_categorias.id')
-                                        ->where("tbl_parametrizacion_encuesta.cliente = $varIdServicios")
-                                        ->andwhere("tbl_categorias.id = 1");                    
+                                        ->where("tbl_parametrizacion_encuesta.cliente = :varIdServicios")
+                                        ->andwhere("tbl_categorias.id = 1")
+                                        ->addParams([':varIdServicios'=>$varIdServicios]);                    
                             $command1 = $querys1->createCommand();
                             $query1 = $command1->queryAll();
 
                             foreach ($query1 as $key => $value) {
                                 $txtIdPrograma = $value['programa'];
 
-                               $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = '$txtIdPrograma'  and activo = 0")->queryScalar();
+                               $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = :txtIdPrograma  and activo = 0")
+                               ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                               ->queryScalar();
 
                                 if ($varVerificar != '0') {
-                                    $varMax = Yii::$app->db->createCommand("select max(pregunta1) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = '$txtIdPrograma'")->queryScalar();
+                                    $varMax = Yii::$app->db->createCommand("select max(pregunta1) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin and :varDateLast and tbl_base_satisfaccion.pcrc = :txtIdPrograma")
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
 
                                     if ($varMax > 5) {
-                                        $varContarNSatu = Yii::$app->db->createCommand("select (round(((((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (8,9,10)) - (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (0,1,2,3,4,5))) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast'))*100),2)) as VarNSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on  p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where a.id = '$txtIdPrograma' and c.id = 1 and a.activo = 0 ")->queryScalar();
+                                        $varContarNSatu = Yii::$app->db->createCommand("select (round(((((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (8,9,10)) - (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (0,1,2,3,4,5))) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast))*100),2)) as VarNSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on  p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where a.id = :txtIdPrograma and c.id = 1 and a.activo = 0 ")
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarNSatu != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1290,7 +1447,11 @@ use app\models\ControlVolumenxencuestasdq;
 
                                     }else{
 
-                                        $varContarSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (4,5)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 1 and a.activo = 0")->queryScalar();
+                                        $varContarSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (4,5)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 1 and a.activo = 0")
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarSatu != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1306,7 +1467,11 @@ use app\models\ControlVolumenxencuestasdq;
                                             ])->execute();
                                         }                                
 
-                                        $varContarInSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.pregunta1 in (1,2)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 1 and a.activo = 0")->queryScalar();
+                                        $varContarInSatu = Yii::$app->db->createCommand("select (round(((select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.pregunta1 in (1,2)) / (select count(pregunta1) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 1 and a.activo = 0")
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarInSatu != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1412,23 +1577,38 @@ use app\models\ControlVolumenxencuestasdq;
                                             'tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id')
                                     ->join('LEFT OUTER JOIN', 'tbl_categorias',
                                             'tbl_preguntas.categoria = tbl_categorias.id')
-                                    ->where("tbl_parametrizacion_encuesta.cliente = $varIdServicios")
-                                    ->andwhere("tbl_categorias.id = 7");                    
+                                    ->where("tbl_parametrizacion_encuesta.cliente = :varIdServicios")
+                                    ->andwhere("tbl_categorias.id = 7")
+                                    ->addParams([':varIdServicios'=>$varIdServicios]);                    
                         $command1 = $querys1->createCommand();
                         $query1 = $command1->queryAll();
 
                         foreach ($query1 as $key => $value) {
                             $txtIdPrograma = $value['programa'];
 
-                            $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = '$txtIdPrograma'  and activo = 0")->queryScalar();
+                            $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = :txtIdPrograma  and activo = 0")
+                            ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                            ->queryScalar();
 
                             if ($varVerificar != '0') {
-                                $varPregunta = Yii::$app->db->createCommand("select tbl_preguntas.pre_indicador from tbl_preguntas inner join tbl_parametrizacion_encuesta on tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id inner join tbl_categorias on tbl_preguntas.categoria = tbl_categorias.id where tbl_parametrizacion_encuesta.programa = '$txtIdPrograma' and tbl_categorias.id = 7")->queryScalar();
+                                $varPregunta = Yii::$app->db->createCommand("select tbl_preguntas.pre_indicador from tbl_preguntas inner join tbl_parametrizacion_encuesta on tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id inner join tbl_categorias on tbl_preguntas.categoria = tbl_categorias.id where tbl_parametrizacion_encuesta.programa = :txtIdPrograma and tbl_categorias.id = 7")
+                                ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                ->queryScalar();
 
-                                $varMax = Yii::$app->db->createCommand("select max($varPregunta) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = '$txtIdPrograma'")->queryScalar();
+                                $varMax = Yii::$app->db->createCommand("select max(:varPregunta) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin and :varDateLast and tbl_base_satisfaccion.pcrc = :txtIdPrograma")
+                                ->bindValue(':varPregunta',$varPregunta)
+                                ->bindValue(':varDateBegin',$varDateBegin)
+                                ->bindValue(':varDateLast',$varDateLast)
+                                ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                ->queryScalar();
 
                                 if ($varMax > 2) {
-                                    $varContarNSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (4,5)) / (select count('$varPregunta') from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                    $varContarNSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (4,5)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                    ->bindValue(':varPregunta',$varPregunta)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
                                     if ($varContarNSolucion != null) {
                                         Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1444,7 +1624,12 @@ use app\models\ControlVolumenxencuestasdq;
                                         ])->execute();
                                     } 
                                 }else{
-                                    $varContarSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (1)) / (select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                    $varContarSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (1)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                    ->bindValue(':varPregunta',$varPregunta)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
                                     if ($varContarSolucion != null) {
                                         Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1460,7 +1645,12 @@ use app\models\ControlVolumenxencuestasdq;
                                         ])->execute();
                                     } 
 
-                                    $varContarNoSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (2)) / (select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                    $varContarNoSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (2)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                    ->bindValue(':varPregunta',$varPregunta)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
                                     if ($varContarNoSolucion != null) {
                                         Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1506,23 +1696,38 @@ use app\models\ControlVolumenxencuestasdq;
                                                 'tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id')
                                         ->join('LEFT OUTER JOIN', 'tbl_categorias',
                                                 'tbl_preguntas.categoria = tbl_categorias.id')
-                                        ->where("tbl_parametrizacion_encuesta.cliente = $varIdServicios")
-                                        ->andwhere("tbl_categorias.id = 7");                    
+                                        ->where("tbl_parametrizacion_encuesta.cliente = :varIdServicios")
+                                        ->andwhere("tbl_categorias.id = 7")
+                                        ->addParams([':varIdServicios'=>$varIdServicios]);                    
                             $command1 = $querys1->createCommand();
                             $query1 = $command1->queryAll();
 
                             foreach ($query1 as $key => $value) {
                                 $txtIdPrograma = $value['programa'];
 
-                                $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = '$txtIdPrograma'  and activo = 0")->queryScalar();
+                                $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = :txtIdPrograma  and activo = 0")
+                                ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                ->queryScalar();
 
                                 if ($varVerificar != '0') {
-                                    $varPregunta = Yii::$app->db->createCommand("select tbl_preguntas.pre_indicador from tbl_preguntas inner join tbl_parametrizacion_encuesta on tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id inner join tbl_categorias on tbl_preguntas.categoria = tbl_categorias.id where tbl_parametrizacion_encuesta.programa = '$txtIdPrograma' and tbl_categorias.id = 7")->queryScalar();
+                                    $varPregunta = Yii::$app->db->createCommand("select tbl_preguntas.pre_indicador from tbl_preguntas inner join tbl_parametrizacion_encuesta on tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id inner join tbl_categorias on tbl_preguntas.categoria = tbl_categorias.id where tbl_parametrizacion_encuesta.programa = :txtIdPrograma and tbl_categorias.id = 7")
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
-                                    $varMax = Yii::$app->db->createCommand("select max($varPregunta) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = '$txtIdPrograma'")->queryScalar();
+                                    $varMax = Yii::$app->db->createCommand("select max(:varPregunta) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin and :varDateLast and tbl_base_satisfaccion.pcrc = :txtIdPrograma")
+                                    ->bindValue(':varPregunta',$varPregunta)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
                                     if ($varMax > 2) {
-                                        $varContarNSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (4,5)) / (select count('$varPregunta') from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                        $varContarNSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (4,5)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                        ->bindValue(':varPregunta',$varPregunta)
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarNSolucion != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1538,7 +1743,12 @@ use app\models\ControlVolumenxencuestasdq;
                                             ])->execute();
                                         } 
                                     }else{
-                                        $varContarSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (1)) / (select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                        $varContarSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (1)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                        ->bindValue(':varPregunta',$varPregunta)
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarSolucion != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1554,7 +1764,12 @@ use app\models\ControlVolumenxencuestasdq;
                                             ])->execute();
                                         } 
 
-                                        $varContarNoSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (2)) / (select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                        $varContarNoSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (2)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                        ->bindValue(':varPregunta',$varPregunta)
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarNoSolucion != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1599,23 +1814,38 @@ use app\models\ControlVolumenxencuestasdq;
                                                 'tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id')
                                         ->join('LEFT OUTER JOIN', 'tbl_categorias',
                                                 'tbl_preguntas.categoria = tbl_categorias.id')
-                                        ->where("tbl_parametrizacion_encuesta.cliente = $varIdServicios")
-                                        ->andwhere("tbl_categorias.id = 7");                    
+                                        ->where("tbl_parametrizacion_encuesta.cliente = :varIdServicios")
+                                        ->andwhere("tbl_categorias.id = 7")
+                                        ->addParams([':varIdServicios'=>$varIdServicios]);                    
                             $command1 = $querys1->createCommand();
                             $query1 = $command1->queryAll();
 
                             foreach ($query1 as $key => $value) {
                                 $txtIdPrograma = $value['programa'];
 
-                                $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = '$txtIdPrograma'  and activo = 0")->queryScalar();
+                                $varVerificar = Yii::$app->db->createCommand("select count(*) from tbl_arbols where id = :txtIdPrograma  and activo = 0")
+                                ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                ->queryScalar();
 
                                 if ($varVerificar != '0') {
-                                    $varPregunta = Yii::$app->db->createCommand("select tbl_preguntas.pre_indicador from tbl_preguntas inner join tbl_parametrizacion_encuesta on tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id inner join tbl_categorias on tbl_preguntas.categoria = tbl_categorias.id where tbl_parametrizacion_encuesta.programa = '$txtIdPrograma' and tbl_categorias.id = 7")->queryScalar();
+                                    $varPregunta = Yii::$app->db->createCommand("select tbl_preguntas.pre_indicador from tbl_preguntas inner join tbl_parametrizacion_encuesta on tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id inner join tbl_categorias on tbl_preguntas.categoria = tbl_categorias.id where tbl_parametrizacion_encuesta.programa = :txtIdPrograma and tbl_categorias.id = 7")
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
-                                    $varMax = Yii::$app->db->createCommand("select max($varPregunta) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varDateBegin' and '$varDateLast' and tbl_base_satisfaccion.pcrc = '$txtIdPrograma'")->queryScalar();
+                                    $varMax = Yii::$app->db->createCommand("select max(:varPregunta) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between :varDateBegin and :varDateLast and tbl_base_satisfaccion.pcrc = :txtIdPrograma")
+                                    ->bindValue(':varPregunta',$varPregunta)
+                                    ->bindValue(':varDateBegin',$varDateBegin)
+                                    ->bindValue(':varDateLast',$varDateLast)
+                                    ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                    ->queryScalar();
 
                                     if ($varMax > 2) {
-                                        $varContarNSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (4,5)) / (select count('$varPregunta') from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                        $varContarNSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (4,5)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                        ->bindValue(':varPregunta',$varPregunta)
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarNSolucion != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1631,7 +1861,12 @@ use app\models\ControlVolumenxencuestasdq;
                                             ])->execute();
                                         } 
                                     }else{
-                                        $varContarSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (1)) / (select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                        $varContarSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (1)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                        ->bindValue(':varPregunta',$varPregunta)
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarSolucion != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1647,7 +1882,12 @@ use app\models\ControlVolumenxencuestasdq;
                                             ])->execute();
                                         } 
 
-                                        $varContarNoSolucion = Yii::$app->db->createCommand("select ( round(((select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast' and bs.$varPregunta in (2)) / (select count($varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between '$varDateBegin' and '$varDateLast') * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = '$txtIdPrograma' and c.id = 7 and a.activo = 0")->queryScalar();
+                                        $varContarNoSolucion = Yii::$app->db->createCommand("select ( round(((select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast and bs.:varPregunta in (2)) / (select count(:varPregunta) from tbl_base_satisfaccion bs where bs.cliente = pe.cliente and bs.pcrc = pe.programa and bs.created between :varDateBegin and :varDateLast) * 100),2) ) as varSatu, a.name, a.id from tbl_preguntas p inner join tbl_parametrizacion_encuesta pe on p.id_parametrizacion = pe.id inner join tbl_categorias c on p.categoria = c.id inner join tbl_arbols a on pe.programa = a.id where pe.programa = :txtIdPrograma and c.id = 7 and a.activo = 0")
+                                        ->bindValue(':varPregunta',$varPregunta)
+                                        ->bindValue(':varDateBegin',$varDateBegin)
+                                        ->bindValue(':varDateLast',$varDateLast)
+                                        ->bindValue(':txtIdPrograma',$txtIdPrograma)
+                                        ->queryScalar();
 
                                         if ($varContarNoSolucion != null) {
                                             Yii::$app->db->createCommand()->insert('tbl_voz_encuestas',[
@@ -1840,7 +2080,10 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle2);
 
 
-            $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+            $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between :varBeginYear and :varLastYear group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")
+            ->bindValue(':varBeginYear',$varBeginYear)
+            ->bindValue(':varLastYear',$varLastYear)
+            ->queryAll();
             $lastColumn = 'A';
 
             foreach ($varMonthYear as $key => $value) {
@@ -1869,7 +2112,10 @@ use app\models\ControlVolumenxencuestasdq;
                 $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle2);
                 
                 
-                $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a  order by a.mesyear asc")->queryAll();
+                $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between :varBeginYear and :varLastYear group by mesyear order by mesyear desc limit 7) a  order by a.mesyear asc")
+                ->bindValue(':varBeginYear',$varBeginYear)
+                ->bindValue(':varLastYear',$varLastYear)
+                ->queryAll();
 
                 $txtTotalMonth = null;
                 $lastColumn = 'A';
@@ -1905,8 +2151,9 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->from('tbl_control_volumenxclientedq')
                                     ->join('LEFT OUTER JOIN', 'tbl_arbols',
                                                 'tbl_control_volumenxclientedq.idservicio = tbl_arbols.id')
-                                    ->where('tbl_arbols.arbol_id = '.$varIdPcrc.'')
-                                    ->andwhere(['between','tbl_control_volumenxclientedq.mesyear', $varListYear, $varListYear]);
+                                    ->where('tbl_arbols.arbol_id = :varIdPcrc')
+                                    ->andwhere(['between','tbl_control_volumenxclientedq.mesyear', $varListYear, $varListYear])
+                                    ->addParams([':varIdPcrc'=>$varIdPcrc]);
                         $command = $txtQuery->createCommand();
                         $txtTotalMonth1 = $command->queryScalar();                       
 
@@ -1915,8 +2162,9 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->from('tbl_control_volumenxclienteds')
                                     ->join('LEFT OUTER JOIN', 'tbl_arbols',
                                                 'tbl_control_volumenxclienteds.idservicio = tbl_arbols.id')
-                                    ->where('tbl_arbols.arbol_id = '.$varIdPcrc.'')
-                                    ->andwhere(['between','tbl_control_volumenxclienteds.mesyear', $varListYear, $varListYear]);
+                                    ->where('tbl_arbols.arbol_id = :varIdPcrc')
+                                    ->andwhere(['between','tbl_control_volumenxclienteds.mesyear', $varListYear, $varListYear])
+                                    ->addParams([':varIdPcrc'=>$varIdPcrc]);
                         $command2 = $txtQuery2->createCommand();
                         $txtTotalMonth2 = $command2->queryScalar(); 
 
@@ -1937,7 +2185,10 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A10')->applyFromArray($styleArraySubTitle);
             $phpExc->getActiveSheet()->getStyle('A10')->applyFromArray($styleArrayTitle);
 
-            $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+            $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between :varBeginYear and :varLastYear group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")
+            ->bindValue(':varBeginYear',$varBeginYear)
+            ->bindValue(':varLastYear',$varLastYear)
+            ->queryAll();
 
             $numCell = 11;
             $phpExc->getActiveSheet()->setCellValue('A'.$numCell, 'Nivel');
@@ -1971,7 +2222,10 @@ use app\models\ControlVolumenxencuestasdq;
                 $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
                 $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle2);
 
-                $varListMonthE = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+                $varListMonthE = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between :varBeginYear and :varLastYear group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")
+                ->bindValue(':varBeginYear',$varBeginYear)
+                ->bindValue(':varLastYear',$varLastYear)
+                ->queryAll();
 
                 $lastColumn = 'A';
                 foreach ($varListMonthE as $key => $value) {
@@ -1996,8 +2250,9 @@ use app\models\ControlVolumenxencuestasdq;
                                                 ->from('tbl_control_volumenxencuestasdq')
                                                 ->join('LEFT OUTER JOIN', 'tbl_arbols',
                                                             'tbl_control_volumenxencuestasdq.idservicio = tbl_arbols.id')
-                                                ->where('tbl_arbols.arbol_id = '.$varIdPcrcE.'')
-                                                ->andwhere(['between','tbl_control_volumenxencuestasdq.mesyear', $varListYearE, $varListYearE]);                    
+                                                ->where('tbl_arbols.arbol_id = :varIdPcrcE')
+                                                ->andwhere(['between','tbl_control_volumenxencuestasdq.mesyear', $varListYearE, $varListYearE])
+                                                ->addParams([':varIdPcrcE'=>$varIdPcrcE]);                    
                         $commandE = $txtQueryE->createCommand();
                         $txtTotalMonth1E = $commandE->queryScalar(); 
 
@@ -2038,7 +2293,9 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A21')->applyFromArray($styleColor);
             $phpExc->getActiveSheet()->getStyle('A21')->applyFromArray($styleArraySubTitle2);
 
-            $txtGerentes = Yii::$app->db->createCommand("select group_concat(distinct gerentes order by gerentes asc separator ', ') as concatenar from tbl_voz_seleccion vs where arbol_id = '$varPcrc' and anulado = 0 ")->queryScalar();
+            $txtGerentes = Yii::$app->db->createCommand("select group_concat(distinct gerentes order by gerentes asc separator ', ') as concatenar from tbl_voz_seleccion vs where arbol_id = :varPcrc and anulado = 0 ")
+            ->bindValue(':varPcrc',$varPcrc)
+            ->queryScalar();
 
             $query =  new Query;
             $query      ->select(['tbl_voz_seleccion.ciudad','tbl_procesos_directores.director_programa','tbl_arbols.name'])->distinct()
@@ -2087,7 +2344,10 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A25')->applyFromArray($styleArraySubTitle);
             $phpExc->getActiveSheet()->getStyle('A25')->applyFromArray($styleArrayTitle);
 
-            $varMonthYearA = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a    order by a.mesyear asc")->queryAll();
+            $varMonthYearA = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between :varBeginYear and :varLastYear group by mesyear order by mesyear desc limit 7) a    order by a.mesyear asc")
+            ->bindValue(':varBeginYear',$varBeginYear)
+            ->bindValue(':varLastYear',$varLastYear)
+            ->queryAll();
 
             $numCell = 26;
             $phpExc->getActiveSheet()->setCellValue('A'.$numCell, 'Datos Evolutivos');
@@ -2114,7 +2374,9 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A27')->applyFromArray($styleColor);
             $phpExc->getActiveSheet()->getStyle('A27')->applyFromArray($styleArraySubTitle2);
 
-            $varControlUnion = Yii::$app->db->createCommand("select sum(sumar) as sumar, mesyear from ((select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = '$varPcrc' and anuladovxcs = 0 group by mesyear desc limit 7) a order by a.mesyear asc) union all (select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = '$varPcrc' and anuladovxc = 0  group by mesyear desc limit 7) a order by a.mesyear asc ) ) unidaTables group by mesyear")->queryAll();
+            $varControlUnion = Yii::$app->db->createCommand("select sum(sumar) as sumar, mesyear from ((select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = :varPcrc and anuladovxcs = 0 group by mesyear desc limit 7) a order by a.mesyear asc) union all (select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = :varPcrc and anuladovxc = 0  group by mesyear desc limit 7) a order by a.mesyear asc ) ) unidaTables group by mesyear")
+            ->bindValue(':varPcrc',$varPcrc)
+            ->queryAll();
 
             $lastColumn = 'A';
             foreach ($varControlUnion as $key => $value) {
@@ -2130,7 +2392,9 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A28')->applyFromArray($styleColor);
             $phpExc->getActiveSheet()->getStyle('A28')->applyFromArray($styleArraySubTitle2);
 
-            $varControlSpeech = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = '$varPcrc' and anuladovxcs = 0  group by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+            $varControlSpeech = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = :varPcrc and anuladovxcs = 0  group by mesyear desc limit 7) a order by a.mesyear asc")
+            ->bindValue(':varPcrc',$varPcrc)
+            ->queryAll();
 
             $lastColumn = 'A';
             foreach ($varControlSpeech as $key => $value) {
@@ -2146,7 +2410,9 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A29')->applyFromArray($styleColor);
             $phpExc->getActiveSheet()->getStyle('A29')->applyFromArray($styleArraySubTitle2);
 
-            $varControlManual = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = '$varPcrc' and anuladovxc = 0   group by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+            $varControlManual = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = :varPcrc and anuladovxc = 0   group by mesyear desc limit 7) a order by a.mesyear asc")
+            ->bindValue(':varPcrc',$varPcrc)
+            ->queryAll();
 
             $lastColumn = 'A';
             foreach ($varControlManual as $key => $value) {
@@ -2165,7 +2431,10 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A31:H31')->applyFromArray($styleArraySubTitle);
             $phpExc->getActiveSheet()->getStyle('A31')->applyFromArray($styleArrayTitle);
 
-            $varMonthYearA = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a    order by a.mesyear asc")->queryAll();
+            $varMonthYearA = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between :varBeginYear and :varLastYear group by mesyear order by mesyear desc limit 7) a    order by a.mesyear asc")
+            ->bindValue(':varBeginYear',$varBeginYear)
+            ->bindValue(':varLastYear',$varLastYear)
+            ->queryAll();
 
             $numCell = 32;
             $phpExc->getActiveSheet()->setCellValue('A'.$numCell, 'Datos Evolutivos');
@@ -2191,7 +2460,9 @@ use app\models\ControlVolumenxencuestasdq;
             $phpExc->getActiveSheet()->getStyle('A33')->applyFromArray($styleColor);
             $phpExc->getActiveSheet()->getStyle('A33')->applyFromArray($styleArraySubTitle2);
 
-            $varControlEncuestas = Yii::$app->db->createCommand("select totalvalor, mesyear from (select sum(cantidadvalor)as totalvalor, mesyear from tbl_control_volumenxencuestasdq where idservicio = '$varPcrc' and anuladovxedq = 0 group by mesyear desc limit 7) a order by a.mesyear asc")->queryAll(); 
+            $varControlEncuestas = Yii::$app->db->createCommand("select totalvalor, mesyear from (select sum(cantidadvalor)as totalvalor, mesyear from tbl_control_volumenxencuestasdq where idservicio = :varPcrc and anuladovxedq = 0 group by mesyear desc limit 7) a order by a.mesyear asc")
+            ->bindValue(':varPcrc',$varPcrc)
+            ->queryAll(); 
 
             $lastColumn = 'A';
             foreach ($varControlEncuestas as $key => $value) {

@@ -255,7 +255,8 @@ class ParametrizacionEncuestaController extends Controller {
             $data = \app\models\Arboles::find()
                     ->select(['id', 'text' => 'UPPER(name)'])
                     ->where(["snhoja" => 1])
-                    ->andWhere('name LIKE "%' . $search . '%"')
+                    ->andWhere('name LIKE "%":search"%"')
+                    ->addParams([':search' => $search])
                     ->orderBy('name')
                     ->asArray()
                     ->all();
@@ -266,7 +267,8 @@ class ParametrizacionEncuestaController extends Controller {
                 $data = \app\models\Arboles::find()
                         ->select(['id', 'text' => 'UPPER(name)'])
                         ->where(["snhoja" => 1])
-                        ->andWhere('id = ' . $id)
+                        ->andWhere('id = :id')
+                        ->addParams([':id' => $id])
                         ->orderBy('name')
                         ->asArray()
                         ->all();

@@ -94,14 +94,22 @@ use app\models\Controldimensionamiento;
 			                            'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
 			                ->join('LEFT OUTER JOIN', 'tbl_usuarios',
 			                            'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
-			                ->where('tbl_usuarios.usua_id = '.$varusuario.'');                    
+			                ->where('tbl_usuarios.usua_id = :varusuario')
+							->addParams([':varusuario' => $varusuario]);
 			    $command = $rol->createCommand();
 			    $roles = $command->queryScalar();
 
 			    if ($roles == '270' || $roles == '309') {
-			    	$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.year = '$yearActual' AND cd.month = '$varmes'")->queryAll();
+			    	$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.year = :yearActual AND cd.month = :varmes")
+					->bindValue(':yearActual', $yearActual)
+					->bindValue(':varmes', $varmes)
+					->queryAll();
 			    }else{
-			    	$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = '$varusuario' AND cd.year = '$yearActual' AND cd.month = '$varmes'")->queryAll();
+			    	$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = :varusuario AND cd.year = :yearActual AND cd.month = :varmes")
+					->bindValue(':yearActual', $yearActual)
+					->bindValue(':varmes', $varmes)
+					->bindValue(':varusuario', $varusuario)
+					->queryAll();
 			    }
 				 
 			}else{				
@@ -147,7 +155,11 @@ use app\models\Controldimensionamiento;
 			        $varmonth = "Diciembre";
 			      }
 
-			      $varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = '$varusuario' AND cd.year = '$yearActual' AND cd.month = '$varmonth'")->queryAll();
+			      $varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = :varusuario AND cd.year = :yearActual AND cd.month = :varmonth")
+				  ->bindValue(':yearActual', $yearActual)
+				  ->bindValue(':varmonth', $varmonth)
+				  ->bindValue(':varusuario', $varusuario)
+				  ->queryAll();
 			}
 
 			return $this->render('index',[
@@ -174,7 +186,11 @@ use app\models\Controldimensionamiento;
 				$txtausentismo  = $model->ausentismo;
 				$txtvacapermilicen  = $model->vaca_permi_licen;
 
-				$varConteo = Yii::$app->db->createCommand("SELECT COUNT(cd.usua_id) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0  AND cd.usua_id = $txtusuaid AND cd.year = '$txtyear' AND cd.month = '$txtmonth'")->queryScalar(); 
+				$varConteo = Yii::$app->db->createCommand("SELECT COUNT(cd.usua_id) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0  AND cd.usua_id = :txtusuaid AND cd.year = :txtyear AND cd.month =:txtmonth")
+				->bindValue(':txtusuaid', $txtusuaid)
+				->bindValue(':txtyear', $txtyear)
+				->bindValue(':txtmonth', $txtmonth)
+				->queryScalar(); 
 
 				if ($varConteo == 0) {
 					Yii::$app->db->createCommand()->insert('tbl_control_dimensionamiento',[
@@ -193,7 +209,11 @@ use app\models\Controldimensionamiento;
 	                                'anulado' => 0,
 	                            ])->execute(); 
 
-					$txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = $txtusuaid and year = '$txtyear' and month = '$txtmonth' and anulado = 0")->queryScalar(); 
+					$txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = :txtusuaid and year = :txtyear and month = :txtmonth and anulado = 0")
+					->bindValue(':txtusuaid', $txtusuaid)
+					->bindValue(':txtyear', $txtyear)
+					->bindValue(':txtmonth', $txtmonth)
+					->queryScalar(); 
 
 					$txtduracion_ponde = $txttiempollamada + $txttiempoadicional;
 		            $txtocupacion = 80 / 100;
@@ -252,7 +272,11 @@ use app\models\Controldimensionamiento;
 				$varyear = date("Y");
 				$varmonth = $model->month;
 
-				$varconteoresult = Yii::$app->db->createCommand("SELECT count(cd.iddimensionamiento) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = $varsession AND cd.year = '$varyear' AND cd.month = '$varmonth'")->queryScalar();
+				$varconteoresult = Yii::$app->db->createCommand("SELECT count(cd.iddimensionamiento) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = :varsession AND cd.year = :varyear AND cd.month = :varmonth")
+				->bindValue(':varsession', $varsession)
+				->bindValue(':varyear', $varyear)
+				->bindValue(':varmonth', $varmonth)
+				->queryScalar();
 
 				if ($varconteoresult != 0) {
 					return $this->redirect(array('actualizadimensiona','varmonth'=>$varmonth));
@@ -274,16 +298,28 @@ use app\models\Controldimensionamiento;
 			$varmes = $varmonth;
 			$model = new Controldimensionamiento();
 
-			$varlistaresult = Yii::$app->db->createCommand("SELECT * FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = $varsession AND cd.year = '$varyear' AND cd.month = '$varmes'")->queryAll();
+			$varlistaresult = Yii::$app->db->createCommand("SELECT * FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = :varsession AND cd.year = :varyear AND cd.month = :varmes")
+			->bindValue(':varsession', $varsession)
+			->bindValue(':varyear', $varyear)
+			->bindValue(':varmes', $varmes)
+			->queryAll();
 
-			$variddimensiona = Yii::$app->db->createCommand("SELECT DISTINCT cd.iddimensionamiento FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = $varsession AND cd.year = '$varyear' AND cd.month = '$varmes'")->queryScalar();
+			$variddimensiona = Yii::$app->db->createCommand("SELECT DISTINCT cd.iddimensionamiento FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0 AND cd.usua_id = :varsession AND cd.year = :varyear AND cd.month = :varmes")
+			->bindValue(':varsession', $varsession)
+			->bindValue(':varyear', $varyear)
+			->bindValue(':varmes', $varmes)
+			->queryScalar();
 
 			$form = Yii::$app->request->post();
 			if($model->load($form)){
 
-				Yii::$app->db->createCommand("DELETE FROM tbl_control_dimensionamiento WHERE anulado = 0 AND iddimensionamiento = '$variddimensiona'")->execute();
+				Yii::$app->db->createCommand("DELETE FROM tbl_control_dimensionamiento WHERE anulado = 0 AND iddimensionamiento = :variddimensiona")
+				->bindValue(':variddimensiona', $variddimensiona)
+				->execute();
 
-				Yii::$app->db->createCommand("DELETE FROM tbl_control_dimensionar WHERE anulado = 0 AND iddimensionamiento = '$variddimensiona'")->execute();
+				Yii::$app->db->createCommand("DELETE FROM tbl_control_dimensionar WHERE anulado = 0 AND iddimensionamiento = :variddimensiona")
+				->bindValue(':variddimensiona', $variddimensiona)
+				->execute();
 
 
 				$txtusuaid = Yii::$app->user->identity->id;
@@ -298,7 +334,11 @@ use app\models\Controldimensionamiento;
 				$txtausentismo  = $model->ausentismo;
 				$txtvacapermilicen  = $model->vaca_permi_licen;
 
-				$varConteo = Yii::$app->db->createCommand("SELECT COUNT(cd.usua_id) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0  AND cd.usua_id = $txtusuaid AND cd.year = '$txtyear' AND cd.month = '$txtmonth'")->queryScalar(); 
+				$varConteo = Yii::$app->db->createCommand("SELECT COUNT(cd.usua_id) FROM tbl_control_dimensionamiento cd WHERE cd.anulado = 0  AND cd.usua_id = :txtusuaid AND cd.year = :txtyear AND cd.month = :txtmonth")
+				->bindValue(':txtusuaid', $txtusuaid)
+				->bindValue(':txtyear', $txtyear)
+				->bindValue(':txtmonth', $txtmonth)
+				->queryScalar(); 
 
 				if ($varConteo == 0) {
 					Yii::$app->db->createCommand()->insert('tbl_control_dimensionamiento',[
@@ -317,7 +357,11 @@ use app\models\Controldimensionamiento;
 	                                'anulado' => 0,
 	                            ])->execute(); 
 
-					$txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = $txtusuaid and year = '$txtyear' and month = '$txtmonth' and anulado = 0")->queryScalar(); 
+					$txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = :txtusuaid and year = :txtyear and month = :txtmonth and anulado = 0")
+					->bindValue(':txtusuaid', $txtusuaid)
+					->bindValue(':txtyear', $txtyear)
+					->bindValue(':txtmonth', $txtmonth)
+					->queryScalar(); 
 
 					$txtduracion_ponde = $txttiempollamada + $txttiempoadicional;
 		            $txtocupacion = 80 / 100;
@@ -379,7 +423,10 @@ use app\models\Controldimensionamiento;
 			if($model->load($form)){
 				$varcorreo = $model->month;
 
-				$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = '$varusuario' AND cd.year = '$yearActual'")->queryAll();
+				$varListresult = Yii::$app->db->createCommand("SELECT u.usua_nombre, cd.year 'Annio', cd.month 'Mes', cd.cant_valor 'CantValor', cd.tiempo_llamada 'TiempoLlamada', cd.tiempoadicional 'TiempoAdicional', cd.actuales 'TecnicosActua', cd.otras_actividad 'OtrasActivi', cd.turno_promedio 'TurnoPromedio', cd.ausentismo 'Ausentismos', cd.vaca_permi_licen 'Vacaciones', c.duracion_ponde, c.ocupacion, c.carga_trabajo, c.horasCNX, c.uti_gentes, c.horas_nomina_monit, c.horas_laboral_mes, c.FTE, c.p_monit, c.p_otras_actividad, c.personas, c.pnas_vacaciones, c.pnas_ausentismo, c.exceso_deficit FROM tbl_control_dimensionar c INNER JOIN tbl_control_dimensionamiento cd ON  c.iddimensionamiento = cd.iddimensionamiento INNER JOIN tbl_usuarios u ON u.usua_id = cd.usua_id WHERE 	cd.anulado = 0 AND cd.usua_id = :varusuario AND cd.year = :yearActual")
+				->bindValue(':varusuario', $varusuario)
+				->bindValue(':yearActual', $yearActual)
+				->queryAll();
 
 
 				$phpExc = new \PHPExcel();

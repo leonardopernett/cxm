@@ -124,7 +124,9 @@ class EvaluadosController extends Controller {
                 if (count(Yii::$app->request->post()) > 0) {
                     $query3 = $query["Evaluados"]["dsusuario_red"];
 
-                    $query2 = Yii::$app->db->createCommand("select count(*) from tbl_evaluados where dsusuario_red = '$query3'")->queryScalar();
+                    $query2 = Yii::$app->db->createCommand("select count(*) from tbl_evaluados where dsusuario_red = ':query3'")
+                    ->bindValue(':query3', $query3)
+                    ->queryScalar();
 
                     if ($query2 == 0) {
                         if ($model->load($query)) {
@@ -164,7 +166,9 @@ class EvaluadosController extends Controller {
                     $query3 = $txtUsu["Evaluados"]["dsusuario_red"];
 
                     if ($varUsu != $query3) {
-                        $query = Yii::$app->db->createCommand("select count(*) from tbl_evaluados where dsusuario_red = '$query3'")->queryScalar();
+                        $query = Yii::$app->db->createCommand("select count(*) from tbl_evaluados where dsusuario_red = ':query3'")
+                        ->bindValue(':query3', $query3)
+                        ->queryScalar();
 
                         if ($query == 0) {
                             if ($model->load($txtUsu) && $model->save()) {

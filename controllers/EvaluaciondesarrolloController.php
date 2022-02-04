@@ -139,9 +139,14 @@ use yii\base\Exception;
       $txtvarnivel = Yii::$app->request->get("txtvarnivel");
       $txtvarcargo = Yii::$app->request->get("txtvarcargo");
 
-      $txtvarnamecargo = Yii::$app->get('dbjarvis2')->createCommand("select posicion from dp_posicion where estado = 1 and id_dp_posicion = $txtvarcargo")->queryScalar(); 
+      $txtvarnamecargo = Yii::$app->get('dbjarvis2')->createCommand("select posicion from dp_posicion where estado = 1 and id_dp_posicion = ':txtvarcargo'")
+      ->bindValue(':txtvarcargo', $txtvarcargo)
+      ->queryScalar(); 
 
-      $txtverificanivel = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_nivel where anulado = 0 and nivel = $txtvarnivel and cargo = $txtvarcargo")->queryScalar();
+      $txtverificanivel = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_nivel where anulado = 0 and nivel = ':txtvarnivel' and cargo = ':txtvarcargo'")
+      ->bindValue(':txtvarnivel', $txtvarnivel)
+      ->bindValue(':txtvarcargo', $txtvarcargo)
+      ->queryScalar();
 
       $txtrta = null;
       if ($txtverificanivel > 0) {
@@ -362,7 +367,9 @@ use yii\base\Exception;
 		              LEFT JOIN dp_datos_generales f
                   ON f.documento = a.documento
 
-                  WHERE a.documento = '$vardocumentojefe'")->queryAll();
+                  WHERE a.documento = ':vardocumentojefe'")
+                  ->bindValue(':vardocumentojefe', $vardocumentojefe)
+                  ->queryAll();
 
                   foreach ($query2 as $key => $value2) {
                     $varidcargojefe = $value2['idcargo'];
@@ -521,7 +528,13 @@ use yii\base\Exception;
       $txtvaridpreg = Yii::$app->request->get("txtvaridpreg");
       $txtvaridrta = Yii::$app->request->get("txtvaridrta");
 
-      $varverifica = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where documento = '$txtvardocumento' and documentoevaluado = '$txtvardocumento' and idevaluacionbloques = $txtvaridbloque and idevaluacioncompetencia = $txtvaridcompetencia and idevaluacionpregunta = $txtvaridpreg and idevaluacionrespuesta = $txtvaridrta and anulado = 0")->queryScalar();
+      $varverifica = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where documento = ':txtvardocumento' and documentoevaluado = ':txtvardocumento' and idevaluacionbloques = ':txtvaridbloque' and idevaluacioncompetencia = ':txtvaridcompetencia' and idevaluacionpregunta = ':txtvaridpreg' and idevaluacionrespuesta = ':txtvaridrta' and anulado = 0")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->bindValue(':txtvaridbloque', $txtvaridbloque)
+      ->bindValue(':txtvaridcompetencia', $txtvaridcompetencia)
+      ->bindValue(':txtvaridpreg', $txtvaridpreg)
+      ->bindValue(':txtvaridrta', $txtvaridrta)
+      ->queryScalar();
 
       if ($varverifica == 0) {
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
@@ -617,9 +630,18 @@ use yii\base\Exception;
       $txtvaridpreg = Yii::$app->request->get("txtvaridpreg");
       $txtvaridrta = Yii::$app->request->get("txtvaridrta");
 
-      $vardocumentjefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua where documento = $txtvardocumento group by documento_jefe")->queryScalar();
+      $vardocumentjefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua where documento = ':txtvardocumento' group by documento_jefe")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->queryScalar();
 
-      $varverifica = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where documento = '$txtvardocumento' and documentoevaluado = '$vardocumentjefe' and idevaluacionbloques = $txtvaridbloque and idevaluacioncompetencia = $txtvaridcompetencia and idevaluacionpregunta = $txtvaridpreg and idevaluacionrespuesta = $txtvaridrta and anulado = 0")->queryScalar();
+      $varverifica = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where documento = ':txtvardocumento' and documentoevaluado = ':vardocumentjefe' and idevaluacionbloques = ':txtvaridbloque' and idevaluacioncompetencia = ':txtvaridcompetencia' and idevaluacionpregunta = ':txtvaridpreg' and idevaluacionrespuesta = ':txtvaridrta' and anulado = 0")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->bindValue(':vardocumentjefe', $vardocumentjefe)
+      ->bindValue(':txtvaridbloque', $txtvaridbloque)
+      ->bindValue(':txtvaridcompetencia', $txtvaridcompetencia)
+      ->bindValue(':txtvaridpreg', $txtvaridpreg)
+      ->bindValue(':txtvaridrta', $txtvaridrta)
+      ->queryScalar();
 
       if ($varverifica == 0) {
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
@@ -645,7 +667,9 @@ use yii\base\Exception;
       $txtvarocmentario = Yii::$app->request->get("txtvarocmentario");
       $txtvardocumento = Yii::$app->request->get("txtvardocumento");
 
-      $vardocumentjefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua where documento = $txtvardocumento group by documento_jefe")->queryScalar();
+      $vardocumentjefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua where documento = ':txtvardocumento' group by documento_jefe")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->queryScalar();
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
                                 'documento' => $txtvardocumento,
@@ -740,7 +764,9 @@ use yii\base\Exception;
                   $varArray = $datos[$c]; 
                   $varDatos = explode(";", utf8_encode($varArray));
 
-                  $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_usuario = '$varDatos[0]'")->queryScalar();
+                  $varidusua = Yii::$app->db->createCommand("select usua_id from tbl_usuarios where usua_usuario = ':varDatos'")
+                  ->bindValue(':varDatos', $varDatos[0])
+                  ->queryScalar();
               
               
               
@@ -872,7 +898,14 @@ use yii\base\Exception;
 
       $vardocumentjefe = Yii::$app->request->get("txtvardocument2");
 
-      $varverifica = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where documento = '$txtvardocumento' and documentoevaluado = '$vardocumentjefe' and idevaluacionbloques = $txtvaridbloque and idevaluacioncompetencia = $txtvaridcompetencia and idevaluacionpregunta = $txtvaridpreg and idevaluacionrespuesta = $txtvaridrta and anulado = 0")->queryScalar();
+      $varverifica = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where documento = ':txtvardocumento' and documentoevaluado = ':vardocumentjefe' and idevaluacionbloques = ':txtvaridbloque' and idevaluacioncompetencia = ':txtvaridcompetencia' and idevaluacionpregunta = ':txtvaridpreg' and idevaluacionrespuesta = ':txtvaridrta' and anulado = 0")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->bindValue(':vardocumentjefe', $vardocumentjefe)
+      ->bindValue(':txtvaridbloque', $txtvaridbloque)
+      ->bindValue(':txtvaridcompetencia', $txtvaridcompetencia)
+      ->bindValue(':txtvaridpreg', $txtvaridpreg)
+      ->bindValue(':txtvaridrta', $txtvaridrta)
+      ->queryScalar();
 
       if ($varverifica == 0) {
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
@@ -933,7 +966,9 @@ use yii\base\Exception;
     public function actionRestringirevalua(){
       $sessiones = Yii::$app->user->identity->id;
 
-      $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+      $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = ':sessiones'")
+      ->bindValue(':sessiones', $sessiones)
+      ->queryScalar();
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_novedadesgeneral',[
                                 'documento' => $vardocument,
@@ -951,7 +986,10 @@ use yii\base\Exception;
       $txtvardocumento = Yii::$app->request->get("txtvardocumento");
       $txtvaridpares = Yii::$app->request->get("txtvaridpares");
 
-      $varconteorta = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where  documento = $txtvardocumento and documentoevaluado = $txtvaridpares and idevaluaciontipo = 4 and anulado = 0")->queryScalar();
+      $varconteorta = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where  documento = ':txtvardocumento' and documentoevaluado = ':txtvaridpares' and idevaluaciontipo = 4 and anulado = 0")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->bindValue(':txtvaridpares', $txtvaridpares)
+      ->queryScalar();
 
       die(json_encode($varconteorta)); 
 
@@ -1002,7 +1040,10 @@ use yii\base\Exception;
       $txtvardocumento = Yii::$app->request->get("txtvardocumento");
       $txtvaridpares = Yii::$app->request->get("txtvaridpares");
 
-      $varconteorta = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where  documento = $txtvardocumento and documentoevaluado = $txtvaridpares and idevaluaciontipo = 3 and anulado = 0")->queryScalar();
+      $varconteorta = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where  documento = ':txtvardocumento' and documentoevaluado = ':txtvaridpares' and idevaluaciontipo = 3 and anulado = 0")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->bindValue(':txtvaridpares', $txtvaridpares)
+      ->queryScalar();
 
       die(json_encode($varconteorta)); 
 
@@ -1027,7 +1068,14 @@ use yii\base\Exception;
 
       $vardocumentjefe = Yii::$app->request->get("txtvardocument2");
 
-      $varverifica = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where documento = '$txtvardocumento' and documentoevaluado = '$vardocumentjefe' and idevaluacionbloques = $txtvaridbloque and idevaluacioncompetencia = $txtvaridcompetencia and idevaluacionpregunta = $txtvaridpreg and idevaluacionrespuesta = $txtvaridrta and anulado = 0")->queryScalar();
+      $varverifica = Yii::$app->db->createCommand("select count(*) from tbl_evaluacion_solucionado where documento = ':txtvardocumento' and documentoevaluado = ':vardocumentjefe' and idevaluacionbloques = ':txtvaridbloque' and idevaluacioncompetencia = ':txtvaridcompetencia' and idevaluacionpregunta = ':txtvaridpreg' and idevaluacionrespuesta = ':txtvaridrta' and anulado = 0")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->bindValue(':vardocumentjefe', $vardocumentjefe)
+      ->bindValue(':txtvaridbloque', $txtvaridbloque)
+      ->bindValue(':txtvaridcompetencia', $txtvaridcompetencia)
+      ->bindValue(':txtvaridpreg', $txtvaridpreg)
+      ->bindValue(':txtvaridrta', $txtvaridrta)
+      ->queryScalar();
 
       if ($varverifica == 0) {
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
@@ -1126,7 +1174,9 @@ use yii\base\Exception;
     public function actionNovedadesglobales($idparams){
       $model = new EvaluacionTipoeval();
       $varidtipo = $idparams;
-      $varnombretipo  = Yii::$app->db->createCommand("select tipoevaluacion from tbl_evaluacion_tipoeval where anulado = 0 and idevaluaciontipo = $varidtipo")->queryScalar();      
+      $varnombretipo  = Yii::$app->db->createCommand("select tipoevaluacion from tbl_evaluacion_tipoeval where anulado = 0 and idevaluaciontipo = ':varidtipo'")
+      ->bindValue(':varidtipo', $varidtipo)
+      ->queryScalar();      
 
       return $this->render('novedadesglobales',[
         'model' => $model,
@@ -1162,7 +1212,9 @@ use yii\base\Exception;
     public function actionVerificapersona(){
       $txtvarIdcambiosNcargo = Yii::$app->request->get("txtvarIdcambiosNcargo");
 
-      $varname = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua where anulado = 0 and documento = $txtvarIdcambiosNcargo group by documento")->queryScalar();
+      $varname = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua where anulado = 0 and documento = ':txtvarIdcambiosNcargo' group by documento")
+      ->bindValue(':txtvarIdcambiosNcargo', $txtvarIdcambiosNcargo)
+      ->queryScalar();
 
       die(json_encode($varname));
     }
@@ -1212,7 +1264,9 @@ use yii\base\Exception;
                                       ],'idnovedadesj ='.$varidevalua.'')->execute(); 
 
           if ($varEstado == 1) {
-            $varlistJefe = Yii::$app->db->createCommand("select documento_jefe, nombre_jefe, id_cargo_jefe, cargo_jefe from tbl_usuarios_evalua where anulado = 0 and documento_jefe = $varcambioJefe group by documento_jefe")->queryAll();
+            $varlistJefe = Yii::$app->db->createCommand("select documento_jefe, nombre_jefe, id_cargo_jefe, cargo_jefe from tbl_usuarios_evalua where anulado = 0 and documento_jefe = ':varcambioJefe' group by documento_jefe")
+            ->bindValue(':varcambioJefe', $varcambioJefe)
+            ->queryAll();
 
             foreach ($varlistJefe as $key => $value) {
                Yii::$app->db->createCommand()->update('tbl_usuarios_evalua',[
@@ -1228,14 +1282,22 @@ use yii\base\Exception;
         }else{
           if ($vartipoevalua == 3) {
 
-            $vartipos = Yii::$app->db->createCommand("select distinct tipo from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = $varidevalua")->queryScalar();
+            $vartipos = Yii::$app->db->createCommand("select distinct tipo from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = ':varidevalua'")
+            ->bindValue(':varidevalua', $varidevalua)
+            ->queryScalar();
 
             if ($varEstado == 1) {
               if ($vartipos == 1) {
-                $vardocumentboss = Yii::$app->db->createCommand("select distinct documento from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = $varidevalua")->queryScalar();
-                $vardocumentnewperson = Yii::$app->db->createCommand("select distinct cambios from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = $varidevalua")->queryScalar();
+                $vardocumentboss = Yii::$app->db->createCommand("select distinct documento from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = ':varidevalua'")
+                ->bindValue(':varidevalua', $varidevalua)
+                ->queryScalar();
+                $vardocumentnewperson = Yii::$app->db->createCommand("select distinct cambios from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = ':varidevalua'")
+                ->bindValue(':varidevalua', $varidevalua)
+                ->queryScalar();
 
-                $varlistnewboss = Yii::$app->db->createCommand("select distinct documento_jefe, nombre_jefe, id_cargo_jefe, cargo_jefe, directorarea, clientearea from tbl_usuarios_evalua where anulado = 0 and documento_jefe = $vardocumentboss")->queryAll();
+                $varlistnewboss = Yii::$app->db->createCommand("select distinct documento_jefe, nombre_jefe, id_cargo_jefe, cargo_jefe, directorarea, clientearea from tbl_usuarios_evalua where anulado = 0 and documento_jefe = ':vardocumentboss'")
+                ->bindValue(':vardocumentboss', $vardocumentboss)
+                ->queryAll();
 
                 foreach ($varlistnewboss as $key => $value) {
                   Yii::$app->db->createCommand()->update('tbl_usuarios_evalua',[
@@ -1249,10 +1311,16 @@ use yii\base\Exception;
                 }
 
               }else{
-                $vardocumentnewboss = Yii::$app->db->createCommand("select distinct comentarios from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = $varidevalua")->queryScalar();
-                $vardocumentperson = Yii::$app->db->createCommand("select distinct cambios from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = $varidevalua")->queryScalar();
+                $vardocumentnewboss = Yii::$app->db->createCommand("select distinct comentarios from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = ':varidevalua'")
+                ->bindValue(':varidevalua', $varidevalua)
+                ->queryScalar();
+                $vardocumentperson = Yii::$app->db->createCommand("select distinct cambios from tbl_evaluacion_novedadescargo where anulado = 0 and idnovedadesc = ':varidevalua'")
+                ->bindValue(':varidevalua', $varidevalua)
+                ->queryScalar();
 
-                $varlistnewboss = Yii::$app->db->createCommand("select distinct documento_jefe, nombre_jefe, id_cargo_jefe, cargo_jefe, directorarea, clientearea from tbl_usuarios_evalua where anulado = 0 and documento_jefe = $vardocumentnewboss")->queryAll();
+                $varlistnewboss = Yii::$app->db->createCommand("select distinct documento_jefe, nombre_jefe, id_cargo_jefe, cargo_jefe, directorarea, clientearea from tbl_usuarios_evalua where anulado = 0 and documento_jefe = ':vardocumentnewboss'")
+                ->bindValue(':vardocumentnewboss', $vardocumentnewboss)
+                ->queryAll();
 
                 foreach ($varlistnewboss as $key => $value) {
                   Yii::$app->db->createCommand()->update('tbl_usuarios_evalua',[
@@ -1308,7 +1376,9 @@ use yii\base\Exception;
         $txtvaridpares = $txtvarvardocument;
       }else{
         if ($txtvaridasuntosNcargo == 2) {
-          $txtvaridpares = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua where documento = $txtvarvardocument group by documento_jefe")->queryScalar();
+          $txtvaridpares = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua where documento = ':txtvarvardocument' group by documento_jefe")
+          ->bindValue(':txtvarvardocument', $txtvarvardocument)
+          ->queryScalar();
         }
       }
 
@@ -1346,24 +1416,38 @@ use yii\base\Exception;
 
     $txtvardocumento = Yii::$app->request->get("txtvardocumento");
 
-    $vardocumento1 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 1 group by documentoevaluado")->queryScalar();
-    $vardocumento2 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
+    $vardocumento1 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = ':txtvardocumento' and idevaluaciontipo = 1 group by documentoevaluado")
+    ->bindValue(':txtvardocumento', $txtvardocumento)
+    ->queryScalar();
+    $vardocumento2 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = ':txtvardocumento' and idevaluaciontipo = 3 group by documentoevaluado")
+    ->bindValue(':txtvardocumento', $txtvardocumento)
+    ->queryScalar();
     
-    $vardocumentojefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua WHERE documento = $txtvardocumento")->queryScalar();
+    $vardocumentojefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua WHERE documento = ':txtvardocumento'")
+    ->bindValue(':txtvardocumento', $txtvardocumento)
+    ->queryScalar();
 
-    $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento AND idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
+    $varevaluoaljefe = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = ':txtvardocumento' AND idevaluaciontipo = 3 group by documentoevaluado")
+    ->bindValue(':txtvardocumento', $txtvardocumento)
+    ->queryScalar();
 
     if($vardocumentojefe > 1){
-      $varnopares = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_novedadesgeneral WHERE documento = $txtvardocumento AND aprobado = 1")->queryScalar();
+      $varnopares = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_novedadesgeneral WHERE documento = ':txtvardocumento' AND aprobado = 1")
+      ->bindValue(':txtvardocumento', $txtvardocumento)
+      ->queryScalar();
       if($varnopares > 0){
         $vardocumento3 = 0;
       }else {
-        $vardocumento3 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = $txtvardocumento and idevaluaciontipo = 3 group by documentoevaluado")->queryScalar();
+        $vardocumento3 = Yii::$app->db->createCommand("select documentoevaluado from tbl_evaluacion_solucionado where documentoevaluado = ':txtvardocumento' and idevaluaciontipo = 3 group by documentoevaluado")
+        ->bindValue(':txtvardocumento', $txtvardocumento)
+        ->queryScalar();
       } 
     }else{
       #code
     }
-    $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua WHERE documento_jefe = $vardocumentojefe")->queryScalar();
+    $varcantipares = Yii::$app->db->createCommand("select COUNT(documento_jefe) from tbl_usuarios_evalua WHERE documento_jefe = ':vardocumentojefe'")
+    ->bindValue(':vardocumentojefe', $vardocumentojefe)
+    ->queryScalar();
     if($vardocumento1 && $vardocumento2 && $varevaluoaljefe){
       $txtRta = 1;
     } else{
@@ -1379,7 +1463,9 @@ use yii\base\Exception;
     $txtvardocumento = Yii::$app->request->get("vardocumento");
     $txtvardocumentojefe = Yii::$app->request->get("vardocumentojefe");
     $txtvartipocoaching = Yii::$app->request->get("vartipocoaching");
-    $txtvalidadocumento = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_resulta_feedback WHERE documento = $txtvardocumento")->queryScalar();
+    $txtvalidadocumento = Yii::$app->db->createCommand("select count(documento) from tbl_evaluacion_resulta_feedback WHERE documento = ':txtvardocumento'")
+    ->bindValue(':txtvardocumento', $txtvardocumento)
+    ->queryScalar();
     $txtrta = 0;
     if($txtvalidadocumento == 0) {
         $txtEmail = "anmorenoa@grupokonecta.com";
@@ -1415,8 +1501,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = $varidbloque
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':txtvardocumento' AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = ':varidbloque'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':txtvardocumento', $txtvardocumento)
+                                                        ->bindValue(':varidbloque', $varidbloque)
+                                                        ->queryAll();
 
           $varconteocompetencia = 0;
           foreach ($listadocompetencias as $key => $value) {
@@ -1436,8 +1525,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 1 AND ec.namecompetencia = '$nombrecompetencias'
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':txtvardocumento' AND es.idevaluaciontipo = 1 AND ec.namecompetencia = ':nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':txtvardocumento', $txtvardocumento)
+                                                        ->bindValue(':nombrecompetencias', $nombrecompetencias)
+                                                        ->queryAll();
 
             foreach ($listacompetencia1 as $key => $value1) {
               $valortotal1Auto = $value1['%Competencia'];
@@ -1472,8 +1564,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 2 AND ec.namecompetencia = '$nombrecompetencias'
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':txtvardocumento' AND es.idevaluaciontipo = 2 AND ec.namecompetencia = ':nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':txtvardocumento', $txtvardocumento)
+                                                        ->bindValue(':nombrecompetencias', $nombrecompetencias)
+                                                        ->queryAll();
 
             foreach ($listacompetencia3 as $key => $value3) {
               $valortotal3Cargo = $value3['%Competencia'];
@@ -1490,8 +1585,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $txtvardocumento AND es.idevaluaciontipo = 4 AND ec.namecompetencia = '$nombrecompetencias'
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':txtvardocumento' AND es.idevaluaciontipo = 4 AND ec.namecompetencia = ':nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':txtvardocumento', $txtvardocumento)
+                                                        ->bindValue(':nombrecompetencias', $nombrecompetencias)
+                                                        ->queryAll();
 
             foreach ($listacompetencia4 as $key => $value4) {
               $valortotal4Pares = $value4['%Competencia'];
@@ -1577,13 +1675,23 @@ use yii\base\Exception;
 
       if ($varestado == 1) {
 	if ($varidevaluado != null) {
-          Yii::$app->db->createCommand("delete from tbl_evaluacion_solucionado where documento = $varidnombre and documentoevaluado = $varidevaluado and idevaluaciontipo = $vartipoeva and anulado = 0")->execute();
+          Yii::$app->db->createCommand("delete from tbl_evaluacion_solucionado where documento = ':varidnombre' and documentoevaluado = ':varidevaluado' and idevaluaciontipo = ':vartipoeva' and anulado = 0")
+          ->bindValue(':varidnombre', $varidnombre)
+          ->bindValue(':varidevaluado', $varidevaluado)
+          ->bindValue(':vartipoeva', $vartipoeva)
+          ->execute();
         
-          Yii::$app->db->createCommand("delete from tbl_evaluacion_desarrollo where idevaluador = $varidnombre and idevalados = $varidevaluado and idevaluaciontipo = $vartipoeva and anulado = 0")->execute();
+          Yii::$app->db->createCommand("delete from tbl_evaluacion_desarrollo where idevaluador = ':varidnombre' and idevalados = ':varidevaluado' and idevaluaciontipo = ':vartipoeva' and anulado = 0")
+          ->bindValue(':varidnombre', $varidnombre)
+          ->bindValue(':varidevaluado', $varidevaluado)
+          ->bindValue(':vartipoeva', $vartipoeva)
+          ->execute();
         }
 
         if ($vartipoeva == 4 && $varidevaluado == null) {
-          Yii::$app->db->createCommand("delete from tbl_evaluacion_novedadesgeneral where documento = $varidnombre and anulado = 0")->execute();
+          Yii::$app->db->createCommand("delete from tbl_evaluacion_novedadesgeneral where documento = ':varidnombre' and anulado = 0")
+          ->bindValue(':varidnombre', $varidnombre)
+          ->execute();
         }
       } 
 
@@ -1683,7 +1791,9 @@ use yii\base\Exception;
           $vardirectorarea = $value['directorarea'];
           $varclienarea =$value['clientearea'];
 
-          $varrtaauto = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo ed where ed.anulado = 0 and ed.idevaluador = $varusuarioid and ed.idevalados = $varusuarioid")->queryscalar();
+          $varrtaauto = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo ed where ed.anulado = 0 and ed.idevaluador = ':varusuarioid' and ed.idevalados = ':varusuarioid'")
+          ->bindValue(':varusuarioid', $varusuarioid)
+          ->queryscalar();
 
           // Guardo informacion de autoevaluacion
           Yii::$app->db->createCommand()->insert('tbl_evaluacion_cumplimiento',[
@@ -1699,9 +1809,14 @@ use yii\base\Exception;
               'usua_id' => Yii::$app->user->identity->id,              
           ])->execute();
 
-          $varjefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua where documento = $varusuarioid and anulado = 0 group by documento_jefe")->queryScalar();
+          $varjefe = Yii::$app->db->createCommand("select documento_jefe from tbl_usuarios_evalua where documento = ':varusuarioid' and anulado = 0 group by documento_jefe")
+          ->bindValue(':varusuarioid', $varusuarioid)
+          ->queryScalar();
 
-          $varrtajefe = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo ed where ed.anulado = 0 and ed.idevaluador = $varusuarioid and ed.idevalados = $varjefe")->queryscalar();
+          $varrtajefe = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo ed where ed.anulado = 0 and ed.idevaluador = ':varusuarioid' and ed.idevalados = ':varjefe'")
+          ->bindValue(':varusuarioid', $varusuarioid)
+          ->bindValue(':varjefe', $varjefe)
+          ->queryscalar();
 
           // Guardo informacion de evaluacion Jefe
           Yii::$app->db->createCommand()->insert('tbl_evaluacion_cumplimiento',[
@@ -1717,11 +1832,17 @@ use yii\base\Exception;
               'usua_id' => Yii::$app->user->identity->id,              
           ])->execute(); 
 
-          $varlistpares = Yii::$app->db->createCommand("select ue.documento from tbl_usuarios_evalua ue where ue.documento_jefe = '$varjefe' and ue.documento != '$varusuarioid' group by ue.documento")->queryAll();
+          $varlistpares = Yii::$app->db->createCommand("select ue.documento from tbl_usuarios_evalua ue where ue.documento_jefe = ':varjefe' and ue.documento != ':varusuarioid' group by ue.documento")
+          ->bindValue(':varjefe', $varjefe)
+          ->bindValue(':varusuarioid', $varusuarioid)
+          ->queryAll();
 
           foreach ($varlistpares as $key => $value) {
             $varpar = $value['documento'];
-            $varrtapar = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo ed where ed.anulado = 0 and ed.idevaluador = $varusuarioid and ed.idevalados = $varpar")->queryscalar();
+            $varrtapar = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo ed where ed.anulado = 0 and ed.idevaluador = ':varusuarioid' and ed.idevalados = ':varpar'")
+            ->bindValue(':varusuarioid', $varusuarioid)
+            ->bindValue(':varpar', $varpar)
+            ->queryscalar();
 
             // Guardo informacion de evaluacion Pares
             Yii::$app->db->createCommand()->insert('tbl_evaluacion_cumplimiento',[
@@ -1739,11 +1860,16 @@ use yii\base\Exception;
 
           }
 
-          $varlistcargo = Yii::$app->db->createCommand("select ue.documento from tbl_usuarios_evalua ue where ue.documento_jefe = '$varusuarioid' and ue.documento != '$varusuarioid' group by ue.documento")->queryAll();
+          $varlistcargo = Yii::$app->db->createCommand("select ue.documento from tbl_usuarios_evalua ue where ue.documento_jefe = ':varusuarioid' and ue.documento != ':varusuarioid' group by ue.documento")
+          ->bindValue(':varusuarioid', $varusuarioid)
+          ->queryAll();
 
           foreach ($varlistcargo as $key => $value) {
             $varcargo = $value['documento'];
-            $varrtacargo = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo ed where ed.anulado = 0 and ed.idevaluador = $varusuarioid and ed.idevalados = $varcargo")->queryscalar();
+            $varrtacargo = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo ed where ed.anulado = 0 and ed.idevaluador = ':varusuarioid' and ed.idevalados = ':varcargo'")
+            ->bindValue(':varusuarioid', $varusuarioid)
+            ->bindValue(':varcargo', $varcargo)
+            ->queryscalar();
 
             // Guardo informacion de evaluacion Pares
             Yii::$app->db->createCommand()->insert('tbl_evaluacion_cumplimiento',[
@@ -1782,10 +1908,17 @@ use yii\base\Exception;
         $varevaluado = $value['cedulaevaluado'];
         $vartipo = $value['idtipoevalua'];
 
-        $varconteo = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo where anulado = 0 and idevaluador = $varevaluador and idevalados = $varevaluado and idevaluaciontipo = $vartipo")->queryScalar();
+        $varconteo = Yii::$app->db->createCommand("select count(1) from tbl_evaluacion_desarrollo where anulado = 0 and idevaluador = ':varevaluador' and idevalados = ':varevaluado' and idevaluaciontipo = ':vartipo'")
+        ->bindValue(':varevaluador', $varevaluador)
+        ->bindValue(':varevaluado', $varevaluado)
+        ->bindValue(':vartipo', $vartipo)
+        ->queryScalar();
 
         if ($varconteo != 0) {
-          Yii::$app->db->createCommand("update tbl_evaluacion_cumplimiento set idresultado = $varconteo where idevaluacioncumplimiento = $varidlinea and anulado = 0")->execute();
+          Yii::$app->db->createCommand("update tbl_evaluacion_cumplimiento set idresultado = ':varconteo' where idevaluacioncumplimiento = ':varidlinea' and anulado = 0")
+          ->bindValue(':varconteo', $varconteo)
+          ->bindValue(':varidlinea', $varidlinea)
+          ->execute();
         }
       }
 
@@ -1798,13 +1931,21 @@ use yii\base\Exception;
             $txtId = Yii::$app->request->get('id'); 
             
             $sessiones = Yii::$app->user->identity->id;
-            $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();                     
+            $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = ':sessiones'")
+            ->bindValue(':sessiones', $sessiones)
+            ->queryScalar();                     
 
             if ($txtId) {
-                $txtControl = Yii::$app->db->createCommand("select count(1) from tbl_usuarios_evalua ue inner join tbl_evaluacion_solucionado es on ue.documento = es.documentoevaluado where es.documento = $vardocument and es.anulado = 0 and es.idevaluaciontipo = $txtId group by ue.documento")->queryScalar();
+                $txtControl = Yii::$app->db->createCommand("select count(1) from tbl_usuarios_evalua ue inner join tbl_evaluacion_solucionado es on ue.documento = es.documentoevaluado where es.documento = ':vardocument' and es.anulado = 0 and es.idevaluaciontipo = ':txtId' group by ue.documento")
+                ->bindValue(':vardocument', $vardocument)
+                ->bindValue(':txtId', $txtId)
+                ->queryScalar();
 
                 if ($txtControl > 0) {
-                  $varListaPcrc = Yii::$app->db->createCommand("select ue.nombre_completo, ue.documento from tbl_usuarios_evalua ue inner join tbl_evaluacion_solucionado es on ue.documento = es.documentoevaluado where es.documento = $vardocument and es.anulado = 0 and es.idevaluaciontipo = $txtId group by ue.documento")->queryAll();
+                  $varListaPcrc = Yii::$app->db->createCommand("select ue.nombre_completo, ue.documento from tbl_usuarios_evalua ue inner join tbl_evaluacion_solucionado es on ue.documento = es.documentoevaluado where es.documento = ':vardocument' and es.anulado = 0 and es.idevaluaciontipo = ':txtId' group by ue.documento")
+                  ->bindValue(':vardocument', $vardocument)
+                  ->bindValue(':txtId', $txtId)
+                  ->queryAll();
            
                     
                     foreach ($varListaPcrc as $key => $value) {
@@ -1852,9 +1993,13 @@ use yii\base\Exception;
         $varevaluados = $varidevaluado;
 
         if ($varaprobar == 1) {
-          Yii::$app->db->createCommand("update tbl_evaluacion_eliminarusuarios set aprobado = 1 where ideliminarusuarios = $varidnov and anulado = 0")->execute();
+          Yii::$app->db->createCommand("update tbl_evaluacion_eliminarusuarios set aprobado = 1 where ideliminarusuarios = ':varidnov' and anulado = 0")
+          ->bindValue(':varidnov', $varidnov)
+          ->execute();
 
-          $varlistusuario = Yii::$app->db->createCommand("select distinct * from tbl_usuarios_evalua u where u.documento = '$varevaluados' and u.anulado = 0")->queryAll();
+          $varlistusuario = Yii::$app->db->createCommand("select distinct * from tbl_usuarios_evalua u where u.documento = ':varevaluados' and u.anulado = 0")
+          ->bindValue(':varevaluados', $varevaluados)
+          ->queryAll();
 
           foreach ($varlistusuario as $key => $value) {
               Yii::$app->db->createCommand()->insert('tbl_usuarios_evalua_copy',[
@@ -1879,9 +2024,13 @@ use yii\base\Exception;
                               ])->execute(); 
           }
 
-          Yii::$app->db->createCommand("delete from tbl_usuarios_evalua  where documento = '$varevaluados' and anulado = 0")->execute();
+          Yii::$app->db->createCommand("delete from tbl_usuarios_evalua  where documento = ':varevaluados' and anulado = 0")
+          ->bindValue(':varevaluados', $varevaluados)
+          ->execute();
         }else{
-          Yii::$app->db->createCommand("update tbl_evaluacion_eliminarusuarios set aprobado = 2 where ideliminarusuarios = $varidnov and anulado = 0")->execute();
+          Yii::$app->db->createCommand("update tbl_evaluacion_eliminarusuarios set aprobado = 2 where ideliminarusuarios = ':varidnov' and anulado = 0")
+          ->bindValue(':varidnov', $varidnov)
+          ->execute();
         }
 
         return $this->redirect('eliminarusuarios');
@@ -1895,7 +2044,9 @@ use yii\base\Exception;
         $form = Yii::$app->request->post();
         if ($model->load($form)) {        
           $vardocumento = $model->documento;
-          $varname = Yii::$app->db->createCommand("select distinct nombre_completo from tbl_usuarios_evalua u where u.documento = '$vardocumento' and u.anulado = 0")->queryScalar();
+          $varname = Yii::$app->db->createCommand("select distinct nombre_completo from tbl_usuarios_evalua u where u.documento = ':vardocumento' and u.anulado = 0")
+          ->bindValue(':vardocumento', $vardocumento)
+          ->queryScalar();
           return $this->render('habilitarpares',['model'=>$model,'varname'=>$varname,'vardocumento'=>$vardocumento]);
         }
 
@@ -1910,7 +2061,10 @@ use yii\base\Exception;
         $txtvardocumento = Yii::$app->request->get("txtvardocumento");
         $txtvars = $txtvardocumento.'s';
 
-        Yii::$app->db->createCommand("update tbl_evaluacion_novedadesgeneral set documento = '$txtvars', anulado = 1 where documento = '$txtvardocumento' and anulado = 0")->execute();       
+        Yii::$app->db->createCommand("update tbl_evaluacion_novedadesgeneral set documento = ':txtvars', anulado = 1 where documento = ':txtvardocumento' and anulado = 0")
+        ->bindValue(':txtvars', $txtvars)
+        ->bindValue(':txtvardocumento', $txtvardocumento)
+        ->execute();       
 
         $varverifica = 1;
 
@@ -2110,15 +2264,29 @@ use yii\base\Exception;
         $form = Yii::$app->request->post();
         if($model->load($form)){
           $vardocumento = $model->idevaluador;
-          $varlistrtadesarrollo = Yii::$app->db->createCommand("SELECT COUNT(*) FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento'")->queryScalar();
+          $varlistrtadesarrollo = Yii::$app->db->createCommand("SELECT COUNT(*) FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento'")
+          ->bindValue(':vardocumento', $vardocumento)
+          ->queryScalar();
 
-          $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
-          $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
+          $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = ':vardocumento'")
+          ->bindValue(':vardocumento', $vardocumento)
+          ->queryScalar();
+          $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in (':vardocumento')")
+          ->bindValue(':vardocumento', $vardocumento)
+          ->queryScalar();
 
-          $varrtaA = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 1")->queryScalar();
-          $varrtaJ = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 3")->queryScalar();
-          $varrtaP = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 4")->queryScalar();
-          $varrtaC = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 2")->queryScalar();
+          $varrtaA = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento' AND ed.idevaluaciontipo = 1")
+          ->bindValue(':vardocumento', $vardocumento)
+          ->queryScalar();
+          $varrtaJ = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento' AND ed.idevaluaciontipo = 3")
+          ->bindValue(':vardocumento', $vardocumento)
+          ->queryScalar();
+          $varrtaP = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento' AND ed.idevaluaciontipo = 4")
+          ->bindValue(':vardocumento', $vardocumento)
+          ->queryScalar();
+          $varrtaC = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento' AND ed.idevaluaciontipo = 2")
+          ->bindValue(':vardocumento', $vardocumento)
+          ->queryScalar();
 
           $varlistbloques = Yii::$app->db->createCommand("select * from tbl_evaluacion_bloques where anulado = 0")->queryAll();
           $varconteobloque = 0;
@@ -2143,8 +2311,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = $varidbloque
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':vardocumento' AND es.idevaluaciontipo = 1 AND eb.idevaluacionbloques = ':varidbloque'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':vardocumento', $vardocumento)
+                                                        ->bindValue(':varidbloque', $varidbloque)
+                                                        ->queryAll();
 
             foreach ($listadocompetencias as $key => $value) {
               $nombrecompetencias = $value['namecompetencia'];
@@ -2161,8 +2332,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 1 AND ec.namecompetencia = '$nombrecompetencias'
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':vardocumento' AND es.idevaluaciontipo = 1 AND ec.namecompetencia = ':nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':vardocumento', $vardocumento)
+                                                        ->bindValue(':nombrecompetencias', $nombrecompetencias)
+                                                        ->queryAll();
 
               foreach ($listacompetencia1 as $key => $value1) {
                 $valortotal1Auto = $value1['%Competencia'];
@@ -2179,8 +2353,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 3 AND ec.namecompetencia = '$nombrecompetencias'
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':vardocumento' AND es.idevaluaciontipo = 3 AND ec.namecompetencia = ':nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':vardocumento', $vardocumento)
+                                                        ->bindValue(':nombrecompetencias', $nombrecompetencias)
+                                                        ->queryAll();
 
               foreach ($listacompetencia2 as $key => $value2) {
                 $valortotal2Jefe = $value2['%Competencia'];
@@ -2197,8 +2374,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 2 AND ec.namecompetencia = '$nombrecompetencias'
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':vardocumento' AND es.idevaluaciontipo = 2 AND ec.namecompetencia = ':nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':vardocumento', $vardocumento)
+                                                        ->bindValue(':nombrecompetencias', $nombrecompetencias)
+                                                        ->queryAll();
 
               foreach ($listacompetencia3 as $key => $value3) {
                 $valortotal3Cargo = $value3['%Competencia'];
@@ -2215,8 +2395,11 @@ use yii\base\Exception;
                                                         INNER JOIN tbl_evaluacion_bloques eb ON es.idevaluacionbloques = eb.idevaluacionbloques                                                    
                                                         LEFT JOIN tbl_evaluacion_feedback_mensaje ef ON es.idevaluacioncompetencia = ef.idevaluacioncompetencia
                                                         INNER JOIN tbl_evaluacion_tipoeval et ON es.idevaluaciontipo = et.idevaluaciontipo
-                                                        WHERE es.documentoevaluado = $vardocumento AND es.idevaluaciontipo = 4 AND ec.namecompetencia = '$nombrecompetencias'
-                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")->queryAll();
+                                                        WHERE es.documentoevaluado = ':vardocumento' AND es.idevaluaciontipo = 4 AND ec.namecompetencia = ':nombrecompetencias'
+                                                        GROUP BY es.idevaluacioncompetencia ORDER BY eb.idevaluacionbloques, ec.namecompetencia")
+                                                        ->bindValue(':vardocumento', $vardocumento)
+                                                        ->bindValue(':nombrecompetencias', $nombrecompetencias)
+                                                        ->queryAll();
 
               foreach ($listacompetencia4 as $key => $value4) {
                 $valortotal4Pares = $value4['%Competencia'];
@@ -2493,13 +2676,25 @@ use yii\base\Exception;
           foreach ($txtlistadoDNI as $key => $value) {
             $vardocumento = $value['documento'];
 
-            $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
-            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in ('$vardocumento')")->queryScalar();
+            $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = ':vardocumento'")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
+            $varrol = Yii::$app->db->createCommand("select distinct concat(posicion,' - ',funcion) from  tbl_usuarios_evalua_feedback where documento in (':vardocumento')")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
-            $varrtaA = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 1")->queryScalar();
-            $varrtaJ = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 3")->queryScalar();
-            $varrtaP = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 4")->queryScalar();
-            $varrtaC = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = '$vardocumento' AND ed.idevaluaciontipo = 2")->queryScalar();
+            $varrtaA = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento' AND ed.idevaluaciontipo = 1")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
+            $varrtaJ = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento' AND ed.idevaluaciontipo = 3")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
+            $varrtaP = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento' AND ed.idevaluaciontipo = 4")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
+            $varrtaC = Yii::$app->db->createCommand("SELECT if(COUNT(*)=0,'No','Si') FROM tbl_evaluacion_desarrollo ed WHERE ed.anulado = 0   AND ed.idevalados = ':vardocumento' AND ed.idevaluaciontipo = 2")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $vardocumento);
             $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $varnombrec);
@@ -2509,14 +2704,18 @@ use yii\base\Exception;
             $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varrtaC);
             $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['notafinal']);
 
-            $varlistarBloqueA = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 1")->queryAll();
+            $varlistarBloqueA = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 1")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryAll();
 
             $lastColumn = 'H';
             $conteocolumnzBA = 0;
             foreach ($varlistarBloqueA as $key => $value) {
 
               $idcompetencia = $value['idevaluacioncompetencia'];
-              $varcompetencia = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetencia)")->queryScalar();
+              $varcompetencia = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in (':idcompetencia')")
+              ->bindValue(':idcompetencia', $idcompetencia)
+              ->queryScalar();
 
               $conteocolumnzBA = $conteocolumnzBA + 1;
               $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Competencia');
@@ -2541,18 +2740,24 @@ use yii\base\Exception;
               $lastColumn++;
             }
 
-            $varNotaFinaBA = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 1")->queryScalar();
+            $varNotaFinaBA = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 1")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('AB'.$numCell, $varNotaFinaBA);
 
 
-            $varlistarBloqueB = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 2")->queryAll();
+            $varlistarBloqueB = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 2")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryAll();
 
             $lastColumn = 'AC';
             $conteocolumnzBB = 0;
             foreach ($varlistarBloqueB as $key => $value) {
               $idcompetenciaB = $value['idevaluacioncompetencia'];
-              $varcompetenciaB = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetenciaB)")->queryScalar();
+              $varcompetenciaB = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in (':idcompetenciaB')")
+              ->bindValue(':idcompetenciaB', $idcompetenciaB)
+              ->queryScalar();
 
               $conteocolumnzBB = $conteocolumnzBB + 1;
               $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Organizacional');
@@ -2577,18 +2782,24 @@ use yii\base\Exception;
               $lastColumn++;
             }
 
-            $varNotaFinaBB = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 2")->queryScalar();
+            $varNotaFinaBB = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 2")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $varNotaFinaBB);
 
 
-            $varlistarBloqueC = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 3")->queryAll();
+            $varlistarBloqueC = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 3")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryAll();
 
             $lastColumn = 'AH';
             $conteocolumnzBC = 0;
             foreach ($varlistarBloqueC as $key => $value) {
               $idcompetenciaC = $value['idevaluacioncompetencia'];
-              $varcompetenciaC = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetenciaC)")->queryScalar();
+              $varcompetenciaC = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in (':idcompetenciaC')")
+              ->bindValue(':idcompetenciaC', $idcompetenciaC)
+              ->queryScalar();
 
               $conteocolumnzBC = $conteocolumnzBC + 1;
               $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Desempeno');
@@ -2613,13 +2824,17 @@ use yii\base\Exception;
               $lastColumn++; 
             }
 
-            $varNotaFinaBC = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 3")->queryScalar();
+            $varNotaFinaBC = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 3")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('AP'.$numCell, $varNotaFinaBC);
 
             $varcomentarios2 = null;
             $can = 0;
-            $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $vardocumento AND  es.comentarios != ''")->queryAll();
+            $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = ':vardocumento' AND  es.comentarios != ''")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryAll();
             foreach ($varcomentarios as $key => $value) {
                 $can = $can + 1;
                 $varcomentarios2 = $varcomentarios2.' '.$can.'-. '.$value['comentarios'];            
@@ -2628,7 +2843,9 @@ use yii\base\Exception;
             $phpExc->getActiveSheet()->setCellValue('AQ'.$numCell, $varcomentarios2);
 
             $varcomentariosfeedback = null;
-            $varcomentariosfeedback = Yii::$app->db->createCommand("SELECT er.observacion_feedback FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0 AND  er.documento IN ($vardocumento)")->queryScalar();
+            $varcomentariosfeedback = Yii::$app->db->createCommand("SELECT er.observacion_feedback FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0 AND  er.documento IN (':vardocumento')")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('AR'.$numCell, $varcomentariosfeedback);
 
@@ -2889,11 +3106,15 @@ use yii\base\Exception;
             $varevaluador = $value['idevaluador'];
             $vartipoevaluacion = $value['idevaluaciontipo'];
 
-            $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $vardocumento")->queryScalar();
+            $varnombrec = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = ':vardocumento'")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $varrtaA = '--';
             $varrtaJ = $varevaluador;
-            $varrtaP = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = $varevaluador")->queryScalar();
+            $varrtaP = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua_feedback where documento = ':varevaluador'")
+            ->bindValue(':varevaluador', $varevaluador)
+            ->queryScalar();
 
             $varrol = null;
             if ($vartipoevaluacion == 1) {
@@ -2921,13 +3142,17 @@ use yii\base\Exception;
             $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $varrtaC);
             $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['notafinal']);
 
-            $varlistarBloqueA = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 1")->queryAll();
+            $varlistarBloqueA = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 1")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryAll();
 
             $lastColumn = 'H';
             $conteocolumnzBA = 0;
             foreach ($varlistarBloqueA as $key => $value) {
               $idcompetencia = $value['idevaluacioncompetencia'];
-              $varcompetencia = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetencia)")->queryScalar();
+              $varcompetencia = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in (':idcompetencia')")
+              ->bindValue(':idcompetencia', $idcompetencia)
+              ->queryScalar();
 
               $conteocolumnzBA = $conteocolumnzBA + 1;
               $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Competencia');
@@ -2952,18 +3177,24 @@ use yii\base\Exception;
               $lastColumn++;
             }
 
-            $varNotaFinaBA = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 1")->queryScalar();
+            $varNotaFinaBA = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 1")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('AB'.$numCell, $varNotaFinaBA);
 
 
-            $varlistarBloqueB = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 2")->queryAll();
+            $varlistarBloqueB = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 2")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryAll();
 
             $lastColumn = 'AC';
             $conteocolumnzBB = 0;
             foreach ($varlistarBloqueB as $key => $value) {
               $idcompetenciaB = $value['idevaluacioncompetencia'];
-              $varcompetenciaB = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetenciaB)")->queryScalar();
+              $varcompetenciaB = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in (':idcompetenciaB')")
+              ->bindValue(':idcompetenciaB', $idcompetenciaB)
+              ->queryScalar();
 
               $conteocolumnzBB = $conteocolumnzBB + 1;
               $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Organizacional');
@@ -2988,18 +3219,24 @@ use yii\base\Exception;
               $lastColumn++;
             }
 
-            $varNotaFinaBB = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 2")->queryScalar();
+            $varNotaFinaBB = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 2")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $varNotaFinaBB);
 
 
-            $varlistarBloqueC = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 3")->queryAll();
+            $varlistarBloqueC = Yii::$app->db->createCommand("SELECT * FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 3")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryAll();
 
             $lastColumn = 'AH';
             $conteocolumnzBC = 0;
             foreach ($varlistarBloqueC as $key => $value) {
               $idcompetenciaC = $value['idevaluacioncompetencia'];
-              $varcompetenciaC = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in ($idcompetenciaC)")->queryScalar();
+              $varcompetenciaC = Yii::$app->db->createCommand("SELECT ec.namecompetencia FROM tbl_evaluacion_competencias ec WHERE ec.anulado = 0 AND ec.idevaluacioncompetencia in (':idcompetenciaC')")
+              ->bindValue(':idcompetenciaC', $idcompetenciaC)
+              ->queryScalar();
 
               $conteocolumnzBC = $conteocolumnzBC + 1;
               $phpExc->getActiveSheet()->SetCellValue($lastColumn.'3','Desempeno');
@@ -3024,13 +3261,17 @@ use yii\base\Exception;
               $lastColumn++; 
             }
 
-            $varNotaFinaBC = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN ('$vardocumento') AND erd.idevaluacionbloques = 3")->queryScalar();
+            $varNotaFinaBC = Yii::$app->db->createCommand("SELECT ROUND(AVG(erd.notacompetencia),2) AS NotaBA FROM tbl_evaluacion_rtafeedback_detalle erd WHERE erd.anulado = 0  AND erd.documento IN (':vardocumento') AND erd.idevaluacionbloques = 3")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('AP'.$numCell, $varNotaFinaBC);
 
             $varcomentarios2 = null;
             $can  = 0;
-            $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = $vardocumento AND  es.comentarios != ''")->queryAll();
+            $varcomentarios = Yii::$app->db->createCommand("select es.comentarios FROM tbl_evaluacion_solucionado es WHERE es.documentoevaluado = ':vardocumento' AND  es.comentarios != ''")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryAll();
             foreach ($varcomentarios as $key => $value) {
                 $can = $can + 1;
                 $varcomentarios2 = $varcomentarios2.' '.$can.'-. '.$value['comentarios'];            
@@ -3039,7 +3280,9 @@ use yii\base\Exception;
             $phpExc->getActiveSheet()->setCellValue('AQ'.$numCell, $varcomentarios2);
 
             $varcomentariosfeedback = null;
-            $varcomentariosfeedback = Yii::$app->db->createCommand("SELECT er.observacion_feedback FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0 AND  er.documento IN ($vardocumento)")->queryScalar();
+            $varcomentariosfeedback = Yii::$app->db->createCommand("SELECT er.observacion_feedback FROM tbl_evaluacion_resulta_feedback er WHERE er.anulado = 0 AND  er.documento IN (':vardocumento')")
+            ->bindValue(':vardocumento', $vardocumento)
+            ->queryScalar();
 
             $phpExc->getActiveSheet()->setCellValue('AR'.$numCell, $varcomentariosfeedback);
 
@@ -3250,9 +3493,11 @@ use yii\base\Exception;
                                   ue.documento = es.documentoevaluado 
                               WHERE 
                                 es.anulado = 0
-                                  AND es.documentoevaluado IN ($varArrayDocumentos) 
+                                  AND es.documentoevaluado IN (':varArrayDocumentos') 
                                   GROUP BY es.documentoevaluado 
-                                    ORDER BY es.documentoevaluado")->queryAll();
+                                    ORDER BY es.documentoevaluado")
+                                    ->bindValue(':varArrayDocumentos', $varArrayDocumentos)
+                                    ->queryAll();
           
           $numCell = 4;
           foreach ($varListGeneral as $key => $value) {

@@ -513,7 +513,8 @@ class FormulariosController extends Controller {
                   EN MODO VISUALIZACI�N FORMULARIO. */
                 $data->tablaproblemas = \app\models\Ejecuciontableroexperiencias::
                                 find()
-                                ->where(["ejecucionformulario_id" => $TmpForm->ejecucionformulario_id])->all();
+                                ->where(["ejecucionformulario_id" => $TmpForm->ejecucionformulario_id])
+                                ->all();
                 $data->tablallamadas = \app\models\Ejecuciontiposllamada::getTabLlamByIdEjeForm($TmpForm->ejecucionformulario_id);
                 $data->list_Add_feedbacks = \app\models\Tmpejecucionfeedbacks::getJoinTipoFeedbacks($formulario_id);
 
@@ -530,7 +531,8 @@ class FormulariosController extends Controller {
                         $TmpForm->save();
                         $array_indices_TmpForm = \app\models\Textos::find()
                                 ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                                ->where('id IN (:TmpForm->subi_calculo)')
+                                ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                 ->asArray()
                                 ->all();
                         foreach ($array_indices_TmpForm as $value) {
@@ -541,7 +543,8 @@ class FormulariosController extends Controller {
                     if (isset($data->formulario->subi_calculo)) {
                         $array_indices_TmpForm = \app\models\Textos::find()
                                 ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                                ->where('id IN (:TmpForm->subi_calculo)')
+                                ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                 ->asArray()
                                 ->all();
                         foreach ($array_indices_TmpForm as $value) {
@@ -566,15 +569,25 @@ class FormulariosController extends Controller {
                 }
 
 
-                $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$formulario_id'")->queryScalar();
+                $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = :formulario_id")
+                ->bindValue(':formulario_id',$formulario_id)
+                ->queryScalar();
 		//DATOS GENERALES
 
-                $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = '$TmpForm->arbol_id'")->queryScalar();
+                $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = :TmpForm->arbol_id")
+                ->bindValue(':TmpForm->arbol_id',$TmpForm->arbol_id)
+                ->queryScalar();
 
-                 $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = '$TmpForm->arbol_id'")->queryScalar();
+                 $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = :TmpForm->arbol_id")
+                 ->bindValue(':TmpForm->arbol_id',$TmpForm->arbol_id)
+                 ->queryScalar();
 
-                $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
-                $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu'")->queryScalar();
+                $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = :varIdformu")
+                ->bindValue(':varIdformu',$varIdformu)
+                ->queryScalar();
+                $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = :varIdformu")
+                ->bindValue(':varIdformu',$varIdformu)
+                ->queryScalar();
                 if(is_numeric($varIdclienteSel)){
                     $varIdclienteSel = $varIdclienteSel;
                 }else{
@@ -610,7 +623,8 @@ class FormulariosController extends Controller {
                             ->join('INNER JOIN', 'tbl_arbols_equipos', 'tbl_arbols_equipos.equipo_id = tbl_equipos_evaluados.equipo_id'
                             )
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('name LIKE "%' . $search . '%" AND tbl_arbols_equipos.arbol_id = ' . $arbol_id)
+                            ->where('name LIKE "%":search"%" AND tbl_arbols_equipos.arbol_id = :arbol_id')
+                            ->addParams([':search'=>$search,':arbol_id'=>$arbol_id])
                             ->orderBy('name')
                             ->asArray()
                             ->all();
@@ -721,14 +735,13 @@ class FormulariosController extends Controller {
 
                 /* GUARDO SUBTIPIFICACIONES */
                 foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                    $sql = "UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a ";
-                    $sql .= "INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b ";
-                    $sql .= "ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id ";
-                    $sql .= "SET a.sncheck = 1 ";
-                    $sql .= "WHERE b.tmpejecucionbloquedetalle_id = " . $form_detalle_id;
-                    $sql .= " AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")";
-                    $command = \Yii::$app->db->createCommand($sql);
-                    $command->execute();
+                    $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                        $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
+                        INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
+                        ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id'   
+                        AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
+                        $command->execute();
                 }
                 foreach ($arrComentariosSecciones as $secc_id => $comentario) {
 
@@ -830,12 +843,24 @@ class FormulariosController extends Controller {
                 \app\models\Tmpejecucionbloques::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
                 
                 //Para cliente y centros de costos
-                $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$tmp_id'")->queryScalar();
-                $varcliente = Yii::$app->db->createCommand("select cliente from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
-                $varpcrc = Yii::$app->db->createCommand("select CONCAT_WS(' - ', cod_pcrc, pcrc) from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
-                $vardirector = Yii::$app->db->createCommand("select director_programa from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
-                $varcuidad = Yii::$app->db->createCommand("select ciudad from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
-	        $vargerente = Yii::$app->db->createCommand("select gerente_cuenta from tbl_proceso_cliente_centrocosto where cod_pcrc = '$varid_centro_costo'")->queryScalar();
+                $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = :tmp_id")
+                ->bindValue(':tmp_id',$tmp_id)
+                ->queryScalar();
+                $varcliente = Yii::$app->db->createCommand("select cliente from tbl_proceso_cliente_centrocosto where cod_pcrc = :varid_centro_costo")
+                ->bindValue(':varid_centro_costo',$varid_centro_costo)
+                ->queryScalar();
+                $varpcrc = Yii::$app->db->createCommand("select CONCAT_WS(' - ', cod_pcrc, pcrc) from tbl_proceso_cliente_centrocosto where cod_pcrc = :varid_centro_costo")
+                ->bindValue(':varid_centro_costo',$varid_centro_costo)
+                ->queryScalar();
+                $vardirector = Yii::$app->db->createCommand("select director_programa from tbl_proceso_cliente_centrocosto where cod_pcrc = :varid_centro_costo")
+                ->bindValue(':varid_centro_costo',$varid_centro_costo)
+                ->queryScalar();
+                $varcuidad = Yii::$app->db->createCommand("select ciudad from tbl_proceso_cliente_centrocosto where cod_pcrc = :varid_centro_costo")
+                ->bindValue(':varid_centro_costo',$varid_centro_costo)
+                ->queryScalar();
+	        $vargerente = Yii::$app->db->createCommand("select gerente_cuenta from tbl_proceso_cliente_centrocosto where cod_pcrc = :varid_centro_costo")
+            ->bindValue(':varid_centro_costo',$varid_centro_costo)
+            ->queryScalar();
                 //fin
                 
                 
@@ -918,14 +943,13 @@ class FormulariosController extends Controller {
 
                 /* GUARDO SUBTIPIFICACIONES */
                 foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                    $sql = "UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a ";
-                    $sql .= "INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b ";
-                    $sql .= "ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id ";
-                    $sql .= "SET a.sncheck = 1 ";
-                    $sql .= "WHERE b.tmpejecucionbloquedetalle_id = " . $form_detalle_id;
-                    $sql .= " AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")";
-                    $command = \Yii::$app->db->createCommand($sql);
-                    $command->execute();
+                    $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                        $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
+                        INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
+                        ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id'   
+                        AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
+                        $command->execute();
                 }
                 foreach ($arrComentariosSecciones as $secc_id => $comentario) {
 
@@ -1006,7 +1030,9 @@ class FormulariosController extends Controller {
 
                 //Proceso para guardar clientes y centro de costos
                
-		$varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = '$varIdformu '")->queryScalar();
+		$varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = :varIdformu")
+        ->bindValue(':varIdformu',$varIdformu)
+        ->queryScalar();
                 
                 if($varIdcliente){
 
@@ -1257,7 +1283,8 @@ class FormulariosController extends Controller {
                         $TmpForm->save();
                         $array_indices_TmpForm = \app\models\Textos::find()
                                 ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                                ->where('id IN (:TmpForm->subi_calculo)')
+                                ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                 ->asArray()
                                 ->all();
                         foreach ($array_indices_TmpForm as $value) {
@@ -1268,7 +1295,8 @@ class FormulariosController extends Controller {
                     if (isset($data->formulario->subi_calculo)) {
                         $array_indices_TmpForm = \app\models\Textos::find()
                                 ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                                ->where('id IN (:TmpForm->subi_calculo)')
+                                ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                 ->asArray()
                                 ->all();
                         foreach ($array_indices_TmpForm as $value) {
@@ -1429,7 +1457,8 @@ class FormulariosController extends Controller {
                                 "grupousuario_id" => $grupo,
                                 "snver_grafica" => 1])
                             ->andWhere(['not', ['formulario_id' => null]])
-                            ->andWhere('name LIKE "%' . $search . '%" ')
+                            ->andWhere('name LIKE "%":search"%" ')
+                            ->addParams([':search'=>$search])
                             ->orderBy("dsorden ASC")
                             ->asArray()
                             ->all();
@@ -1444,7 +1473,8 @@ class FormulariosController extends Controller {
                                 "grupousuario_id" => $grupo,
                                 "snver_grafica" => 1])
                             ->andWhere(['not', ['formulario_id' => null]])
-                            ->andWhere('tbl_arbols.id = ' . $id)
+                            ->andWhere('tbl_arbols.id = :id')
+                            ->addParams([':id'=>$id])
                             ->orderBy("dsorden ASC")
                             ->asArray()
                             ->all();
@@ -1473,8 +1503,9 @@ class FormulariosController extends Controller {
                                 "snhoja" => 1,
                                 "grupousuario_id" => $grupo])
                             ->andWhere(['not', ['formulario_id' => null]])
-                            ->andWhere('name LIKE "%' . $search . '%" ')
+                            ->andWhere('name LIKE "%":search"%" ')
                             ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
+                            ->addParams([':search'=>$search])
                             ->orderBy("dsorden ASC")
                             ->asArray()
                             ->all();
@@ -1489,8 +1520,9 @@ class FormulariosController extends Controller {
                                 "snhoja" => 1,
                                 "grupousuario_id" => $grupo])
                             ->andWhere(['not', ['formulario_id' => null]])
-                            ->andWhere('tbl_arbols.id = ' . $id)
+                            ->andWhere('tbl_arbols.id = :id')
                             ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
+                            ->addParams([':id'=>$id])
                             ->orderBy("dsorden ASC")
                             ->asArray()
                             ->all();
@@ -1518,7 +1550,8 @@ class FormulariosController extends Controller {
                                 "snhoja" => 1,
                                 "grupousuario_id" => $grupo])
                             ->andWhere(['not', ['formulario_id' => null]])
-                            ->andWhere('name LIKE "%' . $search . '%" ')
+                            ->andWhere('name LIKE "%":search"%" ')
+                            ->addParams([':search'=>$search])
                             ->orderBy("dsorden ASC")
                             ->asArray()
                             ->all();
@@ -1532,7 +1565,8 @@ class FormulariosController extends Controller {
                                 "snhoja" => 1,
                                 "grupousuario_id" => $grupo])
                             ->andWhere(['not', ['formulario_id' => null]])
-                            ->andWhere('tbl_arbols.id = ' . $id)
+                            ->andWhere('tbl_arbols.id = :id')
+                            ->addParams([':id'=>$id])
                             ->orderBy("dsorden ASC")
                             ->asArray()
                             ->all();
@@ -1562,7 +1596,8 @@ class FormulariosController extends Controller {
                                 "tbl_permisos_grupos_arbols.snver_grafica" => 1])
                             ->andWhere("rel_grupos_usuarios.grupo_id = tbl_permisos_grupos_arbols.grupousuario_id")
                             ->andWhere("tbl_tmpreportes_arbol.seleccion_arbol_id = tbl_tmpreportes_arbol.arbol_id")
-                            ->andWhere('tbl_tmpreportes_arbol.dsruta_arbol LIKE "%' . $search . '%" ')
+                            ->andWhere('tbl_tmpreportes_arbol.dsruta_arbol LIKE "%":search"%" ')
+                            ->addParams([':search'=>$search])
                             ->orderBy("tbl_tmpreportes_arbol.dsruta_arbol ASC")
                             ->asArray()
                             ->all();
@@ -1578,7 +1613,8 @@ class FormulariosController extends Controller {
                                 "tbl_permisos_grupos_arbols.snver_grafica" => 1])
                             ->andWhere("rel_grupos_usuarios.grupo_id = tbl_permisos_grupos_arbols.grupousuario_id")
                             ->andWhere("tbl_tmpreportes_arbol.seleccion_arbol_id = tbl_tmpreportes_arbol.arbol_id")
-                            ->andWhere('tbl_tmpreportes_arbol.seleccion_arbol_id = ' . $id)
+                            ->andWhere('tbl_tmpreportes_arbol.seleccion_arbol_id = :id')
+                            ->addParams([':id'=>$id])
                             ->orderBy("tbl_tmpreportes_arbol.dsruta_arbol ASC")
                             ->asArray()
                             ->all();
@@ -1697,7 +1733,8 @@ class FormulariosController extends Controller {
                             $TmpForm->save();
                             $array_indices_TmpForm = \app\models\Textos::find()
                                     ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                    ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                                    ->where('id IN (:TmpForm->subi_calculo)')
+                                    ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                     ->asArray()
                                     ->all();
                             foreach ($array_indices_TmpForm as $value) {
@@ -1708,7 +1745,8 @@ class FormulariosController extends Controller {
                         if (isset($data->formulario->subi_calculo)) {
                             $array_indices_TmpForm = \app\models\Textos::find()
                                     ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                    ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                                    ->where('id IN (:TmpForm->subi_calculo)')
+                                    ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                     ->asArray()
                                     ->all();
                             foreach ($array_indices_TmpForm as $value) {
@@ -1790,13 +1828,12 @@ class FormulariosController extends Controller {
 
                 /* GUARDO SUBTIPIFICACIONES */
                 foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                    $sql = "UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a ";
-                    $sql .= "INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b ";
-                    $sql .= "ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id ";
-                    $sql .= "SET a.sncheck = 1 ";
-                    $sql .= "WHERE b.tmpejecucionbloquedetalle_id = " . $form_detalle_id;
-                    $sql .= " AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")";
-                    $command = \Yii::$app->db->createCommand($sql);
+                    $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                    $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
+                    INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
+                    ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
+                    SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id'   
+                    AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                     $command->execute();
                 }
                 foreach ($arrComentariosSecciones as $secc_id => $comentario) {
@@ -1841,8 +1878,9 @@ class FormulariosController extends Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Textos::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                            ->where('detexto LIKE "%' . $search . '%"')
+                            ->where('detexto LIKE "%":search"%"')
                             ->andWhere('id NOT IN (11,12)')
+                            ->addParams([':search'=>$search])
                             ->orderBy('detexto')
                             ->asArray()
                             ->all();
@@ -1850,8 +1888,9 @@ class FormulariosController extends Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Textos::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                            ->where('id IN (' . $id . ')')
+                            ->where('id IN (:id)')
                             ->andWhere('id NOT IN (11,12)')
+                            ->addParams([':id'=>$id])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -1876,8 +1915,9 @@ class FormulariosController extends Controller {
 
                     $data = \app\models\Textos::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                            ->where('detexto LIKE "%' . $search . '%"')
-                            ->andWhere('id NOT IN (' . $ids_selec . ',11,12)')
+                            ->where('detexto LIKE "%":search"%"')
+                            ->andWhere('id NOT IN (:ids_selec,11,12)')
+                            ->addParams([':search'=>$search,':ids_selec'=>$ids_selec])
                             ->orderBy('detexto')
                             ->asArray()
                             ->all();
@@ -1890,8 +1930,9 @@ class FormulariosController extends Controller {
                     }
                     $data = \app\models\Textos::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                            ->where('id IN (' . $id . ')')
-                            ->andWhere('id NOT IN (' . $ids_selec . ')')
+                            ->where('id IN (:id)')
+                            ->andWhere('id NOT IN (:ids_selec)')
+                            ->addParams([':id'=>$id,':ids_selec'=>$ids_selec])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -2194,7 +2235,8 @@ class FormulariosController extends Controller {
                 if (!empty($id)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('id = ' . $id)
+                            ->where('id = :id')
+                            ->addParams([':id'=>$id])
                             ->orderBy('name')
                             ->asArray()
                             ->all();
@@ -2309,7 +2351,8 @@ class FormulariosController extends Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_nombre LIKE "%' . $search . '%"')
+                            ->where('usua_nombre LIKE "%":search"%"')
+                            ->addParams([':search'=>$search])
                             ->orderBy('usua_nombre')
                             ->asArray()
                             ->all();
@@ -2319,7 +2362,8 @@ class FormulariosController extends Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_id = "' . $id . '"')
+                            ->where('usua_id = :id')
+                            ->addParams([':id'=>$id])
                             ->asArray()
                             ->all();
                     //agrego el usuario no definido solo para la visualizacion  en la inbox
@@ -2362,7 +2406,8 @@ class FormulariosController extends Controller {
                 if (!empty($id)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_id= ' . $id)
+                            ->where('usua_id= :id')
+                            ->addParams([':id'=>$id])
                             ->orderBy('usua_nombre')
                             ->asArray()
                             ->all();

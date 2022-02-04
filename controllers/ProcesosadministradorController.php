@@ -110,10 +110,14 @@ use app\models\FormUploadtigo;
         if($model->load($form)){
             $varidarbol = $model->procesos;
 
-            $varListresponsabilidad = Yii::$app->db->createCommand("SELECT * FROM tbl_responsabilidad r WHERE r.arbol_id in ('$varidarbol')")->queryAll();
+            $varListresponsabilidad = Yii::$app->db->createCommand("SELECT * FROM tbl_responsabilidad r WHERE r.arbol_id in (':varidarbol')")
+            ->bindValue(':varidarbol', $varidarbol)
+            ->queryAll();
             $txtConteo = count($varListresponsabilidad);
 
-            $varnombrepcrc = Yii::$app->db->createCommand("SELECT a.name FROM tbl_arbols a WHERE a.id in ('$varidarbol')")->queryScalar();
+            $varnombrepcrc = Yii::$app->db->createCommand("SELECT a.name FROM tbl_arbols a WHERE a.id in (':varidarbol')")
+            ->bindValue(':varidarbol', $varidarbol)
+            ->queryScalar();
         }else{
           #code
         }
@@ -138,10 +142,12 @@ use app\models\FormUploadtigo;
                     ->where([
                         "sncrear_formulario" => 1,
                         "snhoja" => 1,
-                        "grupousuario_id" => $grupo])
+                        "grupousuario_id" => ':grupo'])
                     ->andWhere(['not', ['formulario_id' => null]])
-                    ->andWhere('name LIKE "%' . $search . '%" ')
+                    ->andWhere('name LIKE "%":search"%" ')
                     ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
+                    ->addParams([':grupo' => $grupo])
+                    ->addParams([':search' => $search])
                     ->orderBy("dsorden ASC")
                     ->asArray()
                     ->all();
@@ -154,10 +160,12 @@ use app\models\FormUploadtigo;
                     ->where([
                         "sncrear_formulario" => 1,
                         "snhoja" => 1,
-                        "grupousuario_id" => $grupo])
+                        "grupousuario_id" => ':grupo'])
                     ->andWhere(['not', ['formulario_id' => null]])
-                    ->andWhere('tbl_arbols.id = ' . $id)
+                    ->andWhere('tbl_arbols.id = :id')
                     ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
+                    ->addParams([':grupo' => $grupo])
+                    ->addParams([':id' => $id])
                     ->orderBy("dsorden ASC")
                     ->asArray()
                     ->all();
@@ -172,7 +180,9 @@ use app\models\FormUploadtigo;
         $varidvararboltwo = Yii::$app->request->get('txtvaridvararboltwo');
         $varidvararbol = Yii::$app->request->get('txtvaridvararbol');
 
-        $arbolclon = Yii::$app->db->createCommand("SELECT * FROM tbl_responsabilidad r WHERE r.arbol_id in ('$varidvararboltwo')")->queryAll();
+        $arbolclon = Yii::$app->db->createCommand("SELECT * FROM tbl_responsabilidad r WHERE r.arbol_id in (':varidvararboltwo')")
+        ->bindValue(':varidvararboltwo', $varidvararboltwo)
+        ->queryAll();
 
         if (count($arbolclon) != 0) {
             foreach ($arbolclon as $key => $value) {

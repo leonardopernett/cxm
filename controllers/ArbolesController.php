@@ -305,9 +305,11 @@ class ArbolesController extends Controller {
                         
                         $grupoExist = \yii\helpers\ArrayHelper::map(
                                 \app\models\PermisosGruposArbols::find()
-                                ->where('arbol_id =' . $model->arbol_id 
-                                        . ' AND grupousuario_id IN (' . $model->grupousuario_id 
-                                        . ')')->asArray()->all(),
+                                ->where('arbol_id = :model->arbol_id 
+                                    AND grupousuario_id IN (:model->grupousuario_id)')
+                                        ->bindValue(':model->arbol_id',$model->arbol_id)
+                                        ->bindValue(':model->grupousuario_id',$model->grupousuario_id)
+                                        ->asArray()->all(),
                                         'id', 'grupousuario_id'); 
                         
                         $grupos = explode(',', $model->grupousuario_id);                                                
@@ -365,7 +367,8 @@ class ArbolesController extends Controller {
             
             $rolExist = \yii\helpers\ArrayHelper::map(
                                 \app\models\PermisosGruposArbols::find()
-                                ->where('arbol_id =' . $arbolId)
+                                ->where('arbol_id =:arbolId')
+                                ->addParams([':arbolId'=>$arbolId])
                                 ->asArray()
                                 ->all(),
                                         'id', 'grupousuario_id');
@@ -374,8 +377,8 @@ class ArbolesController extends Controller {
             $notin = ($strRol != '') ? 'AND grupos_id NOT IN ('.$strRol.')' : '';
             $data = \app\models\Gruposusuarios::find()
                     ->select(['id' => 'grupos_id', 'text' => 'UPPER(grupo_descripcion)'])                    
-                    ->where(' grupo_descripcion LIKE "%' . $search 
-                            . '%" '. $notin)         
+                    ->where(' grupo_descripcion LIKE "%":search"%" ' . ':notin')         
+                    ->addParams([':search'=>$search,':notin'=>$notin])
                     ->orderBy('grupo_descripcion')
                     ->asArray()
                     ->all();
@@ -482,7 +485,8 @@ class ArbolesController extends Controller {
         if (!is_null($search)) {
             $data = \app\models\Equipos::find()
                     ->select(['id', 'text' => 'UPPER(name)'])
-                    ->where('name LIKE "%' . $search . '%"')
+                    ->where('name LIKE "%":search"%"')
+                    ->addParams([':search'=>$search])
                     ->orderBy('name')
                     ->asArray()
                     ->all();
@@ -492,7 +496,8 @@ class ArbolesController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Equipos::find()
                         ->select(['id', 'text' => 'UPPER(name)'])
-                        ->where('id IN (' . $id . ')')
+                        ->where('id IN (:id)')
+                        ->addParams([':id'=>$id])
                         ->orderBy('name')
                         ->asArray()
                         ->all();
@@ -521,7 +526,8 @@ class ArbolesController extends Controller {
         if (!is_null($search)) {
             $data = \app\models\Usuarios::find()
                     ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                    ->where('usua_nombre LIKE "%' . $search . '%"')
+                    ->where('usua_nombre LIKE "%":search"%"')
+                    ->addParams([':search'=>$search])
                     ->orderBy('usua_nombre')
                     ->asArray()
                     ->all();
@@ -531,7 +537,8 @@ class ArbolesController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Usuarios::find()
                         ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                        ->where('usua_id IN (' . $id . ')')
+                        ->where('usua_id IN (:id)')
+                        ->addParams([':id'=>$id])
                         ->asArray()
                         ->all();
                 $out['results'] = array_values($data);

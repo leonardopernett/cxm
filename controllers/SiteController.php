@@ -279,18 +279,23 @@ class SiteController extends Controller {
                 $tempData = $tempDataCant = $dates;
                 $name = '';
                 //Calculamos el procentaje -------------------------------------
-                $sql = "SELECT DATE_FORMAT(e.created, '%d') as fecha, 
-                    ROUND((avg(e.$colMetrica)*100), 2) promedio,                    
-                    COUNT($colMetrica) cantidad,                    
-                    a.name as arbol
-                    FROM tbl_ejecucionformularios e
-                    JOIN tbl_arbols a ON a.id = e.arbol_id
-                    WHERE e.dimension_id = $dimension_id 
-                        AND (e.created >= '$fechaInicio 00:00:00' 
-                        AND e.created <= '$fechaFin 23:59:59')
-                        AND e.arbol_id = $arbol_id
-                    GROUP BY DATE_FORMAT(e.created, '%Y%m%d')";
-                $resultData = \Yii::$app->db->createCommand($sql)->queryAll();
+               
+                $resultData = \Yii::$app->db->createCommand("SELECT DATE_FORMAT(e.created, '%d') as fecha, 
+                ROUND((avg(e.$colMetrica)*100), 2) promedio,                    
+                COUNT($colMetrica) cantidad,                    
+                a.name as arbol
+                FROM tbl_ejecucionformularios e
+                JOIN tbl_arbols a ON a.id = e.arbol_id
+                WHERE e.dimension_id = :dimension_id 
+                    AND (e.created >= ':fechaInicio 00:00:00' 
+                    AND e.created <= ':fechaFin 23:59:59')
+                    AND e.arbol_id = :arbol_id
+                GROUP BY DATE_FORMAT(e.created, '%Y%m%d')")
+                    ->bindValue(':dimension_id',$dimension_id)
+                    ->bindValue(':fechaInicio',$fechaInicio)
+                    ->bindValue(':fechaFin',$fechaFin)
+                    ->bindValue(':arbol_id',$arbol_id)
+                ->queryAll();
 
                 if (count($resultData) > 0) {
                     foreach ($resultData as $value) {
@@ -322,9 +327,9 @@ class SiteController extends Controller {
     public function getRecursivearbolscopia($tabla, $id_field, $show_data, $link_field, $parent, $prefix, $arraArboles) {
         /* Armar query */
         if ($parent == 0) {
-            $sql = 'select * from ' . $tabla . ' where ' . $link_field . ' is null';
+            $sql = "select * from  tbl_arbols  where arbol_id is null ";
         } else {
-            $sql = 'select * from ' . $tabla . ' where ' . $link_field . '=' . $parent;
+            $sql = "select * from tbl_arbols  where arbol_id =  :parent ";
         }
         $rs = Yii::$app->db->createCommand($sql)->queryAll();
         $out = '<ol id="arbol_ids">';
@@ -346,9 +351,9 @@ class SiteController extends Controller {
     public function getRecursiveArbByRol($tabla, $id_field, $show_data, $link_field, $parent, $prefix, $arraArboles, $arrArbRol) {
         /* Armar query */
         if ($parent == 0) {
-            $sql = 'select * from ' . $tabla . ' where ' . $link_field . ' is null';
+            $sql = "select * from  tbl_arbols  where arbol_id is null ";
         } else {
-            $sql = 'select * from ' . $tabla . ' where ' . $link_field . '=' . $parent;
+            $sql = "select * from tbl_arbols  where arbol_id =  :parent ";
         }
         $rs = Yii::$app->db->createCommand($sql)->queryAll();
         $out = '<ol id="arbol_ids">';
@@ -502,12 +507,17 @@ class SiteController extends Controller {
                     $modelForm = \app\models\SegundoCalificador::find()->where(['id_segundo_calificador' => Yii::$app->request->post('scid')])->one();
                     $formulario = \app\models\Ejecucionformularios::find()->where(['id' => $modelForm->id_ejecucion_formulario])->one();
                     $evaluado = \app\models\Evaluados::find()->where(['id' => $formulario->evaluado_id])->one();
-                    $sql = 'SELECT u.usua_id,u.usua_usuario,r.grupo_id,g.usua_id_responsable AS resp FROM  tbl_usuarios u '
-                            . 'INNER JOIN rel_grupos_usuarios r ON u.usua_id = r.usuario_id '
-                            . 'INNER JOIN tbl_grupos_usuarios g ON g.grupos_id = r.grupo_id'
-                            . ' INNER JOIN tbl_permisos_grupos_arbols pga ON pga.grupousuario_id = g.grupos_id'
-                            . ' WHERE u.usua_id = ' . $formulario->usua_id . ' AND pga.arbol_id = ' . $formulario->arbol_id;
-                    $liderEvaluador = \Yii::$app->db->createCommand($sql)->queryAll();
+                   
+                    $liderEvaluador = \Yii::$app->db->createCommand("SELECT u.usua_id,u.usua_usuario,r.grupo_id,g.usua_id_responsable 
+                    AS resp FROM  tbl_usuarios u INNER JOIN rel_grupos_usuarios r 
+                    ON u.usua_id = r.usuario_id INNER JOIN tbl_grupos_usuarios g 
+                    ON g.grupos_id = r.grupo_id
+                    INNER JOIN tbl_permisos_grupos_arbols pga 
+                    ON pga.grupousuario_id = g.grupos_id 
+                    WHERE u.usua_id = :formulario->usua_id 
+                    AND pga.arbol_id = :formulario->usua_id")
+                    ->bindValue(':formulario->usua_id',$formulario->usua_id)
+                    ->queryAll();
                     $model = new \app\models\SegundoCalificador();
                     $model->id_ejecucion_formulario = $modelForm->id_ejecucion_formulario;
                     $model->id_evaluador = $formulario->usua_id;

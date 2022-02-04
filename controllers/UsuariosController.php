@@ -248,7 +248,9 @@ class UsuariosController extends Controller {
                     $query3 = $txtRegistros['Usuarios']['usua_usuario'];
 
                     if ($varUsu != $query3) {
-                        $query =  Yii::$app->db->createCommand("select count(*) from tbl_usuarios where usua_usuario = '$query3'")->queryScalar();
+                        $query =  Yii::$app->db->createCommand("select count(*) from tbl_usuarios where usua_usuario = ':query3'")
+                        ->bindValue(':query3', $query3)
+                        ->queryScalar();
 
                         if ($query == 0) {
                             if ($model->load($txtRegistros) && $model->save()) {
@@ -465,7 +467,9 @@ class UsuariosController extends Controller {
 		              LEFT JOIN dp_datos_generales f
                   ON f.documento = a.documento
 
-                  WHERE a.documento = '$vardocumentojefe'")->queryAll();
+                  WHERE a.documento = ':vardocumentojefe'")
+                  ->bindValue(':vardocumentojefe', $vardocumentojefe)
+                  ->queryAll();
 
                   foreach ($query2 as $key => $value2) {
                     $varidcargojefe = $value2['idcargo'];

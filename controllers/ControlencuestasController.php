@@ -228,7 +228,9 @@ use app\models\ControlEncuestaaci;
 
                     if (strlen($varDocumento) > 1) {
 
-                      $varcc = Yii::$app->get('dbjarvis')->createCommand("select id_dp_centros_costos from dp_distribucion_personal where documento = $varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                      $varcc = Yii::$app->get('dbjarvis')->createCommand("select id_dp_centros_costos from dp_distribucion_personal where documento = :varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                      ->bindValue(':varDocumento', $varDocumento)
+                      ->queryScalar();
 
                         $vardirector = null;
                         $vargerente = null;
@@ -239,19 +241,33 @@ use app\models\ControlEncuestaaci;
                         $varfecharetiro = null;
 
                       if ($varcc != null) {
-                        $vardirector = Yii::$app->get('dbjarvis')->createCommand("select distinct director_programa from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                        $vardirector = Yii::$app->get('dbjarvis')->createCommand("select distinct director_programa from dp_centros_costos where id_dp_centros_costos = :varcc")
+                        ->bindValue(':varcc', $varcc)
+                        ->queryScalar();
 
-                        $vargerente = Yii::$app->get('dbjarvis')->createCommand("select distinct gerente_cuenta from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                        $vargerente = Yii::$app->get('dbjarvis')->createCommand("select distinct gerente_cuenta from dp_centros_costos where id_dp_centros_costos = :varcc")
+                        ->bindValue(':varcc', $varcc)
+                        ->queryScalar();
 
-                        $varcedulaJefe = Yii::$app->get('dbjarvis')->createCommand("select documento_jefe from dp_distribucion_personal where documento = $varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                        $varcedulaJefe = Yii::$app->get('dbjarvis')->createCommand("select documento_jefe from dp_distribucion_personal where documento = :varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                        ->bindValue(':varDocumento', $varDocumento)
+                        ->queryScalar();
 
-                        $varnombrejefe = Yii::$app->get('dbjarvis')->createCommand("select nombre_completo from dp_datos_generales where documento = $varcedulaJefe")->queryScalar();
+                        $varnombrejefe = Yii::$app->get('dbjarvis')->createCommand("select nombre_completo from dp_datos_generales where documento = :varcedulaJefe")
+                        ->bindValue(':varcedulaJefe', $varcedulaJefe)
+                        ->queryScalar();
 
-                        $varfechaingreso = Yii::$app->get('dbjarvis')->createCommand("select fecha_alta  from dp_datos_generales where documento = $varDocumento")->queryScalar();
+                        $varfechaingreso = Yii::$app->get('dbjarvis')->createCommand("select fecha_alta  from dp_datos_generales where documento = :varDocumento")
+                        ->bindValue(':varDocumento', $varDocumento)
+                        ->queryScalar();
 
-                        $varcliente = Yii::$app->get('dbjarvis')->createCommand("select distinct id_dp_clientes from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                        $varcliente = Yii::$app->get('dbjarvis')->createCommand("select distinct id_dp_clientes from dp_centros_costos where id_dp_centros_costos = :varcc")
+                        ->bindValue(':varcc', $varcc)
+                        ->queryScalar();
 
-                        $varfecharetiro = Yii::$app->get('dbjarvis2')->createCommand("select fecha_baja from gh_retiros where documento = $varDocumento")->queryScalar();
+                        $varfecharetiro = Yii::$app->get('dbjarvis2')->createCommand("select fecha_baja from gh_retiros where documento = :varDocumento")
+                        ->bindValue(':varDocumento', $varDocumento)
+                        ->queryScalar();
                       }else{
                         $vardirector = 0;
                         $vargerente = 0;
@@ -360,7 +376,9 @@ use app\models\ControlEncuestaaci;
 
                     if (strlen($varDocumento) > 1) {
 
-                      $varcc = Yii::$app->get('dbjarvis2')->createCommand("select id_dp_centros_costos from dp_distribucion_personal where documento = $varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                      $varcc = Yii::$app->get('dbjarvis2')->createCommand("select id_dp_centros_costos from dp_distribucion_personal where documento = :varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                      ->bindValue(':varDocumento', $varDocumento)
+                      ->queryScalar();
 
                       $varproceso1 = $varDatos[3];
                       $varproceso = null;
@@ -368,23 +386,39 @@ use app\models\ControlEncuestaaci;
                         $varproceso = $varDatos[3];
                       }else{
                         if ($varproceso1 == "Operación") {
-                          $varproceso = Yii::$app->get('dbjarvis2')->createCommand("select distinct c.cliente from dp_clientes c   inner join dp_centros_costos cc on c.id_dp_clientes = cc.id_dp_clientes where cc.id_dp_centros_costos = $varcc")->queryScalar();
+                          $varproceso = Yii::$app->get('dbjarvis2')->createCommand("select distinct c.cliente from dp_clientes c   inner join dp_centros_costos cc on c.id_dp_clientes = cc.id_dp_clientes where cc.id_dp_centros_costos = :varcc")
+                          ->bindValue(':varcc', $varcc)
+                          ->queryScalar();
                         }
                       }
 
-                      $vardirector = Yii::$app->get('dbjarvis2')->createCommand("select distinct director_programa from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                      $vardirector = Yii::$app->get('dbjarvis2')->createCommand("select distinct director_programa from dp_centros_costos where id_dp_centros_costos = :varcc")
+                      ->bindValue(':varcc', $varcc)
+                      ->queryScalar();
 
-                      $vargerente = Yii::$app->get('dbjarvis2')->createCommand("select distinct gerente_cuenta from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                      $vargerente = Yii::$app->get('dbjarvis2')->createCommand("select distinct gerente_cuenta from dp_centros_costos where id_dp_centros_costos = :varcc")
+                      ->bindValue(':varcc', $varcc)
+                      ->queryScalar();
 
-                      $varcargo = Yii::$app->get('dbjarvis2')->createCommand("select distinct p.posicion from dp_posicion p inner join dp_cargos c on p.id_dp_posicion = c.id_dp_posicion inner join dp_distribucion_personal dp on c.id_dp_cargos = dp.id_dp_cargos  where dp.documento = $varDocumento and dp.fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                      $varcargo = Yii::$app->get('dbjarvis2')->createCommand("select distinct p.posicion from dp_posicion p inner join dp_cargos c on p.id_dp_posicion = c.id_dp_posicion inner join dp_distribucion_personal dp on c.id_dp_cargos = dp.id_dp_cargos  where dp.documento = :varDocumento and dp.fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                      ->bindValue(':varDocumento', $varDocumento)
+                      ->queryScalar();
 
-                      $vardocjefe = Yii::$app->get('dbjarvis2')->createCommand("select distinct d.documento_jefe from dp_distribucion_personal d left join dp_distribucion_personal djefe ON djefe.documento = d.documento_jefe where   d.documento = $varDocumento and d.fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                      $vardocjefe = Yii::$app->get('dbjarvis2')->createCommand("select distinct d.documento_jefe from dp_distribucion_personal d left join dp_distribucion_personal djefe ON djefe.documento = d.documento_jefe where   d.documento = :varDocumento and d.fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                      ->bindValue(':varDocumento', $varDocumento)
+                      ->queryScalar();
 
-                      $varnamelider = Yii::$app->get('dbjarvis2')->createCommand("select nombre_completo from dp_datos_generales where documento = $vardocjefe")->queryScalar();
+                      $varnamelider = Yii::$app->get('dbjarvis2')->createCommand("select nombre_completo from dp_datos_generales where documento = :vardocjefe")
+                      ->bindValue(':vardocjefe', $vardocjefe)
+                      ->queryScalar();
 
-                      $vardoccoordi = Yii::$app->get('dbjarvis2')->createCommand("select distinct djefe.documento_jefe from dp_distribucion_personal d left join dp_distribucion_personal djefe ON djefe.documento = d.documento_jefe where  d.documento = $varDocumento and d.fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                      $vardoccoordi = Yii::$app->get('dbjarvis2')->createCommand("select distinct djefe.documento_jefe from dp_distribucion_personal d left join dp_distribucion_personal djefe ON djefe.documento = d.documento_jefe where  d.documento = :varDocumento and d.fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                      ->bindValue(':varDocumento', $varDocumento)
+                      ->queryScalar();
 
-                      $varnamecoordi = Yii::$app->get('dbjarvis2')->createCommand("select nombre_completo from dp_datos_generales where documento = $vardoccoordi")->queryScalar();
+                      $varnamecoordi = Yii::$app->get('dbjarvis2')->createCommand("select nombre_completo from dp_datos_generales where documento = :vardoccoordi")
+                      ->bindValue(':vardoccoordi', $vardoccoordi)
+                      ->queryScalar();
 
 
                       Yii::$app->db->createCommand()->insert('tbl_control_encuestalaboral',[
@@ -504,26 +538,40 @@ use app\models\ControlEncuestaaci;
                   $varNumeric = is_numeric($varDocumento);
                   if ($varNumeric == true) {
                     if (strlen($varDocumento) > 1) {
-                      $varcc = Yii::$app->get('dbjarvis2')->createCommand("select id_dp_centros_costos from dp_distribucion_personal where documento = $varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                      $varcc = Yii::$app->get('dbjarvis2')->createCommand("select id_dp_centros_costos from dp_distribucion_personal where documento = :varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                      ->bindValue(':varDocumento', $varDocumento)
+                      ->queryScalar();
 
                       if (strlen($varcc) > 1) {
                         $varpcrc = substr($varcc, 0, 3);
                         
-                        $varccpromotor = Yii::$app->db->createCommand("select ccpromotor from tbl_control_promotores where id_dp_cliente = $varpcrc")->queryScalar();
+                        $varccpromotor = Yii::$app->db->createCommand("select ccpromotor from tbl_control_promotores where id_dp_cliente = :varpcrc")
+                        ->bindValue(':varpcrc', $varpcrc)
+                        ->queryScalar();
 
 			if (strlen($varccpromotor) > 1) {
-                          $varnombrepromotor = Yii::$app->get('dbjarvis2')->createCommand("select nombre_completo  from dp_datos_generales where documento = $varccpromotor")->queryScalar();  
+                          $varnombrepromotor = Yii::$app->get('dbjarvis2')->createCommand("select nombre_completo  from dp_datos_generales where documento = :varccpromotor")
+                          ->bindValue(':varccpromotor', $varccpromotor)
+                          ->queryScalar();  
                         }else{
                           $varnombrepromotor = null;  
                         }                                                                    
 
-                        $vardirector = Yii::$app->get('dbjarvis2')->createCommand("select distinct director_programa from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                        $vardirector = Yii::$app->get('dbjarvis2')->createCommand("select distinct director_programa from dp_centros_costos where id_dp_centros_costos = :varcc")
+                        ->bindValue(':varcc', $varcc)
+                        ->queryScalar();
 
-                        $vargerente = Yii::$app->get('dbjarvis2')->createCommand("select distinct gerente_cuenta from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                        $vargerente = Yii::$app->get('dbjarvis2')->createCommand("select distinct gerente_cuenta from dp_centros_costos where id_dp_centros_costos = :varcc")
+                        ->bindValue(':varcc', $varcc)
+                        ->queryScalar();
 
-                        $vardoccoordi = Yii::$app->get('dbjarvis2')->createCommand("select distinct djefe.documento_jefe from dp_distribucion_personal d left join dp_distribucion_personal djefe ON djefe.documento = d.documento_jefe where  d.documento = $varDocumento and d.fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                        $vardoccoordi = Yii::$app->get('dbjarvis2')->createCommand("select distinct djefe.documento_jefe from dp_distribucion_personal d left join dp_distribucion_personal djefe ON djefe.documento = d.documento_jefe where  d.documento = :varDocumento and d.fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                        ->bindValue(':varDocumento', $varDocumento)
+                        ->queryScalar();
 
-                        $varnamecoordi = Yii::$app->get('dbjarvis2')->createCommand("select nombre_completo from dp_datos_generales where documento = $vardoccoordi")->queryScalar();
+                        $varnamecoordi = Yii::$app->get('dbjarvis2')->createCommand("select nombre_completo from dp_datos_generales where documento = :vardoccoordi")
+                        ->bindValue(':vardoccoordi', $vardoccoordi)
+                        ->queryScalar();
                       }else{
                         $varpcrc = null;
 
@@ -618,19 +666,29 @@ use app\models\ControlEncuestaaci;
                   $varNumeric = is_numeric($varDocumento);
                   if ($varNumeric == true) {
                     if (strlen($varDocumento) > 1) {
-                      $varcc = Yii::$app->get('dbjarvis2')->createCommand("select id_dp_centros_costos from dp_distribucion_personal where documento = $varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = $varDocumento)")->queryScalar();
+                      $varcc = Yii::$app->get('dbjarvis2')->createCommand("select id_dp_centros_costos from dp_distribucion_personal where documento = :varDocumento and fecha_actual = (select max(fecha_actual) from dp_distribucion_personal where documento = :varDocumento)")
+                      ->bindValue(':varDocumento', $varDocumento)
+                      ->queryScalar();
 
                       if (strlen($varcc) > 1) {
 
                         $varpcrc = substr($varcc, 0, 3);       
 
-                        $varClientes =     Yii::$app->get('dbjarvis2')->createCommand("select distinct cliente from dp_clientes where id_dp_clientes = $varpcrc")->queryScalar();             
+                        $varClientes =     Yii::$app->get('dbjarvis2')->createCommand("select distinct cliente from dp_clientes where id_dp_clientes = :varpcrc")
+                        ->bindValue(':varpcrc', $varpcrc)
+                        ->queryScalar();             
                         
-                        $varciudad = Yii::$app->get('dbjarvis2')->createCommand("select distinct ciudad from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                        $varciudad = Yii::$app->get('dbjarvis2')->createCommand("select distinct ciudad from dp_centros_costos where id_dp_centros_costos = :varcc")
+                        ->bindValue(':varcc', $varcc)
+                        ->queryScalar();
 
-                        $vardirector = Yii::$app->get('dbjarvis2')->createCommand("select distinct director_programa from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                        $vardirector = Yii::$app->get('dbjarvis2')->createCommand("select distinct director_programa from dp_centros_costos where id_dp_centros_costos = :varcc")
+                        ->bindValue(':varcc', $varcc)
+                        ->queryScalar();
 
-                        $vargerente = Yii::$app->get('dbjarvis2')->createCommand("select distinct gerente_cuenta from dp_centros_costos where id_dp_centros_costos = $varcc")->queryScalar();
+                        $vargerente = Yii::$app->get('dbjarvis2')->createCommand("select distinct gerente_cuenta from dp_centros_costos where id_dp_centros_costos = :varcc")
+                        ->bindValue(':varcc', $varcc)
+                        ->queryScalar();
 
                       }else{
                         $varpcrc = null;
