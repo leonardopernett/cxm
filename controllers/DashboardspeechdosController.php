@@ -7126,7 +7126,7 @@ public function actionTotalagente(){
     $paramsBusquedaInteraccion = ['txtvaridspeechcalls' => $varidspeechcalls];
 
     $concatenarspeech = Yii::$app->db->createCommand('
-      SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d 
+      SELECT DISTINCT CONCAT(d.callId,"; ",d.fechareal) FROM  tbl_dashboardspeechcalls d 
         WHERE 
           d.iddashboardspeechcalls in (:txtvaridspeechcalls)')->bindValues($paramsBusquedaInteraccion)->queryScalar();
 
