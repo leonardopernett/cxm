@@ -7351,6 +7351,53 @@ public function actionTotalagente(){
       }
     }
 
+    public function actionListarvariablesx(){
+      $txtidspeech = Yii::$app->request->get('id');
+      $paramsBusquedaVariables = [':txtidspeech' => $txtidspeech, ':txtanulados' => 0];
+
+      if ($txtidspeech) {
+        $txtcodigopcrcx = Yii::$app->db->createCommand('
+          SELECT s.cod_pcrc FROM tbl_speech_categorias s 
+            WHERE 
+              s.idspeechcategoria = :txtidspeech
+                AND s.anulado = :txtanulados')->bindValues($paramsBusquedaVariables)->queryScalar();
+        
+        $txtindicadorx = Yii::$app->db->createCommand('
+          SELECT s.nombre FROM tbl_speech_categorias s 
+            WHERE 
+              s.idspeechcategoria = :txtidspeech
+                AND s.anulado = :txtanulados')->bindValues($paramsBusquedaVariables)->queryScalar();
+
+        $txtControl = \app\models\SpeechCategorias::find()->distinct()  
+        ->select(['idcategoria','nombre'])        
+        ->where("cod_pcrc in ('$txtcodigopcrcx')")  
+        ->andwhere("tipoindicador like '$txtindicadorx'")  
+        ->andwhere("idcategorias = 2")
+        ->andwhere("anulado = 0")  
+        ->count(); 
+
+        if ($txtControl > 0) {
+          $varListaVariablesx = \app\models\SpeechCategorias::find()->distinct()  
+          ->select(['idcategoria','nombre'])        
+          ->where(['cod_pcrc' => $txtcodigopcrcx])  
+          ->andwhere("tipoindicador like '$txtindicadorx'")  
+          ->andwhere("idcategorias = 2")
+          ->andwhere("anulado = 0")  
+          ->orderBy(['nombre' => SORT_DESC])
+          ->all();   
+
+          echo "<option value='' disabled selected>Seleccionar Variable...</option>";
+          foreach ($varListaVariablesx as $value) {
+            echo "<option value='" . $value->idcategoria. "'>" . $value->nombre . "</option>";
+          }
+        }else{
+          echo "<option>--</option>";
+        }
+      }else{
+        echo "<option>Seleccionar Variable</option>";
+      }                    
+    }
+
 
   
 
