@@ -7069,7 +7069,7 @@ public function actionTotalagente(){
             d.iddashboardspeechcalls = :txtvaridspeechcalls
               and d.anulado = :txtanulado')->bindValues($paramsBusquedaIdInteraccion)->queryScalar();
 
-      $paramsBusquedaVariables = [':txtvarcod_pcrc' => $varidspeechcalls, ':txtanulado' => 0, ':txtid_categorias' => 2, ':txtid_responsable' => 1];
+      $paramsBusquedaVariables = [':txtvarcod_pcrc' => $varcod_pcrc, ':txtanulado' => 0, ':txtid_categorias' => 2, ':txtid_responsable' => 1];
 
       $varlistvariables = Yii::$app->db->createCommand("
         SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc  
