@@ -1607,20 +1607,11 @@ use Exception;
 
         $varCodigo = $varCodparametrizar;
 
-        $varListIndicadores = Yii::$app->db->createCommand("select distinct sc.idcategoria, sc.nombre, sc.tipoparametro, sc.orientacionsmart, sc.orientacionform, sc.programacategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1  and sc.cod_pcrc in (:txtCodPcrcok) and sc.programacategoria in (:txtServicio) ")
-        ->bindValue(':txtCodPcrcok',$txtCodPcrcok)
-        ->bindValue(':txtServicio',$txtServicio)
-        ->queryAll();
+        $varListIndicadores = "select distinct sc.idcategoria, sc.nombre, sc.tipoparametro, sc.orientacionsmart, sc.orientacionform, sc.programacategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1  and sc.cod_pcrc in ('".$txtCodPcrcok."') and sc.programacategoria in ('".$txtServicio."') ";
 
-        $txtvDatosMotivos = Yii::$app->db->createCommand("select distinct sc.nombre, sc.idcategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 3 and sc.cod_pcrc in (:txtCodPcrcok) and sc.programacategoria in (:txtServicio)")
-        ->bindValue(':txtCodPcrcok',$txtCodPcrcok)
-        ->bindValue(':txtServicio',$txtServicio)
-        ->queryAll();
+        $txtvDatosMotivos = "select distinct sc.nombre, sc.idcategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 3 and sc.cod_pcrc in ('".$txtCodPcrcok."') and sc.programacategoria in ('".$txtServicio."')";
 
-        $txtlistDatas = Yii::$app->db->createCommand("select distinct  sp.rn, sp.ext, sp.usuared, sp.comentarios, sc.programacategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sp.cod_pcrc = sc.cod_pcrc where sc.anulado = 0 and sc.cod_pcrc in (:txtCodPcrcok) and sc.programacategoria in (:txtServicio)")
-        ->bindValue(':txtCodPcrcok',$txtCodPcrcok)
-        ->bindValue(':txtServicio',$txtServicio)
-        ->queryAll();
+        $txtlistDatas = "select distinct  sp.rn, sp.ext, sp.usuared, sp.comentarios, sc.programacategoria from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sp.cod_pcrc = sc.cod_pcrc where sc.anulado = 0 and sc.cod_pcrc in ('".$txtCodPcrcok."') and sc.programacategoria in ('".$txtServicio."')";
 
         if ($varCodigo == 1) {
           $varServicio = Yii::$app->db->createCommand("select distinct a.name from tbl_arbols a inner join tbl_speech_servicios ss on a.id = ss.arbol_id inner join tbl_speech_parametrizar sp on ss.id_dp_clientes = sp.id_dp_clientes where     sp.anulado = 0 and sp.cod_pcrc in (:txtCodPcrcok) and sp.rn in (:txtParametros)")
