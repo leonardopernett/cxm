@@ -178,7 +178,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                 'prompt'=>'Seleccionar indicador...',
                                                 'onchange' => '
                                                     $.get(
-                                                        "' . Url::toRoute('dashboardspeech/listarvariablesx') . '", 
+                                                        "' . Url::toRoute('listarvariablesx') . '", 
                                                         {id: $(this).val()}, 
                                                         function(res){
                                                             $("#requester").html(res);

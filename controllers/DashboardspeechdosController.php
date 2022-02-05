@@ -5297,48 +5297,6 @@ public function actionCantidadentto(){
           ]);
       }
 
-      public function actionListarvariablesx(){
-        $txtidspeech = Yii::$app->request->get('id');
-
-        if ($txtidspeech) {
-          $txtcodigopcrcx = Yii::$app->db->createCommand("select s.cod_pcrc from tbl_speech_categorias s where s.idspeechcategoria = :txtidspeech and s.anulado = 0")
-          ->bindValue(':txtidspeech',$txtidspeech)
-          ->queryScalar();
-          $txtindicadorx = Yii::$app->db->createCommand("select s.nombre from tbl_speech_categorias s where s.idspeechcategoria = :txtidspeech and s.anulado = 0")
-          ->bindValue(':txtidspeech',$txtidspeech)
-          ->queryScalar();
-
-          $txtControl = \app\models\SpeechCategorias::find()->distinct()  
-          ->select(['idcategoria','nombre'])        
-          ->where("cod_pcrc in ('$txtcodigopcrcx')")  
-          ->andwhere("tipoindicador like txtindicadorx")  
-          ->andwhere("idcategorias = 2")
-          ->andwhere("anulado = 0")
-          ->addParams([':txtindicadorx' => $txtindicadorx])  
-          ->count(); 
-
-          if ($txtControl > 0) {
-            $varListaVariablesx = \app\models\SpeechCategorias::find()->distinct()  
-            ->select(['idcategoria','nombre'])        
-            ->where(['cod_pcrc' => $txtcodigopcrcx])  
-            ->andwhere("tipoindicador like :txtindicadorx")  
-            ->andwhere("idcategorias = 2")
-            ->andwhere("anulado = 0")  
-            ->addParams([':txtindicadorx' => $txtindicadorx])
-            ->orderBy(['nombre' => SORT_DESC])
-            ->all();   
-
-            echo "<option value='' disabled selected>Seleccionar variable...</option>";
-            foreach ($varListaVariablesx as $key => $value) {
-              echo "<option value='" . $value->idcategoria. "'>" . $value->nombre . "</option>";
-            }
-          }else{
-            echo "<option>--</option>";
-          }
-        }else{
-          echo "<option>Seleccionar variable</option>";
-        }                    
-      }
 
   public function actionDescargarcalls($varprograma,$varcodigopcrc,$varidcategoria,$varextension,$varfechasinicio,$varfechasfin,$varcantllamadas,$varfechainireal,$varfechafinreal,$consinmotivos){
     $model = new Dashboardspeechcalls();
