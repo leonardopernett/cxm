@@ -7061,13 +7061,23 @@ public function actionTotalagente(){
     $varcod_pcrc = $varcodpcrc;
     $varidspeechcalls = $idspeechcalls;
 
-    $varCallid = Yii::$app->db->createCommand("SELECT d.callId FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = :varidspeechcalls")
-    ->bindValue(':varidspeechcalls',$varidspeechcalls)
-    ->queryScalar();
+    $paramsBusquedaIdInteraccion = [':txtvaridspeechcalls' => $varidspeechcalls, ':txtanulado' => 0];
 
-    $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc  WHERE sc.anulado = 0 AND sc.cod_pcrc IN (:varcod_pcrc) AND sc.idcategorias in (2) AND sc.responsable IN (1)")
-    ->bindValue(':varcod_pcrc',$varcod_pcrc)
-    ->queryAll();
+      $varCallid = Yii::$app->db->createCommand('
+        SELECT d.callId FROM tbl_dashboardspeechcalls d 
+          WHERE 
+            d.iddashboardspeechcalls = :txtvaridspeechcalls
+              and d.anulado = :txtanulado')->bindValues($paramsBusquedaIdInteraccion)->queryScalar();
+
+      $paramsBusquedaVariables = [':txtvarcod_pcrc' => $varidspeechcalls, ':txtanulado' => 0, ':txtid_categorias' => 2, ':txtid_responsable' => 1];
+
+      $varlistvariables = Yii::$app->db->createCommand("
+        SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc  
+          WHERE 
+            sc.anulado = :txtanulado
+              AND sc.cod_pcrc IN (:txtvarcod_pcrc) 
+                AND sc.idcategorias IN (:txtid_categorias) 
+                  AND sc.responsable IN (:txtid_responsable)")->bindValues($paramsBusquedaVariables)->queryAll();
 
     $countpositivas = 0;
     $countnegativas = 0;
@@ -7194,6 +7204,42 @@ public function actionTotalagente(){
       }else{
         echo "<option>Seleccionar Variable</option>";
       }                    
+    }
+
+    public function actionViewcallids($idcallids,$varfechareal,$varconnid,$varcategolias){
+
+      $paramsBusqueda = [':varCallid' => $idcallids, ':varFecha' => $varfechareal, ':varConnid' => $varconnid, ':varCategoria' => $varcategolias, ':varAnulado' => 0];
+
+      $varextension = Yii::$app->db->createCommand('
+        SELECT d.extensiones FROM tbl_dashboardspeechcalls d
+          WHERE d.anulado = :varAnulado 
+            AND d.callId = :varCallid
+              AND d.fechareal = :varFecha AND connid = :varConnid
+                AND d.idcategoria = :varCategoria
+          GROUP BY d.extensiones
+      ')->bindValues($paramsBusqueda)->queryScalar();
+
+      $paramsBusquedaConnid = [':varConnid' => $varconnid];
+
+      $varencuestaid = Yii::$app->db->createCommand('
+        SELECT b.id FROM tbl_base_satisfaccion b 
+          WHERE 
+            b.connid = :varConnid
+      ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+      $varbuzones = Yii::$app->db->createCommand('
+        SELECT b.buzon FROM tbl_base_satisfaccion b 
+          WHERE 
+            b.connid = :varConnid
+      ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+      return $this->render('viewcallids',[
+        'varextension' => $varextension,
+        'idcallids' => $idcallids,
+        'varconnid' => $varconnid,
+        'varencuestaid' => $varencuestaid,
+        'varbuzones' => $varbuzones,
+      ]);
     }
 
 

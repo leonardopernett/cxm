@@ -435,7 +435,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                             $varsConnid = 0;
                                         }
 
-                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-paperclip" style="font-size: 17px; color: #495057; display: inline;"></i>'),'javascript:void(0)',
+                                        return Html::a(Yii::t('app', '<em id="idimage" class="fas fa-paperclip" style="font-size: 17px; color: #495057; display: inline;"></em>'),'javascript:void(0)',
                                         [
                                             'title' => Yii::t('app', 'Datos de las Interacciones'),
                                             'onclick' => "                       
@@ -480,7 +480,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                             }
                                                         
 
-                                                        return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-calculator" style="font-size: 17px; color: #9F9AE1; display: inline;"></i>'),
+                                                        return Html::a(Yii::t('app', '<em id="idimage" class="fas fa-calculator" style="font-size: 17px; color: #9F9AE1; display: inline;"></em>'),
                                                             'javascript:void(0)',
                                                             [
                                                                 'title' => Yii::t('app', 'Resultados VOC'),
@@ -518,7 +518,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
                                         if ($txtidredbox != null && $txtidgrabadora != null) {
                                            
-                                            return Html::a(Yii::t('app', '<i id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #ff3838; display: inline;"></i>'),
+                                            return Html::a(Yii::t('app', '<em id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #ff3838; display: inline;"></em>'),
                                                 'javascript:void(0)',
                                                 [
                                                     'title' => Yii::t('app', 'Escucha VOC'),
@@ -589,7 +589,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
                                                         if (strlen($idloginid) > 7) {
                                                          
-                                                            return Html::a('<i id="idimage" class="fas fa-edit" style="font-size: 17px; color: #4dbdff; display: inline;"></i>'
+                                                            return Html::a('<em id="idimage" class="fas fa-edit" style="font-size: 17px; color: #4dbdff; display: inline;"></em>'
                                                                     , Url::to(['basesatisfaccion/showformulariogestion',
                                                                         'basesatisfaccion_id' => $idbase, 'preview' => 5, 'fill_values' => false, 'banderaescalado' => false, 'aleatorio'=> 0]), ['title' => Yii::t('yii', 'Gestionar'),'target' => "_blank"]);
                                                         }
