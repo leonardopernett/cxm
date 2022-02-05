@@ -1633,17 +1633,16 @@ use Exception;
           ->bindValue(':txtParametros',$txtParametros)
           ->queryScalar();
 
-          $varListIndicadores = Yii::$app->db->createCommand(":varListIndicadores and sp.rn in (:txtParametros)")
-          ->bindValue(':varListIndicadores',$varListIndicadores)
-          ->bindValue(':txtParametros',$txtParametros)
+          $varListIndicadores = Yii::$app->db->createCommand($varListIndicadores." and sp.rn in (:txtParametrosind)")          
+          ->bindValue(':txtParametrosind',$txtParametros)
           ->queryAll();
-          $txtvDatosMotivos = Yii::$app->db->createCommand(":txtvDatosMotivos and sp.rn in (:txtParametros)")
-          ->bindValue(':txtvDatosMotivos',$txtvDatosMotivos)
-          ->bindValue(':txtParametros',$txtParametros)
+
+          $txtvDatosMotivos = Yii::$app->db->createCommand($txtvDatosMotivos." and sp.rn in (:txtParametrosmot)")          
+          ->bindValue(':txtParametrosmot',$txtParametros)
           ->queryAll();
-          $txtlistDatas = Yii::$app->db->createCommand(":txtlistDatas and sp.rn in (:txtParametros)")
-          ->bindValue(':txtlistDatas',$txtlistDatas)
-          ->bindValue(':txtParametros',$txtParametros)
+
+          $txtlistDatas = Yii::$app->db->createCommand($txtlistDatas." and sp.rn in (:txtParametroslisda)")          
+          ->bindValue(':txtParametroslisda',$txtParametros)
           ->queryAll();
         }else{
           if ($varCodigo == 2) {
@@ -1657,17 +1656,15 @@ use Exception;
             ->bindValue(':txtParametros',$txtParametros)
             ->queryScalar();
 
-            $varListIndicadores = Yii::$app->db->createCommand(":varListIndicadores and sp.ext in (:txtParametros)")
-            ->bindValue(':varListIndicadores',$varListIndicadores)
-            ->bindValue(':txtParametros',$txtParametros)
+            $varListIndicadores = Yii::$app->db->createCommand($varListIndicadores." and sp.ext in (:txtParametrosind)")            
+            ->bindValue(':txtParametrosind',$txtParametros)
             ->queryAll();
-            $txtvDatosMotivos = Yii::$app->db->createCommand(":txtvDatosMotivos and sp.ext in (:txtParametros)")
-            ->bindValue(':txtvDatosMotivos',$txtvDatosMotivos)
-            ->bindValue(':txtParametros',$txtParametros)
+
+            $txtvDatosMotivos = Yii::$app->db->createCommand($txtvDatosMotivos." and sp.ext in (:txtParametrosmotis)")
+            ->bindValue(':txtParametrosmotis',$txtParametros)
             ->queryAll();
-            $txtlistDatas = Yii::$app->db->createCommand(":txtlistDatas and sp.ext in (:txtParametros)")
-            ->bindValue(':txtlistDatas',$txtlistDatas)
-            ->bindValue(':txtParametros',$txtParametros)
+            $txtlistDatas = Yii::$app->db->createCommand($txtlistDatas." and sp.ext in (:txtParametrosdatas)")
+            ->bindValue(':txtParametrosdatas',$txtParametros)
             ->queryAll();
           }else{        
             $varServicio = Yii::$app->db->createCommand("select distinct a.name from tbl_arbols a inner join tbl_speech_servicios ss on a.id = ss.arbol_id inner join tbl_speech_parametrizar sp on ss.id_dp_clientes = sp.id_dp_clientes where  sp.anulado = 0 and sp.cod_pcrc in (:txtCodPcrcok) and sp.usuared in (:txtParametros)")
@@ -1680,17 +1677,16 @@ use Exception;
             ->bindValue(':txtParametros',$txtParametros)
             ->queryScalar();
 
-            $varListIndicadores = Yii::$app->db->createCommand(":varListIndicadores and sp.usuared in (:txtParametros)")
-            ->bindValue(':varListIndicadores',$varListIndicadores)
-            ->bindValue(':txtParametros',$txtParametros)
+            $varListIndicadores = Yii::$app->db->createCommand($varListIndicadores." and sp.usuared in (:txtParametrosinds)")            
+            ->bindValue(':txtParametrosinds',$txtParametros)
             ->queryAll();
-            $txtvDatosMotivos = Yii::$app->db->createCommand(":txtvDatosMotivos and sp.usuared in (:txtParametros)")
-            ->bindValue(':txtvDatosMotivos',$txtvDatosMotivos)
-            ->bindValue(':txtParametros',$txtParametros)
+
+            $txtvDatosMotivos = Yii::$app->db->createCommand($txtvDatosMotivos." and sp.usuared in (:txtParametrosmots)")            
+            ->bindValue(':txtParametrosmots',$txtParametros)
             ->queryAll();
-            $txtlistDatas = Yii::$app->db->createCommand(":txtlistDatas and sp.usuared in (:txtParametros)")
-            ->bindValue(':txtlistDatas',$txtlistDatas)
-            ->bindValue(':txtParametros',$txtParametros)
+
+            $txtlistDatas = Yii::$app->db->createCommand($txtlistDatas." and sp.usuared in (:txtParametrosdatas)")            
+            ->bindValue(':txtParametrosdatas',$txtParametros)
             ->queryAll();
           }
         }
