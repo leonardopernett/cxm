@@ -7135,7 +7135,7 @@ public function actionTotalagente(){
     $txtejecucion = Yii::$app->db->createCommand('
       SELECT DISTINCT round(te.score,2) FROM tbl_ejecucionformularios te 
         WHERE 
-          te.dsfuente_encuesta = $txtconcatenarspeech')->bindValues($paramsBusquedaconcatenar)->queryScalar();
+          te.dsfuente_encuesta = :txtconcatenarspeech')->bindValues($paramsBusquedaconcatenar)->queryScalar();
           
     if ($txtejecucion == '') {
       $txtejecucion = '--';
