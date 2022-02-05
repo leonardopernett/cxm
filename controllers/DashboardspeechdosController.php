@@ -7122,6 +7122,53 @@ public function actionTotalagente(){
     }else{
       $resultadosIDA = 0;
     }
+
+    $paramsBusquedaInteraccion = ['txtvaridspeechcalls' => $varidspeechcalls];
+
+    $concatenarspeech = Yii::$app->db->createCommand('
+      SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d 
+        WHERE 
+          d.iddashboardspeechcalls in (:txtvaridspeechcalls)')->bindValues($paramsBusquedaInteraccion)->queryScalar();
+
+    $paramsBusquedaconcatenar = [':txtconcatenarspeech' => $concatenarspeech];
+
+    $txtejecucion = Yii::$app->db->createCommand('
+      SELECT DISTINCT round(te.score,2) FROM tbl_ejecucionformularios te 
+        WHERE 
+          te.dsfuente_encuesta = $txtconcatenarspeech')->bindValues($paramsBusquedaconcatenar)->queryScalar();
+          
+    if ($txtejecucion == '') {
+      $txtejecucion = '--';
+      $txtpromediorta = $resultadosIDA;
+    }else{
+      $txtpromediorta = round(($resultadosIDA + $txtejecucion) / 2,2);
+    }
+
+    $txtvarcallid = Yii::$app->db->createCommand('
+      SELECT DISTINCT d.callId FROM  tbl_dashboardspeechcalls d 
+        WHERE d.iddashboardspeechcalls in (:txtvaridspeechcalls)')->bindValues($paramsBusquedaInteraccion)->queryScalar();
+
+    $txtvarhoras = Yii::$app->db->createCommand('
+      SELECT DISTINCT d.fechareal FROM  tbl_dashboardspeechcalls d 
+        WHERE d.iddashboardspeechcalls in (:txtvaridspeechcalls)')->bindValues($paramsBusquedaInteraccion)->queryScalar();
+
+    $txtusuarios = Yii::$app->db->createCommand('
+      SELECT DISTINCT d.login_id FROM  tbl_dashboardspeechcalls d 
+        WHERE d.iddashboardspeechcalls in (:txtvaridspeechcalls)')->bindValues($paramsBusquedaInteraccion)->queryScalar();
+    
+    return $this->renderAjax('viewrtas',[
+      'resultadosIDA' => $resultadosIDA,
+      'countpositivas' => $countpositivas,
+      'countnegativas' => $countnegativas,
+      'countpositicasc' => $countpositicasc,
+      'countnegativasc' => $countnegativasc,
+      'totalvariables' => $totalvariables,
+      'txtejecucion' => $txtejecucion,
+      'txtpromediorta' => $txtpromediorta,
+      'txtvarcallid' => $txtvarcallid,
+      'txtvarhoras' => $txtvarhoras,
+      'txtusuarios' => $txtusuarios,
+    ]);
   }
     
 
