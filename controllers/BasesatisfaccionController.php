@@ -789,10 +789,10 @@ class BasesatisfaccionController extends Controller {
                             ON p.id_parametrizacion = pe.id 
                             AND p.categoria = dp.categoria
                         JOIN tbl_categorias ca ON ca.id = dp.categoria 
-                        WHERE pe.cliente = :n.nombrecliente
-                                                AND pe.programa = :n.nombrepcrc')
-                                                ->bindValue(':n.nombrecliente',$nombrecliente)
-                                                ->bindValue(':n.nombrepcrc',$nombrepcrc)
+                        WHERE pe.cliente = :nombrecliente
+                                                AND pe.programa = :nombrepcrc')
+                                                ->bindValue(':nombrecliente',$nombrecliente)
+                                                ->bindValue(':nombrepcrc',$nombrepcrc)
                                                 ->queryAll();
 
                         $prioridades = ArrayHelper::map($config, 'prioridad', 'name');
@@ -1169,10 +1169,10 @@ class BasesatisfaccionController extends Controller {
                             ON p.id_parametrizacion = pe.id 
                             AND p.categoria = dp.categoria
                         JOIN tbl_categorias ca ON ca.id = dp.categoria 
-                        WHERE pe.cliente = :n.nombrecliente
-                                                AND pe.programa = :n.nombrepcrc')
-                                                ->bindValue(':n.nombrecliente',$nombrecliente)
-                                                ->bindValue(':n.nombrepcrc',$nombrepcrc)
+                        WHERE pe.cliente = :nombrecliente
+                                                AND pe.programa = :nombrepcrc')
+                                                ->bindValue(':nombrecliente',$nombrecliente)
+                                                ->bindValue(':nombrepcrc',$nombrepcrc)
                                                 ->queryAll();
 
                         $prioridades = ArrayHelper::map($config, 'prioridad', 'name');
@@ -3799,9 +3799,10 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ON p.id_parametrizacion = pe.id 
                             AND p.categoria = dp.categoria
                         JOIN tbl_categorias ca ON ca.id = dp.categoria 
-                        WHERE pe.cliente = :n.nombrecliente
-                                                AND pe.programa = :n.nombrepcrc')->bindValue(':n.nombrecliente',$nombrecliente)
-                                                ->bindValue(':n.nombrepcrc',$nombrepcrc)
+                        WHERE pe.cliente = :nombrecliente
+                                                AND pe.programa = :nombrepcrc')
+                                                ->bindValue(':nombrecliente',$nombrecliente)
+                                                ->bindValue(':nombrepcrc',$nombrepcrc)
                                                 ->queryAll();
 
                         $prioridades = ArrayHelper::map($config, 'prioridad', 'name');
