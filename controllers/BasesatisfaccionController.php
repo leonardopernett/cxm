@@ -775,7 +775,7 @@ class BasesatisfaccionController extends Controller {
                     if (!empty($model->pcrc) && !empty($model->cliente)) {
                         $nombrecliente = $model->cliente;
                         $nombrepcrc = $model->pcrc;
-                        $paramsBusqueda = [':n.nombrecliente'=>$nombrecliente,':n.nombrepcrc'=>$nombrepcrc];
+                        
 
                         $config = \Yii::$app->db->createCommand('
                         SELECT ca.nombre, dp.categoria, p.pre_indicador, 
@@ -790,7 +790,10 @@ class BasesatisfaccionController extends Controller {
                             AND p.categoria = dp.categoria
                         JOIN tbl_categorias ca ON ca.id = dp.categoria 
                         WHERE pe.cliente = :n.nombrecliente
-                                                AND pe.programa = :n.nombrepcrc')->bindValues($paramsBusqueda)->queryAll();
+                                                AND pe.programa = :n.nombrepcrc')
+                                                ->bindValue(':n.nombrecliente',$nombrecliente)
+                                                ->bindValue(':n.nombrepcrc',$nombrepcrc)
+                                                ->queryAll();
 
                         $prioridades = ArrayHelper::map($config, 'prioridad', 'name');
                         $arrayCumpleRegla = [];
@@ -1151,7 +1154,7 @@ class BasesatisfaccionController extends Controller {
                     if (!empty($nModel->pcrc) && !empty($nModel->cliente)) {
                         $nombrecliente = $nModel->cliente;
                         $nombrepcrc = $nModel->pcrc;
-                        $paramsBusqueda = [':n.nombrecliente'=>$nombrecliente,':n.nombrepcrc'=>$nombrepcrc];
+                       
 
                         
                         $config = \Yii::$app->db->createCommand('
@@ -1167,7 +1170,10 @@ class BasesatisfaccionController extends Controller {
                             AND p.categoria = dp.categoria
                         JOIN tbl_categorias ca ON ca.id = dp.categoria 
                         WHERE pe.cliente = :n.nombrecliente
-                                                AND pe.programa = :n.nombrepcrc')->bindValues($paramsBusqueda)->queryAll();
+                                                AND pe.programa = :n.nombrepcrc')
+                                                ->bindValue(':n.nombrecliente',$nombrecliente)
+                                                ->bindValue(':n.nombrepcrc',$nombrepcrc)
+                                                ->queryAll();
 
                         $prioridades = ArrayHelper::map($config, 'prioridad', 'name');
                         $arrayCumpleRegla = $prioridadesReales = [];
@@ -3779,7 +3785,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     if (!empty($model->pcrc) && !empty($model->cliente)) {
                         $nombrecliente = $model->cliente;
                         $nombrepcrc = $model->pcrc;
-                        $paramsBusqueda = [':n.nombrecliente'=>$nombrecliente,':n.nombrepcrc'=>$nombrepcrc];
+                        
 
                         $config = \Yii::$app->db->createCommand('
                         SELECT ca.nombre, dp.categoria, p.pre_indicador, 
@@ -3794,7 +3800,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             AND p.categoria = dp.categoria
                         JOIN tbl_categorias ca ON ca.id = dp.categoria 
                         WHERE pe.cliente = :n.nombrecliente
-                                                AND pe.programa = :n.nombrepcrc')->bindValues($paramsBusqueda)->queryAll();
+                                                AND pe.programa = :n.nombrepcrc')->bindValue(':n.nombrecliente',$nombrecliente)
+                                                ->bindValue(':n.nombrepcrc',$nombrepcrc)
+                                                ->queryAll();
 
                         $prioridades = ArrayHelper::map($config, 'prioridad', 'name');
                         $arrayCumpleRegla = [];
