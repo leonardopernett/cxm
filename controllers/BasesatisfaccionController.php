@@ -391,8 +391,9 @@ class BasesatisfaccionController extends Controller {
                                 "tbl_permisos_grupos_arbols.snver_grafica" => 1])
                             ->andWhere("rel_grupos_usuarios.grupo_id = tbl_permisos_grupos_arbols.grupousuario_id")
                             ->andWhere("tbl_tmpreportes_arbol.seleccion_arbol_id = tbl_tmpreportes_arbol.arbol_id")
-                            ->andWhere('tbl_tmpreportes_arbol.dsruta_arbol LIKE "%' . $search . '%" ')
+                            ->andWhere('tbl_tmpreportes_arbol.dsruta_arbol LIKE "%":search"%" ')
                             ->orderBy("tbl_tmpreportes_arbol.dsruta_arbol ASC")
+                            ->addParams([':search'=>$search])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -521,9 +522,9 @@ class BasesatisfaccionController extends Controller {
                                     $varuserseg = $varDatos[7];
                                     $varAni = $varDatos[8];
                                     $varRN = $varDatos[9];
-                                    $paramsBusqueda = [':v.varRN'=>$varRN,':v.varPcrc'=>$varPcrc];
-                                    $varCodIndustria = Yii::$app->db->createCommand("select cod_industria from tbl_reglanegocio where rn = ':v.varRN' and cliente = 358 and pcrc = :v.varPcrc")->bindValues($paramsBusqueda)->queryScalar();
-                                    $varCodInstitucion = Yii::$app->db->createCommand("select cod_institucion from tbl_reglanegocio where rn = ':v.varRN' and cliente = 358 and pcrc = :v.varPcrc")->bindValues($paramsBusqueda)->queryScalar();
+                                    $paramsBusqueda = [':varRN'=>$varRN,':varPcrc'=>$varPcrc];
+                                    $varCodIndustria = Yii::$app->db->createCommand("select cod_industria from tbl_reglanegocio where rn = ':varRN' and cliente = 358 and pcrc = :varPcrc")->bindValues($paramsBusqueda)->queryScalar();
+                                    $varCodInstitucion = Yii::$app->db->createCommand("select cod_institucion from tbl_reglanegocio where rn = ':varRN' and cliente = 358 and pcrc = :varPcrc")->bindValues($paramsBusqueda)->queryScalar();
                                     $varTipoServicio = 'telefónico';
                                     $varPregunta1 = $varDatos[10];
                                     $varPregunta = 'NO APLICA';
@@ -557,12 +558,12 @@ class BasesatisfaccionController extends Controller {
                                     $varInbox = 'NORMAL';
                                     $varaliados = 'KNT';
 
-                                    $paramsBusqueda = [':v.varAgente'=>$varAgente];
-                                    $varEvaluadoId = Yii::$app->db->createCommand("select distinct id from tbl_evaluados where dsusuario_red in (':v.varAgente')")->bindValues($paramsBusqueda)->queryScalar();
-                                    $paramsBusqueda = [':v.varEvaluadoId'=>$varEvaluadoId];
-                                    $varIdLider = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_id from tbl_usuarios inner join tbl_equipos on tbl_usuarios.usua_id = tbl_equipos.usua_id inner join tbl_equipos_evaluados on tbl_equipos.id = tbl_equipos_evaluados.equipo_id where   tbl_equipos_evaluados.evaluado_id = ':v.varEvaluadoId'")->bindValues($paramsBusqueda)->queryScalar();
-                                    $varNomLider = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_nombre from tbl_usuarios inner join tbl_equipos on tbl_usuarios.usua_id = tbl_equipos.usua_id inner join tbl_equipos_evaluados on tbl_equipos.id = tbl_equipos_evaluados.equipo_id where   tbl_equipos_evaluados.evaluado_id = ':v.varEvaluadoId'")->bindValues($paramsBusqueda)->queryScalar();
-                                    $varCCLider = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_identificacion from tbl_usuarios inner join tbl_equipos on tbl_usuarios.usua_id = tbl_equipos.usua_id inner join tbl_equipos_evaluados on tbl_equipos.id = tbl_equipos_evaluados.equipo_id where   tbl_equipos_evaluados.evaluado_id = ':v.varEvaluadoId'")->bindValues($paramsBusqueda)->queryScalar();
+                                    $paramsBusqueda = [':varAgente'=>$varAgente];
+                                    $varEvaluadoId = Yii::$app->db->createCommand("select distinct id from tbl_evaluados where dsusuario_red in (':varAgente')")->bindValues($paramsBusqueda)->queryScalar();
+                                    $paramsBusqueda = [':varEvaluadoId'=>$varEvaluadoId];
+                                    $varIdLider = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_id from tbl_usuarios inner join tbl_equipos on tbl_usuarios.usua_id = tbl_equipos.usua_id inner join tbl_equipos_evaluados on tbl_equipos.id = tbl_equipos_evaluados.equipo_id where   tbl_equipos_evaluados.evaluado_id = ':varEvaluadoId'")->bindValues($paramsBusqueda)->queryScalar();
+                                    $varNomLider = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_nombre from tbl_usuarios inner join tbl_equipos on tbl_usuarios.usua_id = tbl_equipos.usua_id inner join tbl_equipos_evaluados on tbl_equipos.id = tbl_equipos_evaluados.equipo_id where   tbl_equipos_evaluados.evaluado_id = ':varEvaluadoId'")->bindValues($paramsBusqueda)->queryScalar();
+                                    $varCCLider = Yii::$app->db->createCommand("select distinct tbl_usuarios.usua_identificacion from tbl_usuarios inner join tbl_equipos on tbl_usuarios.usua_id = tbl_equipos.usua_id inner join tbl_equipos_evaluados on tbl_equipos.id = tbl_equipos_evaluados.equipo_id where   tbl_equipos_evaluados.evaluado_id = ':varEvaluadoId'")->bindValues($paramsBusqueda)->queryScalar();
                                     
 
                                     Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
@@ -620,8 +621,8 @@ class BasesatisfaccionController extends Controller {
                                            'modalidad_encuesta' => null,
                                     ])->execute();
 
-                                    $paramsBusqueda = [':v.varFechaAno,'=>$varFechaAno,':v.varFechaMes'=>$varFechaMes,':v.varFechaDia'=>$varFechaDia,':v.varFechaHora'=>$varFechaHora,':v.varAgente'=>$varAgente,':v.varIdentificacion'=>$varIdentificacion];                
-                                    $varIdBase = Yii::$app->db->createCommand("select max(id) from tbl_base_satisfaccion where ano = ':v.varFechaAno' and mes = ':v.varFechaMes' and dia = ':v.varFechaDia' and hora = ':v.varFechaHora' and agente like ':v.varAgente' and identificacion like ':v.varIdentificacion'")->bindValues($paramsBusqueda)->queryScalar();
+                                    $paramsBusqueda = [':varFechaAno,'=>$varFechaAno,':v.varFechaMes'=>$varFechaMes,':varFechaDia'=>$varFechaDia,':varFechaHora'=>$varFechaHora,':v.varAgente'=>$varAgente,':v.varIdentificacion'=>$varIdentificacion];                
+                                    $varIdBase = Yii::$app->db->createCommand("select max(id) from tbl_base_satisfaccion where ano = ':varFechaAno' and mes = ':varFechaMes' and dia = ':varFechaDia' and hora = ':varFechaHora' and agente like ':varAgente' and identificacion like ':varIdentificacion'")->bindValues($paramsBusqueda)->queryScalar();
 
                     $varFormulario = 4537;
 
@@ -661,8 +662,8 @@ class BasesatisfaccionController extends Controller {
                 $txtvarbols = Yii::$app->request->post("txtvarbols");
                 $txtvencuesta = Yii::$app->request->post("txtvencuesta");
 
-                $paramsBusqueda = [':t.txtvencuesta'=>$txtvencuesta,':t.txtvarbols'=>$txtvarbols];
-                $varIdBaseAvon = Yii::$app->db->createCommand("select distinct idbaseavon from tbl_base_Avon where id = ':t.txtvencuesta' and arbol_id = ':t.txtvarbols'")->bindValues($paramsBusqueda)->queryScalar();
+                $paramsBusqueda = [':txtvencuesta'=>$txtvencuesta,':txtvarbols'=>$txtvarbols];
+                $varIdBaseAvon = Yii::$app->db->createCommand("select distinct idbaseavon from tbl_base_Avon where id = ':txtvencuesta' and arbol_id = ':txtvarbols'")->bindValues($paramsBusqueda)->queryScalar();
 
                 Yii::$app->db->createCommand()->update('tbl_base_Avon',[
                                           'formulario' => $txtvidformulario,
@@ -731,7 +732,8 @@ class BasesatisfaccionController extends Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Reglanegocio::find()
                             ->select(['id' => 'rn', 'text' => 'UPPER(rn)'])
-                            ->where('rn LIKE "%' . $search . '%"')
+                            ->where('rn LIKE "%":search"%"')
+                            ->addParams([':search'=>$search])
                             ->orderBy('rn')
                             ->asArray()
                             ->all();
@@ -914,7 +916,8 @@ class BasesatisfaccionController extends Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_nombre LIKE "%' . $search . '%"')
+                            ->where('usua_nombre LIKE "%":search"%"')
+                            ->addParams([':search'=>$search])
                             ->orderBy('usua_nombre')
                             ->asArray()
                             ->all();
@@ -945,7 +948,8 @@ class BasesatisfaccionController extends Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_usuario', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_nombre LIKE "%' . $search . '%"')
+                            ->where('usua_nombre LIKE "%":search"%"')
+                            ->addParams([':search'=>$search])
                             ->orderBy('usua_nombre')
                             ->asArray()
                             ->all();
@@ -976,7 +980,8 @@ class BasesatisfaccionController extends Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.dsusuario_red', 'text' => 'UPPER(name)'])
-                            ->where('name LIKE "%' . $search . '%"')
+                            ->where('name LIKE "%":search"%"')
+                            ->addParams([':search'=>$search])
                             ->orderBy('name')
                             ->asArray()
                             ->all();
@@ -1003,7 +1008,8 @@ class BasesatisfaccionController extends Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.identificacion', 'text' => 'UPPER(identificacion)'])
-                            ->where('identificacion LIKE "%' . $search . '%"')
+                            ->where('identificacion LIKE "%":search"%"')
+                            ->addParams([':search'=>$search])
                             ->orderBy('identificacion')
                             ->asArray()
                             ->all();
@@ -1060,13 +1066,13 @@ class BasesatisfaccionController extends Controller {
                 $nombrern = $model->rn;
                 $nombreindustria = $model->industria;
                 $nombreinstitucion = $model->institucion;
-                $paramsBusqueda = [':n.nombrern'=>$nombrern,':n.nombreindustria'=>$nombreindustria,':n.nombreinstitucion'=>$nombreinstitucion];
+                $paramsBusqueda = [':nombrern'=>$nombrern,':nombreindustria'=>$nombreindustria,':nombreinstitucion'=>$nombreinstitucion];
 
                 $validRn = \Yii::$app->db->createCommand("SELECT `pcrc`,`cliente`, `encu_diarias`, `encu_mes`, rango_encuestas, tramo1, tramo2, tramo3, tramo4, tramo5, tramo6, tramo7, tramo8, tramo9, tramo10, tramo11, tramo12, tramo13, tramo14, tramo15, tramo16, tramo17, tramo18, tramo19, tramo20, tramo21, tramo22, tramo23, tramo24
                 FROM `tbl_reglanegocio` AS R 
-                WHERE `rn` = ':n.nombrern'
-                AND `cod_industria` = ':n.nombreindustria'
-                AND `cod_institucion`= ':n.nombreinstitucion'
+                WHERE `rn` = ':nombrern'
+                AND `cod_industria` = ':nombreindustria'
+                AND `cod_institucion`= ':nombreinstitucion'
                 LIMIT 1;")->bindValues($paramsBusqueda)->queryAll();
                 if (count($validRn) <= 0) {
                     $msj = "Error guardando los datos: ";
@@ -1635,9 +1641,9 @@ class BasesatisfaccionController extends Controller {
                         }
 
                         //QUERY QUE ME RETORNA LOS DATOS
-                        $paramsBusqueda = [':c.connId'=>$connId,':t.table'=>$table];
+                        $paramsBusqueda = [':connId'=>$connId,':table'=>$table];
                         $query = "SELECT TOP 1 IdReLL FROM 
-                        ':t.table' WHERE Anotacion1 = ':c.connId'";
+                        ':table' WHERE Anotacion1 = ':connId'";
 
                         $result = mssql_query($query);
                         $idRelF = mssql_fetch_array($result);
@@ -1768,13 +1774,13 @@ class BasesatisfaccionController extends Controller {
       // aca voy German91# toca traer la hora de la llamada que se acaba de declinar para traer la llamada en el mismo rango horario.
 
 
-      $paramsBusqueda = [':a.ano'=>$model["ano"],':m.mes'=>$model["mes"],':m.dia'=>$model["dia"],':i.inicio'=> $inicio,':f.final'=> $final,':m.pcrc'=>$model['pcrc'],':w.where'=>$where];
+      $paramsBusqueda = [':ano'=>$model["ano"],':mes'=>$model["mes"],':dia'=>$model["dia"],':inicio'=> $inicio,':f.final'=> $final,':pcrc'=>$model['pcrc'],':where'=>$where];
       $validRn = \Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where ano = ':a.ano' 
       AND mes = ':m.mes' AND dia = ':m.dia' 
-      AND LPAD(hora,6,'0') >= :i.inicio 
-      AND LPAD(hora,6,'0') <= :f.final 
-      AND pcrc = ':m.pcrc' 
-      AND tipo_inbox = 'NORMAL' ':w.where' ORDER BY RAND() LIMIT 1;")->bindValues($paramsBusqueda)->queryAll();
+      AND LPAD(hora,6,'0') >= :inicio 
+      AND LPAD(hora,6,'0') <= :final 
+      AND pcrc = ':pcrc' 
+      AND tipo_inbox = 'NORMAL' ':where' ORDER BY RAND() LIMIT 1;")->bindValues($paramsBusqueda)->queryAll();
                 
                     if(count($validRn) == 0){
                             $msg = \Yii::t('app', 'No existe encuesta disponible para reemplazar');
@@ -2068,10 +2074,10 @@ class BasesatisfaccionController extends Controller {
                 $txtbasefuente = null;
                 if ($preview == 5) {
                     $txtpreview = $basesatisfaccion_id;
-                    $paramsBusqueda = [':t.txtpreview,'=>$txtpreview];
-                    $txtidbase = Yii::$app->db->createCommand("SELECT b.connid FROM tbl_base_satisfaccion b WHERE b.id = ':t.txtpreview'")->bindValues($paramsBusqueda)->queryScalar();
-                    $paramsBusqueda = [':t.txtidbase,'=>$txtidbase];
-                    $txtbasefuente = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,', ',d.fechareal) AS dsfuente FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.connid = ':t.txtidbase'")->bindValues($paramsBusqueda)->queryScalar();
+                    $paramsBusqueda = [':txtpreview,'=>$txtpreview];
+                    $txtidbase = Yii::$app->db->createCommand("SELECT b.connid FROM tbl_base_satisfaccion b WHERE b.id = ':txtpreview'")->bindValues($paramsBusqueda)->queryScalar();
+                    $paramsBusqueda = [':txtidbase,'=>$txtidbase];
+                    $txtbasefuente = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,', ',d.fechareal) AS dsfuente FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.connid = ':txtidbase'")->bindValues($paramsBusqueda)->queryScalar();
                 }
 
                 $modelBase = BaseSatisfaccion::findOne($basesatisfaccion_id);
@@ -2456,8 +2462,8 @@ class BasesatisfaccionController extends Controller {
                                 $varvalencia = "Buzón sin información";
                             }
     
-                            $paramsBusqueda = [':v.varConnids'=>$varConnids];
-                            $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN (':v.varConnids')")->queryScalar();
+                            $paramsBusqueda = [':varConnids'=>$varConnids];
+                            $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN (':varConnids')")->queryScalar();
     
                             if ($varverificaconnid == 0) { 
                                 Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
@@ -2663,11 +2669,11 @@ class BasesatisfaccionController extends Controller {
 
                     /* GUARDO SUBTIPIFICACIONES */
                     foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                        $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                        $paramsBusqueda = [':form_detalle_id'=>$form_detalle_id];
                         $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
                         INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
                         ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id'   
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':form_detalle_id'   
                         AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                         $command->execute();
                     }
@@ -3158,13 +3164,13 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     //NOMBRE PCRC
                     $nmPcrc = $pcrc['pcrc0']['name'];
 
-                    $paramsBusqueda = [':a.ano'=>$ano,':m.mes'=>$mes,':d.dia'=>$dia,':i.inihoratramo'=>$inihoratramo,':p.pcrc'=>$pcrc['pcrc'],':f.finhoratramo'=>$finhoratramo];
+                    $paramsBusqueda = [':ano'=>$ano,':mes'=>$mes,':dia'=>$dia,':inihoratramo'=>$inihoratramo,':pcrc'=>$pcrc['pcrc'],':finhoratramo'=>$finhoratramo];
                     $tot = \Yii::$app->db->createCommand("select * from tbl_base_satisfaccion where ano = ':a.ano'
-                     AND mes = ':m.mes' 
-                     AND dia = ':d.dia' 
-                     AND LPAD(hora,6,'0') >= ':i.inihoratramo' 
-                     AND pcrc = ':p.pcrc'
-                     AND LPAD(hora,6,'0') <= ':f.finhoratramo' 
+                     AND mes = ':mes' 
+                     AND dia = ':dia' 
+                     AND LPAD(hora,6,'0') >= ':inihoratramo' 
+                     AND pcrc = ':pcrc'
+                     AND LPAD(hora,6,'0') <= ':finhoratramo' 
                      AND tipo_inbox = 'ALEATORIO';")->bindValues($paramsBusqueda)->queryAll();
 
                     if(count($tot) >= $tramo || $tramo == 0){
@@ -3247,14 +3253,14 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                         $where2 = " ";
                                     }
 
-                                    $paramsBusqueda = [':a.ano'=>$ano,':m.mes'=>$mes,':d.dia'=>$dia,':i.inihoratramo'=>$inihoratramo,':p.pcrc'=>$pcrc['pcrc'],':f.finhoratramo'=>$finhoratramo,':w.where'=>$where];
-                                    $validRn = \Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where ano = ':a.ano' 
-                                    AND mes = ':m.mes' 
-                                    AND dia = ':d.dia' 
-                                    AND pcrc = ':p.pcrc' 
-                                    AND LPAD(hora,6,'0') >= ':i.inihoratramo'
-                                    AND LPAD(hora,6,'0') <= ':f.finhoratramo' 
-                                    AND tipo_inbox = 'NINGUNO' ':w.where' ORDER BY RAND()
+                                    $paramsBusqueda = [':ano'=>$ano,':mes'=>$mes,':dia'=>$dia,':inihoratramo'=>$inihoratramo,':pcrc'=>$pcrc['pcrc'],':finhoratramo'=>$finhoratramo,':where'=>$where];
+                                    $validRn = \Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where ano = ':ano' 
+                                    AND mes = ':mes' 
+                                    AND dia = ':dia' 
+                                    AND pcrc = ':pcrc' 
+                                    AND LPAD(hora,6,'0') >= ':inihoratramo'
+                                    AND LPAD(hora,6,'0') <= ':finhoratramo' 
+                                    AND tipo_inbox = 'NINGUNO' ':where' ORDER BY RAND()
                                     LIMIT 1;")->bindValues($paramsBusqueda)->queryAll();
 
                                     if (($tramo + $encuFaltantesDia) != $tramo AND !empty($validRn)){
@@ -3940,8 +3946,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                     $data = \app\models\Textos::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                            ->where('detexto LIKE "%' . $search . '%"')
+                            ->where('detexto LIKE "%":search"%"')
                             ->andWhere('id NOT IN (' . $ids_selec . ',11,12)')
+                            ->addParams([':search'=>$search])
                             ->orderBy('detexto')
                             ->asArray()
                             ->all();
@@ -4736,7 +4743,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     $data = \app\models\Equipos::find()
                             ->select(['id' => 'tbl_usuarios.usua_usuario', 'text' => 'UPPER(usua_nombre)'])
                             ->join('JOIN', 'tbl_usuarios', 'tbl_usuarios.usua_id = tbl_equipos.usua_id')
-                            ->where('usua_nombre LIKE "%' . $search . '%"')
+                            ->where('usua_nombre LIKE "%":search"%"')
+                            ->addParams([':search'=>$search])
                             ->groupBy('id')
                             ->orderBy('usua_nombre')
                             ->asArray()
@@ -4868,9 +4876,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 $sessiones = Yii::$app->user->identity->id;
 
-                $paramsBusqueda = [':s.sessione'=>$sessiones];
-                $varNombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = ':s.sessione'")->bindValues($paramsBusqueda)->queryScalar();
-                $varCorreo = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':s.sessione'")->bindValues($paramsBusqueda)->queryScalar();
+                $paramsBusqueda = [':sessione'=>$sessiones];
+                $varNombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = ':sessione'")->bindValues($paramsBusqueda)->queryScalar();
+                $varCorreo = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':sessione'")->bindValues($paramsBusqueda)->queryScalar();
 
             $html = "
             Correo enviado por: ".$varNombre." con correo: ".$varCorreo."
@@ -5054,9 +5062,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             public function actionPruebas() {
         $varAlertas = Yii::$app->request->post("alertas_cx");   
         
-        $paramsBusqueda = [':v.varAlertas'=>$varAlertas];
+        $paramsBusqueda = [':varAlertas'=>$varAlertas];
         
-        $model = Yii::$app->db->createCommand("delete from tbl_alertascx where id = ':v.varAlertas'")->bindValues($paramsBusqueda)->execute();
+        $model = Yii::$app->db->createCommand("delete from tbl_alertascx where id = ':varAlertas'")->bindValues($paramsBusqueda)->execute();
 
         if($model){
             die("1");
@@ -5200,22 +5208,22 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     }
                     /* GUARDO TIPIFICACIONES */
                     foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                        $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                        $paramsBusqueda = [':form_detalle_id'=>$form_detalle_id];
                         $command = \Yii::$app->db->createCommand("UPDATE tbl_tmpejecucionbloquedetalles_subtipificaciones a 
                         INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b 
                         ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id' 
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':form_detalle_id' 
                         AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                         $command->execute();
                     }
 
                     /* GUARDO SUBTIPIFICACIONES */
                     foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                        $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                        $paramsBusqueda = [':form_detalle_id'=>$form_detalle_id];
                         $command = \Yii::$app->db->createCommand("UPDATE tbl_tmpejecucionbloquedetalles_subtipificaciones a 
                         INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b 
                         ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id'
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':form_detalle_id'
                         AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                         $command->execute();
                     }
@@ -5298,16 +5306,16 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             }
 
             public function actionPrueba(){
-                $paramsBusqueda = [':v.varUsuarios'=>$varUsuarios];
-                $varIdUsu = Yii::$app->db->createCommand("select usua_id from tbl_correogrupal where nombre like ':v.varUsuarios'")->bindValues($paramsBusqueda)->queryAll();   
+                $paramsBusqueda = [':varUsuarios'=>$varUsuarios];
+                $varIdUsu = Yii::$app->db->createCommand("select usua_id from tbl_correogrupal where nombre like ':varUsuarios'")->bindValues($paramsBusqueda)->queryAll();   
 
         $varRta1 = null;
         $varcorreos = null;
         $varEmail = null;
         $varRta = null;
                 foreach ($varIdUsu as $key => $value) {
-                    $paramsBusqueda = [':v.varRta'=>$varRta];
-                    $varEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':v.varRta'")->bindValues($paramsBusqueda)->queryAll(); 
+                    $paramsBusqueda = [':varRta'=>$varRta];
+                    $varEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':varRta'")->bindValues($paramsBusqueda)->queryAll(); 
 
                     foreach ($varEmail as $key => $value) {
                         $varRta1[] = $value['usua_email'];
@@ -5324,8 +5332,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $varEmail = null;
 
                 if ($varIdUsu != null) {
-                    $paramsBusqueda = [':v.varIdUsu'=>$varIdUsu];
-                     $varEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':v.varIdUsu'")->bindValues($paramsBusqueda)->queryScalar();    
+                    $paramsBusqueda = [':varIdUsu'=>$varIdUsu];
+                     $varEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':varIdUsu'")->bindValues($paramsBusqueda)->queryScalar();    
                 }                                          
 
                 return $this->render('actualizarcorreos',[
@@ -5350,8 +5358,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 foreach ($arrayUsu as $key => $value) {
                     $txtIdUsu = $value["usua_id"];
-                    $paramsBusqueda = [':t.txtIdUsu'=>$txtIdUsu];
-                    (string)$txtRtaEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':t.txtIdUsu'")->bindValues($paramsBusqueda)->queryScalar(); 
+                    $paramsBusqueda = [':txtIdUsu'=>$txtIdUsu];
+                    (string)$txtRtaEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':txtIdUsu'")->bindValues($paramsBusqueda)->queryScalar(); 
 
                     if ($txtRtaEmail != null || $txtRtaEmail != "") {
                         $txtWord1 = strpos($txtRtaEmail, $varWord1);
@@ -5385,8 +5393,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $varUsuarios = Yii::$app->request->post("varusuarios");
                 (string)$varCorreos = Yii::$app->request->post("varcorreos");
 
-                $paramsBusqueda = [':v.varCorreos'=>$varCorreos,':v.varUsuarios'=>$varUsuarios];
-                $varResultados = Yii::$app->db->createCommand("update tbl_usuarios set usua_email = ':v.varCorreos' where usua_id = ':v.varUsuarios'")->bindValues($paramsBusqueda)->execute(); 
+                $paramsBusqueda = [':varCorreos'=>$varCorreos,':varUsuarios'=>$varUsuarios];
+                $varResultados = Yii::$app->db->createCommand("update tbl_usuarios set usua_email = ':varCorreos' where usua_id = ':varUsuarios'")->bindValues($paramsBusqueda)->execute(); 
 
                 die(json_encode($varResultados));
             }
@@ -5403,9 +5411,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 foreach ($arrayUsu as $key => $value) {
                     $txtIdUsu = $value["usua_id"];
-                    $paramsBusqueda = [':t.txtIdUsu'=>$txtIdUsu];
-                    (string)$txtRtaName = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = ':t.txtIdUsu'")->bindValues($paramsBusqueda)->queryScalar(); 
-                    (string)$txtRtaEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':t.txtIdUsu'")->bindValues($paramsBusqueda)->queryScalar(); 
+                    $paramsBusqueda = [':txtIdUsu'=>$txtIdUsu];
+                    (string)$txtRtaName = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = ':txtIdUsu'")->bindValues($paramsBusqueda)->queryScalar(); 
+                    (string)$txtRtaEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = ':txtIdUsu'")->bindValues($paramsBusqueda)->queryScalar(); 
 
                     (string)$varResultados[] = $txtRtaName." - ".$txtRtaEmail;
                  }
