@@ -6913,7 +6913,7 @@ public function actionTotalagente(){
         }
 
       }else{
-        echo "<option>Seleccionar variable</option>";
+        echo "<option>Seleccionar Asesor</option>";
       }
     }
 
