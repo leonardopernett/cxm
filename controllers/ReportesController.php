@@ -447,7 +447,7 @@ class ReportesController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('name LIKE "%" :search  "%"')
+                            ->where('name LIKE "%":search"%"')
                             ->orderBy('name')
                             ->asArray()
                             ->addParams([':search'=>$search])
@@ -515,7 +515,7 @@ class ReportesController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_nombre LIKE "% ":search"%"')
+                            ->where('usua_nombre LIKE "%":search"%"')
                             ->orderBy('usua_nombre')
                             ->addParams([':search'=>$search])
                             ->asArray()
@@ -524,7 +524,7 @@ class ReportesController extends \yii\web\Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_id IN (:id)')
+                            ->where('usua_id IN (":id")')
                             ->addParams([':id'=>$id])
                             ->asArray()
                             ->all();
@@ -631,8 +631,10 @@ class ReportesController extends \yii\web\Controller {
                         . 'INNER JOIN rel_grupos_usuarios rgu ON rgu.grupo_id = tgu.grupos_id '
                         . 'INNER JOIN tbl_permisos_grupos_arbols pga ON tgu.grupos_id = pga.grupousuario_id '
                         . ' INNER JOIN tbl_arbols a ON a.id = pga.arbol_id'
-                        . ' WHERE rgu.usuario_id =' . Yii::$app->user->identity->id . '  GROUP BY pga.arbol_id';
-                $queryGrupos = \Yii::$app->db->createCommand($query)->queryAll();
+                        . ' WHERE rgu.usuario_id = :usuario_id GROUP BY pga.arbol_id';
+                $queryGrupos = \Yii::$app->db->createCommand($query)
+                ->bindValue(':usuario_id', Yii::$app->user->identity->id)
+                ->queryAll();
                 foreach ($queryGrupos as $value) {
                     $idArbolesPermiso[] = $value['arbol_id'];
                 }
@@ -643,7 +645,7 @@ class ReportesController extends \yii\web\Controller {
                                 //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
                                 ->where("MONTH(fecha) = '" . date('m')
                                         . "' AND YEAR(fecha) = '" . date('Y') . "'")
-                                ->andWhere('arbol_id IN (:cadenaIdarboles)')
+                                ->andWhere('arbol_id IN (":cadenaIdarboles")')
                                 ->addParams([':cadenaIdarboles'=>$cadenaIdarboles])
                                 ->count();
                 // Top Declinacione ----------------------------------------------------
@@ -656,14 +658,14 @@ class ReportesController extends \yii\web\Controller {
                                      (SELECT COUNT(*) FROM tbl_declinaciones_usuarios duss
                                     JOIN  tbl_declinaciones dss ON dss.id = duss.declinacion_id
                                     WHERE MONTH(duss.fecha) = '" . date('m')
-                                    . "'  AND YEAR(duss.fecha) = '" . date('Y') . "' AND duss.arbol_id IN (:cadenaIdarboles))*100)"])
+                                    . "'  AND YEAR(duss.fecha) = '" . date('Y') . "' AND duss.arbol_id IN (':cadenaIdarboles'))*100)"])
                                 ->from("tbl_declinaciones_usuarios du")
                                 ->join('JOIN', 'tbl_declinaciones d', 'd.id = '
                                         . 'du.declinacion_id')
                                 //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  `du`.usua_id')
                                 ->where("MONTH(du.fecha) = '" . date('m')
                                         . "' AND YEAR(du.fecha) = '" . date('Y') . "'")
-                                ->andWhere('du.arbol_id IN (:cadenaIdarboles)')
+                                ->andWhere('du.arbol_id IN (":cadenaIdarboles")')
                                 ->addParams([':cadenaIdarboles'=>$cadenaIdarboles])
                                 ->groupBy('du.declinacion_id')
                                 ->orderBy('contar DESC')
@@ -681,13 +683,13 @@ class ReportesController extends \yii\web\Controller {
                                     (SELECT COUNT(*)
                                     FROM tbl_declinaciones_usuarios dus
                                     JOIN tbl_usuarios us ON us.usua_id =dus.usua_id
-                                    WHERE dus.arbol_id IN (:cadenaIdarboles)
+                                    WHERE dus.arbol_id IN (':cadenaIdarboles')
                                     ))*100"])
                                 ->from("tbl_declinaciones_usuarios du")
                                 ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                         . 'du.usua_id')
                                 //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
-                                ->where('du.arbol_id IN (:cadenaIdarboles)')
+                                ->where('du.arbol_id IN (":cadenaIdarboles")')
                                 ->addParams([':cadenaIdarboles'=>$cadenaIdarboles])
                                 ->groupBy('du.usua_id')
                                 ->orderBy('contar DESC')
@@ -715,13 +717,13 @@ class ReportesController extends \yii\web\Controller {
                 ->select(['d.nombre', 'd.id', 'contar' => 'COUNT(*)', 'prom' => "(COUNT(*)/
                                      (SELECT COUNT(*) FROM tbl_declinaciones_usuarios duss
                                     JOIN  tbl_declinaciones dss ON dss.id = duss.declinacion_id
-                                    WHERE duss.fecha BETWEEN ':dates[0] 00:00:01'  AND  
-                                    ' :dates[1] 23:59:59 ' AND duss.arbol_id IN (:cadenaIdarboles))*100)"])
+                                    WHERE duss.fecha BETWEEN ':dates0 00:00:01'  AND  
+                                    ' :dates1 23:59:59 ' AND duss.arbol_id IN (':cadenaIdarboles'))*100)"])
                 ->from("tbl_declinaciones_usuarios du")
                 ->join('JOIN', 'tbl_declinaciones d', 'd.id = '. 'du.declinacion_id')
-                ->where("du.fecha BETWEEN  ':dates[0] 00:00:01' AND  ':dates[1] 23:59:59'  ")
-                ->andWhere('du.arbol_id IN (:cadenaIdarboles)')
-                ->addParams([':dates[0]' => $dates[0], ':dates[1]' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
+                ->where("du.fecha BETWEEN  ':dates0 00:00:01' AND  ':dates1 23:59:59'  ")
+                ->andWhere('du.arbol_id IN (":cadenaIdarboles")')
+                ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
                 ->groupBy('du.declinacion_id')
                 ->orderBy('contar DESC')
                 ->limit(3)->all();
@@ -729,10 +731,10 @@ class ReportesController extends \yii\web\Controller {
                     //Numero Declinaciones del mes------------------------------------------
                     $numDeclinaciones = \app\models\DeclinacionesUsuarios::find()
                                     //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
-                                    ->where("fecha BETWEEN  ':dates[0] 00:00:01'
-                                             AND  ':dates[1] 23:59:59'")
-                                    ->andWhere('arbol_id IN (:cadenaIdarboles)')
-                                    ->addParams([':dates[0]' => $dates[0], ':dates[1]' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
+                                    ->where("fecha BETWEEN  ':dates0 00:00:01'
+                                             AND  ':dates1 23:59:59'")
+                                    ->andWhere('arbol_id IN (":cadenaIdarboles")')
+                                    ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
                                     ->count();
                     //----------------------------------------------------------------------
                     //Top Usuarios declinan ------------------------------------------------
@@ -748,18 +750,18 @@ class ReportesController extends \yii\web\Controller {
                                     (SELECT COUNT(*)
                                     FROM tbl_declinaciones_usuarios dus
                                     JOIN tbl_usuarios us ON us.usua_id =dus.usua_id
-                                    WHERE dus.arbol_id IN (:cadenaIdarboles)
-                                        AND dus.fecha BETWEEN ':dates[0] 00:00:01'
-                                       AND  ' :dates[1] 23:59:59'
+                                    WHERE dus.arbol_id IN (':cadenaIdarboles')
+                                        AND dus.fecha BETWEEN ':dates0 00:00:01'
+                                       AND  ' :dates1 23:59:59'
                                     ))*100"])
                                     ->from("tbl_declinaciones_usuarios du")
                                     ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                             . 'du.usua_id')
                                     //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
-                                    ->where('du.arbol_id IN (:cadenaIdarboles)')
-                                    ->andWhere("du.fecha BETWEEN ':dates[0] 00:00:01'
-                                            AND ':dates[1] 23:59:59' ")
-                                    ->addParams([':dates[0]' => $dates[0], ':dates[1]' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])        
+                                    ->where('du.arbol_id IN (":cadenaIdarboles")')
+                                    ->andWhere("du.fecha BETWEEN ':dates0 00:00:01'
+                                            AND ':dates1 23:59:59' ")
+                                    ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])        
                                     ->groupBy('du.usua_id')
                                     ->orderBy('contar DESC')
                                     ->limit(3)->all();
@@ -778,17 +780,20 @@ class ReportesController extends \yii\web\Controller {
                      * 14/03/2016->Modificacion para obtener porcentaje de declinaciones en top declinaciones
                      * se agrega subconsulta
                      */
+                    
+                    /* var_dump($cadenaIdarboles);
+                    die; */
                     $topDeclinaciones = \app\models\DeclinacionesUsuarios::find()->asArray()
                                     ->select(['d.nombre', 'd.id', 'contar' => 'COUNT(*)', 'prom' => "(COUNT(*)/
                                      (SELECT COUNT(*) FROM tbl_declinaciones_usuarios duss
                                     JOIN  tbl_declinaciones dss ON dss.id = duss.declinacion_id
-                                    WHERE duss.fecha BETWEEN ':dates[0] 00:00:01'  AND  
-                                    ' :dates[1] 23:59:59 ' AND duss.arbol_id IN (:cadenaIdarboles))*100)"])
+                                    WHERE duss.fecha BETWEEN  ':dates0 00:00:01' AND  
+                                    ' :dates1 23:59:59 ' AND duss.arbol_id IN (':cadenaIdarboles'))*100)"])
                 ->from("tbl_declinaciones_usuarios du")
                 ->join('JOIN', 'tbl_declinaciones d', 'd.id = '. 'du.declinacion_id')
-                ->where("du.fecha BETWEEN  ':dates[0] 00:00:01' AND  ':dates[1] 23:59:59'  ")
-                ->andWhere('du.arbol_id IN (:cadenaIdarboles)')
-                ->addParams([':dates[0]' => $dates[0], ':dates[1]' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
+                ->where("du.fecha BETWEEN  ':dates0 00:00:01' AND  ':dates1 23:59:59'  ")
+                ->andWhere('du.arbol_id IN (":cadenaIdarboles")')
+                ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
                 ->groupBy('du.declinacion_id')
                 ->orderBy('contar DESC')
                 ->limit(3)->all();
@@ -796,10 +801,10 @@ class ReportesController extends \yii\web\Controller {
                     //Numero Declinaciones del mes------------------------------------------
                     $numDeclinaciones = \app\models\DeclinacionesUsuarios::find()
                                     //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
-                                    ->where("fecha BETWEEN  ':dates[0] 00:00:01'
-                                    AND  ':dates[1] 23:59:59'")
-                           ->andWhere('arbol_id IN (:cadenaIdarboles)')
-                           ->addParams([':dates[0]' => $dates[0], ':dates[1]' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
+                                    ->where("fecha BETWEEN  ':dates0 00:00:01'
+                                    AND  ':dates1 23:59:59'")
+                           ->andWhere('arbol_id IN (":cadenaIdarboles")')
+                           ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
                            ->count();
                     //----------------------------------------------------------------------
                     //Top Usuarios declinan ------------------------------------------------
@@ -815,18 +820,18 @@ class ReportesController extends \yii\web\Controller {
                                     (SELECT COUNT(*)
                                     FROM tbl_declinaciones_usuarios dus
                                     JOIN tbl_usuarios us ON us.usua_id =dus.usua_id
-                                    WHERE dus.arbol_id IN (:cadenaIdarboles)
-                                        AND dus.fecha BETWEEN ':dates[0] 00:00:01'
-                                       AND  ' :dates[1] 23:59:59'
+                                    WHERE dus.arbol_id IN (':cadenaIdarboles')
+                                        AND dus.fecha BETWEEN ':dates0 00:00:01'
+                                       AND  ' :dates1 23:59:59'
                                     ))*100"])
                                     ->from("tbl_declinaciones_usuarios du")
                                     ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                             . 'du.usua_id')
                                     //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
-                                    ->where('du.arbol_id IN (:cadenaIdarboles)')
-                                    ->andWhere("du.fecha BETWEEN ':dates[0] 00:00:01'
-                                            AND ':dates[1] 23:59:59' ")
-                                    ->addParams([':dates[0]' => $dates[0], ':dates[1]' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])        
+                                    ->where('du.arbol_id IN (":cadenaIdarboles")')
+                                    ->andWhere("du.fecha BETWEEN ':dates0 00:00:01'
+                                            AND ':dates1 23:59:59' ")
+                                    ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])        
                                     ->groupBy('du.usua_id')
                                     ->orderBy('contar DESC')
                                     ->limit(3)->all();
@@ -1108,7 +1113,7 @@ class ReportesController extends \yii\web\Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Dimensiones::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(name)'])
-                            ->where('id IN (:id)')
+                            ->where('id IN (":id")')
                             ->addParams([':id'=>$id])
                             ->asArray()
                             ->all();
@@ -1143,7 +1148,7 @@ class ReportesController extends \yii\web\Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('tbl_evaluados.id IN (:id)')
+                            ->where('tbl_evaluados.id IN (":id")')
                             ->addParams([':id'=>$id])
                             ->asArray()
                             ->all();
@@ -1190,7 +1195,7 @@ class ReportesController extends \yii\web\Controller {
                                 "tbl_permisos_grupos_arbols.snver_grafica" => 1])
                             ->andWhere("rel_grupos_usuarios.grupo_id = tbl_permisos_grupos_arbols.grupousuario_id")
                             ->andWhere("tbl_tmpreportes_arbol.seleccion_arbol_id = tbl_tmpreportes_arbol.arbol_id")
-                            ->andWhere('tbl_tmpreportes_arbol.seleccion_arbol_id IN (:id)')
+                            ->andWhere('tbl_tmpreportes_arbol.seleccion_arbol_id IN (":id")')
                             ->addParams([':id'=>$id])
                             ->orderBy("tbl_tmpreportes_arbol.dsruta_arbol ASC")
                             ->asArray()
@@ -1225,7 +1230,7 @@ class ReportesController extends \yii\web\Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Roles::find()
                             ->select(['id' => 'tbl_roles.role_id', 'text' => 'UPPER(role_nombre)'])
-                            ->where('tbl_roles.role_id IN (:id)')
+                            ->where('tbl_roles.role_id IN (":id")')
                             ->addParams([':id'=>$id])
                             ->asArray()
                             ->all();
