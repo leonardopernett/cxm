@@ -218,8 +218,9 @@ use app\models\SpeechParametrizar;
                     }
                     public function actionCargadatocc(){ 
                         $txtIdcc = Yii::$app->request->post('idcentrocos');
-                        $paramsBusqueda = [':t.txtIdcc'=>$txtIdcc];
-                        $txtRta = Yii::$app->db->createCommand("Select ciudad, director_programa, gerente_cuenta FROM tbl_proceso_cliente_centrocosto WHERE cod_pcrc = ':t.txtIdcc'")->bindValues($paramsBusqueda)->queryAll();
+                        $txtRta = Yii::$app->db->createCommand("Select ciudad, director_programa, gerente_cuenta FROM tbl_proceso_cliente_centrocosto WHERE cod_pcrc =:txtIdcc")
+                        ->bindValue(':txtIdcc',$txtIdcc)
+                        ->queryAll();
                         die(json_encode($txtRta));
                     
                     }
@@ -344,7 +345,7 @@ use app\models\SpeechParametrizar;
                                         ->join('LEFT JOIN', 'tbl_momento_bit_uni', 'tbl_bitacora_universo.id_momento = tbl_momento_bit_uni.id_momento')
                                         ->join('LEFT JOIN', 'tbl_detalle_momento_bit_uni', 'tbl_bitacora_universo.id_detalle_momento = tbl_detalle_momento_bit_uni.id_detalle_momento')
                                         ->Where('tbl_bitacora_universo.id_bitacora_uni = :id_bitacora')
-                                        ->bindValue(':id_bitacora',$id_bitacora);
+                                        ->addParams([':id_bitacora'=>$id_bitacora]);
                            
                             $command = $txtQuery2->createCommand();
                             $dataProvider = $command->queryAll();
