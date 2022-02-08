@@ -286,10 +286,10 @@ class SiteController extends Controller {
                 a.name as arbol
                 FROM tbl_ejecucionformularios e
                 JOIN tbl_arbols a ON a.id = e.arbol_id
-                WHERE e.dimension_id = :dimension_id 
+                WHERE e.dimension_id = ':dimension_id' 
                     AND (e.created >= ':fechaInicio 00:00:00' 
                     AND e.created <= ':fechaFin 23:59:59')
-                    AND e.arbol_id = :arbol_id
+                    AND e.arbol_id = ':arbol_id'
                 GROUP BY DATE_FORMAT(e.created, '%Y%m%d')")
                     ->bindValue(':dimension_id',$dimension_id)
                     ->bindValue(':fechaInicio',$fechaInicio)
@@ -442,8 +442,10 @@ class SiteController extends Controller {
                 $id_caso = Yii::$app->request->get('id_caso');
                 $modelCaso = \app\models\SegundoCalificador::find()
                                 ->select("argumento, s_fecha")
-                                ->where(['id_caso' => $id_caso])
-                                ->orderBy("id_segundo_calificador ASC")->all();
+                                ->where(['id_caso' => ':id_caso'])
+                                ->orderBy("id_segundo_calificador ASC")
+                                ->addParams([':id_caso' => $id_caso])
+                                ->all();
                 $model = $this->findModel($scid);
                 $model->scenario = 'liderevaluado';
                 $arrayCadena = explode('<br>', $model->argumento);
@@ -514,9 +516,9 @@ class SiteController extends Controller {
                     ON g.grupos_id = r.grupo_id
                     INNER JOIN tbl_permisos_grupos_arbols pga 
                     ON pga.grupousuario_id = g.grupos_id 
-                    WHERE u.usua_id = :formulario->usua_id 
-                    AND pga.arbol_id = :formulario->usua_id")
-                    ->bindValue(':formulario->usua_id',$formulario->usua_id)
+                    WHERE u.usua_id = ':usua_id' 
+                    AND pga.arbol_id = ':usua_id'")
+                    ->bindValue(':usua_id',$formulario->usua_id)
                     ->queryAll();
                     $model = new \app\models\SegundoCalificador();
                     $model->id_ejecucion_formulario = $modelForm->id_ejecucion_formulario;
