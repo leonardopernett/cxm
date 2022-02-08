@@ -232,7 +232,7 @@ use PHPExcel_IOFactory;
                     ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                                     'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
                     ->where(['between','tbl_ejecucionformularios.created', ':fechainiC', ':fechafinC'])
-                    ->andwhere( " tbl_usuarios.usua_id in (:varlistausuarios)")
+                    ->andwhere( " tbl_usuarios.usua_id in (':varlistausuarios')")
                     ->addParams([':fechainiC' => $fechainiC])
                     ->addParams([':fechafinC' => $fechafinC])
                     ->addParams([':varlistausuarios' => $varlistausuarios])
