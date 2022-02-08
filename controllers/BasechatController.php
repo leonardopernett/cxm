@@ -289,11 +289,11 @@ use yii\base\Exception;
                     }
 
                     $varcompleteasesor = $sheet->getCell("EE".$row)->getValue();
-                    $paramsBusqueda = [':varcompleteasesor'=>$varcompleteasesor];
-                    $rest = Yii::$app->db->createCommand("select distinct dusuario_red from tbl_evaluados_tigo where anulado = 0 and usua_tigo = :varcompleteasesor")->bindValues($paramsBusqueda)->queryScalar();
+                    $paramsBusqueda = [':v.varcompleteasesor'=>$varcompleteasesor];
+                    $rest = Yii::$app->db->createCommand("select distinct dusuario_red from tbl_evaluados_tigo where anulado = 0 and usua_tigo = :v.varcompleteasesor")->bindValues($paramsBusqueda)->queryScalar();
                     $varbaseencuesta = $sheet->getCell("B".$row)->getValue();
                     $varfechab = date("Y-m-d H:i:s");
-                    $paramsBusqueda = [':varbaseencuesta' => $varbaseencuesta, ':varfechab' => $varfechab ];
+                    $paramsBusqueda = [':v.varbaseencuesta' => $varbaseencuesta, ':v.varfechab' => $varfechab ];
                     
 
                     Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
@@ -304,7 +304,7 @@ use yii\base\Exception;
                                         'created' => $varfechab,
                                         ])->execute();  
 
-                    $varbasesatisfaccionid = Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where chat_transfer = :varbaseencuesta and estado = 'Cerrado' and usado = 'SI' and tipo_inbox = 'NINGUNO' AND created = :varfechab")->bindValues($paramsBusqueda)->queryScalar();
+                    $varbasesatisfaccionid = Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where chat_transfer = :v.varbaseencuesta and estado = 'Cerrado' and usado = 'SI' and tipo_inbox = 'NINGUNO' AND created = :v.varfechab")->bindValues($paramsBusqueda)->queryScalar();
                     
 
                     Yii::$app->db->createCommand()->insert('tbl_basechat_tigob',[                                        
@@ -523,8 +523,8 @@ use yii\base\Exception;
                                $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                       ->where('id IN (:TmpFormsubi_calculo)')
-                                       ->addParams([':TmpFormsubi_calculo'=>$TmpForm->subi_calculo])
+                                       ->where('id IN (:TmpForm->subi_calculo)')
+                                       ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                        ->asArray()
                                        ->all();
                                foreach ($array_indices_TmpForm as $value) {
@@ -535,8 +535,8 @@ use yii\base\Exception;
                            if (isset($data->formulario->subi_calculo)) {
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                       ->where('id IN (:TmpFormsubi_calculo)')
-                                       ->addParams([':TmpFormsubi_calculo'=>$TmpForm->subi_calculo])
+                                       ->where('id IN (:TmpForm->subi_calculo)')
+                                       ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                        ->asArray()
                                        ->all();
                                foreach ($array_indices_TmpForm as $value) {
@@ -582,8 +582,8 @@ use yii\base\Exception;
                                    $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                                    $array_indices_TmpForm = \app\models\Textos::find()
                                            ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                           ->where('id IN (:TmpFormsubi_calculo)')
-                                           ->addParams([':TmpFormsubi_calculo'=>$TmpForm->subi_calculo])
+                                           ->where('id IN (:TmpForm->subi_calculo)')
+                                           ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                            ->asArray()
                                            ->all();
                                    foreach ($array_indices_TmpForm as $value) {
@@ -594,8 +594,8 @@ use yii\base\Exception;
                                if (isset($data->formulario->subi_calculo)) {
                                    $array_indices_TmpForm = \app\models\Textos::find()
                                            ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                           ->where('id IN (:TmpFormsubi_calculo)')
-                                           ->addParams([':TmpFormsubi_calculo'=>$TmpForm->subi_calculo])
+                                           ->where('id IN (:TmpForm->subi_calculo)')
+                                           ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                            ->asArray()
                                            ->all();
                                    foreach ($array_indices_TmpForm as $value) {
@@ -616,8 +616,8 @@ use yii\base\Exception;
                                        $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                                        $array_indices_TmpForm = \app\models\Textos::find()
                                                ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                               ->where('id IN (:TmpFormsubi_calculo)')
-                                               ->addParams([':TmpFormsubi_calculo'=>$TmpForm->subi_calculo])
+                                               ->where('id IN (:TmpForm->subi_calculo)')
+                                               ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                                ->asArray()
                                                ->all();
                                        foreach ($array_indices_TmpForm as $value) {
@@ -628,8 +628,8 @@ use yii\base\Exception;
                                    if (isset($data->formulario->subi_calculo)) {
                                        $array_indices_TmpForm = \app\models\Textos::find()
                                                ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                               ->where('id IN (:TmpFormsubi_calculo)')
-                                               ->addParams([':TmpFormsubi_calculo'=>$TmpForm->subi_calculo])
+                                               ->where('id IN (:TmpForm->subi_calculo)')
+                                               ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                                ->asArray()
                                                ->all();
                                        foreach ($array_indices_TmpForm as $value) {
@@ -653,8 +653,8 @@ use yii\base\Exception;
                                $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                       ->where('id IN (:TmpFormsubi_calculo)')
-                                       ->addParams([':TmpFormsubi_calculo'=>$TmpForm->subi_calculo])
+                                       ->where('id IN (:TmpForm->subi_calculo)')
+                                       ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                        ->asArray()
                                        ->all();
                                foreach ($array_indices_TmpForm as $value) {
@@ -665,8 +665,8 @@ use yii\base\Exception;
                            if (isset($data->formulario->subi_calculo)) {
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                       ->where('id IN (:TmpFormsubi_calculo)')
-                                       ->addParams([':TmpFormsubi_calculo'=>$TmpForm->subi_calculo])
+                                       ->where('id IN (:TmpForm->subi_calculo)')
+                                       ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
                                        ->asArray()
                                        ->all();
                                foreach ($array_indices_TmpForm as $value) {
@@ -970,11 +970,11 @@ use yii\base\Exception;
                     /* GUARDO SUBTIPIFICACIONES */
                     foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
 
-                        $paramsBusqueda = [':form_detalle_id'=>$form_detalle_id];
+                        $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
                         $command = \Yii::$app->db->createCommand("UPDATE tbl_tmpejecucionbloquedetalles_subtipificaciones a 
                         INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b 
                         ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = :form_detalle_id 
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = :f.form_detalle_id 
                         AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                         $command->execute();
                     }
