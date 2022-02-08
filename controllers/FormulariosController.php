@@ -572,12 +572,12 @@ class FormulariosController extends Controller {
                 ->queryScalar();
 		//DATOS GENERALES
 
-                $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = ':TmpForm->arbol_id'")
-                ->bindValue(':TmpForm->arbol_id',$TmpForm->arbol_id)
+                $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = :TmpFormarbol_id")
+                ->bindValue(':TmpFormarbol_id',$TmpForm->arbol_id)
                 ->queryScalar();
 
-                 $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = ':TmpForm->arbol_id'")
-                 ->bindValue(':TmpForm->arbol_id',$TmpForm->arbol_id)
+                 $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = :TmpFormarbol_id")
+                 ->bindValue(':TmpFormarbol_id',$TmpForm->arbol_id)
                  ->queryScalar();
 
                 $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = :varIdformu")
@@ -733,11 +733,11 @@ class FormulariosController extends Controller {
 
                 /* GUARDO SUBTIPIFICACIONES */
                 foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                    $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                    $paramsBusqueda = [':form_detalle_id'=>$form_detalle_id];
                         $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
                         INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
                         ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id'   
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':form_detalle_id'   
                         AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                         $command->execute();
                 }
@@ -941,11 +941,11 @@ class FormulariosController extends Controller {
 
                 /* GUARDO SUBTIPIFICACIONES */
                 foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                    $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                    $paramsBusqueda = [':form_detalle_id'=>$form_detalle_id];
                         $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
                         INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
                         ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id'   
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':form_detalle_id'   
                         AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                         $command->execute();
                 }
