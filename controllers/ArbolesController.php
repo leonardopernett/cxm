@@ -302,15 +302,13 @@ class ArbolesController extends Controller {
                 if ($model->load(Yii::$app->request->post())) {
                     
                     if (!empty($model->grupousuario_id)) {                        
-                        
+                                                
                         $grupoExist = \yii\helpers\ArrayHelper::map(
-                                \app\models\PermisosGruposArbols::find()
-                                ->where('arbol_id = :modelarbol_id 
-                                    AND grupousuario_id IN (:modelgrupousuario_id)')
-                                        ->bindValue(':modelarbol_id',$model->arbol_id)
-                                        ->bindValue(':modelgrupousuario_id',$model->grupousuario_id)
-                                        ->asArray()->all(),
-                                        'id', 'grupousuario_id'); 
+                            \app\models\PermisosGruposArbols::find()
+                            ->where('arbol_id =' . $model->arbol_id 
+                                    . ' AND grupousuario_id IN (' . $model->grupousuario_id 
+                                    . ')')->asArray()->all(),
+                                    'id', 'grupousuario_id'); 
                         
                         $grupos = explode(',', $model->grupousuario_id);                                                
                         if (count($grupos) > 0) {
