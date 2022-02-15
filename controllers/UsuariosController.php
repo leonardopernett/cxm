@@ -248,7 +248,7 @@ class UsuariosController extends Controller {
                     $query3 = $txtRegistros['Usuarios']['usua_usuario'];
 
                     if ($varUsu != $query3) {
-                        $query =  Yii::$app->db->createCommand("select count(*) from tbl_usuarios where usua_usuario = ':query3'")
+                        $query =  Yii::$app->db->createCommand("select count(*) from tbl_usuarios where usua_usuario = :query3")
                         ->bindValue(':query3', $query3)
                         ->queryScalar();
 
