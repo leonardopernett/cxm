@@ -108,6 +108,7 @@ use app\models\DistribucionAsesores;
               AND dc.id_dp_funciones IN (322,783,190,909,915,323,324)
                 AND dp.fecha_actual >= DATE_FORMAT(NOW() ,'%Y-%m-01')
                   AND de.tipo = 'ACTIVO'
+                    AND pc.id_dp_pcrc != 0
           GROUP BY dp.documento
         ")->queryAll();
 
