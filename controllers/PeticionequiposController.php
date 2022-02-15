@@ -39,42 +39,6 @@ use yii\db\Query;
 			];
 		}
 
-		public function actions() {
-            return [
-                'error' => [
-                  'class' => 'yii\web\ErrorAction',
-                ]
-            ];
-        }
-    
-        public function actionError() {
-    
-            //ERROR PRESENTADO
-            $exception = Yii::$app->errorHandler->exception;
-    
-            if ($exception !== null) {
-                //VARIABLES PARA LA VISTA ERROR
-                $code = $exception->statusCode;
-                $name = $exception->getName() . " (#$code)";
-                $message = $exception->getMessage();
-                //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
-                // PARA LOS ERRORES 400
-                $request = \Yii::$app->request->pathInfo;
-                if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
-                        400) {
-                    //GUARDO EN EL ERROR DE SATU
-                    $baseSat = new BasesatisfaccionController();
-                    $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
-                }
-                //RENDERIZO LA VISTA
-                return $this->render('error', [
-                            'name' => $name,
-                            'message' => $message,
-                            'exception' => $exception,
-                ]);
-            }
-        }
-
 
 		/**
 		*
@@ -96,17 +60,11 @@ use yii\db\Query;
 		public function actionUpdate($iddesvincular){
 			$txtIdDesvin = $iddesvincular;
 
-			$txtvalorador = Yii::$app->db->createCommand("select evaluados_id from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
-			->bindValue(':txtIdDesvin', $txtIdDesvin)
-			->queryScalar(); 
+			$txtvalorador = Yii::$app->db->createCommand("select evaluados_id from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
 
-			$txtCoordinador = Yii::$app->db->createCommand("select responsable from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
-			->bindValue(':txtIdDesvin', $txtIdDesvin)
-			->queryScalar(); 
+			$txtCoordinador = Yii::$app->db->createCommand("select responsable from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
 
-			$txtCorreo = Yii::$app->db->createCommand("select correo from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
-			->bindValue(':txtIdDesvin', $txtIdDesvin)
-			->queryScalar(); 
+			$txtCorreo = Yii::$app->db->createCommand("select correo from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
 
 			return $this->render('_formupdate',[
 					'txtIdDesvin' => $txtIdDesvin,
@@ -118,17 +76,11 @@ use yii\db\Query;
 		public function actionUpdate2($iddesvincular){
 			$txtIdDesvin = $iddesvincular;
 
-			$txtvalorador = Yii::$app->db->createCommand("select evaluados_id from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
-			->bindValue(':txtIdDesvin', $txtIdDesvin)
-			->queryScalar(); 
+			$txtvalorador = Yii::$app->db->createCommand("select evaluados_id from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
 
-			$txtCoordinador = Yii::$app->db->createCommand("select responsable from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
-			->bindValue(':txtIdDesvin', $txtIdDesvin)
-			->queryScalar(); 
+			$txtCoordinador = Yii::$app->db->createCommand("select responsable from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
 
-			$txtCorreo = Yii::$app->db->createCommand("select correo from tbl_control_desvincular where iddesvincular = ':txtIdDesvin'")
-			->bindValue(':txtIdDesvin', $txtIdDesvin)
-			->queryScalar(); 
+			$txtCorreo = Yii::$app->db->createCommand("select correo from tbl_control_desvincular where iddesvincular = $txtIdDesvin")->queryScalar(); 
 
 			return $this->render('_formupdateneg',[
 					'txtIdDesvin' => $txtIdDesvin,
@@ -146,10 +98,7 @@ use yii\db\Query;
 			$varResultados = null;
 			$varResultados1 = 1;
 			
-			$data = Yii::$app->db->createCommand("select * from tbl_control_procesos where evaluados_id = ':txtidEvalua' and  responsable = ':txtidCoordi'")
-			->bindValue(':txtidEvalua', $txtidEvalua)
-			->bindValue(':txtidCoordi', $txtidCoordi)
-			->queryAll(); 
+			$data = Yii::$app->db->createCommand("select * from tbl_control_procesos where evaluados_id = $txtidEvalua and  responsable = $txtidCoordi")->queryAll(); 
 
 
 			foreach ($data as $key => $value) {
@@ -166,9 +115,7 @@ use yii\db\Query;
 					                                'anulado' => 1,
 					                            ],'iddesvincular ='.$txtDesvin.'')->execute(); 
 
-			$data2 = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = ':txtidEvalua' and  anulado = 0")
-			->bindValue(':txtidEvalua', $txtidEvalua)
-			->queryAll();
+			$data2 = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = $txtidEvalua and  anulado = 0")->queryAll();
 
 			foreach ($data2 as $key => $value) {
 				$varId2 = $value['id'];
@@ -186,7 +133,6 @@ use yii\db\Query;
                         		->setTo($txtEmail)
                         		->setFrom(Yii::$app->params['email_satu_from'])
                         		->setSubject("Notificación, desvinculación de equipos")
-                        		//->attach("")
                         		->setHtmlBody($message)
                         		->send();
 
@@ -194,14 +140,15 @@ use yii\db\Query;
 		}
 
 		public function actionNodesvincular(){
+			(int)$txtidCoordi = Yii::$app->request->post("txtNamesC");
+			(int)$txtidEvalua = Yii::$app->request->post("txtNamceT");
 			(int)$txtDesvin = Yii::$app->request->post("txtDesvin");
 			$txtiddesvin = (int)$txtDesvin;
 			$txtEmail = Yii::$app->request->post("txtEmail");
+			$varResultados = null;
 			$varResultados1 = 1;
 
-			$txtmotivo = Yii::$app->db->createCommand("select motivo from tbl_control_desvincular where iddesvincular = ':txtiddesvin'")
-			->bindValue(':txtiddesvin', $txtiddesvin)
-			->queryScalar(); 
+			$txtmotivo = Yii::$app->db->createCommand("select motivo from tbl_control_desvincular where iddesvincular = $txtiddesvin")->queryScalar(); 
             
 			Yii::$app->db->createCommand()->update('tbl_control_desvincular',[
 					                                'anulado' => 1,
@@ -215,8 +162,7 @@ use yii\db\Query;
          		Yii::$app->mailer->compose()
                         		->setTo($txtEmail)
                         		->setFrom(Yii::$app->params['email_satu_from'])
-                        		->setSubject("Notificación, rechazada la desvinculación de equipos")
-                        		//->attach("")
+                        		->setSubject("Notificación, rechazada la desvinculación de equipos")                        		
                         		->setHtmlBody($message)
                         		->send();
 
