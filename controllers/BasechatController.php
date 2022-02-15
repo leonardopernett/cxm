@@ -492,8 +492,8 @@ use yii\base\Exception;
                     $equipoevaluado = \app\models\EquiposEvaluados::find()->select('eq.evaluado_id, eq.equipo_id')
                             ->from('tbl_equipos_evaluados eq')
                             ->join('INNER JOIN', 'tbl_evaluados e', 'e.id = eq.evaluado_id')
-                            ->where('e.dsusuario_red = :evaluado->dsusuario_red')
-                            ->addParams([':evaluado->dsusuario_red'=>$evaluado->dsusuario_red])
+                            ->where('e.dsusuario_red = :evaluadodsusuario_red')
+                            ->addParams([':evaluadodsusuario_red'=>$evaluado->dsusuario_red])
                             ->one();
                 }
                 
