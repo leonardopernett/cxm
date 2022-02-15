@@ -3,7 +3,6 @@
 namespace app\Controllers;
 
 use Yii;
-use Yii\base\Exception;
 use yii\helpers\Json;
 use yii\data\ArrayDataProvider;
 
@@ -61,42 +60,6 @@ class ReportesController extends \yii\web\Controller {
                         ],
                     ],
                 ];
-            }
-
-            public function actions() {
-                return [
-                    'error' => [
-                      'class' => 'yii\web\ErrorAction',
-                    ]
-                ];
-            }
-        
-            public function actionError() {
-        
-                //ERROR PRESENTADO
-                $exception = Yii::$app->errorHandler->exception;
-        
-                if ($exception !== null) {
-                    //VARIABLES PARA LA VISTA ERROR
-                    $code = $exception->statusCode;
-                    $name = $exception->getName() . " (#$code)";
-                    $message = $exception->getMessage();
-                    //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
-                    // PARA LOS ERRORES 400
-                    $request = \Yii::$app->request->pathInfo;
-                    if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
-                            400) {
-                        //GUARDO EN EL ERROR DE SATU
-                        $baseSat = new BasesatisfaccionController();
-                        $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
-                    }
-                    //RENDERIZO LA VISTA
-                    return $this->render('error', [
-                                'name' => $name,
-                                'message' => $message,
-                                'exception' => $exception,
-                    ]);
-                }
             }
 
             public function actionExtractarformulario() {
@@ -447,18 +410,16 @@ class ReportesController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('name LIKE "%":search"%"')
+                            ->where('name LIKE "%' . $search . '%"')
                             ->orderBy('name')
                             ->asArray()
-                            ->addParams([':search'=>$search])
                             ->all();
                     $out['results'] = array_values($data);
                 } elseif (!empty($id)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('tbl_evaluados.id = :id' )
+                            ->where('tbl_evaluados.id = ' . $id)
                             ->asArray()
-                            ->addParams([':id'=>$id])
                             ->all();
                     $out['results'] = array_values($data);
                 } else {
@@ -481,17 +442,15 @@ class ReportesController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Equipos::find()
                             ->select(['id' => 'tbl_equipos.id', 'text' => 'UPPER(name)'])
-                            ->where('name LIKE "%":search"%"')
+                            ->where('name LIKE "%' . $search . '%"')
                             ->orderBy('name')
                             ->asArray()
-                            ->addParams([':search'=>$search])
                             ->all();
                     $out['results'] = array_values($data);
                 } elseif (!empty($id)) {
                     $data = \app\models\Equipos::find()
                             ->select(['id' => 'tbl_equipos.id', 'text' => 'UPPER(name)'])
-                            ->where('tbl_equipos.id = :id')
-                            ->addParams([':id'=>$id])
+                            ->where('tbl_equipos.id = ' . $id)
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -515,17 +474,15 @@ class ReportesController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_nombre LIKE "%":search"%"')
+                            ->where('usua_nombre LIKE "%' . $search . '%"')
                             ->orderBy('usua_nombre')
-                            ->addParams([':search'=>$search])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
                 } elseif (!empty($id)) {
                     $data = \app\models\Usuarios::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                            ->where('usua_id IN (":id")')
-                            ->addParams([':id'=>$id])
+                            ->where('usua_id IN (' . $id . ')')
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -550,10 +507,9 @@ class ReportesController extends \yii\web\Controller {
                     $data = \app\models\Equipos::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
                             ->join('JOIN', 'tbl_usuarios', 'tbl_usuarios.usua_id = tbl_equipos.usua_id')
-                            ->where('usua_nombre LIKE "%":search"%"')
+                            ->where('usua_nombre LIKE "%' . $search . '%"')
                             ->groupBy('id')
                             ->orderBy('usua_nombre')
-                            ->addParams([':search'=>$search])
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -561,8 +517,7 @@ class ReportesController extends \yii\web\Controller {
                     $data = \app\models\Equipos::find()
                             ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
                             ->join('JOIN', 'tbl_usuarios', 'tbl_usuarios.usua_id = tbl_equipos.usua_id')
-                            ->where('tbl_usuarios.usua_id = :id')
-                            ->addParams([':id'=>$id])
+                            ->where('tbl_usuarios.usua_id = ' . $id)
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -590,7 +545,7 @@ class ReportesController extends \yii\web\Controller {
                 $out = [];
 
                 if (isset($_POST['depdrop_parents'])) {
-                    $parents = Yii::$app->request->post('depdrop_parents');
+                    $parents = $_POST['depdrop_parents'];
                     if ($parents != null && $parents[0] != "") {
                         $id = $parents[0];
                         $out = \app\models\Tmpreportes::getPreguntasByArbol($id);
@@ -631,10 +586,8 @@ class ReportesController extends \yii\web\Controller {
                         . 'INNER JOIN rel_grupos_usuarios rgu ON rgu.grupo_id = tgu.grupos_id '
                         . 'INNER JOIN tbl_permisos_grupos_arbols pga ON tgu.grupos_id = pga.grupousuario_id '
                         . ' INNER JOIN tbl_arbols a ON a.id = pga.arbol_id'
-                        . ' WHERE rgu.usuario_id = :usuario_id GROUP BY pga.arbol_id';
-                $queryGrupos = \Yii::$app->db->createCommand($query)
-                ->bindValue(':usuario_id', Yii::$app->user->identity->id)
-                ->queryAll();
+                        . ' WHERE rgu.usuario_id =' . Yii::$app->user->identity->id . '  GROUP BY pga.arbol_id';
+                $queryGrupos = \Yii::$app->db->createCommand($query)->queryAll();
                 foreach ($queryGrupos as $value) {
                     $idArbolesPermiso[] = $value['arbol_id'];
                 }
@@ -645,9 +598,7 @@ class ReportesController extends \yii\web\Controller {
                                 //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
                                 ->where("MONTH(fecha) = '" . date('m')
                                         . "' AND YEAR(fecha) = '" . date('Y') . "'")
-                                ->andWhere('arbol_id IN (":cadenaIdarboles")')
-                                ->addParams([':cadenaIdarboles'=>$cadenaIdarboles])
-                                ->count();
+                                ->andWhere('arbol_id IN (' . $cadenaIdarboles . ')')->count();
                 // Top Declinacione ----------------------------------------------------
                 /*
                  * 14/03/2016->Modificacion para obtener porcentaje de declinaciones en top declinaciones
@@ -658,15 +609,14 @@ class ReportesController extends \yii\web\Controller {
                                      (SELECT COUNT(*) FROM tbl_declinaciones_usuarios duss
                                     JOIN  tbl_declinaciones dss ON dss.id = duss.declinacion_id
                                     WHERE MONTH(duss.fecha) = '" . date('m')
-                                    . "'  AND YEAR(duss.fecha) = '" . date('Y') . "' AND duss.arbol_id IN (':cadenaIdarboles'))*100)"])
+                                    . "'  AND YEAR(duss.fecha) = '" . date('Y') . "' AND duss.arbol_id IN (" . $cadenaIdarboles . "  ))*100)"])
                                 ->from("tbl_declinaciones_usuarios du")
                                 ->join('JOIN', 'tbl_declinaciones d', 'd.id = '
                                         . 'du.declinacion_id')
                                 //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  `du`.usua_id')
                                 ->where("MONTH(du.fecha) = '" . date('m')
                                         . "' AND YEAR(du.fecha) = '" . date('Y') . "'")
-                                ->andWhere('du.arbol_id IN (":cadenaIdarboles")')
-                                ->addParams([':cadenaIdarboles'=>$cadenaIdarboles])
+                                ->andWhere('du.arbol_id IN (' . $cadenaIdarboles . ')')
                                 ->groupBy('du.declinacion_id')
                                 ->orderBy('contar DESC')
                                 ->limit(3)->all();
@@ -683,14 +633,13 @@ class ReportesController extends \yii\web\Controller {
                                     (SELECT COUNT(*)
                                     FROM tbl_declinaciones_usuarios dus
                                     JOIN tbl_usuarios us ON us.usua_id =dus.usua_id
-                                    WHERE dus.arbol_id IN (':cadenaIdarboles')
+                                    WHERE dus.arbol_id IN (" . $cadenaIdarboles . ")
                                     ))*100"])
                                 ->from("tbl_declinaciones_usuarios du")
                                 ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                         . 'du.usua_id')
                                 //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
-                                ->where('du.arbol_id IN (":cadenaIdarboles")')
-                                ->addParams([':cadenaIdarboles'=>$cadenaIdarboles])
+                                ->where('du.arbol_id IN (' . $cadenaIdarboles . ')')
                                 ->groupBy('du.usua_id')
                                 ->orderBy('contar DESC')
                                 ->limit(3)->all();
@@ -708,34 +657,34 @@ class ReportesController extends \yii\web\Controller {
                     $dates = explode(' - ', $model->fecha);
                     $model->startDate = $dates[0].' 00:00:01';
                     $model->endDate = $dates[1].' 23:59:59';
-            // Top Declinacione ----------------------------------------------------
-            /*
+                    // Top Declinacione ----------------------------------------------------
+                    /*
                      * 14/03/2016->Modificacion para obtener porcentaje de declinaciones en top declinaciones
                      * se agrega subconsulta
                      */
-            $topDeclinaciones = \app\models\DeclinacionesUsuarios::find()->asArray()
-                ->select(['d.nombre', 'd.id', 'contar' => 'COUNT(*)', 'prom' => "(COUNT(*)/
+                    $topDeclinaciones = \app\models\DeclinacionesUsuarios::find()->asArray()
+                                    ->select(['d.nombre', 'd.id', 'contar' => 'COUNT(*)', 'prom' => "(COUNT(*)/
                                      (SELECT COUNT(*) FROM tbl_declinaciones_usuarios duss
                                     JOIN  tbl_declinaciones dss ON dss.id = duss.declinacion_id
-                                    WHERE duss.fecha BETWEEN ':dates0 00:00:01'  AND  
-                                    ' :dates1 23:59:59 ' AND duss.arbol_id IN (':cadenaIdarboles'))*100)"])
-                ->from("tbl_declinaciones_usuarios du")
-                ->join('JOIN', 'tbl_declinaciones d', 'd.id = '. 'du.declinacion_id')
-                ->where("du.fecha BETWEEN  ':dates0 00:00:01' AND  ':dates1 23:59:59'  ")
-                ->andWhere('du.arbol_id IN (":cadenaIdarboles")')
-                ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
-                ->groupBy('du.declinacion_id')
-                ->orderBy('contar DESC')
-                ->limit(3)->all();
+                                    WHERE duss.fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                        . "'  AND  '" . $dates[1].' 23:59:59' . "' AND duss.arbol_id IN (" . $cadenaIdarboles . "  ))*100)"])
+                                    ->from("tbl_declinaciones_usuarios du")
+                                    ->join('JOIN', 'tbl_declinaciones d', 'd.id = '
+                                            . 'du.declinacion_id')
+                                    //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  `du`.usua_id')
+                                    ->where("du.fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                            . "' AND '" . $dates[1].' 23:59:59' . "'")
+                                    ->andWhere('du.arbol_id IN (' . $cadenaIdarboles . ')')
+                                    ->groupBy('du.declinacion_id')
+                                    ->orderBy('contar DESC')
+                                    ->limit(3)->all();
                     //ESTADISTICAS 
                     //Numero Declinaciones del mes------------------------------------------
                     $numDeclinaciones = \app\models\DeclinacionesUsuarios::find()
                                     //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
-                                    ->where("fecha BETWEEN  ':dates0 00:00:01'
-                                             AND  ':dates1 23:59:59'")
-                                    ->andWhere('arbol_id IN (":cadenaIdarboles")')
-                                    ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
-                                    ->count();
+                                    ->where("fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                            . "' AND '" .$dates[1].' 23:59:59' . "'")
+                                    ->andWhere('arbol_id IN (' . $cadenaIdarboles . ')')->count();
                     //----------------------------------------------------------------------
                     //Top Usuarios declinan ------------------------------------------------
                     /*
@@ -750,18 +699,17 @@ class ReportesController extends \yii\web\Controller {
                                     (SELECT COUNT(*)
                                     FROM tbl_declinaciones_usuarios dus
                                     JOIN tbl_usuarios us ON us.usua_id =dus.usua_id
-                                    WHERE dus.arbol_id IN (':cadenaIdarboles')
-                                        AND dus.fecha BETWEEN ':dates0 00:00:01'
-                                       AND  ' :dates1 23:59:59'
+                                    WHERE dus.arbol_id IN (" . $cadenaIdarboles . ")
+                                        AND dus.fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                        . "' AND  '" . $dates[1].' 23:59:59'. " '
                                     ))*100"])
                                     ->from("tbl_declinaciones_usuarios du")
                                     ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                             . 'du.usua_id')
                                     //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
-                                    ->where('du.arbol_id IN (":cadenaIdarboles")')
-                                    ->andWhere("du.fecha BETWEEN ':dates0 00:00:01'
-                                            AND ':dates1 23:59:59' ")
-                                    ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])        
+                                    ->where('du.arbol_id IN (' . $cadenaIdarboles . ')')
+                                    ->andWhere("du.fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                            . "' AND '" . $dates[1].' 23:59:59' . "'")
                                     ->groupBy('du.usua_id')
                                     ->orderBy('contar DESC')
                                     ->limit(3)->all();
@@ -780,32 +728,29 @@ class ReportesController extends \yii\web\Controller {
                      * 14/03/2016->Modificacion para obtener porcentaje de declinaciones en top declinaciones
                      * se agrega subconsulta
                      */
-                    
-                    /* var_dump($cadenaIdarboles);
-                    die; */
                     $topDeclinaciones = \app\models\DeclinacionesUsuarios::find()->asArray()
                                     ->select(['d.nombre', 'd.id', 'contar' => 'COUNT(*)', 'prom' => "(COUNT(*)/
                                      (SELECT COUNT(*) FROM tbl_declinaciones_usuarios duss
                                     JOIN  tbl_declinaciones dss ON dss.id = duss.declinacion_id
-                                    WHERE duss.fecha BETWEEN  ':dates0 00:00:01' AND  
-                                    ' :dates1 23:59:59 ' AND duss.arbol_id IN (':cadenaIdarboles'))*100)"])
-                ->from("tbl_declinaciones_usuarios du")
-                ->join('JOIN', 'tbl_declinaciones d', 'd.id = '. 'du.declinacion_id')
-                ->where("du.fecha BETWEEN  ':dates0 00:00:01' AND  ':dates1 23:59:59'  ")
-                ->andWhere('du.arbol_id IN (":cadenaIdarboles")')
-                ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
-                ->groupBy('du.declinacion_id')
-                ->orderBy('contar DESC')
-                ->limit(3)->all();
+                                    WHERE duss.fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                        . "'  AND  '" . $dates[1].' 23:59:59' . "' AND duss.arbol_id IN (" . $cadenaIdarboles . "  ))*100)"])
+                                    ->from("tbl_declinaciones_usuarios du")
+                                    ->join('JOIN', 'tbl_declinaciones d', 'd.id = '
+                                            . 'du.declinacion_id')
+                                    //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  `du`.usua_id')
+                                    ->where("du.fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                            . "' AND '" . $dates[1].' 23:59:59'. "'")
+                                    ->andWhere('du.arbol_id IN (' . $cadenaIdarboles . ')')
+                                    ->groupBy('du.declinacion_id')
+                                    ->orderBy('contar DESC')
+                                    ->limit(3)->all();
                     //ESTADISTICAS 
                     //Numero Declinaciones del mes------------------------------------------
                     $numDeclinaciones = \app\models\DeclinacionesUsuarios::find()
                                     //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
-                                    ->where("fecha BETWEEN  ':dates0 00:00:01'
-                                    AND  ':dates1 23:59:59'")
-                           ->andWhere('arbol_id IN (":cadenaIdarboles")')
-                           ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])
-                           ->count();
+                                    ->where("fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                            . "' AND '" . $dates[1].' 23:59:59' . "'")
+                                    ->andWhere('arbol_id IN (' . $cadenaIdarboles . ')')->count();
                     //----------------------------------------------------------------------
                     //Top Usuarios declinan ------------------------------------------------
                     /*
@@ -820,18 +765,17 @@ class ReportesController extends \yii\web\Controller {
                                     (SELECT COUNT(*)
                                     FROM tbl_declinaciones_usuarios dus
                                     JOIN tbl_usuarios us ON us.usua_id =dus.usua_id
-                                    WHERE dus.arbol_id IN (':cadenaIdarboles')
-                                        AND dus.fecha BETWEEN ':dates0 00:00:01'
-                                       AND  ' :dates1 23:59:59'
+                                    WHERE dus.arbol_id IN (" . $cadenaIdarboles . ")
+                                        AND dus.fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                        . "' AND  '" . $dates[1].' 23:59:59' . " '
                                     ))*100"])
                                     ->from("tbl_declinaciones_usuarios du")
                                     ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                             . 'du.usua_id')
                                     //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
-                                    ->where('du.arbol_id IN (":cadenaIdarboles")')
-                                    ->andWhere("du.fecha BETWEEN ':dates0 00:00:01'
-                                            AND ':dates1 23:59:59' ")
-                                    ->addParams([':dates0' => $dates[0], ':dates1' => $dates[1], ':cadenaIdarboles' => $cadenaIdarboles])        
+                                    ->where('du.arbol_id IN (' . $cadenaIdarboles . ')')
+                                    ->andWhere("du.fecha BETWEEN '" . $dates[0].' 00:00:01'
+                                            . "' AND '" . $dates[1].' 23:59:59' . "'")
                                     ->groupBy('du.usua_id')
                                     ->orderBy('contar DESC')
                                     ->limit(3)->all();
@@ -986,7 +930,7 @@ class ReportesController extends \yii\web\Controller {
                 $model = new \app\models\Ejecucionformularios();
                 $modelEvaluado = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
                 $id_evaluado = (isset($modelEvaluado->id)) ? $modelEvaluado->id : '';
-                /* Llama al SP sp_llenar_tmpreportes. */
+                
                 $model->scenario = 'historico';
                 $dataProvider = [];
                 $showGrid = false;
@@ -1000,6 +944,7 @@ class ReportesController extends \yii\web\Controller {
                         $dates = explode(' - ', $model->created);
                         $model->startDate = $dates[0] . " 00:00:00";
                         $model->endDate = $dates[1] . " 23:59:59";
+                        $dataProvider = $model->getReportformulariosamigo(true);
                         $showGrid = true;
                     }
                     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -1064,7 +1009,7 @@ class ReportesController extends \yii\web\Controller {
                 $model = new \app\models\Ejecucionformularios();
                 $modelEvaluado = base64_decode($evaluado_usuared);
                 $id_evaluado = $modelEvaluado;
-                /* Llama al SP sp_llenar_tmpreportes. */
+
                 $model->scenario = 'historico';
                 $dataProvider = [];
                 $showGrid = false;
@@ -1104,8 +1049,7 @@ class ReportesController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Dimensiones::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(name)'])
-                            ->where('name LIKE "%":search"%"')
-                            ->addParams([':search'=>$search])
+                            ->where('name LIKE "%' . $search . '%"')
                             ->orderBy('name')
                             ->asArray()
                             ->all();
@@ -1113,8 +1057,7 @@ class ReportesController extends \yii\web\Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Dimensiones::find()
                             ->select(['id' => 'id', 'text' => 'UPPER(name)'])
-                            ->where('id IN (":id")')
-                            ->addParams([':id'=>$id])
+                            ->where('id IN (' . $id . ')')
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -1139,8 +1082,7 @@ class ReportesController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('name LIKE "%":search"%"')
-                            ->addParams([':search'=>$search])
+                            ->where('name LIKE "%' . $search . '%"')
                             ->orderBy('name')
                             ->asArray()
                             ->all();
@@ -1148,8 +1090,7 @@ class ReportesController extends \yii\web\Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Evaluados::find()
                             ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
-                            ->where('tbl_evaluados.id IN (":id")')
-                            ->addParams([':id'=>$id])
+                            ->where('tbl_evaluados.id IN (' . $id . ')')
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
@@ -1178,8 +1119,7 @@ class ReportesController extends \yii\web\Controller {
                                 "tbl_permisos_grupos_arbols.snver_grafica" => 1])
                             ->andWhere("rel_grupos_usuarios.grupo_id = tbl_permisos_grupos_arbols.grupousuario_id")
                             ->andWhere("tbl_tmpreportes_arbol.seleccion_arbol_id = tbl_tmpreportes_arbol.arbol_id")
-                            ->andWhere('tbl_tmpreportes_arbol.dsruta_arbol LIKE "%":search"%" ')
-                            ->addParams([':search'=>$search])
+                            ->andWhere('tbl_tmpreportes_arbol.dsruta_arbol LIKE "%' . $search . '%" ')
                             ->orderBy("tbl_tmpreportes_arbol.dsruta_arbol ASC")
                             ->asArray()
                             ->all();
@@ -1195,8 +1135,7 @@ class ReportesController extends \yii\web\Controller {
                                 "tbl_permisos_grupos_arbols.snver_grafica" => 1])
                             ->andWhere("rel_grupos_usuarios.grupo_id = tbl_permisos_grupos_arbols.grupousuario_id")
                             ->andWhere("tbl_tmpreportes_arbol.seleccion_arbol_id = tbl_tmpreportes_arbol.arbol_id")
-                            ->andWhere('tbl_tmpreportes_arbol.seleccion_arbol_id IN (":id")')
-                            ->addParams([':id'=>$id])
+                            ->andWhere('tbl_tmpreportes_arbol.seleccion_arbol_id IN (' . $id . ')')
                             ->orderBy("tbl_tmpreportes_arbol.dsruta_arbol ASC")
                             ->asArray()
                             ->all();
@@ -1221,8 +1160,7 @@ class ReportesController extends \yii\web\Controller {
                 if (!is_null($search)) {
                     $data = \app\models\Roles::find()
                             ->select(['id' => 'tbl_roles.role_id', 'text' => 'UPPER(role_nombre)'])
-                            ->where('role_nombre LIKE "%":search"%"')
-                            ->addParams([':search'=>$search])
+                            ->where('role_nombre LIKE "%' . $search . '%"')
                             ->orderBy('role_nombre')
                             ->asArray()
                             ->all();
@@ -1230,8 +1168,7 @@ class ReportesController extends \yii\web\Controller {
                 } elseif (!empty($id)) {
                     $data = \app\models\Roles::find()
                             ->select(['id' => 'tbl_roles.role_id', 'text' => 'UPPER(role_nombre)'])
-                            ->where('tbl_roles.role_id IN (":id")')
-                            ->addParams([':id'=>$id])
+                            ->where('tbl_roles.role_id IN (' . $id . ')')
                             ->asArray()
                             ->all();
                     $out['results'] = array_values($data);
