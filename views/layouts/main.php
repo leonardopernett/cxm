@@ -586,16 +586,7 @@ AppAsset::register($this);
                                                     'url' => ['/peticionequipos/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Monitoreo de Categorizaci&oacute;n'),
-                                                    'url' => ['/categorizacion/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                                ],
-                                                // [
-                                                //    'label' => Yii::t('app', '&nbsp;&nbsp;Buzones Kaliope'),
-                                                //    'url' => ['/buzoneskaliope/index'],
-                                                //    'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                                // ],
+                                               
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Procesamiento Entto'),
                                                     'url' => ['/idageneral/index'],
