@@ -9,7 +9,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\helpers\Html;
-use yii\base\Exception;
 
 /**
  * ArbolesController implements the CRUD actions for Arboles model.
@@ -41,39 +40,13 @@ class ArbolesController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function() {
+                            //return Yii::$app->user->identity->isAdminProcesos();
 			    return Yii::$app->user->identity->isEdEqipoValorado();
                         },
                     ],
                 ],
             ],
         ];
-    }
-
-    public function actions() {
-        return [
-            'error' => [
-              'class' => 'yii\web\ErrorAction',
-            ]
-        ];
-    }
-
-    public function actionError() {
-
-        //ERROR PRESENTADO
-        $exception = Yii::$app->errorHandler->exception;
-
-        if ($exception !== null) {
-            //VARIABLES PARA LA VISTA ERROR
-            $code = $exception->statusCode;
-            $name = $exception->getName() . " (#$code)";
-            $message = $exception->getMessage();
-            //RENDERIZO LA VISTA
-            return $this->render('error', [
-                        'name' => $name,
-                        'message' => $message,
-                        'exception' => $exception,
-            ]);
-        }
     }
 
     /**
@@ -302,13 +275,13 @@ class ArbolesController extends Controller {
                 if ($model->load(Yii::$app->request->post())) {
                     
                     if (!empty($model->grupousuario_id)) {                        
-                                                
+                        
                         $grupoExist = \yii\helpers\ArrayHelper::map(
-                            \app\models\PermisosGruposArbols::find()
-                            ->where('arbol_id =' . $model->arbol_id 
-                                    . ' AND grupousuario_id IN (' . $model->grupousuario_id 
-                                    . ')')->asArray()->all(),
-                                    'id', 'grupousuario_id'); 
+                                \app\models\PermisosGruposArbols::find()
+                                ->where('arbol_id =' . $model->arbol_id 
+                                        . ' AND grupousuario_id IN (' . $model->grupousuario_id 
+                                        . ')')->asArray()->all(),
+                                        'id', 'grupousuario_id'); 
                         
                         $grupos = explode(',', $model->grupousuario_id);                                                
                         if (count($grupos) > 0) {
@@ -365,8 +338,7 @@ class ArbolesController extends Controller {
             
             $rolExist = \yii\helpers\ArrayHelper::map(
                                 \app\models\PermisosGruposArbols::find()
-                                ->where('arbol_id =:arbolId')
-                                ->addParams([':arbolId'=>$arbolId])
+                                ->where('arbol_id =' . $arbolId)
                                 ->asArray()
                                 ->all(),
                                         'id', 'grupousuario_id');
@@ -375,8 +347,8 @@ class ArbolesController extends Controller {
             $notin = ($strRol != '') ? 'AND grupos_id NOT IN ('.$strRol.')' : '';
             $data = \app\models\Gruposusuarios::find()
                     ->select(['id' => 'grupos_id', 'text' => 'UPPER(grupo_descripcion)'])                    
-                    ->where(' grupo_descripcion LIKE "%":search"%" ' . ':notin')         
-                    ->addParams([':search'=>$search,':notin'=>$notin])
+                    ->where(' grupo_descripcion LIKE "%' . $search 
+                            . '%" '. $notin)         
                     ->orderBy('grupo_descripcion')
                     ->asArray()
                     ->all();
@@ -483,8 +455,7 @@ class ArbolesController extends Controller {
         if (!is_null($search)) {
             $data = \app\models\Equipos::find()
                     ->select(['id', 'text' => 'UPPER(name)'])
-                    ->where('name LIKE "%":search"%"')
-                    ->addParams([':search'=>$search])
+                    ->where('name LIKE "%' . $search . '%"')
                     ->orderBy('name')
                     ->asArray()
                     ->all();
@@ -494,8 +465,7 @@ class ArbolesController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Equipos::find()
                         ->select(['id', 'text' => 'UPPER(name)'])
-                        ->where('id IN (:id)')
-                        ->addParams([':id'=>$id])
+                        ->where('id IN (' . $id . ')')
                         ->orderBy('name')
                         ->asArray()
                         ->all();
@@ -524,8 +494,7 @@ class ArbolesController extends Controller {
         if (!is_null($search)) {
             $data = \app\models\Usuarios::find()
                     ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                    ->where('usua_nombre LIKE "%":search"%"')
-                    ->addParams([':search'=>$search])
+                    ->where('usua_nombre LIKE "%' . $search . '%"')
                     ->orderBy('usua_nombre')
                     ->asArray()
                     ->all();
@@ -535,8 +504,7 @@ class ArbolesController extends Controller {
             if (count($ids) > 0) {
                 $data = \app\models\Usuarios::find()
                         ->select(['id' => 'tbl_usuarios.usua_id', 'text' => 'UPPER(usua_nombre)'])
-                        ->where('usua_id IN (:id)')
-                        ->addParams([':id'=>$id])
+                        ->where('usua_id IN (' . $id . ')')
                         ->asArray()
                         ->all();
                 $out['results'] = array_values($data);
