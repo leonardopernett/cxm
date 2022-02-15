@@ -3827,7 +3827,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $redct = ($aleatorio == '1') ? 'inboxaleatorio' : 'index';
                 return $this->redirect([$redct]);
             }
-            
+
             /**
              * Funcion para buscar Buzones
              * 
@@ -3835,7 +3835,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
              * @return boolean
              */
             public function actionBuscarllamadasbuzones($aleatorio) {
-                $arregloFiltroB = Yii::$app->request->post('BaseSatisfaccionSearch');
+                $arregloFiltro = Yii::$app->request->post('BaseSatisfaccionSearch');
                 
                 if ($arregloFiltro['fecha'] != '') {
                     $dates = explode(' - ', $arregloFiltro['fecha']);
