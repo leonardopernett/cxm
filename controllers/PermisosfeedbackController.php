@@ -48,42 +48,6 @@ use app\models\Permisosfeedback;
         ],
       ];
     }
-
-    public function actions() {
-      return [
-          'error' => [
-            'class' => 'yii\web\ErrorAction',
-          ]
-      ];
-  }
-
-  public function actionError() {
-
-      //ERROR PRESENTADO
-      $exception = Yii::$app->errorHandler->exception;
-
-      if ($exception !== null) {
-          //VARIABLES PARA LA VISTA ERROR
-          $code = $exception->statusCode;
-          $name = $exception->getName() . " (#$code)";
-          $message = $exception->getMessage();
-          //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
-          // PARA LOS ERRORES 400
-          $request = \Yii::$app->request->pathInfo;
-          if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
-                  400) {
-              //GUARDO EN EL ERROR DE SATU
-              $baseSat = new BasesatisfaccionController();
-              $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
-          }
-          //RENDERIZO LA VISTA
-          return $this->render('error', [
-                      'name' => $name,
-                      'message' => $message,
-                      'exception' => $exception,
-          ]);
-      }
-  }
     
 
     public function actionIndex(){ 
@@ -111,15 +75,11 @@ use app\models\Permisosfeedback;
     public function actionGenerarregistro(){
       $varusuario = Yii::$app->request->get('txtusuarios');
       $txtvalida = null;
-      $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = ':varusuario'")
-      ->bindValue(':varusuario', $varusuario)
-      ->queryScalar();
+      $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = '$varusuario'")->queryScalar();
       $txtrta = 0;
 
       if ($txtidusuario != "") {
-        $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = ':txtidusuario'")
-        ->bindValue(':txtidusuario', $txtidusuario)
-        ->queryScalar();
+        $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = $txtidusuario")->queryScalar();
 
         if ($txtvalida != 0) {
           $txtrta = 1;
@@ -142,18 +102,25 @@ use app\models\Permisosfeedback;
     public function actionValidarregistro(){
       $varusuario = Yii::$app->request->get('txtusuarios');
       $txtvalida = null;
-      $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = ':varusuario'")
-      ->bindValue(':varusuario', $varusuario)
-      ->queryScalar();
+      $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = '$varusuario'")->queryScalar();
+      $txtrta = 0;
 
       if ($txtidusuario != "") {
-        $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = ':txtidusuario'")
-        ->bindValue(':txtidusuario', $txtidusuario)
-        ->queryScalar();
+        $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = $txtidusuario")->queryScalar();
+
+        if ($txtvalida != 0) {
+          $txtrta = 1;
+        }else{
+          $txtrta = 2;
+        }       
+
+      }else{
+        $txtrta = 2;
       }
 
       die(json_encode($txtvalida));
     }
+
   }
 
 ?>
