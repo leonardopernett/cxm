@@ -4288,43 +4288,22 @@ public function actionCantidadentto(){
             }else{
                 $txtarrayasesores = $varasesor;
             }
+                        
+            $txttxtvarcantllamadasb = $dataProvider->getTotalCount();
 
-            if ($varidloginid == "1") {
-              if ($varlider == "" && $varasesor == "") {
-                $txtvisualcallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($varcategoriass) group by callId ")->queryAll();
-
-                 $txttxtvarcantllamadasb = count($txtvisualcallid);
-              }else{
-                $txtvisualcallid = Yii::$app->db->createCommand("select callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($varcategoriass) and login_id in ('$txtarrayasesores') group by callId ")->queryAll();
-
-                 $txttxtvarcantllamadasb = count($txtvisualcallid);
-              }               
-              
-              
-            }else{
-              $varlistcallid = Yii::$app->db->createCommand("select callId from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2') and idcategoria in ($varcategoriass) group by callId")->queryAll();
-              $txtarraylistcallid = array();
-              foreach ($varlistcallid as $key => $value) {
-                  array_push($txtarraylistcallid, $value['callId']);
-              }
-              $arraycallids = implode(", ", $txtarraylistcallid);
-              
-              if ($varlider == "" && $varasesor == "") {
-                $txttxtvarcantllamadasb = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($paramscalls) and callId not in ($arraycallids)")->queryScalar();
-              }else{
-                $txttxtvarcantllamadasb = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$params1') and fechallamada between '$params3' and '$params4' and extension in ('$params2')  and idcategoria in ($paramscalls) and callId not in ($arraycallids) and login_id in ('$txtarrayasesores')")->queryScalar();
-              }
-
-            }
-            
-            
           }else{
             $params1 = $txtvarprograma;
             $params2 = $txtvarextension;
             $params3 = $txtvarfechasinicio;
-            $params4 = $txtvarfechasfin;                       
+            $params4 = $txtvarfechasfin;  
+            $params5 = $txtvarcodigopcrc;
+            $params6 = $varAelatorio;                     
 
-            $dataProvider = $model->buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls);
+            $dataProvider = $model->buscarsllamadasmodel($params1,$params2,$params3,$params4,$paramscalls,$params5,$params6);
+
+            if ($params6 == "1") {
+              $txttxtvarcantllamadasb = $dataProvider->getTotalCount();
+            }
 
             $varcategoriass = 0;
             $varidloginid = 0;
