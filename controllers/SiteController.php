@@ -42,9 +42,9 @@ class SiteController extends Controller {
 
     public function actions() {
         return [
-            'error' => [
+            /* 'error' => [
               'class' => 'yii\web\ErrorAction',
-            ],
+              ], */
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
@@ -90,7 +90,6 @@ class SiteController extends Controller {
     }
 
     public function actionLogin() {
-        
         $this->layout = "login";
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -107,15 +106,8 @@ class SiteController extends Controller {
     }
 
     public function actionLogout() {
-        \Yii::$app->db->createCommand()->insert('tbl_usuarioslog', [
-            'uslg_usua_id' => Yii::$app->user->identity->id,
-            'uslg_usuario' => Yii::$app->user->identity->username,
-            'uslg_fechahora' => date('Y-m-d h:i:s'),
-            'uslg_ip' => Yii::$app->getRequest()->getUserIP(),
-            'uslg_accion' => 'Desconexion',
-            'uslg_estado' => 'Exitoso'
-        ])->execute();
         Yii::$app->user->logout();
+
         return $this->goHome();
     }
 
@@ -135,6 +127,7 @@ class SiteController extends Controller {
             if (!empty($filtrosForm)) {
                 $dataFiltos = json_decode($filtrosForm->parametros);
                 $filtros->fecha = $fecha = date('Y-m-01') . ' - ' . date('Y-m-d');
+                //$filtros->fecha = $fecha = $dataFiltos->fecha;
                 $filtros->dimension = $dataFiltos->dimension;
                 $filtros->metrica = $dataFiltos->metrica;
                 $arbIds = $dataFiltos->arbol_ids;
@@ -155,19 +148,19 @@ class SiteController extends Controller {
             }
         } else {
             if (isset($_POST["arbol_ids"]) && count($_POST["arbol_ids"]) > 0) {
-                $filtros->fecha = $fecha = Yii::$app->request->post('selMesDesde');
-                $filtros->dimension = Yii::$app->request->post("selDimension");
-                $filtros->metrica = Yii::$app->request->post("selMetrica");
+                $filtros->fecha = $fecha = $_POST['selMesDesde'];
+                $filtros->dimension = $_POST["selDimension"];
+                $filtros->metrica = $_POST["selMetrica"];
                 $fecha = explode(' - ', $fecha);
                 $fechaInicio = $fecha[0];
                 $fechaFin = $fecha[1];
 
                 //Guardar filtros --------------------------------------------------                    
                 $filtrosDatos = new \stdClass();
-                $filtrosDatos->fecha = Yii::$app->request->post("selMesDesde");
-                $filtrosDatos->dimension = Yii::$app->request->post("selDimension");
-                $filtrosDatos->metrica = Yii::$app->request->post("selMetrica");
-                $filtrosDatos->arbol_ids = Yii::$app->request->post("arbol_ids");
+                $filtrosDatos->fecha = $_POST["selMesDesde"];
+                $filtrosDatos->dimension = $_POST["selDimension"];
+                $filtrosDatos->metrica = $_POST["selMetrica"];
+                $filtrosDatos->arbol_ids = $_POST["arbol_ids"];
                 $arbIds = $filtrosDatos->arbol_ids;
 
                 $filtrosForm = \app\models\FiltrosFormularios::findOne(['vista' => $controlador . '/' . $vista, 'usua_id' => Yii::$app->user->identity->id]);
@@ -181,15 +174,15 @@ class SiteController extends Controller {
                 $filtrosForm->save();
 
                 $data->graph = $this->actionGetGraph(
-                        Yii::$app->request->post("arbol_ids"), 
-                        Yii::$app->request->post("selDimension"), 
-                        Yii::$app->request->post("selMetrica"), 
-                        $fechaInicio, 
-                        $fechaFin
+                        $_POST["arbol_ids"]
+                        , $_POST["selDimension"]
+                        , $_POST["selMetrica"]
+                        , $fechaInicio
+                        , $fechaFin
                 );
             } else {
-                $filtros->dimension = Yii::$app->request->post("selDimension");
-                $filtros->metrica = Yii::$app->request->post("selMetrica");
+                $filtros->dimension = $_POST["selDimension"];
+                $filtros->metrica = $_POST["selMetrica"];
                 $msg = \Yii::t('app', 'Seleccione un arbol');
                 Yii::$app->session->setFlash('danger', $msg);
             }
@@ -211,6 +204,7 @@ class SiteController extends Controller {
 
     public function actionGetgraph($arrIds, $dimension_id, $metrica, $fechaInicio, $fechaFin) {
 
+        $showGraf = (count($arrIds) > 0) ? true : false;
 
         //Tomamos el numero de dias --------------------------------------------
         $step = '+1 day';
@@ -279,23 +273,18 @@ class SiteController extends Controller {
                 $tempData = $tempDataCant = $dates;
                 $name = '';
                 //Calculamos el procentaje -------------------------------------
-               
-                $resultData = \Yii::$app->db->createCommand("SELECT DATE_FORMAT(e.created, '%d') as fecha, 
-                ROUND((avg(e.$colMetrica)*100), 2) promedio,                    
-                COUNT($colMetrica) cantidad,                    
-                a.name as arbol
-                FROM tbl_ejecucionformularios e
-                JOIN tbl_arbols a ON a.id = e.arbol_id
-                WHERE e.dimension_id = ':dimension_id' 
-                    AND (e.created >= ':fechaInicio 00:00:00' 
-                    AND e.created <= ':fechaFin 23:59:59')
-                    AND e.arbol_id = ':arbol_id'
-                GROUP BY DATE_FORMAT(e.created, '%Y%m%d')")
-                    ->bindValue(':dimension_id',$dimension_id)
-                    ->bindValue(':fechaInicio',$fechaInicio)
-                    ->bindValue(':fechaFin',$fechaFin)
-                    ->bindValue(':arbol_id',$arbol_id)
-                ->queryAll();
+                $sql = "SELECT DATE_FORMAT(e.created, '%d') as fecha, 
+                    ROUND((avg(e.$colMetrica)*100), 2) promedio,                    
+                    COUNT($colMetrica) cantidad,                    
+                    a.name as arbol
+                    FROM tbl_ejecucionformularios e
+                    JOIN tbl_arbols a ON a.id = e.arbol_id
+                    WHERE e.dimension_id = $dimension_id 
+                        AND (e.created >= '$fechaInicio 00:00:00' 
+                        AND e.created <= '$fechaFin 23:59:59')
+                        AND e.arbol_id = $arbol_id
+                    GROUP BY DATE_FORMAT(e.created, '%Y%m%d')";
+                $resultData = \Yii::$app->db->createCommand($sql)->queryAll();
 
                 if (count($resultData) > 0) {
                     foreach ($resultData as $value) {
@@ -327,9 +316,9 @@ class SiteController extends Controller {
     public function getRecursivearbolscopia($tabla, $id_field, $show_data, $link_field, $parent, $prefix, $arraArboles) {
         /* Armar query */
         if ($parent == 0) {
-            $sql = "select * from  tbl_arbols  where arbol_id is null ";
+            $sql = 'select * from ' . $tabla . ' where ' . $link_field . ' is null';
         } else {
-            $sql = "select * from tbl_arbols  where arbol_id =  :parent ";
+            $sql = 'select * from ' . $tabla . ' where ' . $link_field . '=' . $parent;
         }
         $rs = Yii::$app->db->createCommand($sql)->queryAll();
         $out = '<ol id="arbol_ids">';
@@ -351,9 +340,9 @@ class SiteController extends Controller {
     public function getRecursiveArbByRol($tabla, $id_field, $show_data, $link_field, $parent, $prefix, $arraArboles, $arrArbRol) {
         /* Armar query */
         if ($parent == 0) {
-            $sql = "select * from  tbl_arbols  where arbol_id is null ";
+            $sql = 'select * from ' . $tabla . ' where ' . $link_field . ' is null';
         } else {
-            $sql = "select * from tbl_arbols  where arbol_id =  :parent ";
+            $sql = 'select * from ' . $tabla . ' where ' . $link_field . '=' . $parent;
         }
         $rs = Yii::$app->db->createCommand($sql)->queryAll();
         $out = '<ol id="arbol_ids">';
@@ -431,6 +420,7 @@ class SiteController extends Controller {
                 $model->s_fecha = date('Y-m-d H:i:s');
                 $model->estado_sc = $datos['estado_sc'];
                 $model->argumento = "<b>" . Yii::$app->user->identity->fullName . '</b>: ' . $datos['argumentoLider'];
+                //$model->argumento = $datos['argumentoLider'];
                 $model->id_caso = $id_caso;
                 $model->save();
                 $modelEdit->gestionado = "SI";
@@ -442,10 +432,8 @@ class SiteController extends Controller {
                 $id_caso = Yii::$app->request->get('id_caso');
                 $modelCaso = \app\models\SegundoCalificador::find()
                                 ->select("argumento, s_fecha")
-                                ->where(['id_caso' => ':id_caso'])
-                                ->orderBy("id_segundo_calificador ASC")
-                                ->addParams([':id_caso' => $id_caso])
-                                ->all();
+                                ->where(['id_caso' => $id_caso])
+                                ->orderBy("id_segundo_calificador ASC")->all();
                 $model = $this->findModel($scid);
                 $model->scenario = 'liderevaluado';
                 $arrayCadena = explode('<br>', $model->argumento);
@@ -495,31 +483,29 @@ class SiteController extends Controller {
                         $model->id_responsable = $formulario->usua_id_lider;
                         $model->argumento = "<b>" . $evaluado->name . '</b>: ' . $datos['argumentoAsesor'];
                     }
+                    //$model->argumento = $datos['argumentoAsesor'];
                     $model->s_fecha = date('Y-m-d H:i:s');
                     //ID DE CASO, UN NUMERO UNICO E IRREPETIBLE PUEDE SER LA FECHA
                     $model->id_caso = date('YmdHis');
+                    //$model->argumento = $evaluado->dsusuario_red . ' => ' . $model->argumento;
                     $model->save();
                     if($esLider == '1'){
                         $this->llamarwsLiderAmigo($model, false);
                         return $this->redirect(['reportes/historicoformularios']);
                     }
+                    //$this->llamarwsLiderAmigo($model, true);
                     return ($historico == 0) ? ($this->redirect(['reportes/historicoformulariosamigo',
                                 "evaluado_usuared" => base64_encode($evaluado->dsusuario_red)])) : true;
                 } else {
                     $modelForm = \app\models\SegundoCalificador::find()->where(['id_segundo_calificador' => Yii::$app->request->post('scid')])->one();
                     $formulario = \app\models\Ejecucionformularios::find()->where(['id' => $modelForm->id_ejecucion_formulario])->one();
                     $evaluado = \app\models\Evaluados::find()->where(['id' => $formulario->evaluado_id])->one();
-                   
-                    $liderEvaluador = \Yii::$app->db->createCommand("SELECT u.usua_id,u.usua_usuario,r.grupo_id,g.usua_id_responsable 
-                    AS resp FROM  tbl_usuarios u INNER JOIN rel_grupos_usuarios r 
-                    ON u.usua_id = r.usuario_id INNER JOIN tbl_grupos_usuarios g 
-                    ON g.grupos_id = r.grupo_id
-                    INNER JOIN tbl_permisos_grupos_arbols pga 
-                    ON pga.grupousuario_id = g.grupos_id 
-                    WHERE u.usua_id = ':usua_id' 
-                    AND pga.arbol_id = ':usua_id'")
-                    ->bindValue(':usua_id',$formulario->usua_id)
-                    ->queryAll();
+                    $sql = 'SELECT u.usua_id,u.usua_usuario,r.grupo_id,g.usua_id_responsable AS resp FROM  tbl_usuarios u '
+                            . 'INNER JOIN rel_grupos_usuarios r ON u.usua_id = r.usuario_id '
+                            . 'INNER JOIN tbl_grupos_usuarios g ON g.grupos_id = r.grupo_id'
+                            . ' INNER JOIN tbl_permisos_grupos_arbols pga ON pga.grupousuario_id = g.grupos_id'
+                            . ' WHERE u.usua_id = ' . $formulario->usua_id . ' AND pga.arbol_id = ' . $formulario->arbol_id;
+                    $liderEvaluador = \Yii::$app->db->createCommand($sql)->queryAll();
                     $model = new \app\models\SegundoCalificador();
                     $model->id_ejecucion_formulario = $modelForm->id_ejecucion_formulario;
                     $model->id_evaluador = $formulario->usua_id;
@@ -531,9 +517,11 @@ class SiteController extends Controller {
                     $model->estado_sc = $datos['estado_sc'];
                     $model->b_segundo_envio = 1;
                     $model->b_editar = 0;
+                    //var_dump($model->argumento);exit;
                     if (count($liderEvaluador) > 0) {
                         $model->id_responsable = $liderEvaluador[0]['resp'];
                         $model->save();
+                        //$this->llamarwsLiderAmigo($model, true);
                     } else {
                         $msg = \Yii::t('app', 'No se encuentra el lider del evaluador asociado');
                         Yii::$app->session->setFlash('danger', $msg);
@@ -641,6 +629,7 @@ class SiteController extends Controller {
 
         $modelLider = \app\models\Usuarios::findOne(["usua_id" => $notificacion->id_responsable]);
         $modelEvaluado = \app\models\Evaluados::findOne(["id" => $notificacion->id_solicitante]);
+        //$ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
         $params = [];
         $params['titulo'] = ($bandera_envio) ?
                 'Te han remitido una solicitud de segundo calificador' :
