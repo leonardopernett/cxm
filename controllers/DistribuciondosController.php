@@ -52,42 +52,6 @@ use app\models\DistribucionAsesores;
         ];
     } 
 
-    public function actions() {
-      return [
-          'error' => [
-            'class' => 'yii\web\ErrorAction',
-          ]
-      ];
-  }
-
-  public function actionError() {
-
-      //ERROR PRESENTADO
-      $exception = Yii::$app->errorHandler->exception;
-
-      if ($exception !== null) {
-          //VARIABLES PARA LA VISTA ERROR
-          $code = $exception->statusCode;
-          $name = $exception->getName() . " (#$code)";
-          $message = $exception->getMessage();
-          //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
-          // PARA LOS ERRORES 400
-          $request = \Yii::$app->request->pathInfo;
-          if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
-                  400) {
-              //GUARDO EN EL ERROR DE SATU
-              $baseSat = new BasesatisfaccionController();
-              $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
-          }
-          //RENDERIZO LA VISTA
-          return $this->render('error', [
-                      'name' => $name,
-                      'message' => $message,
-                      'exception' => $exception,
-          ]);
-      }
-  }
-
     public function actionIndex(){
       $varUltimaFecha = null;
       $varCantAsesores = null;
@@ -124,6 +88,7 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesadistribucion(){
+      // var_dump("Primer paso, aqui actualiza tabala temporal de jarvis");
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
@@ -143,8 +108,6 @@ use app\models\DistribucionAsesores;
               AND dc.id_dp_funciones IN (322,783,190,909,915,323,324)
                 AND dp.fecha_actual >= DATE_FORMAT(NOW() ,'%Y-%m-01')
                   AND de.tipo = 'ACTIVO'
-                	  AND dp.cod_pcrc != 0
-                  	  AND de.tipo = 'ACTIVO'
           GROUP BY dp.documento
         ")->queryAll();
 
@@ -167,8 +130,6 @@ use app\models\DistribucionAsesores;
         $this->Guardarcantidades();
 
         return $this->redirect('procesaasesores');
-      }else{
-        #code
       }
       
 
@@ -178,6 +139,7 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesaasesores(){
+      // var_dump("Segundo paso, aqui actualiza los asesores si no existen los crean.");
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
@@ -200,9 +162,7 @@ use app\models\DistribucionAsesores;
           $VarExisteAsesor = Yii::$app->db->createCommand("
           SELECT COUNT(*) FROM tbl_evaluados e 
             WHERE 
-              e.identificacion IN (':varDocumentoAsesor')")
-              ->bindValue(':varDocumentoAsesor', $varDocumentoAsesor)
-              ->queryScalar();
+              e.identificacion IN ($varDocumentoAsesor)")->queryScalar();
 
           if ($VarExisteAsesor == 0) {
             $varListDatosAsesor = Yii::$app->dbjarvis2->createCommand("
@@ -212,9 +172,7 @@ use app\models\DistribucionAsesores;
                 INNER JOIN dp_usuarios_red ur ON 
                   dg.documento = ur.documento
                 WHERE 
-                  ur.documento IN (':varDocumentoAsesor') AND ur.dominio = 'multienlace.com.co'")
-                  ->bindValue(':varDocumentoAsesor', $varDocumentoAsesor)
-                  ->queryAll();
+                  ur.documento IN ($varDocumentoAsesor) AND ur.dominio = 'multienlace.com.co'")->queryAll();
 
 
             foreach ($varListDatosAsesor as $key => $value) {
@@ -238,8 +196,6 @@ use app\models\DistribucionAsesores;
         }
 
         return $this->redirect('procesalideres');
-      }else{
-        #code
       }      
 
       return $this->render('procesaasesores',[
@@ -248,6 +204,7 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesalideres(){
+      // var_dump("Tercer paso, aqui actualiza Verifican lideres, si no existen los crea y crea equipo del lider");
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
@@ -266,17 +223,13 @@ use app\models\DistribucionAsesores;
           $varNombreCliente = Yii::$app->db->createCommand("
           SELECT pc.cliente FROM tbl_proceso_cliente_centrocosto pc 
           WHERE 
-            pc.id_dp_clientes IN (':varCliente')
-          GROUP BY pc.id_dp_clientes")
-          ->bindValue(':varCliente', $varCliente)
-          ->queryScalar();
+            pc.id_dp_clientes IN ($varCliente)
+          GROUP BY pc.id_dp_clientes")->queryScalar();
 
           $varExisteLider = Yii::$app->db->createCommand("
           SELECT COUNT(u.usua_id) FROM tbl_usuarios u
             WHERE 
-              u.usua_identificacion IN (':varCCLider')")
-              ->bindValue(':varCCLider', $varCCLider)
-              ->queryScalar();
+              u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
           if ($varExisteLider == 0) {
             
@@ -287,9 +240,7 @@ use app\models\DistribucionAsesores;
                 INNER JOIN dp_usuarios_red ur ON 
                   dg.documento = ur.documento
                 WHERE 
-                  ur.documento IN (':varCCLider') AND ur.dominio = 'multienlace.com.co'")
-                  ->bindValue(':varCCLider', $varCCLider)
-                  ->queryAll();
+                  ur.documento IN ($varCCLider) AND ur.dominio = 'multienlace.com.co'")->queryAll();
 
             foreach ($varListDatosLideres as $key => $value) {
               
@@ -300,7 +251,7 @@ use app\models\DistribucionAsesores;
                       'usua_identificacion' => $varCCLider,
                       'usua_activo' => "S",
                       'usua_estado' => "D",  
-                      'usua_fechhoratimeout' => null,
+                      'usua_fechatimeout' => null,
                       'fechacreacion' =>  date('Y-m-d'),                                  
                   ])->execute();
 
@@ -309,68 +260,38 @@ use app\models\DistribucionAsesores;
             $varUsuarioLider = Yii::$app->db->createCommand("
               SELECT u.usua_id FROM tbl_usuarios u
                 WHERE 
-                  u.usua_identificacion IN (':varCCLider')")
-                  ->bindValue(':varCCLider', $varCCLider)
-                  ->queryScalar();
+                  u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
-            if (COUNT($varUsuarioLider) != 0) {
+            Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
+                      'rel_usua_id' => $varUsuarioLider,
+                      'rel_role_id' => 273,                               
+                  ])->execute();
 
-                $varValidadosrol = Yii::$app->db->createCommand("
-                SELECT COUNT(u.rel_usua_id) FROM rel_usuarios_roles u
-                  WHERE 
-                    u.rel_usua_id IN (':varUsuarioLider')")
-                    ->bindValue(':varUsuarioLider', $varUsuarioLider)
-                    ->queryScalar();
-
-                if ($varValidadosrol == 0) {
-                    Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
-                        'rel_usua_id' => $varUsuarioLider,
-                        'rel_role_id' => 273,                               
-                    ])->execute();
-                }
-                
-                $varValidadosgrupo = Yii::$app->db->createCommand("
-                        SELECT COUNT(u.usuario_id) FROM rel_grupos_usuarios u
-                        WHERE 
-                            u.usuario_id IN (':varUsuarioLider')")
-                            ->bindValue(':varUsuarioLider', $varUsuarioLider)
-                            ->queryScalar();
-
-                if ($varValidadosgrupo == 0) {
-                    Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
-                        'usuario_id' => $varUsuarioLider,
-                        'grupo_id' => 1,                               
-                    ])->execute();
-                }     
-            }
-                   
+            Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
+                      'usuario_id' => $varUsuarioLider,
+                      'grupo_id' => 1,                               
+                  ])->execute();
 
           }
 
           $varUsuaIdLider = Yii::$app->db->createCommand("
           SELECT u.usua_id FROM tbl_usuarios u
             WHERE 
-              u.usua_identificacion IN (':varCCLider')")
-              ->bindValue(':varCCLider', $varCCLider)
-              ->queryScalar();
+              u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
           $varUsuaNombreLider = Yii::$app->db->createCommand("
           SELECT u.usua_nombre FROM tbl_usuarios u
             WHERE 
-              u.usua_identificacion IN (':varCCLider')")
-              ->bindValue(':varCCLider', $varCCLider)
-              ->queryScalar();          
+              u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
           $varContarEquipos = Yii::$app->db->createCommand("
-              SELECT COUNT(eq.id) FROM tbl_equipos eq
-                INNER JOIN tbl_usuarios u ON 
-                  eq.usua_id = u.usua_id 
-                          WHERE 
-                            u.usua_identificacion IN (':varCCLider')")
-                            ->bindValue(':varCCLider', $varCCLider)
-                            ->queryScalar();
+          SELECT COUNT(eq.id) FROM tbl_equipos eq
+            INNER JOIN tbl_usuarios u ON 
+              eq.usua_id = u.usua_id 
+                      WHERE 
+                        u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
-          if ($varContarEquipos == 0 && $varUsuaIdLider != 0) {
+          if ($varContarEquipos == 0) {
             Yii::$app->db->createCommand()->insert('tbl_equipos',[
                       'name' => $varUsuaNombreLider.'_'.$varNombreCliente,
                       'nmumbral_verde' => 1, 
@@ -383,8 +304,6 @@ use app\models\DistribucionAsesores;
 
         return $this->redirect('procesaequipos');
 
-      }else{
-        #code
       }
 
       return $this->render('procesalideres',[
@@ -393,10 +312,11 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesaequipos(){
+      // var_dump("Cuarto paso, aqui actualiza Los equipos");
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
-      if($model->load($form)){        
+      if($model->load($form)){
         $modelos = Yii::$app->db->createCommand('DELETE FROM tbl_equipos_evaluados');
         $modelos->execute();
 
@@ -418,9 +338,7 @@ use app\models\DistribucionAsesores;
             INNER JOIN tbl_distribucion_asesores da ON 
               e.identificacion = da.cedulaasesor
             WHERE 
-              da.cedulalider = ':varCcLideres'")
-              ->bindValue(':varCcLideres', $varCcLideres)
-              ->queryAll();
+              da.cedulalider = $varCcLideres")->queryAll();
 
           foreach ($varListAsesores as $key => $value) {
             Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
@@ -431,8 +349,6 @@ use app\models\DistribucionAsesores;
         }
 
         return $this->redirect('index');
-      }else{
-        #code
       }
 
       return $this->render('procesaequipos',[
