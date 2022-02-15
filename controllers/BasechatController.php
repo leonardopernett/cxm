@@ -27,7 +27,6 @@ use yii\db\ActiveRecord;
 use app\models\BasechatFormulario;
 use app\models\BasechatCategorias;
 use app\models\BasechatMotivos;
-use yii\base\Exception;
 
 
     class BaseChatController extends \yii\web\Controller {
@@ -55,37 +54,10 @@ use yii\base\Exception;
                 ],
             ];
         }
-        public function actions() {
-			return [
-				'error' => [
-				  'class' => 'yii\web\ErrorAction',
-				]
-			];
-		}
-	
-		public function actionError() {
-	
-			//ERROR PRESENTADO
-			$exception = Yii::$app->errorHandler->exception;
-	
-			if ($exception !== null) {
-				//VARIABLES PARA LA VISTA ERROR
-				$code = $exception->statusCode;
-				$name = $exception->getName() . " (#$code)";
-				$message = $exception->getMessage();
-				//RENDERIZO LA VISTA
-				return $this->render('error', [
-							'name' => $name,
-							'message' => $message,
-							'exception' => $exception,
-				]);
-			}
-		}
         
         public function actionIndex(){
             $model = new BasechatTigo();
 
-          
             $dataProvider = $model->buscarbasechat(Yii::$app->request->post());
 
             return $this->render('index',[
@@ -114,55 +86,7 @@ use yii\base\Exception;
                                     $varArray = $datos[$c];
                                     $varDatos = explode(";", utf8_encode($varArray));
 
-                                    // Yii::$app->db->createCommand()->insert('tbl_basechat_tigo',[
-                                    //     'idencuesta' => ,
-                                    //     'nombre_cliente' => ,
-                                    //     'email' => ,
-                                    //     'telefono_cliente' => ,
-                                    //     'mercado' => ,
-                                    //     'unidad_nombre' => ,
-                                    //     'b2b' => ,
-                                    //     'response_date' => ,
-                                    //     'tipo_canal_digital' => ,
-                                    //     'tipo_producto_digital' => ,
-                                    //     'msisdn' => ,
-                                    //     'tipo_ambiente' => ,
-                                    //     'email_asesor' => ,
-                                    //     'nombre_grupo' => ,
-                                    //     'nobre_asesor' => ,
-                                    //     'ticked_id' => ,
-                                    //     'nps' => ,
-                                    //     'comentario_adicional' => ,
-                                    //     'csat' => ,
-                                    //     'ces' => ,
-                                    //     'fcr' => ,
-                                    //     'comentario_fcr' => ,
-                                    //     'conocimiento' => ,
-                                    //     'regresar_al_canal' => ,
-                                    //     'interes_comprender_necesidad' => ,
-                                    //     'ofrecer_alternativa' => ,
-                                    //     'claridad' => ,
-                                    //     'relevancia' => ,
-                                    //     'comentario_contaco' => ,
-                                    //     'desea_ser_contactado' => ,
-                                    //     'nombre_cliente_encuesta' => ,
-                                    //     'non_survey_data_flag' => ,
-                                    //     'motivo_no_fcr' => ,
-                                    //     'uno_mas_contactos' => ,
-                                    //     'digital_canal' => ,
-                                    //     'digital_subcanal' => ,
-                                    //     'comentario_mejoras' => ,
-                                    //     'lourney' => ,
-                                    //     'etiquetas' => ,
-                                    //     'tipo_encuesta_digital' => ,
-                                    //     'evaluadoid' => ,
-                                    //     'rn' => ,
-                                    //     'pcrc' => ,
-                                    //     'cliente' => ,
-                                    //     'fechacreacion' => ,
-                                    //     'anulado' => ,
-                                    //     'usua_id' => ,
-                                    //     ])->execute();
+                                    
                                 }
                             }
                             fclose($gestor);
@@ -226,6 +150,7 @@ use yii\base\Exception;
 
                     $InvDateChange= $sheet->getCell("C".$row)->getValue();
                     $InvDate= PHPExcel_Shared_Date::ExcelToPHPObject($InvDateChange)->format('Y-m-d H:i:s');
+                    // var_dump($InvDate);
                     $anio = date("Y", strtotime($InvDate));
                     $mes = date("m", strtotime($InvDate));
                     $dia = date("d", strtotime($InvDate));
@@ -233,7 +158,9 @@ use yii\base\Exception;
                     $minutos = date("i", strtotime($InvDate));
                     $segundos = date("s", strtotime($InvDate));
 
-                        $fechaencuesta = $anio.'-'.$mes.'-'.$dia.' '.$hora.':'.$minutos.':'.$segundos;
+                    
+                    $fechaencuesta = $anio.'-'.$mes.'-'.$dia.' '.$hora.':'.$minutos.':'.$segundos;
+                    
 
                     $varfechatransaccion = $sheet->getCell("U".$row)->getValue();
                     if ($varfechatransaccion != null) {
@@ -289,12 +216,10 @@ use yii\base\Exception;
                     }
 
                     $varcompleteasesor = $sheet->getCell("EE".$row)->getValue();
-                    $paramsBusqueda = [':v.varcompleteasesor'=>$varcompleteasesor];
-                    $rest = Yii::$app->db->createCommand("select distinct dusuario_red from tbl_evaluados_tigo where anulado = 0 and usua_tigo = :v.varcompleteasesor")->bindValues($paramsBusqueda)->queryScalar();
+                    
+                    $rest = Yii::$app->db->createCommand("select distinct dusuario_red from tbl_evaluados_tigo where anulado = 0 and usua_tigo = '$varcompleteasesor'")->queryScalar();
                     $varbaseencuesta = $sheet->getCell("B".$row)->getValue();
                     $varfechab = date("Y-m-d H:i:s");
-                    $paramsBusqueda = [':v.varbaseencuesta' => $varbaseencuesta, ':v.varfechab' => $varfechab ];
-                    
 
                     Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
                                         'chat_transfer' => $varbaseencuesta,
@@ -304,7 +229,7 @@ use yii\base\Exception;
                                         'created' => $varfechab,
                                         ])->execute();  
 
-                    $varbasesatisfaccionid = Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where chat_transfer = :v.varbaseencuesta and estado = 'Cerrado' and usado = 'SI' and tipo_inbox = 'NINGUNO' AND created = :v.varfechab")->bindValues($paramsBusqueda)->queryScalar();
+                    $varbasesatisfaccionid = Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where chat_transfer = $varbaseencuesta and estado = 'Cerrado' and usado = 'SI' and tipo_inbox = 'NINGUNO' AND created = '$varfechab'")->queryScalar();
                     
 
                     Yii::$app->db->createCommand()->insert('tbl_basechat_tigob',[                                        
@@ -343,87 +268,28 @@ use yii\base\Exception;
                                         'encontro_buscaba'=> $sheet->getCell("FH".$row)->getValue(),
                                         'topicos_nps'=> $sheet->getCell("FM".$row)->getValue(),
                                         'b2b'=> $sheet->getCell("FN".$row)->getValue(),
-                                        // 'conocimiento'=> $sheet->getCell("IE".$row)->getValue(),
                                         'conocimiento'=> $sheet->getCell("IP".$row)->getValue(),
-                                        // 'digital_cliente_enc'=> $sheet->getCell("IG".$row)->getValue(),
                                         'digital_cliente_enc'=> $sheet->getCell("IR".$row)->getValue(),
-                                        // 'uno_mas_contactos'=> $sheet->getCell("IM".$row)->getValue(),
                                         'uno_mas_contactos'=> $sheet->getCell("IX".$row)->getValue(),
-                                        // 'tipo_canal_digital'=> $sheet->getCell("IN".$row)->getValue(),
                                         'tipo_canal_digital'=> $sheet->getCell("IY".$row)->getValue(),
-                                        // 'unidad_identificador'=> $sheet->getCell("IO".$row)->getValue(),
                                         'unidad_identificador'=> $sheet->getCell("IZ".$row)->getValue(),
-                                        // 'unidad_nombre'=> $sheet->getCell("IP".$row)->getValue(),
                                         'unidad_nombre'=> $sheet->getCell("JA".$row)->getValue(),
-                                        // 'digital_form'=> $sheet->getCell("IW".$row)->getValue(),
                                         'digital_form'=> $sheet->getCell("JH".$row)->getValue(),
-                                        // 'digital_b2b'=> $sheet->getCell("JD".$row)->getValue(),
                                         'digital_b2b'=> $sheet->getCell("JO".$row)->getValue(),
-                                        // 'digital_canal'=> $sheet->getCell("JF".$row)->getValue(),
                                         'digital_canal'=> $sheet->getCell("JQ".$row)->getValue(),
-                                        // 'tipo_producto_digital'=> $sheet->getCell("JH".$row)->getValue(),
                                         'tipo_producto_digital'=> $sheet->getCell("JS".$row)->getValue(),
-                                        // 'msisdn'=> $sheet->getCell("JI".$row)->getValue(),
                                         'msisdn'=> $sheet->getCell("JT".$row)->getValue(),
-                                        // 'tipo_ambiente'=> $sheet->getCell("JJ".$row)->getValue(),
                                         'tipo_ambiente'=> $sheet->getCell("JU".$row)->getValue(),
-                                        // 'email_asesor'=> $sheet->getCell("JL".$row)->getValue(),
                                         'email_asesor'=> $sheet->getCell("JW".$row)->getValue(),
-                                        // 'nombre_grupo'=> $sheet->getCell("JM".$row)->getValue(),
                                         'nombre_grupo'=> $sheet->getCell("JX".$row)->getValue(),
-                                        // 'nombre_asesor'=> $sheet->getCell("JN".$row)->getValue(),
                                         'nombre_asesor'=> $sheet->getCell("JY".$row)->getValue(),
-                                        // 'ticked_id'=> $sheet->getCell("JO".$row)->getValue(),
                                         'ticked_id'=> $sheet->getCell("JZ".$row)->getValue(),
-                                        // 'ticket_via'=> $sheet->getCell("JQ".$row)->getValue(),
                                         'ticket_via'=> $sheet->getCell("KB".$row)->getValue(),
-                                        // 'digital_subcanal'=> $sheet->getCell("JW".$row)->getValue(),
                                         'digital_subcanal'=> $sheet->getCell("KH".$row)->getValue(),
-                                        // 'digital_comentarioadic'=> $sheet->getCell("OU".$row)->getValue(),
                                         'digital_comentarioadic'=> $sheet->getCell("PF".$row)->getValue(),
-                                        // 'tagged_original'=> $sheet->getCell("PX".$row)->getValue(),
                                         'tagged_original'=> $sheet->getCell("QI".$row)->getValue(),
 
-                                        // 'nombre_cliente' => $sheet->getCell("C".$row)->getValue(),
-                                        // 'email' => $sheet->getCell("D".$row)->getValue(),
-                                        // 'telefono_cliente' => $sheet->getCell("E".$row)->getValue(),
-                                        // 'mercado' => $sheet->getCell("F".$row)->getValue(),
-                                        // 'unidad_nombre' => $sheet->getCell("H".$row)->getValue(),
-                                        // 'b2b' => $sheet->getCell("J".$row)->getValue(),
-                                        // 'response_date' => $fechaencuesta,
-                                        // 'tipo_canal_digital' => $sheet->getCell("BC".$row)->getValue(),
-                                        // 'tipo_producto_digital' => $sheet->getCell("BE".$row)->getValue(),
-                                        // 'msisdn' => $sheet->getCell("BF".$row)->getValue(),
-                                        // 'tipo_ambiente' => $sheet->getCell("BG".$row)->getValue(),
-                                        // 'email_asesor' => $sheet->getCell("BI".$row)->getValue(),
-                                        // 'nombre_grupo' => $sheet->getCell("BJ".$row)->getValue(),
-                                        // 'nobre_asesor' => $sheet->getCell("BK".$row)->getValue(),
-                                        // 'ticked_id' => $sheet->getCell("BL".$row)->getValue(),
-                                        // 'nps' => $sheet->getCell("BO".$row)->getValue(),
-                                        // 'comentario_adicional' => $sheet->getCell("BP".$row)->getValue(),
-                                        // 'csat' => $sheet->getCell("BQ".$row)->getValue(),
-                                        // 'ces' => $sheet->getCell("BR".$row)->getValue(),
-                                        // 'fcr' => $sheet->getCell("BS".$row)->getValue(),
-                                        // 'comentario_fcr' => $sheet->getCell("BT".$row)->getValue(),
-                                        // 'conocimiento' => $sheet->getCell("BU".$row)->getValue(),
-                                        // 'regresar_al_canal' => $sheet->getCell("BV".$row)->getValue(),
-                                        // 'interes_comprender_necesidad' => $sheet->getCell("BW".$row)->getValue(),
-                                        // 'ofrecer_alternativa' => $sheet->getCell("BX".$row)->getValue(),
-                                        // 'claridad' => $sheet->getCell("BY".$row)->getValue(),
-                                        // 'relevancia' => $sheet->getCell("BZ".$row)->getValue(),
-                                        // 'comentario_contaco' => $sheet->getCell("CA".$row)->getValue(),
-                                        // 'desea_ser_contactado' => $sheet->getCell("CB".$row)->getValue(),
-                                        // 'nombre_cliente_encuesta' => $sheet->getCell("CC".$row)->getValue(),
-                                        // 'non_survey_data_flag' => $sheet->getCell("CE".$row)->getValue(),
-                                        // 'motivo_no_fcr' => $sheet->getCell("CM".$row)->getValue(),
-                                        // 'uno_mas_contactos' => $sheet->getCell("CN".$row)->getValue(),
-                                        // 'digital_canal' => $sheet->getCell("CP".$row)->getValue(),
-                                        // 'digital_subcanal' => $sheet->getCell("CQ".$row)->getValue(),
-                                        // 'comentario_mejoras' => $sheet->getCell("CR".$row)->getValue(),
-                                        // 'lourney' => $sheet->getCell("CT".$row)->getValue(),
-                                        // 'etiquetas' => $sheet->getCell("CW".$row)->getValue(),
-                                        // 'tipo_encuesta_digital' => $sheet->getCell("DY".$row)->getValue(),
-
+                                        
                                         'evaluadoid' => $rest,
                                         'rn' => $varrn,
                                         'institucion' => $varinstitucion,
@@ -450,6 +316,7 @@ use yii\base\Exception;
 
         public function actionShowformulariogestion($basesatisfaccion_id, $preview, $aleatorio = null, $fill_values, $view = "index",$banderaescalado = false, $idtmp = null) {
                 
+                
                 $modelBase = BasechatTigo::find()->where(['basesatisfaccion_id' => $basesatisfaccion_id])->one();
                 
                 //REDIRECT CORRECTO
@@ -467,6 +334,7 @@ use yii\base\Exception;
 
 
                 $modelReglaNegocio = \app\models\Reglanegocio::findOne(["cod_industria" => $modelBase->industria, "cod_institucion" => $modelBase->institucion, "pcrc" => $modelBase->pcrc, "rn" => $modelBase->rn]);
+                
                 $usua_id = Yii::$app->user->identity->id;
                 if ($modelBase->usado == "SI" && $modelBase->responsable != Yii::$app->user->identity->username && $preview != 1) {
                     return $this->redirect([$redct]);
@@ -492,8 +360,7 @@ use yii\base\Exception;
                     $equipoevaluado = \app\models\EquiposEvaluados::find()->select('eq.evaluado_id, eq.equipo_id')
                             ->from('tbl_equipos_evaluados eq')
                             ->join('INNER JOIN', 'tbl_evaluados e', 'e.id = eq.evaluado_id')
-                            ->where('e.dsusuario_red = :evaluadodsusuario_red')
-                            ->addParams([':evaluadodsusuario_red'=>$evaluado->dsusuario_red])
+                            ->where('e.dsusuario_red = "' . $evaluado->dsusuario_red . '"')
                             ->one();
                 }
                 
@@ -506,7 +373,9 @@ use yii\base\Exception;
                 if ((!is_null($equipoevaluado) || !empty($equipoevaluado) || $equipoevaluado != '')) {
                     $equipo = \app\models\Equipos::findOne(['id' => $equipoevaluado->equipo_id]);
                     $usuario = \app\models\Usuarios::findOne(['usua_id' => $equipo->usua_id]);
+                    
                     $modelBase->lider_equipo = ($modelBase->lider_equipo == '' || is_null($modelBase->lider_equipo)) ? $usuario->usua_nombre : $modelBase->lider_equipo;
+                    
                     $modelBase->save();
                 }
 
@@ -518,13 +387,13 @@ use yii\base\Exception;
                     $TmpForm = \app\models\Tmpejecucionformularios::findOne(['id' => $idtmp, 'basesatisfaccion_id' => $modelBase->idencuesta]);
                        $data->formulario = \app\models\Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
                        if (!isset($TmpForm->subi_calculo)) {
-                           //$TmpForm->subi_calculo = $data->formulario->subi_calculo
+                           
                            if (isset($data->formulario->subi_calculo)) {
                                $TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                                         
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                       ->where('id IN (:TmpForm->subi_calculo)')
-                                       ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                       ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                        ->asArray()
                                        ->all();
                                foreach ($array_indices_TmpForm as $value) {
@@ -535,8 +404,7 @@ use yii\base\Exception;
                            if (isset($data->formulario->subi_calculo)) {
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                       ->where('id IN (:TmpForm->subi_calculo)')
-                                       ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                       ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                        ->asArray()
                                        ->all();
                                foreach ($array_indices_TmpForm as $value) {
@@ -544,8 +412,10 @@ use yii\base\Exception;
                                }
                            }
                        }
+                       
                 }else{
                     $validarEjecucionForm = \app\models\Ejecucionformularios::findOne(['basesatisfaccion_id' => $modelBase->basesatisfaccion_id]);
+                    
                    //OBTENGO EL FORMULARIO
                    if (is_null($validarEjecucionForm)) {
                         /* luego de la validacion en la tabla de ejecucionformularios,
@@ -554,8 +424,6 @@ use yii\base\Exception;
                         $condition = [
                             "usua_id" => Yii::$app->user->id,
                             "arbol_id" => $modelBase->pcrc,
-                            //"evaluado_id" => $evaluado_id,
-                            //"dimension_id" => $dimension_id,
                             "basesatisfaccion_id" => $modelBase->basesatisfaccion_id,
                             "sneditable" => $sneditable,
                         ];
@@ -578,12 +446,13 @@ use yii\base\Exception;
                            //en 1 por defecto
                            $data->formulario = \app\models\Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
                            if (!isset($TmpForm->subi_calculo)) {
+                               
                                if (isset($data->formulario->subi_calculo)) {
                                    $TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                                   
                                    $array_indices_TmpForm = \app\models\Textos::find()
                                            ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                           ->where('id IN (:TmpForm->subi_calculo)')
-                                           ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                           ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                            ->asArray()
                                            ->all();
                                    foreach ($array_indices_TmpForm as $value) {
@@ -594,8 +463,7 @@ use yii\base\Exception;
                                if (isset($data->formulario->subi_calculo)) {
                                    $array_indices_TmpForm = \app\models\Textos::find()
                                            ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                           ->where('id IN (:TmpForm->subi_calculo)')
-                                           ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                           ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                            ->asArray()
                                            ->all();
                                    foreach ($array_indices_TmpForm as $value) {
@@ -612,12 +480,13 @@ use yii\base\Exception;
                             $TmpForm = $validarTmpejecucionForm;
                             $data->formulario = \app\models\Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
                                if (!isset($TmpForm->subi_calculo)) {
+                                   
                                    if (isset($data->formulario->subi_calculo)) {
                                        $TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                                       
                                        $array_indices_TmpForm = \app\models\Textos::find()
                                                ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                               ->where('id IN (:TmpForm->subi_calculo)')
-                                               ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                               ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                                ->asArray()
                                                ->all();
                                        foreach ($array_indices_TmpForm as $value) {
@@ -628,8 +497,7 @@ use yii\base\Exception;
                                    if (isset($data->formulario->subi_calculo)) {
                                        $array_indices_TmpForm = \app\models\Textos::find()
                                                ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                               ->where('id IN (:TmpForm->subi_calculo)')
-                                               ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                               ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                                ->asArray()
                                                ->all();
                                        foreach ($array_indices_TmpForm as $value) {
@@ -649,12 +517,13 @@ use yii\base\Exception;
                        $TmpForm = \app\models\Tmpejecucionformularios::findOne(['id' => $formId['0']['tmp_id'], 'basesatisfaccion_id' => $modelBase->basesatisfaccion_id]);
                        $data->formulario = \app\models\Formularios::find()->where(['id' => $modelReglaNegocio->id_formulario])->one();
                        if (!isset($TmpForm->subi_calculo)) {
+                           
                            if (isset($data->formulario->subi_calculo)) {
                                $TmpForm->subi_calculo = $data->formulario->subi_calculo;
+                               
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                       ->where('id IN (:TmpForm->subi_calculo)')
-                                       ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                       ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                        ->asArray()
                                        ->all();
                                foreach ($array_indices_TmpForm as $value) {
@@ -665,8 +534,7 @@ use yii\base\Exception;
                            if (isset($data->formulario->subi_calculo)) {
                                $array_indices_TmpForm = \app\models\Textos::find()
                                        ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
-                                       ->where('id IN (:TmpForm->subi_calculo)')
-                                       ->addParams([':TmpForm->subi_calculo'=>$TmpForm->subi_calculo])
+                                       ->where('id IN (' . $TmpForm->subi_calculo . ')')
                                        ->asArray()
                                        ->all();
                                foreach ($array_indices_TmpForm as $value) {
@@ -755,6 +623,7 @@ use yii\base\Exception;
                 $data->fill_values = $fill_values;
                 //VALIDO Q  LA REGLA DE NEGOCIO TENGA UN FORMULARIO ASOCIADO
                 $form_val = \app\models\Formularios::findOne($modelReglaNegocio->id_formulario);
+        
 
                 if($data->tmp_formulario->hora_inicial != "" AND $data->tmp_formulario->hora_final != ""){
                     $inicial = new DateTime($data->tmp_formulario->hora_inicial);
@@ -764,6 +633,7 @@ use yii\base\Exception;
 
                     $dteDiff->format("Y-m-d H:i:s");
 
+                    
 
                     $data->fecha_inicial = $data->tmp_formulario->hora_inicial;
                     $data->fecha_final = $data->tmp_formulario->hora_final;
@@ -787,9 +657,9 @@ use yii\base\Exception;
                     }
 
                     $data->minutes = $hour . ":" . $minute . ":" . $seconds;
-                }else{
-                    #code
                 }
+
+                
 
                 if (empty($form_val)) {
                     $msg = \Yii::t('app', 'No existe formulario asociada para esta gestión:' . $modelBase->basesatisfaccion_id);
@@ -807,6 +677,7 @@ use yii\base\Exception;
                 );
                 
 
+
                 return $this->render('showformulariosatisfaccion', [
                             'data' => $data,
                             'view' => $view,
@@ -818,6 +689,8 @@ use yii\base\Exception;
             public function actionCancelarformulario($id, $tmp_form = null) {
 
                 $model = BasechatTigo::find()->where(['basesatisfaccion_id' => $id])->one();
+                
+                $redct = 'index';
                 if (Yii::$app->user->identity->username == $model->responsable) {
                     $model->usado = "NO";
                     $model->save();
@@ -830,37 +703,39 @@ use yii\base\Exception;
 
             public function actionConsultarcalificacionsubi() {
 
-                $arrCalificaciones = !Yii::$app->request->post('calificaciones') ? array() : Yii::$app->request->post('calificaciones');
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
-                $arrComentariosSecciones = !Yii::$app->request->post('comentarioSeccion') ? array() : Yii::$app->request->post('comentarioSeccion');
-                $arrCheckPits = !isset($_POST['checkPits']) ? array() : Yii::$app->request->post('checkPits');
-                $arrayForm = Yii::$app->request->post();
+                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
+                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
+                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
+                $arrayForm = $_POST;
                 $arrFormulario = [];
                 /* Variables para conteo de bloques */
                 $arrayCountBloques = [];
                 $arrayBloques = [];
                 $count = 0;
                 /* fin de variables */
-                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
-                $basesatisfaccion_id = Yii::$app->request->post('basesatisfaccion_id');
-                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension');
-                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
-                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
-                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
-                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
+                $tmp_id = $_POST['tmp_formulario_id'];
+                $basesatisfaccion_id = $_POST['basesatisfaccion_id'];
+                $arrFormulario["dimension_id"] = $_POST['dimension'];
+                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
+                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
+                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
+                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
                 $arrFormulario["sn_mostrarcalculo"] = 1;
                 $modelBase = BasechatTigo::find()->where(['basesatisfaccion_id' => $basesatisfaccion_id])->one();
-                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
-                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
-                //$arrFormulario["sn_mostrarcalculo"] = 1;
+                
+                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
+                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
+                
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
 
-                if (Yii::$app->request->post('subi_calculo') != '') {
-                    $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
+                if ($_POST['subi_calculo'] != '') {
+                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
                     $data->save();
                 }
+                
                 //IF TODOS LOS BLOQUES ESTAN USADOS SETEO ARRAY VACIO
                 if (!isset($arrayForm['bloque'])) {
                     $arrayForm['bloque'] = [];
@@ -969,17 +844,15 @@ use yii\base\Exception;
 
                     /* GUARDO SUBTIPIFICACIONES */
                     foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-
-                        $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
-                        $command = \Yii::$app->db->createCommand("UPDATE tbl_tmpejecucionbloquedetalles_subtipificaciones a 
-                        INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b 
-                        ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = :f.form_detalle_id 
-                        AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
+                        $sql = "UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a ";
+                        $sql .= "INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b ";
+                        $sql .= "ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id ";
+                        $sql .= "SET a.sncheck = 1 ";
+                        $sql .= "WHERE b.tmpejecucionbloquedetalle_id = " . $form_detalle_id;
+                        $sql .= " AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")";
+                        $command = \Yii::$app->db->createCommand($sql);
                         $command->execute();
                     }
-
-
 
                     foreach ($arrComentariosSecciones as $secc_id => $comentario) {
 
@@ -993,38 +866,19 @@ use yii\base\Exception;
                     //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                     /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
                     \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
+                    
                     $modelBase->comentario = $arrFormulario["dscomentario"];
-                    $modelBase->tipologia = Yii::$app->request->post('categoria');
+                    $modelBase->tipologia = $_POST['categoria'];
                     $modelBase->estado = "Cerrado";
                     $modelBase->usado = "NO";
-                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? Yii::$app->request->post('responsabilidad') : "";
-                    $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", Yii::$app->request->post('canal')) : "";
-                    $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", Yii::$app->request->post('marca')) : "";
-                    $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", Yii::$app->request->post('equivocacion')) : "";
+                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? $_POST['responsabilidad'] : "";
+                    $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", $_POST['canal']) : "";
+                    $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", $_POST['marca']) : "";
+                    $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", $_POST['equivocacion']) : "";
                     $modelBase->save();
 
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Indices calculados'));
-                    /* TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
-                     * 
-                      $modelEvaluado = \app\models\Evaluados::findOne(["id" => $tmp_ejecucion->evaluado_id]);
-                      $ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
-                      $params = [];
-                      $params['titulo'] = 'Te han realizado una valoración';
-                      $params['pcrc'] = '';
-                      $params['descripcion'] = '';
-                      $params['notificacion'] = 'SI';
-                      $params['muro'] = 'NO';
-                      $params['usuariored'] = $modelEvaluado->dsusuario_red;
-                      $params['cedula'] = '';
-                      $params['plataforma'] = 'QA';
-                      $params['url'] = '' . Url::to(['formularios/showformulariodiligenciadoamigo']) . '?form_id=' . base64_encode($ejecucion[0]->id);
-              //Se comenta webservicesresponse para QA por caida de Amigo - 13-02-2019 -
-                      //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
-              $webservicesresponse = null;
-                      $tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
-                      if (!$webservicesresponse && $tmp_ejecucion == '') {
-                      Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));
-                      } */
+                    
                 } catch (\Exception $exc) {
                     Yii::$app->session->setFlash('danger', Yii::t('app', 'error exception') . ": " . $exc->getMessage());
                 }
@@ -1036,42 +890,44 @@ use yii\base\Exception;
 
             public function actionGuardaryenviarformulariogestion() {
 
-                $arrCalificaciones = !Yii::$app->request->post('calificaciones') ? array() : Yii::$app->request->post('calificaciones');
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : Yii::$app->request->post('tipificaciones');
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : Yii::$app->request->post('subtipificaciones');
-                $arrComentariosSecciones = !Yii::$app->request->post('comentarioSeccion') ? array() : Yii::$app->request->post('comentarioSeccion');
-                $arrCheckPits = !isset($_POST['checkPits']) ? array() : Yii::$app->request->post('checkPits');
-                $arrayForm = Yii::$app->request->post();
+                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
+                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
+                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
+                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
+                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
+                $arrayForm = $_POST;
                 $arrFormulario = [];
                 /* Variables para conteo de bloques */
                 $arrayCountBloques = [];
                 $arrayBloques = [];
                 $count = 0;
                 /* fin de variables */
-                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
-                $basesatisfaccion_id = Yii::$app->request->post('basesatisfaccion_id');
-                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension');
-                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
-                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
-                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
-                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
+                $tmp_id = $_POST['tmp_formulario_id'];
+                $basesatisfaccion_id = $_POST['basesatisfaccion_id'];
+                $arrFormulario["dimension_id"] = $_POST['dimension'];
+                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
+                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
+                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
+                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
                 $arrFormulario["sn_mostrarcalculo"] = 1;
-                $view = (isset($_POST['view']))?Yii::$app->request->post('view'):null;
+                $view = (isset($_POST['view']))?$_POST['view']:null;
                 $modelBase = BasechatTigo::find()->where(['basesatisfaccion_id' => $basesatisfaccion_id])->one();
 
-                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
-                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
-                //$arrFormulario["sn_mostrarcalculo"] = 1;
+
+                
+                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
+                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
+                
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
-                if (Yii::$app->request->post('subi_calculo') != '') {
-                    $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
+                if ($_POST['subi_calculo'] != '') {
+                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
                     $data->save();
                 }
 
                 date_default_timezone_set('America/Bogota');
                 if($data['hora_final'] != ""){
-                        $inicial = new DateTime(Yii::$app->request->post('hora_modificacion'));
+                        $inicial = new DateTime($_POST['hora_modificacion']);
                         $final = new DateTime(date("Y-m-d H:i:s"));
 
                         $dteDiff  = $inicial->diff($final);
@@ -1083,7 +939,9 @@ use yii\base\Exception;
                         $data->cant_modificaciones = $data->cant_modificaciones + 1;
 
                         $date = new DateTime($tiempo_modificacion_actual);
+                        
                         $suma2 = $this->sumarhoras($data->tiempo_modificaciones, $date->format('H:i:s'));
+                        
                         $data->tiempo_modificaciones = $suma2;
 
                         $data->save();
@@ -1092,9 +950,7 @@ use yii\base\Exception;
                     $data->hora_final = $pruebafecha;
                     $data->save();
                 }
-                /*                 * if ($modelBase->tipo_inbox != 'NORMAL') {
-                  $arrFormulario["dimension_id"] = 1;
-                  } */
+                
                 //IF TODOS LOS BLOQUES ESTAN USADOS SETEO ARRAY VACIO
                 if (!isset($arrayForm['bloque'])) {
                     $arrayForm['bloque'] = [];
@@ -1237,12 +1093,12 @@ use yii\base\Exception;
                             'basesatisfaccion_id' => $modelBase->idencuesta, 'preview' => 0, 'fill_values' => false, 'aleatorio' => 3, 'banderaescalado' => false]);
                     }
                     $modelBase->comentario = $arrFormulario["dscomentario"];
-                    $modelBase->tipologia = Yii::$app->request->post('categoria');
+                    $modelBase->tipologia = $_POST['categoria'];
                     $modelBase->usado = "NO";
-                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? Yii::$app->request->post('responsabilidad') : "";
-                    $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", Yii::$app->request->post('canal')) : "";
-                    $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", Yii::$app->request->post('marca')) : "";
-                    $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", Yii::$app->request->post('equivocacion')) : "";
+                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? $_POST['responsabilidad'] : "";
+                    $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", $_POST['canal']) : "";
+                    $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", $_POST['marca']) : "";
+                    $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", $_POST['equivocacion']) : "";
                     $modelBase->save();
 
 
@@ -1277,9 +1133,7 @@ use yii\base\Exception;
                 } catch (\Exception $exc) {
                     Yii::$app->session->setFlash('danger', Yii::t('app', 'error exception') . ": " . $exc->getMessage());
                 }
-        Yii::$app->db->createCommand("update tbl_basechat_tigo set estado = 'Cerrado' where anulado = 0 and basesatisfaccion_id = :basesatisfaccion_id")
-        ->bindValue(':basesatisfaccion_id',$basesatisfaccion_id)
-        ->execute(); 
+        Yii::$app->db->createCommand("update tbl_basechat_tigo set estado = 'Cerrado' where anulado = 0 and basesatisfaccion_id = $basesatisfaccion_id")->execute(); 
 
         //REDIRECT CORRECTO
                 if ($view == "index") {
@@ -1310,9 +1164,7 @@ use yii\base\Exception;
             $varcreacion = null;
             $varrta = null;
 
-            $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = :basechatid")
-            ->bindValue(':basechatid',$basechatid)
-            ->queryAll();
+            $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = $basechatid")->queryAll();
             foreach ($varlistencuestas as $key => $value) {
                 $varticket = $value['ticked_id'];
                 $varencuesta = $value['fecha_transaccion'];
@@ -1407,16 +1259,9 @@ use yii\base\Exception;
             $txtvaridtxtFechaHoraclasifi = Yii::$app->request->get("txtvaridtxtFechaHoraclasifi");
             $txtvaridtxtFechaHorasendesk = Yii::$app->request->get("txtvaridtxtFechaHorasendesk");
 
-            $varbasesatisfaccion_id = Yii::$app->db->createCommand("select basesatisfaccion_id from tbl_basechat_tigob where anulado = 0 and ticked_id = :txtvartxtticket")
-            ->bindValue(':txtvartxtticket',$txtvartxtticket)
-            ->queryScalar();
+            $varbasesatisfaccion_id = Yii::$app->db->createCommand("select basesatisfaccion_id from tbl_basechat_tigob where anulado = 0 and ticked_id = $txtvartxtticket")->queryScalar();
 
-            $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = :txtvartxtticket and basesatisfaccion_id = :varbasesatisfaccion_id and idlista = :txtvarbloque and idbaselista = :txtvaridbloque")
-            ->bindValue(':txtvartxtticket',$txtvartxtticket)
-            ->bindValue(':varbasesatisfaccion_id',$varbasesatisfaccion_id)
-            ->bindValue(':txtvarbloque',$txtvarbloque)
-            ->bindValue(':txtvaridbloque',$txtvaridbloque)
-            ->queryScalar();
+            $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = $txtvartxtticket and basesatisfaccion_id = $varbasesatisfaccion_id and idlista = $txtvarbloque and idbaselista = $txtvaridbloque")->queryScalar();
             if ($varcomprobacion == 0) {
                 Yii::$app->db->createCommand()->insert('tbl_basechat_formulario',[
                     'ticked_id' => $txtvartxtticket,
@@ -1451,18 +1296,9 @@ use yii\base\Exception;
             $varidfprocedimiento = Yii::$app->request->get("varidfprocedimiento");
 	    $txtvaridencuesta = Yii::$app->request->get("txtvaridencuesta");
 
-            $varbasesatisfaccion_id = Yii::$app->db->createCommand("select basesatisfaccion_id from tbl_basechat_tigob where anulado = 0 and ticked_id = :txtvartxtticket")
-            ->bindValue(':txtvartxtticket',$txtvartxtticket)
-            ->queryScalar();
+            $varbasesatisfaccion_id = Yii::$app->db->createCommand("select basesatisfaccion_id from tbl_basechat_tigob where anulado = 0 and ticked_id = $txtvartxtticket")->queryScalar();
 
-            $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = :txtvartxtticket and basesatisfaccion_id = :varbasesatisfaccion_id and fsolicitud = :txtvaridfsolicitud and fsolucion = :txtvaridfsolucion: and fobservacion = :txtvaridfobservacion and fprocedimiento = :varidfprocedimiento")
-            ->bindValue(':txtvartxtticket',$txtvartxtticket)
-            ->bindValue(':varbasesatisfaccion_id',$varbasesatisfaccion_id)
-            ->bindValue(':txtvaridfsolicitud',$txtvaridfsolicitud)
-            ->bindValue(':txtvaridfsolucion',$txtvaridfsolucion)
-            ->bindValue(':txtvaridfobservacion',$txtvaridfobservacion)
-            ->bindValue(':varidfprocedimiento',$varidfprocedimiento)
-            ->queryScalar();
+            $varcomprobacion = Yii::$app->db->createCommand("select count(1) from tbl_basechat_formulario where anulado = 0 and ticked_id = $txtvartxtticket and basesatisfaccion_id = $varbasesatisfaccion_id and fsolicitud = '$txtvaridfsolicitud' and fsolucion = '$txtvaridfsolucion' and fobservacion = '$txtvaridfobservacion' and fprocedimiento = '$varidfprocedimiento'")->queryScalar();
 	
 	    $varestado = 'Cerrado';
             if ($varcomprobacion == 0) {
@@ -1510,9 +1346,7 @@ use yii\base\Exception;
             $varcreacion = null;
             $varrta = null;
 
-            $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = :basechatid")
-            ->bindValue(':basechatid',$basechatid)
-            ->queryAll();
+            $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = $basechatid")->queryAll();
             foreach ($varlistencuestas as $key => $value) {
                 $varticket = $value['ticked_id'];
                 $varencuesta = $value['fecha_transaccion'];
@@ -1531,14 +1365,9 @@ use yii\base\Exception;
                 $varvasrchatid = $value['basesatisfaccion_id'];
             }
 
-            $varlistshowbase = Yii::$app->db->createCommand("select * from tbl_basechat_formulario where anulado = 0 and ticked_id = $varticket and basesatisfaccion_id = :varvasrchatid")
-            ->bindValue(':varvasrchatid',$varvasrchatid)
-            ->queryAll();
+            $varlistshowbase = Yii::$app->db->createCommand("select * from tbl_basechat_formulario where anulado = 0 and ticked_id = $varticket and basesatisfaccion_id = $varvasrchatid")->queryAll();
 
-            $varzendesk = Yii::$app->db->createCommand("select distinct fechazendeks from tbl_basechat_formulario where anulado = 0 and ticked_id = $varticket and basesatisfaccion_id = $varvasrchatid")
-            ->bindValue(':varticket',$varticket)
-            ->bindValue(':varvasrchatid',$varvasrchatid)
-            ->queryScalar();
+            $varzendesk = Yii::$app->db->createCommand("select distinct fechazendeks from tbl_basechat_formulario where anulado = 0 and ticked_id = $varticket and basesatisfaccion_id = $varvasrchatid")->queryScalar();
 
             return $this->render('showbasechatview',[                
                 'varticket' => $varticket,
@@ -1575,9 +1404,7 @@ use yii\base\Exception;
                 $varusuatigo = $value['usuario'];
                 $varusuak = $value['usuario_red'];
 
-                $varvalida = Yii::$app->db->createCommand("select count(1) from tbl_evaluados_tigo et where et.dusuario_red = :varusuak and anulado = 0")
-                ->bindValue(':varusuak',$varusuak)
-                ->queryScalar();
+                $varvalida = Yii::$app->db->createCommand("select count(1) from tbl_evaluados_tigo et where et.dusuario_red = '$varusuak' and anulado = 0")->queryScalar();
 
                 if ($varvalida == 0) {
                     Yii::$app->db->createCommand()->insert('tbl_evaluados_tigo',[
@@ -1714,6 +1541,7 @@ public function actionElegirimportar(){
             {
     if ($sheet->getCell("A".$row)->getValue() != null) {
 
+     
 
 
                 $varfechartaChange = $sheet->getCell("AI".$row)->getValue();
@@ -1725,13 +1553,14 @@ public function actionElegirimportar(){
                 $minutosrta = date("i", strtotime($varfecharta));
                 $segundosrta = date("s", strtotime($varfecharta));
 	
+		
 		$varrtafecha = $aniorta.'-'.$mesrta.'-'.$diarta.' '.$horarta.':'.$minutosrta.':'.$segundosrta;
                     
                 $varrtafecha = strtotime('2 hours', strtotime($varrtafecha));
                 $varrtafecha = date ( 'Y-m-d H:i:s' , $varrtafecha );
-//
+
                 $vartipo = $sheet->getCell("IN".$row)->getValue();
-                if ($vartipo == "Mensajer�a :: WhatsApp") {                        
+                if ($vartipo == "Mensajer? :: WhatsApp") {                        
                     $varpcrc = 3513;
                     $varcliente = 2919;
                     $varrn = 'BW';
@@ -1744,8 +1573,7 @@ public function actionElegirimportar(){
                      $varinstitucion = '27';
                      $varindustria = '27';
                 }
-//        
-//        
+       
                 $varnaps = $sheet->getCell("BO".$row)->getValue();
                 if ($varnaps >= 9) {
                     $txtnps = "FELICITACION";
@@ -1758,9 +1586,8 @@ public function actionElegirimportar(){
                 }
 
                 $varcompleteasesor = $sheet->getCell("BI".$row)->getValue();
-                $rest = Yii::$app->db->createCommand("select distinct usuario_red from tbl_tmpvaloradosdistribucion where anulado = 0 and correo = :varcompleteasesor")
-                ->bindValue(':varcompleteasesor',$varcompleteasesor)
-                ->queryScalar();
+                
+                $rest = Yii::$app->db->createCommand("select distinct usuario_red from tbl_tmpvaloradosdistribucion where anulado = 0 and correo = '$varcompleteasesor'")->queryScalar();
                 $varbaseencuesta = $sheet->getCell("A".$row)->getValue();
                 $varfechab = date("Y-m-d H:i:s");
 
@@ -1772,10 +1599,7 @@ public function actionElegirimportar(){
                                     'created' => $varfechab,
                                     ])->execute();  
 
-                $varbasesatisfaccionid = Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where chat_transfer = :varbaseencuesta and estado = 'Cerrado' and usado = 'SI' and tipo_inbox = 'NINGUNO' AND created = :varfechab")
-                ->bindValue(':varbaseencuesta',$varbaseencuesta)
-                ->bindValue(':varfechab',$varfechab)
-                ->queryScalar();
+                $varbasesatisfaccionid = Yii::$app->db->createCommand("select id from tbl_base_satisfaccion where chat_transfer = $varbaseencuesta and estado = 'Cerrado' and usado = 'SI' and tipo_inbox = 'NINGUNO' AND created = '$varfechab'")->queryScalar();
                 
 
                 Yii::$app->db->createCommand()->insert('tbl_basechat_tigob',[
@@ -1846,11 +1670,10 @@ public function actionElegirimportar(){
         $vartipo_producto = null;
         $varvasrchatid = $basechatid;
         $varrta = null;
+        $varpcrc = $pcrc;
         $varcomentario_fcr = null;
 
-        $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = :basechatid")
-        ->bindValue(':basechatid',$basechatid)
-        ->queryAll();
+        $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = $basechatid")->queryAll();
         foreach ($varlistencuestas as $key => $value) {
             $varticket = $value['ticked_id'];
             $varrta = $value['fecha_respuesta'];
@@ -1896,6 +1719,7 @@ public function actionElegirimportar(){
 
      public function actionExportbol(){
         $varCorreo = Yii::$app->request->get("var_Destino");
+        $sessiones = Yii::$app->user->identity->id;
 	
         $valist = Yii::$app->db->createCommand("select bt.ticked_id 'NumeroTicket', bt.fecha_creacion 'FechaCreacion', bt.fecha_respuesta 'FechaRespuesta', bt.fecha_transaccion 'FechaTransaccion', bt.nombre_cliente 'Cliente', bt.id_agente 'Agente', bt.tipologia 'Tipologia', bt.tipo_producto 'TipoProducto', bt.comentario_adicional 'SentirCliente', bt.nps 'Pregunta1', bt.csat 'Pregunta2', bt.ces 'Pregunta3', bt.fcr 'Pregunta4', bt.conocimiento 'Pregunta5', bf.fechacalificacion 'FechaCalificacion', bf.fechazendeks 'FechaZendesk',  bt.basesatisfaccion_id  'Basesatisfaccion' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on  bc.idlista = bm.idlista   inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista inner join tbl_basechat_tigob bt on bf.ticked_id = bt.ticked_id and bf.basesatisfaccion_id = bt.basesatisfaccion_id where bf.anulado = 0 and bt.anulado = 0 AND bt.pcrc = 3272 group by NumeroTicket, Basesatisfaccion")->queryAll();
 
@@ -1904,10 +1728,10 @@ public function actionElegirimportar(){
         $phpExc->getProperties()
                 ->setCreator("Konecta")
                 ->setLastModifiedBy("Konecta")
-                ->setTitle("Listado de Gesti�n")
-                ->setSubject("Fuentes de Informaci�n")
-                ->setDescription("Este archivo contiene el listado de gesti�n")
-                ->setKeywords("Lista de gesti�n");
+                ->setTitle("Listado de Gesti?")
+                ->setSubject("Fuentes de Informaci?")
+                ->setDescription("Este archivo contiene el listado de gesti?")
+                ->setKeywords("Lista de gesti?");
         $phpExc->setActiveSheetIndex(0);
 
         $phpExc->getActiveSheet()->setShowGridlines(False);
@@ -1918,6 +1742,15 @@ public function actionElegirimportar(){
                 ),
             );
 
+        $styleArraySize = array(
+                'font' => array(
+                        'bold' => true,
+                        'size'  => 15,
+                ),
+                'alignment' => array(
+                        'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                ), 
+            );
 
         $styleColor = array( 
                 'fill' => array( 
@@ -1933,6 +1766,12 @@ public function actionElegirimportar(){
                 )
             );
 
+        $styleArraySubTitle = array(              
+                'fill' => array( 
+                        'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                        'color' => array('rgb' => '4298B5'),
+                )
+            );
 
         $styleArraySubTitle2 = array(              
                 'fill' => array( 
@@ -1952,6 +1791,27 @@ public function actionElegirimportar(){
                         'style' => \PHPExcel_Style_Border::BORDER_THIN,
                         'color' => array('rgb' => 'DDDDDD')
                     )
+                )
+            );
+
+        $styleColorLess = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => '92DD5B'),
+                )
+            );
+
+        $styleColorMiddle = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => 'E3AD48'),
+                )
+            );
+
+        $styleColorhigh = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => 'DD6D5B'),
                 )
             );
 
@@ -2110,27 +1970,12 @@ public function actionElegirimportar(){
             $varcreacion = $value['FechaCreacion'];
             $varrespuesta = $value['FechaRespuesta'];
 
-            $varsolicitud = Yii::$app->db->createCommand("select distinct fsolicitud from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = :varidticket and basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryScalar();
-            $varsolucion = Yii::$app->db->createCommand("select distinct fsolucion from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = :varidticket and basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryScalar();
-            $varobservacion = Yii::$app->db->createCommand("select distinct fobservacion from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = :varidticket and basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryScalar();
-            $varprocedimiento = Yii::$app->db->createCommand("select distinct fprocedimiento from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = :varidticket and basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryScalar();
+            $varsolicitud = Yii::$app->db->createCommand("select distinct fsolicitud from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();
+            $varsolucion = Yii::$app->db->createCommand("select distinct fsolucion from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();
+            $varobservacion = Yii::$app->db->createCommand("select distinct fobservacion from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();
+            $varprocedimiento = Yii::$app->db->createCommand("select distinct fprocedimiento from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();
 
-            $varlistacategorias = Yii::$app->db->createCommand("select concat(bc.nombrecategoria,': ',bm.nombrelista) 'unidos' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on bc.idlista = bm.idlista inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista where  bf.ticked_id = :varidticket    and bf.basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryAll();
+            $varlistacategorias = Yii::$app->db->createCommand("select concat(bc.nombrecategoria,': ',bm.nombrelista) 'unidos' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on bc.idlista = bm.idlista inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista where  bf.ticked_id = $varidticket    and bf.basesatisfaccion_id = $varbasesatisfaccion")->queryAll();
 
             $vararraymotivos = array();
               foreach ($varlistacategorias as $key => $value) {
@@ -2190,23 +2035,25 @@ public function actionElegirimportar(){
                         ->send();
 
 
+        $rtaenvio = 1;
         die(json_encode($varCorreo));
 
       }
 
       public function actionExportcol(){
         $varCorreo = Yii::$app->request->get("var_Destino");
+        $sessiones = Yii::$app->user->identity->id;
 
-        $valist = Yii::$app->db->createCommand("select bt.ticked_id 'NumeroTicket', bt.fecha_creacion 'FechaCreacion', bt.fecha_respuesta 'FechaRespuesta', bt.fecha_transaccion 'FechaTransaccion', bt.nombre_cliente 'Cliente', bt.id_agente 'Agente', bt.tipologia 'Tipologia', bt.tipo_producto 'TipoProducto', bt.comentario_adicional 'SentirCliente', bt.nps 'Pregunta1', bt.csat 'Pregunta2', bt.ces 'Pregunta3', bt.fcr 'Pregunta4', bt.conocimiento 'Pregunta5', bf.fechacalificacion 'FechaCalificacion', bf.fechazendeks 'FechaZendesk',  bt.basesatisfaccion_id  'Basesatisfaccion' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on  bc.idlista = bm.idlista   inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista inner join tbl_basechat_tigob bt on bf.ticked_id = bt.ticked_id and bf.basesatisfaccion_id = bt.basesatisfaccion_id where bf.anulado = 0 and bt.anulado = 0 AND bt.pcrc = 3513 group by NumeroTicket, Basesatisfaccion")->queryAll();
+        $valist = Yii::$app->db->createCommand("select bt.ticked_id 'NumeroTicket', bt.fecha_creacion 'FechaCreacion', bt.fecha_respuesta 'FechaRespuesta', bt.fecha_transaccion 'FechaTransaccion', bt.nombre_cliente 'Cliente', bt.id_agente 'Agente', bt.tipologia 'Tipologia', bt.tipo_producto 'TipoProducto', bt.comentario_adicional 'SentirCliente', bt.nps 'Pregunta1', bt.csat 'Pregunta2', bt.ces 'Pregunta3', bt.fcr 'Pregunta4', bt.conocimiento 'Pregunta5', bf.fechacalificacion 'FechaCalificacion', bf.fechazendeks 'FechaZendesk',  bt.basesatisfaccion_id  'Basesatisfaccion' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on  bc.idlista = bm.idlista   inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista inner join tbl_basechat_tigob bt on bf.ticked_id = bt.ticked_id and bf.basesatisfaccion_id = bt.basesatisfaccion_id where bf.anulado = 0 and bt.anulado = 0 AND bt.pcrc = 3513group by NumeroTicket, Basesatisfaccion")->queryAll();
 
         $phpExc = new \PHPExcel();
         $phpExc->getProperties()
                 ->setCreator("Konecta")
                 ->setLastModifiedBy("Konecta")
-                ->setTitle("Listado de Gestión")
-                ->setSubject("Fuentes de Información")
-                ->setDescription("Este archivo contiene el listado de gestión")
-                ->setKeywords("Lista de gestión");
+                ->setTitle("Listado de Gesti?")
+                ->setSubject("Fuentes de Informaci?")
+                ->setDescription("Este archivo contiene el listado de gesti?")
+                ->setKeywords("Lista de gesti?");
         $phpExc->setActiveSheetIndex(0);
 
         $phpExc->getActiveSheet()->setShowGridlines(False);
@@ -2217,6 +2064,15 @@ public function actionElegirimportar(){
                 ),
             );
 
+        $styleArraySize = array(
+                'font' => array(
+                        'bold' => true,
+                        'size'  => 15,
+                ),
+                'alignment' => array(
+                        'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                ), 
+            );
 
         $styleColor = array( 
                 'fill' => array( 
@@ -2229,6 +2085,13 @@ public function actionElegirimportar(){
                 'font' => array(
                   'bold' => false,
                   'color' => array('rgb' => 'FFFFFF')
+                )
+            );
+
+        $styleArraySubTitle = array(              
+                'fill' => array( 
+                        'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                        'color' => array('rgb' => '4298B5'),
                 )
             );
 
@@ -2250,6 +2113,27 @@ public function actionElegirimportar(){
                         'style' => \PHPExcel_Style_Border::BORDER_THIN,
                         'color' => array('rgb' => 'DDDDDD')
                     )
+                )
+            );
+
+        $styleColorLess = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => '92DD5B'),
+                )
+            );
+
+        $styleColorMiddle = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => 'E3AD48'),
+                )
+            );
+
+        $styleColorhigh = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => 'DD6D5B'),
                 )
             );
 
@@ -2397,27 +2281,12 @@ public function actionElegirimportar(){
             $varcreacion = $value['FechaCreacion'];
             $varrespuesta = $value['FechaRespuesta'];
 
-            $varsolicitud = Yii::$app->db->createCommand("select distinct fsolicitud from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = :varidticket and basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryScalar();
-            $varsolucion = Yii::$app->db->createCommand("select distinct fsolucion from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = :varidticket and basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryScalar();
-            $varobservacion = Yii::$app->db->createCommand("select distinct fobservacion from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = :varidticket and basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryScalar();
-            $varprocedimiento = Yii::$app->db->createCommand("select distinct fprocedimiento from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = :varidticket and basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryScalar();
+            $varsolicitud = Yii::$app->db->createCommand("select distinct fsolicitud from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();
+            $varsolucion = Yii::$app->db->createCommand("select distinct fsolucion from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();
+            $varobservacion = Yii::$app->db->createCommand("select distinct fobservacion from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();
+            $varprocedimiento = Yii::$app->db->createCommand("select distinct fprocedimiento from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();
 
-            $varlistacategorias = Yii::$app->db->createCommand("select concat(bc.nombrecategoria,': ',bm.nombrelista) 'unidos' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on bc.idlista = bm.idlista inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista where  bf.ticked_id = :varidticket    and bf.basesatisfaccion_id = :varbasesatisfaccion")
-            ->bindValue(':varidticket',$varidticket)
-            ->bindValue(':varbasesatisfaccion',$varbasesatisfaccion)
-            ->queryAll();
+            $varlistacategorias = Yii::$app->db->createCommand("select concat(bc.nombrecategoria,': ',bm.nombrelista) 'unidos' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on bc.idlista = bm.idlista inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista where  bf.ticked_id = $varidticket    and bf.basesatisfaccion_id = $varbasesatisfaccion")->queryAll();
 
             $vararraymotivos = array();
             foreach ($varlistacategorias as $key => $value) {
