@@ -244,6 +244,7 @@ use app\models\DistribucionAsesores;
 
             foreach ($varListDatosLideres as $key => $value) {
               
+              // Aqui ingresa procesos de usuarios nuevos
               Yii::$app->db->createCommand()->insert('tbl_usuarios',[
                       'usua_usuario' => $value['UsuarioRed'],
                       'usua_nombre' => $value['Name'],
