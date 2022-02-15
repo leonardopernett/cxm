@@ -88,7 +88,7 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesadistribucion(){
-      // var_dump("Primer paso, aqui actualiza tabala temporal de jarvis");
+      
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
@@ -139,7 +139,7 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesaasesores(){
-      // var_dump("Segundo paso, aqui actualiza los asesores si no existen los crean.");
+      
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
@@ -204,7 +204,7 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesalideres(){
-      // var_dump("Tercer paso, aqui actualiza Verifican lideres, si no existen los crea y crea equipo del lider");
+      
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
@@ -252,7 +252,7 @@ use app\models\DistribucionAsesores;
                       'usua_identificacion' => $varCCLider,
                       'usua_activo' => "S",
                       'usua_estado' => "D",  
-                      'usua_fechatimeout' => null,
+                      'usua_fechhoratimeout' => null,
                       'fechacreacion' =>  date('Y-m-d'),                                  
                   ])->execute();
 
