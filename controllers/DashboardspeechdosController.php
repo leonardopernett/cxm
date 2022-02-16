@@ -2929,6 +2929,8 @@ $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboar
                   array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['ext'],"tipoparametro"=>$value['tipoparametro']));
               }elseif($value['usuared']!=""){
                   array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['usuared'],"tipoparametro"=>$value['tipoparametro']));
+              }else {
+                #code
               }
             }
 
@@ -5600,6 +5602,8 @@ public function actionCantidadentto(){
             $idTmpForm->save();
             $showInteraccion = 0;
             $showBtnIteraccion = 0;
+          }else {
+            #code
           }
         }
 

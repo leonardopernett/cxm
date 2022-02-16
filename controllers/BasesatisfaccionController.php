@@ -1424,12 +1424,16 @@ class BasesatisfaccionController extends Controller {
                                 $titulo = '¡Atención! Un cliente no quedó satisfecho en una de tus relaciones.';
                             }else if($value == $nModel->agente){
                                 $titulo = '¡Qué bien! Un cliente quedó satisfecho en una de tus relaciones.';
+                            }else {
+                                #code
                             }
 
                             if($value == $usuario->usua_usuario && $nModel->tipologia == 'CRITICA PENALIZABLE' || $nModel->tipologia == 'CRITICA' || $nModel->tipologia == 'CRITICA POR BUZÓN'){
                                 $titulo = '¡Atención! Un cliente no quedó satisfecho en una de las relaciones de tu equipo.';
                             }else if($value == $usuario->usua_usuario){
                                 $titulo = '¡Qué bien! En una de las relaciones de tu equipo se generó satisfacción.';
+                            }else {
+                                #code
                             }
                             $params = [];
                             $params['titulo'] = $titulo;

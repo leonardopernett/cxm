@@ -1065,7 +1065,11 @@ if ($data->ppregunta8 != "") {
 
                 });
 
-            <?php } ?>
+            <?php } else { ?> ?>
+
+                //code
+ 
+                <?php } ?>
 
         <?php } else { ?>
 
