@@ -1704,6 +1704,8 @@ class BasesatisfaccionController extends Controller {
                         } elseif ($dia == 1) {
                             $startDate = date('Y-m-d', strtotime('-' . $numDias . ' day'));
                             $table = "Llamada" . date('Ym', strtotime('-1 month'));
+                        }else {
+                            #code
                         }
 
                         //CONECTO A AL SERVIDOR
