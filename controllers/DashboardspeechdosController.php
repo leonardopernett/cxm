@@ -4220,6 +4220,9 @@ public function actionCantidadentto(){
             $varlider = $model->servicio;
             $varasesor = $model->fechallamada;
 
+            // Nuevo Filtro - Tipologias
+            $vartipologia = $model->idredbox;
+
             // Si el filtro es Contiene dejo el proceso normal.
             if ($varidloginid == "1") {
               if ($varidspeechindi != null && $varidspeechvar == null && $varidmotivos == null) {
@@ -4274,7 +4277,7 @@ public function actionCantidadentto(){
             $params3 = $txtvarfechasinicio;
             $params4 = $txtvarfechasfin;
 
-            $dataProvider = $model->buscarsllamadas($params1,$params2,$params3,$params4,$varcategoriass,$varidloginid,$paramscalls,$varlider,$varasesor);
+            $dataProvider = $model->buscarsllamadas($params1,$params2,$params3,$params4,$varcategoriass,$varidloginid,$paramscalls,$varlider,$varasesor,$vartipologia);
 
             $txtresultadoasesor = null;
             $txtarrayasesores = null;
