@@ -26,6 +26,7 @@ use app\models\Tipofeedbacks;
 use app\models\Dashboardpermisos;
 use app\models\BaseUsuariosip;
 use app\models\FormUploadtigo;
+use app\models\BaseSatisfaccion; 
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
@@ -34,7 +35,7 @@ use app\models\FormUploadtigo;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls'],
             'rules' => [
               [
                 'allow' => true,
@@ -53,42 +54,6 @@ use app\models\FormUploadtigo;
         ],
       ];
     }
-
-    public function actions() {
-      return [
-          'error' => [
-            'class' => 'yii\web\ErrorAction',
-          ]
-      ];
-  }
-
-  public function actionError() {
-
-      //ERROR PRESENTADO
-      $exception = Yii::$app->errorHandler->exception;
-
-      if ($exception !== null) {
-          //VARIABLES PARA LA VISTA ERROR
-          $code = $exception->statusCode;
-          $name = $exception->getName() . " (#$code)";
-          $message = $exception->getMessage();
-          //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
-          // PARA LOS ERRORES 400
-          $request = \Yii::$app->request->pathInfo;
-          if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
-                  400) {
-              //GUARDO EN EL ERROR DE SATU
-              $baseSat = new BasesatisfaccionController();
-              $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
-          }
-          //RENDERIZO LA VISTA
-          return $this->render('error', [
-                      'name' => $name,
-                      'message' => $message,
-                      'exception' => $exception,
-          ]);
-      }
-  }
     
 
     public function actionIndex(){ 
@@ -110,16 +75,10 @@ use app\models\FormUploadtigo;
         if($model->load($form)){
             $varidarbol = $model->procesos;
 
-            $varListresponsabilidad = Yii::$app->db->createCommand("SELECT * FROM tbl_responsabilidad r WHERE r.arbol_id in (':varidarbol')")
-            ->bindValue(':varidarbol', $varidarbol)
-            ->queryAll();
+            $varListresponsabilidad = Yii::$app->db->createCommand("SELECT * FROM tbl_responsabilidad r WHERE r.arbol_id in ('$varidarbol')")->queryAll();
             $txtConteo = count($varListresponsabilidad);
 
-            $varnombrepcrc = Yii::$app->db->createCommand("SELECT a.name FROM tbl_arbols a WHERE a.id in (':varidarbol')")
-            ->bindValue(':varidarbol', $varidarbol)
-            ->queryScalar();
-        }else{
-          #code
+            $varnombrepcrc = Yii::$app->db->createCommand("SELECT a.name FROM tbl_arbols a WHERE a.id in ('$varidarbol')")->queryScalar();
         }
 
         return $this->render('viewresponsability',[
@@ -142,12 +101,10 @@ use app\models\FormUploadtigo;
                     ->where([
                         "sncrear_formulario" => 1,
                         "snhoja" => 1,
-                        "grupousuario_id" => ':grupo'])
+                        "grupousuario_id" => $grupo])
                     ->andWhere(['not', ['formulario_id' => null]])
-                    ->andWhere('name LIKE "%":search"%" ')
+                    ->andWhere('name LIKE "%' . $search . '%" ')
                     ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
-                    ->addParams([':grupo' => $grupo])
-                    ->addParams([':search' => $search])
                     ->orderBy("dsorden ASC")
                     ->asArray()
                     ->all();
@@ -160,12 +117,10 @@ use app\models\FormUploadtigo;
                     ->where([
                         "sncrear_formulario" => 1,
                         "snhoja" => 1,
-                        "grupousuario_id" => ':grupo'])
+                        "grupousuario_id" => $grupo])
                     ->andWhere(['not', ['formulario_id' => null]])
-                    ->andWhere('tbl_arbols.id = :id')
+                    ->andWhere('tbl_arbols.id = ' . $id)
                     ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
-                    ->addParams([':grupo' => $grupo])
-                    ->addParams([':id' => $id])
                     ->orderBy("dsorden ASC")
                     ->asArray()
                     ->all();
@@ -180,9 +135,7 @@ use app\models\FormUploadtigo;
         $varidvararboltwo = Yii::$app->request->get('txtvaridvararboltwo');
         $varidvararbol = Yii::$app->request->get('txtvaridvararbol');
 
-        $arbolclon = Yii::$app->db->createCommand("SELECT * FROM tbl_responsabilidad r WHERE r.arbol_id in (':varidvararboltwo')")
-        ->bindValue(':varidvararboltwo', $varidvararboltwo)
-        ->queryAll();
+        $arbolclon = Yii::$app->db->createCommand("SELECT * FROM tbl_responsabilidad r WHERE r.arbol_id in ('$varidvararboltwo')")->queryAll();
 
         if (count($arbolclon) != 0) {
             foreach ($arbolclon as $key => $value) {
@@ -245,34 +198,34 @@ use app\models\FormUploadtigo;
     }
 
     public function actionViewescucharmas(){
-      $model = new Dashboardpermisos();
+        $model = new Dashboardpermisos();
 
-      $form = Yii::$app->request->post();
-      if ($model->load($form)) {
-          $paramsBusqueda = [':varid_dp_clientes' => $model->iddashservicio, ':anulado' => 0];
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $paramsBusqueda = [':varid_dp_clientes' => $model->iddashservicio, ':anulado' => 0];
 
-          $varNombreservicio = Yii::$app->db->createCommand('
-            SELECT p.cliente FROM tbl_procesos_volumendirector p 
-              WHERE p.id_dp_clientes = :varid_dp_clientes
-                  AND p.anulado = :anulado
-                  GROUP BY p.id_dp_clientes')->bindValues($paramsBusqueda)->queryScalar();
+            $varNombreservicio = Yii::$app->db->createCommand('
+              SELECT p.cliente FROM tbl_procesos_volumendirector p 
+                WHERE p.id_dp_clientes = :varid_dp_clientes
+                    AND p.anulado = :anulado
+                    GROUP BY p.id_dp_clientes')->bindValues($paramsBusqueda)->queryScalar();
 
-          Yii::$app->db->createCommand()->insert('tbl_dashboardpermisos',[
-                                           'iddashservicio' => $model->iddashservicio,
-                                           'usuaid' => $model->usuaid,
-                                           'nombreservicio' => $varNombreservicio,
-                                           'fechacreacion' => date("Y-m-d"),
-                                           'anulado' => 0,
-                                       ])->execute(); 
+            Yii::$app->db->createCommand()->insert('tbl_dashboardpermisos',[
+                                             'iddashservicio' => $model->iddashservicio,
+                                             'usuaid' => $model->usuaid,
+                                             'nombreservicio' => $varNombreservicio,
+                                             'fechacreacion' => date("Y-m-d"),
+                                             'anulado' => 0,
+                                         ])->execute(); 
 
-          return $this->redirect('viewescucharmas',[
-              'model' => $model,
-          ]);
-      }
+            return $this->redirect('viewescucharmas',[
+                'model' => $model,
+            ]);
+        }
 
-      return $this->render('viewescucharmas',[
-          'model' => $model,
-      ]);
+        return $this->render('viewescucharmas',[
+            'model' => $model,
+        ]);
     }
 
     public function actionDeletepermisos($id){
@@ -309,6 +262,7 @@ use app\models\FormUploadtigo;
         $varFechaMax = Yii::$app->db->createCommand('
             SELECT MAX(bu.fechacreacion) AS FechaMax FROM tbl_base_usuariosip bu')->queryScalar();
 
+
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
             $paramsBusquedaEval = [':varIdEval' => $model->evaluados_id];
@@ -331,12 +285,12 @@ use app\models\FormUploadtigo;
             'varTotalAsesores' => $varTotalAsesores,
             'varFechaMax' => $varFechaMax,
         ]);
-    }    
+    }
 
     public function actionDeletesip($id){
-      BaseUsuariosip::findOne($id)->delete();
+        BaseUsuariosip::findOne($id)->delete();
 
-      return $this->redirect('viewusuariosencuestas');
+        return $this->redirect('viewusuariosencuestas');
     }
 
     public function actionActualizaprocesos(){
@@ -352,6 +306,7 @@ use app\models\FormUploadtigo;
             $paramsBusquedaSip = [':varUsarioSip' => $value['usuariosip']];
             $varUsariosRed = $value['usuariored'];
             $varIdSip = $value['idusuariossip'];
+
             
                 $varListBaseSip = Yii::$app->db->createCommand('
                 SELECT b.id FROM tbl_base_satisfaccion b
@@ -380,7 +335,8 @@ use app\models\FormUploadtigo;
                             ->bindValue(':varCambios', 1)
                             ->execute(); 
                 }
-                       
+            
+            
         }
 
         return $this->redirect('viewusuariosencuestas');
@@ -412,62 +368,150 @@ use app\models\FormUploadtigo;
     }
 
     public function Importexcelusuarios($name){
-      $inputFile = 'categorias/' . $name . '.xlsx';
+        $inputFile = 'categorias/' . $name . '.xlsx';
 
-      try {
-        $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
-        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
-        $objPHPExcel = $objReader->load($inputFile);
-      } catch (Exception $e) {
-        die('Error');
-      }
-
-      $sheet = $objPHPExcel->getSheet(0);
-      $highestRow = $sheet->getHighestRow();
-
-      for ($row = 2; $row <= $highestRow; $row++) { 
-            
-        if ($sheet->getCell("A".$row)->getValue() != null) {
-
-          $paramsBusqueda = [':varAsesorCC' => $sheet->getCell("A".$row)->getValue()];
-
-          $varListaSip = Yii::$app->db->createCommand('
-            SELECT COUNT(bu.idusuariossip) FROM tbl_base_usuariosip bu
-              WHERE 
-                bu.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
-
-          if ($varListaSip == "0") {
-            
-            $varExisteUsuario = Yii::$app->db->createCommand('
-              SELECT if(COUNT(e.id)=0,0,1) AS rta FROM tbl_evaluados e 
-                WHERE 
-                  e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
-
-            $varIdEvalua = 0;
-            if ($varExisteUsuario != 0) {
-                
-              $varIdEvalua = Yii::$app->db->createCommand('
-                SELECT e.id FROM tbl_evaluados e 
-                  WHERE 
-                    e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
-            }                
-
-            Yii::$app->db->createCommand()->insert('tbl_base_usuariosip',[
-                                      'usuariored' => $sheet->getCell("D".$row)->getValue(),
-                                      'usuariosip' => $sheet->getCell("C".$row)->getValue(),
-                                      'evaluados_id' => $varIdEvalua,
-                                      'identificacion' => $sheet->getCell("A".$row)->getValue(),
-                                      'comentarios' => $sheet->getCell("B".$row)->getValue(),
-                                      'existeusuario' => $varExisteUsuario,
-                                      'fechacreacion' => date("Y-m-d"),
-                                      'anulado' => 0,
-                                      'usua_id' => Yii::$app->user->identity->id,
-                                      ])->execute();
-          }
-               
+        try {
+            $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($inputFile);
+        } catch (Exception $e) {
+            die('Error');
         }
-      }
 
+        $sheet = $objPHPExcel->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+
+        for ($row = 2; $row <= $highestRow; $row++) { 
+            
+            if ($sheet->getCell("A".$row)->getValue() != null) {
+
+                $paramsBusqueda = [':varAsesorCC' => $sheet->getCell("A".$row)->getValue()];
+
+                $varListaSip = Yii::$app->db->createCommand('
+                  SELECT COUNT(bu.idusuariossip) FROM tbl_base_usuariosip bu
+                    WHERE 
+                        bu.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+
+                if ($varListaSip == "0") {
+                    $varExisteUsuario = Yii::$app->db->createCommand('
+                      SELECT if(COUNT(e.id)=0,0,1) AS rta FROM tbl_evaluados e 
+                        WHERE 
+                            e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+
+                    $varIdEvalua = 0;
+                    if ($varExisteUsuario != 0) {
+                        $varIdEvalua = Yii::$app->db->createCommand('
+                      SELECT e.id FROM tbl_evaluados e 
+                        WHERE 
+                            e.identificacion IN (:varAsesorCC)')->bindValues($paramsBusqueda)->queryScalar();
+                    }                
+
+                    Yii::$app->db->createCommand()->insert('tbl_base_usuariosip',[
+                                        'usuariored' => $sheet->getCell("D".$row)->getValue(),
+                                        'usuariosip' => $sheet->getCell("C".$row)->getValue(),
+                                        'evaluados_id' => $varIdEvalua,
+                                        'identificacion' => $sheet->getCell("A".$row)->getValue(),
+                                        'comentarios' => $sheet->getCell("B".$row)->getValue(),
+                                        'existeusuario' => $varExisteUsuario,
+                                        'fechacreacion' => date("Y-m-d"),
+                                        'anulado' => 0,
+                                        'usua_id' => Yii::$app->user->identity->id,
+                                        ])->execute();
+                }
+                 
+            }
+
+        }
+
+    }
+
+    public function actionBuscarurls(){
+        $model = new BaseSatisfaccion();
+
+        $paramsbusquedaurls = [':varAnulado' => 0];
+
+        $varDataMax = Yii::$app->db->createCommand('
+            SELECT CONCAT(MAX(bu.fechaingreso)," - ",bu.cantidadurls) AS Datas FROM tbl_base_urllogs bu
+                WHERE 
+                    bu.anulado = :varAnulado')->bindValues($paramsbusquedaurls)->queryScalar();
+
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varFechaSatu = explode(' - ',$model->fecha_gestion);
+            $varFechaInicio = $varFechaSatu[0] . ' 00:00:00';
+            $varFechaFin = $varFechaSatu[1] . ' 23:59:59';
+
+            $allModels = BaseSatisfaccion::find()->where(['tipo_inbox' => 'NORMAL'])
+                    ->andWhere('(buzon = "")')
+                    ->andWhere('fecha_satu BETWEEN "' . $varFechaInicio . '" AND "' . $varFechaFin . '"');
+
+            try {
+                $allModels = $allModels->all();
+            } catch (Exception $exc) {
+                \Yii::error('Error en consulta Masiva: *****' . $exc->getMessage(), 'redbox');
+            }
+
+            $count = 0;
+
+            foreach ($allModels as $nModel) {
+                
+                if (is_null($nModel->buzon) || empty($nModel->buzon) || $nModel->buzon == "") {
+                    $nModel->buzon = $this->_buscarArchivoBuzon(
+                                sprintf("%02s", $nModel->dia) . "_" . sprintf("%02s", $nModel->mes) . "_" . $nModel->ano, $nModel->connid);
+                }
+
+                if (!is_null($nModel->llamada) || (!empty($nModel->buzon) || $nModel->buzon != "")) {
+                    $count++;
+                }
+
+                try {
+                    $nModel->save();
+                } catch (Exception $exc) {
+                    \Yii::error('Error al momento de guardar el registro: ' . $nModel->id . ' ' . $exc->getMessage() . '#####', 'redbox');
+                }
+
+            }
+
+            $paramsBusquedaurl = [':vardateBegin' => $varFechaInicio, ':vardatEnd' => $varFechaFin];
+
+            $varCantidadUrl = Yii::$app->db->createCommand('
+                SELECT COUNT(b.id) FROM tbl_base_satisfaccion b 
+                    WHERE 
+                        b.buzon LIKE "%/srv/www/htdocs/qa_managementv2/web/buzones_qa%"
+                            AND b.fecha_satu BETWEEN :vardateBegin AND :vardatEnd')->bindValues($paramsBusquedaurl)->queryScalar();
+
+            Yii::$app->db->createCommand()->insert('tbl_base_urllogs',[
+                                        'fechaingreso' => date("Y-m-d"),
+                                        'cantidadurls' => $varCantidadUrl,
+                                        'fechacreacion' => date("Y-m-d"),
+                                        'anulado' => 0,
+                                        'usua_id' => Yii::$app->user->identity->id,
+                                        ])->execute();
+
+            return $this->redirect('buscarurls');
+        }
+
+        return $this->render('buscarurls',[
+            'model' => $model,
+            'varDataMax' => $varDataMax,
+        ]);
+    }
+
+    private function _buscarArchivoBuzon($fechaEncuesta, $connId) {
+        $output = NULL;
+        try {
+            $rutaPrincipalBuzonesLlamadas = \Yii::$app->params["ruta_buzon"];
+            $command = "find {$rutaPrincipalBuzonesLlamadas}/Buzones_{$fechaEncuesta} -iname *{$connId}*.wav";
+            \Yii::error("COMANDO BUZON: " . $command, 'procesosadministrador');
+            file_put_contents("A.TXT", $command);
+            $output = exec($command);
+        } catch (\yii\base\Exception $exc) {
+            \Yii::error($exc->getTraceAsString(), 'procesosadministrador');
+            return $output;
+        }
+        
+        return $output;
     }
     
 
