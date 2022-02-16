@@ -143,9 +143,9 @@ $config = [
             // for the mailer to send real emails.
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => '172.23.1.100',
-                'username' => 'Nombre de usuario',
-                'password' => 'xxxxxxxxx',
+                'host' => HOST_SMTP,
+                /* 'username' => 'Nombre de usuario',
+                'password' => 'xxxxxxxxx', */
                 'port' => '25',
             ],
 
