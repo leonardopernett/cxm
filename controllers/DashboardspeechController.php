@@ -3006,6 +3006,8 @@ use app\models\Formularios;
                   array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['ext']));
               }elseif($value['usuared']!=""){
                   array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['usuared']));
+              }else {
+                #code
               }
             }
 
