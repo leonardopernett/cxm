@@ -42,42 +42,6 @@ use PHPExcel_IOFactory;
                 ],
             ];
         }
-
-        public function actions() {
-            return [
-                'error' => [
-                  'class' => 'yii\web\ErrorAction',
-                ]
-            ];
-        }
-    
-        public function actionError() {
-    
-            //ERROR PRESENTADO
-            $exception = Yii::$app->errorHandler->exception;
-    
-            if ($exception !== null) {
-                //VARIABLES PARA LA VISTA ERROR
-                $code = $exception->statusCode;
-                $name = $exception->getName() . " (#$code)";
-                $message = $exception->getMessage();
-                //VALIDO QUE EL ERROR VENGA DEL CLIENTE DE IVR Y QUE SOLO APLIQUE
-                // PARA LOS ERRORES 400
-                $request = \Yii::$app->request->pathInfo;
-                if ($request == "basesatisfaccion/clientebasesatisfaccion" && $code ==
-                        400) {
-                    //GUARDO EN EL ERROR DE SATU
-                    $baseSat = new BasesatisfaccionController();
-                    $baseSat->setErrorSatu(\Yii::$app->request->url, $name . ": " . $message);
-                }
-                //RENDERIZO LA VISTA
-                return $this->render('error', [
-                            'name' => $name,
-                            'message' => $message,
-                            'exception' => $exception,
-                ]);
-            }
-        }
         
         public function actionIndex(){
             $model = new ControlProcesosPlan();
@@ -155,10 +119,7 @@ use PHPExcel_IOFactory;
 
         public function actionEditarplan($varidplan,$varestado){
 
-            Yii::$app->db->createCommand("update tbl_plan_escalamientos set Estado = ':varestado' where anulado = 0 and idplanjustificar = ':varidplan'")
-            ->bindValue(':varestado', $varestado)
-            ->bindValue(':varidplan', $varidplan)
-            ->execute();
+            Yii::$app->db->createCommand("update tbl_plan_escalamientos set Estado = $varestado where anulado = 0 and idplanjustificar = $varidplan")->execute();
 
             return $this->redirect('gestionarescalamientos');
 
@@ -181,38 +142,21 @@ use PHPExcel_IOFactory;
                                     'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
                         ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                                     'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
-                        ->where('tbl_usuarios.usua_id = :sessiones1')
-                        ->addParams([':sessiones1' => $sessiones1]);
+                        ->where('tbl_usuarios.usua_id = '.$sessiones1.'');                    
             $command = $rol->createCommand();
             $roles = $command->queryScalar();
 
             $varlistEscalamientos = null;
             if ($roles == '270') {
-                $varlistEscalamientos = Yii::$app->db->createCommand("select distinct evaluados_id from tbl_control_procesos where anulado = 0 and fechacreacion between :varfechainicio and :varfechafin")
-                ->bindValue(':varfechainicio', $varfechainicio)
-                ->bindValue(':varfechafin', $varfechafin)
-                ->queryAll();
+                $varlistEscalamientos = Yii::$app->db->createCommand("select distinct evaluados_id from tbl_control_procesos where anulado = 0 and fechacreacion between '$varfechainicio' and '$varfechafin'")->queryAll();
             }else{
-                $vartipopermiso = Yii::$app->db->createCommand("select tipopermiso from tbl_plan_permisos where anulado = 0 and usuaidpermiso = ':sessiones1'")
-                ->bindValue(':sessiones1', $sessiones1)
-                ->queryScalar();
-                $vararbol = Yii::$app->db->createCommand("select arbol_id from tbl_plan_permisos where anulado = 0 and usuaidpermiso = ':sessiones1'")
-                ->bindValue(':sessiones1', $sessiones1)
-                ->queryScalar();
+                $vartipopermiso = Yii::$app->db->createCommand("select tipopermiso from tbl_plan_permisos where anulado = 0 and usuaidpermiso = $sesiones")->queryScalar();
+                $vararbol = Yii::$app->db->createCommand("select arbol_id from tbl_plan_permisos where anulado = 0 and usuaidpermiso = $sesiones")->queryScalar();
 
                 if ($vartipopermiso == 1) {
-                    $varlistEscalamientos = Yii::$app->db->createCommand("select distinct cp1.evaluados_id from tbl_control_procesos cp1 inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id   inner join tbl_arbols a on cp2.arbol_id = a.id where cp1.anulado = 0 and cp2.anulado = 0            and cp2.fechacreacion between :varfechainicio and :varfechafin and cp1.fechacreacion between :varfechainicio and :varfechafin and a.arbol_id = ':vararbol'")
-                    ->bindValue(':varfechainicio', $varfechainicio)
-                    ->bindValue(':varfechafin', $varfechafin)
-                    ->bindValue(':vararbol', $vararbol)
-                    ->queryAll();
+                    $varlistEscalamientos = Yii::$app->db->createCommand("select distinct cp1.evaluados_id from tbl_control_procesos cp1 inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id   inner join tbl_arbols a on cp2.arbol_id = a.id where cp1.anulado = 0 and cp2.anulado = 0            and cp2.fechacreacion between '$varfechainicio' and '$varfechafin' and cp1.fechacreacion between '$varfechainicio' and '$varfechafin' and a.arbol_id = $vararbol")->queryAll();
                 }else{
-                    $varlistEscalamientos = Yii::$app->db->createCommand("select distinct cp1.evaluados_id from tbl_control_procesos cp1 inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id   inner join tbl_arbols a on cp2.arbol_id = a.id where cp1.anulado = 0 and cp2.anulado = 0            and cp2.fechacreacion between :varfechainicio and :varfechafin and cp1.fechacreacion between :varfechainicio and :varfechafin and cp1.responsable = ':sessiones1' and a.arbol_id = ':vararbol'")
-                    ->bindValue(':varfechainicio', $varfechainicio)
-                    ->bindValue(':varfechafin', $varfechafin)
-                    ->bindValue(':sessiones1', $sessiones1)
-                    ->bindValue(':vararbol', $vararbol)
-                    ->queryAll();
+                    $varlistEscalamientos = Yii::$app->db->createCommand("select distinct cp1.evaluados_id from tbl_control_procesos cp1 inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id   inner join tbl_arbols a on cp2.arbol_id = a.id where cp1.anulado = 0 and cp2.anulado = 0            and cp2.fechacreacion between '$varfechainicio' and '$varfechafin' and cp1.fechacreacion between '$varfechainicio' and '$varfechafin' and cp1.responsable = $sessiones1 and a.arbol_id = $vararbol")->queryAll();
                 }
             }
 
@@ -232,7 +176,7 @@ use PHPExcel_IOFactory;
                     ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                                     'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
                     ->where(['between','tbl_ejecucionformularios.created', $fechainiC, $fechafinC])
-                    ->andwhere(['IN','tbl_usuarios.usua_id', $varlistausuarios])
+                    ->andwhere( " tbl_usuarios.usua_id in ($varlistausuarios)")
                     ->groupBy('fecha');
             $command = $querys->createCommand();
             $data = $command->queryAll();
@@ -295,13 +239,9 @@ use PHPExcel_IOFactory;
             $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
 	    $varlistaPlanx = Yii::$app->get('dbslave')->createCommand("select   uu.usua_identificacion 'IdResponsable', uu.usua_nombre 'Repsonsable', u.usua_identificacion 'IdTecnico/Lider', u.usua_nombre 'Tecnico/Lider', rr.role_nombre 'Rol',     sum(cp2.cant_valor) 'Meta', (select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(t.fechainiciotc,' 00:00:00') and concat(t.fechafintc,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas', (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between t.fechainiciotc and t.fechafintc) 'NovedadesAprobadas', cp1.tipo_corte 'TipoCorte', cp1.idtc 'idcorte', cp1.evaluados_id 'idevaluado', if (gc.idgrupocorte  = 4,   round(sum(cp2.cant_valor/3)), round(sum(cp2.cant_valor/4))) 'MetaCorte1', (select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(tcu.fechainiciotcs,' 00:00:00') and concat(tcu.fechafintcs,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas_Corte1', if (        gc.idgrupocorte  = 4, round(sum(cp2.cant_valor/3)), round(sum(cp2.cant_valor/4)) ) 'MetaCorte2',(select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(tcd.fechainiciotcs,' 00:00:00') and concat(tcd.fechafintcs,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas_Corte2', if ( gc.idgrupocorte  = 4, round(sum(cp2.cant_valor/3)),  round(sum(cp2.cant_valor/4))  ) 'MetaCorte3', (select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(tct.fechainiciotcs,' 00:00:00') and concat(tct.fechafintcs,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas_Corte3',  if ( gc.idgrupocorte  = 4,   round(sum(cp2.cant_valor/3)),        round(sum(cp2.cant_valor/4))) 'MetaCorte4', (select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(tcc.fechainiciotcs,' 00:00:00') and concat(tcc.fechafintcs,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas_Corte4', (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between tcu.fechainiciotcs and tcu.fechafintcs) 'NovedadesAprobada_Corte1',  (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between tcd.fechainiciotcs and tcd.fechafintcs) 'NovedadesAprobada_Corte2', (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between tct.fechainiciotcs and tct.fechafintcs) 'NovedadesAprobada_Corte3',  (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between tcc.fechainiciotcs and tcc.fechafintcs) 'NovedadesAprobada_Corte4'  from  tbl_control_procesos cp1   inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id  inner join tbl_usuarios u on cp1.evaluados_id = u.usua_id inner join tbl_usuarios uu on cp1.responsable = uu.usua_id  inner join rel_usuarios_roles r on u.usua_id = r.rel_usua_id inner join tbl_roles rr on r.rel_role_id = rr.role_id      inner join tbl_tipocortes t on cp1.idtc = t.idtc  inner join tbl_grupo_cortes gc on t.idgrupocorte = gc.idgrupocorte inner join tbl_tipos_cortes tcu on t.idtc = tcu.idtc and tcu.cortetcs = 'Corte 1'        inner join tbl_tipos_cortes tcd on t.idtc = tcd.idtc and tcd.cortetcs = 'Corte 2'  inner join tbl_tipos_cortes tct on t.idtc = tct.idtc and tct.cortetcs = 'Corte 3' left join tbl_tipos_cortes tcc on t.idtc = tcc.idtc and tcc.cortetcs = 'Corte 4'  where    cp1.anulado = 0 and cp2.anulado = 0 
-            and cp2.fechacreacion between :varfechainicio and :varfechafin  and cp1.fechacreacion between :varfechainicio and :varfechafin  group by  cp1.evaluados_id")
-            ->bindValue(':varfechainicio', $varfechainicio)
-            ->bindValue(':varfechafin', $varfechafin)
-            ->queryAll();
+            and cp2.fechacreacion between '$varfechainicio' and '$varfechafin'  and cp1.fechacreacion between '$varfechainicio' and '$varfechafin'  group by  cp1.evaluados_id")->queryAll();
 
 
-            
             return $this->renderAjax('excelplanx',[
                 'varlistaPlanx' => $varlistaPlanx,
                 'varfechainicio' => $varfechainicio,
@@ -318,11 +258,7 @@ use PHPExcel_IOFactory;
             $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
 
             $varlistaPlany = Yii::$app->get('dbslave')->createCommand("select   uu.usua_identificacion 'IdResponsable', uu.usua_nombre 'Repsonsable', u.usua_identificacion 'IdTecnico/Lider', u.usua_nombre 'Tecnico/Lider', rr.role_nombre 'Rol',     sum(cp2.cant_valor) 'Meta', (select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(t.fechainiciotc,' 00:00:00') and concat(t.fechafintc,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas', (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between t.fechainiciotc and t.fechafintc) 'NovedadesAprobadas', cp1.tipo_corte 'TipoCorte', cp1.idtc 'idcorte', cp1.evaluados_id 'idevaluado', if (gc.idgrupocorte  = 4,   round(sum(cp2.cant_valor/3)), round(sum(cp2.cant_valor/4))) 'MetaCorte1', (select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(tcu.fechainiciotcs,' 00:00:00') and concat(tcu.fechafintcs,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas_Corte1', if (        gc.idgrupocorte  = 4, round(sum(cp2.cant_valor/3)), round(sum(cp2.cant_valor/4)) ) 'MetaCorte2',(select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(tcd.fechainiciotcs,' 00:00:00') and concat(tcd.fechafintcs,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas_Corte2', if ( gc.idgrupocorte  = 4, round(sum(cp2.cant_valor/3)),  round(sum(cp2.cant_valor/4))  ) 'MetaCorte3', (select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(tct.fechainiciotcs,' 00:00:00') and concat(tct.fechafintcs,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas_Corte3',  if ( gc.idgrupocorte  = 4,   round(sum(cp2.cant_valor/3)),        round(sum(cp2.cant_valor/4))) 'MetaCorte4', (select distinct count(1) as cantidad from tbl_ejecucionformularios aa where aa.created between concat(tcc.fechainiciotcs,' 00:00:00') and concat(tcc.fechafintcs,' 23:59:59') and aa.usua_id = cp1.evaluados_id) 'Realizadas_Corte4', (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between tcu.fechainiciotcs and tcu.fechafintcs) 'NovedadesAprobada_Corte1',  (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between tcd.fechainiciotcs and tcd.fechafintcs) 'NovedadesAprobada_Corte2', (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between tct.fechainiciotcs and tct.fechafintcs) 'NovedadesAprobada_Corte3',  (select distinct sum(pe.cantidadjustificar) from tbl_plan_escalamientos pe where pe.tecnicolider = cp1.evaluados_id and pe.Estado = 1 and pe.fechacreacion between tcc.fechainiciotcs and tcc.fechafintcs) 'NovedadesAprobada_Corte4'  from  tbl_control_procesos cp1   inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id  inner join tbl_usuarios u on cp1.evaluados_id = u.usua_id inner join tbl_usuarios uu on cp1.responsable = uu.usua_id  inner join rel_usuarios_roles r on u.usua_id = r.rel_usua_id inner join tbl_roles rr on r.rel_role_id = rr.role_id      inner join tbl_tipocortes t on cp1.idtc = t.idtc  inner join tbl_grupo_cortes gc on t.idgrupocorte = gc.idgrupocorte inner join tbl_tipos_cortes tcu on t.idtc = tcu.idtc and tcu.cortetcs = 'Corte 1'        inner join tbl_tipos_cortes tcd on t.idtc = tcd.idtc and tcd.cortetcs = 'Corte 2'  inner join tbl_tipos_cortes tct on t.idtc = tct.idtc and tct.cortetcs = 'Corte 3' left join tbl_tipos_cortes tcc on t.idtc = tcc.idtc and tcc.cortetcs = 'Corte 4'  where    cp1.anulado = 0 and cp2.anulado = 0 
-            and cp2.fechacreacion between :varfechainicio and :varfechafin  and cp1.fechacreacion between :varfechainicio and :varfechafin group by  cp1.evaluados_id")
-            ->bindValue(':varfechainicio', $varfechainicio)
-            ->bindValue(':varfechafin', $varfechafin)
-            ->queryAll();
-
+            and cp2.fechacreacion between '$varfechainicio' and '$varfechafin'  and cp1.fechacreacion between '$varfechainicio' and '$varfechafin'  group by  cp1.evaluados_id")->queryAll();
 
 
             return $this->renderAjax('excelplanpast',[
@@ -343,19 +279,11 @@ use PHPExcel_IOFactory;
             if ($model->load($formData)) {
                 $varusuaid = $model->evaluados_id;
                 $varidtc = $model->idtc;
-                $varcorte = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where idtc = ':varidtc' ")
-                ->bindValue(':varidtc', $varidtc)
-                ->queryScalar();
+                $varcorte = Yii::$app->db->createCommand("select tipocortetc from tbl_tipocortes where idtc = $varidtc ")->queryScalar();
 
-                $varfechacreacion = Yii::$app->db->createCommand("select distinct fechacreacion from tbl_control_procesos where evaluados_id = ':varusuaid' and idtc = ':varidtc' ")
-                ->bindValue(':varusuaid', $varusuaid)
-                ->bindValue(':varidtc', $varidtc)
-                ->queryScalar();
+                $varfechacreacion = Yii::$app->db->createCommand("select distinct fechacreacion from tbl_control_procesos where evaluados_id = $varusuaid and idtc = $varidtc ")->queryScalar();
 
-                $varlistadimension = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = ':varusuaid' and fechacreacion = ':varfechacreacion'")
-                ->bindValue(':varusuaid', $varusuaid)
-                ->bindValue(':varfechacreacion', $varfechacreacion)
-                >queryAll();
+                $varlistadimension = Yii::$app->db->createCommand("select * from tbl_control_params where evaluados_id = $varusuaid and fechacreacion = '$varfechacreacion'")->queryAll();
             }
 
             return $this->render('administrar',[
@@ -374,19 +302,11 @@ use PHPExcel_IOFactory;
             $txtvaridusua = Yii::$app->request->get("txtvaridusua");
             $txtvaridtcs = Yii::$app->request->get("txtvaridtcs");
 
-            $vartipogrupo = Yii::$app->get('dbslave')->createCommand("select tbl_grupo_cortes.idgrupocorte from tbl_grupo_cortes inner join tbl_tipocortes on  tbl_grupo_cortes.idgrupocorte = tbl_tipocortes.idgrupocorte inner join tbl_control_procesos on tbl_tipocortes.idtc = tbl_control_procesos.idtc where tbl_control_procesos.id = ':txtvaridtcgeneral' group by tbl_grupo_cortes.idgrupocorte")
-            ->bindValue(':txtvaridtcgeneral', $txtvaridtcgeneral)
-            ->queryScalar();
+            $vartipogrupo = Yii::$app->get('dbslave')->createCommand("select tbl_grupo_cortes.idgrupocorte from tbl_grupo_cortes inner join tbl_tipocortes on  tbl_grupo_cortes.idgrupocorte = tbl_tipocortes.idgrupocorte inner join tbl_control_procesos on tbl_tipocortes.idtc = tbl_control_procesos.idtc where tbl_control_procesos.id = $txtvaridtcgeneral group by tbl_grupo_cortes.idgrupocorte")->queryScalar();
 
-            $varfecha = Yii::$app->get('dbslave')->createCommand("select fechacreacion from tbl_control_procesos where id = ':txtvaridtcgeneral'")
-            ->bindValue(':txtvaridtcgeneral', $txtvaridtcgeneral)
-            ->queryScalar();
+            $varfecha = Yii::$app->get('dbslave')->createCommand("select fechacreacion from tbl_control_procesos where id = $txtvaridtcgeneral")->queryScalar();
 
-            $varcantidadarbol = Yii::$app->get('dbslave')->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = ':txtvaridusua' and arbol_id = ':txtvaridarbols' and fechacreacion = :varfecha")
-            ->bindValue(':txtvaridusua', $txtvaridusua)
-            ->bindValue(':txtvaridarbols', $txtvaridarbols)
-            ->bindValue(':varfecha', $varfecha)
-            ->queryScalar();
+            $varcantidadarbol = Yii::$app->get('dbslave')->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = $txtvaridusua and arbol_id = $txtvaridarbols and fechacreacion = '$varfecha'")->queryScalar();
 
             $varcantidadarbol2 = 0;
             if ($vartipogrupo == 4) {
@@ -397,11 +317,7 @@ use PHPExcel_IOFactory;
             
             
             if ($varcantidadarbol2 > $txtvartxtcantidad) {
-                $varvalida = Yii::$app->db->createCommand("select sum(cantidadjustificar) from tbl_plan_escalamientos where tecnicolider = ':txtvaridusua' and arbol_id = ':txtvaridarbols' and idtcs = ':txtvaridtcs' and anulado = 0")
-                ->bindValue(':txtvaridusua', $txtvaridusua)
-                ->bindValue(':txtvaridarbols', $txtvaridarbols)
-                ->bindValue(':txtvaridtcs', $txtvaridtcs)
-                ->queryScalar();
+                $varvalida = Yii::$app->db->createCommand("select sum(cantidadjustificar) from tbl_plan_escalamientos where tecnicolider = $txtvaridusua and arbol_id = $txtvaridarbols and idtcs = $txtvaridtcs and anulado = 0")->queryScalar();
                 $varvalida = $varvalida + $txtvartxtcantidad;
 
                 if ($varcantidadarbol2 > $varvalida) {
@@ -422,6 +338,7 @@ use PHPExcel_IOFactory;
             $txtvarid_argumentos = Yii::$app->request->get("txtvarid_argumentos");
             $txtvartxtcantidad = Yii::$app->request->get("txtvartxtcantidad");
             $txtvartxtcorreoid = Yii::$app->request->get("txtvartxtcorreoid");
+            $txtvaridtcgeneral = Yii::$app->request->get("txtvaridtcgeneral");
             $txtvaridusua = Yii::$app->request->get("txtvaridusua");
             $txtvarselect2chosen1 = Yii::$app->request->get("txtvarselect2chosen1");
             $txtvartxtcomentariosid = Yii::$app->request->get("txtvartxtcomentariosid");
@@ -457,15 +374,9 @@ use PHPExcel_IOFactory;
             if ($model->load($formData)) {
                 $txtnegar = $model->negargestion;
 
-                Yii::$app->db->createCommand("update tbl_plan_escalamientos set negargestion = ':txtnegar' where anulado = 0 and idplanjustificar = ':txtvaridplan'")
-                ->bindValue(':txtnegar', $txtnegar)
-                ->bindValue(':txtvaridplan', $txtvaridplan)
-                ->execute();
+                Yii::$app->db->createCommand("update tbl_plan_escalamientos set negargestion = '$txtnegar' where anulado = 0 and idplanjustificar = $txtvaridplan")->execute();
 
-                Yii::$app->db->createCommand("update tbl_plan_escalamientos set Estado = ':txtvarestado' where anulado = 0 and idplanjustificar = ':txtvaridplan'")
-                ->bindValue(':txtvarestado', $txtvarestado)
-                ->bindValue(':txtvaridplan', $txtvaridplan)
-                ->execute();
+                Yii::$app->db->createCommand("update tbl_plan_escalamientos set Estado = $txtvarestado where anulado = 0 and idplanjustificar = $txtvaridplan")->execute();
 
                 return $this->redirect('gestionarescalamientos');
                 
