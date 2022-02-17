@@ -150,8 +150,8 @@ use PHPExcel_IOFactory;
             if ($roles == '270') {
                 $varlistEscalamientos = Yii::$app->db->createCommand("select distinct evaluados_id from tbl_control_procesos where anulado = 0 and fechacreacion between '$varfechainicio' and '$varfechafin'")->queryAll();
             }else{
-                $vartipopermiso = Yii::$app->db->createCommand("select tipopermiso from tbl_plan_permisos where anulado = 0 and usuaidpermiso = $sesiones")->queryScalar();
-                $vararbol = Yii::$app->db->createCommand("select arbol_id from tbl_plan_permisos where anulado = 0 and usuaidpermiso = $sesiones")->queryScalar();
+                $vartipopermiso = Yii::$app->db->createCommand("select tipopermiso from tbl_plan_permisos where anulado = 0 and usuaidpermiso = $sessiones1")->queryScalar();
+                $vararbol = Yii::$app->db->createCommand("select arbol_id from tbl_plan_permisos where anulado = 0 and usuaidpermiso = $sessiones1")->queryScalar();
 
                 if ($vartipopermiso == 1) {
                     $varlistEscalamientos = Yii::$app->db->createCommand("select distinct cp1.evaluados_id from tbl_control_procesos cp1 inner join tbl_control_params cp2 on cp1.evaluados_id = cp2.evaluados_id   inner join tbl_arbols a on cp2.arbol_id = a.id where cp1.anulado = 0 and cp2.anulado = 0            and cp2.fechacreacion between '$varfechainicio' and '$varfechafin' and cp1.fechacreacion between '$varfechainicio' and '$varfechafin' and a.arbol_id = $vararbol")->queryAll();
