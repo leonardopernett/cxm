@@ -40,7 +40,7 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 	 *
 	 * @var string
 	 */
-	private $_path;
+	private $_path='';
 
 	/**
 	 * Name

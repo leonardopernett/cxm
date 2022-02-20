@@ -110,7 +110,7 @@ class Module extends ServiceLocator
     /**
      * @var string the root directory of the module.
      */
-    private $_basePath;
+    private $_basePath='';
     /**
      * @var string the root directory that contains view files for this module
      */

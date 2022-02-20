@@ -18,7 +18,7 @@ class RequestException extends TransferException
     private $response;
 
     /** @var array */
-    private $handlerContext;
+    private $handlerContext=[];
 
     public function __construct(
         $message,

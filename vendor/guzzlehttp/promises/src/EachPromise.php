@@ -25,7 +25,7 @@ class EachPromise implements PromisorInterface
     private $aggregate;
 
     /** @var bool */
-    private $mutex;
+    private $mutex=true;
 
     /**
      * Configuration hash can include the following key value pairs:

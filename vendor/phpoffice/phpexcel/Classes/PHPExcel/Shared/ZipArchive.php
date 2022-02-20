@@ -51,14 +51,14 @@ class PHPExcel_Shared_ZipArchive
 	 *
 	 * @var string
 	 */
-	private $_tempDir;
+	private $_tempDir='';
 
 	/**
 	 * Zip Archive Stream Handle
 	 *
 	 * @var string
 	 */
-	private $_zip;
+	private $_zip='';
 
 
     /**

@@ -81,7 +81,7 @@ class HTMLPurifier_Config
      * Whether or not a set is taking place due to an alias lookup.
      * @type bool
      */
-    private $aliasMode;
+    private $aliasMode =true;
 
     /**
      * Set to false if you do not want line and file numbers in errors.
@@ -95,7 +95,7 @@ class HTMLPurifier_Config
      * Current lock; only gets to this namespace are allowed.
      * @type string
      */
-    private $lock;
+    private $lock ="";
 
     /**
      * Constructor

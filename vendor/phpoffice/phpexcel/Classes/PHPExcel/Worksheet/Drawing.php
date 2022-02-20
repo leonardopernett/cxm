@@ -40,7 +40,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
 	 *
 	 * @var string
 	 */
-	private $_path;
+	private $_path="";
 
     /**
      * Create a new PHPExcel_Worksheet_Drawing

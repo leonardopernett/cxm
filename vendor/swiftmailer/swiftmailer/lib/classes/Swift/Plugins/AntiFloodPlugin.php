@@ -20,14 +20,14 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      *
      * @var int
      */
-    private $_threshold;
+    private $_threshold=0;
 
     /**
      * The number of seconds to sleep for during a restart.
      *
      * @var int
      */
-    private $_sleep;
+    private $_sleep=0;
 
     /**
      * The internal counter.

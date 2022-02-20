@@ -41,13 +41,13 @@ class SingularValueDecomposition  {
 	 *	Row dimension.
 	 *	@var int
 	 */
-	private $m;
+	private $m=0;
 
 	/**
 	 *	Column dimension.
 	 *	@var int
 	 */
-	private $n;
+	private $n=0;
 
 
 	/**

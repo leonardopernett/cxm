@@ -20,7 +20,7 @@ class Swift_Mime_Headers_PathHeader extends Swift_Mime_Headers_AbstractHeader
      *
      * @var string
      */
-    private $_address;
+    private $_address='';
 
     /**
      * Creates a new PathHeader with the given $name.

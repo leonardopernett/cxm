@@ -19,10 +19,10 @@ class Swift_Plugins_PopBeforeSmtpPlugin implements Swift_Events_TransportChangeL
     private $_connection;
 
     /** Hostname of the POP3 server */
-    private $_host;
+    private $_host='';
 
     /** Port number to connect on */
-    private $_port;
+    private $_port=0;
 
     /** Encryption type to use (if any) */
     private $_crypto;

@@ -50,14 +50,14 @@ class PHPExcel_Writer_Excel5_Escher
 	 *
 	 * @var array
 	 */
-	private $_spOffsets;
+	private $_spOffsets=[];
 
 	/**
 	 * Shape types.
 	 *
 	 * @var array
 	 */
-	private $_spTypes;
+	private $_spTypes=[];
 	
 	/**
 	 * Constructor

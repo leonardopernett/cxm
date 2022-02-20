@@ -113,14 +113,14 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      *
      * @var string
      */
-    private $_title;
+    private $_title="";
 
     /**
      * Sheet state
      *
      * @var string
      */
-    private $_sheetState;
+    private $_sheetState="";
 
     /**
      * Page setup

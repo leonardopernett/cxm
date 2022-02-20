@@ -52,21 +52,21 @@ class PHPExcel_Calculation_Function {
 	 *
 	 * @var string
 	 */
-	private $_category;
+	private $_category="";
 
 	/**
 	 * Excel name
 	 *
 	 * @var string
 	 */
-	private $_excelName;
+	private $_excelName="";
 
 	/**
 	 * PHPExcel name
 	 *
 	 * @var string
 	 */
-	private $_phpExcelName;
+	private $_phpExcelName="";
 
     /**
      * Create a new PHPExcel_Calculation_Function

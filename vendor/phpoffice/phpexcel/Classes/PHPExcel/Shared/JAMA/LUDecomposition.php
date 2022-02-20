@@ -33,19 +33,19 @@ class PHPExcel_Shared_JAMA_LUDecomposition {
 	 *	Row dimension.
 	 *	@var int
 	 */
-	private $m;
+	private $m=0;
 
 	/**
 	 *	Column dimension.
 	 *	@var int
 	 */
-	private $n;
+	private $n=0;
 
 	/**
 	 *	Pivot sign.
 	 *	@var int
 	 */
-	private $pivsign;
+	private $pivsign=0;
 
 	/**
 	 *	Internal storage of pivot vector.

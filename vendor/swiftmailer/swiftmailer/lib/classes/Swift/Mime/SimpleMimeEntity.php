@@ -63,10 +63,10 @@ class Swift_Mime_SimpleMimeEntity implements Swift_Mime_MimeEntity
     );
 
     /** The CID of this entity */
-    private $_id;
+    private $_id='';
 
     /** The key used for accessing the cache */
-    private $_cacheKey;
+    private $_cacheKey='';
 
     protected $_userContentType;
 

@@ -18,7 +18,7 @@ class Swift_Plugins_MessageLogger implements Swift_Events_SendListener
     /**
      * @var array
      */
-    private $messages;
+    private $messages=[];
 
     public function __construct()
     {

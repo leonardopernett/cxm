@@ -10,23 +10,18 @@ use SoapFault;
 
 class WebServices extends Component {
 
-    /**
-     * Parametro de tipo WebServices
-     * @var WebServices
-     */
-    private $soapClient;
 
     /**
      * Parametro con la respuesta del servicio
      * @var string
      */
-    private $response;
+    private $response = "";
 
     /**
      * Parametro con el wsdl
      * @var string
      */
-    private $wsdl;
+    private $wsdl = "";
 
     /**
      * Constructor para instanciar el servicio web

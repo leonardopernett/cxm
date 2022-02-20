@@ -146,31 +146,31 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	/**
 	 * Color cache
 	 */
-	private $_colors;
+	private $_colors=[];
 
 	/**
 	 * Index of first used row (at least 0)
 	 * @var int
 	 */
-	private $_firstRowIndex;
+	private $_firstRowIndex=0;
 
 	/**
 	 * Index of last used row. (no used rows means -1)
 	 * @var int
 	 */
-	private $_lastRowIndex;
+	private $_lastRowIndex=0;
 
 	/**
 	 * Index of first used column (at least 0)
 	 * @var int
 	 */
-	private $_firstColumnIndex;
+	private $_firstColumnIndex=0;
 
 	/**
 	 * Index of last used column (no used columns means -1)
 	 * @var int
 	 */
-	private $_lastColumnIndex;
+	private $_lastColumnIndex=0;
 
 	/**
 	 * Sheet object
@@ -183,7 +183,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * @var int
 	 */
-	private $_countCellStyleXfs;
+	private $_countCellStyleXfs=0;
 
 	/**
 	 * Escher object corresponding to MSODRAWING
@@ -197,7 +197,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * @var array
 	 */
-	public $_fntHashIndex;
+	public $_fntHashIndex=[];
 
 	/**
 	 * Constructor

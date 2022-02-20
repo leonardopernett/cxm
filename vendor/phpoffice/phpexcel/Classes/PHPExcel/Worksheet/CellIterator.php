@@ -49,7 +49,7 @@ class PHPExcel_Worksheet_CellIterator implements Iterator
 	 *
 	 * @var int
 	 */
-	private $_rowIndex;
+	private $_rowIndex=0;
 
 	/**
 	 * Current iterator position

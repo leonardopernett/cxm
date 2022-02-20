@@ -47,7 +47,7 @@ class PHPExcel
      *
      * @var string
      */
-    private $_uniqueID;
+    private $_uniqueID="";
 
     /**
      * Document properties

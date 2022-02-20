@@ -39,21 +39,21 @@ class PHPExcel_Shared_Escher_DggContainer
 	 *
 	 * @var int
 	 */
-	private $_spIdMax;
+	private $_spIdMax=0;
 
 	/**
 	 * Total number of drawings saved
 	 *
 	 * @var int
 	 */
-	private $_cDgSaved;
+	private $_cDgSaved=0;
 
 	/**
 	 * Total number of shapes saved (including group shapes)
 	 *
 	 * @var int
 	 */
-	private $_cSpSaved;
+	private $_cSpSaved=0;
 
 	/**
 	 * BLIP Store Container

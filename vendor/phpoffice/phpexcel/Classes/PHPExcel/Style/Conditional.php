@@ -60,21 +60,21 @@ class PHPExcel_Style_Conditional implements PHPExcel_IComparable
 	 *
 	 * @var int
 	 */
-	private $_conditionType;
+	private $_conditionType=0;
 
 	/**
 	 * Operator type
 	 *
 	 * @var int
 	 */
-	private $_operatorType;
+	private $_operatorType=0;
 
 	/**
 	 * Text
 	 *
 	 * @var string
 	 */
-	private $_text;
+	private $_text='';
 
 	/**
 	 * Condition

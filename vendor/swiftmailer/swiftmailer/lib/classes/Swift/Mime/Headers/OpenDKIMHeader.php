@@ -20,13 +20,13 @@ class Swift_Mime_Headers_OpenDKIMHeader implements Swift_Mime_Header
      *
      * @var string
      */
-    private $_value;
+    private $_value='';
 
     /**
      * The name of this Header
      * @var string
      */
-    private $_fieldName;
+    private $_fieldName='';
 
     /**
      * Creates a new SimpleHeader with $name.

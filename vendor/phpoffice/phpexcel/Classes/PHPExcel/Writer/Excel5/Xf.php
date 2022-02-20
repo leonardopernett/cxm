@@ -75,13 +75,13 @@ class PHPExcel_Writer_Excel5_Xf
 	 *
 	 * @var boolean
 	 */
-	private $_isStyleXf;
+	private $_isStyleXf=true;
 
 	/**
 	 * Index to the FONT record. Index 4 does not exist
 	 * @var integer
 	 */
-	private $_fontIndex;
+	private $_fontIndex=0;
 
 	/**
 	 * An index (2 bytes) to a FORMAT record (number format).

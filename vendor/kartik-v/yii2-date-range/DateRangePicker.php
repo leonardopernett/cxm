@@ -95,12 +95,12 @@ HTML;
     /**
      * @var string the pluginOptions format for the date time
      */
-    private $_format;
+    private $_format ='';
 
     /**
      * @var string the pluginOptions separator
      */
-    private $_separator;
+    private $_separator ='';
 
     /**
      * Initializes the widget

@@ -172,42 +172,42 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 	 *
 	 * @var string
 	 */
-	private $_summaryInformation;
+	private $_summaryInformation="";
 
 	/**
 	 * Extended Summary Information stream data.
 	 *
 	 * @var string
 	 */
-	private $_documentSummaryInformation;
+	private $_documentSummaryInformation="";
 
 	/**
 	 * User-Defined Properties stream data.
 	 *
 	 * @var string
 	 */
-	private $_userDefinedProperties;
+	private $_userDefinedProperties="";
 
 	/**
 	 * Workbook stream data. (Includes workbook globals substream as well as sheet substreams)
 	 *
 	 * @var string
 	 */
-	private $_data;
+	private $_data="";
 
 	/**
 	 * Size in bytes of $this->_data
 	 *
 	 * @var int
 	 */
-	private $_dataSize;
+	private $_dataSize=0;
 
 	/**
 	 * Current position in stream
 	 *
 	 * @var integer
 	 */
-	private $_pos;
+	private $_pos=0;
 
 	/**
 	 * Workbook to be returned by the reader.
@@ -228,7 +228,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 	 *
 	 * @var int
 	 */
-	private $_version;
+	private $_version=0;
 
 	/**
 	 * Codepage set in the Excel file being read. Only important for BIFF5 (Excel 5.0 - Excel 95)
@@ -236,147 +236,147 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 	 *
 	 * @var string
 	 */
-	private $_codepage;
+	private $_codepage="";
 
 	/**
 	 * Shared formats
 	 *
 	 * @var array
 	 */
-	private $_formats;
+	private $_formats=[];
 
 	/**
 	 * Shared fonts
 	 *
 	 * @var array
 	 */
-	private $_objFonts;
+	private $_objFonts=[];
 
 	/**
 	 * Color palette
 	 *
 	 * @var array
 	 */
-	private $_palette;
+	private $_palette=[];
 
 	/**
 	 * Worksheets
 	 *
 	 * @var array
 	 */
-	private $_sheets;
+	private $_sheets=[];
 
 	/**
 	 * External books
 	 *
 	 * @var array
 	 */
-	private $_externalBooks;
+	private $_externalBooks=[];
 
 	/**
 	 * REF structures. Only applies to BIFF8.
 	 *
 	 * @var array
 	 */
-	private $_ref;
+	private $_ref=[];
 
 	/**
 	 * External names
 	 *
 	 * @var array
 	 */
-	private $_externalNames;
+	private $_externalNames=[];
 
 	/**
 	 * Defined names
 	 *
 	 * @var array
 	 */
-	private $_definedname;
+	private $_definedname=[];
 
 	/**
 	 * Shared strings. Only applies to BIFF8.
 	 *
 	 * @var array
 	 */
-	private $_sst;
+	private $_sst=[];
 
 	/**
 	 * Panes are frozen? (in sheet currently being read). See WINDOW2 record.
 	 *
 	 * @var boolean
 	 */
-	private $_frozen;
+	private $_frozen=true;
 
 	/**
 	 * Fit printout to number of pages? (in sheet currently being read). See SHEETPR record.
 	 *
 	 * @var boolean
 	 */
-	private $_isFitToPages;
+	private $_isFitToPages=true	;
 
 	/**
 	 * Objects. One OBJ record contributes with one entry.
 	 *
 	 * @var array
 	 */
-	private $_objs;
+	private $_objs=[];
 
 	/**
 	 * Text Objects. One TXO record corresponds with one entry.
 	 *
 	 * @var array
 	 */
-	private $_textObjects;
+	private $_textObjects=[];
 
 	/**
 	 * Cell Annotations (BIFF8)
 	 *
 	 * @var array
 	 */
-	private $_cellNotes;
+	private $_cellNotes=[];
 
 	/**
 	 * The combined MSODRAWINGGROUP data
 	 *
 	 * @var string
 	 */
-	private $_drawingGroupData;
+	private $_drawingGroupData="";
 
 	/**
 	 * The combined MSODRAWING data (per sheet)
 	 *
 	 * @var string
 	 */
-	private $_drawingData;
+	private $_drawingData="";
 
 	/**
 	 * Keep track of XF index
 	 *
 	 * @var int
 	 */
-	private $_xfIndex;
+	private $_xfIndex=0;
 
 	/**
 	 * Mapping of XF index (that is a cell XF) to final index in cellXf collection
 	 *
 	 * @var array
 	 */
-	private $_mapCellXfIndex;
+	private $_mapCellXfIndex=[];
 
 	/**
 	 * Mapping of XF index (that is a style XF) to final index in cellStyleXf collection
 	 *
 	 * @var array
 	 */
-	private $_mapCellStyleXfIndex;
+	private $_mapCellStyleXfIndex=[];
 
 	/**
 	 * The shared formulas in a sheet. One SHAREDFMLA record contributes with one value.
 	 *
 	 * @var array
 	 */
-	private $_sharedFormulas;
+	private $_sharedFormulas=[];
 
 	/**
 	 * The shared formula parts in a sheet. One FORMULA record contributes with one value if it
@@ -384,7 +384,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 	 *
 	 * @var array
 	 */
-	private $_sharedFormulaParts;
+	private $_sharedFormulaParts=[];
 
 	/**
 	 * The type of encryption in use

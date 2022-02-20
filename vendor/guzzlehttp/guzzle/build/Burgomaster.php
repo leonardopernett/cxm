@@ -9,10 +9,10 @@
 class Burgomaster
 {
     /** @var string Base staging directory of the project */
-    public $stageDir;
+    public $stageDir="";
 
     /** @var string Root directory of the project */
-    public $projectRoot;
+    public $projectRoot="";
 
     /** @var array stack of sections */
     private $sections = array();

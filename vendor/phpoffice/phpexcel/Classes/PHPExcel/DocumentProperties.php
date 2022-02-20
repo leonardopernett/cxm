@@ -55,7 +55,7 @@ class PHPExcel_DocumentProperties
      *
      * @var string
      */
-    private $_lastModifiedBy;
+    private $_lastModifiedBy = '';
 
     /**
      * Created

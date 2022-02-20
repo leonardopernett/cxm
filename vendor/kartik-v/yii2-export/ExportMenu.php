@@ -446,7 +446,7 @@ class ExportMenu extends GridView
     /**
      * @var array the visble columns for export
      */
-    private $_visibleColumns;
+    private $_visibleColumns=[];
 
     /**
      * @var array the default style configuration

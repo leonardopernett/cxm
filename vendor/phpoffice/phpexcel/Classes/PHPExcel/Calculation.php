@@ -192,7 +192,7 @@ class PHPExcel_Calculation {
 	 * @var array of string
 	 *
 	 */
-	private $_cyclicReferenceStack;
+	private $_cyclicReferenceStack =[];
 
 	/**
 	 * Current iteration counter for cyclic formulae

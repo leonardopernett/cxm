@@ -21,7 +21,7 @@ class CurlFactory implements CurlFactoryInterface
     private $handles = [];
 
     /** @var int Total number of idle handles to keep in cache */
-    private $maxHandles;
+    private $maxHandles=0;
 
     /**
      * @param int $maxHandles Maximum number of idle handles.

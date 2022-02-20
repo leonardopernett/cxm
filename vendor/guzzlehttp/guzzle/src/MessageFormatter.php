@@ -44,7 +44,7 @@ class MessageFormatter
     const SHORT = '[{ts}] "{method} {target} HTTP/{version}" {code}';
 
     /** @var string Template used to format log messages */
-    private $template;
+    private $template="";
 
     /**
      * @param string $template Log message template

@@ -80,7 +80,7 @@ class PHPExcel_Calculation_FormulaParser {
 	 *
 	 * @var string
 	 */
-	private $_formula;
+	private $_formula="";
 
 	/**
 	 * Tokens

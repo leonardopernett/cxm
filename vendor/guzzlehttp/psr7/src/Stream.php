@@ -25,7 +25,7 @@ class Stream implements StreamInterface
     private $size;
     private $seekable;
     private $readable;
-    private $writable;
+    private $writable=true;
     private $uri;
     private $customMetadata;
 

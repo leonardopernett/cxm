@@ -47,7 +47,7 @@ class PHPExcel_Shared_JAMA_Matrix {
 	 *	@var int
 	 *	@access private
 	 */
-	private $m;
+	private $m=0;
 
 	/**
 	 *	Matrix column dimension
@@ -55,7 +55,7 @@ class PHPExcel_Shared_JAMA_Matrix {
 	 *	@var int
 	 *	@access private
 	 */
-	private $n;
+	private $n=0;
 
 
 	/**

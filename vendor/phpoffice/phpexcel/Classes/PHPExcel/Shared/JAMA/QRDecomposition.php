@@ -30,13 +30,13 @@ class PHPExcel_Shared_JAMA_QRDecomposition {
 	 *	Row dimension.
 	 *	@var integer
 	 */
-	private $m;
+	private $m=0;
 
 	/**
 	*	Column dimension.
 	*	@var integer
 	*/
-	private $n;
+	private $n=0;
 
 	/**
 	 *	Array for internal storage of diagonal of R.

@@ -12,7 +12,7 @@ use Psr\Http\Message\StreamInterface;
 class FnStream implements StreamInterface
 {
     /** @var array */
-    private $methods;
+    private $methods=[];
 
     /** @var array Methods that must be implemented in the given array */
     private static $slots = ['__toString', 'close', 'detach', 'rewind',

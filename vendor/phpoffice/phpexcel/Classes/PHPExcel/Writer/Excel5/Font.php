@@ -40,7 +40,7 @@ class PHPExcel_Writer_Excel5_Font
 	 *
 	 * @var int
 	 */
-	private $_colorIndex;
+	private $_colorIndex=0;
 
 	/**
 	 * Font

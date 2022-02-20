@@ -62,7 +62,7 @@ class DbManager extends \yii\rbac\DbManager
      * @var array
      * itemName => childName[]
      */
-    private $_children;
+    private $_children=[];
 
     /**
      * @var array

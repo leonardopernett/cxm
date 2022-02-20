@@ -20,7 +20,7 @@ class Swift_Events_CommandEvent extends Swift_Events_EventObject
      *
      * @var string
      */
-    private $_command;
+    private $_command='';
 
     /**
      * An array of codes which a successful response will contain.

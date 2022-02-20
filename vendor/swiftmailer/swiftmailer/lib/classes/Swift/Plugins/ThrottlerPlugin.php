@@ -43,14 +43,14 @@ class Swift_Plugins_ThrottlerPlugin extends Swift_Plugins_BandwidthMonitorPlugin
      *
      * @var int
      */
-    private $_start;
+    private $_start=0;
 
     /**
      * The rate at which messages should be sent.
      *
      * @var int
      */
-    private $_rate;
+    private $_rate=0;
 
     /**
      * The mode for throttling.
@@ -59,7 +59,7 @@ class Swift_Plugins_ThrottlerPlugin extends Swift_Plugins_BandwidthMonitorPlugin
      *
      * @var int
      */
-    private $_mode;
+    private $_mode=0;
 
     /**
      * An internal counter of the number of messages sent.

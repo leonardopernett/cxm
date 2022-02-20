@@ -20,14 +20,14 @@ class Swift_Events_ResponseEvent extends Swift_Events_EventObject
      *
      * @var bool
      */
-    private $_valid;
+    private $_valid=true;
 
     /**
      * The response received from the server.
      *
      * @var string
      */
-    private $_response;
+    private $_response='';
 
     /**
      * Create a new ResponseEvent for $source and $response.

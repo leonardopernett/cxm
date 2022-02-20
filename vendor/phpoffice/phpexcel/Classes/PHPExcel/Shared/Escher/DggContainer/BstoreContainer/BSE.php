@@ -64,7 +64,7 @@ class PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE
 	 *
 	 * @var int
 	 */
-	private $_blipType;
+	private $_blipType=0;
 
 	/**
 	 * Set parent BLIP Store Entry Container
