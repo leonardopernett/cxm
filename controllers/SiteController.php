@@ -106,8 +106,19 @@ class SiteController extends Controller {
     }
 
     public function actionLogout() {
+        $usuario_id = Yii::$app->user->identity->id;
+        $usuario_red = Yii::$app->user->identity->username;
+        $usuario_ip = Yii::$app->getRequest()->getUserIP();
         Yii::$app->user->logout();
-
+        
+        \Yii::$app->db->createCommand()->insert('tbl_usuarioslog', [
+            'uslg_usua_id' => $usuario_id,
+            'uslg_usuario' => $usuario_red,
+            'uslg_fechahora' => date('Y-m-d h:i:s'),
+            'uslg_ip' => $usuario_ip,
+            'uslg_accion' => 'Desconexion',
+            'uslg_estado' => 'Exitoso'
+        ])->execute();
         return $this->goHome();
     }
 

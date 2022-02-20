@@ -122,6 +122,14 @@ class SlidesController extends Controller {
                 if ($file->saveAs('images/uploads/' . $filename)) {
                     $model->imagen = $filename;
                     $model->save();
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Create',
+                        'tabla' => 'tbl_slides'
+                    ])->execute();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
@@ -152,6 +160,15 @@ class SlidesController extends Controller {
                     if ($file->saveAs('images/uploads/' . $filename)) {
                         $model->imagen = $filename;
                         $model->save();
+
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Update',
+                            'tabla' => 'tbl_slides'
+                        ])->execute();
                         return $this->redirect(['view', 'id' => $model->id]);
                     }
                 }
@@ -184,6 +201,14 @@ class SlidesController extends Controller {
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
+        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+            'usua_id' => Yii::$app->user->identity->id,
+            'usuario' => Yii::$app->user->identity->username,
+            'fechahora' => date('Y-m-d h:i:s'),
+            'ip' => Yii::$app->getRequest()->getUserIP(),
+            'accion' => 'Delete',
+            'tabla' => 'tbl_slides'
+        ])->execute();
 
         return $this->redirect(['index']);
     }

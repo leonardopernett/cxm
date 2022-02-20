@@ -145,6 +145,14 @@ class TmpejecucionfeedbacksController extends Controller {
                     $model->evaluado_id = $evaluado_id;
                     $model->basessatisfaccion_id = $basesatisfaccion_id;
                     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Create',
+                            'tabla' => 'tbl_tmpejecucionfeedbacks'
+                        ])->execute();
                         return $this->renderAjax('view', [
                                     'model' => $model,
                         ]);
@@ -169,6 +177,14 @@ class TmpejecucionfeedbacksController extends Controller {
 
                 if (Yii::$app->getRequest()->isAjax) {
                     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Update',
+                            'tabla' => 'tbl_tmpejecucionfeedbacks'
+                        ])->execute();
                         return $this->renderAjax('view', [
                                     'model' => $model,
                         ]);
@@ -195,6 +211,15 @@ class TmpejecucionfeedbacksController extends Controller {
                         if (!$model->delete()) {
                             Yii::$app->getSession()->setFlash('danger'
                                     , Yii::t('app', 'No puede eliminar el registro'));
+                        }else{
+                            \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                                'usua_id' => Yii::$app->user->identity->id,
+                                'usuario' => Yii::$app->user->identity->username,
+                                'fechahora' => date('Y-m-d h:i:s'),
+                                'ip' => Yii::$app->getRequest()->getUserIP(),
+                                'accion' => 'Delete',
+                                'tabla' => 'tbl_tmpejecucionfeedbacks'
+                            ])->execute();
                         }
                     } catch (\yii\db\IntegrityException $exc) {
                         \Yii::error($exc->getMessage(), 'db');

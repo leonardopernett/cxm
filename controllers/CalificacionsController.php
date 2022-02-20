@@ -116,6 +116,14 @@ class CalificacionsController extends Controller {
                 $model = new Calificacions();
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Create',
+                        'tabla' => 'tbl_calificacions'
+                    ])->execute();
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('create', [
@@ -134,6 +142,14 @@ class CalificacionsController extends Controller {
                 $model = $this->findModel($id);
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Update',
+                        'tabla' => 'tbl_calificacions'
+                    ])->execute();
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('update', [
@@ -156,6 +172,15 @@ class CalificacionsController extends Controller {
                                 Yii::t('app',
                                         'No se pudo eliminar la calificación "'
                                         . $model->name. '" ya que se encuentra relacionada'));
+                    }else {
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Delete',
+                            'tabla' => 'tbl_calificacions'
+                        ])->execute();
                     }
                 } catch (\yii\db\IntegrityException $exc) {
                     \Yii::error($exc->getMessage(), 'db');

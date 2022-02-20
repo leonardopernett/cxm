@@ -137,6 +137,14 @@ class TmptiposllamadaController extends Controller {
             $tmp_formulario_id = Yii::$app->request->get('tmp_formulario_id');
             $model->tmpejecucionformulario_id = $tmp_formulario_id;
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_tmptiposllamada'
+                ])->execute();
                 return $this->renderPartial('view', [
                             'model' => $model,
                 ]);
@@ -161,6 +169,14 @@ class TmptiposllamadaController extends Controller {
 
         if (Yii::$app->getRequest()->isAjax) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Update',
+                    'tabla' => 'tbl_tmptiposllamada'
+                ])->execute();
                 return $this->renderPartial('view', [
                             'model' => $model,
                 ]);
@@ -187,6 +203,15 @@ class TmptiposllamadaController extends Controller {
                 if (!$model->delete()) {
                     Yii::$app->getSession()->setFlash('danger'
                             , Yii::t('app', 'No puede eliminar el registro'));
+                }else{
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Delete',
+                        'tabla' => 'tbl_tmptiposllamada'
+                    ])->execute();
                 }
             } catch (\yii\db\IntegrityException $exc) {
                 \Yii::error($exc->getMessage(), 'db');

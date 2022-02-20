@@ -181,6 +181,14 @@ class DetalleparametrizacionController extends Controller {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Update',
+                'tabla' => 'tbl_detalleparametrizacion'
+            ])->execute();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             $modelcategoriaGestion = \app\models\Categoriagestion::findOne($model->id_categoriagestion);
@@ -205,6 +213,14 @@ class DetalleparametrizacionController extends Controller {
         $id_parametrizacion = Yii::$app->request->post('idparame');
         $idcategoriagestion = Yii::$app->request->post('gestion');
         $this->findModel($id)->delete();
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+            'usua_id' => Yii::$app->user->identity->id,
+            'usuario' => Yii::$app->user->identity->username,
+            'fechahora' => date('Y-m-d h:i:s'),
+            'ip' => Yii::$app->getRequest()->getUserIP(),
+            'accion' => 'Delete',
+            'tabla' => 'tbl_detalleparametrizacion'
+        ])->execute();
         if ($idcategoriagestion != 0) {
             $modelGestionCategoria = \app\models\Categoriagestion::findOne($idcategoriagestion);
         } else {

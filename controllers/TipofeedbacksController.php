@@ -139,6 +139,14 @@ class TipofeedbacksController extends Controller {
             $model->dsmensaje_auto = Yii::t('app', "Generado por el usuario");
             $model->categoriafeedback_id = $catFeedbackId;
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_tipofeedbacks'
+                ])->execute();
                 return $this->renderPartial('view',
                                 [
                             'model' => $model,
@@ -165,6 +173,14 @@ class TipofeedbacksController extends Controller {
 
         if (Yii::$app->getRequest()->isAjax) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Update',
+                    'tabla' => 'tbl_tipofeedbacks'
+                ])->execute();
                 return $this->renderPartial('view',
                                 [
                             'model' => $model,
@@ -204,6 +220,15 @@ class TipofeedbacksController extends Controller {
                     Yii::$app->getSession()->setFlash('danger',
                             Yii::t('app',
                                     'Integrity constraint violation tipofeedback'));
+                }else{
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Delete',
+                        'tabla' => 'tbl_tipofeedbacks'
+                    ])->execute();
                 }
             } catch (\yii\db\IntegrityException $exc) {
                 \Yii::error($exc->getMessage(), 'db');

@@ -140,6 +140,14 @@ class TableroproblemadetallesController extends Controller {
                     $problemaId = Yii::$app->request->get('tableroproblema_id');
                     $model->tableroproblema_id = $problemaId;
                     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Create',
+                            'tabla' => 'tbl_tableroproblemadetalles'
+                        ])->execute();
                         return $this->renderPartial('view',
                                         [
                                     'model' => $model,
@@ -166,6 +174,14 @@ class TableroproblemadetallesController extends Controller {
 
                 if (Yii::$app->getRequest()->isAjax) {
                     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Update',
+                            'tabla' => 'tbl_tableroproblemadetalles'
+                        ])->execute();
                         return $this->renderPartial('view',
                                         [
                                     'model' => $model,
@@ -199,6 +215,15 @@ class TableroproblemadetallesController extends Controller {
                                             . $model->name
                                             . '" porque corresponde al formulario de '
                                             . 'una o mas personas evaluadas'));
+                        }else{
+                            \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                                'usua_id' => Yii::$app->user->identity->id,
+                                'usuario' => Yii::$app->user->identity->username,
+                                'fechahora' => date('Y-m-d h:i:s'),
+                                'ip' => Yii::$app->getRequest()->getUserIP(),
+                                'accion' => 'Delete',
+                                'tabla' => 'tbl_tableroproblemadetalles'
+                            ])->execute();
                         }
                     } catch (\yii\db\IntegrityException $exc) {
                         \Yii::error($exc->getMessage(), 'db');

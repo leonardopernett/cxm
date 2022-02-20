@@ -205,6 +205,14 @@ class EquiposEvaluadosController extends Controller {
         $model = new EquiposEvaluados();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_equipos_evaluados'
+            ])->execute();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create',
@@ -224,6 +232,14 @@ class EquiposEvaluadosController extends Controller {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Update',
+                'tabla' => 'tbl_equipos_evaluados'
+            ])->execute();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update',
@@ -245,6 +261,15 @@ class EquiposEvaluadosController extends Controller {
             try {                
                 $model = $this->findModel($id);                
                 $model->delete();
+
+                Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Delete',
+                    'tabla' => 'tbl_equipos_evaluados'
+                ])->execute();
                            
             } catch (\yii\db\IntegrityException $exc) {
                 \Yii::error($exc->getMessage(), 'db');

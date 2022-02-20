@@ -1278,6 +1278,15 @@ use app\models\BasechatMotivos;
                     'usua_id' => Yii::$app->user->identity->id,
                     'fechacreacion' => date("Y-m-d"),
                 ])->execute(); 
+
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_basechat_formulario'
+                ])->execute();
             }
             
 
@@ -1318,10 +1327,29 @@ use app\models\BasechatMotivos;
                     'fechacreacion' => date("Y-m-d"),
                 ])->execute();
 
-	     Yii::$app->db->createCommand()->update('tbl_basechat_tigob',[                    
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_basechat_formulario'
+                ])->execute();
+
+	            Yii::$app->db->createCommand()->update('tbl_basechat_tigob',[                    
                     'estado' => $varestado,
                 ],'idencuesta ='.$txtvaridencuesta.' and ticked_id ='.$txtvartxtticket.'')->execute(); 
+
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Update',
+                    'tabla' => 'tbl_basechat_tigob'
+                ])->execute();
             }            
+            
 
             $txtrta = 1;
             die(json_encode($txtrta));  
@@ -1414,6 +1442,15 @@ use app\models\BasechatMotivos;
                         'usua_id' => Yii::$app->user->identity->id,
                         'fechacreacion' => date("Y-m-d"),
                     ])->execute(); 
+
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Create',
+                        'tabla' => 'tbl_evaluados_tigo'
+                    ])->execute();
                 }
 
             }

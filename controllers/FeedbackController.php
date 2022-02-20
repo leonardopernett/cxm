@@ -90,6 +90,14 @@ class FeedbackController extends \yii\web\Controller {
                         $model->usua_id_lider = $modelBasesatisafaccion->id_lider_equipo;
                         $model->basessatisfaccion_id = $modelBasesatisafaccion->id;
                         if ($model->save()) {
+                            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                                'usua_id' => Yii::$app->user->identity->id,
+                                'usuario' => Yii::$app->user->identity->username,
+                                'fechahora' => date('Y-m-d h:i:s'),
+                                'ip' => Yii::$app->getRequest()->getUserIP(),
+                                'accion' => 'Create',
+                                'tabla' => 'tbl_ejecucionfeedbacks'
+                            ])->execute(); 
                             Yii::$app->session->setFlash('success', Yii::t('app', 'Feedback creado'));
                         }
                         return $this->redirect(['basesatisfaccion/formulariogestionsatisfaccion', 'id' => $modelBasesatisafaccion->id, 'bandera' => true]);

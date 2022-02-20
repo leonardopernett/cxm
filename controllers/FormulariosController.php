@@ -174,6 +174,15 @@ class FormulariosController extends Controller {
                 $model->i10_nmfactor = 1;
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Create',
+                        'tabla' => 'tbl_formularios'
+                    ])->execute(); 
+
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('create', [
@@ -192,6 +201,14 @@ class FormulariosController extends Controller {
                 $model = $this->findModel($id);
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Update',
+                        'tabla' => 'tbl_formularios'
+                    ])->execute(); 
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('update', [
@@ -237,6 +254,15 @@ class FormulariosController extends Controller {
                                     . $model->name
                                     . '" porque corresponde a una o mas personas '
                                     . 'evaluadas.'));
+                }else{
+                    Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Delete',
+                        'tabla' => 'tbl_formularios'
+                    ])->execute(); 
                 }
 
                 return $this->redirect(['index']);

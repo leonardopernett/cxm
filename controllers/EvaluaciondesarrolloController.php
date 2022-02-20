@@ -153,13 +153,22 @@ use yii\base\Exception;
         $txtrta = 1;
       }else{
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_nivel',[
-                                'nivel' => $txtvarnivel,
-                                'cargo' => $txtvarcargo,
-                                'nombrecargo' => $txtvarnamecargo,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+              'nivel' => $txtvarnivel,
+              'cargo' => $txtvarcargo,
+              'nombrecargo' => $txtvarnamecargo,
+              'anulado' => 0,
+              'usua_id' => Yii::$app->user->identity->id,
+              'fechacrecion' => date("Y-m-d"),
+          ])->execute(); 
+
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+          'usua_id' => Yii::$app->user->identity->id,
+          'usuario' => Yii::$app->user->identity->username,
+          'fechahora' => date('Y-m-d h:i:s'),
+          'ip' => Yii::$app->getRequest()->getUserIP(),
+          'accion' => 'Create',
+          'tabla' => 'tbl_evaluacion_nivel'
+        ])->execute();
       }     
 
       
@@ -175,11 +184,19 @@ use yii\base\Exception;
       $txtvarIdEvaluacion = Yii::$app->request->get("txtvarIdEvaluacion");
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_nombre',[
-                                'nombreeval' => $txtvarIdEvaluacion,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+              'nombreeval' => $txtvarIdEvaluacion,
+              'anulado' => 0,
+              'usua_id' => Yii::$app->user->identity->id,
+              'fechacrecion' => date("Y-m-d"),
+          ])->execute(); 
+          Yii::$app->db->createCommand()->insert('tbl_logs', [
+            'usua_id' => Yii::$app->user->identity->id,
+            'usuario' => Yii::$app->user->identity->username,
+            'fechahora' => date('Y-m-d h:i:s'),
+            'ip' => Yii::$app->getRequest()->getUserIP(),
+            'accion' => 'Create',
+            'tabla' => 'tbl_evaluacion_nombre'
+          ])->execute();
 
       $txtrta = 1;
       die(json_encode($txtrta));
@@ -200,6 +217,15 @@ use yii\base\Exception;
                                 'fechacrecion' => date("Y-m-d"),
                             ])->execute(); 
 
+          Yii::$app->db->createCommand()->insert('tbl_logs', [
+            'usua_id' => Yii::$app->user->identity->id,
+            'usuario' => Yii::$app->user->identity->username,
+            'fechahora' => date('Y-m-d h:i:s'),
+            'ip' => Yii::$app->getRequest()->getUserIP(),
+            'accion' => 'Create',
+            'tabla' => 'tbl_evaluacion_tipoeval'
+          ])->execute();
+
       $txtrta = 1;
       die(json_encode($txtrta));
     }
@@ -217,14 +243,23 @@ use yii\base\Exception;
 
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_competencias',[
-                                'namecompetencia' => $txtvarIdnamecompetencia,
-                                'idevaluacionnivel' => $txtvaridnivel2,
-                                'idevaluaciontipo' => $txtvarIdTipoEvaluacion2,
-				'idevaluacionbloques' => $txtvarIdBloque,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+                  'namecompetencia' => $txtvarIdnamecompetencia,
+                  'idevaluacionnivel' => $txtvaridnivel2,
+                  'idevaluaciontipo' => $txtvarIdTipoEvaluacion2,
+                  'idevaluacionbloques' => $txtvarIdBloque,
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,
+                  'fechacrecion' => date("Y-m-d"),
+              ])->execute(); 
+
+              Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_evaluacion_competencias'
+              ])->execute();
 
       $txtrta = 1;
       die(json_encode($txtrta));
@@ -240,13 +275,22 @@ use yii\base\Exception;
       $txtvarIdEvaluacion2 = Yii::$app->request->get("txtvarIdEvaluacion2");
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_comportamientos',[
-                                'namepregunta' => $txtvarIdnamepregunta,
-                                'idevaluacioncompetencia' => $txtvaridcompetencia,
-                                'idevaluacionnombre' => $txtvarIdEvaluacion2,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'namepregunta' => $txtvarIdnamepregunta,
+          'idevaluacioncompetencia' => $txtvaridcompetencia,
+          'idevaluacionnombre' => $txtvarIdEvaluacion2,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute(); 
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_comportamientos'
+      ])->execute();
 
       $txtrta = 1;
       die(json_encode($txtrta));      
@@ -260,13 +304,22 @@ use yii\base\Exception;
       $txtvarIdEvaluacion2 = Yii::$app->request->get("txtvarIdEvaluacion2");
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_respuestas',[
-                                'namerespuesta' => $txtvarIdnamerespuesta,
-                                'valor' => $txtvarvalor,
-                                'idevaluacionnombre' => $txtvarIdEvaluacion2,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'namerespuesta' => $txtvarIdnamerespuesta,
+          'valor' => $txtvarvalor,
+          'idevaluacionnombre' => $txtvarIdEvaluacion2,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute();
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_respuestas'
+      ])->execute();
 
       $txtrta = 1;
       die(json_encode($txtrta));      
@@ -502,12 +555,21 @@ use yii\base\Exception;
       $txtvarIdEvaluacion2 = Yii::$app->request->get("txtvarIdEvaluacion2");
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_bloques',[
-                                'namebloque' => $txtvarIdnamebloque,
-                                'idevaluacionnombre' => $txtvarIdEvaluacion2,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'namebloque' => $txtvarIdnamebloque,
+          'idevaluacionnombre' => $txtvarIdEvaluacion2,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute(); 
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_bloques'
+      ])->execute();
 
       $txtrta = 1;
       die(json_encode($txtrta));      
@@ -538,18 +600,27 @@ use yii\base\Exception;
 
       if ($varverifica == 0) {
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
-                                'documento' => $txtvardocumento,
-                                'documentoevaluado' => $txtvardocumento,
-                                'idevaluacionbloques' => $txtvaridbloque,
-                                'idevaluacioncompetencia' => $txtvaridcompetencia,
-                                'idevaluacionpregunta' => $txtvaridpreg,
-                                'idevaluacionrespuesta' => $txtvaridrta,
-                                'idevaluaciontipo' => 1,
-                                'comentarios' => null,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+            'documento' => $txtvardocumento,
+            'documentoevaluado' => $txtvardocumento,
+            'idevaluacionbloques' => $txtvaridbloque,
+            'idevaluacioncompetencia' => $txtvaridcompetencia,
+            'idevaluacionpregunta' => $txtvaridpreg,
+            'idevaluacionrespuesta' => $txtvaridrta,
+            'idevaluaciontipo' => 1,
+            'comentarios' => null,
+            'anulado' => 0,
+            'usua_id' => Yii::$app->user->identity->id,
+            'fechacrecion' => date("Y-m-d"),
+        ])->execute();
+        
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+          'usua_id' => Yii::$app->user->identity->id,
+          'usuario' => Yii::$app->user->identity->username,
+          'fechahora' => date('Y-m-d h:i:s'),
+          'ip' => Yii::$app->getRequest()->getUserIP(),
+          'accion' => 'Create',
+          'tabla' => 'tbl_evaluacion_solucionado'
+        ])->execute();
       }
 
       die(json_encode($varverifica)); 
@@ -561,29 +632,47 @@ use yii\base\Exception;
       $txtvardocumento = Yii::$app->request->get("txtvardocumento");
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
-                                'documento' => $txtvardocumento,
-                                'documentoevaluado' => $txtvardocumento,
-                                'idevaluacionbloques' => null,
-                                'idevaluacioncompetencia' => null,
-                                'idevaluacionpregunta' => null,
-                                'idevaluacionrespuesta' => null,
-                                'idevaluaciontipo' => 1,
-                                'comentarios' => $txtvarocmentario,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'documento' => $txtvardocumento,
+          'documentoevaluado' => $txtvardocumento,
+          'idevaluacionbloques' => null,
+          'idevaluacioncompetencia' => null,
+          'idevaluacionpregunta' => null,
+          'idevaluacionrespuesta' => null,
+          'idevaluaciontipo' => 1,
+          'comentarios' => $txtvarocmentario,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute(); 
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_solucionado'
+      ])->execute();
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_desarrollo',[
-                                'idevaluador' => $txtvardocumento,
-                                'idevalados' => $txtvardocumento,
-                                'idevaluaciontipo' => 1,
-                                'realizada' => 1,
-                                'comentarios' => null,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'idevaluador' => $txtvardocumento,
+          'idevalados' => $txtvardocumento,
+          'idevaluaciontipo' => 1,
+          'realizada' => 1,
+          'comentarios' => null,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute(); 
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_desarrollo'
+      ])->execute();
 
       $varverifica = 1;
 
@@ -645,18 +734,27 @@ use yii\base\Exception;
 
       if ($varverifica == 0) {
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
-                                'documento' => $txtvardocumento,
-                                'documentoevaluado' => $vardocumentjefe,
-                                'idevaluacionbloques' => $txtvaridbloque,
-                                'idevaluacioncompetencia' => $txtvaridcompetencia,
-                                'idevaluacionpregunta' => $txtvaridpreg,
-                                'idevaluacionrespuesta' => $txtvaridrta,
-                                'idevaluaciontipo' => 2,
-                                'comentarios' => null,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+            'documento' => $txtvardocumento,
+            'documentoevaluado' => $vardocumentjefe,
+            'idevaluacionbloques' => $txtvaridbloque,
+            'idevaluacioncompetencia' => $txtvaridcompetencia,
+            'idevaluacionpregunta' => $txtvaridpreg,
+            'idevaluacionrespuesta' => $txtvaridrta,
+            'idevaluaciontipo' => 2,
+            'comentarios' => null,
+            'anulado' => 0,
+            'usua_id' => Yii::$app->user->identity->id,
+            'fechacrecion' => date("Y-m-d"),
+        ])->execute(); 
+
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+          'usua_id' => Yii::$app->user->identity->id,
+          'usuario' => Yii::$app->user->identity->username,
+          'fechahora' => date('Y-m-d h:i:s'),
+          'ip' => Yii::$app->getRequest()->getUserIP(),
+          'accion' => 'Create',
+          'tabla' => 'tbl_evaluacion_solucionado'
+        ])->execute();
       }
 
       die(json_encode($varverifica)); 
@@ -672,29 +770,47 @@ use yii\base\Exception;
       ->queryScalar();
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
-                                'documento' => $txtvardocumento,
-                                'documentoevaluado' => $vardocumentjefe,
-                                'idevaluacionbloques' => null,
-                                'idevaluacioncompetencia' => null,
-                                'idevaluacionpregunta' => null,
-                                'idevaluacionrespuesta' => null,
-                                'idevaluaciontipo' => 2,
-                                'comentarios' => $txtvarocmentario,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'documento' => $txtvardocumento,
+          'documentoevaluado' => $vardocumentjefe,
+          'idevaluacionbloques' => null,
+          'idevaluacioncompetencia' => null,
+          'idevaluacionpregunta' => null,
+          'idevaluacionrespuesta' => null,
+          'idevaluaciontipo' => 2,
+          'comentarios' => $txtvarocmentario,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute(); 
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_solucionado'
+      ])->execute();
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_desarrollo',[
-                                'idevaluador' => $txtvardocumento,
-                                'idevalados' => $vardocumentjefe,
-                                'idevaluaciontipo' => 2,
-                                'realizada' => 1,
-                                'comentarios' => null,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'idevaluador' => $txtvardocumento,
+          'idevalados' => $vardocumentjefe,
+          'idevaluaciontipo' => 2,
+          'realizada' => 1,
+          'comentarios' => null,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute();
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_desarrollo'
+      ])->execute(); 
 
 
       $varverifica = 1;
@@ -851,15 +967,24 @@ use yii\base\Exception;
       $txtvarIdEvaluacion2 = Yii::$app->request->get("txtvarIdEvaluacion2");
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_feedback_mensaje',[
-                                'idevaluacioncompetencia' => $txtvarIdcompetencia,
-                                'mensaje' => $txtvarmensaje,
-              'rol_competencia' => $txtvarIdcargo,
-                                'tipocompetencia' => $txtvarIdtipocompetencia,
-              'idevaluacionnombre' => $txtvarIdEvaluacion2,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'idevaluacioncompetencia' => $txtvarIdcompetencia,
+          'mensaje' => $txtvarmensaje,
+          'rol_competencia' => $txtvarIdcargo,
+          'tipocompetencia' => $txtvarIdtipocompetencia,
+          'idevaluacionnombre' => $txtvarIdEvaluacion2,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute();
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_feedback_mensaje'
+      ])->execute(); 
 
       $txtrta = 1;
       die(json_encode($txtrta));      
@@ -909,18 +1034,27 @@ use yii\base\Exception;
 
       if ($varverifica == 0) {
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
-                                'documento' => $txtvardocumento,
-                                'documentoevaluado' => $vardocumentjefe,
-                                'idevaluacionbloques' => $txtvaridbloque,
-                                'idevaluacioncompetencia' => $txtvaridcompetencia,
-                                'idevaluacionpregunta' => $txtvaridpreg,
-                                'idevaluacionrespuesta' => $txtvaridrta,
-                                'idevaluaciontipo' => 4,
-                                'comentarios' => null,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+            'documento' => $txtvardocumento,
+            'documentoevaluado' => $vardocumentjefe,
+            'idevaluacionbloques' => $txtvaridbloque,
+            'idevaluacioncompetencia' => $txtvaridcompetencia,
+            'idevaluacionpregunta' => $txtvaridpreg,
+            'idevaluacionrespuesta' => $txtvaridrta,
+            'idevaluaciontipo' => 4,
+            'comentarios' => null,
+            'anulado' => 0,
+            'usua_id' => Yii::$app->user->identity->id,
+            'fechacrecion' => date("Y-m-d"),
+        ])->execute(); 
+
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+          'usua_id' => Yii::$app->user->identity->id,
+          'usuario' => Yii::$app->user->identity->username,
+          'fechahora' => date('Y-m-d h:i:s'),
+          'ip' => Yii::$app->getRequest()->getUserIP(),
+          'accion' => 'Create',
+          'tabla' => 'tbl_evaluacion_solucionado'
+        ])->execute(); 
       }
 
       die(json_encode($varverifica)); 
@@ -933,29 +1067,47 @@ use yii\base\Exception;
       $vardocumentjefe = Yii::$app->request->get("txtvardocument2");
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
-                                'documento' => $txtvardocumento,
-                                'documentoevaluado' => $vardocumentjefe,
-                                'idevaluacionbloques' => null,
-                                'idevaluacioncompetencia' => null,
-                                'idevaluacionpregunta' => null,
-                                'idevaluacionrespuesta' => null,
-                                'idevaluaciontipo' => 4,
-                                'comentarios' => $txtvarocmentario,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'documento' => $txtvardocumento,
+          'documentoevaluado' => $vardocumentjefe,
+          'idevaluacionbloques' => null,
+          'idevaluacioncompetencia' => null,
+          'idevaluacionpregunta' => null,
+          'idevaluacionrespuesta' => null,
+          'idevaluaciontipo' => 4,
+          'comentarios' => $txtvarocmentario,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute(); 
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_solucionado'
+      ])->execute(); 
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_desarrollo',[
-                                'idevaluador' => $txtvardocumento,
-                                'idevalados' => $vardocumentjefe,
-                                'idevaluaciontipo' => 4,
-                                'realizada' => 1,
-                                'comentarios' => null,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'idevaluador' => $txtvardocumento,
+          'idevalados' => $vardocumentjefe,
+          'idevaluaciontipo' => 4,
+          'realizada' => 1,
+          'comentarios' => null,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute();
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_desarrollo'
+      ])->execute(); 
 
       $varverifica = 1;
 
@@ -1079,18 +1231,27 @@ use yii\base\Exception;
 
       if ($varverifica == 0) {
         Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
-                                'documento' => $txtvardocumento,
-                                'documentoevaluado' => $vardocumentjefe,
-                                'idevaluacionbloques' => $txtvaridbloque,
-                                'idevaluacioncompetencia' => $txtvaridcompetencia,
-                                'idevaluacionpregunta' => $txtvaridpreg,
-                                'idevaluacionrespuesta' => $txtvaridrta,
-                                'idevaluaciontipo' => 3,
-                                'comentarios' => null,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+            'documento' => $txtvardocumento,
+            'documentoevaluado' => $vardocumentjefe,
+            'idevaluacionbloques' => $txtvaridbloque,
+            'idevaluacioncompetencia' => $txtvaridcompetencia,
+            'idevaluacionpregunta' => $txtvaridpreg,
+            'idevaluacionrespuesta' => $txtvaridrta,
+            'idevaluaciontipo' => 3,
+            'comentarios' => null,
+            'anulado' => 0,
+            'usua_id' => Yii::$app->user->identity->id,
+            'fechacrecion' => date("Y-m-d"),
+        ])->execute(); 
+
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+          'usua_id' => Yii::$app->user->identity->id,
+          'usuario' => Yii::$app->user->identity->username,
+          'fechahora' => date('Y-m-d h:i:s'),
+          'ip' => Yii::$app->getRequest()->getUserIP(),
+          'accion' => 'Create',
+          'tabla' => 'tbl_evaluacion_solucionado'
+        ])->execute(); 
       }
 
       die(json_encode($varverifica)); 
@@ -1103,29 +1264,47 @@ use yii\base\Exception;
       $vardocumentjefe = Yii::$app->request->get("txtvardocument2");
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_solucionado',[
-                                'documento' => $txtvardocumento,
-                                'documentoevaluado' => $vardocumentjefe,
-                                'idevaluacionbloques' => null,
-                                'idevaluacioncompetencia' => null,
-                                'idevaluacionpregunta' => null,
-                                'idevaluacionrespuesta' => null,
-                                'idevaluaciontipo' => 3,
-                                'comentarios' => $txtvarocmentario,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'documento' => $txtvardocumento,
+          'documentoevaluado' => $vardocumentjefe,
+          'idevaluacionbloques' => null,
+          'idevaluacioncompetencia' => null,
+          'idevaluacionpregunta' => null,
+          'idevaluacionrespuesta' => null,
+          'idevaluaciontipo' => 3,
+          'comentarios' => $txtvarocmentario,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute(); 
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_solucionado'
+      ])->execute(); 
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_desarrollo',[
-                                'idevaluador' => $txtvardocumento,
-                                'idevalados' => $vardocumentjefe,
-                                'idevaluaciontipo' => 3,
-                                'realizada' => 1,
-                                'comentarios' => null,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute(); 
+          'idevaluador' => $txtvardocumento,
+          'idevalados' => $vardocumentjefe,
+          'idevaluaciontipo' => 3,
+          'realizada' => 1,
+          'comentarios' => null,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute();
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_desarrollo'
+      ])->execute(); 
 
       $varverifica = 1;
 
@@ -1383,16 +1562,25 @@ use yii\base\Exception;
       }
 
       Yii::$app->db->createCommand()->insert('tbl_evaluacion_novedadeslog',[
-                                'evaluadorid' => $txtvarvardocument,
-                                'evaluado' => $txtvaridpares,
-                                'tipo_eva' => $txtvaridasuntosNcargo,
-                                'asunto' => $txtvaridasuntosN,
-                                'comentarios' => $txtvarIdcomentarios,
-                                'aprobado' => 0,
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacrecion' => date("Y-m-d"),
-                            ])->execute();        
+          'evaluadorid' => $txtvarvardocument,
+          'evaluado' => $txtvaridpares,
+          'tipo_eva' => $txtvaridasuntosNcargo,
+          'asunto' => $txtvaridasuntosN,
+          'comentarios' => $txtvarIdcomentarios,
+          'aprobado' => 0,
+          'anulado' => 0,
+          'usua_id' => Yii::$app->user->identity->id,
+          'fechacrecion' => date("Y-m-d"),
+      ])->execute(); 
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_evaluacion_novedadeslog'
+      ])->execute(); 
 
       $varverifica = 1;
 

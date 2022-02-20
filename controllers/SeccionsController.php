@@ -169,6 +169,14 @@ class SeccionsController extends Controller {
             $isAjax = true;
             $formulario_id = Yii::$app->request->get('formulario_id');
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_seccions'
+                ])->execute();
                 return $this->renderPartial('view',
                                 [
                             'model' => $model,
@@ -215,6 +223,14 @@ class SeccionsController extends Controller {
         if (Yii::$app->getRequest()->isAjax) {
             $isAjax = true;
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Update',
+                    'tabla' => 'tbl_seccions'
+                ])->execute();
                 return $this->renderPartial('view',
                                 [
                             'model' => $model,
@@ -256,6 +272,15 @@ class SeccionsController extends Controller {
             try {
                 $model = $this->findModel($id);
                 $model->delete();
+
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Delete',
+                    'tabla' => 'tbl_seccions'
+                ])->execute();
                             
             } catch (\yii\db\IntegrityException $exc) {
                 \Yii::error($exc->getMessage(), 'db');

@@ -156,6 +156,16 @@ class UsuariosController extends Controller {
                     $isAjax = true;
 
                     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Create',
+                            'tabla' => 'tbl_usuarios'
+                        ])->execute();
+
                         $rolUsuario = new \app\models\RelUsuariosRoles();
                         $rolUsuario->rel_usua_id = $model->usua_id;
                         $rolUsuario->rel_role_id = $model->rol;
@@ -179,6 +189,14 @@ class UsuariosController extends Controller {
                 }
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Create',
+                        'tabla' => 'tbl_usuarios'
+                    ])->execute();
                     $rolUsuario = new \app\models\RelUsuariosRoles();
                     $rolUsuario->rel_usua_id = $model->usua_id;
                     $rolUsuario->rel_role_id = $model->rol;
@@ -220,6 +238,14 @@ class UsuariosController extends Controller {
                     $isAjax = true;
                     $grupo_id = Yii::$app->request->get('grupo_id');
                     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Update',
+                            'tabla' => 'tbl_usuarios'
+                        ])->execute();
                         if (!isset($roles)) {
                             $roles = new \app\models\RelUsuariosRoles();
                             $roles->rel_role_id = $model->rol;
@@ -254,6 +280,14 @@ class UsuariosController extends Controller {
 
                         if ($query == 0) {
                             if ($model->load($txtRegistros) && $model->save()) {
+                                Yii::$app->db->createCommand()->insert('tbl_logs', [
+                                    'usua_id' => Yii::$app->user->identity->id,
+                                    'usuario' => Yii::$app->user->identity->username,
+                                    'fechahora' => date('Y-m-d h:i:s'),
+                                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                                    'accion' => 'Update',
+                                    'tabla' => 'tbl_usuarios'
+                                ])->execute();
                                 if (!isset($roles)) {
                                     $roles = new \app\models\RelUsuariosRoles();
                                     $roles->rel_role_id = $model->rol;

@@ -152,11 +152,20 @@ use app\models\SpeechParametrizar;
                 $txtRta = 1;
                             
                 Yii::$app->db->createCommand()->insert('tbl_momento_bit_uni',[
-                                    'nombre_momento' => $txtName,
-                                    'usua_id' => $txtUsua,
-                                    'fechacreacion' => $txtfecha,
-                                    'anulado' => $txtanulado,
-                                ])->execute();
+                    'nombre_momento' => $txtName,
+                    'usua_id' => $txtUsua,
+                    'fechacreacion' => $txtfecha,
+                    'anulado' => $txtanulado,
+                ])->execute();
+
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_momento_bit_uni'
+                ])->execute();
     
     
                 die(json_encode($txtRta));
@@ -180,12 +189,21 @@ use app\models\SpeechParametrizar;
                 
                          
                 Yii::$app->db->createCommand()->insert('tbl_detalle_momento_bit_uni',[
-                                    'id_momento' => $txtvmomentoid,
-                                    'detalle_momento' => $txtvanomdet,
-                                    'usua_id' => $txtvusuaid,
-                                    'fechacreacion' => $txtfecha,
-                                    'anulado' => $txtanulado,
-                                ])->execute();
+                    'id_momento' => $txtvmomentoid,
+                    'detalle_momento' => $txtvanomdet,
+                    'usua_id' => $txtvusuaid,
+                    'fechacreacion' => $txtfecha,
+                    'anulado' => $txtanulado,
+                ])->execute();
+
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_detalle_momento_bit_uni'
+                ])->execute();
     
             $txtRta = 1;
                 die(json_encode($txtRta));
@@ -284,6 +302,16 @@ use app\models\SpeechParametrizar;
                                             'fecha_creacion' => $txtvFechacreacion,
                                             'anulado' => $txtanulado,
                                         ])->execute();
+
+                        \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'usuario' => Yii::$app->user->identity->username,
+                            'fechahora' => date('Y-m-d h:i:s'),
+                            'ip' => Yii::$app->getRequest()->getUserIP(),
+                            'accion' => 'Create',
+                            'tabla' => 'tbl_bitacora_universo'
+                        ])->execute();
+
                         $resp = 1;
                         die(json_encode($resp));
 
