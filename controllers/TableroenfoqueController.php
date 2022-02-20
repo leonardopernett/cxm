@@ -114,6 +114,14 @@ class TableroenfoqueController extends Controller {
                 $model = new Tableroenfoques();
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Create',
+                        'tabla' => 'tbl_tableroenfoques'
+                    ])->execute();
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('create', [
@@ -132,6 +140,14 @@ class TableroenfoqueController extends Controller {
                 $model = $this->findModel($id);
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Update',
+                        'tabla' => 'tbl_tableroenfoques'
+                    ])->execute();
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('update', [
@@ -148,6 +164,15 @@ class TableroenfoqueController extends Controller {
              */
             public function actionDelete($id) {
                 $this->findModel($id)->delete();
+
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Delete',
+                    'tabla' => 'tbl_tableroenfoques'
+                ])->execute();
 
                 return $this->redirect(['index']);
             }

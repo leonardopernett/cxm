@@ -209,6 +209,15 @@ use app\models\Controldimensionamiento;
 	                                'anulado' => 0,
 	                            ])->execute(); 
 
+					\Yii::$app->db->createCommand()->insert('tbl_logs', [
+						'usua_id' => Yii::$app->user->identity->id,
+						'usuario' => Yii::$app->user->identity->username,
+						'fechahora' => date('Y-m-d h:i:s'),
+						'ip' => Yii::$app->getRequest()->getUserIP(),
+						'accion' => 'Create',
+						'tabla' => 'tbl_control_dimensionamiento'
+					])->execute();
+
 					$txtdimensionId = Yii::$app->db->createCommand("select iddimensionamiento from tbl_control_dimensionamiento where usua_id = :txtusuaid and year = :txtyear and month = :txtmonth and anulado = 0")
 					->bindValue(':txtusuaid', $txtusuaid)
 					->bindValue(':txtyear', $txtyear)

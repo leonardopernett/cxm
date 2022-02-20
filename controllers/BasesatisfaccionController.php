@@ -284,6 +284,14 @@ class BasesatisfaccionController extends Controller {
                 $model = new BaseSatisfaccion();
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Create',
+                        'tabla' => 'tbl_base_satisfaccion'
+                    ])->execute();
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('create', [
@@ -302,6 +310,14 @@ class BasesatisfaccionController extends Controller {
                 $model = $this->findModel($id);
 
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Update',
+                        'tabla' => 'tbl_base_satisfaccion'
+                    ])->execute();
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     return $this->render('update', [
@@ -331,7 +347,25 @@ class BasesatisfaccionController extends Controller {
                         $ejecucion->delete();
                     }
                     $msg = \Yii::t('app', 'Encuesta Eliminada con éxito: ' . $model->id);
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Delete',
+                        'tabla' => 'tbl_ejecucionformularios'
+                    ])->execute();
+
                     $model->delete();
+
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Delete',
+                        'tabla' => 'tbl_base_satisfaccion'
+                    ])->execute();
                 } catch (Exception $exc) {
                     $msg = \Yii::t('app', 'Error al realizar la operación: ' . $model->id);
                 }

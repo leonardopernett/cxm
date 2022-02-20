@@ -282,11 +282,20 @@ use Exception;
       if($modelpais->load($form)){
 
         Yii::$app->db->createCommand()->insert('tbl_hv_pais',[
-                    'pais' => $modelpais->pais,
-                    'fechacreacion' => date('Y-m-d'),
-                    'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
-                ])->execute();
+              'pais' => $modelpais->pais,
+              'fechacreacion' => date('Y-m-d'),
+              'anulado' => 0,
+              'usua_id' => Yii::$app->user->identity->id,                                       
+          ])->execute();
+
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+          'usua_id' => Yii::$app->user->identity->id,
+          'usuario' => Yii::$app->user->identity->username,
+          'fechahora' => date('Y-m-d h:i:s'),
+          'ip' => Yii::$app->getRequest()->getUserIP(),
+          'accion' => 'Create',
+          'tabla' => 'tbl_hv_pais'
+        ])->execute(); 
 
         return $this->redirect('paisciudad');
       }else{
@@ -316,12 +325,21 @@ use Exception;
       if($modelciudad->load($form)){
 
         Yii::$app->db->createCommand()->insert('tbl_hv_ciudad',[
-                    'pais_id' => $modelciudad->pais_id,
-                    'ciudad' => $modelciudad->ciudad,
-                    'fechacreacion' => date('Y-m-d'),
-                    'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id,                                       
-                ])->execute();
+            'pais_id' => $modelciudad->pais_id,
+            'ciudad' => $modelciudad->ciudad,
+            'fechacreacion' => date('Y-m-d'),
+            'anulado' => 0,
+            'usua_id' => Yii::$app->user->identity->id,                                       
+        ])->execute();
+
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+          'usua_id' => Yii::$app->user->identity->id,
+          'usuario' => Yii::$app->user->identity->username,
+          'fechahora' => date('Y-m-d h:i:s'),
+          'ip' => Yii::$app->getRequest()->getUserIP(),
+          'accion' => 'Create',
+          'tabla' => 'tbl_hv_ciudad'
+        ])->execute();
 
         return $this->redirect('paisciudad');
       }else{
@@ -1026,6 +1044,15 @@ use Exception;
                       'anulado' => 0,
                       'usua_id' => Yii::$app->user->identity->id,                                  
           ])->execute();
+
+          Yii::$app->db->createCommand()->insert('tbl_logs', [
+            'usua_id' => Yii::$app->user->identity->id,
+            'usuario' => Yii::$app->user->identity->username,
+            'fechahora' => date('Y-m-d h:i:s'),
+            'ip' => Yii::$app->getRequest()->getUserIP(),
+            'accion' => 'Create',
+            'tabla' => 'tbl_hojavida_permisoscliente'
+          ])->execute();
         }    
 
         return $this->redirect(array('editarpermisos','id'=>$idaccion));
@@ -1041,32 +1068,95 @@ use Exception;
 
     public function actionDeleteinfo($idinfo){
       Yii::$app->db->createCommand()->update('tbl_hojavida_asignareventos',[
-                                          'anulado' => 1,
-                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+          'anulado' => 1,
+      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Update',
+        'tabla' => 'tbl_hojavida_asignareventos'
+      ])->execute();
 
       Yii::$app->db->createCommand()->update('tbl_hojavida_dataacademica',[
-                                          'anulado' => 1,
-                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+          'anulado' => 1,
+      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Update',
+        'tabla' => 'tbl_hojavida_dataacademica'
+      ])->execute();
 
       Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
-                                          'anulado' => 1,
-                                      ],'hv_idpersonal ='.$idinfo.'')->execute(); 
+          'anulado' => 1,
+      ],'hv_idpersonal ='.$idinfo.'')->execute(); 
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Update',
+        'tabla' => 'tbl_hojavida_datadirector'
+      ])->execute();
 
       Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
-                                          'anulado' => 1,
-                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+          'anulado' => 1,
+      ],'hv_idpersonal ='.$idinfo.'')->execute(); 
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Update',
+        'tabla' => 'tbl_hojavida_datagerente'
+      ])->execute();
 
       Yii::$app->db->createCommand()->update('tbl_hojavida_datalaboral',[
-                                          'anulado' => 1,
-                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+          'anulado' => 1,
+      ],'hv_idpersonal ='.$idinfo.'')->execute();
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Update',
+        'tabla' => 'tbl_hojavida_datalaboral'
+      ])->execute();
 
       Yii::$app->db->createCommand()->update('tbl_hojavida_datapcrc',[
-                                          'anulado' => 1,
-                                      ],'hv_idpersonal ='.$idinfo.'')->execute();  
+          'anulado' => 1,
+      ],'hv_idpersonal ='.$idinfo.'')->execute();
+      
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Update',
+        'tabla' => 'tbl_hojavida_datapcrc'
+      ])->execute();
 
       Yii::$app->db->createCommand()->update('tbl_hojavida_datapersonal',[
-                                          'anulado' => 1,
-                                      ],'hv_idpersonal ='.$idinfo.'')->execute();
+          'anulado' => 1,
+      ],'hv_idpersonal ='.$idinfo.'')->execute();
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Update',
+        'tabla' => 'tbl_hojavida_datapersonal'
+      ])->execute();
 
       return $this->redirect('index');
     }
@@ -1103,11 +1193,29 @@ use Exception;
     public function actionDeletepcrc($id,$idsinfo){
       HojavidaDatapcrc::findOne($id)->delete();
 
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Delete',
+        'tabla' => 'tbl_hojavida_datapcrc'
+      ])->execute();
+
       return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
     }
 
     public function actionDeletedirector($id,$idsinfo){
       HojavidaDatadirector::findOne($id)->delete();
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Delete',
+        'tabla' => 'tbl_hojavida_datadirector'
+      ])->execute();
 
       return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
     }
@@ -1115,23 +1223,57 @@ use Exception;
     public function actionDeletegerente($id,$idsinfo){
       HojavidaDatagerente::findOne($id)->delete();
 
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Delete',
+        'tabla' => 'tbl_hojavida_datagerente'
+      ])->execute();
+
       return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
     }
 
     public function actionDeleteacademico($id,$idsinfo){
       HojavidaDataacademica::findOne($id)->delete();
 
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Delete',
+        'tabla' => 'tbl_hojavida_dataacademica'
+      ])->execute();
+
       return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
     }
 
     public function actionDeleteeventos($id,$idsinfo){
       HojavidaEventos::findOne($id)->delete();
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Delete',
+        'tabla' => 'tbl_hojavida_eventos'
+      ])->execute();
 
       return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
     }
 
     public function actionDeletecomplementos($id,$idsinfo){
       HojavidaDatacomplementos::findOne($id)->delete();
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Delete',
+        'tabla' => 'tbl_hojavida_datacomplementos'
+      ])->execute();
 
       return $this->redirect(['editinfo','idinfo'=>$idsinfo]);
     }
@@ -1418,12 +1560,32 @@ use Exception;
            "modalidad"=>Yii::$app->request->post('modalidad'),
            "usua_id"  =>Yii::$app->user->identity->id
        ])->execute();
+
+       Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Create',
+        'tabla' => 'tbl_hv_modalidad_trabajo'
+      ])->execute();
+
        Yii::$app->session->setFlash('info','MODALIDAD CREADA EXITOSAMENTE');
        return $this->redirect(["crearmodalidad"]);
     }
 
     public function actionEliminarmodalidad($id){
       Yii::$app->db->createCommand('DELETE FROM tbl_hv_modalidad_trabajo WHERE hv_idmodalidad=:id')->bindParam(':id',$id)->execute();
+
+      Yii::$app->db->createCommand()->insert('tbl_logs', [
+        'usua_id' => Yii::$app->user->identity->id,
+        'usuario' => Yii::$app->user->identity->username,
+        'fechahora' => date('Y-m-d h:i:s'),
+        'ip' => Yii::$app->getRequest()->getUserIP(),
+        'accion' => 'Delete',
+        'tabla' => 'tbl_hv_modalidad_trabajo'
+      ])->execute();
+
       Yii::$app->session->setFlash('info','MODALIDAD ELIMINADA CORRECTAMENTE');
       return $this->redirect(["crearmodalidad"]);
     }

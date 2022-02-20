@@ -216,6 +216,15 @@ use app\models\ControlProcesosVOC;
                                 'created' => date("Y-m-d H:i:s"),
                             ])->execute(); 
 
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_ejecucionfeedbacks'
+            ])->execute();
+
             die(json_encode(count($txtLider)));
         }
 
@@ -234,11 +243,19 @@ use app\models\ControlProcesosVOC;
             $txtRta = 1;
                         
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_sessionlista',[
-                                'nombresession' => $txtName,
-                                'fechacreacion' => $txtfecha,
-                                'anulado' => $txtanulado,
-                            ])->execute();
+                'nombresession' => $txtName,
+                'fechacreacion' => $txtfecha,
+                'anulado' => $txtanulado,
+            ])->execute();
 
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_controlvoc_sessionlista'
+            ])->execute();
 
             die(json_encode($txtRta));
         }
@@ -261,12 +278,21 @@ use app\models\ControlProcesosVOC;
             $txtRta = 1;
 
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_listadopadre',[
-                                'idsessionvoc' => $txtvsesion1,
-                                'nombrelistap' => $txtvname1,
-                                'arbol_id' => $txtvarbol1,
-                                'fechacreacion' => $txtvfechas1,
-                                'anulado' => $txtvanular1,
-                            ])->execute();
+                'idsessionvoc' => $txtvsesion1,
+                'nombrelistap' => $txtvname1,
+                'arbol_id' => $txtvarbol1,
+                'fechacreacion' => $txtvfechas1,
+                'anulado' => $txtvanular1,
+            ])->execute();
+
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_controlvoc_listadopadre'
+            ])->execute();
 
 
             die(json_encode($txtRta));
@@ -293,12 +319,21 @@ use app\models\ControlProcesosVOC;
 
 
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_listadohijo',[
-                                'idsessionvoc' => $txtvsesion1,
-                                'idlistapadrevoc' => $txtvarbol1,
-                                'nombrelistah' => $txtvname1,
-                                'fechacreacion' => $txtvfechas1,
-                                'anulado' => $txtvanular1,
-                            ])->execute();
+                'idsessionvoc' => $txtvsesion1,
+                'idlistapadrevoc' => $txtvarbol1,
+                'nombrelistah' => $txtvname1,
+                'fechacreacion' => $txtvfechas1,
+                'anulado' => $txtvanular1,
+            ])->execute();
+
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_controlvoc_listadohijo'
+            ])->execute();
 
 
             die(json_encode($txtRta));
@@ -356,19 +391,28 @@ use app\models\ControlProcesosVOC;
             $txtVRta = null;
 
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_bloque1',[
-                                'valorador_id' => $txtvaloradorID,
-                                'arbol_id' => $txtvArbol,
-                                'dimensions' => $txtvDimension,
-                                'lider_id' => $txtvLider,
-                                'tecnico_id' => $txtvValorado,
-                                'numidextsp' => $txtvSpeech,
-                                'fechahora' => $txtvFH,
-                                'usuagente' => $txtvAgenteu,
-                                'duracion' => $txtvDuracion,
-                                'extencion' => $txtvExt,
-                                'fechacreacion' => $txtvFechacreacion,
-                                'anulado' => $txtanulado,
-                            ])->execute();
+                'valorador_id' => $txtvaloradorID,
+                'arbol_id' => $txtvArbol,
+                'dimensions' => $txtvDimension,
+                'lider_id' => $txtvLider,
+                'tecnico_id' => $txtvValorado,
+                'numidextsp' => $txtvSpeech,
+                'fechahora' => $txtvFH,
+                'usuagente' => $txtvAgenteu,
+                'duracion' => $txtvDuracion,
+                'extencion' => $txtvExt,
+                'fechacreacion' => $txtvFechacreacion,
+                'anulado' => $txtanulado,
+            ])->execute();
+
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_controlvoc_bloque1'
+            ])->execute();
 
             $txtVRta = Yii::$app->db->createCommand('select count(*) from tbl_controlvoc_bloque1 where valorador_id = :txtvaloradorID and arbol_id = :txtvArbol and tecnico_id = :txtvValorado and anulado = 0')
             ->bindValue(':txtvaloradorID', $txtvaloradorID)
@@ -383,26 +427,35 @@ use app\models\ControlProcesosVOC;
             ->queryScalar();
 
             Yii::$app->db->createCommand()->insert('tbl_controlvoc_bloque2',[
-                                'idbloque1' => $txtvIdBloque,
-                                'indicadorglobal' => $txtvIndicadorG,
-                                'variable' => $txtvVariable,
-                                'moticocontacto' => $txtvMotivoC,
-                                'motivollamadas' => $txtvMotivoL,
-                                'puntodolor' => $txtvPuntoD,
-                                'categoria' => $txtvCategoria,
-                                'ajustecategoia' => $txtvAjusteC,
-                                'indicadorvar' => $txtvIndicador,
-                                'agente' => $txtvAgente,
-                                'marca' => $txtvMarca,
-                                'canal' => $txtvCanal,
-                                'detalle' => $txtvDetalle,
-                                'mapa1' => $txtvMapa1,
-                                'mapa2' => $txtvMapa2,
+                'idbloque1' => $txtvIdBloque,
+                'indicadorglobal' => $txtvIndicadorG,
+                'variable' => $txtvVariable,
+                'moticocontacto' => $txtvMotivoC,
+                'motivollamadas' => $txtvMotivoL,
+                'puntodolor' => $txtvPuntoD,
+                'categoria' => $txtvCategoria,
+                'ajustecategoia' => $txtvAjusteC,
+                'indicadorvar' => $txtvIndicador,
+                'agente' => $txtvAgente,
+                'marca' => $txtvMarca,
+                'canal' => $txtvCanal,
+                'detalle' => $txtvDetalle,
+                'mapa1' => $txtvMapa1,
+                'mapa2' => $txtvMapa2,
                 'interesados' => $txtvInteresados,
-                                'responsabilidad' => $txtvResponsabilidad,
-                                'fechacreacion' => $txtvFechacreacion,
-                                'anulado' => $txtanulado,
-                            ])->execute();
+                'responsabilidad' => $txtvResponsabilidad,
+                'fechacreacion' => $txtvFechacreacion,
+                'anulado' => $txtanulado,
+            ])->execute();
+
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_controlvoc_bloque2'
+            ])->execute();
 
             die(json_encode($txtVRta));
         }
@@ -767,11 +820,30 @@ use app\models\ControlProcesosVOC;
                 ->bindValue(':varPCRC', $varPCRC)
                 ->bindValue(':varIdList', $varIdList)
                 ->execute();
+
+                Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Delete',
+                    'tabla' => 'tbl_controlvoc_listadopadre'
+                ])->execute();
+
             }else{
                 Yii::$app->db->createCommand('delete from tbl_controlvoc_listadohijo where idsessionvoc = :varSesiones and anulado = 0 and idlistahijovoc = :varIdList')
                 ->bindValue(':varSesiones', $varSesiones)
                 ->bindValue(':varIdList', $varIdList)
                 ->execute();
+
+                Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Delete',
+                    'tabla' => 'tbl_controlvoc_listadohijo'
+                ])->execute();
             }
 
             $rta = 1;

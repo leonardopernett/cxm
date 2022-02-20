@@ -149,6 +149,14 @@ class ControlprocesosController extends \yii\web\Controller {
 
          	if ($model->load($formData)) {
          		if ($model->save()) {
+					\Yii::$app->db->createCommand()->insert('tbl_logs', [
+						'usua_id' => Yii::$app->user->identity->id,
+						'usuario' => Yii::$app->user->identity->username,
+						'fechahora' => date('Y-m-d h:i:s'),
+						'ip' => Yii::$app->getRequest()->getUserIP(),
+						'accion' => 'Create',
+						'tabla' => 'tbl_control_params'
+					])->execute();
          			Yii::$app->getsession()->setFlash('message','Registro agregado correctamente.');
          			return $this->redirect(array('create','usua_id'=>$txtusua_id));
          		}
@@ -366,6 +374,14 @@ class ControlprocesosController extends \yii\web\Controller {
 
 	            if ($model2->load($formData)) {
 	                if ($model2->save()) {
+						\Yii::$app->db->createCommand()->insert('tbl_logs', [
+							'usua_id' => Yii::$app->user->identity->id,
+							'usuario' => Yii::$app->user->identity->username,
+							'fechahora' => date('Y-m-d h:i:s'),
+							'ip' => Yii::$app->getRequest()->getUserIP(),
+							'accion' => 'Create',
+							'tabla' => 'tbl_control_procesos'
+						])->execute();
 	                    Yii::$app->getsession()->setFlash('message','Registro agregado correctamente');
 	                    return $this->redirect(['index']);
 	                }
@@ -464,6 +480,15 @@ class ControlprocesosController extends \yii\web\Controller {
 					->bindValue(':txtevaluados',$txtevaluados)
 					->queryScalar();
 				$model->delete();
+
+				\Yii::$app->db->createCommand()->insert('tbl_logs', [
+					'usua_id' => Yii::$app->user->identity->id,
+					'usuario' => Yii::$app->user->identity->username,
+					'fechahora' => date('Y-m-d h:i:s'),
+					'ip' => Yii::$app->getRequest()->getUserIP(),
+					'accion' => 'Delete',
+					'tabla' => 'tbl_control_procesos'
+				])->execute();
 			    	return $this->redirect(array('update2','id'=>$txtidprocesos,'evaluados_id'=>$txtevaluados));
 			}
 		}
@@ -502,6 +527,15 @@ class ControlprocesosController extends \yii\web\Controller {
 				->execute();
 
 				$model->delete();
+
+				\Yii::$app->db->createCommand()->insert('tbl_logs', [
+					'usua_id' => Yii::$app->user->identity->id,
+					'usuario' => Yii::$app->user->identity->username,
+					'fechahora' => date('Y-m-d h:i:s'),
+					'ip' => Yii::$app->getRequest()->getUserIP(),
+					'accion' => 'Delete',
+					'tabla' => 'tbl_control_procesos'
+				])->execute();
 				return $this->redirect(['index']);
 			}
 		}
@@ -646,6 +680,15 @@ class ControlprocesosController extends \yii\web\Controller {
 				        			'fechacreacion' => $fechaActual,
 				        			'anulado' => $anulados,
 				        		])->execute();
+
+								\Yii::$app->db->createCommand()->insert('tbl_logs', [
+									'usua_id' => Yii::$app->user->identity->id,
+									'usuario' => Yii::$app->user->identity->username,
+									'fechahora' => date('Y-m-d h:i:s'),
+									'ip' => Yii::$app->getRequest()->getUserIP(),
+									'accion' => 'Create',
+									'tabla' => 'tbl_control_params'
+								])->execute();
 
 				        }
 
@@ -1003,6 +1046,14 @@ class ControlprocesosController extends \yii\web\Controller {
          	if ($model->load($formData)) {
          		var_dump("Aqui");
          		if ($model->save()) {
+					\Yii::$app->db->createCommand()->insert('tbl_logs', [
+						'usua_id' => Yii::$app->user->identity->id,
+						'usuario' => Yii::$app->user->identity->username,
+						'fechahora' => date('Y-m-d h:i:s'),
+						'ip' => Yii::$app->getRequest()->getUserIP(),
+						'accion' => 'Create',
+						'tabla' => 'tbl_control_params'
+					])->execute();
          			Yii::$app->getsession()->setFlash('message','Registro agregado correctamente.');
          			return $this->redirect(array('update2','id'=>$id,'evaluados_id'=>$evaluados_id));
          		}
@@ -1420,15 +1471,24 @@ class ControlprocesosController extends \yii\web\Controller {
           	$txtvarusuario = Yii::$app->request->get("txtvarusuario");
 
           	Yii::$app->db->createCommand()->insert('tbl_control_focalizada',[
-                                                           'arbol_id' => $txtvarcliente,
-                                                           'cod_pcrc' => $txtvarservicio,
-                                                           'dimensions' => $txtvardimension,
-                                                           'cant_valor' => $txtvarcantidad,
-                                                           'evaluados_id' => $txtvarusuario,
-                                                           'argumentos' => null,
-                                                           'fechacreacion' => date("Y-m-d"),
-                                                           'anulado' => 0,
-                                                        ])->execute();
+				'arbol_id' => $txtvarcliente,
+				'cod_pcrc' => $txtvarservicio,
+				'dimensions' => $txtvardimension,
+				'cant_valor' => $txtvarcantidad,
+				'evaluados_id' => $txtvarusuario,
+				'argumentos' => null,
+				'fechacreacion' => date("Y-m-d"),
+				'anulado' => 0,
+			])->execute();
+			
+			\Yii::$app->db->createCommand()->insert('tbl_logs', [
+				'usua_id' => Yii::$app->user->identity->id,
+				'usuario' => Yii::$app->user->identity->username,
+				'fechahora' => date('Y-m-d h:i:s'),
+				'ip' => Yii::$app->getRequest()->getUserIP(),
+				'accion' => 'Create',
+				'tabla' => 'tbl_control_focalizada'
+			])->execute();
 
           	die(json_encode($txtvarusuario));
 		}
@@ -1442,15 +1502,24 @@ class ControlprocesosController extends \yii\web\Controller {
           	$txtvarfechacreacion = Yii::$app->request->get("txtvarfechacreacion");
 
           	Yii::$app->db->createCommand()->insert('tbl_control_focalizada',[
-                                                           'arbol_id' => $txtvarcliente,
-                                                           'cod_pcrc' => $txtvarservicio,
-                                                           'dimensions' => $txtvardimension,
-                                                           'cant_valor' => $txtvarcantidad,
-                                                           'evaluados_id' => $txtvarusuario,
-                                                           'argumentos' => null,
-                                                           'fechacreacion' => $txtvarfechacreacion,
-                                                           'anulado' => 0,
-                                                        ])->execute();
+				'arbol_id' => $txtvarcliente,
+				'cod_pcrc' => $txtvarservicio,
+				'dimensions' => $txtvardimension,
+				'cant_valor' => $txtvarcantidad,
+				'evaluados_id' => $txtvarusuario,
+				'argumentos' => null,
+				'fechacreacion' => $txtvarfechacreacion,
+				'anulado' => 0,
+			])->execute();
+
+			\Yii::$app->db->createCommand()->insert('tbl_logs', [
+				'usua_id' => Yii::$app->user->identity->id,
+				'usuario' => Yii::$app->user->identity->username,
+				'fechahora' => date('Y-m-d h:i:s'),
+				'ip' => Yii::$app->getRequest()->getUserIP(),
+				'accion' => 'Create',
+				'tabla' => 'tbl_control_focalizada'
+			])->execute();
 
           	die(json_encode($txtvarusuario));
 		}
@@ -1511,6 +1580,15 @@ class ControlprocesosController extends \yii\web\Controller {
 			->bindValue(':varid',$varid)
 			->execute();
 
+			\Yii::$app->db->createCommand()->insert('tbl_logs', [
+				'usua_id' => Yii::$app->user->identity->id,
+				'usuario' => Yii::$app->user->identity->username,
+				'fechahora' => date('Y-m-d h:i:s'),
+				'ip' => Yii::$app->getRequest()->getUserIP(),
+				'accion' => 'Delete',
+				'tabla' => 'tbl_control_focalizada'
+			])->execute();
+
 	    	return $this->redirect(array('create','usua_id'=>$varevaluadoId));
 	    }
 
@@ -1527,6 +1605,15 @@ class ControlprocesosController extends \yii\web\Controller {
 	    	Yii::$app->db->createCommand("delete from tbl_control_focalizada where idcontrolfocalizada = :varid")
 			->bindValue(':varid',$varid)
 			->execute();
+
+			\Yii::$app->db->createCommand()->insert('tbl_logs', [
+				'usua_id' => Yii::$app->user->identity->id,
+				'usuario' => Yii::$app->user->identity->username,
+				'fechahora' => date('Y-m-d h:i:s'),
+				'ip' => Yii::$app->getRequest()->getUserIP(),
+				'accion' => 'Delete',
+				'tabla' => 'tbl_control_focalizada'
+			])->execute();
 
 	    	return $this->redirect(array('update2','id'=>$varsoluciones,'evaluados_id'=>$varevaluadoId));
 	    }

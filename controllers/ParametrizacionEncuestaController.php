@@ -96,6 +96,14 @@ class ParametrizacionEncuestaController extends Controller {
         $model = new ParametrizacionEncuesta();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_parametrizacion_encuesta'
+            ])->execute();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -114,6 +122,14 @@ class ParametrizacionEncuestaController extends Controller {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Update',
+                'tabla' => 'tbl_parametrizacion_encuesta'
+            ])->execute();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -135,8 +151,32 @@ class ParametrizacionEncuestaController extends Controller {
             \app\models\Detalleparametrizacion::deleteAll(['id_categoriagestion' => $value->id]);
         }
         \app\models\Preguntas::deleteAll(['id_parametrizacion' => $model->id]);
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+            'usua_id' => Yii::$app->user->identity->id,
+            'usuario' => Yii::$app->user->identity->username,
+            'fechahora' => date('Y-m-d h:i:s'),
+            'ip' => Yii::$app->getRequest()->getUserIP(),
+            'accion' => 'Delete',
+            'tabla' => 'tbl_preguntas'
+        ])->execute();
         \app\models\Categoriagestion::deleteAll(['id_parametrizacion' => $model->id]);
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+            'usua_id' => Yii::$app->user->identity->id,
+            'usuario' => Yii::$app->user->identity->username,
+            'fechahora' => date('Y-m-d h:i:s'),
+            'ip' => Yii::$app->getRequest()->getUserIP(),
+            'accion' => 'Delete',
+            'tabla' => 'tbl_categoriagestion'
+        ])->execute();
         $model->delete();
+        Yii::$app->db->createCommand()->insert('tbl_logs', [
+            'usua_id' => Yii::$app->user->identity->id,
+            'usuario' => Yii::$app->user->identity->username,
+            'fechahora' => date('Y-m-d h:i:s'),
+            'ip' => Yii::$app->getRequest()->getUserIP(),
+            'accion' => 'Delete',
+            'tabla' => 'tbl_parametrizacion_encuesta'
+        ])->execute();
         return $this->redirect(['index']);
     }
 

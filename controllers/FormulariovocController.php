@@ -213,13 +213,22 @@ use app\models\FormvocBloque1;
                 }
 
                 Yii::$app->db->createCommand()->insert('tbl_formvoc_acciones',[
-                                'idacciones' => $varidaccion,
-                                'iddetalle' => $variddetalle,
-                                'acciones' => $varaccion,
-                                'anulado' => 0,
-                                'usua_id' => $varsessiones,
-                                'fechacreacion' => $varfechacreacion,
-                            ])->execute(); 
+                    'idacciones' => $varidaccion,
+                    'iddetalle' => $variddetalle,
+                    'acciones' => $varaccion,
+                    'anulado' => 0,
+                    'usua_id' => $varsessiones,
+                    'fechacreacion' => $varfechacreacion,
+                ])->execute(); 
+
+                Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_formvoc_acciones'
+                ])->execute(); 
 
                 return $this->redirect('index');
             } 
@@ -264,21 +273,31 @@ use app\models\FormvocBloque1;
 
             if ($txtVRta == 0 || $txtVRta == null) {
                 Yii::$app->db->createCommand()->insert('tbl_formvoc_bloque1',[
-                                'idpcrccxm' => $txtCXM,
-                                'idpcrcspeech' => $txtPcrc,
-                                'cod_pcrc' => $txtcodpcrc,
-                                'pcrc' => $txtNompcrc,
-                                'idvalorado' => $txtValoraddo,
-                                'idspeech' => $txtIDExtSp,
-                                'fechahora' => $txtFechaHora,
-                                'usuarioagente' => $txtUsuAge,
-                                'duracions' => $txtDuracion,
-                                'extension' => $txtExtencion, 
-                                'dimensionform' => $txtDimension,
-                                'anulado' => $txtanulado,
-                                'usua_id' => $txtvaloradorID,
-                                'fechacreacion' => $txtvFechacreacion, 
-                            ])->execute();
+                    'idpcrccxm' => $txtCXM,
+                    'idpcrcspeech' => $txtPcrc,
+                    'cod_pcrc' => $txtcodpcrc,
+                    'pcrc' => $txtNompcrc,
+                    'idvalorado' => $txtValoraddo,
+                    'idspeech' => $txtIDExtSp,
+                    'fechahora' => $txtFechaHora,
+                    'usuarioagente' => $txtUsuAge,
+                    'duracions' => $txtDuracion,
+                    'extension' => $txtExtencion, 
+                    'dimensionform' => $txtDimension,
+                    'anulado' => $txtanulado,
+                    'usua_id' => $txtvaloradorID,
+                    'fechacreacion' => $txtvFechacreacion, 
+                ])->execute();
+
+                Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_formvoc_bloque1'
+                ])->execute(); 
+
                 $txthola = 1;
             }
 
@@ -326,26 +345,35 @@ use app\models\FormvocBloque1;
              ->queryScalar();
 
             Yii::$app->db->createCommand()->insert('tbl_formvoc_bloque2',[
-                                'idformvocbloque1' => $txtvIdBloque,
-                                'indicadorglobal' => $txtIndiGlo,
-                                'variable' => $txtVariable,
-                                'moticocontacto' => $txtMotivoC,
-                                'motivollamadas' => $txtMotivoL,
-                                'puntodolor' => $txtPuntoD,
-                                'categoria' => $txtCategori,
-                                'ajustecategoia' => $txtAjusteC,
-                                'indicadorvar' => $txtPorcentajeAfe,
-                                'agente' => $txtAgente,
-                                'marca' => $txtMarca,
-                                'canal' => $txtCanal,
-                                'detalle' => $txtDcualitativo,
-                                'mapa1' => $txtMapa1,
-                                'mapa2' => $txtMapa2,
-                                'interesados' => $txtMapa3,
-                                'responsabilidad' => $txtatributos,
-                                'fechacreacion' => $txtvFechacreacion,
-                                'anulado' => $txtanulado,
-                            ])->execute();  
+                'idformvocbloque1' => $txtvIdBloque,
+                'indicadorglobal' => $txtIndiGlo,
+                'variable' => $txtVariable,
+                'moticocontacto' => $txtMotivoC,
+                'motivollamadas' => $txtMotivoL,
+                'puntodolor' => $txtPuntoD,
+                'categoria' => $txtCategori,
+                'ajustecategoia' => $txtAjusteC,
+                'indicadorvar' => $txtPorcentajeAfe,
+                'agente' => $txtAgente,
+                'marca' => $txtMarca,
+                'canal' => $txtCanal,
+                'detalle' => $txtDcualitativo,
+                'mapa1' => $txtMapa1,
+                'mapa2' => $txtMapa2,
+                'interesados' => $txtMapa3,
+                'responsabilidad' => $txtatributos,
+                'fechacreacion' => $txtvFechacreacion,
+                'anulado' => $txtanulado,
+            ])->execute();  
+
+            Yii::$app->db->createCommand()->insert('tbl_logs', [
+                'usua_id' => Yii::$app->user->identity->id,
+                'usuario' => Yii::$app->user->identity->username,
+                'fechahora' => date('Y-m-d h:i:s'),
+                'ip' => Yii::$app->getRequest()->getUserIP(),
+                'accion' => 'Create',
+                'tabla' => 'tbl_formvoc_bloque2'
+            ])->execute(); 
 
             $txthola = 1;  
 

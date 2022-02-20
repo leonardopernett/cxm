@@ -148,6 +148,14 @@ class CalificaciondetallesController extends Controller {
             $calificacionId = Yii::$app->request->get('calificacion_id');
             $model->calificacion_id = $calificacionId;
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_calificaciondetalles'
+                ])->execute();
                 return $this->renderPartial('view', ['model' => $model]);
             } else {
                 return $this->renderPartial('create', ['model' => $model]);
@@ -169,6 +177,14 @@ class CalificaciondetallesController extends Controller {
 
         if (Yii::$app->getRequest()->isAjax) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Update',
+                    'tabla' => 'tbl_calificaciondetalles'
+                ])->execute();
                 return $this->renderPartial('view', ['model' => $model]);
             } else {
                 return $this->renderPartial('update', ['model' => $model]);
@@ -196,6 +212,15 @@ class CalificaciondetallesController extends Controller {
                                     . $model->name
                                     . '" porque corresponde al formulario de '
                                     . 'una o mas personas evaluadas'));
+                }else{
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Delete',
+                        'tabla' => 'tbl_calificaciondetalles'
+                    ])->execute();
                 }
             } catch (\yii\db\IntegrityException $exc) {
                 \Yii::error($exc->getMessage(), 'db');

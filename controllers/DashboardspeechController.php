@@ -3179,6 +3179,15 @@ use app\models\Formularios;
 
                 if ($varValidacionGeneral != 0) {
                   Yii::$app->db->createCommand("delete from tbl_speech_general where anulado = 0 and programacliente in ('$txtSerivicios') and extension in ('$txtExtensiones') and fechallamada between '$varFechainicio' and '$varFechaFin'")->execute();
+
+                  Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Delete',
+                    'tabla' => 'tbl_speech_general'
+                  ])->execute();
                 }
 
                 $varListConteos = Yii::$app->db->createCommand("select llama.callid, llama.extension, llama.fechallamada, llama.servicio, llama.idcategoria as llamacategoria, cate.idcategoria as catecategoria, if(llama.idcategoria = cate.idcategoria, 1, 0) as encuentra, llama.nombreCategoria from tbl_dashboardspeechcalls llama left join (select idcategoria, tipoindicador, programacategoria, cod_pcrc from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and programacategoria in ('$txtSerivicios') order by cod_pcrc, tipoindicador) cate on llama.servicio = cate.programacategoria where   llama.servicio in ('$txtSerivicios') and llama.extension in ('$txtExtensiones') and llama.fechallamada between '$varFechainicio' and '$varFechaFin'  group by llama.callid, llama.extension, llama.idcategoria, cate.idcategoria  order by encuentra desc ")->queryAll(); 
@@ -3194,20 +3203,29 @@ use app\models\Formularios;
                   $varNombre = $value['nombreCategoria'];
                   
                   Yii::$app->db->createCommand()->insert('tbl_speech_general',[
-                                                     'programacliente' => $varServicio,
-                                                     'fechainicio' => $varFechainicio,
-                                                     'fechafin' => null,
-                                                     'callid' => $varCallid,
-                                                     'fechallamada' => $varFechacall,
-                                                     'extension' => $varExt,
-                                                     'idindicador' => $varIndiCa,
-                                                     'idvariable' => $varCategoria,
-                                                     'cantproceso' => $varConteo,
-                                                     'fechacreacion' => $txtfechacreacion,
-                                                     'anulado' => $txtanulado,
-                                                     'usua_id' => $sessiones,
-                                                     'arbol_id' => $varCliente,
-                                                  ])->execute();
+                      'programacliente' => $varServicio,
+                      'fechainicio' => $varFechainicio,
+                      'fechafin' => null,
+                      'callid' => $varCallid,
+                      'fechallamada' => $varFechacall,
+                      'extension' => $varExt,
+                      'idindicador' => $varIndiCa,
+                      'idvariable' => $varCategoria,
+                      'cantproceso' => $varConteo,
+                      'fechacreacion' => $txtfechacreacion,
+                      'anulado' => $txtanulado,
+                      'usua_id' => $sessiones,
+                      'arbol_id' => $varCliente,
+                  ])->execute();
+
+                  Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_speech_general'
+                  ])->execute();
                 }
               }
 

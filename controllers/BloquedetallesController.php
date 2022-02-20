@@ -185,6 +185,14 @@ class BloquedetallesController extends Controller {
         if (Yii::$app->getRequest()->isAjax) {
             $isAjax = true;
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_bloquedetalles'
+                ])->execute();
                 return $this->renderPartial('view',
                                 [
                             'model' => $model,
@@ -241,6 +249,14 @@ class BloquedetallesController extends Controller {
             $isAjax = true;
             $bloqeId = Yii::$app->request->get('bloque_id');
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Update',
+                    'tabla' => 'tbl_bloquedetalles'
+                ])->execute();
                 return $this->renderPartial('view',
                                 [
                             'model' => $model,
@@ -295,7 +311,16 @@ class BloquedetallesController extends Controller {
                                     . $model->name
                                     . '" porque corresponde al formulario de '
                                     . 'una o mas personas evaluadas'));
-                }                        
+                }else {
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Delete',
+                        'tabla' => 'tbl_bloquedetalles'
+                    ])->execute();
+                }                      
             } catch (\yii\db\IntegrityException $exc) {
                 \Yii::error($exc->getMessage(), 'db');
                 Yii::$app->getSession()->setFlash('danger',

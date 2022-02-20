@@ -138,6 +138,14 @@ class TipificaciondetallesController extends Controller {
             $tipificacionId = Yii::$app->request->get('tipificacion_id');
             $model->tipificacion_id = $tipificacionId;
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Create',
+                    'tabla' => 'tbl_tipificaciondetalles'
+                ])->execute();
                 return $this->renderPartial('view', ['model' => $model]);
             } else {
                 return $this->renderPartial('create', ['model' => $model]);
@@ -158,6 +166,14 @@ class TipificaciondetallesController extends Controller {
 
         if (Yii::$app->getRequest()->isAjax) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'usuario' => Yii::$app->user->identity->username,
+                    'fechahora' => date('Y-m-d h:i:s'),
+                    'ip' => Yii::$app->getRequest()->getUserIP(),
+                    'accion' => 'Update',
+                    'tabla' => 'tbl_tipificaciondetalles'
+                ])->execute();
                 return $this->renderPartial('view', ['model' => $model]);
             } else {
                 return $this->renderPartial('update', ['model' => $model]);
@@ -183,6 +199,15 @@ class TipificaciondetallesController extends Controller {
                                     'No se pudo eliminar el detalle "'
                                     . $model->name
                                     . '" de la tipificación.'));
+                }else{
+                    \Yii::$app->db->createCommand()->insert('tbl_logs', [
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'usuario' => Yii::$app->user->identity->username,
+                        'fechahora' => date('Y-m-d h:i:s'),
+                        'ip' => Yii::$app->getRequest()->getUserIP(),
+                        'accion' => 'Delete',
+                        'tabla' => 'tbl_tipificaciondetalles'
+                    ])->execute();
                 }
             } catch (\yii\db\IntegrityException $exc) {
                 \Yii::error($exc->getMessage(), 'db');
