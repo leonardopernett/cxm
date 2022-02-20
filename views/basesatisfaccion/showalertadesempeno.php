@@ -329,11 +329,13 @@ if ($data->ppregunta8 != "") {
                             <?php endif; ?>
                             <tr>
                                 <td>
-                                    <?php if ($data->respuesta_lider == "" and $_GET['lider'] == "si") : ?>
+                                <?php 
+                                        $getLider = Yii::$app->request->get("lider");
+                                        if ($data->respuesta_lider == "" and $getLider == "si") : ?>
 
                                         <?= $form->field($data, 'respuesta_lider')->textArea(['rows' => 6, 'maxlength' => 200])->label('Feedback Lider:') ?>
 
-                                    <?php elseif ($data->respuesta_lider != "" or isset($jefeop) or $_GET['lider'] == "no") : ?>
+                                        <?php elseif ($data->respuesta_lider != "" or isset($jefeop) or $getLider == "no") : ?>
 
                                         <?= $form->field($data, 'respuesta_lider')->textArea(['rows' => 6, 'maxlength' => 200, 'disabled' => true])->label('Feedback Lider:') ?>
                                         <?php else :?>
@@ -346,7 +348,7 @@ if ($data->ppregunta8 != "") {
 
 
 
-                            <?php if ($_GET['lider'] == "si" and $data->puntovista_lider == "") : ?>
+                            <?php if ($getLider == "si" and $data->puntovista_lider == "") : ?>
                                 <tr>
                                     <td>
                                         <?= $form->field($data, 'puntovista_lider')->textArea(['rows' => 6, 'maxlength' => 200])->label('Sugerencia del lider: (este campo es visible solo para el jefe de operacion y el departamento juridico)') ?>
@@ -413,7 +415,9 @@ if ($data->ppregunta8 != "") {
 
     <?php if ($data->notificacion == 3) : ?>
 
-        <?php if ($_GET['lider'] == "si" or isset($jefeop)) { ?>
+        <?php 
+            $getLider = Yii::$app->request->get("lider");
+            if ($getLider == "si" or isset($jefeop)) { ?>
             <div id="datosGenerales" class="col-sm-12">
                 <table class="table table-striped table-bordered detail-view formDinamico">
                     <caption>Tabla datos generales</caption>
@@ -449,7 +453,9 @@ if ($data->ppregunta8 != "") {
                             </td>
                         </tr>
 
-                        <?php if ($_GET['lider'] == "si") { ?>
+                        <?php 
+                            $getLider = Yii::$app->request->get("lider");
+                            if ($getLider == "si") { ?>
                             <tr>
                                 <table style="width:50%" class="table table-striped table-bordered detail-view formDinamico">
                                     <caption>Tabla cumplimiento</caption>
@@ -924,7 +930,9 @@ if ($data->ppregunta8 != "") {
     <?php endif; ?>
     <?php if ($data->notificacion != 3) { ?>
         <tr>
-            <?php if ($_GET['lider'] == "abo" or $_GET['lider'] == "si") { ?>
+        <?php 
+                $getLider = Yii::$app->request->get("lider");
+                if ($getLider == "abo" or $getLider == "si") { ?>
 
                 <?php if ($data->respuesta_asesor != "") { ?>
 
@@ -958,7 +966,9 @@ if ($data->ppregunta8 != "") {
         </table>
 
         <tr>
-            <?php if ($_GET['lider'] == "abo" or $_GET['lider'] == "si") { ?>
+        <?php 
+                $getLider = Yii::$app->request->get("lider");
+                if ($getLider == "abo" or $getLider == "si") { ?>
 
                 <?php if ($data->respuesta_lider == "" or $data->puntovista_lider == "" or $data->rac_meta  == "" or $data->rac_pcrc  == "" or $data->rac_cumple  == "" or $data->meta  == "" or $data->empleado  == "" or $data->grupo  == "" or $data->dif_empleado_meta  == "" or $data->dif_empleado_grupo == "") { ?>
 

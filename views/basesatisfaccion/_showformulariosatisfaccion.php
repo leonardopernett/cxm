@@ -316,7 +316,8 @@ $detalles_ids = array();
                                 </td>
                             </tr>
                             <?php
-                            if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1):
+                            $showInteraccion = Yii::$app->request->get("showInteraccion");
+                            if (isset($showInteraccion) && base64_decode($showInteraccion) == 1):
                                 ?>
                                 <tr>
                                     <th id="enalcesInteraccion"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
@@ -352,7 +353,8 @@ $detalles_ids = array();
                         </tbody>
                     </table>
                     <?php
-                    if (isset($_GET['showBtnIteraccion']) && base64_decode($_GET['showBtnIteraccion']) == 1) {
+                    $showBtnIteraccion = Yii::$app->request->get("showBtnIteraccion");
+                    if (isset($showBtnIteraccion) && base64_decode($showBtnIteraccion) == 1) {
                         echo Html::a(Html::img(Url::to("@web/images/actualizar.png"), ["width" => "20px"]) . ' '
                                 . Yii::t("app", "Solicitar interaccion"), 'javascript:void(0)', ['class' => 'btn btn-default',
                             'data-pjax' => 'w0',

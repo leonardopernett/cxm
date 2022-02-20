@@ -439,7 +439,8 @@ $banderaSaltoComentario = true;
                                         </td>
                                     </tr>
                                     <?php
-                                    if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1) :
+                                        $showInteraccion = Yii::$app->request->get("showInteraccion");
+                                        if (isset($showInteraccion) && base64_decode($showInteraccion) == 1) :
                                     ?>
                                         <tr>
                                             <th scope="col"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
@@ -475,7 +476,8 @@ $banderaSaltoComentario = true;
                                 </tbody>
                             </table>
                             <?php
-                            if (isset($_GET['showBtnIteraccion']) && base64_decode($_GET['showBtnIteraccion']) == 1) {
+                            $showBtnIteraccion = Yii::$app->request->get("showBtnIteraccion");
+                            if (isset($showBtnIteraccion) && base64_decode($showBtnIteraccion) == 1) {
                                 echo Html::a(Html::img(Url::to("@web/images/actualizar.png"), ["width" => "20px"]) . ' '
                                     . Yii::t("app", "Solicitar interaccion"), 'javascript:void(0)', [
                                     'class' => 'btn btn-default',
@@ -714,7 +716,8 @@ $banderaSaltoComentario = true;
                     </tr>
 
                     <?php
-                        if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1) :
+                        $showInteraccion = Yii::$app->request->get("showInteraccion");
+                        if (isset($showInteraccion) && base64_decode($showInteraccion) == 1) :
                     ?>
                         <tr>
                             <th scope="col"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
@@ -1422,7 +1425,8 @@ $banderaSaltoComentario = true;
                             </td>
                         </tr>
                         <?php
-                        if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1) :
+                            $showInteraccion = Yii::$app->request->get("showInteraccion");
+                            if (isset($showInteraccion) && base64_decode($showInteraccion) == 1) :    
                         ?>
                             <tr>
                                 <th scope="col"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
@@ -1458,7 +1462,8 @@ $banderaSaltoComentario = true;
                     </tbody>
                 </table>
                 <?php
-                        if (isset($_GET['showBtnIteraccion']) && base64_decode($_GET['showBtnIteraccion']) == 1) {
+                        $showBtnIteraccion = Yii::$app->request->get("showBtnIteraccion");
+                        if (isset($showBtnIteraccion) && base64_decode($showBtnIteraccion) == 1) {
                             echo Html::a(Html::img(Url::to("@web/images/actualizar.png"), ["width" => "20px"]) . ' '
                                 . Yii::t("app", "Solicitar interaccion"), 'javascript:void(0)', [
                                 'class' => 'btn btn-default',
@@ -1696,7 +1701,8 @@ $banderaSaltoComentario = true;
             </tr>
 
             <?php
-                        if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1) :
+                        $showInteraccion = Yii::$app->request->get("showInteraccion");
+                        if (isset($showInteraccion) && base64_decode($showInteraccion) == 1) :
             ?>
                 <tr>
                     <th scope="col"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
@@ -3187,7 +3193,8 @@ $banderaSaltoComentario = true;
                 $("#escalateForm").change(function() {
                     var tmp_form = $("#tmp_formulario_id").val();
                     var banderaescalado = '<?php
-                                            if (isset($_GET["banderaescalado"])) {
+                                            $banderaescalado = Yii::$app->request->get("banderaescalado");
+                                            if (isset($banderaescalado)) {
                                                 echo Yii::$app->request->get("banderaescalado");
                                             } ?>';
                     if ($(this).is(":checked") == true) {
@@ -3206,7 +3213,8 @@ $banderaSaltoComentario = true;
                 $(".soloDeclinar").on("click", function() {
                     var tmp_form = $("#tmp_formulario_id").val();
                     var banderaescalado = '<?php
-                                            if (isset($_GET["banderaescalado"])) {
+                                            $banderaescalado = Yii::$app->request->get("banderaescalado");
+                                            if (isset($banderaescalado)) {
                                                 echo Yii::$app->request->get("banderaescalado") ;
                                             } ?>';
                     if ($(this).is(":checked") == true) {

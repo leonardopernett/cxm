@@ -5508,17 +5508,21 @@ public function actionCantidadentto(){
       $modelE = new \app\models\Evaluados;
       $modelE->scenario = "monitoreo";
 
-      if (isset($_POST) && !empty($_POST)) {
-        $arbol_id = $_POST["Arboles"]["arbol_id"];
+      $post = Yii::$app->request->post();
+      if (isset($post) && !empty($post)) {
+        $arboles = Yii::$app->request->post('Arboles');
+        $arbol_id = $arboles["arbol_id"];
         $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
         $formulario_id = $infoArbol->formulario_id;
-        $dimension_id = $_POST["Dimensiones"]["dimension_id"];
-        $evaluado_id = $_POST["evaluado_id"];
-        $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? $_POST["tipo_interaccion"] : 1;
+        $dimension = Yii::$app->request->post('Dimensiones');
+        $dimension_id = $arboles["dimension_id"];
+        $evaluado_id = Yii::$app->request->post("evaluado_id");
+        $postTipoInteraccion =  Yii::$app->request->post('tipo_interaccion')
+        $tipoInteraccion = (isset($postTipoInteraccion)) ? $postTipoInteraccion : 1;
         $usua_id = Yii::$app->user->identity->id;
         $created = ($preview == 1) ? 0 : date("Y-m-d H:i:s");
         $sneditable = 1;
-        $dsfuente_encuesta = $_POST["dsfuente_encuesta"];
+        $dsfuente_encuesta = Yii::$app->request->post("dsfuente_encuesta");
 
         //CONSULTO SI YA EXISTE LA EVALUACION
         $condition = [
@@ -5815,34 +5819,40 @@ public function actionCantidadentto(){
     public function actionGuardaryenviarformulario() {
 
       $txtanulado = 0;
+                $calificaciones = Yii::$app->request->post('calificaciones');
+                $tipificaciones = Yii::$app->request->post('tipificaciones');
+                $subtipificaciones = Yii::$app->request->post('subtipificaciones');
+                $comentarioSeccion = Yii::$app->request->post('comentarioSeccion');
+                $checkPits = Yii::$app->request->post('checkPits');
                 $txtfechacreacion = date("Y-m-d");
-                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
-                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
-                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
+                $arrCalificaciones = !$calificaciones ? array() : Yii::$app->request->post('calificaciones');
+                $arrTipificaciones = !isset($tipificaciones) ? array() : Yii::$app->request->post('tipificaciones');
+                $arrSubtipificaciones = !isset($subtipificaciones) ? array() : Yii::$app->request->post('subtipificaciones');
+                $arrComentariosSecciones = !$comentarioSeccion ? array() : Yii::$app->request->post('comentarioSeccion');
+                $arrCheckPits = !isset($checkPits) ? array() : Yii::$app->request->post('checkPits');
                 $arrFormulario = [];
                 $arrayCountBloques = [];
                 $arrayBloques = [];
 
-                $varid_clientes = $_POST['id_dp_clientes'];
-                $varid_centro_costo = $_POST['requester'];                
+                $varid_clientes = Yii::$app->request->post('id_dp_clientes');
+                $varid_centro_costo = Yii::$app->request->post('requester');
                 $count = 0;
-                $tmp_id = $_POST['tmp_formulario_id'];
-                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
-                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
-                $arrFormulario["dimension_id"] = $_POST['dimension_id'];
-                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
-                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
-                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
-                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
+                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
+                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
+                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
+                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension_id');
+                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
+                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
                 $arrFormulario["sn_mostrarcalculo"] = 1;
-                $view = (isset($_POST['view']))?$_POST['view']:null;
-                //$arrFormulario["subi_calculo"] = !isset($_POST['subi_calculo']) ? '' : $_POST['subi_calculo'];
+                $postView = Yii::$app->request->post('view');
+                $view = (isset($postView))?Yii::$app->request->post('view'):null;
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
-                if (isset($_POST['subi_calculo']) AND $_POST['subi_calculo'] != '') {
-                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
+                $subi_calculo = Yii::$app->request->post('subi_calculo');
+                if (isset($subi_calculo) AND $subi_calculo != '') {
+                    $data->subi_calculo .=',' . $subi_calculo;
                     $data->save();
                 }
 
@@ -5860,13 +5870,13 @@ public function actionCantidadentto(){
                     $modelRegistro->ejec_form_id = $tmp_id;
                     $modelRegistro->descripcion = 'Primera valoraci�n';
                 }
-                $modelRegistro->dimension_id = $_POST['dimension_id'];
+                $modelRegistro->dimension_id = Yii::$app->request->post('dimension_id');
                 $modelRegistro->valorado_id = $data->evaluado_id;
                 $modelRegistro->valorador_id = $data->usua_id;
                 $modelRegistro->pcrc_id = $data->arbol_id;
                 $modelRegistro->tipo_interaccion = $data->tipo_interaccion;
                 $modelRegistro->fecha_modificacion = date("Y-m-d H:i:s");
-                $fecha_inicial_mod = $_POST['hora_modificacion'];
+                $fecha_inicial_mod = Yii::$app->request->post('hora_modificacion');
                 $modelRegistro->save();
                 //FIN
                 \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
