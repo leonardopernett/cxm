@@ -20,6 +20,11 @@ use SoapClient;
 class WebServicesAmigo extends Component {
 
 
+            /**
+     * Parametro de tipo WebServices
+     * @var WebServices
+     */
+    private $soapClient;
 
     /**
      * Parametro con la respuesta del servicio
