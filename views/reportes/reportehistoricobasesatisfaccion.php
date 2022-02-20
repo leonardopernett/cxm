@@ -170,7 +170,9 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 </div>
 
 
-<?php if (isset($_POST['exporthistorico'])): ?>
+<?php 
+    $exporthistorico = Yii::$app->request->post("exporthistorico");
+    if (isset($exporthistorico)): ?>
     <?php if($export):?>
         <?php
             $fileName = Yii::t('app', 'Reporte_Gestion') . '_' . date('Ymd') . "_" .

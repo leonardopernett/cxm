@@ -35,7 +35,8 @@ $this->title = 'Visualización de Categorias -- QA & Speech --';
 
     $FechaActual = date("Y-m-d");
     $MesAnterior = date("m") - 1;
-    if(isset($_GET['txtmes'])) {
+    $postTxtmes = Yii::$app->request->get("txtmes");
+    if(isset($postTxtmes)) {
         $txtmes = Yii::$app->request->get('txtmes');
     }
     $txtConteo = 0;

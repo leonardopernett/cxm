@@ -134,7 +134,9 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     <?php ActiveForm::end(); ?>  
 </div>
 
-<?php if (isset($_POST['exportextractar'])): ?>
+<?php 
+    $exportextractar = Yii::$app->request->post("exportextractar");
+    if (isset($exportextractar)): ?>
     <hr>
     <?php if ($export): ?>
         <?php

@@ -97,8 +97,10 @@ $contadorSecciones = 0;
                     <?php endif; ?>
                     <?= Html::a('Desplegar', "javascript:void(0)", ['id' => 'prueba', 'class' => 'btn btn-info soloAbrir'])
                     ?>
-                    <?php if (isset($_GET["escalado"])): ?>
-            <?php if ($_GET["escalado"]== 0): ?>
+                    <?php 
+                        $escalado = Yii::$app->request->get("escalado");
+                        if (isset($escalado)): ?>
+                    <?php if ($escalado== 0): ?>
                     <?= Html::a(Yii::t('app', 'Borrar'), "javascript:void(0)", ['class' => 'btn btn-danger soloCancelar'])
                     ?>
             <?php endif; ?>
@@ -414,7 +416,8 @@ $contadorSecciones = 0;
                                 </td>
                             </tr>
                             <?php
-                            if (isset($_GET['showInteraccion']) && base64_decode($_GET['showInteraccion']) == 1):
+                            $showInteraccion = Yii::$app->request->get("showInteraccion");
+                            if (isset($showInteraccion) && base64_decode($showInteraccion) == 1):
                                 ?>
                                 <tr>
                                     <th scope="row"><?php echo Yii::t("app", "Enalces Interaccion"); ?></th>
@@ -530,7 +533,8 @@ $contadorSecciones = 0;
                         </tbody>
                     </table>
                     <?php
-                    if (isset($_GET['showBtnIteraccion']) && base64_decode($_GET['showBtnIteraccion']) == 1) {
+                    $showBtnIteraccion = Yii::$app->request->get("showBtnIteraccion");
+                    if (isset($showBtnIteraccion) && base64_decode($showBtnIteraccion) == 1) {
                         echo Html::a(Html::img(Url::to("@web/images/actualizar.png"), ["width" => "20px"]) . ' '
                                 . Yii::t("app", "Solicitar interaccion"), 'javascript:void(0)', ['class' => 'btn btn-default',
                             'data-pjax' => 'w0',
@@ -1375,8 +1379,10 @@ $contadorSecciones = 0;
                 ?>  
                 <?= Html::a(Yii::t('app', 'Calcular subi'), "javascript:void(0)", ['class' => 'btn  btn-primary soloCalcular'])
                 ?> 
-                <?php if (isset($_GET["escalado"])): ?>
-            <?php if ($_GET["escalado"]== 1): ?>
+                <?php 
+                    $escalado = Yii::$app->request->get("escalado");
+                    if (isset($escalado)): ?>
+                <?php if ($escalado== 1): ?>
                     <?= Html::a(Yii::t('app', 'Borrar'), "javascript:void(0)", ['class' => 'btn btn-danger soloCancelar'])
                     ?>
             <?php endif; ?>
@@ -1665,7 +1671,8 @@ function cargarlista(){
         $("#escalateForm").change(function () {
             var tmp_form = $("#tmp_formulario_id").val();
             var escalado = '<?php 
-                if (isset($_GET["escalado"])){
+                $escalado = Yii::$app->request->get("escalado");
+                if (isset($escalado)){
                     echo Yii::$app->request->get("escalado");
                     
                 } ?>';
