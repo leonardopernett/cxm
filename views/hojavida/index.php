@@ -464,7 +464,7 @@ $this->params['breadcrumbs'][] = $this->title;
               ]) ?>
               <div class="form-group">
                  <label for="">Correo Destinatario</label>
-                 <input type="text" class="form-control" name="email" placeholder="Example@correo.com" required>
+                 <input type="text" class="form-control" autocomplete="off" name="email" placeholder="Example@correo.com" required>
               </div>
               <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em> </button>
             <?php  Activeform::end() ?>
@@ -480,7 +480,7 @@ $this->params['breadcrumbs'][] = $this->title;
               ]) ?>
               <div class="form-group">
                  <label for="">Correo Destinatario</label>
-                 <input type="text" class="form-control" name="email" placeholder="correo destinatario" required>
+                 <input type="text" class="form-control" autocomplete="off" name="email" placeholder="correo destinatario" required>
               </div>
               <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em></button>
             <?php  Activeform::end() ?>
@@ -509,7 +509,7 @@ $this->params['breadcrumbs'][] = $this->title;
               ]) ?>
               <div class="form-group">
                  <label for="">Correo Destinatario</label>
-                 <input type="text" class="form-control" name="email" placeholder="Example@correo.com" required>
+                 <input type="text" class="form-control" autocomplete="off" name="email" placeholder="Example@correo.com" required>
               </div>
               <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em> </button>
             <?php  Activeform::end() ?>
@@ -525,7 +525,7 @@ $this->params['breadcrumbs'][] = $this->title;
               ]) ?>
               <div class="form-group">
                  <label for="">Correo Destinatario</label>
-                 <input type="text" class="form-control" name="email" placeholder="correo destinatario" required>
+                 <input type="text" class="form-control" autocomplete="off" name="email" placeholder="correo destinatario" required>
               </div>
               <button class="btn btn-primary btn-block" style="margin-top:10px">Enviar <em class="fa fa-paper-plane"></em></button>
             <?php  Activeform::end() ?>
