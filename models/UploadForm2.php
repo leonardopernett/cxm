@@ -16,7 +16,10 @@ class UploadForm2 extends Model
     public function rules()
     {
         return [
-            [['file'], 'file',  'maxSize'=> 1024 * 1024 * 50],
+            [['file'], 'file', 
+            'extensions' => 'png, jpg, pdf, xls, xlsx, csv, xlt, docx',
+            'wrongExtension' => 'El archivo {file} no contiene una extensión permitida {extensions}', 
+            'maxSize'=> 1024 * 1024 * 50],
         ];
     }   
 
