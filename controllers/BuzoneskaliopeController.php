@@ -168,7 +168,7 @@ use app\models\Formularios;
       curl_setopt_array($curl, array(
         CURLOPT_SSL_VERIFYPEER=> false,
         CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+        CURLOPT_URL => KALIOPE_STATUS_BY_CONNID,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -232,7 +232,7 @@ use app\models\Formularios;
         curl_setopt_array($curl, array(
           CURLOPT_SSL_VERIFYPEER=> false,
           CURLOPT_SSL_VERIFYHOST => false,
-          CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+          CURLOPT_URL => KALIOPE_STATUS_BY_CONNID,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
