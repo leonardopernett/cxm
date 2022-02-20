@@ -7,10 +7,10 @@ namespace GuzzleHttp\Cookie;
 class FileCookieJar extends CookieJar
 {
     /** @var string filename */
-    private $filename;
+    private $filename="";
 
     /** @var bool Control whether to persist session cookies or not. */
-    private $storeSessionCookies;
+    private $storeSessionCookies=true;
 
     /**
      * Create a new FileCookieJar object

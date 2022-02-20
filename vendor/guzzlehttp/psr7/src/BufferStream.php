@@ -13,7 +13,7 @@ use Psr\Http\Message\StreamInterface;
  */
 class BufferStream implements StreamInterface
 {
-    private $hwm;
+    private $hwm=0;
     private $buffer = '';
 
     /**

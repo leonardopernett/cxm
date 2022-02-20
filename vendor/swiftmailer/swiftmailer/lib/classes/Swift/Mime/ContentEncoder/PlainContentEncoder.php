@@ -20,14 +20,14 @@ class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_Conten
      *
      * @var string
      */
-    private $_name;
+    private $_name='';
 
     /**
      * True if canonical transformations should be done.
      *
      * @var bool
      */
-    private $_canonical;
+    private $_canonical=true;
 
     /**
      * Creates a new PlainContentEncoder with $name (probably 7bit or 8bit).

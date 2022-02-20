@@ -40,7 +40,7 @@ class PHPExcel_Comment implements PHPExcel_IComparable
      *
      * @var string
      */
-    private $_author;
+    private $_author="";
 
     /**
      * Rich text comment
@@ -96,7 +96,7 @@ class PHPExcel_Comment implements PHPExcel_IComparable
      *
      * @var string
      */
-    private $_alignment;
+    private $_alignment="";
 
     /**
      * Create a new PHPExcel_Comment

@@ -40,7 +40,7 @@ class PHPExcel_Worksheet_RowDimension
 	 *
 	 * @var int
 	 */
-	private $_rowIndex;
+	private $_rowIndex=0;
 
 	/**
 	 * Row height (in pt)

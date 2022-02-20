@@ -29,7 +29,7 @@ class CholeskyDecomposition {
 	 *	@var int
 	 *	@access private
 	 */
-	private $m;
+	private $m=0;
 
 	/**
 	 *	Symmetric positive definite flag

@@ -25,17 +25,17 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @var string
      */
-    private $clientFilename;
+    private $clientFilename="";
 
     /**
      * @var string
      */
-    private $clientMediaType;
+    private $clientMediaType="";
 
     /**
      * @var int
      */
-    private $error;
+    private $error=0;
 
     /**
      * @var null|string
@@ -50,7 +50,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @var int
      */
-    private $size;
+    private $size=0;
 
     /**
      * @var StreamInterface|null

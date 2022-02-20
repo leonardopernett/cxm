@@ -35,7 +35,7 @@ class Swift_CharacterStream_NgCharacterStream implements Swift_CharacterStream
      *
      * @var string
      */
-    private $_charset;
+    private $_charset='';
 
     /**
      * The data's stored as-is.

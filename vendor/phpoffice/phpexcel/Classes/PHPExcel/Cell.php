@@ -74,7 +74,7 @@ class PHPExcel_Cell
 	 *
 	 *	@var	string
 	 */
-	private $_dataType;
+	private $_dataType ="";
 
 	/**
 	 *	Parent worksheet
@@ -88,7 +88,7 @@ class PHPExcel_Cell
 	 *
 	 *	@var	int
 	 */
-	private $_xfIndex;
+	private $_xfIndex =0;
 
 	/**
 	 *	Attributes of the formula

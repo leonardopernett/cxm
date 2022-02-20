@@ -33,19 +33,19 @@ class HTMLPurifier_Generator
      * Cache of %Output.SortAttr.
      * @type bool
      */
-    private $_sortAttr;
+    private $_sortAttr= true;
 
     /**
      * Cache of %Output.FlashCompat.
      * @type bool
      */
-    private $_flashCompat;
+    private $_flashCompat = true;
 
     /**
      * Cache of %Output.FixInnerHTML.
      * @type bool
      */
-    private $_innerHTMLFix;
+    private $_innerHTMLFix = true;
 
     /**
      * Stack for keeping track of object information when outputting IE

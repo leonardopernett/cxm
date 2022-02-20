@@ -35,7 +35,7 @@ abstract class BaseDataProvider extends Component implements DataProviderInterfa
      * You should set this property if the same page contains two or more different data providers.
      * Otherwise, the [[pagination]] and [[sort]] mainly not work properly.
      */
-    public $id;
+    public $id="";
 
     private $_sort;
     private $_pagination;

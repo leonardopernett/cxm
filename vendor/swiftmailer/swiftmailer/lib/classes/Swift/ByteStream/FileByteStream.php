@@ -19,10 +19,10 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
     private $_offset = 0;
 
     /** The path to the file */
-    private $_path;
+    private $_path='';
 
     /** The mode this file is opened in for writing */
-    private $_mode;
+    private $_mode='';
 
     /** A lazy-loaded resource handle for reading the file */
     private $_reader;

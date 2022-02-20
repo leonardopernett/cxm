@@ -40,7 +40,7 @@ class PHPExcel_NamedRange
 	 *
 	 * @var string
 	 */
-	private $_name;
+	private $_name ='';
 
 	/**
 	 * Worksheet on which the named range can be resolved
@@ -54,14 +54,14 @@ class PHPExcel_NamedRange
 	 *
 	 * @var string
 	 */
-	private $_range;
+	private $_range='';
 
 	/**
 	 * Is the named range local? (i.e. can only be used on $this->_worksheet)
 	 *
 	 * @var bool
 	 */
-	private $_localOnly;
+	private $_localOnly=true;
 
 	/**
 	 * Scope

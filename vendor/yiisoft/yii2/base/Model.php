@@ -73,7 +73,7 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
     /**
      * @var array validation errors (attribute name => array of errors)
      */
-    private $_errors;
+    private $_errors=[];
     /**
      * @var ArrayObject list of validators
      */

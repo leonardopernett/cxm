@@ -5541,7 +5541,7 @@ public function actionCantidadentto(){
                 $json = json_encode($enlaces);
                 $tmpeje->url_llamada = $json;
               }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
               \Yii::error('#####' . __FILE__ . ':' . __LINE__
                   . $exc->getMessage() . '#####', 'redbox');
               $msg = Yii::t('app', 'Error redbox');
@@ -5585,7 +5585,7 @@ public function actionCantidadentto(){
                 $msg = Yii::t('app', 'Error redbox');
                 Yii::$app->session->setFlash('danger', $msg);
               }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
               \Yii::error('#####' . __FILE__ . ':' . __LINE__
                                         . $exc->getMessage() . '#####', 'redbox');
               $msg = Yii::t('app', 'Error redbox');

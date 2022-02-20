@@ -14,7 +14,7 @@ class Request implements RequestInterface
     use MessageTrait;
 
     /** @var string */
-    private $method;
+    private $method="";
 
     /** @var null|string */
     private $requestTarget;

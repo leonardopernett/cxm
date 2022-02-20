@@ -65,14 +65,14 @@ class PHPExcel_Cell_DataValidation
      *
      * @var string
      */
-    private $_formula1;
+    private $_formula1="";
 
     /**
      * Formula 2
      *
      * @var string
      */
-    private $_formula2;
+    private $_formula2="";
 
     /**
      * Type
@@ -93,63 +93,63 @@ class PHPExcel_Cell_DataValidation
      *
      * @var string
      */
-    private $_operator;
+    private $_operator="";
 
     /**
      * Allow Blank
      *
      * @var boolean
      */
-    private $_allowBlank;
+    private $_allowBlank=true;
 
     /**
      * Show DropDown
      *
      * @var boolean
      */
-    private $_showDropDown;
+    private $_showDropDown=true;
 
     /**
      * Show InputMessage
      *
      * @var boolean
      */
-    private $_showInputMessage;
+    private $_showInputMessage=true;
 
     /**
      * Show ErrorMessage
      *
      * @var boolean
      */
-    private $_showErrorMessage;
+    private $_showErrorMessage=true;
 
     /**
      * Error title
      *
      * @var string
      */
-    private $_errorTitle;
+    private $_errorTitle="";
 
     /**
      * Error
      *
      * @var string
      */
-    private $_error;
+    private $_error="";
 
     /**
      * Prompt title
      *
      * @var string
      */
-    private $_promptTitle;
+    private $_promptTitle="";
 
     /**
      * Prompt
      *
      * @var string
      */
-    private $_prompt;
+    private $_prompt="";
 
     /**
      * Create a new PHPExcel_Cell_DataValidation

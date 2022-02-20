@@ -20,7 +20,7 @@ class SetCookie
     ];
 
     /** @var array Cookie data */
-    private $data;
+    private $data=[];
 
     /**
      * Create a new SetCookie object from a string

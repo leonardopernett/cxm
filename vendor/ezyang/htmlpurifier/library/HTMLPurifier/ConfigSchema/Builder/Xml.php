@@ -15,7 +15,7 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
     /**
      * @type string
      */
-    private $namespace;
+    private $namespace ="";
 
     /**
      * @param string $html

@@ -46,7 +46,7 @@ class PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE_Blip
 	 *
 	 * @var string
 	 */
-	private $_data;
+	private $_data='';
 
 	/**
 	 * Get the raw image data

@@ -17,7 +17,7 @@
 class Swift_FileSpool extends Swift_ConfigurableSpool
 {
     /** The spool directory */
-    private $_path;
+    private $_path='';
 
     /**
      * File WriteRetry Limit

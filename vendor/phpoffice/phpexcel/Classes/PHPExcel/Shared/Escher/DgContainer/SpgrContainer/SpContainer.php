@@ -53,70 +53,70 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
 	 *
 	 * @var int
 	 */
-	private $_spType;
+	private $_spType=0;
 
 	/**
 	 * Shape flag
 	 *
 	 * @var int
 	 */
-	private $_spFlag;
+	private $_spFlag=0;
 
 	/**
 	 * Shape index (usually group shape has index 0, and the rest: 1,2,3...)
 	 *
 	 * @var boolean
 	 */
-	private $_spId;
+	private $_spId="";
 
 	/**
 	 * Array of options
 	 *
 	 * @var array
 	 */
-	private $_OPT;
+	private $_OPT=[];
 
 	/**
 	 * Cell coordinates of upper-left corner of shape, e.g. 'A1'
 	 *
 	 * @var string
 	 */
-	private $_startCoordinates;
+	private $_startCoordinates="";
 
 	/**
 	 * Horizontal offset of upper-left corner of shape measured in 1/1024 of column width
 	 *
 	 * @var int
 	 */
-	private $_startOffsetX;
+	private $_startOffsetX=0;
 
 	/**
 	 * Vertical offset of upper-left corner of shape measured in 1/256 of row height
 	 *
 	 * @var int
 	 */
-	private $_startOffsetY;
+	private $_startOffsetY=0;
 
 	/**
 	 * Cell coordinates of bottom-right corner of shape, e.g. 'B2'
 	 *
 	 * @var string
 	 */
-	private $_endCoordinates;
+	private $_endCoordinates="";
 
 	/**
 	 * Horizontal offset of bottom-right corner of shape measured in 1/1024 of column width
 	 *
 	 * @var int
 	 */
-	private $_endOffsetX;
+	private $_endOffsetX=0;
 
 	/**
 	 * Vertical offset of bottom-right corner of shape measured in 1/256 of row height
 	 *
 	 * @var int
 	 */
-	private $_endOffsetY;
+	private $_endOffsetY=0;
 
 	/**
 	 * Set parent Shape Group Container

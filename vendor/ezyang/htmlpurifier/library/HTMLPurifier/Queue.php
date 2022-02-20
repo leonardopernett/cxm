@@ -18,8 +18,8 @@
  * to the output stack and back.
  */
 class HTMLPurifier_Queue {
-    private $input;
-    private $output;
+    private $input=[];
+    private $output=[];
 
     public function __construct($input = array()) {
         $this->input = $input;

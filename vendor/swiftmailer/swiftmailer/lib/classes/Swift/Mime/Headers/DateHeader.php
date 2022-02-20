@@ -20,7 +20,7 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader
      *
      * @var int
      */
-    private $_timestamp;
+    private $_timestamp=0;
 
     /**
      * Creates a new DateHeader with $name and $timestamp.

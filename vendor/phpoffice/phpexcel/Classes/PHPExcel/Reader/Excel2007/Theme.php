@@ -40,21 +40,21 @@ class PHPExcel_Reader_Excel2007_Theme
 	 *
 	 * @var string
 	 */
-	private $_themeName;
+	private $_themeName='';
 
 	/**
 	 * Colour Scheme Name
 	 *
 	 * @var string
 	 */
-	private $_colourSchemeName;
+	private $_colourSchemeName='';
 
 	/**
 	 * Colour Map indexed by position
 	 *
 	 * @var array of string
 	 */
-	private $_colourMapValues;
+	private $_colourMapValues=[];
 
 
 	/**
@@ -62,7 +62,7 @@ class PHPExcel_Reader_Excel2007_Theme
 	 *
 	 * @var array of string
 	 */
-	private $_colourMap;
+	private $_colourMap=[];
 
 
     /**

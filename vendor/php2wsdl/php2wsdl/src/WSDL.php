@@ -39,7 +39,7 @@ class WSDL
      *
      * @var array
      */
-    private $includedTypes;
+    private $includedTypes=[];
 
     /**
      * Default XSD Types.

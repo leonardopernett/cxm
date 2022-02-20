@@ -19,7 +19,7 @@ class CurlMultiHandler
 {
     /** @var CurlFactoryInterface */
     private $factory;
-    private $selectTimeout;
+    private $selectTimeout=0;
     private $active;
     private $handles = [];
     private $delays = [];

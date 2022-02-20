@@ -20,12 +20,12 @@ class HTMLPurifier_Injector_RemoveEmpty extends HTMLPurifier_Injector
     /**
      * @type bool
      */
-    private $removeNbsp;
+    private $removeNbsp = true;
 
     /**
      * @type bool
      */
-    private $removeNbspExceptions;
+    private $removeNbspExceptions = true;
 
     /**
      * @type array

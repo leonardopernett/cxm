@@ -39,14 +39,14 @@ class PHPExcel_Shared_Escher_DgContainer
 	 *
 	 * @var int
 	 */
-	private $_dgId;
+	private $_dgId=0;
 
 	/**
 	 * Last shape index in this drawing
 	 *
 	 * @var int
 	 */
-	private $_lastSpId;
+	private $_lastSpId=0;
 
 	private $_spgrContainer = null;
 

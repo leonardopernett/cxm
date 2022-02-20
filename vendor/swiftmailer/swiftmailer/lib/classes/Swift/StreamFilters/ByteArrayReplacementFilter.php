@@ -18,13 +18,13 @@
 class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilter
 {
     /** The needle(s) to search for */
-    private $_search;
+    private $_search=[];
 
     /** The replacement(s) to make */
-    private $_replace;
+    private $_replace=[];
 
     /** The Index for searching */
-    private $_index;
+    private $_index=[];
 
     /** The Search Tree */
     private $_tree = array();
@@ -32,7 +32,7 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
     /**  Gives the size of the largest search */
     private $_treeMaxLen = 0;
 
-    private $_repSize;
+    private $_repSize=[];
 
     /**
      * Create a new ByteArrayReplacementFilter with $search and $replace.

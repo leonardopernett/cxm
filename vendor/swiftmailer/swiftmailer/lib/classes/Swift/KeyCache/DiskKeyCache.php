@@ -36,7 +36,7 @@ class Swift_KeyCache_DiskKeyCache implements Swift_KeyCache
      *
      * @var string
      */
-    private $_path;
+    private $_path='';
 
     /**
      * Stored keys.

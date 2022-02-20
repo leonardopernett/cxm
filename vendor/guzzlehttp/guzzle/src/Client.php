@@ -26,7 +26,7 @@ use Psr\Http\Message\UriInterface;
 class Client implements ClientInterface
 {
     /** @var array Default request options */
-    private $config;
+    private $config=[];
 
     /**
      * Clients accept an array of constructor parameters.

@@ -40,7 +40,7 @@ class PHPExcel_Worksheet_ColumnDimension
 	 *
 	 * @var int
 	 */
-	private $_columnIndex;
+	private $_columnIndex=0;
 
 	/**
 	 * Column width
@@ -84,7 +84,7 @@ class PHPExcel_Worksheet_ColumnDimension
 	 *
 	 * @var int
 	 */
-	private $_xfIndex;
+	private $_xfIndex=0;
 
     /**
      * Create a new PHPExcel_Worksheet_ColumnDimension

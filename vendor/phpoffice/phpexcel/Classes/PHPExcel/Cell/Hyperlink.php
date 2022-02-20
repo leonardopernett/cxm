@@ -40,14 +40,14 @@ class PHPExcel_Cell_Hyperlink
      *
      * @var string
      */
-    private $_url;
+    private $_url="";
 
     /**
      * Tooltip to display on the hyperlink
      *
      * @var string
      */
-    private $_tooltip;
+    private $_tooltip="";
 
     /**
      * Create a new PHPExcel_Cell_Hyperlink

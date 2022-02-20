@@ -57,7 +57,7 @@ class BatchQueryResult extends Object implements \Iterator
     /**
      * @var array the data retrieved in the current batch
      */
-    private $_batch;
+    private $_batch=[];
     /**
      * @var mixed the value for the current iteration
      */

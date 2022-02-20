@@ -68,7 +68,7 @@ class PHPExcel_Writer_Excel5 extends PHPExcel_Writer_Abstract implements PHPExce
 	 *
 	 * @var array
 	 */
-	private $_colors;
+	private $_colors=[];
 
 	/**
 	 * Formula parser
@@ -82,21 +82,21 @@ class PHPExcel_Writer_Excel5 extends PHPExcel_Writer_Abstract implements PHPExce
 	 *
 	 * @var array
 	 */
-	private $_IDCLs;
+	private $_IDCLs=[];
 
 	/**
 	 * Basic OLE object summary information
 	 *
 	 * @var array
 	 */
-	private $_summaryInformation;
+	private $_summaryInformation=[];
 
 	/**
 	 * Extended OLE object document summary information
 	 *
 	 * @var array
 	 */
-	private $_documentSummaryInformation;
+	private $_documentSummaryInformation=[];
 
 	/**
 	 * Create a new PHPExcel_Writer_Excel5

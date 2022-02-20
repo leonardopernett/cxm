@@ -51,7 +51,7 @@ class HTMLPurifier_UnitConverter
      * Whether or not BCMath is available.
      * @type bool
      */
-    private $bcmath;
+    private $bcmath = true;
 
     public function __construct($output_precision = 4, $internal_precision = 10, $force_no_bcmath = false)
     {

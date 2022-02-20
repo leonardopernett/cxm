@@ -20,7 +20,7 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
      *
      * @var string
      */
-    private $_name;
+    private $_name='';
 
     /**
      * The Grammar used for this Header.
@@ -48,7 +48,7 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
      *
      * @var string
      */
-    private $_lang;
+    private $_lang='';
 
     /**
      * The character set of the text in this Header.

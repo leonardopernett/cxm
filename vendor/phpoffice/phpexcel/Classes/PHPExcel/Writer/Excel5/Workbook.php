@@ -161,26 +161,26 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * @var int
 	 */
-	private $_str_total;
+	private $_str_total=0;
 
 	/**
 	 * Number of unique shared strings in workbook
 	 *
 	 * @var int
 	 */
-	private $_str_unique;
+	private $_str_unique=0;
 
 	/**
 	 * Array of unique shared strings in workbook
 	 *
 	 * @var array
 	 */
-	private $_str_table;
+	private $_str_table=[];
 
 	/**
 	 * Color cache
 	 */
-	private $_colors;
+	private $_colors=[];
 
 	/**
 	 * Escher object corresponding to MSODRAWINGGROUP

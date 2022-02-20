@@ -15,7 +15,7 @@ class StreamWrapper
     private $stream;
 
     /** @var string r, r+, or w */
-    private $mode;
+    private $mode="";
 
     /**
      * Returns a resource representing the stream.

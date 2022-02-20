@@ -28,7 +28,7 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
      * PCRE regex derived from $dtd_regex.
      * @type string
      */
-    private $_pcre_regex;
+    private $_pcre_regex ="";
 
     /**
      * @param $dtd_regex Allowed child pattern from the DTD

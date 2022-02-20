@@ -9,10 +9,10 @@ namespace GuzzleHttp;
 class UriTemplate
 {
     /** @var string URI template */
-    private $template;
+    private $template="";
 
     /** @var array Variables to use in the template expansion */
-    private $variables;
+    private $variables=[];
 
     /** @var array Hash for quick operator lookups */
     private static $operatorHash = [

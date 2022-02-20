@@ -13,7 +13,7 @@ class CookieJar implements CookieJarInterface
     private $cookies = [];
 
     /** @var bool */
-    private $strictMode;
+    private $strictMode=true;
 
     /**
      * @param bool $strictMode   Set to true to throw exceptions when invalid

@@ -19,13 +19,13 @@ class PumpStream implements StreamInterface
     private $source;
 
     /** @var int */
-    private $size;
+    private $size=0;
 
     /** @var int */
     private $tellPos = 0;
 
     /** @var array */
-    private $metadata;
+    private $metadata=[];
 
     /** @var BufferStream */
     private $buffer;

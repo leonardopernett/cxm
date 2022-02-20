@@ -50,7 +50,7 @@ class PHPExcel_Worksheet_Drawing_Shadow implements PHPExcel_IComparable
 	 *
 	 * @var boolean
 	 */
-	private $_visible;
+	private $_visible=true;
 
 	/**
 	 * Blur radius
@@ -59,7 +59,7 @@ class PHPExcel_Worksheet_Drawing_Shadow implements PHPExcel_IComparable
 	 *
 	 * @var int
 	 */
-	private $_blurRadius;
+	private $_blurRadius=0;
 
 	/**
 	 * Shadow distance
@@ -68,21 +68,21 @@ class PHPExcel_Worksheet_Drawing_Shadow implements PHPExcel_IComparable
 	 *
 	 * @var int
 	 */
-	private $_distance;
+	private $_distance=0;
 
 	/**
 	 * Shadow direction (in degrees)
 	 *
 	 * @var int
 	 */
-	private $_direction;
+	private $_direction=0;
 
 	/**
 	 * Shadow alignment
 	 *
 	 * @var int
 	 */
-	private $_alignment;
+	private $_alignment=0;
 
 	/**
 	 * Color
@@ -96,7 +96,7 @@ class PHPExcel_Worksheet_Drawing_Shadow implements PHPExcel_IComparable
 	 *
 	 * @var int
 	 */
-	private $_alpha;
+	private $_alpha=0;
 
     /**
      * Create a new PHPExcel_Worksheet_Drawing_Shadow

@@ -58,21 +58,21 @@ class PHPExcel_Reader_Excel5_Escher
 	 *
 	 * @var string
 	 */
-	private $_data;
+	private $_data='';
 
 	/**
 	 * Size in bytes of the Escher stream data
 	 *
 	 * @var int
 	 */
-	private $_dataSize;
+	private $_dataSize=0;
 
 	/**
 	 * Current position of stream pointer in Escher stream data
 	 *
 	 * @var int
 	 */
-	private $_pos;
+	private $_pos=0;
 
 	/**
 	 * The object to be returned by the reader. Modified during load.
