@@ -135,8 +135,8 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 </div>
 
 <?php 
-    $exportextractar = Yii::$app->request->post("exportextractar");
-    if (isset($exportextractar)): ?>
+    $exportextractar = Yii::$app->request->post('exportextractar');
+    if (!$exportextractar): ?>
     <hr>
     <?php if ($export): ?>
         <?php

@@ -5405,7 +5405,7 @@ public function actionCantidadentto(){
         $dimension = Yii::$app->request->post('Dimensiones');
         $dimension_id = $arboles["dimension_id"];
         $evaluado_id = Yii::$app->request->post("evaluado_id");
-        $postTipoInteraccion =  Yii::$app->request->post('tipo_interaccion')
+        $postTipoInteraccion =  Yii::$app->request->post('tipo_interaccion');
         $tipoInteraccion = (isset($postTipoInteraccion)) ? $postTipoInteraccion : 1;
         $usua_id = Yii::$app->user->identity->id;
         $created = ($preview == 1) ? 0 : date("Y-m-d H:i:s");
