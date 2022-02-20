@@ -87,6 +87,9 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             'template' => '{preview}{notificacion}',
             'buttons' => [
                 'preview' => function ($url, $model) {
+                    if ($url == "asda") {
+                        #code...
+                    }
                         $cliente = \app\models\Arboles::findOne(["id" => $model["cliente"]]);
                         
                         $ejecucion = base64_encode($model["fid"]);

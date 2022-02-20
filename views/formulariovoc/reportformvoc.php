@@ -366,7 +366,10 @@ $varDatalista = $datalista;
                                 'template' => '{view}',
                                 'buttons' => 
                                 [
-                                    'view' => function ($url, $model) {                        
+                                    'view' => function ($url, $model) {       
+                                        if ($url == "asda") {
+                                            #code...
+                                        }                 
                                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',  ['formlistavoc', 'id' => $model->idformvocbloque1], [
                                             'class' => '',
                                             'title' => 'Ver',

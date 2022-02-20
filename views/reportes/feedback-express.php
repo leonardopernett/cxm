@@ -351,6 +351,9 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 'template' => '{preview}{update}{calculate}',
                 'buttons' => [
                     'preview' => function ($url, $model) {
+                        if ($url == "asda") {
+                            #code...
+                        }
                         $ejecucion = \app\models\Ejecucionformularios::findOne(["id" => $model->ejecucionformulario_id]);
                         if (isset($ejecucion->basesatisfaccion_id)) {
                             $modelBase = app\models\BaseSatisfaccion::findOne($ejecucion->basesatisfaccion_id);
@@ -374,6 +377,9 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                         }
                     },
                             'update' => function ($url, $model) {
+                                if ($url == "asda") {
+                                    #code...
+                                }
                         $page = Yii::$app->request->get('page');
                         $numPage = (empty($page)) ? 1 : $page;
                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '', [
@@ -393,6 +399,9 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                         ]);
                     },
                             'calculate' => function ($url, $model) {
+                                if ($url == "asda") {
+                                    #code...
+                                }
                         return Html::a('<span class="glyphicon glyphicon-stats"></span>', '', [
                                     'title' => Yii::t('yii', 'Calculos'),
                                     'data-pjax' => 'w0',

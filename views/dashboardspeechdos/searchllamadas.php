@@ -429,7 +429,9 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
-                                       
+                                        if ($url == "asda") {
+                                            #code...
+                                        }
                                         $varsConnid = $model->connid;
                                         if ($varsConnid == "") {
                                             $varsConnid = 0;
@@ -463,7 +465,9 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
-                                                                                
+                                        if ($url == "asda") {
+                                            #code...
+                                        }     
                                             $varextensiones = $model->extension;
                                             $varservicios = $model->servicio;
                                             if (strlen($varextensiones) <= 3) {
@@ -513,6 +517,9 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'buttons' => 
                                 [
                                     'view' => function ($url, $model) {   
+                                        if ($url == "asda") {
+                                            #code...
+                                        }
                                         $txtidredbox = $model->idredbox;
                                         $txtidgrabadora = $model->idgrabadora;
 
@@ -552,6 +559,9 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'buttons' => 
                                 [
                                    'update' => function ($url, $model) {
+                                    if ($url == "asda") {
+                                        #code...
+                                    }
                                         $idloginid = $model->login_id;
                                         $concatenarspeech = $model->callId.'; '.$model->fechareal;
                                         $txtejecucion = Yii::$app->db->createCommand("SELECT COUNT(te.id) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta like '%$concatenarspeech%'")->queryScalar();

@@ -82,6 +82,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => 
                 [
                     'update' => function ($url, $model) {
+                        if ($url == "asda") {
+                            #code...
+                        }
                         return Html::a('<span class="far fa-check-circle" style="font-size: 20px; color: #28c916;" ></span>',['update', 'iddesvincular' => $model->iddesvincular], [
                             'class' => '',
                             'title' => 'Aceptar desvinculación',
@@ -102,6 +105,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'buttons' => 
             [
                 'update' => function ($url, $model) {
+                    if ($url == "asda") {
+                        #code...
+                    }
                     return Html::a('<span class="far fa-times-circle" style="font-size: 20px; color: #cf1b1b;" ></span>',['update2', 'iddesvincular' => $model->iddesvincular], [
                         'class' => '',
                         'title' => 'Rechazar desvinculación',

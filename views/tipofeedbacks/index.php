@@ -63,7 +63,7 @@ Modal::begin([
             ],            
             ['class' => 'yii\grid\ActionColumn',
                     'buttons' => [
-                        'view' => function ($url, $model) {
+                        'view' => function ($url) {
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
                                             $url,
                                             [
@@ -71,7 +71,7 @@ Modal::begin([
                                         'data-pjax' => 'w0',
                             ]);
                         },
-                        'update' => function ($url, $model) {
+                        'update' => function ($url) {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>',
                                             $url,
                                             [
@@ -81,6 +81,9 @@ Modal::begin([
                             ]);
                         },
                         'delete' => function ($url, $model) {
+                            if ($url == "asda") {
+                                #code...
+                            }
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>',
                                     Url::to(['delete', 
                                         'id'=>$model->id, 

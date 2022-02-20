@@ -398,7 +398,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'template' => '{view}{stats}',
                                     'buttons' => 
                                     [
-                                        'view' => function ($url, $model) {                        
+                                        'view' => function ($url, $model) {
+                                            if ($url == "asda") {
+                                                #code...
+                                            }                        
                                             return Html::a('<i class="fas fa-search" style="font-size: 18px; color: #002855;"></i> ',  ['view', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                                                 'class' => '',
                                                 'title' => 'Ver',

@@ -240,7 +240,10 @@ else
                 'template' => '{view}{stats}',
                 'buttons' => 
                 [
-                    'view' => function ($url, $model) {                        
+                    'view' => function ($url, $model) {
+                        if ($url == "asda") {
+                            #code...
+                        }                        
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',  ['view', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                             'class' => '',
                             'title' => 'Ver',
@@ -249,7 +252,10 @@ else
                             ],
                         ]);  
                     },                    
-                    'stats' => function ($url, $model) {                        
+                    'stats' => function ($url, $model) {
+                        if ($url == "asda") {
+                            #code...
+                        }                        
                         return Html::a('<span class=" glyphicon glyphicon-signal"></span>',  ['graficos2', 'evaluados_id' => $model->evaluados_id], [
                             'class' => '',
                             'title' => 'Detalles',

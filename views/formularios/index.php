@@ -91,6 +91,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'template' => '{duplicate}{view}{update}{delete}',
                         'buttons' => [
                             'duplicate' => function($url, $model) {
+                                if ($url == "asda") {
+                                    #code...
+                                }
                                 return Html::a('<span class="glyphicon glyphicon-share"></span> ', Url::to(['duplicate', 'id' => $model->id]), [
                                             'title' => Yii::t('app', 'Duplicate'),
                                 ]);

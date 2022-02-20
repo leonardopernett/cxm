@@ -160,6 +160,9 @@ $sessiones1 = Yii::$app->user->identity->id;
                 'buttons' => 
                 [
                     'view' => function ($url, $model) {                        
+                        if ($url == "asda") {
+                            #code...
+                        }
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',  ['viewpcrc', 'arbolid' => $model->arbol_id], [
                             'class' => '',
                             'data' => [
@@ -167,7 +170,10 @@ $sessiones1 = Yii::$app->user->identity->id;
                             ],
                         ]);
                     },                   
-                    'stats' => function ($url, $model) {                        
+                    'stats' => function ($url, $model) {
+                        if ($url == "asda") {
+                            #code...
+                        }                        
                         return Html::a('<span class=" glyphicon glyphicon-signal"></span>',  ['graficos4', 'arbolid' => $model->arbol_id], [
                             'class' => '',
                             'title' => 'Detalles',

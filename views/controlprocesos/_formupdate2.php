@@ -225,6 +225,9 @@ $this->title = 'Actualizar la Valoraciones';
                             
                                         },
                                         'delete' => function($url, $model){
+                                            if ($url == "asda") {
+                                                #code...
+                                            }
                                              $varFechacreacion = date("Y-m-d");
                                             
                                             $varId = $model->id;

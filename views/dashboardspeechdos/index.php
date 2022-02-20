@@ -285,7 +285,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         [],
                         [
                             "id" =>"requester",
-                            'item'=>function ($index, $label, $name, $checked, $value)
+                            'item'=>function ($label)
                             {
                                 return '<div class="col-md-12">
                                             <input type="checkbox"/>'.$label.'

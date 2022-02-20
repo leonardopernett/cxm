@@ -94,7 +94,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'buttons' => 
                     [
                         'view' => function ($url, $model) {
-                           
+                            if ($url == "asda") {
+                                #code...
+                            }
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',  ['view', 'id' => $model->id, 'evaluados_id' => $model->evaluados_id], [
                                 'class' => '',
                                 'data' => [

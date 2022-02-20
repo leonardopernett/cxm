@@ -199,25 +199,25 @@ if (!isset($aleatorio) || !$aleatorio) {
             ['class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'template' => '{view}{update}{delete}',
-                    'update' => function ($url, $model) {
+                    'update' => function ($url) {
                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                                     'title' => Yii::t('app', 'lead-update'),
                         ]);
                     },
-                    'delete' => function ($url, $model) {
+                    'delete' => function ($url) {
 
                         if ($url == "asda") {
                             //code...
                         }
                     },
-                    'view' => function ($url, $model) {
+                    'view' => function ($url) {
 
                         if ($url == "asda") {
                             //code...
                         }
                     },
                 ],
-                'urlCreator' => function ($action, $model, $key, $index) {
+                'urlCreator' => function ($action, $model) {
 
                     if ($action === 'update') {
                         $url ='showalertadesempeno?form_id='.base64_encode($model->id).'&lider=no&jefeop=si';

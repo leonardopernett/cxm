@@ -160,7 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'tipo_notifi',
                         'filter' => false,
-                        'value' => function($data) {
+                        'value' => function() {
 
                             return 'Segundo Calificador';
                         }
