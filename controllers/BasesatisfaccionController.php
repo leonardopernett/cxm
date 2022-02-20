@@ -2602,7 +2602,7 @@ class BasesatisfaccionController extends Controller {
                         curl_setopt_array($curl, array(
                             CURLOPT_SSL_VERIFYPEER=> false,
                             CURLOPT_SSL_VERIFYHOST => false,
-                            CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+                            CURLOPT_URL => KALIOPE_STATUS_BY_CONNID,
                             CURLOPT_RETURNTRANSFER => true,
                             CURLOPT_ENCODING => '',
                             CURLOPT_MAXREDIRS => 10,
@@ -4387,15 +4387,15 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                     if($alert == 1){
                         $titulo = 'Un asesor de tu grupo ha recibido una notificacion por bajo desempeño';
-                        $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
+                        $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
                         $this->notificar($lider, $titulo, $url); // Notificar Lider
                     }else if($alert == 2){
                         $titulo = 'Un asesor de tu grupo ha recibido una notificacion por bajo desempeño';
-                        $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
+                        $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
                         $this->notificar($lider, $titulo, $url); // Notificar Lider 
                     }else{
                         $titulo = 'Un asesor de tu grupo ha recibido un pliego de cargos';
-                        $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
+                        $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($idnoti['id']) . '&lider=si';
                         $this->notificar($lider, $titulo, $url); // Notificar Lider
                         //$this->enviarcorreo($usuario, $lider, $url);
                     }
@@ -4475,7 +4475,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 foreach ($lideres as $value1) {
                     $titulo = "te queda poco tiempo para responder a esta alerta!!!";
-                    $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($value1['id']) . '&lider=si';
+                    $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($value1['id']) . '&lider=si';
                     $usuario = $value1['lider'];
                     $this->notificar($usuario, $titulo, $url);
                 }
@@ -4506,7 +4506,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 foreach ($asesores as $value1) {
                     $titulo = "te queda poco tiempo para responder a esta alerta!!!";
-                    $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($value1['id']) . '&lider=no';
+                    $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($value1['id']) . '&lider=no';
                     $usuario = $value1['lider'];
                     $this->notificar($usuario, $titulo, $url);
                 }
@@ -4556,7 +4556,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         $model->notificado_lider = "si";
                         $model->fecha_finalizacion = date("Y-m-d H:i:s");
                         $titulo = "El lider ha respondido a tu compromiso por bajo desempeño!!!";
-                        $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no';
+                        $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($id) . '&lider=no';
                         $usuario = $model->asesor;
                         $this->notificar($usuario, $titulo, $url);
                     }
@@ -4646,7 +4646,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         if(isset($respuestas['respuesta_asesor'])){
                             $lider = $model['lider'];
                             $titulo = "Un asesor de tu grupo ha generado un compromiso por bajo desempeño";
-                            $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=si';
+                            $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($id) . '&lider=si';
 
                             $this->notificar($lider, $titulo, $url); // Notificar Lider
                         }
@@ -4694,7 +4694,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $id = \Yii::$app->request->get('id');
                 $motivo = \Yii::$app->request->get('motivo');
 
-                $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no&jefeop=si';
+                $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($id) . '&lider=no&jefeop=si';
                 //print_r($asesor . " justificacion: " . $justificacion); die;
                 $coordinador = Yii::$app->user->identity->username;
                 $despedir = new Despido();
@@ -4726,7 +4726,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 //print_r($justificacion); die;
 
-                $url = '/qa_managementv2/web/index.php/basesatisfaccion/showalertadesempeno?form_id=' . base64_encode($id) . '&lider=no&jefeop=si';
+                $url = BASESATISFACCION_SHOW_ALERTA.'?form_id=' . base64_encode($id) . '&lider=no&jefeop=si';
                 //print_r($asesor . " justificacion: " . $justificacion); die;
 
                 $coordinador = Yii::$app->user->identity->username;
@@ -5766,7 +5766,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/update/emotional-valence',
+                CURLOPT_URL => KALIOPE_EMOTIONAL_VALENCE,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,

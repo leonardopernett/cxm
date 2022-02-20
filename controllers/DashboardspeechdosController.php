@@ -4789,7 +4789,7 @@ public function actionCantidadentto(){
         ob_start();
         $curl = curl_init();
         curl_setopt_array($curl, array(
-          CURLOPT_URL => 'http://172.20.212.12/ASULWSRedboxReproducirAudio/ASULWSREDBOXReproducirAudioPantalla.asmx',
+          CURLOPT_URL => WS_REDBOX,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
@@ -4833,7 +4833,7 @@ public function actionCantidadentto(){
         curl_setopt_array($curl, array(
           CURLOPT_SSL_VERIFYPEER=> false,
           CURLOPT_SSL_VERIFYHOST => false,
-          CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+          CURLOPT_URL => KALIOPE_STATUS_BY_CONNID,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
