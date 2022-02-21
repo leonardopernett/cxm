@@ -332,8 +332,7 @@ use app\models\SpeechParametrizar;
                             'model' => $model,
                             'model2' => $model2,
                             'model3' => $model3,
-                            'dataProvider' => $dataProvider,
-                            //'txtIdBloques1' => $arrayUsu,                
+                            'dataProvider' => $dataProvider,              
                             ]);        
                         }
 

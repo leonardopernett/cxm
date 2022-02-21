@@ -287,7 +287,6 @@ class AdmincortesController extends \yii\web\Controller {
 						$model->diastc = $table->diastc;
 						$model->fechainiciotc = $table->fechainiciotc;
 						$model->fechafintc = $table->fechafintc;
-						//$model->cantdiastc = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '.$idtc.'')->queryScalar();
 						$numdias = Yii::$app->db->createCommand('select sum(cantdiastcs) from tbl_tipos_cortes where idtc = '.$idtc.'')->queryScalar();
 
 						$dataProvider = $model2->ObtenerCorte2($idtc);

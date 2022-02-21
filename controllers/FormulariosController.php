@@ -365,8 +365,6 @@ class FormulariosController extends Controller {
                         date_default_timezone_set('America/Bogota');
                         $tmpeje->hora_inicial = date("Y-m-d H:i:s");
 
-                        //echo "<pre>";
-                        //print_r($tmpeje); die;
                         //EN CASO DE SELECCIONAR ITERACCION AUTOMATICA
                         //CONSULTAMOS LA ITERACCION
                         if ($tipoInteraccion == 0) {
@@ -923,7 +921,6 @@ class FormulariosController extends Controller {
                         }
                     }
                 }
-                //$arrayCountBloques = call_user_func_array('array_merge', $arrayCountBloques);
                 //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
                 foreach ($arrayCountBloques as $dato) {
                     $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
@@ -1749,7 +1746,7 @@ class FormulariosController extends Controller {
                     //y valido de q si tenga un formulario, de lo contrario se fija 
                     //en 1 por defecto
                     $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
-                    if (/* !isset($data->formulario->subi_calculo) || */!isset($TmpForm->subi_calculo)) {
+                    if (!isset($TmpForm->subi_calculo)) {
                         if (isset($data->formulario->subi_calculo)) {
                             $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                             $TmpForm->save();
@@ -1866,7 +1863,6 @@ class FormulariosController extends Controller {
                 }
 
                 //CONSULTA DEL FORMULARIO
-                //$data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
                 //VALIDACION TIPO DE INTERACCION
                 if ($data->tipo_interaccion == 0) {
                     $showInteraccion = $showBtnIteraccion = 1;
@@ -2377,7 +2373,6 @@ class FormulariosController extends Controller {
                             ->asArray()
                             ->all();
                     //agrego el usuario no definido solo para la visualizacion  en la inbox
-                    //$data[] = ['id' => '1', 'text' => 'NO DEFINIDO'];
                     $out['results'] = array_values($data);
                 } elseif (!empty($id)) {
                     $data = \app\models\Usuarios::find()
@@ -2387,7 +2382,6 @@ class FormulariosController extends Controller {
                             ->asArray()
                             ->all();
                     //agrego el usuario no definido solo para la visualizacion  en la inbox
-                    //$data[] = ['id' => '1', 'text' => 'NO DEFINIDO'];
                     $out['results'] = array_values($data);
                 } else {
                     $out['results'] = ['id' => 0, 'text' => Yii::t('app', 'No matching records found')];

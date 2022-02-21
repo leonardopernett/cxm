@@ -256,7 +256,6 @@ class ControlController extends \yii\web\Controller
             'id',
             'detexto'
         ); //limite metrica vista unica German Index
-        //$data->metrica[] = 'Score';
         return $this->render('index', ['data' => $data, 'model' => $model, 'tipo_grafica' => $tipo_grafica]);
     }
 
@@ -1882,7 +1881,6 @@ class ControlController extends \yii\web\Controller
                             $correo = Yii::$app->mailer->compose('@app/views/control/plantillaCorreo')
                                 ->setFrom(\Yii::$app->params['email_envio_proceso'])
                                 ->setTo($usuario->usua_email)
-                                //->setSubject('Excel Control Proceso')
                                 ->attach($ruta)
                                 ->attach(Yii::$app->basePath . "/web/images/plantilla.png");
                             if ($control == 'proceso') {
@@ -2345,7 +2343,6 @@ class ControlController extends \yii\web\Controller
         $metrica = $this->validarMetrica($model->metrica);
         $arrayLabelsx = [
             'enabled' => true,
-            //'rotation' => ($agrupar == 1) ? 0 : -90,
             'color' => ($agrupar == 1) ? '#000000' : '#FFFFFF',
             'align' => ($agrupar == 1) ? 'center' : 'right',
             'style' => [

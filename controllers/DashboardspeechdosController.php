@@ -5110,7 +5110,6 @@ public function actionCantidadentto(){
             }
           }
         }
-        //$lastColumn++;
         // Diego para lo de responsabilidad
         if($varListadorespo) {
           if($vartotalrespo == $numcol1){
@@ -5176,7 +5175,6 @@ public function actionCantidadentto(){
               }
             }
 
-          // $VarCodsPcrc
            $varcallidR = $value['callid'];
            $varlogin_id = $value['login_id'];
 
@@ -5370,8 +5368,6 @@ public function actionCantidadentto(){
                  $varTotalvariables = count($varListIndiVari2);
                   if($cuentavari == ($vartotalrespo)) {
                     $varaqui = 'Aqui';
-                    //$totalpondeR = (($sumapositivoR + ($cuentanegativoR - $sumanegativoR)) / $varTotalvariables;
-                    //$totalpondeR = ($sumapositivoR + $cuentanegativoR);
                     if($cuentanegativoR == 0) {
                       $totalpondeR = $sumapositivoR / $varTotalvariables;
                     }
@@ -5381,8 +5377,6 @@ public function actionCantidadentto(){
                     if($cuentanegativoR != $varTotalvariables && $cuentanegativoR > 0) {
                       $totalpondeR = (($sumapositivoR + ($cuentanegativoR - $sumanegativoR)) / $varTotalvariables);
                     }              
-                    //$phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $totalpondeR); 
-                //  $lastColumn++;
               // insertar en la tabla temporal
               
                     Yii::$app->db->createCommand()->insert('tbl_tmpcategoriaagente',[
@@ -5399,7 +5393,6 @@ public function actionCantidadentto(){
               }
              
             }
-           // $numCell++;
             $cuentavari = 0;
             $cuentanegativoR = 0;
             $sumapositivoR = 0;
@@ -5550,8 +5543,6 @@ public function actionCantidadentto(){
           date_default_timezone_set('America/Bogota');
           $tmpeje->hora_inicial = date("Y-m-d H:i:s");
 
-          //echo "<pre>";
-          //print_r($tmpeje); die;
           //EN CASO DE SELECCIONAR ITERACCION AUTOMATICA
           //CONSULTAMOS LA ITERACCION
 
@@ -5725,7 +5716,6 @@ public function actionCantidadentto(){
                 //en 1 por defecto
                 $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
                 if (!isset($TmpForm->subi_calculo)) {
-                    //$TmpForm->subi_calculo = $data->formulario->subi_calculo;
                     if (isset($data->formulario->subi_calculo)) {
                         $TmpForm->subi_calculo = $data->formulario->subi_calculo;
                         $TmpForm->save();
@@ -5787,21 +5777,11 @@ public function actionCantidadentto(){
                 }else{
                     $data->idcliente =  $varIdcliente;
                 }
-                //$data->idcliente =  $varIdcliente;
                 $data->varidarbol =  $varidarbol;
                 $data->codpcrc =  $varCodpcrc;
                 $data->IdclienteSel =$varIdclienteSel;
                 $data->varIdformu =  $varIdformu;
 
-
-                //$data->indices_calcular = call_user_func_array('array_merge', $data->indices_calcular);
-                /* if (!isset($data->formulario)) {
-                  $data->formulario = new Formularios();
-                  $data->formulario->id_plantilla_form = 1;
-                  } */
-
-                // echo "<pre>";
-                // print_r($data); die;
                 return $this->render('show-formulario', [
                                                         'data' => $data,                            
                                                         'model' => $model,
@@ -5928,7 +5908,6 @@ public function actionCantidadentto(){
                         }
                     }
                 }
-                //$arrayCountBloques = call_user_func_array('array_merge', $arrayCountBloques);
                 //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
                 foreach ($arrayCountBloques as $dato) {
                     $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
@@ -6005,15 +5984,8 @@ public function actionCantidadentto(){
 
                         $tmp_ejecucion->cant_modificaciones = $tmp_ejecucion->cant_modificaciones + 1;
 
-                        // $suma = strtotime($tmp_ejecucion->tiempo_modificaciones) + strtotime($tiempo_modificacion_actual);
-
-                        // $suma1 = date("h:i:s", $suma); //01:57:48
                         $date = new DateTime($tiempo_modificacion_actual);
-                        //print_r($data); die;
                         $suma2 = $this->sumarhoras($tmp_ejecucion->tiempo_modificaciones, $date->format('H:i:s'));
-                        // //$tmp_ejecucion->tiempo_modificaciones = $dt->format('H:i:s');
-                        // print_r("este: " . $tmp_ejecucion->tiempo_modificaciones . " mas : " . $tiempo_modificacion_actual . " es igual a : " .  $suma2); die;
-
                         $tmp_ejecucion->tiempo_modificaciones = $suma2;
 
                         $tmp_ejecucion->save();
@@ -6054,24 +6026,6 @@ public function actionCantidadentto(){
                 /**/
                 $modelEvaluado = \app\models\Evaluados::findOne(["id" => $tmp_ejecucion->evaluado_id]);
                 $ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
-                // $params = [];
-                // $params['titulo'] = 'Te han realizado una valoraci�n';
-                // $params['pcrc'] = '';
-                // $params['descripcion'] = '';
-                // $params['notificacion'] = 'SI';
-                // $params['muro'] = 'NO';
-                // $params['usuariored'] = $modelEvaluado->dsusuario_red;
-                // $params['cedula'] = '';
-                // $params['plataforma'] = 'QA';
-                // $params['url'] = '' . Url::to(['formularios/showformulariodiligenciadoamigo'], true) . '?form_id=' . base64_encode($ejecucion[0]->id);
-
-                // Aqui 2021-04-27 parte que se desomenta para amigo
-
-                //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
-                //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
-                //if (!$webservicesresponse && $tmp_ejecucion == '') {
-                    //Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexi�n con la plataforma Amigo'));
-                //}
 
                 //Proceso para guardar clientes y centro de costos
                
@@ -6092,10 +6046,6 @@ public function actionCantidadentto(){
                                                 ],'ejec_form_id ='.$varIdformu .'')->execute();   
                 }else{
 
-                //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
-           // $txtidejec_formu = intval($txtidejec_formu) + 1;
-               //insertar Cliente y centro de costo
-                  //$txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar();
         $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar(); 
                     Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
                         'ejec_form_id' => $txtidejec_formu,

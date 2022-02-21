@@ -150,7 +150,6 @@ use app\models\BasechatMotivos;
 
                     $InvDateChange= $sheet->getCell("C".$row)->getValue();
                     $InvDate= PHPExcel_Shared_Date::ExcelToPHPObject($InvDateChange)->format('Y-m-d H:i:s');
-                    // var_dump($InvDate);
                     $anio = date("Y", strtotime($InvDate));
                     $mes = date("m", strtotime($InvDate));
                     $dia = date("d", strtotime($InvDate));
@@ -800,7 +799,6 @@ use app\models\BasechatMotivos;
                             }
                         }
                     }
-                    //$arrayCountBloques = call_user_func_array('array_merge', $arrayCountBloques);
                     //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
                     foreach ($arrayCountBloques as $dato) {
                         $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
@@ -863,7 +861,6 @@ use app\models\BasechatMotivos;
                         ]);
                     }
                     //TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
-                    //$tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                     /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
                     \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
                     
@@ -1016,7 +1013,6 @@ use app\models\BasechatMotivos;
                             }
                         }
                     }
-                    //$arrayCountBloques = call_user_func_array('array_merge', $arrayCountBloques);
                     //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
                     foreach ($arrayCountBloques as $dato) {
                         $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
@@ -1120,7 +1116,6 @@ use app\models\BasechatMotivos;
                       $params['plataforma'] = 'QA';
                       $params['url'] = '' . Url::to(['formularios/showformulariodiligenciadoamigo']) . '?form_id=' . base64_encode($ejecucion[0]->id);
                       //Se comenta webservicesresponse  para QA por caida de Amigo - 13-02-2019 -
-                      //$webservicesresponse = Yii::$app->webservicesamigo->webServicesAmigo(Yii::$app->params['wsAmigo'], "setNotification", $params);
                       $webservicesresponse = null;
                       $tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
                       if (!$webservicesresponse && $tmp_ejecucion == '') {

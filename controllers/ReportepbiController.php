@@ -110,7 +110,6 @@ use app\models\ControlProcesosEquipos;
 
 
             return $this->render('reporte', [
-               // 'model' => $model,                
                 'listaworkspaces' => $listWorkspaces,               
                 ]);
     
@@ -425,15 +424,11 @@ use app\models\ControlProcesosEquipos;
     }
 
     if($tipo == 1){ // ELIMINAR REPORTE
-      //$info_log["id_logs_grupo"]  = 71; // LOG GRUPO
-      //$info_log["data"] = array("workspace"=> array("nombre"=>$workspace["name"],"id"=>$workspace["id"]),"reporte"=>array("name"=>$reporte["name"],"id"=>$reporte["id"]));
       $alter_report = $model->delete_report($reporte,$workspace,$accessToken);
     }else{
       #code
     }
     if($tipo == 2){ // DUPLICAR REPORTE EN UN AREA DE TRABAJO
-      //$info_log["id_logs_grupo"]  = 73; // LOG GRUPO
-      //$info_log["data"] = array("workspace"=>array("nombre"=>$workspace["name"],"id"=>$workspace["id"]),"reporte"=>array("name"=>$reporte["name"],"id"=>$reporte["id"]),"Nombre_del_duplicado"=>$new_name_report);
       $alter_report = $model->duplicate_report($reporte,$workspace,$new_name_report,$accessToken);
     }else{
       #code
