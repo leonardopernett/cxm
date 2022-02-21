@@ -82,7 +82,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     $varBeginYear = '2019-01-01';
     $varLastYear = '2050-12-31';
 
-    $varMonthYear = Yii::$app->db->createCommand("select concat_ws('- ', CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1)) as CorteTipo from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+    $varMonthYear = Yii::$app->db->createCommand("select concat_ws('- ', CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1)) as CorteTipo from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
     $varListCorte = array();
     foreach ($varMonthYear as $key => $value) {
@@ -99,11 +99,11 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     $varFisrtDate = date($varListMonth2[0]["mesyear"]);
     $varLastDate = date($varListMonth2[2]["mesyear"]);
 
-    $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+    $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
-    $varListMonthMed = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+    $varListMonthMed = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
-    $varListMonthBog = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+    $varListMonthBog = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
     $txtTotalKonecta = null;   
     $varListKonecta = array(); 
@@ -212,11 +212,11 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     $varFisrtDatee = date($varListMonth2e[0]["mesyear"]);
     $varLastDatee = date($varListMonth2e[2]["mesyear"]);
 
-    $varListMonthe = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a    order by a.mesyear asc")->queryAll();
+    $varListMonthe = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a    order by a.mesyear asc")->queryAll();
 
-    $varListMonthMede = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+    $varListMonthMede = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
-    $varListMonthBoge = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+    $varListMonthBoge = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
     $txtTotalKonectae = null;   
     $varListKonectae = array();    
@@ -621,7 +621,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                     <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                                     <?php
 
-                                                                        $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+                                                                        $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varMonthYear as $key => $value) {
                                                                             $varMonth = $value['CorteMes'];
@@ -650,7 +650,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                             $txtNameCity = $value['name'];
                                                                             $varIdPcrc = $value['id'];
 
-                                                                            $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a      order by a.mesyear asc")->queryAll();
+                                                                            $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a      order by a.mesyear asc")->queryAll();
                                                                     ?>
                                                                     <tr>
                                                                         <td class="text-center"><?php echo $txtNameCity; ?></td>
@@ -743,7 +743,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                 <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                                     <?php
 
-                                                                        $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+                                                                        $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varMonthYear as $key => $value) {
                                                                             $varMonth = $value['CorteMes'];
@@ -760,7 +760,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                 <tr>
                                                                     <td class="text-center"><?= Yii::t('app', 'Automatica y Manual') ?></td>
                                                                     <?php
-                                                                        $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                        $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varListMonth as $key => $value) {                        
                                                                             $varListYear = $value['mesyear']; 
@@ -797,7 +797,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                 <tr>
                                                                     <td class="text-center"><?= Yii::t('app', 'Automatica') ?></td>
                                                                     <?php
-                                                                        $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                        $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varListMonth as $key => $value) {
                                                                             $varListYear = $value['mesyear']; 
@@ -820,7 +820,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                 <tr>
                                                                     <td class="text-center"><?= Yii::t('app', 'Manual') ?></td>
                                                                     <?php
-                                                                        $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                        $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varListMonth as $key => $value) {
                                                                             $varListYear = $value['mesyear']; 
@@ -866,7 +866,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                 <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                                     <?php
 
-                                                                        $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+                                                                        $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varMonthYear as $key => $value) {
                                                                             $varMonth = $value['CorteMes'];
@@ -883,7 +883,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                 <tr>
                                                                     <td class="text-center"><?= Yii::t('app', 'Automatica y Manual') ?></td>
                                                                     <?php
-                                                                        $varListMonthBog = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                        $varListMonthBog = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varListMonthBog as $key => $value) {                        
                                                                             $varListYearB = $value['mesyear']; 
@@ -920,7 +920,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                 <tr>
                                                                     <td class="text-center"><?= Yii::t('app', 'Automatica') ?></td>
                                                                     <?php
-                                                                        $varListMonthBog = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                        $varListMonthBog = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varListMonthBog as $key => $value) {
                                                                             $varListYearB = $value['mesyear']; 
@@ -943,7 +943,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                                 <tr>
                                                                     <td class="text-center"><?= Yii::t('app', 'Manual') ?></td>
                                                                     <?php
-                                                                        $varListMonthBog = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                        $varListMonthBog = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                         foreach ($varListMonthBog as $key => $value) {
                                                                             $varListYearB = $value['mesyear']; 
@@ -989,7 +989,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             <th scope="col" class="text-center" style="background-color: #EEEEEE"><?= Yii::t('app', '') ?></th>
                                                                 <?php
 
-                                                                    $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+                                                                    $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
                                                                     foreach ($varMonthYear as $key => $value) {
                                                                         $varMonth = $value['CorteMes'];
@@ -1006,7 +1006,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             <tr>
                                                                 <td class="text-center"><?= Yii::t('app', 'Automatica y Manual') ?></td>
                                                                 <?php
-                                                                    $varListMonthMed = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                    $varListMonthMed = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                     foreach ($varListMonthMed as $key => $value) {                        
                                                                         $varListYearM = $value['mesyear']; 
@@ -1043,7 +1043,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             <tr>
                                                                 <td class="text-center"><?= Yii::t('app', 'Automatica') ?></td>
                                                                 <?php
-                                                                    $varListMonthM = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                    $varListMonthM = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                     foreach ($varListMonthM as $key => $value) {
                                                                         $varListYearM = $value['mesyear']; 
@@ -1066,7 +1066,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             <tr>
                                                                 <td class="text-center"><?= Yii::t('app', 'Manual') ?></td>
                                                                 <?php
-                                                                    $varListMonthM = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a order by a.mesyear asc")->queryAll();
+                                                                    $varListMonthM = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
 
                                                                     foreach ($varListMonthM as $key => $value) {
                                                                         $varListYearM = $value['mesyear']; 
@@ -1133,7 +1133,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                         $varLastDate1 = $varLastDate0->format('Y/m/d');
 
 
-                                                        $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();
+                                                        $varMonthYear = Yii::$app->db->createCommand("select CorteMes, CorteYear, mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();
 
                                                         foreach ($varMonthYear as $key => $value) {
                                                             $varMonth = $value['CorteMes'];
@@ -1156,7 +1156,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                             $txtNameCity = $value['name'];
                                                             $varIdPcrc = $value['id'];
 
-                                                            $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 7) a   order by a.mesyear asc")->queryAll();                                             
+                                                            $varListMonth = Yii::$app->db->createCommand("select mesyear from (select distinct substring_index(replace((replace(tipocortetc,'<b>','')),'</b>',''),'-',1) as CorteMes, substring_index(replace((replace(mesyear,'<b>','')),'</b>',''),'-',1) as CorteYear, mesyear from tbl_tipocortes where mesyear between '$varBeginYear' and '$varLastYear' group by mesyear order by mesyear desc limit 6) a   order by a.mesyear asc")->queryAll();                                             
 
                                                     ?>
                                                         <tr>
