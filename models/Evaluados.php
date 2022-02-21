@@ -52,7 +52,6 @@ class Evaluados extends \yii\db\ActiveRecord {
             [['dsusuario_red'], 'string', 'max' => 50],
             [['cdestatus'], 'string', 'max' => 1],
             [['identificacion'], 'string', 'max' => 30],
-            //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/'],
             [['identificacion'], 'match', 'not' => true, 'pattern' => '/[^0-9]/'],
             [['name','telefono','dsusuario_red','identificacion'],'filter', 'filter' => function($value){
                 return filter_var($value,FILTER_SANITIZE_STRING) ;
@@ -166,12 +165,9 @@ class Evaluados extends \yii\db\ActiveRecord {
         $titulos = [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-            //'telefono' => Yii::t('app', 'Telefono'),
             'dsusuario_red' => Yii::t('app', 'Dsusuario Red'),
-            //'cdestatus' => Yii::t('app', 'Cdestatus'),
             'identificacion' => Yii::t('app', 'Identificacion'),
             'email' => Yii::t('app', 'Email'),
-            //'evaluado_id' => Yii::t('app', 'Evaluado ID'),
             'equId' => Yii::t('app', 'Equipo ID'),
             'eqName' => Yii::t('app', 'Nombre Equipo'),
         ];

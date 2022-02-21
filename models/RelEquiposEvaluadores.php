@@ -33,8 +33,6 @@ class RelEquiposEvaluadores extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['evaluadores_id', 'equipo_id'], 'required'],
-            //[['evaluado_id', 'equipo_id'], 'integer']
-            //[['equipo_id'], 'integer']
         ];
     }
 

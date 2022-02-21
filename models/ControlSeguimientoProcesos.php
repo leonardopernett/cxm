@@ -115,7 +115,6 @@ class ControlSeguimientoProcesos extends Seguimientoprocesos
                     ->joinWith('ejecucionformularios')
                     ->joinWith('usuarios')
                     ->where(['tbl_control_procesos.anulado' => 'null'])
-		    //->andwhere(['like','tbl_control_procesos.tipo_corte',$txtcorte])
                     ->andwhere(['between','tbl_control_procesos.fechacreacion', $fechainiC, $fechafinC]);
         }
         else

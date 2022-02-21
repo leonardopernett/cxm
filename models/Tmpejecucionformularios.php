@@ -306,8 +306,6 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
         }
         $cadenaIdarboles = implode(',', $idArbolesPermiso);
         //fin de consulta de arboles con el permiso de vista
-        //$this->load($params);
-        
         $query = Tmpejecucionformularios::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -356,8 +354,6 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
         }
         $cadenaIdarboles = implode(',', $idArbolesPermiso);
         //fin de consulta de arboles con el permiso de vista
-        //$this->load($params);
-        
         $query = Tmpejecucionformularios::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -490,7 +486,6 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
         }
         $cadenaIdarboles = implode(',', $idArbolesPermiso);
         //fin de consulta de arboles con el permiso de vista
-        //$this->load($params);
         
         $query = Tmpejecucionformularios::find();
         

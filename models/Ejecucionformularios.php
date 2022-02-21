@@ -407,8 +407,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
         } else {
             $dataProvider = new SqlDataProvider([
                 'sql' => $sql,
-                //'totalCount' => count($count),
-                //'pagination' => ['pageSize' => 20,],
             ]);
         }
 
@@ -2277,12 +2275,10 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
         $baseConsulta = $metrica;
         $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio,je.arbol_id, dimension_id, COUNT(je.id) total, je.*")
                 ->from('`tbl_ejecucionformularios` je')
-                //->join('INNER JOIN', '`tbl_arbols` ar', 'ar.id = `je`.`arbol_id`')
                 ->where("je.dimension_id IN (" . $dimension_id . ") AND je.created BETWEEN '" . $fechaIni . "' AND '" . $fechaFin . "' AND je.arbol_id IN (" . $arbol_id . ")");
         if($segundoCalifPer){            
             $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio,je.arbol_id, dimension_id, COUNT(je.id) total, je.*")
                 ->from('`tbl_ejecucionformularios` je')
-                //->join('INNER JOIN', '`tbl_arbols` ar', 'ar.id = `je`.`arbol_id`')
                 ->where("je.dimension_id IN (" . $dimension_id . ") AND sc.s_fecha BETWEEN '" . $fechaIni . "' AND '" . $fechaFin . "' AND je.arbol_id IN (" . $arbol_id . ")");
             $sql->join('INNER JOIN', 'tbl_segundo_calificador sc', 'je.id = sc.id_ejecucion_formulario');
         }
@@ -2375,7 +2371,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
             $sql->join('INNER JOIN', 'tbl_segundo_calificador sc', 'je.id = sc.id_ejecucion_formulario');
         }
         
-        //->groupBy($groupBy)->asArray()  
         $sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');
         $sql->addSelect('u.*');
         $sql->groupBy('je.usua_id,je.arbol_id,je.dimension_id');
@@ -2642,7 +2637,6 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
         $sql = Ejecucionformularios::find()->select("SUM(je." . $baseConsulta . ")/COUNT(je.id) promedio,je.arbol_id, je.id, je.dimension_id, COUNT(je.id) total,je.*")
                 ->from('`tbl_ejecucionformularios` je')
                 ->where("je.dimension_id IN (" . $dimension_id . ") AND je.created BETWEEN '" . $fechaIni . "' AND '" . $fechaFin . "' AND je.arbol_id IN (" . $arbol_id . ")");
-        //->groupBy($groupBy)->asArray()  
 
         if ($model->valorador != '') {
             $sql->join('INNER JOIN', 'tbl_usuarios u', 'u.usua_id = je.usua_id');

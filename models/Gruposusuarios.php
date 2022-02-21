@@ -131,7 +131,6 @@ class GruposUsuarios extends \yii\db\ActiveRecord
             'usua_email' => 'Email',
             'usua_identificacion' => 'Identificacion',
             'usua_activo' => 'Activo',
-            //'role_id' => 'Rol ID',
             'role_nombre' => 'Nombre Rol',
             'role_descripcion' => 'Descripción Rol',
             'nombre_grupo'=>'Nombre del grupo',

@@ -273,7 +273,6 @@ class Tmpreportes extends \yii\db\ActiveRecord {
         return ArrayHelper::map(Arboles::find()
                                 ->joinWith('permisosGruposArbols')
                                 ->where([
-                                    //"sncrear_formulario" => 1,
                                     "snhoja" => 1,
                                     "grupousuario_id" => $grupo,
                                     "snver_grafica" => 1])

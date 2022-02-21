@@ -28,9 +28,6 @@ class ReportesAdministracion extends Model
         return [
              [['id_usuario'], 'integer'],
               [['id_reporte', 'id_workspace'], 'string', 'max' => 80],
-            // [['evaluados_id', 'salario', 'tipo_corte'], 'safe'],
-           // [],
-           // [['fechacreacion', 'valorador_id', 'arbol_id', 'dimensions', 'lider_id', 'tecnico_id', 'numidextsp', 'usuagente', 'duracion','extencion'], 'safe'],
         ];
     }
     public function attributeLabels()

@@ -19,8 +19,6 @@ class ControlProcesosReportebitacorauni extends Controlbitacorauniv
     public function rules()
     {
         return [
-            // [['id', 'responsable', 'evaluados_id'], 'integer'],
-            // [['evaluados_id', 'salario', 'tipo_corte'], 'safe'],
             [['id_bitacora_uni', 'id_momento', 'id_detalle_momento'], 'integer'],
             [['fecha_registro'], 'safe'],
             [['nombre', 'cedula', 'id_cliente', 'pcrc'], 'safe'],

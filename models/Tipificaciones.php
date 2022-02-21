@@ -34,7 +34,6 @@ class Tipificaciones extends \yii\db\ActiveRecord {
         return [
             [['nmorden'], 'integer', 'max' => 999],
             [['name'], 'string', 'min' => 2, 'max' => 100],
-            //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s?()_-]/'],
             [['name','nmorden'], 'required'],
             [['name','nmorden'], 'filter', 'filter' => function($value){
                 return filter_var($value,FILTER_SANITIZE_STRING) ;

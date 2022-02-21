@@ -57,7 +57,6 @@ class Arboles extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            //[['name', 'arbol_id', 'formulario_id', 'usua_id_responsable', 'tableroproblema_id', 'tiposllamada_id', 'bloquedetalle_id', 'nmfactor_proceso', 'nmumbral_verde', 'nmumbral_amarillo', 'nmumbral_positivo', 'dsorden', 'dsname_full'], 'required'],
             [['name', 'arbol_id', 'responsables'], 'required', 'on' => 'create'],
             [['name', 'arbol_id', 'responsables'], 'required', 'on' => 'update'],
             [['arbol_id'], 'required', 'on' => 'monitoreo'],
@@ -66,7 +65,6 @@ class Arboles extends \yii\db\ActiveRecord {
             [['nmfactor_proceso', 'nmumbral_verde', 'nmumbral_amarillo', 'nmumbral_positivo'], 'number'],
             [['name', 'dsorden'], 'string', 'max' => 100],
             [['dsname_full'], 'string', 'max' => 2000],
-            //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\s()_-]/'],
             [['equipos'], 'safe'],
             [['name', 'dsorden','dsname_full'],'filter', 'filter' => function($value){
                 return filter_var($value,FILTER_SANITIZE_STRING) ;

@@ -184,7 +184,6 @@ class ControlProcesos extends \yii\db\ActiveRecord
                     ->from('tbl_ejecucionformularios')
                     ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                             'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
-                    //->where(['between','tbl_ejecucionformularios.created', $fechainiC, $fechafinC])
                     ->where("tbl_ejecucionformularios.created between '$fechainiC 00:00:00' and '$fechafinC 23:59:59'")
                     ->andwhere('tbl_usuarios.usua_id = '.$variableid.'');
                     
@@ -251,7 +250,6 @@ class ControlProcesos extends \yii\db\ActiveRecord
                     ->from('tbl_ejecucionformularios')
                     ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                             'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
-                    //->where(['between','tbl_ejecucionformularios.created', $fechainiC, $fechafinC])
                     ->where("tbl_ejecucionformularios.created between '$fechainiC 00:00:00' and '$fechafinC 23:59:59'")
                     ->andwhere('tbl_usuarios.usua_id = '.$variableid.'');
                     
@@ -279,7 +277,6 @@ class ControlProcesos extends \yii\db\ActiveRecord
                 ->from('tbl_control_params')
                 ->where(['tbl_control_params.anulado' => 'null'])
 		->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC])
-                //->where("tbl_ejecucionformularios.created between '$fechainiC 00:00:00' and '$fechafinC 23:59:59'")
                 ->andwhere('tbl_control_params.evaluados_id = '.$variableid.'');
         $command = $query->createCommand();
         $data = $command->queryAll();

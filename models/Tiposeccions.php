@@ -32,7 +32,6 @@ class Tiposeccions extends \yii\db\ActiveRecord {
             [['name'], 'required'],
             [['nmumbral'], 'number'],
             [['name'], 'string', 'max' => 100],
-            //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/']
         ];
     }
 

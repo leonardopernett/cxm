@@ -71,7 +71,6 @@ class ParametrizacionEncuestaSearch extends ParametrizacionEncuesta {
         ]);
 
         $query->andFilterWhere([
-            //'like', 'tbl_arbols.name', $this->clienteName,
             'like', 'tbl_arbols.name', $this->pcrcName,
         ]);
 
