@@ -84,8 +84,6 @@ class Dashboardspeechcalls extends \yii\db\ActiveRecord
         $txtlideres = $varlider;
         $txtasesores = $varasesor;
         $txttipologias = $vartipologia;
-        // $txtresultadoasesor = null;
-        // $txtarrayasesores = null;
 
         if ($txtasesores == "") {
             $txtresultadoasesor = Yii::$app->db->createCommand("select distinct e.dsusuario_red from tbl_evaluados e     inner join tbl_equipos_evaluados ee on e.id = ee.evaluado_id where ee.equipo_id in ('$txtlideres') and e.dsusuario_red not like '%usar%'")->queryAll();

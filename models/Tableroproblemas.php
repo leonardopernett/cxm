@@ -29,7 +29,6 @@ class Tableroproblemas extends \yii\db\ActiveRecord {
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 45],
-            //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/'],
         ];
     }
 

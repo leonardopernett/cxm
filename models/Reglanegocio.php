@@ -43,9 +43,6 @@ class Reglanegocio extends \yii\db\ActiveRecord {
             [['rn', 'pcrc', 'cliente', 'tipo_regla', 'cod_industria', 'cod_institucion', 'encu_diarias', 'tramo1', 'tramo2', 'tramo3', 'tramo4', 'tramo5', 'tramo6', 'tramo7', 'tramo8', 'tramo9', 'tramo10', 'tramo11', 'tramo12', 'tramo13', 'tramo14', 'tramo15', 'tramo16', 'tramo17', 'tramo18', 'tramo19', 'tramo20', 'tramo21', 'tramo22', 'tramo23', 'tramo24', 'encu_mes', 'rango_encuestas'], 'required'],
 
 
-            // [['encu_diarias'], 'checkDateFormat'],
-
-
             [['pcrc', 'id_formulario'], 'integer'],
             [['cod_industria', 'cod_institucion', 'encu_diarias', 'tramo1', 'tramo2', 'tramo3', 'tramo4', 'tramo5', 'tramo6', 'tramo7', 'tramo8', 'tramo9', 'tramo10', 'tramo11', 'tramo12', 'tramo13', 'tramo14', 'tramo15', 'tramo16', 'tramo17', 'tramo18', 'tramo19', 'tramo20', 'tramo21', 'tramo22', 'tramo23', 'tramo24', 'encu_mes', 'rango_encuestas'], 'integer'],
             [['rn', 'correos_notificacion'], 'string', 'max' => 255],

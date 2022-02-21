@@ -224,7 +224,6 @@ class BasechatTigo extends \yii\db\ActiveRecord
         }
 
         $query->andFilterWhere([
-            // 'fecha_creacion' => $this->fecha_creacion,
             'pcrc' => $this->pcrc,
             'id_agente' => $this->id_agente,
             'tipologia' => $this->tipologia,

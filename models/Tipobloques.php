@@ -29,7 +29,6 @@ class Tipobloques extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['name'], 'required'],
-            //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/'],
             [['name'], 'string', 'max' => 100]
         ];
     }

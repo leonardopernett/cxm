@@ -18,8 +18,6 @@ class ControlProcesosEquipos extends ControlProcesos
     public function rules()
     {
         return [
-            // [['id', 'responsable', 'evaluados_id'], 'integer'],
-            // [['evaluados_id', 'salario', 'tipo_corte'], 'safe'],
             [['evaluados_id'], 'integer'],
             [['salario', 'tipo_corte', 'cant_valor', 'Dedic_valora', 'responsable'], 'safe'],
         ];
@@ -44,8 +42,7 @@ class ControlProcesosEquipos extends ControlProcesos
      */
     public function search1($params)
     {
-        $query = ControlProcesos::find()                    
-                    //->joinWith('evaluados')
+        $query = ControlProcesos::find()               
                     ->joinWith('usuarios')
                     ->where(['anulado' => '0'])
                     ->andwhere(['responsable' => Yii::$app->user->identity->id])
@@ -82,8 +79,7 @@ class ControlProcesosEquipos extends ControlProcesos
     public function searchplan2($params)
     {
         $txtUsuarios = $params;
-        $query = ControlProcesos::find()                    
-                    //->joinWith('evaluados')
+        $query = ControlProcesos::find()         
                     ->joinWith('usuarios')
                     ->where(['anulado' => '0'])
                     ->andwhere(['evaluados_id' => $txtUsuarios])

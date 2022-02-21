@@ -19,8 +19,6 @@ class ControlProcesosVOC extends ControlvocBloque1
     public function rules()
     {
         return [
-            // [['id', 'responsable', 'evaluados_id'], 'integer'],
-            // [['evaluados_id', 'salario', 'tipo_corte'], 'safe'],
             [['idbloque1'], 'integer'],
             [['fechacreacion', 'valorador_id', 'arbol_id', 'dimensions', 'lider_id', 'tecnico_id', 'numidextsp', 'usuagente', 'duracion','extencion'], 'safe'],
         ];

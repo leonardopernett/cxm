@@ -37,7 +37,6 @@ class Tableroproblemadetalles extends \yii\db\ActiveRecord {
             [['name', 'tableroproblema_id', 'tableroenfoque_id'], 'required'],
             [['tableroproblema_id', 'tableroenfoque_id'], 'integer'],
             [['name'], 'string', 'max' => 100],
-            //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/'],
         ];
     }
 

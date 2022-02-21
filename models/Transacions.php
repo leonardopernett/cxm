@@ -32,7 +32,6 @@ class Transacions extends \yii\db\ActiveRecord {
             [['name'], 'filter', 'filter' => function($value){
                 return filter_var($value,FILTER_SANITIZE_STRING) ;
              }],
-            //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/']
         ];
     }
 

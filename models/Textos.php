@@ -29,7 +29,6 @@ class Textos extends \yii\db\ActiveRecord {
             [['detexto'],  'filter', 'filter' => function($value){
                 return filter_var($value,FILTER_SANITIZE_STRING) ;
              }],
-            //[['detexto'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/']
         ];
     }
 

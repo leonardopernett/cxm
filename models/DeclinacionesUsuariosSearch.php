@@ -50,12 +50,8 @@ class DeclinacionesUsuariosSearch extends DeclinacionesUsuarios {
 
         $query->andFilterWhere([
             'du.id' => $this->id,
-            //'fecha' => $this->fecha,
-            //'du.usua_id' => $this->usua_id,
             'du.declinacion_id' => $this->declinacion_id,
-            //'arbol_id' => $this->arbol_id,
             'du.dimension_id' => $this->dimension_id,
-                //'evaluado_id' => $this->evaluado_id,
         ]);
         $sql = 'SELECT tgu.*,pga.*,rgu.* FROM tbl_grupos_usuarios tgu '
                 . 'INNER JOIN rel_grupos_usuarios rgu ON rgu.grupo_id = tgu.grupos_id '

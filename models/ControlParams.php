@@ -83,7 +83,6 @@ class ControlParams extends \yii\db\ActiveRecord
                     ->where(['anulado' => '0'])
                     ->andwhere("fechacreacion > '$txtfechacreacion'")
                     ->andwhere(['evaluados_id' => $params]);
-                    //->andwhere(['responsable' => Yii::$app->user->identity->id]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -178,7 +177,6 @@ class ControlParams extends \yii\db\ActiveRecord
                     ->joinWith('arboles')
                     ->where(['tbl_control_params.anulado' => 'null'])
                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                    //-> where(['responsable' => Yii::$app->user->identity->id]);
         }
         else
         {
@@ -189,7 +187,6 @@ class ControlParams extends \yii\db\ActiveRecord
                     ->where(['tbl_control_params.anulado' => 'null'])
                     ->andwhere(['tbl_arbols.arbol_id' => '17'])
                     ->andwhere(['between','tbl_control_params.fechacreacion', $txtFechaIniBank, $txtFechaFinBank]);
-                    //-> where(['responsable' => Yii::$app->user->identity->id]);
             }
             else
             {
@@ -200,7 +197,6 @@ class ControlParams extends \yii\db\ActiveRecord
                         ->where(['tbl_control_params.anulado' => 'null'])
                         ->andwhere(['in','tbl_arbols.arbol_id',[678, 358]])
                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                 }
                 else
                 {
@@ -211,7 +207,6 @@ class ControlParams extends \yii\db\ActiveRecord
                             ->where(['tbl_control_params.anulado' => 'null'])
                             ->andwhere(['tbl_arbols.arbol_id' => '1750'])
                             ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                            //-> where(['responsable' => Yii::$app->user->identity->id]);
                     }
                     else
                     {
@@ -222,7 +217,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                 ->where(['tbl_control_params.anulado' => 'null'])
                                 ->andwhere(['in','tbl_arbols.arbol_id',[677, 559, 2767]])
                                 ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                //-> where(['responsable' => Yii::$app->user->identity->id]);
                         }
                         else
                         {
@@ -233,7 +227,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                     ->where(['tbl_control_params.anulado' => 'null'])
                                     ->andwhere(['in','tbl_arbols.arbol_id',[2457, 800, 2764]])
                                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                    //-> where(['responsable' => Yii::$app->user->identity->id]);
                             }
                             else
                             {
@@ -244,7 +237,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                         ->where(['tbl_control_params.anulado' => 'null'])
                                         ->andwhere(['tbl_arbols.arbol_id' => '675'])
                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                 }
                                 else
                                 {
@@ -255,7 +247,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                             ->where(['tbl_control_params.anulado' => 'null'])
                                             ->andwhere(['tbl_arbols.arbol_id' => '1851'])
                                             ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                            //-> where(['responsable' => Yii::$app->user->identity->id]);
                                     }
                                     else
                                     {
@@ -266,7 +257,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                 ->where(['tbl_control_params.anulado' => 'null'])
                                                 ->andwhere(['tbl_arbols.arbol_id' => '1822'])
                                                 ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                //-> where(['responsable' => Yii::$app->user->identity->id]);
                                         }
                                         else
                                         {
@@ -277,7 +267,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                     ->where(['tbl_control_params.anulado' => 'null'])
                                                     ->andwhere(['tbl_arbols.arbol_id' => '1312'])
                                                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                    //-> where(['responsable' => Yii::$app->user->identity->id]);
                                             }
                                             else
                                             {
@@ -288,7 +277,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                         ->where(['tbl_control_params.anulado' => 'null'])
                                                         ->andwhere(['tbl_arbols.arbol_id' => '1302'])
                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                 }
                                                 else
                                                 {
@@ -299,7 +287,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                             ->where(['tbl_control_params.anulado' => 'null'])
                                                             ->andwhere(['tbl_arbols.arbol_id' => '2440'])
                                                             ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                            //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                     }
                                                     else
                                                     {
@@ -310,7 +297,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                 ->where(['tbl_control_params.anulado' => 'null'])
                                                                 ->andwhere(['in','tbl_arbols.arbol_id',[2451, 2614, 2764]])
                                                                 ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                         }
                                                         else
                                                         {
@@ -321,7 +307,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                     ->where(['tbl_control_params.anulado' => 'null'])
                                                                     ->andwhere(['tbl_arbols.arbol_id' => '1652'])
                                                                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                    //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                             }
                                                             else
                                                             {
@@ -332,7 +317,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                         ->where(['tbl_control_params.anulado' => 'null'])
                                                                         ->andwhere(['tbl_arbols.arbol_id' => '563'])
                                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                 }
                                                                 else
                                                                 {
@@ -343,7 +327,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                             ->where(['tbl_control_params.anulado' => 'null'])
                                                                             ->andwhere(['tbl_arbols.arbol_id' => '1494'])
                                                                             ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                            //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                     }
                                                                     else
                                                                     {
@@ -354,7 +337,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                 ->where(['tbl_control_params.anulado' => 'null'])
                                                                                 ->andwhere(['tbl_arbols.arbol_id' => '1667'])
                                                                                 ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                         }
                                                                         else
                                                                         {
@@ -365,7 +347,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                     ->where(['tbl_control_params.anulado' => 'null'])
                                                                                     ->andwhere(['tbl_arbols.arbol_id' => '1323'])
                                                                                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                    //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                             }
                                                                             else
                                                                             {
@@ -376,7 +357,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                         ->where(['tbl_control_params.anulado' => 'null'])
                                                                                         ->andwhere(['tbl_arbols.arbol_id' => '2789'])
                                                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                 }
                                                                                 else
                                                                                 {
@@ -387,7 +367,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                             ->where(['tbl_control_params.anulado' => 'null'])
                                                                                             ->andwhere(['tbl_arbols.arbol_id' => '2692'])
                                                                                             ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                            //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                     }
                                                                                     else
                                                                                     {
@@ -398,7 +377,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                 ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                 ->andwhere(['tbl_arbols.arbol_id' => '1841'])
                                                                                                 ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                         }
                                                                                         else
                                                                                         {
@@ -409,7 +387,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                     ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                     ->andwhere(['tbl_arbols.arbol_id' => '2382'])
                                                                                                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                    //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                             }
                                                                                             else
                                                                                             {
@@ -420,7 +397,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                         ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                         ->andwhere(['tbl_arbols.arbol_id' => '2411'])
                                                                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                 }
                                                                                                 else
                                                                                                 {
@@ -431,7 +407,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                             ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                             ->andwhere(['tbl_arbols.arbol_id' => '2523'])
                                                                                                             ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                            //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                     }
                                                                                                     else
                                                                                                     {
@@ -442,7 +417,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                     ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                     ->andwhere(['tbl_arbols.arbol_id' => '2593'])
                                                                                                                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                    //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                         }
                                                                                                         else
                                                                                                         {
@@ -453,7 +427,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                     ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                     ->andwhere(['tbl_arbols.arbol_id' => '606'])
                                                                                                                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                    //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                             }
                                                                                                             else
                                                                                                             {
@@ -464,7 +437,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                         ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                         ->andwhere(['tbl_arbols.arbol_id' => '2604'])
                                                                                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                 }
                                                                                                                 else
                                                                                                                 {
@@ -495,7 +467,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                         ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                                         ->andwhere(['tbl_arbols.arbol_id' => '2016'])
                                                                                                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                             }
                                                                                                                             else
                                                                                                                             {
@@ -506,7 +477,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                             ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                                             ->andwhere(['tbl_arbols.arbol_id' => '2633'])
                                                                                                                                             ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                            //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                                 }
                                                                                                                                 else
                                                                                                                                 {
@@ -517,7 +487,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                                 ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                                                 ->andwhere(['tbl_arbols.arbol_id' => '1841'])
                                                                                                                                                 ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                                //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                                     }
                                                                                                                                     else
                                                                                                                                     {
@@ -528,7 +497,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                                 ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                                                 ->andwhere(['tbl_arbols.id' => '1453'])
                                                                                                                                                 ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                                //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                                         }
                                                                                                                                         else
                                                                                                                                         {
@@ -539,7 +507,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                                     ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                                                     ->andwhere(['tbl_arbols.id' => '18'])
                                                                                                                                                     ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                                    //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                                             }
                                                                                                                                             else
                                                                                                                                             {
@@ -549,9 +516,7 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                                         ->joinWith('arboles')
                                                                                                                                                         ->where(['tbl_control_params.anulado' => 'null'])
 																			>andwhere(['in','tbl_arbols.arbol_id',[676, 2253]])
-                                                                                                                                                        //->andwhere(['tbl_arbols.id' => '2253'])
                                                                                                                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                                                 }
                                                                                                                                                 else
                                                                                                                                                 {
@@ -562,7 +527,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                                         ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                                                         ->andwhere(['tbl_arbols.arbol_id' => '8'])
                                                                                                                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                                                     }
                                                                                                                                                     else
                                                                                                                                                     {
@@ -573,7 +537,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                                         ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                                                         ->andwhere(['tbl_arbols.arbol_id' => '204'])
                                                                                                                                                         ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                                        //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                                                         }
                                                                                                                                                         else
                                                                                                                                                         {
@@ -583,7 +546,6 @@ class ControlParams extends \yii\db\ActiveRecord
                                                                                                                                                                 ->where(['tbl_control_params.anulado' => 'null'])
                                                                                                                                                                 ->andwhere(['tbl_arbols.arbol_id' => '1'])
                                                                                                                                                                 ->andwhere(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                                                                                                                                                                //-> where(['responsable' => Yii::$app->user->identity->id]);
                                                                                                                                                         }
                                                                                                                                                     }
                                                                                                                                                 }
@@ -816,7 +778,6 @@ class ControlParams extends \yii\db\ActiveRecord
                     ->select(['tbl_control_params.dimensions'])                    
                     ->where(['tbl_control_params.anulado' => 'null'])
                     ->where(['between','tbl_control_params.fechacreacion', $fechainiC, $fechafinC]);
-                    //-> where(['responsable' => Yii::$app->user->identity->id]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -908,8 +869,6 @@ class ControlParams extends \yii\db\ActiveRecord
         $query = new Query;
         $query  ->select(["round(($query2 / (select sum(cant_valor) from tbl_control_params where anulado = 0  and dimensions like '%$varCumplimiento%' and fechacreacion between '$fechainiC' and '$fechafinC')) * 100) as cumplimiento"])
                 ->from('tbl_control_params');
-        // $query  ->select(['round(('.$query2.' / (select sum(cant_valor) from tbl_control_params where anulado = 0  and dimensions like "%'.$varCumplimiento.'%")) * 100) as cumplimiento'])
-        //         ->from('tbl_control_params');                ->from('tbl_control_params');
         $command = $query->createCommand();
         $data = $command->queryAll();
 

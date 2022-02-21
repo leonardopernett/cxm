@@ -313,7 +313,6 @@ WHERE pe.programa = " . $this->pcrc;
                     ->join("LEFT JOIN", "tbl_respuesta_basesatisfaccion_tipificacion t", "t.id_respuesta = r.id")
                     ->join("LEFT JOIN", "tbl_respuesta_basesatisfaccion_subtipificacion s", "t.id = s.tipificacion_id")
                     ->where($condition)
-                    //->andWhere("r.respuesta <> 'on'")
                     ->orderBy("conteo DESC")
                     ->asArray()
                     ->all();
@@ -1002,7 +1001,6 @@ WHERE pe.programa = " . $this->pcrc;
                         ->select("b.*")
                         ->from("tbl_base_satisfaccion b")
                         ->where("b.id NOT IN (" . $idsIn . ") AND b.fecha_satu BETWEEN '" . $startDate . "' AND '" . $endDate . "' AND b.pcrc =" . $this->pcrc)
-                        //->andWhere("r.respuesta <> 'on'")
                         ->asArray()
                         ->all();
             } else {
@@ -1010,7 +1008,6 @@ WHERE pe.programa = " . $this->pcrc;
                         ->select("b.*")
                         ->from("tbl_base_satisfaccion b")
                         ->where("b.fecha_satu BETWEEN '" . $startDate . "' AND '" . $endDate . "' AND b.pcrc = " . $this->pcrc)
-                        //->andWhere("r.respuesta <> 'on'")
                         ->asArray()
                         ->all();
             }

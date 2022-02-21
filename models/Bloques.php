@@ -78,7 +78,6 @@ class Bloques extends \yii\db\ActiveRecord {
             [['name','dstitulo', 'dsdescripcion'], 'filter', 'filter' => function($value){
                 return filter_var($value,FILTER_SANITIZE_STRING) ;
              }],
-                //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s?()_-]/'],
         ];
     }
 

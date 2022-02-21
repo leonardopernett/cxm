@@ -33,8 +33,6 @@ class EquiposEvaluados extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['evaluado_id', 'equipo_id'], 'required'],
-            //[['evaluado_id', 'equipo_id'], 'integer']
-            //[['equipo_id'], 'integer']
         ];
     }
 
@@ -102,7 +100,7 @@ class EquiposEvaluados extends \yii\db\ActiveRecord {
 
     //Automatizacion equipos Teo
     public static function getEvaluadosEquipo($idequipo = 0 ) {
-        $sql = "SELECT REPLACE(ev.dsusuario_red, 'ñ', 'n') as dsusuario_red, ee.evaluado_id, ev.identificacion as identificacion FROM tbl_equipos_evaluados ee INNER JOIN tbl_evaluados ev on ev.id = ee.evaluado_id WHERE ee.equipo_id = :idequipo";
+        $sql = "SELECT REPLACE(ev.dsusuario_red, 'ï¿½', 'n') as dsusuario_red, ee.evaluado_id, ev.identificacion as identificacion FROM tbl_equipos_evaluados ee INNER JOIN tbl_evaluados ev on ev.id = ee.evaluado_id WHERE ee.equipo_id = :idequipo";
         $command = \Yii::$app->db->createCommand($sql);
         $command->bindParam(":idequipo", $idequipo);
         $users                           = $command->queryAll();

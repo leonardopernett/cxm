@@ -108,17 +108,10 @@ class GruposusuariosSearch extends Gruposusuarios
 
         $query->andFilterWhere([
             'gu.grupos_id' => $this->grupos_id,
-            //'u.usua_fechhoratimeout' => $this->usua_fechhoratimeout,
         ]);
 
         $query->andFilterWhere(['like', 'gu.nombre_grupo', $this->nombre_grupo]);
         $query->andFilterWhere(['like', 'gu.grupo_descripcion', $this->grupo_descripcion]);
-                /*->andFilterWhere(['like', 'u.usua_nombre', $this->usua_nombre])
-                ->andFilterWhere(['like', 'u.usua_email', $this->usua_email])
-                ->andFilterWhere(['like', 'u.usua_identificacion', $this->usua_identificacion])
-                ->andFilterWhere(['like', 'u.usua_activo', $this->usua_activo])
-                ->andFilterWhere(['like', 'u.usua_estado', $this->usua_estado])
-                ->andFilterWhere(['like', 'r.role_descripcion', $this->rol]);*/
 
         $dataProvider = $query->asArray()->all();
 

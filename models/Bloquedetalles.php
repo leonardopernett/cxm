@@ -66,7 +66,6 @@ class Bloquedetalles extends \yii\db\ActiveRecord {
                 'number'],
             [['name'], 'string', 'max' => 150],
             [['descripcion'], 'safe']
-                //[['name'], 'match','not' => true,'pattern' => '/[^a-zA-Z\s?()_-]/'],
         ];
     }
 

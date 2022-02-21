@@ -18,8 +18,6 @@ class Controlcorreogrupal extends ControlProcesos
     public function rules()
     {
         return [
-            // [['id', 'responsable', 'evaluados_id'], 'integer'],
-            // [['evaluados_id', 'salario', 'tipo_corte'], 'safe'],
             [['idcg','usua_id'], 'integer'],
             [['fechacreacion','nombre'], 'safe'],
         ];

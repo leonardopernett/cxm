@@ -61,7 +61,6 @@ class Calificaciondetalles extends \yii\db\ActiveRecord {
             'i6_povalor', 'i7_povalor', 'i8_povalor', 'i9_povalor', 'i10_povalor', 'c_pits'],
                 'number'],
             [['name'], 'string', 'max' => 100],
-                //[['name'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z\s()_-]/'],
         ];
     }
 
