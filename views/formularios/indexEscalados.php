@@ -43,7 +43,6 @@ if (!isset($aleatorio) || !$aleatorio) {
             <?=
                     $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -89,7 +88,6 @@ if (!isset($aleatorio) || !$aleatorio) {
                 'pluginOptions' => [
                     'autoApply' => true,
                     'clearBtn' => true,
-                    //'useWithAddon'=>true,
                     'timePicker' => false,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
@@ -97,7 +95,6 @@ if (!isset($aleatorio) || !$aleatorio) {
                     'opens' => 'left'
                 ],
                 'pluginEvents' => [
-                //'cancel.daterangepicker'=>"function(ev, picker) { $('#basesatisfaccionsearch-fecha').val('');}"
                 ]
             ]);
             ?>
@@ -108,7 +105,6 @@ if (!isset($aleatorio) || !$aleatorio) {
             <?=
                     $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -146,7 +142,6 @@ if (!isset($aleatorio) || !$aleatorio) {
             <?=
                     $form->field($model, 'evaluado_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -226,9 +221,7 @@ if (!isset($aleatorio) || !$aleatorio) {
     <?php
     echo GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $model,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             ['class' => 'yii\grid\ActionColumn',
                                         'template' => '{preview}{update}{delete}',
                                         'buttons' => [
@@ -318,13 +311,10 @@ if (!isset($aleatorio) || !$aleatorio) {
                                             },
                                                 ]
                                             ],
-                //'id',
                                                         [
                     'attribute' => 'id',
                     'enableSorting' => false,
                 ],
-                //'identificacion',
-                //'created',
                 [
                     'attribute' => 'created',
                     'enableSorting' => false,

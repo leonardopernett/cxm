@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -76,7 +75,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -102,7 +100,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -125,13 +122,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             'id',
-            //'created',
             [
                 'attribute' => 'created',
                 'value' => 'created',
                 'filter' => false,
             ],
-            //'fecha_satu',
             [
                 'attribute' => 'fecha_satu',
                 'value' => 'fecha_satu',

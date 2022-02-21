@@ -59,7 +59,6 @@ $this->registerJs(
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,            
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'name',
                 'nmorden',
@@ -106,14 +105,7 @@ $this->registerJs(
                                             [
                                         'title' => Yii::t('yii',
                                                 'delete'),
-//                                        'data-confirm' => Yii::t('app',
-//                                                'Are you sure you want to delete this item?'),
                                         'data-pjax' => 'w0',
-//                                        'onclick' => "if(!confirm('" . Yii::t('app',
-//                                                'Are you sure you want to delete this item?') . "')){"
-//                                        . " return false;"
-//                                        . "}"
-//                                        . "",
                                         'onclick' => "
                             if (confirm('" . Yii::t('app',
                                                 'Are you sure you want to delete this item?') . "')) {                                                            
@@ -121,7 +113,6 @@ $this->registerJs(
                             }else{
                                 return false;
                             }",
-                                            //'data-method' => 'post'
                             ]);
                         }
                             ]
@@ -145,7 +136,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -182,9 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => 'grid-seccions',
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            //'options' => ['push' => true ],
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'name',
                 'nmorden',
@@ -202,7 +190,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'javascript:void(0)',
                                         [
                                     'title' => Yii::t('app','Bloques'),
-                                    //'data-pjax' => '0',
                                     'onclick' => "                                    
                                     $.ajax({
                                     type     :'POST',
@@ -217,9 +204,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     }
                 ],
-                //'tiposeccion_id',
-                //'nmorden',                                        
-                // 'sndesplegar_comentario',
                 ['class' => 'yii\grid\ActionColumn'],
             ],
         ]);

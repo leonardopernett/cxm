@@ -434,7 +434,6 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     .w3-round-small{border-radius:2px}.w3-round,.w3-round-medium{border-radius:4px}.w3-round-large{border-radius:8px}.w3-round-xlarge{border-radius:16px}.w3-round-xxlarge{border-radius:32px}
     .w3-row-padding,.w3-row-padding>.w3-half,.w3-row-padding>.w3-third,.w3-row-padding>.w3-twothird,.w3-row-padding>.w3-threequarter,.w3-row-padding>.w3-quarter,.w3-row-padding>.w3-col{padding:0 8px}
     .w3-container,.w3-panel{padding:0.01em 16px}.w3-panel{margin-top:16px;margin-bottom:16px}
-    /*.w3-code,.w3-codespan{font-family:Consolas,"courier new";font-size:16px}*/
     .w3-code{width:auto;background-color:#fff;padding:8px 12px;border-left:4px solid #4CAF50;word-wrap:break-word}
     .w3-codespan{color:crimson;background-color:#f1f1f1;padding-left:4px;padding-right:4px;font-size:110%}
     .w3-card,.w3-card-2{box-shadow:0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)}
@@ -565,7 +564,6 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -1291,7 +1289,6 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                     Modal::begin([
                                                 'header' => '<h4>Parametrizar Gerentes </h4>',
                                                 'id' => 'modal5',
-                                                //'size' => 'modal-lg',
                                               ]);
 
                                     echo "<div id='modalContent5'></div>";
@@ -1394,7 +1391,6 @@ function openCity(evt, cityName) {
 
         var Listado = "<?php echo implode($varListCorte,",");?>";
         Listado = Listado.split(",");
-        //console.log(Listado);
 
         Highcharts.setOptions({
                 lang: {

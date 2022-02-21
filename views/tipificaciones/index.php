@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -53,10 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             'id',
             'name',
-            //'nmorden',
             [
                 'attribute' => 'Detalle',
                 'format' => 'raw',

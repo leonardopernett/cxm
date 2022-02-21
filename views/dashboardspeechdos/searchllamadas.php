@@ -139,7 +139,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -313,7 +312,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                             Modal::begin([
                                 'header' => '<h4></h4>',
                                 'id' => 'modal1',
-                                //'size' => 'modal-lg',
                             ]);
 
                             echo "<div id='modalContent1'></div>";
@@ -460,7 +458,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7;',],
                         'contentOptions' => ['style' => 'text-align: center;',],
-                        //'template' => '{view}{update}{delete}',
                         'template' => '{update}',
                         'buttons' => 
                                 [
@@ -488,7 +485,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                             'javascript:void(0)',
                                                             [
                                                                 'title' => Yii::t('app', 'Resultados VOC'),
-                                                                //'data-pjax' => '0',
                                                                 'onclick' => "
                                                                     generarcarga2();                        
                                                                     $.ajax({
@@ -512,7 +508,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7;',],
                         'contentOptions' => ['style' => 'text-align: center;',],
-                        //'template' => '{view}{update}{delete}',
                         'template' => '{view}',
                         'buttons' => 
                                 [
@@ -529,7 +524,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                                 'javascript:void(0)',
                                                 [
                                                     'title' => Yii::t('app', 'Escucha VOC'),
-                                                    //'data-pjax' => '0',
                                                     'onclick' => "
                                                         generarcarga();                        
                                                         $.ajax({
@@ -554,7 +548,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7;',],
                         'contentOptions' => ['style' => 'text-align: center;',],
-                        //'template' => '{view}{update}{delete}',
                         'template' => '{update}',
                         'buttons' => 
                                 [

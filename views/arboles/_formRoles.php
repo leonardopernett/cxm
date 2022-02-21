@@ -38,7 +38,6 @@ $url = \yii\helpers\Url::to(['roleslist', 'arbol_id' => $model->arbol_id]);
                 'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                 'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
             ],
-        //'initSelection' => new JsExpression($initScript)
         ]
             ]
     );

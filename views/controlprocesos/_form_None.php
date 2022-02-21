@@ -75,7 +75,6 @@ $this->title = 'Agregar Valorador';
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -148,7 +147,6 @@ $this->title = 'Agregar Valorador';
                                  Modal::begin([
                                     'header' => '<h4>Agregar dimensionamiento</h4>',
                                     'id' => 'modal1',
-                                    //'size' => 'modal-lg',
                                 ]);
 
                                 echo "<div id='modalContent1'></div>";
@@ -188,7 +186,6 @@ $this->title = 'Agregar Valorador';
                 <label style="font-size: 20px;"><em class="fas fa-object-ungroup" style="font-size: 20px; color: #FF3F33;"></em> Planes de valoración: </label>
                 <?= GridView::widget([
                         'dataProvider' => $dataProvider,
-                        //'filterModel' => $searchModel,
                         'columns' => [
                             [
                                 'attribute' => 'Formularios de Valoración',
@@ -234,7 +231,6 @@ $this->title = 'Agregar Valorador';
                 <br>
                 <?= GridView::widget([
                         'dataProvider' => $dataProvider2,
-                        //'filterModel' => $searchModel,
                         'columns' => [
                             [
                                 'attribute' => 'Formularios de Valoración VOC',

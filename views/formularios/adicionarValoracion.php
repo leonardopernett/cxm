@@ -48,9 +48,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     <?=
             $form->field($model, 'valorado_id')
             ->widget(Select2::classname(), [
-                //'data' => array_merge(["" => ""], $data),
                 'language' => 'es',
-                //'value'=>$modelTmpeje->evaluado_id,
                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                 'pluginOptions' => [
                     'allowClear' => false,
@@ -77,7 +75,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     <?=
             $form->field($model, 'pcrc_id')
             ->widget(Select2::classname(), [
-                //'data' => array_merge(["" => ""], $data),
                 'language' => 'es',
                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                 'pluginOptions' => [

@@ -26,7 +26,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -52,7 +51,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     <div class="col-sm-12">        
         <?php
         $gridColumns = [
-            //['class' => 'yii\grid\SerialColumn'],
             's_fecha',
             'id_caso',
             [
@@ -103,12 +101,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 } :     function($data) {
                         return $data->argumento;
                 }
-                /*'contentOptions' => [
-                    'style'=>'min-width: 200px; overflow: auto; word-wrap: break-word;'
-                ],
-                'value' => function($data) {
-                    return substr($data['argumento'], 0, 100) . '...';
-                }*/
             ],
             [
                 'format' => 'html',
@@ -129,7 +121,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 'label' => Yii::t('app', 'Export All'),
                 'class' => 'btn btn-default'
             ],
-            //'fontAwesome' => true,
             'showConfirmAlert' => false,
             'target' => '_blank',
             'filename' => Yii::t('app', 'Reporte_feedback') . '_' . date('Ymd'),

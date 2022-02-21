@@ -61,7 +61,6 @@ $fechaActual = date("Y-m-d");
 <br>
 <?= GridView::widget([
     'dataProvider' => $dataProvider2,
-    //'filterModel' => $searchModel,
     'columns' => [
         [
             'attribute' => 'PCRC',

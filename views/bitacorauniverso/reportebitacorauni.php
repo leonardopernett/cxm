@@ -22,12 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     $sessiones = Yii::$app->user->identity->id; 
     $valor = null;
-    /*$txtIds = $txtIdBloques1;
-    $txtValorador = $txtIdBloques1[1];
-    $txtArbol_id = $txtIdBloques1[2];
-    $txtFechacreacion = $txtIdBloques1[3];
-    $txtTecnico = $txtIdBloques1[4]; 
-    //var_dump($txtFechacreacion); */
 
 ?>
 
@@ -81,7 +75,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }

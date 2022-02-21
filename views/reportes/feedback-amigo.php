@@ -57,8 +57,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
-                    //'singleDatePicker'=>true,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -79,7 +77,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             <?=
             Html::submitButton(Yii::t('app', 'Buscar'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
             ?>
-            <?php //Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default'])      ?>
         </div>        
     </div>
 
@@ -93,7 +90,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     </div>
     <?php
     $gridColumns = [
-        //['class' => 'yii\grid\SerialColumn'],
         'created',
         [
             'attribute' => 'snaviso_revisado',

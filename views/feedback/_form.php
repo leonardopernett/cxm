@@ -70,24 +70,6 @@ use yii\web\JsExpression;
 
     <?php
     if (!$ajax) {
-        //echo $form->field($model, 'evaluado_id')
-        //        ->widget(Select2::classname(), [
-        //            //'data' => array_merge(["" => ""], $data),
-        //            'language' => 'es',
-        //            'options' => ['placeholder' => Yii::t('app', 'Select ...')],
-        //            'pluginOptions' => [
-        //                'allowClear' => false,
-        //                'minimumInputLength' => 4,
-        //                'ajax' => [
-        //                    'url' => Url::to(['evaluadolist']),
-        //                    'dataType' => 'json',
-        //                    'data' => new JsExpression('function(term,page) { return {search:term}; }'),
-        //                    'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
-        //                ],
-        //            //'initSelection' => new JsExpression($initScript)
-        //            ]
-        //                ]
-        //);
 
         echo $form->field($model, 'evaluado_id')->widget(Select2::classname(), [
                         'language' => 'es',

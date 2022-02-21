@@ -59,7 +59,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     <?=
             $form->field($model, 'pcrc')
             ->widget(Select2::classname(), [
-                //'data' => array_merge(["" => ""], $data),
                 'language' => 'es',
                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                 'pluginOptions' => [
@@ -101,38 +100,10 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                     ]
     );
     ?>
-    <?php /*=
-            $form->field($model, 'rn')
-            ->widget(Select2::classname(), [
-                'language' => 'es',
-                'options' => ['placeholder' => Yii::t('app', 'Select ...')],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                    'minimumInputLength' => 1,
-                    'ajax' => [
-                        'url' => \yii\helpers\Url::to(['reglanegocio']),
-                        'dataType' => 'json',
-                        'data' => new JsExpression('function(term,page) { return {search:term}; }'),
-                        'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
-                    ],
-                    'initSelection' => new JsExpression('function (element, callback) {
-                            var id=$(element).val();
-                            if (id !== "") {
-                                $.ajax("' . Url::to(['reglanegocio']) . '?id=" + id, {
-                                    dataType: "json",
-                                    type: "post"
-                                }).done(function(data) { callback(data.results[0]);});
-                            }
-                        }')
-                ]
-                    ]
-    );*/
-    ?>
 
     <?=
             $form->field($model, 'agente')
             ->widget(Select2::classname(), [
-                //'data' => array_merge(["" => ""], $data),
                 'language' => 'es',
                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                 'pluginOptions' => [
@@ -161,8 +132,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     <?= $form->field($model, 'ani')->textInput(['id'=>'idani','maxlength' => 200]) ?>
     
     <?= $form->field($model, 'tipo_inbox')->dropDownList(['NORMAL' => 'NORMAL', 'ALEATORIO' => 'ALEATORIO']) ?>
-    <?php //= $form->field($model, 'industria')->textInput(['maxlength' => 3]) ?>
-    <?php //= $form->field($model, 'institucion')->textInput(['maxlength' => 3]) ?>
     <br>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
@@ -182,7 +151,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                   Modal::begin([
                         'header' => '<h4>Importar Archivo Excel </h4>',
                         'id' => 'modal1',
-                        //'size' => 'modal-lg',
                       ]);
 
                   echo "<div id='modalContent1'></div>";

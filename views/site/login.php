@@ -27,14 +27,8 @@ $this->title = 'CX-Management';
 <style>
 
   .login-block {
-    /*background: #4298B5;*/
-    /* fallback for old browsers * #5cc9ed/
-  background: -webkit-linear-gradient(to bottom, #fff, #b7dfeb);  /* Chrome 10-25, Safari 5.1-6 */
-    /*background: linear-gradient(to bottom, #fff, #b7dfeb); */
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     float: left;
     width: 100%;
-    /*padding : 125px 0;*/
     height: 100%;
     font-family: 'Numans', sans-serif !important;
     display: flex;
@@ -56,7 +50,6 @@ $this->title = 'CX-Management';
   .container {
     background: #fff;
     border-radius: 10px 10px 10px 10px;
-    /*box-shadow:15px 20px 0px rgba(0,0,0,0.2)*/
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
 
@@ -146,7 +139,6 @@ $this->title = 'CX-Management';
     margin: auto;
   }
 
-  /*.logok{width: 120px; height: 35px; margin-bottom:20px; margin-top:25px;margin-left:115px;margin-right:20px;} */
   .logok {
     display: block;
     margin: auto;
@@ -199,16 +191,11 @@ $this->title = 'CX-Management';
           <?php
                   $form = ActiveForm::begin([
                               'id' => 'login-form',
-                              //'options' => ['class' => 'form-horizontal'],
                               'options' => ['class' => 'form-group '],
                               'errorSummaryCssClass' => 'alert alert-danger',
                               'fieldConfig' => [
                                 'inputOptions' => ['autocomplete' => 'off']
                               ]
-                                  /* 'fieldConfig' => [
-                                  'template' => "{label}\n<div class=\"col-lg-4\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-                                  'labelOptions' => ['class' => 'col-lg-4 control-label'],
-                                  ], */
         ]);
         ?>
         <div class="form-group sizelet">
@@ -218,11 +205,7 @@ $this->title = 'CX-Management';
             'inputTemplate' => '<div class="has-feedback sizelet">'
               . '<span class="glyphicon glyphicon-user form-control-feedback sizelet colorinp" ></span>'
               . '{input}</div>'
-          ])->label(false/*
-                              Html::img(Url::to("@web/images/ico-login.png")
-                              , ["class" => "img-responsive",
-                              "style" => "text-align: left; float: left; height: 30px;"])
-                              . Yii::t("app", "Usuario") */)
+          ])->label(false)
           ?>
           <?=
           $form->field($model, 'password', [
@@ -230,11 +213,7 @@ $this->title = 'CX-Management';
             'inputTemplate' => '<div class="has-feedback sizelet">'
               . '<span class="glyphicon glyphicon-lock form-control-feedback sizelet colorinp"></span>'
               . '{input}</div>'
-          ])->passwordInput()->label(false/*
-                              Html::img(Url::to("@web/images/clave_ic.png")
-                              , ["class" => "img-responsive",
-                              "style" => "text-align: left; float: left; height: 30px;"])
-                              . Yii::t("app", "Clave") */)
+          ])->passwordInput()->label(false)
           ?>
           <br>
         </div>

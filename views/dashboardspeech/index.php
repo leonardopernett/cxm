@@ -89,7 +89,6 @@ $this->title = 'Dashboard Voz del Cliente';
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -162,7 +161,6 @@ $this->title = 'Dashboard Voz del Cliente';
               Modal::begin([
                     'header' => '<h4>Importar Archivo Excel </h4>',
                     'id' => 'modal3',
-                    //'size' => 'modal-lg',
                   ]);
 
               echo "<div id='modalContent3'></div>";

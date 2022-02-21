@@ -33,53 +33,42 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            //'nmorden',
-            //'i1_cdtipo_eval',
             [
                 'attribute'=>'i1_cdtipo_eval',     
                 'value' => $model->getOption($model->i1_cdtipo_eval)
             ],
-            //'i2_cdtipo_eval',
             [
                 'attribute'=>'i2_cdtipo_eval',     
                 'value' => $model->getOption($model->i2_cdtipo_eval)
             ],
-            //'i3_cdtipo_eval',
             [
                 'attribute'=>'i3_cdtipo_eval',     
                 'value' => $model->getOption($model->i3_cdtipo_eval)
             ],
-            //'i4_cdtipo_eval',
             [
                 'attribute'=>'i4_cdtipo_eval',     
                 'value' => $model->getOption($model->i4_cdtipo_eval)
             ],
-            //'i5_cdtipo_eval',
             [
                 'attribute'=>'i5_cdtipo_eval',     
                 'value' => $model->getOption($model->i5_cdtipo_eval)
             ],
-            //'i6_cdtipo_eval',
             [
                 'attribute'=>'i6_cdtipo_eval',     
                 'value' => $model->getOption($model->i6_cdtipo_eval)
             ],
-            //'i7_cdtipo_eval',
             [
                 'attribute'=>'i7_cdtipo_eval',     
                 'value' => $model->getOption($model->i7_cdtipo_eval)
             ],
-            //'i8_cdtipo_eval',
             [
                 'attribute'=>'i8_cdtipo_eval',     
                 'value' => $model->getOption($model->i8_cdtipo_eval)
             ],
-            //'i9_cdtipo_eval',
             [
                 'attribute'=>'i9_cdtipo_eval',     
                 'value' => $model->getOption($model->i9_cdtipo_eval)
             ],
-            //'i10_cdtipo_eval',
             [
                 'attribute'=>'i10_cdtipo_eval',     
                 'value' => $model->getOption($model->i10_cdtipo_eval)

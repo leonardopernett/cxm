@@ -57,7 +57,6 @@ $this->title = 'Ver la Valoración';
 
 	    <?= GridView::widget([
 	        'dataProvider' => $dataProvider,
-	        //'filterModel' => $searchModel,
 	        'columns' => [
 	            [
 	                'attribute' => 'PCRC',

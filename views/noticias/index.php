@@ -25,20 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             'id',
             'titulo',
-            //'descripcion:ntext',
             [
                 'attribute' => 'activa',
                 'value' => function($data) {
                     return ($data->activa == 0) ? "NO" : "SI";
                 }
             ],
-            // 'created',
-            // 'created_by',
-            // 'modified',
-            // 'modified_by',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]);

@@ -289,7 +289,6 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
 
         var Listadoq = "<?php echo implode($varListDaysq,",");?>";
         Listadoq = Listadoq.split(",");
-        //console.log(Listado);
 
         Highcharts.setOptions({
                 lang: {

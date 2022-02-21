@@ -70,7 +70,6 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
     
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
-                //'filterModel' => $searchModel,
             'columns' => [
                     [
                         'attribute' => 'Centro de Costos',

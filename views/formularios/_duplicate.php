@@ -31,8 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'name')->textInput(['id'=>'idname','maxlength' => 100]) ?>    
 
-        <?php //$form->field($model, 'nmorden')->textInput()  ?>
-
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <?=

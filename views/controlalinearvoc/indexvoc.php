@@ -60,7 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -107,7 +106,6 @@ $this->params['breadcrumbs'][] = $this->title;
               <?=
                 $form->field($model, 'tecnico_id')->label(Yii::t('app','Valorado'))
                       ->widget(Select2::classname(), [
-                          //'data' => array_merge(["" => ""], $data),
                           'language' => 'es',
                           'options' => ['onclick'=>'arbol_id2();', 'id'=>"tecnicosid",'placeholder' => Yii::t('app', 'Select ...')],
                           'pluginOptions' => [
@@ -187,7 +185,6 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                         Modal::begin([
                               'header' => '<h4>Creacion de Sesiones Alinear + VOC</h4>',
                               'id' => 'modal1',
-                              //'size' => 'modal-lg',
                             ]);
 
                         echo "<div id='modalContent1'></div>";
@@ -205,7 +202,6 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                         Modal::begin([
                               'header' => '<h4>Creacion de Participantes Alinear + VOC </h4>',
                               'id' => 'modal2',
-                              //'size' => 'modal-lg',
                             ]);
 
                         echo "<div id='modalContent2'></div>";
@@ -222,7 +218,6 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                         Modal::begin([
                               'header' => '<h4>Creacion de Categorias Alinear + VOC </h4>',
                               'id' => 'modal3',
-                              //'size' => 'modal-lg',
                             ]);
 
                         echo "<div id='modalContent3'></div>";
@@ -238,7 +233,6 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                         Modal::begin([
                               'header' => '<h4>Creacion de Atributos Alinear + VOC </h4>',
                               'id' => 'modal5',
-                              //'size' => 'modal-lg',
                             ]);
 
                         echo "<div id='modalContent5'></div>";

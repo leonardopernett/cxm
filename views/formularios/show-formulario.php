@@ -348,7 +348,7 @@ $contadorSecciones = 0;
                                 
                             <tr>
                                 <th scope="row"><?php echo Yii::t("app", "Dimension"); ?></th>
-                                <td><?php //echo $data->dimension->name                       ?>
+                                <td>
                                     <?php if ($data->preview) : ?>
                                         <?=
                                         Html::dropDownList("dimension_id"
@@ -471,7 +471,6 @@ $contadorSecciones = 0;
                                             echo Select2::widget([
                                                 'language' => 'es',
                                                 'name' => 'subi_calculo',
-                                                //'value' =>  $data->tmp_formulario->attributes['subi_calculo'],
                                                 'options' => [
                                                     'placeholder' => Yii::t('app', 'Select ...'),
                                                     'id' => 'subi_calculo'
@@ -602,7 +601,6 @@ $contadorSecciones = 0;
                                         Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                                 , $prev_secccion_comentario
                                                 , [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "id" => "txt_comentarios_2",
                                             "style"=>"margin: 0px -5.5px 0px 0px; height: 140px; width: 1000px;",
                                             "class" => "form-control droplabel",
@@ -616,7 +614,6 @@ $contadorSecciones = 0;
                                         Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                                 , $prev_secccion_comentario
                                                 , [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "id" => "txt_comentarios_2",
                                             "style"=>"margin: 0px -5.5px 0px 0px; height: 140px; width: 1000px;",
                                             "class" => "form-control droplabel",
@@ -642,7 +639,6 @@ $contadorSecciones = 0;
                                         Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                                 , $prev_secccion_comentario
                                                 , [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "class" => "form-control droplabel",
                                             "placeholder" => "Comentario para el Coaching",
                                             "readonly" => "readonly"
@@ -653,7 +649,6 @@ $contadorSecciones = 0;
                                         Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                                 , $prev_secccion_comentario
                                                 , [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "class" => "form-control droplabel",
                                             "placeholder" => "Comentario para el Coaching"
                                         ]);
@@ -677,7 +672,6 @@ $contadorSecciones = 0;
                                         Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                                 , $prev_secccion_comentario
                                                 , [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "class" => "form-control droplabel",
                                             "placeholder" => "Comentario para el Coaching",
                                             "readonly" => "readonly"
@@ -688,7 +682,6 @@ $contadorSecciones = 0;
                                         Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                                 , $prev_secccion_comentario
                                                 , [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "class" => "form-control droplabel",
                                             "placeholder" => "Comentario para el Coaching"
                                         ]);
@@ -745,8 +738,7 @@ $contadorSecciones = 0;
                 }
                 ?>>
                     <div class="col-md-10">
-                        <label class="labelseccion">
-                            <?php //echo $detalle->seccion ?>  
+                        <label class="labelseccion"> 
                             <?php
                             echo Html::tag('span', $detalle->seccion, [
                                 'data-title' => $detalle->sdescripcion,
@@ -781,7 +773,6 @@ $contadorSecciones = 0;
                                 'style' => 'cursor:pointer;'
                             ]);
                             ?>
-                            <?php //echo $detalle->bloque   ?>
                         </label>                   
                         <?php
                         echo Html::tag('span', Html::img(Url::to("@web/images/Question.png")), [
@@ -1179,7 +1170,6 @@ $contadorSecciones = 0;
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -1229,7 +1219,6 @@ $contadorSecciones = 0;
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -1273,7 +1262,6 @@ $contadorSecciones = 0;
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -1446,9 +1434,7 @@ function cargarlista(){
 
 	var varidform = "<?php echo $data->IdclienteSel; ?>"
         var varPartT = document.getElementById("speechparametrizar-id_dp_clientes");
- //alert(varidform);
         if (!varidform) {
-         // varPartT.readOnly = true;
        varPartT.disabled=true;
         }
 
@@ -1604,7 +1590,6 @@ function cargarlista(){
         });
 
         /* BOTON DESPLEGAR SECCIONES */
-        //$(".soloAbrir").click(function () {
         $("#prueba").on( "click", function() {
             if ($("#prueba").text() == "Desplegar"){
                 $("[id*=datos]").css('display', 'block');
@@ -1716,7 +1701,6 @@ function cargarlista(){
                 } else {
                     visible = true;
                 }
-                //var asd = $('#datosSeccion'+idsDetallesSecciones[val]).css('display') 
                 if (visible) {
                     if ($("#calificacion_" + val).val() == '') {
                         $("#calificacion_" + val).addClass('field-error');
@@ -1778,12 +1762,10 @@ function cargarlista(){
 
 	    //para validar centro de costo
             var varidform = "<?php echo $data->IdclienteSel; ?>"
-            //alert($("#requester").val());
             var varPartT = document.getElementById("requester").value;
             if (varidform) {
                             
                 if (!varPartT) {
-                     // alert(varPartT);
                     $("#requester").addClass('field-error');
                     hayErrores = true;
                 } else
@@ -1797,11 +1779,9 @@ function cargarlista(){
                     $("#seccion" + idseccionesError[b]).show("slow");
                     $("#datosSeccion" + idseccionesError[b]).show("slow");
                 }
-                /*alert("Existen algunos sin seleccionar.");*/
                 return false;
             }
             return true;
-            //return false;
         } catch (err) {
             alert("Error al validar el formulario." + err);
             return false;

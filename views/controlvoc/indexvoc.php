@@ -46,7 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -137,7 +136,6 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
           Modal::begin([
                 'header' => '<h4>Crear sesiones - VOC - </h4>',
                 'id' => 'modal1',
-                //'size' => 'modal-lg',
               ]);
 
           echo "<div id='modalContent1'></div>";
@@ -155,7 +153,6 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
           Modal::begin([
                 'header' => '<h4>Crear Listados - VOC - </h4>',
                 'id' => 'modal2',
-                //'size' => 'modal-lg',
               ]);
 
           echo "<div id='modalContent2'></div>";
@@ -172,7 +169,6 @@ if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessio
                     Modal::begin([
                       'header' => '<h4>Agregar Motivos</h4>',
                       'id' => 'modal3',
-                      //'size' => 'modal-lg',
                     ]);
 
                     echo "<div id='modalContent3'></div>";

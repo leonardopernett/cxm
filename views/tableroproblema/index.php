@@ -23,7 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             'id',
             'name',
             [
@@ -34,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'javascript:void(0)',
                         [
                             'title' => Yii::t('app', 'Ver detalle problemas'),
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                             $.ajax({
                             type     :'POST',

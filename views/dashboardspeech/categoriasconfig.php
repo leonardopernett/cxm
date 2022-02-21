@@ -112,7 +112,6 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -169,7 +168,6 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                                 Modal::begin([
                                   'header' => '<h4>Parametrizar Speech</h4>',
                                   'id' => 'modal5',
-                                  //'size' => 'modal-lg',
                                 ]);
 
                                 echo "<div id='modalContent5'></div>";
@@ -191,8 +189,6 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                 <label><em class="fas fa-list" style="font-size: 20px; color: #2CA53F;"></em> Listado configuracion de categorias: </label>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-
-                        //'filterModel' => $searchModel,
                     'columns' => [            
                             [
                                 'attribute' => 'Id Servicio',
@@ -280,7 +276,6 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                                 Modal::begin([
                                   'header' => '<h4>Actualizar llamadas</h4>',
                                   'id' => 'modal1',
-                                  //'size' => 'moda2-lg',
                                 ]);
 
                                 echo "<div id='modalContent1'></div>";
@@ -314,7 +309,6 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                                     Modal::begin([
                                       'header' => '<h4>Generar Formula</h4>',
                                       'id' => 'modal2',
-                                      //'size' => 'moda2-lg',
                                     ]);
 
                                     echo "<div id='modalContent2'></div>";
@@ -333,7 +327,6 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                                     Modal::begin([
                                       'header' => '<h4>Parametrizar Datos</h4>',
                                       'id' => 'modal3',
-                                      //'size' => 'moda2-lg',
                                     ]);
 
                                     echo "<div id='modalContent3'></div>";

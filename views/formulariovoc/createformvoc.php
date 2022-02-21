@@ -103,7 +103,6 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
       }
@@ -400,7 +399,6 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
                     Modal::begin([
                       'header' => '<h4></h4>',
                       'id' => 'modal1',
-                      //'size' => 'modal-lg',
                     ]);
 
                     echo "<div id='modalContent1'></div>";
@@ -487,7 +485,6 @@ $txtNameLider = Yii::$app->db->createCommand("select usua_nombre from tbl_usuari
 
     var varArbol = "<?php echo $txtCliente; ?>";
     var varValoraddo = "<?php echo $txtUsuario; ?>";
-    // console.log(varValoraddo);
 
     var vartxtPcrc = "<?php echo $txtServicio; ?>";
     var vartxtValorado = document.getElementById("txtValorado").value;

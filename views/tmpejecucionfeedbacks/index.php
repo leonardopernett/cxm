@@ -55,10 +55,7 @@ Modal::begin([
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-
             'id',
             [
                 'attribute' => 'tipofeedback_id',
@@ -66,18 +63,6 @@ Modal::begin([
                 'enableSorting' => false,
                 'value' => 'tipofeedback.name'
             ],
-            //'usua_id',
-            //'created',
-            // 'usua_id_lider',
-            // 'evaluado_id',
-            // 'snavisar',
-            // 'snaviso_revisado',
-            // 'dsaccion_correctiva:ntext',
-            // 'feaccion_correctiva',
-            // 'nmescalamiento',
-            // 'feescalamiento',
-            // 'dscausa_raiz:ntext',
-            // 'dscompromiso:ntext',
             'dscomentario:ntext',
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{verfeedback}{update}{delete}',

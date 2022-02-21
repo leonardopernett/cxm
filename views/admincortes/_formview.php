@@ -56,7 +56,6 @@ $numdias  = Yii::$app->db->createCommand("select sum(cantdiastcs) from tbl_tipos
 
 	    <?= GridView::widget([
 	        'dataProvider' => $dataProvider,
-	        //'filterModel' => $searchModel,
 	        'columns' => [
 	            [
 	                'attribute' => 'Corte',

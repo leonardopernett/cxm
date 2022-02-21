@@ -389,11 +389,7 @@ $detalles_ids = array();
             <?= Html::input("hidden", "basesatisfaccion_id", $data->basesatisfaccion->id); ?>
 
             <?= Html::input("hidden", "arbol_id", $data->tmp_formulario->arbol_id); ?>
-            <?php //if ($banderaDim) : ?>
                 <?= Html::input("hidden", "dimension_id", $data->tmp_formulario->dimension_id); ?>
-            <?php //else: ?>
-                <?php //echo Html::input("hidden", "dimension", $data->tmp_formulario->dimension_id, ['id' => 'dimension']); ?>
-            <?php //endif; ?> 
             <?= Html::input("hidden", "ruta_arbol", $data->ruta_arbol); ?>
             <?= Html::input("hidden", "form_equipo_id", (isset($data->equipo_id))? $data->equipo_id:''); ?>
     <?= Html::input("hidden", "form_lider_id", (isset($data->usua_id_lider))? $data->usua_id_lider:''); ?>
@@ -770,7 +766,6 @@ $detalles_ids = array();
                             echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                                 'title' => Yii::t('app', 'Create'),
                                 'class' => 'btn-sm btn-success',
-                                //'data-pjax' => '0',
                                 'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -820,7 +815,6 @@ $detalles_ids = array();
                             echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                                 'title' => Yii::t('app', 'Create'),
                                 'class' => 'btn-sm btn-success',
-                                //'data-pjax' => '0',
                                 'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -864,7 +858,6 @@ $detalles_ids = array();
                             echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                                 'title' => Yii::t('app', 'Create'),
                                 'class' => 'btn-sm btn-success',
-                                //'data-pjax' => '0',
                                 'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -1047,7 +1040,6 @@ $detalles_ids = array();
             $(".soloFinalizar").click(function () {
                 $("#submitcorrecto").val("SI");
                 $(this).attr("disabled", "disabled");
-                //$(".soloGuardar").attr("disabled", "disabled");
                 $(".soloCancelar").attr("disabled", "disabled");
                 var guardarFormulario = $("#guardarFormulario");
                 guardarFormulario.attr('action', '<?php echo Url::to(['basesatisfaccion/guardaryenviarformulariogestion']); ?>');
@@ -1272,7 +1264,6 @@ $detalles_ids = array();
                     return false;
                 }
                 return true;
-                //return false;
             } catch (err) {
                 alert("Error al validar el formulario." + err);
                 return false;

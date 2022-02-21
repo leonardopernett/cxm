@@ -64,7 +64,6 @@ $rtaCantd = $nameVal;
 
 	    <?= GridView::widget([
 	        'dataProvider' => $dataProvider,
-	        //'filterModel' => $searchModel,
 	        'columns' => [
 	            [
 	                'attribute' => 'Corte',
@@ -204,12 +203,8 @@ $rtaCantd = $nameVal;
 		var afecha2 = fecha2.split("/");
 
 		var ffecha1 = Date.UTC(afecha1[2],afecha1[1]-1,afecha1[0]);
-		//console.log(ffecha1);
 		var ffecha2 = Date.UTC(afecha2[2],afecha2[1]-1,afecha2[0]);
-		//console.log(ffecha2);
-
 		var dif = ffecha2 - ffecha1;
-		//console.log(dif);
 		var contardias1 = Math.round(dif / (1000 * 60 *60 *24));
 
 		//--------------------------------------------------------------------------------

@@ -110,8 +110,7 @@ $fechaActual = date('Y-m-d');
             <?= $form->field($model2, 'nombre2')->dropDownList($listData, ['prompt' => 'Seleccionar...', 'id'=>'nomGrup'])->label('Nombre del Grupo') ?> 
             <br>
             <?= GridView::widget([
-                    'dataProvider' => $dataProvider,        
-                    //'filterModel' => $searchModel,
+                    'dataProvider' => $dataProvider,      
                     'columns' => [
                         [
                             'attribute' => 'Nombre del Grupo',
@@ -157,7 +156,6 @@ $fechaActual = date('Y-m-d');
 
     function selection(){
         var selectes = document.getElementById("nomGrup").value;
-        //console.log(selectes);
 
         if (selectes == 'Seleccione ...' || selectes == undefined || selectes == null || selectes == "") {
             event.preventDefault();

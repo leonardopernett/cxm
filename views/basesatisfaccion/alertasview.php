@@ -79,7 +79,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -124,7 +123,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             <?=
                         $form->field($model, 'responsable', ['template' => $template])
                         ->widget(Select2::classname(), [
-                            //'data' => array_merge(["" => ""], $data),
                             'language' => 'es',
                             'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                             'pluginOptions' => [

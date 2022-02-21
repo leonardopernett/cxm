@@ -21,7 +21,6 @@ use yii\helpers\Url;
 ?>
 <?php
 Modal::begin([
-    //'header' => Yii::t('app', 'Create Tbl Pregunta'),
     'id' => 'modal-corte',
     'size' => Modal::SIZE_LARGE,
     'clientOptions' => [
@@ -50,9 +49,6 @@ Modal::begin([
                 'dataProvider' => $dataProviderSemana,
                 'filterModel' => $searchModel,
                 'columns' => [
-                    //['class' => 'yii\grid\SerialColumn'],
-                    //'corte_id',
-                    //'tipo_corte',
                     [
                         'attribute' => 'tipo_corte',
                         'filter' => false,
@@ -64,7 +60,6 @@ Modal::begin([
                             }
                         }
                     ],
-                    //'corte_descripcion',
                     [
                         'attribute' => 'corte_descripcion',
                         'filter' => false,
@@ -85,8 +80,6 @@ Modal::begin([
                                             'update' => function ($url, $modelCorte) {
 
                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'javascript:void(0)', [
-                                                    //'title' => Yii::t('app', 'Tbl Opcions'),
-                                                    //'data-pjax' => '0',
                                                     'onclick' => "  
                                        var fecha = $('#fecha').val();
                                     $.ajax({
@@ -102,8 +95,6 @@ Modal::begin([
                                     },
                                             'delete' => function ($url, $model) {
                                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:void(0)', [
-                                                    //'title' => Yii::t('yii', 'delete'),
-                                                    //'data-pjax' => 'w0',
                                                     'onclick' => "
                                             var fecha = $('#fecha').val();
                                             bootbox.confirm({ 
@@ -155,9 +146,6 @@ Modal::begin([
                                 'dataProvider' => $dataProviderMes,
                                 'filterModel' => $searchModel,
                                 'columns' => [
-                                    //['class' => 'yii\grid\SerialColumn'],
-                                    //'corte_id',
-                                    //'tipo_corte',
                                     [
                                         'attribute' => 'tipo_corte',
                                         'filter' => false,
@@ -169,7 +157,6 @@ Modal::begin([
                                             }
                                         }
                                     ],
-                                    //'corte_descripcion',
                                     [
                                         'attribute' => 'corte_descripcion',
                                         'filter' => false,
@@ -190,8 +177,6 @@ Modal::begin([
                                                             'update' => function ($url, $modelCorte) {
 
                                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'javascript:void(0)', [
-                                                                    //'title' => Yii::t('app', 'Tbl Opcions'),
-                                                                    //'data-pjax' => '0',
                                                                     'onclick' => "  
                                        var fecha = $('#fecha').val();
                                     $.ajax({
@@ -207,8 +192,6 @@ Modal::begin([
                                                     },
                                                             'delete' => function ($url, $model) {
                                                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:void(0)', [
-                                                                    //'title' => Yii::t('yii', 'delete'),
-                                                                    //'data-pjax' => 'w0',
                                                                     'onclick' => "
                                             var fecha = $('#fecha').val();
                                             if (confirm('" . Yii::t('app', 'Are you sure you want to delete this item?') . "')) { 

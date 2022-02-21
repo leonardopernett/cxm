@@ -65,7 +65,6 @@ $this->title = 'Ver la Valoración';
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -130,7 +129,6 @@ $this->title = 'Ver la Valoración';
                                 Modal::begin([
                                     'header' => '<h4>Enviar la Valoracion</h4>',
                                     'id' => 'modal5',
-                                    //'size' => 'modal-lg',
                                 ]);
 
                                 echo "<div id='modalContent5'></div>";
@@ -171,7 +169,6 @@ $this->title = 'Ver la Valoración';
                 <label><em class="fas fa-address-book" style="font-size: 20px; color: #B833FF;"></em> Listado del plan: </label>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    //'filterModel' => $searchModel,
                     'columns' => [
                         [
                             'attribute' => 'PCRC',

@@ -122,7 +122,6 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                 Modal::begin([
                   'header' => '<h4>Subir archivos con las categorias...</h4>',
                   'id' => 'modal1',
-                  //'size' => 'modal-lg',
                 ]);
 
                 echo "<div id='modalContent1'></div>";

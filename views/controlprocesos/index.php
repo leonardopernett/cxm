@@ -106,7 +106,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -140,7 +139,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?=
                             $form->field($model, 'evaluados_id')->label(Yii::t('app',''))
                             ->widget(Select2::classname(), [
-                                //'data' => array_merge(["" => ""], $data),
                                 'language' => 'es',
                                 'options' => ['placeholder' => Yii::t('app', 'Seleccionar el técnico/lider...')],
                                 'pluginOptions' => [
@@ -190,7 +188,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                  Modal::begin([
                                     'header' => '<h4>Agregar tecnico</h4>',
                                     'id' => 'modal1',
-                                    //'size' => 'modal-lg',
                                 ]);
 
                                 echo "<div id='modalContent1'></div>";
@@ -220,7 +217,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                  Modal::begin([
                                     'header' => '<h4>Petición para desvincular técnico</h4>',
                                     'id' => 'modal2',
-                                    //'size' => 'modal-lg',
                                 ]);
 
                                 echo "<div id='modalContent2'></div>";
@@ -257,7 +253,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <label><em class="fas fa-address-book" style="font-size: 20px; color: #B833FF;"></em> Listado del equipo: </label>
                     <?= GridView::widget([
                             'dataProvider' => $dataProvider,
-                            //'filterModel' => $searchModel,
                             'columns' => [
                                 [
                                     'attribute' => 'Rol',
@@ -288,7 +283,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => 'yii\grid\ActionColumn',
                                     'headerOptions' => ['style' => 'color:#337ab7'],
                                     'template' => '{view}{update}{delete}',
-                            //'template' => '{view}{delete}',
                                     'buttons' => 
                                     [
                                         'view' => function ($url, $model) {

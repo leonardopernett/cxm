@@ -72,7 +72,6 @@ $roles = $command->queryScalar();
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -152,7 +151,6 @@ $roles = $command->queryScalar();
                         <?=
                             $form->field($model, 'procesos', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                         ->widget(Select2::classname(), [
-                                            //'data' => array_merge(["" => ""], $data),
                                             'language' => 'es',
                                             'options' => ['id'=>'idvararbol', 'placeholder' => Yii::t('app', 'Select ...')],
                                             'pluginOptions' => [
@@ -164,7 +162,6 @@ $roles = $command->queryScalar();
                                                     'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                                     'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
                                                 ],
-                                            //'initSelection' => new JsExpression($initScript)
                                             ]
                             ])->label('');
                         ?>  
@@ -189,7 +186,6 @@ $roles = $command->queryScalar();
                                     <?=
                                         $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                                     ->widget(Select2::classname(), [
-                                                        //'data' => array_merge(["" => ""], $data),
                                                         'language' => 'es',
                                                         'options' => ['id'=>'idvararboltwo', 'placeholder' => Yii::t('app', 'Select ...')],
                                                         'pluginOptions' => [
@@ -201,7 +197,6 @@ $roles = $command->queryScalar();
                                                                 'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                                                 'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
                                                             ],
-                                                        //'initSelection' => new JsExpression($initScript)
                                                         ]
                                         ])->label('');
                                     ?>

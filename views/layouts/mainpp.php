@@ -47,13 +47,8 @@ AppAsset::register($this);
             .dropdown-menu {
                 font-family: "Nunito", sans-serif;
                 font-weight: normal;
-                /* font-size: 90%; */
                 color: #777777;
-                /*background-color: #002855;*/
-                /*background-color: #c9cacc;*/
-                /*background-color: #d3d3d4;*/
                 background-color: #fff;
-                /*width: 1000px;    */
                 min-width: max-content;
                 
             }    
@@ -69,20 +64,17 @@ AppAsset::register($this);
             
             .navbar-nav > li {
                 float: left;
-                /*margin-right: 180px;*/
             }     
 
             .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
                 text-decoration: none !important;
                 color: #002855;
                 background-color: #eaeaea;
-                /*background-color: #222222;*/
             }      
             .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
                 text-decoration: none !important;
                 color: #002855;
                 background-color: #eaeaea;
-                /*background-color: #222222;*/
             }  
             a {
                 color: #002855;
@@ -91,14 +83,12 @@ AppAsset::register($this);
             .dropdown-menu > .row > .col-md-3 > li > a:hover, .dropdown-menu > .row > .col-md-3 > li > a:focus{
                 color: #00968F;
                 text-decoration: none !important;
-                /*background-color: #a0daeb;*/
         	font-weight: bold;
         	font-feature-settings: "frac";
             }
 	    .dropdown-menu > .row > .col-md-6 > li > a:hover, .dropdown-menu > .row > .col-md-3 > li > a:focus{
                 color: #00968F;
                 text-decoration: none !important;
-                /*background-color: #a0daeb;*/
                 font-weight: bold;
                 font-feature-settings: "frac";
             }
@@ -111,7 +101,6 @@ AppAsset::register($this);
             .dropdown-headercx {
                 display: block;
                 font-weight: bold;
-                /* padding: 3px 20px; */
                 font-size: 15px;
                 line-height: 1.42857143;
                 color: #777;
@@ -127,7 +116,6 @@ AppAsset::register($this);
            .dropdown-headercx2 {
                 display: block;
                 font-weight: bold;
-                /* padding: 3px 20px; */
                 font-size: 15px;
                 line-height: 1.42857143;
                 color: #CE0F69 ;
@@ -139,9 +127,6 @@ AppAsset::register($this);
             
             .footer2 {
                 height: auto ! important;
-                
-                /* background-color: #f5f5f5; */
-                /* border-top: 1px solid #ddd; */
                 padding-top: 20px;
             }
 
@@ -153,8 +138,6 @@ AppAsset::register($this);
             <?php
                 NavBar::begin([
                     'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
-                    // 'brandLabel' => 'CX-MANAGEMENT',
-                            // ["alt" => "home QA","style" => "width: 250px; margin-top: 8px; margin-left: -10px"]),
                             ["alt" => "home QA","style" => "width: 250px; margin-top: 10px"]),
                     'brandUrl' => Yii::$app->homeUrl,
                     'options' => [
@@ -181,14 +164,7 @@ AppAsset::register($this);
                                             '<li class="dropdown-headercx">&nbsp;Aplicación de la Encuesta</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Encuesta (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Analiza y decide</li>',
                                             '<li class="dropdown-headercx">&nbsp;Tableros automáticos</li>',
@@ -201,59 +177,23 @@ AppAsset::register($this);
                                             '<li class="dropdown-headercx">&nbsp;Text Analytics</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Text (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
-                                            
-                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
+                                                ],                                          
                                         '</div>',  
                                         '<div class="col-md-6">',
                                         '<li class="dropdown-headercx2">&nbsp;Protege y mejora</li>',
                                             '<li class="dropdown-headercx">Gestión de Coaching</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Coaching (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">Administrador</li>',                                            
                                             '<li class="dropdown-headercx">Gestión de Usuarios</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Configurar formuarios(Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],    
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gestión (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
-                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
 					    '<li class="divider"></li>',
                                             '<li class="dropdown-headercx">Gestión de Encuestas</li>',
                                                 [
@@ -281,14 +221,7 @@ AppAsset::register($this);
                                             '<li class="dropdown-headercx ico1">&nbsp;Aplicación de la Encuesta</li>',
                                                 [                                                    
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Encuesta (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx">&nbsp;Evaluación de Desarrollo</li>',
                                                 [
@@ -311,11 +244,6 @@ AppAsset::register($this);
                                                     'url' => ['/evaluaciondesarrollo/resultadodashboard'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
                                             '<li class="divider"></li>',
 					    '<li class="dropdown-headercx">&nbsp;Bitácora Universo</li>',
                                                 [
@@ -335,44 +263,24 @@ AppAsset::register($this);
                                             '<li class="dropdown-headercx">&nbsp;Text Analytics</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Text (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],   
-                                              
-                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                       
                                         '</div>',                                          
                                         '<div class="col-md-6">',
                                         '<li class="dropdown-headercx2">&nbsp;Protege y mejora</li>',
                                         '<li class="dropdown-headercx">Gestión de Coaching</li>',
                                             [
                                                 'label' => Yii::t('app', '&nbsp;&nbsp;Coaching (Por definir)'),
-                                                // 'url' => ['/site/dashboard'],
-                                                // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                             ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">Administrador</li>',
                                             '<li class="dropdown-headercx">Gestión de Formularios</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gestión (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ], 
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx">Gestión de Usuarios</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gestión (Por definir)'),
-                                                    // 'url' => ['/site/dashboard'],
-                                                    // 'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx">Gestión de Evaluaciones</li>',
@@ -386,16 +294,6 @@ AppAsset::register($this);
                                                     'url' => ['/evaluaciondesarrollo/paramsevaluacion'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],                                            
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Resumen Graficado'),
-                                                //     'url' => ['/site/dashboard'],
-                                                //     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                // ],
                                         '</div>',  
                                         '<div class="col-md-6">',
                                             
@@ -574,11 +472,6 @@ AppAsset::register($this);
                                                 'url' => ['/planvaloracion/index'],
                                                 'visible' => Yii::$app->user->identity->isReportes(),
                                             ], 
-                                            //[
-                                            //    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Escucha Focalizada'),
-                                            //    'url' => ['/controlvoc/reportevoc'],
-                                            //    'visible' => Yii::$app->user->identity->isReportes(),
-                                            //], 
                                             [
                                                 'label' => Yii::t('app', '&nbsp;&nbsp;Reporte - VOC -'),
                                                 'url' => ['/formulariovoc/reportformvoc'],

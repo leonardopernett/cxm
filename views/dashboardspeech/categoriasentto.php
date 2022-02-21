@@ -65,7 +65,6 @@ if ($txtservicio != null) {
                   Modal::begin([
                         'header' => '<h4>Importar Archivo Excel </h4>',
                         'id' => 'modal1',
-                        //'size' => 'modal-lg',
                       ]);
 
                   echo "<div id='modalContent1'></div>";

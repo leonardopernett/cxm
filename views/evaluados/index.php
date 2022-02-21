@@ -23,7 +23,6 @@ $rolId = Yii::$app->db->createCommand("select rel_role_id from rel_usuarios_role
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -69,13 +68,10 @@ $rolId = Yii::$app->db->createCommand("select rel_role_id from rel_usuarios_role
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
 
             'id',
             'name',
-            //'telefono',
             'dsusuario_red',
-            //'cdestatus',
             'identificacion',
             'email:email',
             [
@@ -84,7 +80,6 @@ $rolId = Yii::$app->db->createCommand("select rel_role_id from rel_usuarios_role
                 'value' => function ($data) {
                     return Html::a(Yii::t('app', 'Ver Equipos'), 'javascript:void(0)', [
                                 'title' => Yii::t('app', 'Ver Equipos'),
-                                //'data-pjax' => '0',
                                 'onclick' => "                                    
                             $.ajax({
                             type     :'POST',

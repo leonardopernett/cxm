@@ -64,17 +64,10 @@ $this->registerJs(
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
-            //'filterModel' => $searchModel,
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
 
                 'categoria0.nombre',
                 'configuracion',
-                // 'agilidad_agente_cal',
-                // 'claridad_info_cal',
-                // 'interes_cal',
-                // 'recomendacion_cal',
-                // 'solucion_llamada_cal',
                 ['class' => 'yii\grid\ActionColumn',
                     'template' => '{update}{delete}',
                     'buttons' => [

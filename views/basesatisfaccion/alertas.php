@@ -27,7 +27,6 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -152,7 +151,6 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
                                     Modal::begin([
                                             'header' => '<h4>Correo Grupal</h4>',
                                             'id' => 'modal1',
-                                            //'size' => 'modal-lg',
                                         ]);
 
                                     echo "<div id='modalContent1'></div>";

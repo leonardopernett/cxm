@@ -640,7 +640,6 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
     Modal::begin([
       'header' => '<h4>Procesando datos en archivo de excel...</h4>',
       'id' => 'modal1',
-      // 'size' => 'modal-lg',
     ]);
 
     echo "<div id='modalContent1'></div>";
@@ -969,7 +968,6 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
 
         var Listadod = "<?php echo implode($varListCorted,",");?>";
         Listadod = Listadod.split(",");
-        //console.log(Listado);
 
         Highcharts.setOptions({
                 lang: {
@@ -977,75 +975,6 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                   thousandsSep: ','
                 }
         });
-
-        //   $('#containerManual').highcharts({
-        //     chart: {
-        // borderColor: '#DAD9D9',
-        // borderRadius: 7,
-        //     borderWidth: 1,
-        //         type: 'line'
-        //     },
-
-        //     yAxis: {
-        //       title: {
-        //         text: 'Cantidad Valoraciones Realizadas Manuales'
-        //       }
-        //     },     
-
-        //     title: {
-        //       text: '<?php echo $txtArbol; ?>',
-        //   style: {
-        //             color: '#3C74AA'
-        //       }
-
-        //     },
-
-        //     xAxis: {
-        //           categories: Listado,
-        //           title: {
-        //               text: null
-        //           }
-        //         },
-
-        //     series: [{
-        //       name: 'Cantidad ',
-        //       data: [<?= join($varListMeses, ',')?>]
-        //     }]
-        //   });      
-
-        //   $('#containerAuto').highcharts({
-        //     chart: {
-        // borderColor: '#DAD9D9',
-        // borderRadius: 7,
-        //     borderWidth: 1,
-        //         type: 'line'
-        //     },
-
-        //     yAxis: {
-        //       title: {
-        //         text: 'Cantidad Valoraciones Realizadas Automaticas'
-        //       }
-        //     },     
-
-        //     title: {
-        //       text: '<?php echo $txtArbol; ?>',
-        //   style: {
-        //             color: '#3C74AA'
-        //       }
-        //     },
-
-        //     xAxis: {
-        //           categories: Listado,
-        //           title: {
-        //               text: null
-        //           }
-        //         },
-
-        //     series: [{
-        //       name: 'Cantidad ',
-        //       data: [<?= join($varListMeses2, ',')?>]
-        //     }]
-        //   });  
 
         $('#containerSatu').highcharts({
             chart: {

@@ -193,15 +193,6 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
                             <?=  $form->field($model, 'idservicio', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->distinct()->where("id in (98, 2, 1)")->andwhere("activo = 0")->orderBy(['id'=> SORT_ASC])->all(), 'id', 'name'),
                                                         [
                                                             'prompt'=>'Seleccionar Nivel...',
-                                                            // 'onchange' => '
-                                                            //     $.post(
-                                                            //         "' . Url::toRoute('dashboardspeech/listarpcrcindex') . '", 
-                                                            //         {id: $(this).val()}, 
-                                                            //         function(res){
-                                                            //             $("#requester").html(res);
-                                                            //         }
-                                                            //     );
-                                                            // ',
 
                                                         ]
                                                 )->label('Seleccionar Nivel'); 
@@ -274,7 +265,6 @@ $this->title = 'Dashboard Ejecutivo (Programa VOC - Konecta)';
     $(function() {
         var Listado = "<?php echo implode($varListDays,",");?>";
         Listado = Listado.split(",");
-        //console.log(Listado);
 
         Highcharts.setOptions({
                 lang: {

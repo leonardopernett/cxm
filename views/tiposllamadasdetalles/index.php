@@ -50,7 +50,6 @@ Modal::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             'id',
             'name',            
             [

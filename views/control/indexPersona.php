@@ -171,11 +171,6 @@ $this->registerJs($js);
                     <div class="form-group">
                         <?php
                         echo $form->field($model, 'fecha', [
-                            //'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],                 
-//                'inputTemplate' => '<div class="input-group col-md-12">'
-//                . '<span class="input-group-addon">'
-//                . '<i class="glyphicon glyphicon-calendar"></i>'
-//                . '</span>{input}{error}{hint}</div>',
                             'labelOptions' => ['class' => 'col-md-12'],
                             'template' => '<div class="row"><div class="col-md-3">{label}</div>'
                             . '<div class="col-md-9"><div class="input-group">'
@@ -194,7 +189,6 @@ $this->registerJs($js);
                             'readonly' => 'readonly',
                             'pluginOptions' => [
                                 'timePicker' => false,
-                                //'timePickerIncrement' => 15,
                                 'format' => 'Y-m-d',
                                 'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                                 'endDate' => date("Y-m-d"),
@@ -215,8 +209,6 @@ $this->registerJs($js);
                             echo Html::a(Html::tag("span", "", ["aria-hidden" => "true",
                                         "class" => "glyphicon glyphicon-cog",
                                         "id" => "graficar"]) . ' Configurar Corte', 'javascript:void(0)', [
-                                //'title' => Yii::t('app', 'Tbl Opcions'),
-                                //'data-pjax' => '0',
                                 'onclick' => "  
                                         var tipo = $('#selCorte').val();
                                         var fecha = $('#filtroscontrol-fecha').val();
@@ -247,7 +239,6 @@ $this->registerJs($js);
                         <?=
                                 $form->field($model, 'rol', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                 ->widget(Select2::classname(), [
-                                    //'data' => array_merge(["" => ""], $data),
                                     'language' => 'es',
                                     'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                                     'pluginOptions' => [
@@ -308,7 +299,6 @@ $this->registerJs($js);
                         <?=
                                 $form->field($model, 'equiposvalorador', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                 ->widget(Select2::classname(), [
-                                    //'data' => array_merge(["" => ""], $data),
                                     'language' => 'es',
                                     'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                                     'pluginOptions' => [
@@ -511,11 +501,9 @@ $this->registerJs($js);
                                                 'fontFamily' => 'Verdana, sans-serif'
                                             ]
                                         ]
-                                    /* 'categories' => $data->infoDimension['categoria'] */
                                     ],
                                     'yAxis' => [
                                         'title' => ['text' => 'Promedio por ' . Yii::t('app', $data->metricaSelecc)],
-                                    //'min' => $data->menorDimension
                                     ],
                                     'series' => $data->infoDimension['datos'],
                                 ]
@@ -645,7 +633,6 @@ $this->registerJs($js);
                                         "#00ff0c", "#af9d8b", "#cbe2f3", "#3c76b7", "#7d864f",
                                     ],
                                     'chart' => [
-                                        //'type' => 'column',
                                         'zoomType' => 'xy'                                
                                     ],
                                     'legend' => [
@@ -901,7 +888,6 @@ $this->registerJs($js);
                                     'yAxis' => [
                                         'title' => ['text' => 'Cantidad'],
                                     ],
-                                    //'series' => $data->datosGrafica['datosGrafiaSepaDimen_cant'],
                                     'series' => $data->datosGrafica['datosGrafiaSepaDimen_cant_graf_nueva'],
                                 ]
                             ]);                        
@@ -1021,11 +1007,6 @@ $this->registerJs($js);
                 <div class="form-group">
                     <?php
                     echo $form->field($model, 'fechaDetallada', [
-                        //'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],                 
-//                'inputTemplate' => '<div class="input-group col-md-12">'
-//                . '<span class="input-group-addon">'
-//                . '<i class="glyphicon glyphicon-calendar"></i>'
-//                . '</span>{input}{error}{hint}</div>',
                         'labelOptions' => ['class' => 'col-md-12'],
                         'template' => '<div class="row"><div class="col-md-3">{label}</div>'
                         . '<div class="col-md-9"><div class="input-group">'
@@ -1044,7 +1025,6 @@ $this->registerJs($js);
                         'readonly' => 'readonly',
                         'pluginOptions' => [
                             'timePicker' => false,
-                            //'timePickerIncrement' => 15,
                             'format' => 'Y-m-d',
                             'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                             'endDate' => date("Y-m-d"),
@@ -1065,8 +1045,6 @@ $this->registerJs($js);
                                 echo Html::a(Html::tag("span", "", ["aria-hidden" => "true",
                                             "class" => "glyphicon glyphicon-cog",
                                             "id" => "graficar"]) . ' Configurar Corte', 'javascript:void(0)', [
-                                    //'title' => Yii::t('app', 'Tbl Opcions'),
-                                    //'data-pjax' => '0',
                                     'onclick' => "  
                                         var tipo = $('#selCorte').val();
                                         var fecha = $('#filtroscontrol-fechadetallada').val();
@@ -1127,7 +1105,6 @@ $this->registerJs($js);
                     <?=
                             $form->field($model, 'rolDetallada', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                             ->widget(Select2::classname(), [
-                                //'data' => array_merge(["" => ""], $data),
                                 'language' => 'es',
                                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                                 'pluginOptions' => [
@@ -1188,7 +1165,6 @@ $this->registerJs($js);
                     <?=
                             $form->field($model, 'equiposvaloradorDetallada', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                             ->widget(Select2::classname(), [
-                                //'data' => array_merge(["" => ""], $data),
                                 'language' => 'es',
                                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                                 'pluginOptions' => [

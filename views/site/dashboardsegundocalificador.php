@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -93,7 +92,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 , Url::to(['formularios/editarformulariodiligenciado'
                                                     , 'tmp_id' => $model->id_ejecucion_formulario, 'view' => "site/segundocalificador"]), [
                                             'title' => Yii::t('yii', 'Update'),
-                                            //'target' => "_blank",
                                 ]);
                             } else {
                                 if (count($liderEvaluador) > 0) {
@@ -102,7 +100,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         , Url::to(['formularios/editarformulariodiligenciado'
                                                             , 'tmp_id' => $model->id_ejecucion_formulario, 'view' => "site/segundocalificador"]), [
                                                     'title' => Yii::t('yii', 'Update'),
-                                                    //'target' => "_blank",
                                         ]);
                                     }
                                 }
@@ -112,7 +109,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::to(['basesatisfaccion/showformulariogestion'
                                                     , 'basesatisfaccion_id' => $modelBase->id, 'preview' => 0, 'fill_values' => false, 'view' => "site/segundocalificador"]), [
                                             'title' => Yii::t('yii', 'Update'),
-                                            //'target' => "_blank"
                                 ]);
                             }
                         }
@@ -138,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'delete' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(['delete', 'id' => $model->id_segundo_calificador]), [
                                     'title' => Yii::t('yii', 'delete'),
-                                    'data-pjax' => 'w0', //                                        
+                                    'data-pjax' => 'w0',                                         
                                     'onclick' => "
                             if (confirm('" . Yii::t('app', 'Are you sure you want to delete this item?') . "')) {                                                            
                                 return true;

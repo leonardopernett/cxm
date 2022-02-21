@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -49,7 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
 
             'id',
             [
@@ -64,14 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'enableSorting' => true,
                 'value' => 'programa0.name'
             ],
-            /*[
-                'attribute' => 'cliente',
-                'value' => 'cliente0.name'
-            ],
-            [
-                'attribute' => 'programa',
-                'value' => 'programa0.name'
-            ],*/
             ['class' => 'yii\grid\ActionColumn',
                 'buttons' => [        'update' => function ($url,$model) {
                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::to(['parametrizacionencuesta',

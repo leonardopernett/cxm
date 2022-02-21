@@ -192,8 +192,7 @@ $contadorSecciones = 0;
                             <?php } ?>
                             <tr>
                                 <th id="dimension"><?php echo Yii::t("app", "Dimension"); ?></th>
-                                <td><?php //echo $data->dimension->name                       
-                                    ?>
+                                <td>
                                     <?php if ($data->preview) : ?>
                                         <?=
                                         Html::dropDownList(
@@ -451,7 +450,6 @@ $contadorSecciones = 0;
                                         "comentarioSeccion[" . $prev_seccion . "]",
                                         $prev_secccion_comentario,
                                         [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "class" => "form-control droplabel",
                                             "placeholder" => "Comentario para el Coaching",
                                             "readonly" => "readonly"
@@ -464,7 +462,6 @@ $contadorSecciones = 0;
                                         "comentarioSeccion[" . $prev_seccion . "]",
                                         $prev_secccion_comentario,
                                         [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "class" => "form-control droplabel",
                                             "placeholder" => "Comentario para el Coaching"
                                         ]
@@ -517,8 +514,6 @@ $contadorSecciones = 0;
                                                                                         ?>>
         <div class="col-md-10">
             <label class="labelseccion">
-                <?php //echo $detalle->seccion 
-                ?>
                 <?php
                     echo Html::tag('span', $detalle->seccion, [
                         'data-title' => $detalle->sdescripcion,
@@ -556,8 +551,6 @@ $contadorSecciones = 0;
                         'data-toggle' => 'tooltip',
                         'style' => 'cursor:pointer;'
                     ]);
-                ?>
-                <?php //echo $detalle->bloque   
                 ?>
             </label>
             <?php
@@ -850,7 +843,6 @@ if (($contadorSecciones % $cantDivs) == 0) {
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -901,7 +893,6 @@ if (($contadorSecciones % $cantDivs) == 0) {
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -946,7 +937,6 @@ if (($contadorSecciones % $cantDivs) == 0) {
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -1048,7 +1038,6 @@ if (($contadorSecciones % $cantDivs) == 0) {
     <?php if ($data->preview == false) : ?>
         <div class="form-group">
             <div class="col-sm-12 well">
-                <?php /* = Html::submitButton(Yii::t('app', 'Guargar y enviar'), ['class' => 'btn btn-success']) */ ?>
                 <?= Html::a(Yii::t('app', 'Guardar y enviar'), "javascript:void(0)", ['class' => 'btn btn-success soloFinalizar'])
                 ?>
                 <?= Html::a(Yii::t('app', 'Guardar'), "javascript:void(0)", ['class' => 'btn btn-warning soloGuardar'])
@@ -1248,7 +1237,6 @@ if (($contadorSecciones % $cantDivs) == 0) {
         });
 
         /* BOTON DESPLEGAR SECCIONES */
-        //$(".soloAbrir").click(function () {
         $("#prueba").on("click", function() {
             if ($("#prueba").text() == "Desplegar") {
                 $("[id*=datos]").css('display', 'block');
@@ -1358,7 +1346,6 @@ if (($contadorSecciones % $cantDivs) == 0) {
                 } else {
                     visible = true;
                 }
-                //var asd = $('#datosSeccion'+idsDetallesSecciones[val]).css('display') 
                 if (visible) {
                     if ($("#calificacion_" + val).val() == '') {
                         $("#calificacion_" + val).addClass('field-error');
@@ -1424,11 +1411,9 @@ if (($contadorSecciones % $cantDivs) == 0) {
                     $("#seccion" + idseccionesError[b]).show("slow");
                     $("#datosSeccion" + idseccionesError[b]).show("slow");
                 }
-                /*alert("Existen algunos sin seleccionar.");*/
                 return false;
             }
             return true;
-            //return false;
         } catch (err) {
             alert("Error al validar el formulario." + err);
             return false;

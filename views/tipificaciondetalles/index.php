@@ -52,7 +52,6 @@ Modal::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             'id',
             'name',                        
             [
@@ -64,8 +63,7 @@ Modal::begin([
                 'filter' => false,
                 'enableSorting' => false,
                 'value' => 'tipificacion.name'
-            ],
-            //'nmorden',            
+            ],         
             ['class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'view' => function ($url) {

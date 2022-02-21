@@ -48,18 +48,14 @@ Modal::begin([
         'id' => 'grid-equipos-evaluados',
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,        
-        //'filterUrl' => Url::to(['index', 'equipo_id'=>$searchModel->equipo_id]),        
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             'id',
-            //'evaluado_id',
             [
                 'attribute' => 'evaluadorName',
                 'filter' => true,
                 'enableSorting' => true,
                 'value' => 'evaluadores.usua_nombre'
             ],
-            //'equipo_id',
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{delete}',
                 'buttons' => [

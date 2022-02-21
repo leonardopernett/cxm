@@ -135,7 +135,6 @@ $this->title = 'DashBoard Voz del Cliente';
                     console.log(numRta);
                     if (numRta != 0) {
 			location.reload();
-                        // $("#modal1").remove();
                     }                    
                 }
             });  

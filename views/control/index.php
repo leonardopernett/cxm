@@ -48,7 +48,6 @@ $this->registerJs($js);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -209,7 +208,6 @@ $this->registerJs($js);
                             'readonly' => 'readonly',
                             'pluginOptions' => [
                                 'timePicker' => false,
-                                //'timePickerIncrement' => 15,
                                 'format' => 'Y-m-d',
                                 'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                                 'endDate' => date("Y-m-d"),
@@ -429,11 +427,9 @@ $this->registerJs($js);
                                                 'fontFamily' => 'Verdana, sans-serif'
                                             ]
                                         ]
-                                    /* 'categories' => $data->infoDimension['categoria'] */
                                     ],
                                     'yAxis' => [
                                         'title' => ['text' => 'Promedio por ' . Yii::t('app', $data->metricaSelecc)],
-                                    //'min' => $data->menorDimension
                                     ],
                                     'series' => $data->infoDimension['datos'],
                                 ]
@@ -564,7 +560,6 @@ $this->registerJs($js);
                                         "#00ff0c", "#af9d8b", "#cbe2f3", "#3c76b7", "#7d864f",
                                     ],
                                     'chart' => [
-                                        //'type' => 'column',
                                         'zoomType' => 'xy'                                
                                     ],
                                     'legend' => [
@@ -903,13 +898,6 @@ $this->registerJs($js);
     <div class="row">
         <div class="col-lg-12">
 
-          
-            <?php /* /*=
-              Html::a(Html::tag("span", "", ["aria-hidden" => "true",
-              "class" => "glyphicon glyphicon-chevron-down",
-              ]) . " " . Yii::t('app', 'VISTA DETALLADA'), "javascript:void(0)"
-              , ["class" => "openVistas", "id" => "graficarDetallada"]) */
-            ?>
                      
             <div id="divConfigDetallada" class="well" style="z-index:2; display: none" title="Parametros de Visualizaci&oacute;n" >
                 <?php $form = ActiveForm::begin([
@@ -965,11 +953,6 @@ $this->registerJs($js);
                     <div class="form-group">
                         <?php
                         echo $form->field($model, 'fechaDetallada', [
-                            //'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],                 
-//                'inputTemplate' => '<div class="input-group col-md-12">'
-//                . '<span class="input-group-addon">'
-//                . '<i class="glyphicon glyphicon-calendar"></i>'
-//                . '</span>{input}{error}{hint}</div>',
                             'labelOptions' => ['class' => 'col-md-12'],
                             'template' => '<div class="row"><div class="col-md-4">{label}</div>'
                             . '<div class="col-md-8"><div class="input-group">'
@@ -988,7 +971,6 @@ $this->registerJs($js);
                             'readonly' => 'readonly',
                             'pluginOptions' => [
                                 'timePicker' => false,
-                                //'timePickerIncrement' => 15,
                                 'format' => 'Y-m-d',
                                 'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                                 'endDate' => date("Y-m-d"),
@@ -1009,8 +991,6 @@ $this->registerJs($js);
                                     echo Html::a(Html::tag("span", "", ["aria-hidden" => "true",
                                                 "class" => "glyphicon glyphicon-cog",
                                                 "id" => "graficar"]) . ' Configurar Corte', 'javascript:void(0)', [
-                                        //'title' => Yii::t('app', 'Tbl Opcions'),
-                                        //'data-pjax' => '0',
                                         'onclick' => "  
                                         var tipo = $('#selCorte').val();
                                         var fecha = $('#filtroscontrol-fechadetallada').val();
@@ -1129,15 +1109,6 @@ echo Html::tag('div', '', ['id' => 'ajax_result']);
             $("#filtrosControlproceso").show("slow");
                     
         });
-        /* SELECTOR DE GRÁFICA 
-         $(".a-check").click(function () {
-         $("#filtroscontrol-tipo_grafica").val($(this).data("grafica"));
-         $(".a-check").each(function (index, element) {
-         $(element).removeClass("check");
-         });
-         $(this).addClass("check");
-         
-         });*/
 
         $("#graficarDetallada").click(function () {
             $("#divConfigDetallada").toggle("slow");

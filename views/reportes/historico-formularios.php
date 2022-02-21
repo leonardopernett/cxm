@@ -37,7 +37,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -68,11 +67,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
         <div class="col-md-6">  
             <?=
             $form->field($model, 'created', [
-                //'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],                 
-//                'inputTemplate' => '<div class="input-group col-md-12">'
-//                . '<span class="input-group-addon">'
-//                . '<i class="glyphicon glyphicon-calendar"></i>'
-//                . '</span>{input}{error}{hint}</div>',
                 'labelOptions' => ['class' => 'col-md-12'],
                 'template' => '<div class="col-md-3">{label}</div>'
                 . '<div class="col-md-9"><div class="input-group">'
@@ -88,7 +82,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -163,7 +156,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             <?=
                     $form->field($model, 'evaluado_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -193,13 +185,9 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     </div>
     <div class="row col-md-12">
         <div class="col-md-6">
-            <?php
-            //$form->field($model, 'dimension_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($model->getDimensionsList(), ['prompt' => 'Seleccione ...'])
-            ?>
             <?=
                     $form->field($model, 'dimension_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -230,7 +218,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             <?=
                     $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -256,9 +243,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                             ]
             );
             ?>
-            <?php /* =
-              $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($model->getArbolesByRoles(), ['prompt' => 'Seleccione ...'])
-             */ ?>
         </div>
     </div>
     <div class="row col-md-12">
@@ -266,7 +250,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             <?=
                     $form->field($model, 'equipo_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -565,7 +548,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             'header' => 'Dimensión',
             'value' => 'dimension'
         ],
-        //'score',
         [
             'header' => Yii::t('app', 'score'),
             'attribute' => 'score',
@@ -578,7 +560,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 
             }
         ],
-        //'pec_rac',
         [
             'header' => Yii::t('app', 'pec_rac'),
             'attribute' => 'pec_rac',
@@ -761,7 +742,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     'dataProvider' => $dataProvider,
     'columns' => $gridColumns,
     'target' => '_blank',
-    //'fontAwesome' => true,
              'exportRequestParam' => 'exportformularios',
              'filename' => Yii::t('app', 'Reporte_formularios') . '_' . date('Ymd'),
     'asDropdown' => false, // this is important for this case so we just need to get a HTML list    
@@ -786,7 +766,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 'columns' => $gridColumns,
 				    'panel' => [
         'type' => kartik\grid\GridView::TYPE_DEFAULT,
-        //'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Library</h3>',
     ],
     // the toolbar setting is default
     'toolbar' => [
@@ -795,7 +774,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     // configure your GRID inbuilt export dropdown to include additional items
     'export' => [
         'label' => Yii::t('app', 'Export All'),
-        //'fontAwesome' => true,
         'itemsBefore'=> [
             '<li role="presentation" class="divider"></li>',
             '<li class="dropdown-header">Exportar todos los datos</li>',

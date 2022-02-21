@@ -23,7 +23,6 @@ $fechas = explode(' - ', $rangofecha);
 
 <?php
 Modal::begin([
-    //'header' => Yii::t('app', 'Create Tbl Pregunta'),
     'id' => 'modal-viewcorte',
     'size' => Modal::SIZE_LARGE,
     'clientOptions' => [
@@ -76,14 +75,10 @@ HTML;
                                 'id' => 'semana1',
                                 'useWithAddon' => true,
                                 'convertFormat' => true,
-                                //'presetDropdown' => true,
                                 'readonly' => 'readonly',
                                 'pluginOptions' => [
                                     'timePicker' => false,
-                                    //'timePickerIncrement' => 15,
                                     'format' => 'Y-m-d',
-                                    //'minDate' => date("Y-m-d", strtotime($fechas[0])),
-                                    //'maxDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'startDate' => date("Y-m-d", strtotime($fechas[0])),
                                     'endDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'opens' => 'center'
@@ -106,14 +101,10 @@ HTML;
                                 'id' => 'semana2',
                                 'useWithAddon' => true,
                                 'convertFormat' => true,
-                                //'presetDropdown' => true,
                                 'readonly' => 'readonly',
                                 'pluginOptions' => [
                                     'timePicker' => false,
-                                    //'timePickerIncrement' => 15,
                                     'format' => 'Y-m-d',
-                                    //'minDate' => date("Y-m-d", strtotime($fechas[0])),
-                                    //'maxDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'startDate' => date("Y-m-d", strtotime($fechas[0])),
                                     'endDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'opens' => 'center'
@@ -136,14 +127,10 @@ HTML;
                                 'id' => 'semana3',
                                 'useWithAddon' => true,
                                 'convertFormat' => true,
-                                //'presetDropdown' => true,
                                 'readonly' => 'readonly',
                                 'pluginOptions' => [
                                     'timePicker' => false,
-                                    //'timePickerIncrement' => 15,
                                     'format' => 'Y-m-d',
-                                    //'minDate' => date("Y-m-d", strtotime($fechas[0])),
-                                    //'maxDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'startDate' => date("Y-m-d", strtotime($fechas[0])),
                                     'endDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'opens' => 'center'
@@ -166,14 +153,10 @@ HTML;
                                 'id' => 'semana4',
                                 'useWithAddon' => true,
                                 'convertFormat' => true,
-                                //'presetDropdown' => true,
                                 'readonly' => 'readonly',
                                 'pluginOptions' => [
                                     'timePicker' => false,
-                                    //'timePickerIncrement' => 15,
                                     'format' => 'Y-m-d',
-                                    //'minDate' => date("Y-m-d", strtotime($fechas[0])),
-                                    //'maxDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'startDate' => date("Y-m-d", strtotime($fechas[0])),
                                     'endDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'opens' => 'center'
@@ -196,14 +179,10 @@ HTML;
                                 'id' => 'semana5',
                                 'useWithAddon' => true,
                                 'convertFormat' => true,
-                                //'presetDropdown' => true,
                                 'readonly' => 'readonly',
                                 'pluginOptions' => [
                                     'timePicker' => false,
-                                    //'timePickerIncrement' => 15,
                                     'format' => 'Y-m-d',
-                                    //'minDate' => date("Y-m-d", strtotime($fechas[0])),
-                                    //'maxDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'startDate' => date("Y-m-d", strtotime($fechas[0])),
                                     'endDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'drops' => 'up',
@@ -277,14 +256,10 @@ HTML;
                                 'id' => 'mes',
                                 'useWithAddon' => true,
                                 'convertFormat' => true,
-                                //'presetDropdown' => true,
                                 'readonly' => 'readonly',
                                 'pluginOptions' => [
                                     'timePicker' => false,
-                                    //'timePickerIncrement' => 15,
                                     'format' => 'Y-m-d',
-                                    //'minDate' => date("Y-m-d", strtotime($fechas[0])),
-                                    //'maxDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'startDate' => date("Y-m-d", strtotime($fechas[0])),
                                     'endDate' => date("Y-m-d", strtotime($fechas[1])),
                                     'opens' => 'center'
