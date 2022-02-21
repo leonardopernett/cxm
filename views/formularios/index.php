@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -30,8 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
  <div class="container h-100">
    <div class="row h-100 align-items-center">
      <div class="col-12 text-center">
-       <!-- <h1 class="font-weight-light">Vertically Centered Masthead Content</h1>
-       <p class="lead">A great starter layout for a landing page</p> -->
      </div>
    </div>
  </div>
@@ -60,9 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'id' => 'grid-formularios',
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        //'options' => ['data-pjax' => true ],
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             'id',
             'name',
             [
@@ -71,7 +66,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($data) {
                     return Html::a('Ver secciones', 'javascript:void(0)', [
                                 'title' => Yii::t('app', 'Seccions'),
-                                //'data-pjax' => '0',
                                 'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -85,9 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                 }
                     ],
-                    //'nmorden',                    
                     ['class' => 'yii\grid\ActionColumn',
-                        //'template' => '{duplicate}',
                         'template' => '{duplicate}{view}{update}{delete}',
                         'buttons' => [
                             'duplicate' => function($url, $model) {

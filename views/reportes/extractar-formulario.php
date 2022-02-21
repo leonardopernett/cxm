@@ -26,7 +26,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -59,7 +58,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             <?=
                     $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -84,9 +82,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                             ]
             );
             ?>
-            <?php /* =
-              $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($model->getArbolesByRoles(), ['prompt' => 'Seleccione ...'])
-             */ ?>
         </div>
         <div class="col-md-6">  
             <?=

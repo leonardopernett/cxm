@@ -113,7 +113,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
       }
@@ -433,7 +432,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     Modal::begin([
                       'header' => '<h4></h4>',
                       'id' => 'modal1',
-                      //'size' => 'modal-lg',
                     ]);
 
                     echo "<div id='modalContent1'></div>";
@@ -461,7 +459,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <script type="text/javascript">
 
 /* BOTON DESPLEGAR SECCIONES */
-        //$(".soloAbrir").click(function () {
           $("#prueba").on( "click", function() {
             if ($("#prueba").text() == "Desplegar"){
                 $("[id*=datos]").css('display', 'block');
@@ -564,7 +561,6 @@ $this->params['breadcrumbs'][] = $this->title;
   };
 
   function generar(){
-   // generaatributo();
 
     var varArbol = "<?php echo $varIdArbol; ?>";
     var varValoraddo = "<?php echo $varIdValora; ?>";
@@ -587,8 +583,6 @@ $this->params['breadcrumbs'][] = $this->title;
     var varEstado = document.getElementById("txtEstado").value;
     var varObservaciones = document.getElementById("txtObservaciones").value;
     var varIdparticipa = document.getElementById("idparticipa").value;
-   // alert(varIdparticipa);
-
    if (varSpeech == ""){
       event.preventDefault();
       swal.fire("!!! Advertencia !!!","No hay datos a registrar en ID Externo Llamada Speech (Información de Partida).","warning");
@@ -611,11 +605,6 @@ $this->params['breadcrumbs'][] = $this->title;
       swal.fire("!!! Advertencia !!!","No hay datos a registrar en Extensión (Información de Partida).","warning");
       return;  
 
-
-   /* if (varSpeech == "" || varFH == "" || varuSUAgente == "" || varDuracion == "" || varExt == "" || varDimension == "") {
-      event.preventDefault();
-      swal.fire("!!! Advertencia !!!","No hay datos a registrar.","warning");
-      return;*/
     }else{
       $.ajax({
               method: "post",
@@ -646,8 +635,6 @@ $this->params['breadcrumbs'][] = $this->title;
               success : function(response){ 
                           var numRta =   JSON.parse(response);    
                           console.log(response);
-                          //console.log(numRta);
-      //  console.log('Prueba');
 
                           if (numRta != 0) {
                             jQuery(function(){
@@ -687,11 +674,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
          var current_object = {};
 
-         //var idic1 = "txtmedir_"+(x+1);
          varMedir = document.getElementById("txtmedir_"+(x+1)).value;
-         //var idic2 = "txtAcuerdo_"+(x+1);
          varAcuerdo = document.getElementById("txtAcuerdo_"+(x+1)).value;
-         //var idic3 = "txtatribu_"+(x+1);         
          varIdatrubuti = document.getElementById("txtatribu_"+(x+1)).value;
 
          console.log("varMedir",varMedir);
@@ -749,9 +733,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 data : JSON.stringify(array_elementos)
               },
               success : function(response){ 
-                //console.log(response);
                 var numRta =   JSON.parse(response); 
-                //console.log("llego");
                 if (numRta != 0) {
                   console.log("resp_aajx",response);
                   generar();

@@ -103,7 +103,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            //'bloque_id',
             'name',
             [
                 'attribute' => 'bloque_id',
@@ -117,13 +116,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'formularioName',
                 'value' => $model->bloque->seccion->formulario->name
             ],
-            //'calificacion_id',
             [
                 'attribute' => 'calificacion_id',
                 'value' => (!empty($model->calificacion_id)) ? $model->calificacion->name
                             : null
             ],
-            //'tipificacion_id',
             [
                 'attribute' => 'tipificacion_id',
                 'value' => (!empty($model->tipificacion_id)) ? $model->tipificacion->name

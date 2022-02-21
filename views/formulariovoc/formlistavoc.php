@@ -70,7 +70,6 @@ use yii\bootstrap\Modal;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
       }
@@ -243,7 +242,6 @@ use yii\bootstrap\Modal;
                                  Modal::begin([
                                     'header' => '<h4>Descargar</h4>',
                                     'id' => 'modal1',
-                                    //'size' => 'modal-lg',
                                 ]);
 
                                 echo "<div id='modalContent1'></div>";

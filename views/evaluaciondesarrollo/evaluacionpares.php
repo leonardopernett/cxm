@@ -79,7 +79,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -90,11 +89,10 @@ $this->params['breadcrumbs'][] = $this->title;
       border-top: 16px solid #3498db;
       width: 80px;
       height: 80px;
-      -webkit-animation: spin 2s linear infinite; /* Safari */
+      -webkit-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
     }
 
-    /* Safari */
     @-webkit-keyframes spin {
       0% { -webkit-transform: rotate(0deg); }
       100% { -webkit-transform: rotate(360deg); }
@@ -317,7 +315,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     Modal::begin([
                                       'header' => '<h4></h4>',
                                       'id' => 'modal1',
-                                      //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent1'></div>";
@@ -349,7 +346,6 @@ $this->params['breadcrumbs'][] = $this->title;
         for (var i = 0; i < varconteobloque; i++) {
             varbloque = i + 1;
             var varidbloque = document.getElementById('Idbloque'+varbloque).value;
-            // console.log('El bloque es: '+varidbloque);
 
             varcompetencia = 0;
             for (var j = 0; j < varconteocompetencia; j++) {
@@ -358,8 +354,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 if (varcompara != null) {
                     var varidcompetencia = document.getElementById('IdCompetencia'+varcompetencia+varidbloque).value;
-                    // console.log('La competencia es: '+varidcompetencia);
-
                     for (var k = 0; k < varconteopregunta; k++) {
                         varpreguntas = k + 1;
 
@@ -367,11 +361,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         if (varpreg != null) {
                             var varidtext = document.getElementById('idtext'+varpreguntas+varcompetencia+varidbloque).innerHTML;
-                            // console.log(varidtext);
                             var varidpreg = document.getElementById('Idpre'+varpreguntas+varcompetencia+varidbloque).value;
-                            // console.log('La pregunta es: '+varidpreg);
                             var varidrta = document.getElementById('Idrta'+varpreguntas+varcompetencia+varidbloque).value;
-                            // console.log('La respuesta es: '+varidrta);
 
                             if (varidrta == "") {
                                 event.preventDefault();

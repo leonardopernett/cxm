@@ -2555,8 +2555,6 @@ function sortTable(n,type) {
                   var numRta =  JSON.parse(response);                
                   console.log(numRta);
                   if (numRta != 0) {
-                      // $("#modal2").modal("hide");
-                   //   location.reload();
                   }                    
               }
           });

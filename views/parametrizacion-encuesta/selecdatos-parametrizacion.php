@@ -64,7 +64,6 @@ $template = '<label for="pcrc" class="control-label col-sm-3">{label}</label><di
     <?=
             $form->field($model, 'programa', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
             ->widget(Select2::classname(), [
-                //'data' => array_merge(["" => ""], $data),
                 'language' => 'es',
                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                 'pluginOptions' => [

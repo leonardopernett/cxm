@@ -28,16 +28,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'salario') ?>
 
-    <?php // echo $form->field($model, 'tipo_corte') ?>
-
-    <?php // echo $form->field($model, 'responsable') ?>
-
-    <?php // echo $form->field($model, 'dimensions') ?>
-
-    <?php // echo $form->field($model, 'arbol_id') ?>
-
-    <?php // echo $form->field($model, 'Dedic_valora') ?>
-
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>

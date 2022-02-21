@@ -118,7 +118,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,        
-        //'filterModel' => $searchModel,
         'columns' => [
             [
                 'attribute' => 'PCRC',
@@ -154,32 +153,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $data->getFechaFinal($data->arbol_id);
                 }
             ],
-            // [
-            //     'class' => 'yii\grid\ActionColumn',
-            //     'headerOptions' => ['style' => 'color:#337ab7'],
-            //     'template' => '{view}{stats}',
-            //     'buttons' => 
-            //     [
-            //         'view' => function ($url, $model) {                        
-            //             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',  ['viewpcrc', 'arbolid' => $model->arbol_id], [
-            //                 'class' => '',
-            //                 'data' => [
-            //                     'method' => 'post',
-            //                 ],
-            //             ]);
-            //         },                   
-            //         'stats' => function ($url, $model) {                        
-            //             return Html::a('<span class=" glyphicon glyphicon-signal"></span>',  ['graficos4', 'arbolid' => $model->arbol_id], [
-            //                 'class' => '',
-            //                 'title' => 'Detalles',
-            //                 'data' => [
-            //                     'method' => 'post',
-            //                 ],
-            //             ]);
-            //         }
-            //     ]
-              
-            // ],
         ],
     ]);   
 

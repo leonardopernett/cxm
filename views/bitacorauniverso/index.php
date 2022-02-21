@@ -86,7 +86,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -441,7 +440,6 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                         Modal::begin([
                               'header' => '<h4>Creacion de momento</h4>',
                               'id' => 'modal1',
-                              //'size' => 'modal-lg',
                             ]);
 
                         echo "<div id='modalContent1'></div>";
@@ -458,7 +456,6 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                         Modal::begin([
                               'header' => '<h4>Creacion de Detalle de Momento </h4>',
                               'id' => 'modal2',
-                              //'size' => 'modal-lg',
                             ]);
 
                         echo "<div id='modalContent2'></div>";
@@ -545,7 +542,6 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
   
   function carguedato(){
      var varpcrcid = document.getElementById("requester").value;
-      //alert(varareatrabajoid);
      
         $.ajax({
               method: "post",
@@ -769,7 +765,6 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                   success : function(response){ 
                               var numRta =   JSON.parse(response);    
                               console.log(response);
-                              //alert(numRta);
                               if (numRta != 0) {
                                 jQuery(function(){
                                     swal.fire({type: "success",

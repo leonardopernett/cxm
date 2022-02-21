@@ -28,16 +28,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'tiempo_espera_cal') ?>
 
-    <?php // echo $form->field($model, 'agilidad_agente_cal') ?>
-
-    <?php // echo $form->field($model, 'claridad_info_cal') ?>
-
-    <?php // echo $form->field($model, 'interes_cal') ?>
-
-    <?php // echo $form->field($model, 'recomendacion_cal') ?>
-
-    <?php // echo $form->field($model, 'solucion_llamada_cal') ?>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>

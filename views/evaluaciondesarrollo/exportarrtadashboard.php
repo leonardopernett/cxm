@@ -49,7 +49,6 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js")
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito');
@@ -149,7 +148,6 @@ $this->registerJs($js);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -211,7 +209,6 @@ $this->registerJs($js);
                                 Modal::begin([
                                     'header' => '<h4>__</h4>',
                                     'id' => 'modal5',
-                                       //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent5'></div>";
@@ -235,7 +232,6 @@ $this->registerJs($js);
                                 Modal::begin([
                                     'header' => '<h4>..</h4>',
                                     'id' => 'modal6',
-                                       //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent6'></div>";
@@ -275,7 +271,6 @@ $this->registerJs($js);
                                 Modal::begin([
                                     'header' => '<h4></h4>',
                                     'id' => 'modal1',
-                                       //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent1'></div>";
@@ -299,7 +294,6 @@ $this->registerJs($js);
                                 Modal::begin([
                                     'header' => '<h4></h4>',
                                     'id' => 'modal2',
-                                       //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent2'></div>";

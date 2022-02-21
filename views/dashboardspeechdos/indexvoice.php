@@ -202,7 +202,6 @@ $this->title = 'Dashboard Escuchar + 2.0';
     $varListCantidad = array();
 
     //Diego
-    //$txtlistatopvar = Yii::$app->db->createCommand("select distinct callid from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$varProgramas') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF'")->queryAll();
     $varListLogin =  array();
     $varListCantiVar =  array();
     $varListLogin5 =  array();
@@ -259,8 +258,7 @@ $(function () {
 });
 SCRIPT;
 // Register tooltip/popover initialization javascript
-$this->registerJs($js);
-//echo Html::jsFile("js/qa.js")    
+$this->registerJs($js); 
 
 $varrtaA = null;
 $varrtaC = null;
@@ -365,7 +363,6 @@ $varColorM = null;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -1949,7 +1946,6 @@ $varColorM = null;
             Modal::begin([
               'header' => '<h4>Procesando datos en archivo de excel...</h4>',
               'id' => 'modal1',
-              // 'size' => 'modal-lg',
             ]);
 
             echo "<div id='modalContent1'></div>";
@@ -1971,7 +1967,6 @@ $varColorM = null;
             Modal::begin([
               'header' => '<h4>Envio de datos al correo corporativo...</h4>',
               'id' => 'modal2',
-              // 'size' => 'modal-lg',
             ]);
 
             echo "<div id='modalContent2'></div>";
@@ -2532,8 +2527,6 @@ $varColorM = null;
                   var numRta =  JSON.parse(response);                
                   console.log(numRta);
                   if (numRta != 0) {
-                      // $("#modal2").modal("hide");
-                   //   location.reload();
                   }                    
               }
           });
@@ -2546,14 +2539,6 @@ $varColorM = null;
     var varfechainic = "<?php echo $fechaIniCat; ?>";
     var varfechafinc = "<?php echo $fechaFinCat; ?>";
     var varcodigo = "<?php echo $txtCodPcrcok; ?>";
-    // console.log(varServicios);
-    // console.log(varParametros);
-    // console.log(varIndicador);
-    // console.log(varfechainic);
-    // console.log(varfechafinc);
-    // console.log(varcodigo);
-    // document.getElementById("indicadorID3").value = varIndicador;
-
     $.ajax({
               method: "get",
 
@@ -2568,7 +2553,6 @@ $varColorM = null;
               },
               success : function(response){ 
                           var Rta =   JSON.parse(response);    
-                          // console.log(Rta);
                           document.getElementById("txtVariables").innerHTML = "";
                           var node = document.createElement("OPTION");
                           node.setAttribute("value", "");
@@ -2607,7 +2591,6 @@ $varColorM = null;
                 success : function(response){ 
                     var numRta =   JSON.parse(response);    
                     document.getElementById("indicadorID2").value = numRta;            
-                    // console.log(numRta);
                 }
             });
     
@@ -2620,14 +2603,6 @@ $varColorM = null;
     var varfechainic = "<?php echo $fechaIniCat; ?>";
     var varfechafinc = "<?php echo $fechaFinCat; ?>";
     var varcodigo = "<?php echo $txtCodPcrcok; ?>";
-    // console.log(varServicios);
-    // console.log(varParametros);
-    // console.log(varIndicador);
-    // console.log(varfechainic);
-    // console.log(varfechafinc);
-    // console.log(varcodigo);
-    // document.getElementById("indicadorID3").value = varIndicador;
-
     $.ajax({
               method: "get",
 
@@ -2642,7 +2617,6 @@ $varColorM = null;
               },
               success : function(response){ 
                           var Rta =   JSON.parse(response);    
-                          // console.log(Rta);
                           document.getElementById("txtVariables1").innerHTML = "";
                           var node = document.createElement("OPTION");
                           node.setAttribute("value", "");
@@ -2681,7 +2655,6 @@ $varColorM = null;
                 success : function(response){ 
                     var numRta =   JSON.parse(response);    
                     document.getElementById("indicadorID21").value = numRta;            
-                    // console.log(numRta);
                 }
             });
     

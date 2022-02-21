@@ -122,7 +122,6 @@ $this->registerJs(
     <?=
             $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
             ->widget(Select2::classname(), [
-                //'data' => array_merge(["" => ""], $data),
                 'language' => 'es',
                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                 'pluginOptions' => [
@@ -209,7 +208,6 @@ $this->registerJs(
     <?=
             $form->field($model, 'id_formulario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
             ->widget(Select2::classname(), [
-                //'data' => array_merge(["" => ""], $data),
                 'language' => 'es',
                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                 'pluginOptions' => [

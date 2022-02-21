@@ -68,7 +68,6 @@ if (!isset($aleatorio) || !$aleatorio) {
             <?=
                     $form->field($searchModel, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -114,7 +113,6 @@ if (!isset($aleatorio) || !$aleatorio) {
                 'pluginOptions' => [
                     'autoApply' => true,
                     'clearBtn' => true,
-                    //'useWithAddon'=>true,
                     'timePicker' => false,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
@@ -122,7 +120,6 @@ if (!isset($aleatorio) || !$aleatorio) {
                     'opens' => 'left'
                 ],
                 'pluginEvents' => [
-                //'cancel.daterangepicker'=>"function(ev, picker) { $('#basesatisfaccionsearch-fecha').val('');}"
                 ]
             ]);
             ?>
@@ -133,7 +130,6 @@ if (!isset($aleatorio) || !$aleatorio) {
             <?=
                     $form->field($searchModel, 'responsable', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -208,7 +204,6 @@ if (!isset($aleatorio) || !$aleatorio) {
             <?=
                     $form->field($searchModel, 'agente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label(Yii::t('app','Valorado'))
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [

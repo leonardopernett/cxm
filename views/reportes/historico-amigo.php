@@ -56,7 +56,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -292,12 +291,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
         [
             'header' => Yii::t('app', 'Dscomentario'),
             'attribute' => 'dscomentario',
-            /*'contentOptions' => [
-                'style'=>'min-width: 200px; overflow: auto; word-wrap: break-word;'
-            ],
-            'value' => function($data) {
-                return substr($data['dscomentario'], 0, 100) . '...';
-            }*/
         ],
         [
             'header' => Yii::t('app', 'Id Usuario/Modificación'),

@@ -40,7 +40,6 @@ $sessiones1 = Yii::$app->user->identity->id;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -137,7 +136,6 @@ else
             <?=
                         $form->field($model, 'evaluados_id')->label(Yii::t('app','Valorador'))
                         ->widget(Select2::classname(), [
-                            //'data' => array_merge(["" => ""], $data),
                             'language' => 'es',
                             'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                             'pluginOptions' => [
@@ -194,7 +192,6 @@ else
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,        
-        //'filterModel' => $searchModel,
         'columns' => [
             [
                 'attribute' => 'Valorador',
@@ -222,18 +219,6 @@ else
                 'attribute' => 'Tipo de Corte',
                 'value' => 'tipo_corte',
             ],
-            // [
-            //     'attribute' => 'Fecha Inicio',
-            //     'value' => function($data){
-            //         return $data->getInicio($data->evaluados_id);
-            //     }               
-            // ],
-            // [
-            //     'attribute' => 'Fecha Fin',
-            //     'value' => function($data){
-            //         return $data->getFin($data->evaluados_id);
-            //     }               
-            // ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'headerOptions' => ['style' => 'color:#337ab7'],
@@ -307,7 +292,6 @@ else
                     ->from('tbl_ejecucionformularios')
                     ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                             'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
-                    //->where(['between','tbl_ejecucionformularios.created', $fechainiC, $fechafinC])
                     ->where("tbl_ejecucionformularios.created between '$fechainiC 00:00:00' and '$fechafinC 23:59:59'")
                     ->andwhere('tbl_usuarios.usua_id = '.$textoss2.'');
                     

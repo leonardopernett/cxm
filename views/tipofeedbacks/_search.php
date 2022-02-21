@@ -28,12 +28,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sncausa_raiz') ?>
 
-    <?php // echo $form->field($model, 'sncompromiso') ?>
-
-    <?php // echo $form->field($model, 'cdtipo_automatico') ?>
-
-    <?php // echo $form->field($model, 'dsmensaje_auto') ?>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>

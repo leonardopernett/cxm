@@ -80,7 +80,6 @@ if ($varusuar != null) {
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -115,7 +114,6 @@ if ($varusuar != null) {
                     	<?=
                             $form->field($model, 'responsable', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label(Yii::t('app',''))
                                   ->widget(Select2::classname(), [
-                                      //'data' => array_merge(["" => ""], $data),
                                       'language' => 'es',
                                       'options' => ['id'=>"coordinadoresid",'placeholder' => Yii::t('app', 'Seleccionar Coordinador...')],
                                       'pluginOptions' => [
@@ -146,7 +144,6 @@ if ($varusuar != null) {
                     	<?=
                             $form->field($model, 'evaluados_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label(Yii::t('app',''))
                                   ->widget(Select2::classname(), [
-                                      //'data' => array_merge(["" => ""], $data),
                                       'language' => 'es',
                                       'options' => ['id'=>"tecnicosid",'placeholder' => Yii::t('app', 'Seleccionar Tecnico/Lider...')],
                                       'pluginOptions' => [

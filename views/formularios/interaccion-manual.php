@@ -25,7 +25,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -59,7 +58,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     <?=
             $form->field($modelA, 'arbol_id')
             ->widget(Select2::classname(), [
-                //'data' => array_merge(["" => ""], $data),
                 'language' => 'es',
                 'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                 'pluginOptions' => [
@@ -71,7 +69,6 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                         'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                         'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
                     ],
-                //'initSelection' => new JsExpression($initScript)
                 ]
                     ]
     );

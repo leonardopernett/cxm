@@ -30,7 +30,6 @@ $this->registerJs(
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -77,7 +76,6 @@ $this->registerJs(
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'name',
                 'nmorden',     
@@ -92,9 +90,7 @@ $this->registerJs(
                 [
                     'attribute' => 'formularioName',                    
                     'value' => 'bloque.seccion.formulario.name'
-                ],                
-                //'calificacion_id',
-                //'tipificacion_id',                       
+                ],                                     
                 ['class' => 'yii\grid\ActionColumn',
                     'buttons' => [
                         'view' => function ($url, $model) {
@@ -160,7 +156,6 @@ $this->registerJs(
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
                 'id',                
                 'name',
                 'nmorden',     
@@ -175,9 +170,7 @@ $this->registerJs(
                 [
                     'attribute' => 'formularioName',                    
                     'value' => 'bloque.seccion.formulario.name'
-                ],
-                //'calificacion_id',
-                //'tipificacion_id',                        
+                ],                    
                 ['class' => 'yii\grid\ActionColumn',
                     'buttons' => [
                         'view' => function ($url, $model) {                                                        
@@ -210,9 +203,7 @@ $this->registerJs(
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
                 'id',
-                //'bloque_id',
                 'name',
                 [
                     'attribute' => 'bloqueName',   
@@ -227,10 +218,7 @@ $this->registerJs(
                 [
                     'attribute' => 'formularioName',                    
                     'value' => 'bloque.seccion.formulario.name'
-                ],
-                //'calificacion_id',
-                //'tipificacion_id',
-                // 'nmorden',            
+                ],      
                 ['class' => 'yii\grid\ActionColumn'],
             ],
             ]); ?>

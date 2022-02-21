@@ -26,7 +26,6 @@ $this->registerJs(
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -74,7 +73,6 @@ $this->registerJs(
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'name',
                 'nmorden',
@@ -100,10 +98,6 @@ $this->registerJs(
                                 ]);
                             }
                 ],
-                //'tipobloque_id',
-                //'nmorden',            
-                // 'dstitulo',
-                // 'dsdescripcion',
                 ['class' => 'yii\grid\ActionColumn',
                     'buttons' => [
                         'view' => function ($url, $model) {
@@ -173,7 +167,6 @@ $this->registerJs(
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
                     'columns' => [
-                        //['class' => 'yii\grid\SerialColumn'],
                         'id',
                         'name',
                         'nmorden',
@@ -196,7 +189,6 @@ $this->registerJs(
                                                 [
                                             'title' => Yii::t('app',
                                                     'Bloques'),
-                                            //'data-pjax' => '0',
                                             'onclick' => "                                    
                                             $.ajax({
                                             type     :'POST',
@@ -211,10 +203,6 @@ $this->registerJs(
                                 ]);
                             }
                         ],
-                        //'tipobloque_id',
-                        //'nmorden',            
-                        // 'dstitulo',
-                        // 'dsdescripcion',
                         ['class' => 'yii\grid\ActionColumn',
                             'buttons' => [
                                 'view' => function ($url, $model) {                                                        
@@ -258,16 +246,8 @@ $this->registerJs(
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
                     'columns' => [
-                        //['class' => 'yii\grid\SerialColumn'],
                         'id',
                         'name',
-                        //'seccion_id',
-//                        [
-//                            'attribute' => 'seccion_id',
-//                            //'filter' => true,
-//                            //'enableSorting' => $filterSeccion,
-//                            'value' => 'seccion.name'
-//                        ],                        
                         [
                             'attribute' => 'seccionName',
                             'filter' => true,
@@ -287,7 +267,6 @@ $this->registerJs(
                                                 [
                                             'title' => Yii::t('app',
                                                     'Bloques'),
-                                            //'data-pjax' => '0',
                                             'onclick' => "                                    
                                             $.ajax({
                                             type     :'POST',
@@ -302,10 +281,6 @@ $this->registerJs(
                                 ]);
                             }
                         ],
-                        //'tipobloque_id',
-                        //'nmorden',            
-                        // 'dstitulo',
-                        // 'dsdescripcion',
                         ['class' => 'yii\grid\ActionColumn'],
                     ],
                 ]);

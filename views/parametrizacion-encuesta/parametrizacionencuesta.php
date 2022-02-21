@@ -323,7 +323,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="form-group">
         <div class="col-sm-12 well">
-            <?php /* = Html::submitButton(Yii::t('app', 'Guargar y enviar'), ['class' => 'btn btn-success']) */ ?>
             <?php echo Html::a(Yii::t('app', 'Adicionar Categoría'), "javascript:void(0)", ['class' => 'btn btn-warning soloAdicionar'])
             ?>
         </div>        
@@ -346,8 +345,6 @@ $this->params['breadcrumbs'][] = $this->title;
             GridView::widget([
                 'dataProvider' => $data['dataProvider'],
                 'columns' => [
-                    //['class' => 'yii\grid\SerialColumn'],
-
                     [
                         'attribute' => 'categoria',
                         'value' => 'categoria0.nombre'
@@ -391,7 +388,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="form-group">
         <div class="col-sm-12 well">
-            <?php /* = Html::submitButton(Yii::t('app', 'Guargar y enviar'), ['class' => 'btn btn-success']) */ ?>
             <?php echo Html::a(Yii::t('app', 'Adicionar Categoría'), "javascript:void(0)", ['class' => 'btn btn-warning soloAdicionar'])
             ?>
         </div>        

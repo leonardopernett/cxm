@@ -134,7 +134,6 @@ $this->title = 'Configuración de Categorias -- QA & Speech --';
                 success : function(response){ 
                     var numRta =   JSON.parse(response);    
                     document.getElementById("txtIdNombre").value = numRta;            
-                    //console.log(numRta);
                 }
             });            
         }

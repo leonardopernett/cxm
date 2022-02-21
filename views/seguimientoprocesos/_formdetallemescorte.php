@@ -105,7 +105,6 @@ $this->title = 'Vista Valorador';
 	                            'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
 	                    ->where(['between','tbl_ejecucionformularios.created', $fechainiC, $fechafinC])
 	                    ->andwhere('tbl_usuarios.usua_id = '.$varUsuaId.'')
-	                    //->andwhere( " tbl_usuarios.usua_id in ($varUsuaId)")
 	                    ->groupBy('fecha');
 	            	$command2 = $querys2->createCommand();
 	            	$data2 = $command2->queryAll();	     

@@ -54,7 +54,6 @@ $this->title = 'Ver Tipo de Corte';
 
 	    <?= GridView::widget([
 	        'dataProvider' => $dataProvider,
-	        //'filterModel' => $searchModel,
 	        'columns' => [
 	            [
 	                'attribute' => 'Corte',
@@ -161,8 +160,6 @@ $this->title = 'Ver Tipo de Corte';
 			}			
 			else
 			{
-			//	document.getElementById("txtcantdiastc").value = diasCant - festivo;
-
 				document.getElementById("resultId").innerHTML = 0;				
 			}
 		}

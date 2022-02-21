@@ -11,7 +11,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php
 Modal::begin([
-    //'header' => Yii::t('app', 'Tbl Opcions'),
     'id' => 'modal-segundocalificador-dashboard',
     'size' => Modal::SIZE_LARGE,
     'clientOptions' => [

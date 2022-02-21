@@ -367,7 +367,6 @@ $banderaSaltoComentario = true;
                                         Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                                 , $prev_secccion_comentario
                                                 , [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "class" => "form-control droplabel",
                                             "placeholder" => "Comentario para el Coaching",
                                             "readonly" => "readonly"
@@ -378,7 +377,6 @@ $banderaSaltoComentario = true;
                                         Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                                 , $prev_secccion_comentario
                                                 , [
-                                            //"id" => "txt_comentarios'.$prev_seccion.'",
                                             "class" => "form-control droplabel",
                                             "placeholder" => "Comentario para el Coaching"
                                         ]);
@@ -589,7 +587,6 @@ $banderaSaltoComentario = true;
                                                 echo Select2::widget([
                                                     'language' => 'es',
                                                     'name' => 'subi_calculo',
-                                                    //'value' =>  $data->tmp_formulario->attributes['subi_calculo'],
                                                     'options' => [
                                                         'placeholder' => Yii::t('app', 'Select ...'),
                                                         'id' => 'subi_calculo'
@@ -695,7 +692,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 01",
                                         "readonly" => "readonly"
@@ -707,7 +703,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "style"=>"margin: 0px -5.5px 0px 0px; height: 106px; width: 1104px;",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas Aqui 1 \n\n\n\nComentario para el Coaching Pruebas Aqui 2",
@@ -730,7 +725,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 02",
                                         "readonly" => "readonly"
@@ -742,7 +736,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 02"
                                     ]);
@@ -761,7 +754,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 03",
                                         "readonly" => "readonly"
@@ -773,7 +765,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 03"
                                     ]);
@@ -793,7 +784,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 05",
                                         "readonly" => "readonly"
@@ -805,7 +795,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 05"
                                     ]);
@@ -824,7 +813,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 06",
                                         "readonly" => "readonly"
@@ -836,7 +824,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 06"
                                     ]);
@@ -856,7 +843,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 07",
                                         "readonly" => "readonly"
@@ -868,7 +854,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 07"
                                     ]);
@@ -887,7 +872,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 08",
                                         "readonly" => "readonly"
@@ -899,7 +883,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas 08"
                                     ]);
@@ -924,7 +907,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching",
                                         "readonly" => "readonly"
@@ -935,7 +917,6 @@ $banderaSaltoComentario = true;
                                     Html::textarea("comentarioSeccion[" . $prev_seccion . "]"
                                             , $prev_secccion_comentario
                                             , [
-                                        //"id" => "txt_comentarios'.$prev_seccion.'",
                                         "class" => "form-control droplabel",
                                         "placeholder" => "Comentario para el Coaching Pruebas Generales"
                                     ]);
@@ -993,7 +974,6 @@ $banderaSaltoComentario = true;
                 ?>>
                     <div class="col-md-10">
                         <label class="labelseccion">
-                            <?php //echo $detalle->seccion  ?>  
                             <?php
                             echo Html::tag('span', $detalle->seccion, [
                                 'data-title' => $detalle->sdescripcion,
@@ -1028,7 +1008,6 @@ $banderaSaltoComentario = true;
                                 'style' => 'cursor:pointer;'
                             ]);
                             ?>
-                            <?php //echo $detalle->bloque ?>
                         </label> 
                         <?php
                         echo Html::tag('span', Html::img(Url::to("@web/images/Question.png")), [
@@ -1531,7 +1510,6 @@ $banderaSaltoComentario = true;
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -1583,7 +1561,6 @@ $banderaSaltoComentario = true;
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -1627,7 +1604,6 @@ $banderaSaltoComentario = true;
                         echo Html::a(Yii::t("app", "View"), 'javascript:void(0)', [
                             'title' => Yii::t('app', 'Create'),
                             'class' => 'btn-sm btn-success',
-                            //'data-pjax' => '0',
                             'onclick' => "                                    
                                 $.ajax({
                                 type     :'POST',
@@ -1735,7 +1711,6 @@ $banderaSaltoComentario = true;
     <?php if ($data->preview == false): ?>
         <div class="form-group">
             <div class="col-sm-12 well">
-                <?php /* = Html::submitButton(Yii::t('app', 'Guargar y enviar'), ['class' => 'btn btn-success']) */ ?>
                 <?= Html::a(Yii::t('app', 'Guardar y enviar'), "javascript:void(0)", ['class' => 'btn btn-success soloFinalizar'])
                 ?>
                 <?php if (isset($data->formulario->subi_calculo)): ?>
@@ -1891,7 +1866,6 @@ $banderaSaltoComentario = true;
             $(".soloCalcular").click(function () {
                 $("#submitcorrecto").val("SI");
                 $(this).attr("disabled", "disabled");
-                //$(".soloGuardar").attr("disabled", "disabled");
                 $(".soloCancelar").attr("disabled", "disabled");
                 $(".soloFinalizar").attr("disabled", "disabled");
                 var guardarFormulario = $("#guardarFormulario");
@@ -1902,7 +1876,6 @@ $banderaSaltoComentario = true;
                 } else {
                     $("#submitcorrecto").val("NO");
                     $(this).removeAttr("disabled");
-                    //$(".soloGuardar").removeAttr("disabled");
                     $(".soloCancelar").removeAttr("disabled");
                     $(".soloFinalizar").removeAttr("disabled");
                 }
@@ -1911,7 +1884,6 @@ $banderaSaltoComentario = true;
             $(".soloFinalizar").click(function () {
                 $("#submitcorrecto").val("SI");
                 $(this).attr("disabled", "disabled");
-                //$(".soloGuardar").attr("disabled", "disabled");
                 $(".soloCancelar").attr("disabled", "disabled");
                 $(".soloCalcular").attr("disabled", "disabled");
                 var guardarFormulario = $("#guardarFormulario");
@@ -1944,7 +1916,6 @@ $banderaSaltoComentario = true;
             });
 
             /* BOTON DESPLEGAR SECCIONES */
-            //$(".soloAbrir").click(function () {
             $("#prueba").on( "click", function() {
                 if ($("#prueba").text() == "Desplegar"){
                     $("[id*=datos]").css('display', 'block');

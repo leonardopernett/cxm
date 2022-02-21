@@ -123,9 +123,6 @@ use yii\helpers\Url;
         <?= $form->field($model, 'i10_nmfactor', ['labelOptions' => ['class' => 'col-md-6']])->textInput()
         ?>
     </div>
-
-    <?php //$form->field($model, 'nmorden')->textInput()  ?>
-
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <?=

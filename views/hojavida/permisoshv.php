@@ -145,7 +145,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?=
                             $form->field($model, 'usuario_registro')->label(Yii::t('app',''))
                             ->widget(Select2::classname(), [
-                                //'data' => array_merge(["" => ""], $data),
                                 'language' => 'es',
                                 'options' => ['placeholder' => Yii::t('app', 'Seleccionar...')],
                                 'pluginOptions' => [

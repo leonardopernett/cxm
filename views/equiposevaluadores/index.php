@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
             'id',
             'name',
             [
@@ -40,7 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'javascript:void(0)',
                                     [
                                 'title' => Yii::t('app', 'Equipo'),
-                                //'data-pjax' => '0',
                                 'onclick' => "                                    
                                             $.ajax({
                                             type     :'POST',
@@ -55,9 +53,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                 }
                     ],
-                    //'nmumbral_verde',
-                    //'nmumbral_amarillo',
-                    //'usua_id',
                     ['class' => 'yii\grid\ActionColumn'],
                 ],
             ]);

@@ -28,14 +28,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'usua_id') ?>
 
-    <?php // echo $form->field($model, 'declinacion_id') ?>
-
-    <?php // echo $form->field($model, 'arbol_id') ?>
-
-    <?php // echo $form->field($model, 'dimension_id') ?>
-
-    <?php // echo $form->field($model, 'evaluado_id') ?>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>

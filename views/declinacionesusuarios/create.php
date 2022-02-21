@@ -48,8 +48,4 @@ Modal::begin([
     ]) ?>
 
 </div>
-<script>
-//$('#modal-Declinaciones-Usuarios').showLoading();
-//$('#my-content-panel-id').hideLoading();
-</script>
 <?php Modal::end(); ?>

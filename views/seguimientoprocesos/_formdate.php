@@ -94,7 +94,6 @@ $sessiones1 = Yii::$app->user->identity->id;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,        
-        //'filterModel' => $searchModel,
         'columns' => [
             [
                 'attribute' => 'Valorador',

@@ -28,7 +28,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -61,11 +60,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             <?=
             $form->field($model, 'created',
                     [
-                //'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],                 
-//                'inputTemplate' => '<div class="input-group col-md-12">'
-//                . '<span class="input-group-addon">'
-//                . '<i class="glyphicon glyphicon-calendar"></i>'
-//                . '</span>{input}{error}{hint}</div>',
                 'labelOptions' => ['class' => 'col-md-12'],
                 'template' => '<div class="col-md-4">{label}</div>'
                 . '<div class="col-md-8"><div class="input-group">'
@@ -82,7 +76,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") ." -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -136,7 +129,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 	                    ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
 	            ->widget(Select2::classname(),
 	                    [
-	                //'data' => array_merge(["" => ""], $data),
 	                'language' => 'es',
 	                'options' => ['placeholder' => Yii::t('app',
 	                            'Select ...')],
@@ -171,7 +163,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             Html::submitButton(Yii::t('app', 'Buscar'),
                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
             ?>
-            <?php //Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default'])     ?>
         </div>        
     </div>
 
@@ -185,7 +176,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     <?php
     
     $gridColumns = [
-        //['class' => 'yii\grid\SerialColumn'],
         [
             'attribute' => 'agrupacion',
             'value' => 'col1'
@@ -213,7 +203,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => 'Score',
             'attribute' => 'Score',
-            //'value' => 'col6',
             'value' => function($data) {
                 if($data['col6'] == '0') {
                     return '-';
@@ -226,7 +215,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i1_nmcalculo'),
             'attribute' => 'pec',
-            //'value' => 'col7',
             'value' => function($data) {
                 if($data['col7'] == '0') {
                     return '-';
@@ -239,7 +227,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i2_nmcalculo'),
             'attribute' => 'PENC',
-            //'value' => 'col8',
             'value' => function($data) {
                 if($data['col8'] == '0') {
                     return '-';
@@ -252,7 +239,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i4_nmcalculo'),
             'attribute' => 'carino',
-            //'value' => 'col10',
             'value' => function($data) {
                 if($data['col10'] == '0') {
                     return '-';
@@ -265,7 +251,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i5_nmcalculo'),
             'attribute' => 'na',
-            //'value' => 'col11',
             'value' => function($data) {
                 if($data['col11'] == '0') {
                     return '-';
@@ -278,7 +263,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i6_nmcalculo'),
             'attribute' => 'no',
-            //'value' => 'col12',
             'value' => function($data) {
                 if($data['col12'] == '0') {
                     return '-';
@@ -291,7 +275,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i7_nmcalculo'),
             'attribute' => 'texto7',
-            //'value' => 'col13',
             'value' => function($data) {
                 if($data['col13'] == '0') {
                     return '-';
@@ -304,7 +287,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i8_nmcalculo'),
             'attribute' => 'texto8',
-            //'value' => 'col14',
             'value' => function($data) {
                 if($data['col14'] == '0') {
                     return '-';
@@ -317,7 +299,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i9_nmcalculo'),
             'attribute' => 'texto9',
-            //'value' => 'col15',
             'value' => function($data) {
                 if($data['col15'] == '0') {
                     return '-';
@@ -330,7 +311,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         [
             'header' => Yii::t('app', 'i10_nmcalculo'),
             'attribute' => 'texto10',
-            //'value' => 'col16',
             'value' => function($data) {
                 if($data['col16'] == '0') {
                     return '-';
@@ -353,7 +333,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             'label' => Yii::t('app', 'Export All'),
             'class' => 'btn btn-default'
         ],
-        //'fontAwesome' => true,
         'showConfirmAlert' => false,
         'target' => '_blank',
         'filename' => Yii::t('app', 'Reporte_valorados') . '_' . date('Ymd'),

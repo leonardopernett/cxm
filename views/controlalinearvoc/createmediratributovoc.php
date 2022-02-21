@@ -94,7 +94,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     $command = $dataIndi->createCommand();
                     $data = $command->queryAll();
                      foreach ($data as $key => $value) {
-                      // echo "<option value = '".$value['nombrelistap']."'>".$value['nombrelistap'].if($varMedicionList == $value['nombrelistap']) echo 'selected'."</option>"; 
                        echo "<option value='$value[nombrelistap]'> $value[nombrelistap] </option>";
                       }                
       ?>                                   
@@ -130,7 +129,6 @@ $this->params['breadcrumbs'][] = $this->title;
      var rowCount = table.rows.length;
     
     var nomacue = document.querySelectorAll("#txtacuerdoali");    
-    //var medir = document.querySelectorAll("#txtCategorizada");
     var idatrubu = document.querySelectorAll("#idsesion");
 
     //var varindica= "<?php echo $varmodalhide; ?>"; 
@@ -167,7 +165,6 @@ $this->params['breadcrumbs'][] = $this->title;
                           var numRta =   JSON.parse(response); 
 
                           if (numRta != 0) {
-                            //console.log(varModal);
                   $(varModal).modal("hide");
                           }else{
                             event.preventDefault();

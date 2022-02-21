@@ -80,7 +80,6 @@ $sessiones1 = Yii::$app->user->identity->id;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -166,7 +165,6 @@ $sessiones1 = Yii::$app->user->identity->id;
                             <?=
                                 $form->field($model, 'asesorid')->label(Yii::t('app','Valorado'))
                                 ->widget(Select2::classname(), [
-                                    //'data' => array_merge(["" => ""], $data),
                                     'language' => 'es',
                                     'options' => ['placeholder' => Yii::t('app', 'Seleccionar asesor...')],
                                     'pluginOptions' => [
@@ -195,7 +193,6 @@ $sessiones1 = Yii::$app->user->identity->id;
                             <?= 
                                 $form->field($model, 'asesorid')->label(Yii::t('app','Valorado'))
                                 ->widget(Select2::classname(), [
-                                    //'data' => array_merge(["" => ""], $data),
                                     'language' => 'es',
                                     'options' => ['readonly' => true, 'placeholder' => Yii::t('app', 'Seleccionar asesor...')],
                                     'pluginOptions' => [
@@ -293,13 +290,6 @@ $sessiones1 = Yii::$app->user->identity->id;
         var varselect2chosen1 = document.getElementById("planescalamientos-asesorid").value;
         var vartxtcomentariosid = document.getElementById("txtcomentariosid").value;
         var varroles = "<?php echo $roles; ?>";
-        // console.log(varroles);
-
-        // if (varroles != '272') {
-            // event.preventDefault();
-            // swal.fire("¡¡¡ Advertencia !!!","Debe seleccionar el asesor para generar la justificación.","warning");
-            // return;
-        // }
 
         if (varidtcs == "") {
             event.preventDefault();
@@ -338,7 +328,6 @@ $sessiones1 = Yii::$app->user->identity->id;
                                 },
                                 success : function(response){
                                     numRta =   JSON.parse(response);
-                                    // console.log(numRta);
                                     if (numRta == 1) {
                                         event.preventDefault();
                                         swal.fire("¡¡¡ Advertencia !!!","La cantidad de justificaciones excede al valor de la meta del corte seleccionado.","warning");

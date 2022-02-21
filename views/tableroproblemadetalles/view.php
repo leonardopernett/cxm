@@ -50,12 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            //'tableroproblema_id',
             [
                 'attribute' => 'tableroproblema_id',
                 'value' => $model->tableroproblema->name
             ],
-            //'tableroenfoque_id',
             [
                 'attribute' => 'tableroenfoque_id',
                 'value' => $model->tableroenfoque->name

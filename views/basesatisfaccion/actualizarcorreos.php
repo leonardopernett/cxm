@@ -31,7 +31,6 @@ $fechaActual = date('Y-m-d');
         <?php
                     echo    $form->field($model, 'usua_id')->label(Yii::t('app','Valorador'))
                         ->widget(Select2::classname(), [
-                            //'data' => array_merge(["" => ""], $data),
                             'language' => 'es',
                             'options' => ['id'=>'selectUsuaId','placeholder' => Yii::t('app', 'Select ...')],
                             'pluginOptions' => [
@@ -131,8 +130,6 @@ $fechaActual = date('Y-m-d');
                                     window.close();
                             });
                         });
-                        // event.preventDefault();
-                        //     swal.fire("!!! OK !!!","El correo se actualizo correctamente.","success");  
                         return; 
                     }
                 });

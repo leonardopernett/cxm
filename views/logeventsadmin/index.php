@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -77,7 +76,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -99,36 +97,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-            //'id_log',
             'tabla_modificada',
             'datos_ant:ntext',
             'datos_nuevos:ntext',
-            /* [
-              'attribute' => 'datos_ant',
-              'format' => 'ntext',
-              'value' => function ($data) {
-              $span = substr(substr($data->datos_ant, 12), 0, -3);
-              return $span;
-              }
-              ],
-              [
-              'attribute' => 'datos_nuevos',
-              'format' => 'ntext',
-              'value' => function ($data) {
-              $span = substr(substr($data->datos_nuevos, 12), 0, -3);
-              return $span;
-              }
-              ],
-              'datos_nuevos:ntext',
-              [
-              'attribute' => 'fecha_modificacion',
-              'value' => 'fecha_modificacion',
-              'filter' => \yii\jui\DatePicker::widget(['language' => 'es', 'dateFormat' => 'dd-MM-yyyy', 'model' => $searchModel, 'attribute' => 'fecha_modificacion',
-              'options' => [ 'class' => 'form-control',
-              'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
-              'endDate' => date("Y-m-d"),]]),
-              ], */
             [
                 'attribute' => 'fecha_modificacion',
                 'value' => 'fecha_modificacion',
@@ -149,7 +120,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <br/><br/>
-<?php //endif;   ?>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#exportar').click(function () {

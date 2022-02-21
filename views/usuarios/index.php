@@ -45,7 +45,6 @@ $sessiones = Yii::$app->user->identity->id;
 <?php if ($isAjax) : ?>
     <?php
     Modal::begin([
-        //'header' => Yii::t('app', 'Create Tbl Pregunta'),
         'id' => 'modal-usuarios',
         'size' => Modal::SIZE_LARGE,
         'clientOptions' => [
@@ -80,33 +79,26 @@ $sessiones = Yii::$app->user->identity->id;
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
-                //'usua_id',
                 [
                     'attribute' => 'usua_id',
                     'filter' => false,
                     'value' => 'usua_id'
                 ],
-                //'usua_usuario',
                 [
                     'attribute' => 'usua_usuario',
                     'filter' => false,
                     'value' => 'usua_usuario'
                 ],
-                //'usua_nombre',
                 [
                     'attribute' => 'usua_nombre',
                     'filter' => false,
                     'value' => 'usua_nombre'
                 ],
-                //'usua_email:email',
-                //'usua_identificacion',
                 [
                     'attribute' => 'usua_identificacion',
                     'filter' => false,
                     'value' => 'usua_identificacion'
                 ],
-                //'usua_activo',
                 [
                     'attribute' => 'usua_activo',
                     'filter' => false,
@@ -214,15 +206,11 @@ $sessiones = Yii::$app->user->identity->id;
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
                         'columns' => [
-                            //['class' => 'yii\grid\SerialColumn'],
-
                             'usua_id',
                             'usua_usuario',
                             'usua_nombre',
-                            //'usua_email:email',
                             'usua_identificacion',
                             'usua_activo',
-                            //'usua_estado',
                             [
                                 'attribute' => 'rol',
                                 'value' => 'relUsuariosRoles.roles.role_descripcion'
@@ -232,8 +220,6 @@ $sessiones = Yii::$app->user->identity->id;
                                 'format' => 'raw',
                                 'value' => function ($data) {
                                     return Html::a('Ver Grupos de Usuario', 'javascript:void(0)', [
-                                                //'title' => Yii::t('app', 'Tbl Opcions'),
-                                                //'data-pjax' => '0',
                                                 'onclick' => "                                    
                                     $.ajax({
                                     type     :'POST',
@@ -248,7 +234,6 @@ $sessiones = Yii::$app->user->identity->id;
                                     ]);
                                 }
                                     ],
-                                    // 'usua_fechhoratimeout',
                                     ['class' => 'yii\grid\ActionColumn',
                                         'template' => '{view}{update}'],
                                 ],

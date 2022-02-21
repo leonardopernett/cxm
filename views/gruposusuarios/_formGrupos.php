@@ -39,7 +39,6 @@ $url = \yii\helpers\Url::to(['equiposlist','id'=>Yii::$app->request->get('usuari
                 'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                 'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
             ],
-            //'initSelection' => new JsExpression($initScript)
         ]
         ]
             );?>
@@ -49,7 +48,6 @@ $url = \yii\helpers\Url::to(['equiposlist','id'=>Yii::$app->request->get('usuari
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Agregar') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-            <?php //Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default']) ?>
         </div>        
     </div>
   

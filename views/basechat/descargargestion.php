@@ -83,15 +83,6 @@ $this->title = 'Gestión Satisfacción Chat';
         var nvarWord2 = varDestino.indexOf(varWord2);
         var nvarWord3 = varDestino.indexOf(varWord3);
 
-        /*if (nvarWord3 <= 0) {
-            event.preventDefault();
-                swal.fire("!!! Advertencia !!!","Error con el correo, por favor ingrese correo corporativo.","warning");
-                varIdCapaCero.style.display = 'inline';
-                varDestino.value = "";
-                varIdCapaUno.style.display = 'none';
-            return; 
-        }*/
-
         if (varDestino == null || varDestino == "") {
             event.preventDefault();
             swal.fire("��� Advertencia !!!","Debe de ingresar un correo para enviar los datos..","warning");
@@ -99,7 +90,6 @@ $this->title = 'Gestión Satisfacción Chat';
         }
         
         if (varpcrc == 3513){
-           //alert(varpcrc);
             $.ajax({
                 method: "get",
                 url: "exportcol",
@@ -110,7 +100,6 @@ $this->title = 'Gestión Satisfacción Chat';
                     var numRta =  JSON.parse(response);                
                     console.log(numRta);
                     if (numRta != 0) {
-                        // $("#modal2").modal("hide");
                         location.reload();
                     }                    
                 }
@@ -118,7 +107,6 @@ $this->title = 'Gestión Satisfacción Chat';
         }
 
         if (varpcrc == 3272){
-	//alert(varDestino);
 
             $.ajax({
                 method: "get",
@@ -130,7 +118,6 @@ $this->title = 'Gestión Satisfacción Chat';
                     var numRta =  JSON.parse(response);                
                     console.log(numRta);
                     if (numRta != 0) {
-                        // $("#modal2").modal("hide");
                         location.reload();
                     }                    
                 }

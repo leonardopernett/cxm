@@ -21,7 +21,6 @@ $this->registerJs(
 Modal::begin([
     'header' => Yii::t('app', ''),
     'id' => 'modal',
-    // 'size' => Modal::SIZE_LARGE,
     'clientOptions' => [
         'show' => true,
     ],

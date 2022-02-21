@@ -28,14 +28,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'activo') ?>
 
-    <?php // echo $form->field($model, 'created') ?>
-
-    <?php // echo $form->field($model, 'created_by') ?>
-
-    <?php // echo $form->field($model, 'modified') ?>
-
-    <?php // echo $form->field($model, 'modified_by') ?>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>

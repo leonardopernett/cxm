@@ -196,7 +196,6 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
                             Modal::begin([
                                   'header' => '<h4>Creaci�n de WorkSpace</h4>',
                                   'id' => 'modal1',
-                                  //'size' => 'modal-lg',
                                 ]);
 
                             echo "<div id='modalContent1'></div>";
@@ -219,7 +218,6 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
                             Modal::begin([
                                   'header' => '<h4>Creacion de Reportes PBI </h4>',
                                   'id' => 'modal2',
-                                  //'size' => 'modal-lg',
                                 ]);
 
                             echo "<div id='modalContent2'></div>";

@@ -80,7 +80,6 @@ $this->title = 'Registro de Categorias';
                     ->from('tbl_dashboardcategorias')
                     ->join('LEFT OUTER JOIN', 'tbl_dashboardpermisos',
                         'tbl_dashboardcategorias.iddashservicio = tbl_dashboardpermisos.iddashservicio')   
-                    //->where(['like','tbl_dashboardcategorias.tipocategoria',$varMotivos])
                     ->where("tbl_dashboardcategorias.idcategorias = 3")
                     ->andwhere('tbl_dashboardcategorias.anulado = '.$varAnulado.'')
                     ->andwhere("tbl_dashboardcategorias.fechacreacion > $FechaValor")
@@ -242,8 +241,7 @@ $this->title = 'Registro de Categorias';
                 },
                 success : function(response){ 
                     var numRta =   JSON.parse(response);    
-                    document.getElementById("id_city").value = numRta;            
-                    //console.log(numRta);
+                    document.getElementById("id_city").value = numRta;         
                 }
             });            
         }

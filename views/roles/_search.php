@@ -28,18 +28,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'per_estadisticaspersonas') ?>
 
-    <?php // echo $form->field($model, 'per_hacermonitoreo') ?>
-
-    <?php // echo $form->field($model, 'per_reportes') ?>
-
-    <?php // echo $form->field($model, 'per_modificarmonitoreo') ?>
-
-    <?php // echo $form->field($model, 'per_adminsistema') ?>
-
-    <?php // echo $form->field($model, 'per_adminprocesos') ?>
-
-    <?php // echo $form->field($model, 'per_editarequiposvalorados') ?>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>

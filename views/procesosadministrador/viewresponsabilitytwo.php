@@ -54,7 +54,6 @@ $template = '<div class="col-md-12">'
 				<?=
                     $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                 ->widget(Select2::classname(), [
-                                    //'data' => array_merge(["" => ""], $data),
                                     'language' => 'es',
                                     'options' => ['id'=>'idvararbol', 'placeholder' => Yii::t('app', 'Select ...')],
                                     'pluginOptions' => [
@@ -66,7 +65,6 @@ $template = '<div class="col-md-12">'
                                             'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                             'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
                                         ],
-                                    //'initSelection' => new JsExpression($initScript)
                                     ]
                     ])->label('');
                 ?>

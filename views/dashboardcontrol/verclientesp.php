@@ -112,7 +112,6 @@ use yii\bootstrap\Modal;
       Modal::begin([
                       'header' => '<h4>Procesando datos en el archivo de excel... </h4>',
                       'id' => 'modal3',
-                      //'size' => 'modal-lg',
                     ]);
 
       echo "<div id='modalContent3'></div>";

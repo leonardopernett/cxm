@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -40,7 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($isAjax) : ?>
     <?php
     Modal::begin([
-        //'header' => Yii::t('app', 'Tbl Opcions'),
         'id' => 'modal-grupos-usuarios',
         'size' => Modal::SIZE_LARGE,
         'clientOptions' => [
@@ -66,12 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
-                //['class' => 'yii\grid\SerialColumn'],
 
                 'grupos_id',
                 'nombre_grupo',
                 'grupo_descripcion',
-                //'per_realizar_valoracion',
                 [
                     'attribute' => 'per_realizar_valoracion',
                     'filter' => false,
@@ -109,21 +105,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     }
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(['delete', 'id' => $model->grupos_id, 'usuario_id' => $model->usuario]), [
                                         'title' => Yii::t('yii', 'delete'),
-//                                        'data-confirm' => Yii::t('app',
-//                                                'Are you sure you want to delete this item?'),
                                         'data-pjax' => 'w0',
-//                                        'onclick' => "if(!confirm('" . Yii::t('app',
-//                                                'Are you sure you want to delete this item?') . "')){"
-//                                        . " return false;"
-//                                        . "}"
-//                                        . "",
                                         'onclick' => "
                             if (confirm('" . Yii::t('app', 'Are you sure you want to delete this item?') . "')) {                                                            
                                 return true;
                             }else{
                                 return false;
                             }",
-                                            //'data-method' => 'post'
                             ]);
                         }
                             ]
@@ -177,12 +165,10 @@ echo Yii::t("app", "Seleccione los Grupos de usuarios");
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
                     'columns' => [
-                        //['class' => 'yii\grid\SerialColumn'],
 
                         'grupos_id',
                         'nombre_grupo',
                         'grupo_descripcion',
-                        //'per_realizar_valoracion',
                         [
                             'attribute' => 'per_realizar_valoracion',
                             'filter' => false,
@@ -200,7 +186,6 @@ echo Yii::t("app", "Seleccione los Grupos de usuarios");
                             'value' => function ($data) {
                                 return Html::a(Yii::t('app', 'Ver Usuarios'), 'javascript:void(0)', [
                                             'title' => Yii::t('app', 'Ver Usuarios'),
-                                            //'data-pjax' => '0',
                                             'onclick' => "                                    
                             $.ajax({
                             type     :'POST',

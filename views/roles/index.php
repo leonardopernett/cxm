@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
  background-size: cover;
  background-position: center;
  background-repeat: no-repeat;
- /*background: #fff;*/
  border-radius: 5px;
  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
 }
@@ -67,7 +66,6 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta accion");
             <?= Html::a(Yii::t('app', 'Create Roles'), ['create'], ['class' => 'btn btn-success']) ?>
 
             <?= Html::a(Yii::t('app', 'Mostrar Permisos'), "javascript:void(0)", ['class' => 'btn btn-default', 'id' => 'verPermisos']) ?>
-            <?php //Html::a(Yii::t('app', 'Export Logeventsadmin'), "javascript:void(0)", ['class' => 'btn btn-danger', "id" => "exportar"]) ?>
 
         </div>
 
@@ -133,19 +131,8 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta accion");
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-
             'role_id',
             'role_nombre',
-            //'role_descripcion',
-            //'per_cuadrodemando',
-            //'per_estadisticaspersonas',
-            // 'per_hacermonitoreo',
-            // 'per_reportes',
-            // 'per_modificarmonitoreo',
-            // 'per_adminsistema',
-            // 'per_adminprocesos',
-            // 'per_editarequiposvalorados',
             [
                 'class' => 'yii\grid\CheckboxColumn',
             // you may configure additional properties here

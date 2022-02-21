@@ -72,7 +72,6 @@ $(function () {
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-//echo Html::jsFile("js/qa.js") 
 ?>
 <style>
     .card1 {
@@ -112,7 +111,6 @@ $this->registerJs($js);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -172,7 +170,6 @@ $this->registerJs($js);
                                                 [
                                                     'class' =>  'btn btn-primary',
                                                     'title' => Yii::t('app', 'Crear Dimensionamiento'),
-                                                    //'data-pjax' => '0',
                                                     'onclick' => "                                                                                
                                                         $.ajax({
                                                             type     :'get',
@@ -199,7 +196,6 @@ $this->registerJs($js);
                                                 [
                                                     'class' =>  'btn btn-primary',
                                                     'title' => Yii::t('app', 'Actualizar Dimensionamiento'),
-                                                    //'data-pjax' => '0',
                                                     'onclick' => "                                                                                
                                                         $.ajax({
                                                             type     :'get',
@@ -229,7 +225,6 @@ $this->registerJs($js);
                                 Modal::begin([
                                     'header' => '<h4></h4>',
                                     'id' => 'modal6',
-                                       //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent6'></div>";

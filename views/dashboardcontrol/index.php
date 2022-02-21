@@ -233,7 +233,6 @@ $this->title = 'Métricas de Productividad/Valoración';
                     Modal::begin([
                       'header' => '<h4>Paramaterizar Datos </h4>',
                       'id' => 'modal2',
-                      //'size' => 'modal-lg',
                     ]);
 
                     echo "<div id='modalContent2'></div>";

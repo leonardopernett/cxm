@@ -39,11 +39,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         <div class="col-md-6">  
             <?=
             $form->field($model, 'created', [
-                //'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],                 
-//                'inputTemplate' => '<div class="input-group col-md-12">'
-//                . '<span class="input-group-addon">'
-//                . '<i class="glyphicon glyphicon-calendar"></i>'
-//                . '</span>{input}{error}{hint}</div>',
                 'labelOptions' => ['class' => 'col-md-12'],
                 'template' => '<div class="col-md-4">{label}</div>'
                 . '<div class="col-md-8"><div class="input-group">'
@@ -59,7 +54,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -97,7 +91,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             <?=
             Html::submitButton(Yii::t('app', 'Buscar'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
             ?>
-            <?php //Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default'])      ?>
         </div>  
 
 
@@ -130,7 +123,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         $col++;
     }
     $gridColumns = [
-        //['class' => 'yii\grid\SerialColumn'],
         [
             'attribute' => 'Cedula valorado',
             'value' => 'col1'
@@ -191,7 +183,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             'attribute' => 'texto10',
             'value' => 'col15'
         ],
-            //['class' => 'yii\grid\ActionColumn'],
     ];
     foreach ($columnasPreguntas as $value) {
         array_push($gridColumns, $value);
@@ -206,7 +197,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             'label' => Yii::t('app', 'Export All'),
             'class' => 'btn btn-default'
         ],
-        //'fontAwesome' => true,
         'showConfirmAlert' => false,
         'target' => '_blank',
         'filename' => Yii::t('app', 'Reporte_variables') . '_' . date('Ymd'),

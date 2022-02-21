@@ -61,7 +61,6 @@ $fechaActual = Yii::$app->db->createCommand("select distinct fechacreacion from 
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }

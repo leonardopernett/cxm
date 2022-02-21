@@ -94,7 +94,6 @@ $varDatalista = $datalista;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
       }
@@ -163,7 +162,6 @@ $varDatalista = $datalista;
                             <?=
                                 $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label(Yii::t('app',''))
                                       ->widget(Select2::classname(), [
-                                          //'data' => array_merge(["" => ""], $data),
                                           'language' => 'es',
                                           'options' => ['id'=>"valoradorid",'placeholder' => Yii::t('app', 'Seleccionar valorador...')],
                                           'pluginOptions' => [
@@ -194,7 +192,6 @@ $varDatalista = $datalista;
                             <?=
                                 $form->field($model, 'idvalorado', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label(Yii::t('app',''))
                                       ->widget(Select2::classname(), [
-                                          //'data' => array_merge(["" => ""], $data),
                                           'language' => 'es',
                                           'options' => ['id'=>"tecnicosid",'placeholder' => Yii::t('app', 'Seleccionar valorado...')],
                                           'pluginOptions' => [
@@ -297,7 +294,6 @@ $varDatalista = $datalista;
                                             Modal::begin([
                                                 'header' => '<h4>Procesando datos en el archivo de excel...</h4>',
                                                 'id' => 'modal1',
-                                                //'size' => 'modal-lg',
                                             ]);
 
                                             echo "<div id='modalContent1'></div>";

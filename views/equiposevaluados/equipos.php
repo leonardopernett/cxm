@@ -48,7 +48,6 @@ Modal::begin([
         'id' => 'grid-equipos-evaluados',
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,        
-        //'filterUrl' => Url::to(['index', 'equipo_id'=>$searchModel->equipo_id]),        
         'columns' => [            
             'id',            
             [
@@ -57,7 +56,6 @@ Modal::begin([
                 'enableSorting' => true,
                 'value' => 'equipo.name'
             ],
-            //'equipo_id',
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{delete}',
                 'buttons' => [

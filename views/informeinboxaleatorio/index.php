@@ -82,14 +82,11 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'columns' => [
             'fecha_creacion',
             'pcrc',
             'encu_diarias_pcrc',
             'encu_diarias_totales',
-            //'encu_mes_pcrc',
-            //'encu_mes_totales',
             'faltaron',
             'disponibles',
             [

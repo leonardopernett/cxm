@@ -43,7 +43,6 @@ $areatrabajopbi = "'".$areatrabajo."'";
             <?=
                 $form->field($model, 'evaluados_id')->label(Yii::t('app','Usuario'))
                 ->widget(Select2::classname(), [
-                    //'data' => array_merge(["" => ""], $data),
                     'language' => 'es',
                     'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                     'pluginOptions' => [
@@ -132,7 +131,6 @@ $areatrabajopbi = "'".$areatrabajo."'";
 	
 function permisousa(){
     var varidusurio = document.getElementById("controlprocesosequipos-evaluados_id").value;
-    //alert(varidusurio);
 	var varidrepor = "<?php echo $idreporte; ?>";
     var vararearab = "<?php echo $areatrabajo; ?>";
 	var varnombrerep = "<?php echo $nombrerepor; ?>";

@@ -185,7 +185,6 @@ $this->registerJs($js);
                 }
             }
             $(this).attr("disabled", "disabled");
-            //$(".soloFinalizar").attr("disabled", "disabled");
             var datos = fnForm2Array('guardarFormulario');
             $(".soloCancelar").attr("disabled", "disabled");
             ruta = '<?php echo Url::to(['basesatisfaccion/guardarencuesta']); ?>?&id=' + id;

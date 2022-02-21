@@ -62,7 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -227,7 +226,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     Modal::begin([
                                         'header' => '<h4></h4>',
                                         'id' => 'modal5',
-                                        //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent5'></div>";
@@ -256,7 +254,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     Modal::begin([
                                         'header' => '<h4></h4>',
                                         'id' => 'modal3',
-                                        //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent3'></div>";
@@ -334,7 +331,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'class' => 'yii\grid\ActionColumn',
                                 'headerOptions' => ['style' => 'color:#337ab7'],
-                                //'template' => '{view}{update}{delete}',
                                 'template' => '{update}',
                                 'buttons' => 
                                 [
@@ -356,7 +352,6 @@ $this->params['breadcrumbs'][] = $this->title;
                              [
                                 'class' => 'yii\grid\ActionColumn',
                                 'headerOptions' => ['style' => 'color:#337ab7'],
-                                //'template' => '{view}{update}{delete}',
                                 'template' => '{update2}',
                                 'buttons' => 
                                 [
@@ -413,7 +408,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     Modal::begin([
                                         'header' => '<h4></h4>',
                                         'id' => 'modal1',
-                                        //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent1'></div>";
@@ -431,7 +425,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     Modal::begin([
                                         'header' => '<h4></h4>',
                                         'id' => 'modal2',
-                                        //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent2'></div>";

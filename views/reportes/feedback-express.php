@@ -36,7 +36,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*background: #fff;*/
     border-radius: 5px;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
@@ -81,7 +80,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 'readonly' => 'readonly',
                 'pluginOptions' => [
                     'timePicker' => false,
-                    //'timePickerIncrement' => 15,
                     'format' => 'Y-m-d',
                     'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
                     'endDate' => date("Y-m-d"),
@@ -93,7 +91,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             <?=
                     $form->field($model, 'arbol_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['id'=>'idselectarbol','placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -156,7 +153,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             <?=
                     $form->field($model, 'evaluado_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
                         'language' => 'es',
                         'options' => ['placeholder' => Yii::t('app', 'Select ...')],
                         'pluginOptions' => [
@@ -256,7 +252,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
             <?=
             Html::submitButton(Yii::t('app', 'Buscar'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','onclick'=>'verificarpcrc();'])
             ?>
-            <?php //Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default'])      ?>
         </div>        
     </div>
 
@@ -346,7 +341,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 	<br>       
         <?php
         $gridColumns = [
-            //['class' => 'yii\grid\SerialColumn'],
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{preview}{update}{calculate}',
                 'buttons' => [
@@ -464,10 +458,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 'attribute' => 'tipofeedback_id',
                 'value' => 'tipofeedback.name'
             ],
-            //'dscausa_raiz',
-            //'dsaccion_correctiva',
-            //'dscompromiso',
-            //'dscomentario',
             [
                 'header' => Yii::t('app', 'Dscausa Raiz'),
                 'attribute' => 'dscausa_raiz',
@@ -529,7 +519,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                         'label' => Yii::t('app', 'Export All'),
                         'class' => 'btn btn-default'
                     ],
-                    //'fontAwesome' => true,
                     'showConfirmAlert' => false,
                     'target' => '_blank',
                     'filename' => Yii::t('app', 'Reporte_feedback') . '_' . date('Ymd'),
@@ -584,23 +573,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 }                
             }
         }
-
-
-        // if (vargrupos != "81") {
-        //     if (vargrupos != "76") {
-        //         if (vargrupos != "171") {
-        //             if (vargrupos != "79") {                        
-        //                 if (vargrupos != "1") {
-        //                     if (vararbol == "") {
-        //                         event.preventDefault();
-        //                         swal.fire("¡¡¡ Advertencia !!!","Debe de seleccionar al menos un servicio o pcrc.","warning");
-        //                         return; 
-        //                     }                
-        //                 } 
-        //             }           
-        //         }
-        //     }
-        // }
 
     };
 </script>

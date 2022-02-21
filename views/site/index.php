@@ -59,9 +59,6 @@ $this->title = 'CX-Management';
     }
 
     .card .card1 {
-        /*height: 180px;
-        width: 280px;
-        margin-top: -10px;*/
         width: 95%;
         height: 240px;
         background: #fff;
@@ -126,7 +123,6 @@ $this->title = 'CX-Management';
                                     Modal::begin([
                                                 'header' => '<h4></h4>',
                                                 'id' => 'modal1',
-                                                // 'size' => 'modal',
                                               ]);
 
                                     echo "<div id='modalContent1'></div>";
@@ -156,7 +152,6 @@ $this->title = 'CX-Management';
                                     Modal::begin([
                                                 'header' => '<h4></h4>',
                                                 'id' => 'modal2',
-                                                // 'size' => 'modal',
                                               ]);
 
                                     echo "<div id='modalContent2'></div>";
@@ -186,7 +181,6 @@ $this->title = 'CX-Management';
                                     Modal::begin([
                                                 'header' => '<h4></h4>',
                                                 'id' => 'modal3',
-                                                // 'size' => 'modal',
                                               ]);
 
                                     echo "<div id='modalContent3'></div>";

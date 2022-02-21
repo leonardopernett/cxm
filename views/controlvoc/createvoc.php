@@ -546,7 +546,6 @@ $this->params['breadcrumbs'][] = $this->title;
               Modal::begin([
                 'header' => '<h4>Crear Feedback</h4>',
                 'id' => 'modal1',
-                //'size' => 'modal-lg',
               ]);
 
               echo "<div id='modalContent1'></div>";
@@ -569,7 +568,6 @@ $this->params['breadcrumbs'][] = $this->title;
               Modal::begin([
                 'header' => '<h4>Crear Feedback</h4>',
                 'id' => 'modal2',
-                //'size' => 'modal-lg',
               ]);
 
               echo "<div id='modalContent2'></div>";
@@ -592,7 +590,6 @@ $this->params['breadcrumbs'][] = $this->title;
               Modal::begin([
                 'header' => '<h4>Crear Feedback</h4>',
                 'id' => 'modal3',
-                //'size' => 'modal-lg',
               ]);
 
               echo "<div id='modalContent3'></div>";
@@ -615,7 +612,6 @@ $this->params['breadcrumbs'][] = $this->title;
               Modal::begin([
                 'header' => '<h4>Crear Feedback</h4>',
                 'id' => 'modal7',
-                //'size' => 'modal-lg',
               ]);
 
               echo "<div id='modalContent7'></div>";
@@ -638,7 +634,6 @@ $this->params['breadcrumbs'][] = $this->title;
               Modal::begin([
                 'header' => '<h4>Crear Feedback</h4>',
                 'id' => 'modal5',
-                //'size' => 'modal-lg',
               ]);
 
               echo "<div id='modalContent5'></div>";

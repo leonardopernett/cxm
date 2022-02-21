@@ -26,8 +26,6 @@ use dosamigos\ckeditor\CKEditor;
         'preset' => 'full'
     ])
     ?>
-
-    <?php //echo $form->field($model, 'activa')->textInput() ?>
     <?php echo $form->field($model, 'activa')->checkBox(['label' => "Activo"]);  ?>
     
 

@@ -219,7 +219,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -271,7 +270,6 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                                    Modal::begin([
                                        'header' => '<h4>Descargando listado</h4>',
                                        'id' => 'modal1',
-                                       //'size' => 'modal-lg',
                                    ]);
 
                                    echo "<div id='modalContent1'></div>";
@@ -285,7 +283,6 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                                    Modal::begin([
                                        'header' => '<h4>Descargando listado</h4>',
                                        'id' => 'modal3',
-                                       //'size' => 'modal-lg',
                                    ]);
 
                                    echo "<div id='modalContent3'></div>";
@@ -299,7 +296,6 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
                                    Modal::begin([
                                        'header' => '<h4>Descargando listado</h4>',
                                        'id' => 'modal5',
-                                       //'size' => 'modal-lg',
                                    ]);
 
                                    echo "<div id='modalContent5'></div>";
@@ -444,7 +440,6 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
     $(function(){
         var Listado = "<?php echo implode($varListanombre,",");?>";
         Listado = Listado.split(",");        
-        //console.log(Listado);
 
         var Listado2 = "<?php echo implode($varListanombrearea,",");?>";
         Listado2 = Listado2.split(",");
@@ -698,7 +693,6 @@ if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sess
               },
               success : function(response){ 
                           var Rta =   JSON.parse(response);    
-                          // console.log(Rta);
                           document.getElementById("txtOpciones").innerHTML = "";
                           var node = document.createElement("OPTION");
                           node.setAttribute("value", "");

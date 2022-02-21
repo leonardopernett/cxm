@@ -78,7 +78,6 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -89,11 +88,10 @@ $this->params['breadcrumbs'][] = $this->title;
       border-top: 16px solid #3498db;
       width: 80px;
       height: 80px;
-      -webkit-animation: spin 2s linear infinite; /* Safari */
+      -webkit-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
     }
 
-    /* Safari */
     @-webkit-keyframes spin {
       0% { -webkit-transform: rotate(0deg); }
       100% { -webkit-transform: rotate(360deg); }
@@ -317,7 +315,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     Modal::begin([
                                       'header' => '<h4></h4>',
                                       'id' => 'modal1',
-                                      //'size' => 'modal-lg',
                                     ]);
 
                                     echo "<div id='modalContent1'></div>";
