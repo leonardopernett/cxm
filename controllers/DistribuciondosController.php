@@ -314,7 +314,6 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesaequipos(){
-      // var_dump("Cuarto paso, aqui actualiza Los equipos");
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();

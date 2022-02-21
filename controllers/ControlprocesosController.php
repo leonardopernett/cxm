@@ -1246,7 +1246,6 @@ class ControlprocesosController extends \yii\web\Controller {
                             ->asArray()
                             ->all();
                     //agrego el usuario no definido solo para la visualizacion  en la inbox
-                    //$data[] = ['id' => '1', 'text' => 'NO DEFINIDO'];
                     $out['results'] = array_values($data);
                 } elseif (!empty($id)) {
                     $data = \app\models\Usuarios::find()

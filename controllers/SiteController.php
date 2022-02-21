@@ -138,7 +138,6 @@ class SiteController extends Controller {
             if (!empty($filtrosForm)) {
                 $dataFiltos = json_decode($filtrosForm->parametros);
                 $filtros->fecha = $fecha = date('Y-m-01') . ' - ' . date('Y-m-d');
-                //$filtros->fecha = $fecha = $dataFiltos->fecha;
                 $filtros->dimension = $dataFiltos->dimension;
                 $filtros->metrica = $dataFiltos->metrica;
                 $arbIds = $dataFiltos->arbol_ids;
@@ -305,9 +304,7 @@ class SiteController extends Controller {
                     }
                     $result[] = ['name' => $name, 'data' => array_values($tempData)];
                     $resultCant[] = ['name' => $name, 'data' => array_values($tempDataCant)];
-                } /*else {
-                    $showGraf = false;
-                }*/
+                }
             }
         }
         
@@ -431,7 +428,6 @@ class SiteController extends Controller {
                 $model->s_fecha = date('Y-m-d H:i:s');
                 $model->estado_sc = $datos['estado_sc'];
                 $model->argumento = "<b>" . Yii::$app->user->identity->fullName . '</b>: ' . $datos['argumentoLider'];
-                //$model->argumento = $datos['argumentoLider'];
                 $model->id_caso = $id_caso;
                 $model->save();
                 $modelEdit->gestionado = "SI";
@@ -494,17 +490,14 @@ class SiteController extends Controller {
                         $model->id_responsable = $formulario->usua_id_lider;
                         $model->argumento = "<b>" . $evaluado->name . '</b>: ' . $datos['argumentoAsesor'];
                     }
-                    //$model->argumento = $datos['argumentoAsesor'];
                     $model->s_fecha = date('Y-m-d H:i:s');
                     //ID DE CASO, UN NUMERO UNICO E IRREPETIBLE PUEDE SER LA FECHA
                     $model->id_caso = date('YmdHis');
-                    //$model->argumento = $evaluado->dsusuario_red . ' => ' . $model->argumento;
                     $model->save();
                     if($esLider == '1'){
                         $this->llamarwsLiderAmigo($model, false);
                         return $this->redirect(['reportes/historicoformularios']);
                     }
-                    //$this->llamarwsLiderAmigo($model, true);
                     return ($historico == 0) ? ($this->redirect(['reportes/historicoformulariosamigo',
                                 "evaluado_usuared" => base64_encode($evaluado->dsusuario_red)])) : true;
                 } else {
@@ -528,11 +521,9 @@ class SiteController extends Controller {
                     $model->estado_sc = $datos['estado_sc'];
                     $model->b_segundo_envio = 1;
                     $model->b_editar = 0;
-                    //var_dump($model->argumento);exit;
                     if (count($liderEvaluador) > 0) {
                         $model->id_responsable = $liderEvaluador[0]['resp'];
                         $model->save();
-                        //$this->llamarwsLiderAmigo($model, true);
                     } else {
                         $msg = \Yii::t('app', 'No se encuentra el lider del evaluador asociado');
                         Yii::$app->session->setFlash('danger', $msg);
@@ -640,7 +631,6 @@ class SiteController extends Controller {
 
         $modelLider = \app\models\Usuarios::findOne(["usua_id" => $notificacion->id_responsable]);
         $modelEvaluado = \app\models\Evaluados::findOne(["id" => $notificacion->id_solicitante]);
-        //$ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
         $params = [];
         $params['titulo'] = ($bandera_envio) ?
                 'Te han remitido una solicitud de segundo calificador' :

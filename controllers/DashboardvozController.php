@@ -479,7 +479,6 @@ use app\models\ControlVolumenxencuestasdq;
                                 ->andwhere(['like','tbl_dashboardcategorias.nombre','Satisfaccion'])
                                 ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
                                 ->addParams([':varIdServicios'=>$varIdServicios]);
-                                //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                         $command = $querys->createCommand();
                         $query2 = $command->queryAll();
 
@@ -576,8 +575,6 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->andwhere(['like','tbl_dashboardcategorias.nombre','Satisfaccion'])
                                     ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
                                     ->addParams([':varIdServicios'=>$varIdServicios]);
-                                    
-                                    //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                             $command = $querys->createCommand();
                             $query2 = $command->queryAll();
 
@@ -673,7 +670,6 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->andwhere(['like','tbl_dashboardcategorias.nombre','Satisfaccion'])
                                     ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
                                     ->addParams([':varIdServicios'=>$varIdServicios]);
-                                    //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                             $command = $querys->createCommand();
                             $query2 = $command->queryAll();
 
@@ -828,7 +824,6 @@ use app\models\ControlVolumenxencuestasdq;
                                 ->andwhere(['like','tbl_dashboardcategorias.nombre','Solución'])
                                 ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
                                 ->addParams([':varIdServicios'=>$varIdServicios]);
-                                //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                         $command = $querys->createCommand();
                         $query2 = $command->queryAll();
 
@@ -926,7 +921,6 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->andwhere(['like','tbl_dashboardcategorias.nombre','Solución'])
                                     ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
                                     ->addParams([':varIdServicios'=>$varIdServicios]);
-                                    //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                             $command = $querys->createCommand();
                             $query2 = $command->queryAll();
 
@@ -1023,7 +1017,6 @@ use app\models\ControlVolumenxencuestasdq;
                                     ->andwhere(['like','tbl_dashboardcategorias.nombre','Solución'])
                                     ->andwhere(['tbl_dashboardcategorias.anulado' => 0])
                                     ->addParams([':varIdServicios'=>$varIdServicios]);
-                                    //->andwhere(['between','tbl_dashboardcategorias.fechacreacion',$varDateBegin,$varDateLast]);
                             $command = $querys->createCommand();
                             $query2 = $command->queryAll();
 

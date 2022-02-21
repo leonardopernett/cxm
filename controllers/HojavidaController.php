@@ -532,7 +532,6 @@ use Exception;
                 ->setTo('engie.guerrero@grupokonecta.com')
                 ->setFrom(Yii::$app->params['email_satu_from'])
                 ->setSubject("Contacto creado en la Hoja de Vida CXM")
-                // ->attach($tmpFile)
                 ->setHtmlBody($message) 
                 ->send(); 
       

@@ -1832,7 +1832,6 @@ use yii\base\Exception;
                                 ->setTo($txtEmail)
                                 ->setFrom(Yii::$app->params['email_satu_from'])
                                 ->setSubject("NotificaciÃ³n, RevisiÃ³n de resultados de las evaluaciones")
-                                //->attach("")
                                 ->setHtmlBody($message)
                                 ->send();
         }else {

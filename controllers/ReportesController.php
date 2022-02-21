@@ -73,7 +73,6 @@ class ReportesController extends \yii\web\Controller {
                     $dates = explode(' - ', $model->created);
                     $model->startDate = $dates[0];
                     $model->endDate = $dates[1];
-                    //$data = $model->extrctarFormulario();
                     //NUEVA FUNCION QUE CONSULTA Y TRASPONE
                     $data = $model->extractConsTrans();
 
@@ -595,7 +594,6 @@ class ReportesController extends \yii\web\Controller {
                 //ESTADISTICAS 
                 //Numero Declinaciones del mes------------------------------------------
                 $numDeclinaciones = \app\models\DeclinacionesUsuarios::find()
-                                //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
                                 ->where("MONTH(fecha) = '" . date('m')
                                         . "' AND YEAR(fecha) = '" . date('Y') . "'")
                                 ->andWhere('arbol_id IN (' . $cadenaIdarboles . ')')->count();
@@ -613,7 +611,6 @@ class ReportesController extends \yii\web\Controller {
                                 ->from("tbl_declinaciones_usuarios du")
                                 ->join('JOIN', 'tbl_declinaciones d', 'd.id = '
                                         . 'du.declinacion_id')
-                                //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  `du`.usua_id')
                                 ->where("MONTH(du.fecha) = '" . date('m')
                                         . "' AND YEAR(du.fecha) = '" . date('Y') . "'")
                                 ->andWhere('du.arbol_id IN (' . $cadenaIdarboles . ')')
@@ -638,7 +635,6 @@ class ReportesController extends \yii\web\Controller {
                                 ->from("tbl_declinaciones_usuarios du")
                                 ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                         . 'du.usua_id')
-                                //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
                                 ->where('du.arbol_id IN (' . $cadenaIdarboles . ')')
                                 ->groupBy('du.usua_id')
                                 ->orderBy('contar DESC')
@@ -671,7 +667,6 @@ class ReportesController extends \yii\web\Controller {
                                     ->from("tbl_declinaciones_usuarios du")
                                     ->join('JOIN', 'tbl_declinaciones d', 'd.id = '
                                             . 'du.declinacion_id')
-                                    //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  `du`.usua_id')
                                     ->where("du.fecha BETWEEN '" . $dates[0].' 00:00:01'
                                             . "' AND '" . $dates[1].' 23:59:59' . "'")
                                     ->andWhere('du.arbol_id IN (' . $cadenaIdarboles . ')')
@@ -681,7 +676,6 @@ class ReportesController extends \yii\web\Controller {
                     //ESTADISTICAS 
                     //Numero Declinaciones del mes------------------------------------------
                     $numDeclinaciones = \app\models\DeclinacionesUsuarios::find()
-                                    //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
                                     ->where("fecha BETWEEN '" . $dates[0].' 00:00:01'
                                             . "' AND '" .$dates[1].' 23:59:59' . "'")
                                     ->andWhere('arbol_id IN (' . $cadenaIdarboles . ')')->count();
@@ -706,7 +700,6 @@ class ReportesController extends \yii\web\Controller {
                                     ->from("tbl_declinaciones_usuarios du")
                                     ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                             . 'du.usua_id')
-                                    //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
                                     ->where('du.arbol_id IN (' . $cadenaIdarboles . ')')
                                     ->andWhere("du.fecha BETWEEN '" . $dates[0].' 00:00:01'
                                             . "' AND '" . $dates[1].' 23:59:59' . "'")
@@ -737,7 +730,6 @@ class ReportesController extends \yii\web\Controller {
                                     ->from("tbl_declinaciones_usuarios du")
                                     ->join('JOIN', 'tbl_declinaciones d', 'd.id = '
                                             . 'du.declinacion_id')
-                                    //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  `du`.usua_id')
                                     ->where("du.fecha BETWEEN '" . $dates[0].' 00:00:01'
                                             . "' AND '" . $dates[1].' 23:59:59'. "'")
                                     ->andWhere('du.arbol_id IN (' . $cadenaIdarboles . ')')
@@ -747,7 +739,6 @@ class ReportesController extends \yii\web\Controller {
                     //ESTADISTICAS 
                     //Numero Declinaciones del mes------------------------------------------
                     $numDeclinaciones = \app\models\DeclinacionesUsuarios::find()
-                                    //->join('INNER JOIN', 'rel_grupos_usuarios', 'usuario_id =  usua_id')
                                     ->where("fecha BETWEEN '" . $dates[0].' 00:00:01'
                                             . "' AND '" . $dates[1].' 23:59:59' . "'")
                                     ->andWhere('arbol_id IN (' . $cadenaIdarboles . ')')->count();
@@ -772,7 +763,6 @@ class ReportesController extends \yii\web\Controller {
                                     ->from("tbl_declinaciones_usuarios du")
                                     ->join('JOIN', 'tbl_usuarios u', 'u.usua_id= '
                                             . 'du.usua_id')
-                                    //->join('INNER JOIN', 'rel_grupos_usuarios rgu', 'rgu.usuario_id =  u.usua_id')
                                     ->where('du.arbol_id IN (' . $cadenaIdarboles . ')')
                                     ->andWhere("du.fecha BETWEEN '" . $dates[0].' 00:00:01'
                                             . "' AND '" . $dates[1].' 23:59:59' . "'")

@@ -20,7 +20,6 @@ class BloquesController extends Controller {
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                //'delete' => ['post'],
                 ],
             ],
             'access' => [

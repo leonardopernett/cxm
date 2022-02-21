@@ -1500,7 +1500,6 @@ use app\models\Controlvolumenxvalorador;
                                 }                         
 
                                 $varFecha = $varYear.'-'.$varMes.'-'.$varDiasTranscurridos;
-                                // var_dump($varFecha);
 
                                 $querys = new Query;
                                 $querys     ->select(["sum((select count(*) from tbl_base_satisfaccion where tbl_base_satisfaccion.created between '$varFecha 00:00:00' and '$varFecha 23:59:59' and tbl_base_satisfaccion.pcrc = tbl_arbols.id and tbl_base_satisfaccion.tipo_inbox in ('NORMAL'))) as Sumatotal"])->distinct()
@@ -1681,8 +1680,7 @@ use app\models\Controlvolumenxvalorador;
                                     ->from('tbl_tipocortes')
                                     ->join('LEFT OUTER JOIN', 'tbl_grupo_cortes',
                                             'tbl_tipocortes.idgrupocorte = tbl_grupo_cortes.idgrupocorte')
-                                    ->where('tbl_grupo_cortes.idgrupocorte = 2');
-                                    // ->andwhere(['not like', 'tbl_tipocortes.tipocortetc', $txtMes]);                    
+                                    ->where('tbl_grupo_cortes.idgrupocorte = 2');                   
                     $command = $querys->createCommand();
                     $query = $command->queryAll();
 
@@ -1763,8 +1761,7 @@ use app\models\Controlvolumenxvalorador;
                                     ->from('tbl_tipocortes')
                                     ->join('LEFT OUTER JOIN', 'tbl_grupo_cortes',
                                             'tbl_tipocortes.idgrupocorte = tbl_grupo_cortes.idgrupocorte')
-                                    ->where('tbl_grupo_cortes.idgrupocorte = 2');
-                                    // ->andwhere(['not like', 'tbl_tipocortes.tipocortetc', $txtMes]);                    
+                                    ->where('tbl_grupo_cortes.idgrupocorte = 2');                
                     $command = $querys->createCommand();
                     $query = $command->queryAll();
 

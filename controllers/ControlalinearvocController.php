@@ -1005,7 +1005,6 @@ class ControlalinearvocController extends \yii\web\Controller
         }
 
         return $this->render('updatevoc', [
-            //'model' => $model,
             'vartxtPcrc' => $vartxtPcrc,
             'varSession' => $varSession,
         ]);
