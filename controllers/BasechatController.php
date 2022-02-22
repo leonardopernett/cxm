@@ -27,6 +27,7 @@ use yii\db\ActiveRecord;
 use app\models\BasechatFormulario;
 use app\models\BasechatCategorias;
 use app\models\BasechatMotivos;
+use \yii\base\Exception;
 
 
     class BaseChatController extends \yii\web\Controller {

@@ -27,6 +27,7 @@ use app\models\Dashboardpermisos;
 use app\models\BaseUsuariosip;
 use app\models\FormUploadtigo;
 use app\models\BaseSatisfaccion; 
+use \yii\base\Exception;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {

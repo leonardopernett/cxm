@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\helpers\Html;
+use \yii\base\Exception;
 
 /**
  * ArbolesController implements the CRUD actions for Arboles model.
