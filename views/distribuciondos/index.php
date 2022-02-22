@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
     .masthead {
       height: 25vh;
       min-height: 100px;
-      background-image: url('../../images/Dashboard-Escuchar-+.png');
+      background-image: url('../../images/ADMINISTRADOR-GENERAL.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -130,7 +130,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br><br>
 
 <?php
-if ($sesiones == "2953" || $sesiones == "57" || $sesiones == "3468" || $sesiones == "6747" || $sesiones == "6777") {  
+if ($sesiones == "2953" || $sesiones == "57" || $sesiones == "3468" || $sesiones == "6747" || $sesiones == "6777" || $sesiones == "637") {  
 ?>
 
   <div class="capaCero" style="display: none;" id="idCapaCero">
