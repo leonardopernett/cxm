@@ -19,13 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         . ' {input}{error}{hint}</div>';
 ?>
-<script src="../../web/js_extensions/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="tableExport.js"></script>
-<script type="text/javascript" src="jquery.base64.js"></script>
-<script type="text/javascript" src="html2canvas.js"></script>
-<script type="text/javascript" src="jspdf/libs/sprintf.js"></script>
-<script type="text/javascript" src="jspdf/jspdf.js"></script>
-<script type="text/javascript" src="jspdf/libs/base64.js"></script>
+
 
 <style>
   .masthead {
@@ -168,7 +162,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         </div>
         <div style="max-height: 300px; overflow: auto">
             <table class="table table-striped table-bordered tblResDetFeed">
-            <caption>Tabla Proceso</caption>
+            <caption>...</caption>
                 <thead>
                     <tr>
                         <th id="programa"><?= Yii::t('app', 'Programa') ?></th>
@@ -195,7 +189,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         </div>
         <div style="max-height: 300px; overflow: auto">
             <table class="table table-striped table-bordered tblResDetFeed">
-            <caption>Tabala Resumen Tecnico</caption>
+            <caption>...</caption>
                 <thead>
                     <tr>
                         <th id="tecnico"><?= Yii::t('app', 'Tecnico') ?></th>
