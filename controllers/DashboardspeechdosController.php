@@ -5508,7 +5508,7 @@ public function actionCantidadentto(){
         $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
         $formulario_id = $infoArbol->formulario_id;
         $dimension = Yii::$app->request->post('Dimensiones');
-        $dimension_id = $arboles["dimension_id"];
+        $dimension_id = $dimension["dimension_id"];
         $evaluado_id = Yii::$app->request->post("evaluado_id");
         $postTipoInteraccion =  Yii::$app->request->post('tipo_interaccion');
         $tipoInteraccion = (isset($postTipoInteraccion)) ? $postTipoInteraccion : 1;
