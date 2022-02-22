@@ -715,32 +715,32 @@ use app\models\IdaGeneral;
 
       $datapost = file_get_contents('php://input');
       $data_post = json_decode($datapost,true);
-
+  
       if (
-           !isset($data_post["pcrc"])
-        || !isset($data_post["dimension"])
-        || !isset($data_post["fechaInicio"])
-        || !isset($data_post["fechaFin"])
+           !isset($data_post["pcrc"]) 
+        || !isset($data_post["dimension"]) 
+        || !isset($data_post["fechaInicio"]) 
+        || !isset($data_post["fechaFin"]) 
         || !isset($data_post["documentos"])
         || !isset($data_post["usuarios"])
-        || empty($data_post["pcrc"])
-        || empty($data_post["dimension"])
-        || empty($data_post["fechaInicio"])
-        || empty($data_post["fechaFin"])
+        || empty($data_post["pcrc"]) 
+        || empty($data_post["dimension"]) 
+        || empty($data_post["fechaInicio"]) 
+        || empty($data_post["fechaFin"]) 
         || empty($data_post["documentos"])
         || empty($data_post["usuarios"])
       ) {
         die(json_encode(array("status"=>"0","data"=>"Algunos de los campos obligatorios no se enviaron correctamente")));
       }
 
-      $varpcrc = $data_post["pcrc"];
+      $varpcrc = $data_post["pcrc"];   
 
       $paramspcrc = [':cod_pcrc' => $varpcrc];
       $varExistPcrc = Yii::$app->db->createCommand('
-        SELECT COUNT(cod_pcrc)  FROM tbl_speech_categorias
+        SELECT COUNT(cod_pcrc)  FROM tbl_speech_categorias 
           WHERE cod_pcrc IN (:cod_pcrc)
             ')->bindValues($paramspcrc)->queryScalar();
-
+      
       if ($varExistPcrc == 0) {
         die(json_encode(array("status"=>"0","data"=>"Pcrc ingresado no esta parametrizado en CXM")));
       }
@@ -751,28 +751,28 @@ use app\models\IdaGeneral;
       $varDocumentos = $data_post["documentos"];
       $varUsuarios = $data_post["usuarios"];
 
-
+      
       $listdimensiones = array();
       $array_dimensiones = count($varDimension);
       for ($i = 0; $i < $array_dimensiones; ++$i){
-          array_push($listdimensiones, $varDimension[$i]);
+          array_push($listdimensiones, $varDimension[$i]);          
       }
 
       $varparametros = implode(", ", $listdimensiones);
       $varStrDimension = null;
       if ($varDimension == "1") {
         $varStrDimension = "Calidad de Entrenamiento";
+      }else{
+        if ($varDimension == "2") {
+          $varStrDimension = "OJT";
+        }else{
+          $varStrDimension = "";
+        }
       }
-      if ($varDimension == "2") {
-        $varStrDimension = "OJT";
-      }
+      
 
 
-      $varextensiones = Yii::$app->db->createCommand("SELECT concat(sp.rn,sp.ext,sp.usuared) AS extensiones FROM tbl_speech_parametrizar sp WHERE sp.cod_pcrc IN (:varpcrc) and sp.tipoparametro in (:varparametros)")
-      ->bindValue(':varpcrc',$varpcrc)
-      ->bindValue(':varparametros',$varparametros)
-      ->queryAll();
-
+      $varextensiones = Yii::$app->db->createCommand("SELECT concat(sp.rn,sp.ext,sp.usuared) AS extensiones FROM tbl_speech_parametrizar sp WHERE sp.cod_pcrc IN ('$varpcrc') and sp.tipoparametro in ($varparametros)")->queryAll();
 
       $listextensiones = array();
 
@@ -782,9 +782,7 @@ use app\models\IdaGeneral;
 
       $txtParametros = implode("', '", $listextensiones);
 
-      $txtIdCatagoria = Yii::$app->db->createCommand("SELECT ss.idllamada FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes WHERE sp.cod_pcrc IN (:varpcrc) GROUP BY ss.arbol_id")
-      ->bindValue(':varpcrc',$varpcrc)
-      ->queryScalar();
+      $txtIdCatagoria = Yii::$app->db->createCommand("SELECT ss.idllamada FROM tbl_speech_servicios ss INNER JOIN tbl_speech_parametrizar sp ON ss.id_dp_clientes = sp.id_dp_clientes WHERE sp.cod_pcrc IN ('$varpcrc') GROUP BY ss.arbol_id")->queryScalar();
 
       $txtServicio = \app\models\SpeechCategorias::find()->distinct()
                         ->select(['tbl_speech_categorias.programacategoria'])
@@ -814,43 +812,24 @@ use app\models\IdaGeneral;
 
       $varInicioF = $varFechaInicio.' 05:00:00';
       $varFinF = date('Y-m-d',strtotime($varFechaFin."+ 1 day")).' 05:00:00';
-      $varverificarusuarios = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN (:txtServicio)  AND fechallamada BETWEEN :varInicioF AND :varFinF  AND extension IN (:txtParametros) AND login_id IN (:varloginusuarios)")
-      ->bindValue(':txtServicio',$txtServicio)
-      ->bindValue(':varInicioF',$varInicioF)
-      ->bindValue(':varFinF',$varFinF)
-      ->bindValue(':txtParametros',$txtParametros)
-      ->bindValue(':varloginusuarios',$varloginusuarios)
-      ->queryScalar();
+      $varverificarusuarios = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio')  AND fechallamada BETWEEN '$varInicioF' AND '$varFinF'  AND extension IN ('$txtParametros') AND login_id IN ('$varloginusuarios')")->queryScalar();
 
       if ($varverificarusuarios != 0) {
         $varlogin_id = explode("', '", $varloginusuarios);
       }else{
         $varlogin_id = explode("', '", $varlogindocumento);
       }
-
+      
       $arraydata = array();
       $arra_login_id = count($varlogin_id);
 
       for ($i = 0; $i < $arra_login_id; ++$i){
         $varusuariologin = $varlogin_id[$i];
 
-        $varpromedio = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN (:txtServicio) AND extension IN (:txtParametros) AND fechallamada BETWEEN :varInicioF AND :varFinF AND idcategoria IN (:txtIdCatagoria) AND login_id IN (:varusuariologin)")
-        ->bindValue(':txtServicio',$txtServicio)
-        ->bindValue(':txtParametros',$txtParametros)
-        ->bindValue(':varInicioF',$varInicioF)
-        ->bindValue(':varFinF',$varFinF)
-        ->bindValue(':txtIdCatagoria',$txtIdCatagoria)
-        ->bindValue(':varusuariologin',$varusuariologin)
-        ->queryScalar();
+        $varpromedio = Yii::$app->db->createCommand("SELECT COUNT(callId) FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND idcategoria IN ($txtIdCatagoria) AND login_id IN ('$varusuariologin')")->queryScalar();
 
 
-        $varcountarCallid = Yii::$app->db->createCommand("SELECT DISTINCT callId FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN (:txtServicio) AND extension IN (:txtParametros) AND fechallamada BETWEEN :varInicioF AND :varFinF AND login_id IN (:varusuariologin)")
-        ->bindValue(':txtServicio',$txtServicio)
-        ->bindValue(':txtParametros',$txtParametros)
-        ->bindValue(':varInicioF',$varInicioF)
-        ->bindValue(':varFinF',$varFinF)
-        ->bindValue(':varusuariologin',$varusuariologin)
-        ->queryAll();
+        $varcountarCallid = Yii::$app->db->createCommand("SELECT DISTINCT callId FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND login_id IN ('$varusuariologin')")->queryAll();
 
         $varindicadorarray = array();
         $varconteocallid = 0;
@@ -858,9 +837,7 @@ use app\models\IdaGeneral;
           $varcallids = $value['callId'];
           $varconteocallid = $varconteocallid + 1;
 
-          $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.cod_pcrc IN (:varpcrc) AND sc.idcategorias in (2) AND sc.responsable IN (1)")
-          ->bindValue(':varpcrc',$varpcrc)
-          ->queryAll();
+          $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc WHERE sc.anulado = 0 AND sc.cod_pcrc IN ('$varpcrc') AND sc.idcategorias in (2) AND sc.responsable IN (1)")->queryAll();
 
           $varlistanegativo = array();
           $varlistapositivo = array();
@@ -886,30 +863,16 @@ use app\models\IdaGeneral;
           $varvariablespositivas = implode(", ", $varlistapositivo);
 
           if ($varvariablesnegativas != null) {
-            $varcontarvarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in (:txtServicio) AND extension IN (:txtParametros) AND s.callid in(:varcallids) AND s.idvariable in (:varvariablesnegativas) AND s.fechallamada BETWEEN :varInicioF AND :varFinF")
-            ->bindValue(':txtServicio',$txtServicio)
-            ->bindValue(':txtParametros',$txtParametros)
-            ->bindValue(':varcallids',$varcallids)
-            ->bindValue(':varvariablesnegativas',$varvariablesnegativas)
-            ->bindValue(':varInicioF',$varInicioF)
-            ->bindValue(':varFinF',$varFinF)
-            ->queryScalar();
+            $varcontarvarnegativas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablesnegativas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
           }else{
             $varcontarvarnegativas = 0;
           }
-
+            
           if ($varvariablespositivas != null) {
-            $varcontarvarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in (:txtServicio) AND extension IN (:txtParametros) AND s.callid in(:varcallids) AND s.idvariable in (:varvariablespositivas) AND s.fechallamada BETWEEN :varInicioF AND :varFinF")
-            ->bindValue(':txtServicio',$txtServicio)
-            ->bindValue(':txtParametros',$txtParametros)
-            ->bindValue(':varcallids',$varcallids)
-            ->bindValue(':varvariablespositivas',$varvariablespositivas)
-            ->bindValue(':varInicioF',$varInicioF)
-            ->bindValue(':varFinF',$varFinF)
-            ->queryScalar();
+            $varcontarvarpositivas = Yii::$app->db->createCommand("SELECT SUM(s.cantproceso) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$txtServicio') AND extension IN ('$txtParametros') AND s.callid in($varcallids) AND s.idvariable in ($varvariablespositivas) AND s.fechallamada BETWEEN '$varInicioF' AND '$varFinF'")->queryScalar();
           }else{
             $varcontarvarpositivas = 0;
-          }
+          }                
 
           $varResultado = (($varconteonegativas - $varcontarvarnegativas) + $varcontarvarpositivas) / $varconteogeneral;
 
@@ -921,7 +884,7 @@ use app\models\IdaGeneral;
         }else{
           $resultadosIDA = 0;
         }
-
+        
 
         array_push($arraydata, array("usuarios"=>$varusuariologin,"cantidadllamadas"=>$varpromedio,"score"=>$resultadosIDA,"dimension"=>$varStrDimension));
 
@@ -929,7 +892,7 @@ use app\models\IdaGeneral;
       }
 
       die( json_encode( array("status"=>"1","data"=>$arraydata) ) );
-
+      
     }
 
 
