@@ -132,7 +132,8 @@ class SiteController extends Controller {
 
         $controlador = Yii::$app->controller->id;
         $vista = Yii::$app->controller->action->id;
-        if (empty($_POST)) {
+        $post = Yii::$app->request->post();
+        if (empty($post)) {
 
             $filtrosForm = \app\models\FiltrosFormularios::findOne(['vista' => $controlador . '/' . $vista, 'usua_id' => Yii::$app->user->identity->id]);
             if (!empty($filtrosForm)) {
@@ -157,20 +158,21 @@ class SiteController extends Controller {
                 $filtros->metrica = '';
             }
         } else {
-            if (isset($_POST["arbol_ids"]) && count($_POST["arbol_ids"]) > 0) {
-                $filtros->fecha = $fecha = $_POST['selMesDesde'];
-                $filtros->dimension = $_POST["selDimension"];
-                $filtros->metrica = $_POST["selMetrica"];
+            $postarbol_ids = Yii::$app->request->post('arbol_ids');
+            if (isset($postarbol_ids) && count($postarbol_ids) > 0) {
+                $filtros->fecha = $fecha = Yii::$app->request->post('selMesDesde');
+                $filtros->dimension = Yii::$app->request->post("selDimension");
+                $filtros->metrica = Yii::$app->request->post("selMetrica");
                 $fecha = explode(' - ', $fecha);
                 $fechaInicio = $fecha[0];
                 $fechaFin = $fecha[1];
 
                 //Guardar filtros --------------------------------------------------                    
                 $filtrosDatos = new \stdClass();
-                $filtrosDatos->fecha = $_POST["selMesDesde"];
-                $filtrosDatos->dimension = $_POST["selDimension"];
-                $filtrosDatos->metrica = $_POST["selMetrica"];
-                $filtrosDatos->arbol_ids = $_POST["arbol_ids"];
+                $filtrosDatos->fecha = Yii::$app->request->post("selMesDesde");
+                $filtrosDatos->dimension = Yii::$app->request->post("selDimension");
+                $filtrosDatos->metrica = Yii::$app->request->post("selMetrica");
+                $filtrosDatos->arbol_ids = Yii::$app->request->post("arbol_ids");
                 $arbIds = $filtrosDatos->arbol_ids;
 
                 $filtrosForm = \app\models\FiltrosFormularios::findOne(['vista' => $controlador . '/' . $vista, 'usua_id' => Yii::$app->user->identity->id]);
@@ -184,15 +186,15 @@ class SiteController extends Controller {
                 $filtrosForm->save();
 
                 $data->graph = $this->actionGetGraph(
-                        $_POST["arbol_ids"]
-                        , $_POST["selDimension"]
-                        , $_POST["selMetrica"]
+                        Yii::$app->request->post("arbol_ids")
+                        , Yii::$app->request->post("selDimension")
+                        , Yii::$app->request->post("selMetrica")
                         , $fechaInicio
                         , $fechaFin
                 );
             } else {
-                $filtros->dimension = $_POST["selDimension"];
-                $filtros->metrica = $_POST["selMetrica"];
+                $filtros->dimension = Yii::$app->request->post("selDimension");
+                $filtros->metrica = Yii::$app->request->post("selMetrica");
                 $msg = \Yii::t('app', 'Seleccione un arbol');
                 Yii::$app->session->setFlash('danger', $msg);
             }
