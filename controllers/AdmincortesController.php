@@ -354,7 +354,7 @@ class AdmincortesController extends \yii\web\Controller {
 			$model = $this->findModel3($idtc);
 			if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			    Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
-			    // return $this->redirect(['update', 'idtc' => $model->idtc]);
+
 			    return $this->redirect(['index']);
 			    
 			} else {

@@ -37,9 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="formularios-index">
 
-<!--    <div class="page-header">
-        <h3><?= Html::encode($this->title) ?></h3>
-    </div>-->
+<?= Html::encode($this->title) ?>-->
 
     <?php
     foreach (Yii::$app->session->getAllFlashes() as $key => $message) {

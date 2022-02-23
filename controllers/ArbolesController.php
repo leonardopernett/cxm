@@ -41,7 +41,7 @@ class ArbolesController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function() {
-                            //return Yii::$app->user->identity->isAdminProcesos();
+                            
 			    return Yii::$app->user->identity->isEdEqipoValorado();
                         },
                     ],
