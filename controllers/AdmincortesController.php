@@ -276,7 +276,7 @@ class AdmincortesController extends \yii\web\Controller {
 			$CorteID = $idtc;
 
 			if (Yii::$app->request->get('idtc')) {
-				$id_params = Html::encode($_GET['idtc']);
+				$id_params = Html::encode(Yii::$app->request->get('idtc'));
 
 				if ((int) $id_params) {
 					$table = Tipocortes::findOne($id_params);
@@ -362,7 +362,7 @@ class AdmincortesController extends \yii\web\Controller {
 			        }
 
 			if (Yii::$app->request->get('idtc')) {
-				$id_params = Html::encode($_GET['idtc']);
+				$id_params = Html::encode(Yii::$app->request->get('idtc'));
 
 				if ((int) $id_params) {
 					$table = Tipocortes::findOne($id_params);
