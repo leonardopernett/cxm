@@ -367,7 +367,7 @@ class ControlprocesosController extends \yii\web\Controller {
 
 
 			if (Yii::$app->request->get('id')) {
-				$id_params = Html::encode($_GET['id']);
+				$id_params = Html::encode(Yii::$app->request->get('id'));
 
 				if ((int) $id_params) {
 					$table = ControlParams::findOne($id_params);
@@ -478,7 +478,7 @@ class ControlprocesosController extends \yii\web\Controller {
 			$txtId = $id;
 
 			if (Yii::$app->request->get('id')) {
-				$id_params = Html::encode($_GET['id']);
+				$id_params = Html::encode(Yii::$app->request->get('id'));
 
 				if ((int) $id_params) {
 					$table = ControlProcesos::findOne($id_params);
@@ -589,7 +589,7 @@ class ControlprocesosController extends \yii\web\Controller {
 	            }
 
 			if (Yii::$app->request->get('id')) {
-				$id_params = Html::encode($_GET['id']);				
+				$id_params = Html::encode(Yii::$app->request->get('id'));				
 
 				if ((int) $id_params) {
 					$table = ControlProcesos::findOne($id_params);
@@ -810,7 +810,7 @@ class ControlprocesosController extends \yii\web\Controller {
 			$numdias = null;
 
 			if (Yii::$app->request->get('idtc')) {
-				$id_params = Html::encode($_GET['idtc']);
+				$id_params = Html::encode(Yii::$app->request->get('idtc'));
 
 				if ((int) $id_params) {
 					$table = Tipocortes::findOne($id_params);
@@ -877,7 +877,7 @@ class ControlprocesosController extends \yii\web\Controller {
 			        }
 
 			if (Yii::$app->request->get('id')) {
-				$id_params = Html::encode($_GET['id']);
+				$id_params = Html::encode(Yii::$app->request->get('id'));
 
 				if ((int) $id_params) {
 					$table = ControlParams::findOne($id_params);

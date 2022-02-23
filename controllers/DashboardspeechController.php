@@ -28,6 +28,8 @@ use app\models\SpeechCategorias;
 use app\models\SpeechParametrizar;
 use app\models\Dashboardspeechcalls;
 use app\models\Formularios;
+use \yii\base\Exception;
+
 
   class DashboardspeechController extends \yii\web\Controller {
 
@@ -639,7 +641,7 @@ use app\models\Formularios;
       }
 
           if (Yii::$app->request->get('txtServicioCategorias')) {
-            $id_params = Html::encode($_GET['txtServicioCategorias']);
+            $id_params = Html::encode(Yii::$app->request->get('txtServicioCategorias'));
 
             if ((int)$id_params) {
               $table = Dashboardcategorias::findOne($id_params);

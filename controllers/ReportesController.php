@@ -5,6 +5,7 @@ namespace app\Controllers;
 use Yii;
 use yii\helpers\Json;
 use yii\data\ArrayDataProvider;
+use \yii\base\Exception;
 
 class ReportesController extends \yii\web\Controller {
 
