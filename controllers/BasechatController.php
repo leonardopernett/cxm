@@ -879,7 +879,7 @@ use \yii\base\Exception;
                     $modelBase->responsabilidad = (!isset($postResponsabilidad)) ? "" : $postResponsabilidad ;
                     $modelBase->canal = (!isset($postCanal)) ? "" : implode(", ", $postCanal);
                     $modelBase->marca = (!isset($postMarca)) ? "" : implode(", ", $postMarca);
-                    $modelBase->equivocacion = (!isset($postEquivocacion)) ? "" : implode(", ", $postEquivocacion;
+                    $modelBase->equivocacion = (!isset($postEquivocacion)) ? "" : implode(", ", $postEquivocacion);
                     $modelBase->save();
 
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Indices calculados'));
