@@ -434,39 +434,7 @@ class AdmincortesController extends \yii\web\Controller {
 			        }
 
 
-			if (Yii::$app->request->get('idtcs')) {
-				$id_params = Html::encode($_GET['idtcs']);
 
-				if ((int) $id_params) {
-					$table = Tiposdecortes::findOne($id_params);
-
-					if ($table) {
-						$model->idtcs = $table->idtcs;
-						$model->cortetcs = $table->cortetcs;
-						$model->fechainiciotcs = $table->fechainiciotcs;
-						$model->fechafintcs = $table->fechafintcs;
-						$model->diastcs = $table->diastcs;
-						$model->cantdiastcs = $table->cantdiastcs;						
-						$model->fechacreacion = $table->fechacreacion;
-						$model->idtc = $table->idtc;
-
-						$nameVal = $table->idtc;
-						
-					}
-					else
-					{
-						return $this->redirect(['update']);
-					}
-				}
-				else
-				{
-					return $this->redirect(['update']);
-				}
-			}
-			else
-			{
-				return $this->redirect(['update']);
-			}
 
 			return $this->render('_formupdate2', [
 					'model' => $model,
