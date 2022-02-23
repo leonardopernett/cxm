@@ -106,7 +106,7 @@ class ControlprocesosController extends \yii\web\Controller {
 		*/
 		public function actionCreateparameters($usua_id){
 		 	$searchModel = new BaseSatisfaccionSearch;
-        	//$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         	$txtusua_id = $usua_id;
 
          	$model = new Controlparams;
@@ -117,7 +117,7 @@ class ControlprocesosController extends \yii\web\Controller {
          	if ($model->load($formData)) {
          		if ($model->save()) {
          			Yii::$app->getsession()->setFlash('message','Registro agregado correctamente.');
-         			// return $this->redirect(['create']);
+         			
          			return $this->redirect(array('create','usua_id'=>$txtusua_id));
          		}
          		else{
@@ -139,7 +139,7 @@ class ControlprocesosController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionPrueba(){
-						//$arbol_id = Yii::$app->request->post("arbol_id");
+					
 			$cCO1 = Yii::$app->request->post("arbol_id");
 			$pcrcTxt = Yii::$app->request->post("pcrc_text");
 			$numLetras = strlen($cCO1);
@@ -421,7 +421,7 @@ class ControlprocesosController extends \yii\web\Controller {
 			    	$txtidprocesos = Yii::$app->db->createCommand("select distinct id from tbl_control_procesos where anulado = 0 and fechacreacion between '$txtfechaCreacion' and '$txtfechaCreacion' and evaluados_id = $txtevaluados")->queryScalar();
 				$model->delete();
 			    	return $this->redirect(array('update2','id'=>$txtidprocesos,'evaluados_id'=>$txtevaluados));
-				// return $this->redirect(array('create','usua_id'=>$evaluadoId));
+		
 			}
 		}
 		protected function findModel($id){
@@ -453,7 +453,7 @@ class ControlprocesosController extends \yii\web\Controller {
 
 				Yii::$app->db->createCommand()->delete('tbl_control_params', 'anulado = :param1 AND evaluados_id = :param2 AND fechacreacion >= :param3 AND fechacreacion <= :param4', array(':param2' => $varEvaluados, ':param1'=>0, ':param3' => $varDate, ':param4' => $varEndDate))->execute();
 
-				//ControlParams::deleteAll("evaluados_id=:evaluados_id", [":evaluados_id" => $evaluados_id]);
+				
 				$model->delete();
 				return $this->redirect(['index']);
 			}
@@ -605,7 +605,7 @@ class ControlprocesosController extends \yii\web\Controller {
 						$model->salario = $table->salario;
 						$model->tipo_corte = $table->tipo_corte;
 						$varCortes = $table->tipo_corte;
-						//$model->responsable = $table->responsable;
+						
 						$model->cant_valor = Yii::$app->db->createCommand("select sum(cant_valor) from tbl_control_params where anulado = 0 and evaluados_id = $nameVal and fechacreacion between '$fechainiC' and '$fechafinC'")->queryScalar();
 						$model->Dedic_valora = $table->Dedic_valora;
 
@@ -1137,13 +1137,7 @@ class ControlprocesosController extends \yii\web\Controller {
                 $message .= "<h3>Existe nueva petición para desvincular el técnico de  equipo. Por favor verificar en QA, módulo -Peticiones Desvinculación Equipos-.</h3>";
                 $message .= "</body></html>";
 
-                // Yii::$app->mailer->compose()
-                                // ->setTo(["anmorenoa@grupokonecta.com","diego.montoya@grupokonecta.com","engie.guerrero@grupokonecta.com","geraldin.vargas.m@grupokonecta.com"])
-                                // ->setFrom(Yii::$app->params['email_satu_from'])
-                                // ->setSubject("Nueva Peticion -- Desvincular Tecnico Equipo")
-                                //->attach("")
-                                // ->setHtmlBody($message)
-                                // ->send(); 
+             
 
                 return $this->redirect('index');
          	}
