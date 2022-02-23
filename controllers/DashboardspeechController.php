@@ -639,7 +639,7 @@ use app\models\Formularios;
       }
 
           if (Yii::$app->request->get('txtServicioCategorias')) {
-            $id_params = Html::encode($_GET['txtServicioCategorias']);
+            $id_params = Html::encode(Yii::$app->request->get('txtServicioCategorias'));
 
             if ((int)$id_params) {
               $table = Dashboardcategorias::findOne($id_params);
