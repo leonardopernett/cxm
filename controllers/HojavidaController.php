@@ -1378,28 +1378,78 @@ use Exception;
       for ($i=0; $i < $array_codpcrc; $i++) { 
         $varcodpcrc = $txtvaridrequester[$i];
 
-        Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
-                    'id_dp_cliente' => $txtvarid_dp_cliente,
-                    'cod_pcrc' => $varcodpcrc,                                       
-                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();  
+        $paramsAutopcrc = [':VarAuto'=>$txtvarautoincrement];
+        $varVerificarAutopcrc = Yii::$app->db->createCommand('
+          SELECT COUNT(hd.hv_idpcrc) FROM tbl_hojavida_datapcrc hd 
+            WHERE hd.hv_idpersonal = :VarAuto
+            ')->bindValues($paramsAutopcrc)->queryScalar();
+        
+        if ($varVerificarAutopcrc != "0") {
+          Yii::$app->db->createCommand()->update('tbl_hojavida_datapcrc',[
+            'id_dp_cliente' => $txtvarid_dp_cliente,
+            'cod_pcrc' => $varcodpcrc,                                       
+          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
+        }else{
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
+            'id_dp_cliente' => $txtvarid_dp_cliente,
+            'cod_pcrc' => $varcodpcrc,                                       
+          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
+        }
+
+          
       }
 
       $array_director = count($txtvaridrequester2);
       for ($i=0; $i < $array_director; $i++) { 
         $vardirector = $txtvaridrequester2[$i];
 
-        Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
-                    'ccdirector' => $vardirector,                                      
-                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
+        $paramsAutoDirector = [':VarAuto'=>$txtvarautoincrement];
+        $varVerificarAutoDirector = Yii::$app->db->createCommand('
+          SELECT COUNT(hd.hv_iddirector) FROM tbl_hojavida_datadirector hd 
+            WHERE hd.hv_idpersonal = :VarAuto
+            ')->bindValues($paramsAutoDirector)->queryScalar();
+
+        if ($varVerificarAutoDirector != "0") {
+          Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
+            'ccdirector' => $vardirector,                                      
+          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
+        }else{
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
+            'hv_idpersonal' => $txtvarautoincrement,
+            'ccdirector' => $vardirector,       
+            'anulado' => 0,
+            'fechacreacion' => date('Y-m-d'), 
+            'usua_id' => Yii::$app->user->identity->id,                     
+          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
+        }
+
       }
 
       $array_gerente = count($txtvaridrequester3);
       for ($i=0; $i < $array_gerente; $i++) { 
         $vargerente = $txtvaridrequester3[$i];
 
-        Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
-                    'ccgerente' => $vargerente,                                       
-                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();  
+        $paramsAutoGerente = [':VarAuto'=>$txtvarautoincrement];
+        $varVerificarAutoGerente = Yii::$app->db->createCommand('
+          SELECT COUNT(hd.hv_idgerente) FROM tbl_hojavida_datagerente hd 
+            WHERE hd.hv_idpersonal = :VarAuto
+            ')->bindValues($paramsAutoGerente)->queryScalar();
+
+        if ($varVerificarAutoGerente != "0") {
+          Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
+            'ccgerente' => $vargerente,                                       
+          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
+        }else{
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
+            'hv_idpersonal' => $txtvarautoincrement,
+            'ccgerente' => $vargerente,       
+            'anulado' => 0,
+            'fechacreacion' => date('Y-m-d'), 
+            'usua_id' => Yii::$app->user->identity->id,                                
+          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
+        }
+
+          
       }          
 
       die(json_encode($txtrta));
