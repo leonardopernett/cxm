@@ -81,8 +81,6 @@ class ReportesController extends \yii\web\Controller {
                     } else {
                         $export = false;
                     }
-
-                    $_POST['exportextractar'] = 1;
                 }
 
                 return $this->render('extractar-formulario', [
@@ -543,8 +541,9 @@ class ReportesController extends \yii\web\Controller {
 
                 $out = [];
 
-                if (isset($_POST['depdrop_parents'])) {
-                    $parents = $_POST['depdrop_parents'];
+                $postdepdrop_parents = Yii::$app->request->post('depdrop_parents');
+                if (!isset($postdepdrop_parents)) {
+                    $parents = $postdepdrop_parents;
                     if ($parents != null && $parents[0] != "") {
                         $id = $parents[0];
                         $out = \app\models\Tmpreportes::getPreguntasByArbol($id);
@@ -862,7 +861,6 @@ class ReportesController extends \yii\web\Controller {
                     $model->startDate = $dates[0];
                     $model->endDate = $dates[1];
                     $export = $model->extractConsTransSatisfaccion();
-                    $_POST['exporthistorico'] = 1;
                 }
 
                 return $this->render('reportehistoricobasesatisfaccion', [
