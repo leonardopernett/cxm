@@ -702,36 +702,40 @@ use app\models\BasechatMotivos;
 
             public function actionConsultarcalificacionsubi() {
 
-                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
-                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
-                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
-                $arrayForm = $_POST;
+                $postarrTipificaciones = Yii::$app->request->post('tipificaciones');
+                $postarrSubtipificaciones = Yii::$app->request->post('subtipificaciones');
+                $postarrComentariosSecciones = Yii::$app->request->post('comentarioSeccion');
+                $postarrCheckPits = Yii::$app->request->post('checkPits');
+                $arrCalificaciones = !Yii::$app->request->post('calificaciones') ? array() : Yii::$app->request->post('calificaciones');
+                $arrTipificaciones = !isset($postarrTipificaciones) ? array() : $postarrTipificaciones;
+                $arrSubtipificaciones = !isset($postarrSubtipificaciones) ? array() : $postarrSubtipificaciones;
+                $arrComentariosSecciones = !$postarrComentariosSecciones ? array() : $postarrComentariosSecciones;
+                $arrCheckPits = !isset($postarrCheckPits) ? array() : $postarrCheckPits;
+                $arrayForm = Yii::$app->request->post();
                 $arrFormulario = [];
                 /* Variables para conteo de bloques */
                 $arrayCountBloques = [];
                 $arrayBloques = [];
                 $count = 0;
                 /* fin de variables */
-                $tmp_id = $_POST['tmp_formulario_id'];
-                $basesatisfaccion_id = $_POST['basesatisfaccion_id'];
-                $arrFormulario["dimension_id"] = $_POST['dimension'];
-                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
-                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
-                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
-                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
+                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
+                $basesatisfaccion_id = Yii::$app->request->post('basesatisfaccion_id');
+                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension');
+                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
+                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
                 $arrFormulario["sn_mostrarcalculo"] = 1;
                 $modelBase = BasechatTigo::find()->where(['basesatisfaccion_id' => $basesatisfaccion_id])->one();
                 
-                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
-                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
+                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
+                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
                 
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
 
-                if ($_POST['subi_calculo'] != '') {
-                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
+                if (Yii::$app->request->post('subi_calculo') != '') {
+                    $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
                     $data->save();
                 }
                 
@@ -863,15 +867,18 @@ use app\models\BasechatMotivos;
                     //TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
                     /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
                     \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
-                    
+                    $postResponsabilidad = Yii::$app->request->post('responsabilidad');
+                    $postCanal = Yii::$app->request->post('canal');
+                    $postMarca = Yii::$app->request->post('marca');
+                    $postEquivocacion = Yii::$app->request->post('equivocacion');
                     $modelBase->comentario = $arrFormulario["dscomentario"];
-                    $modelBase->tipologia = $_POST['categoria'];
+                    $modelBase->tipologia = Yii::$app->request->post('categoria');
                     $modelBase->estado = "Cerrado";
                     $modelBase->usado = "NO";
-                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? $_POST['responsabilidad'] : "";
-                    $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", $_POST['canal']) : "";
-                    $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", $_POST['marca']) : "";
-                    $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", $_POST['equivocacion']) : "";
+                    $modelBase->responsabilidad = (!isset($postResponsabilidad)) ? "" : $postResponsabilidad ;
+                    $modelBase->canal = (!isset($postCanal)) ? "" : implode(", ", $postCanal);
+                    $modelBase->marca = (!isset($postMarca)) ? "" : implode(", ", $postMarca);
+                    $modelBase->equivocacion = (!isset($postEquivocacion)) ? "" : implode(", ", $postEquivocacion;
                     $modelBase->save();
 
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Indices calculados'));
@@ -887,44 +894,51 @@ use app\models\BasechatMotivos;
 
             public function actionGuardaryenviarformulariogestion() {
 
-                $arrCalificaciones = !$_POST['calificaciones'] ? array() : $_POST['calificaciones'];
-                $arrTipificaciones = !isset($_POST['tipificaciones']) ? array() : $_POST['tipificaciones'];
-                $arrSubtipificaciones = !isset($_POST['subtipificaciones']) ? array() : $_POST['subtipificaciones'];
-                $arrComentariosSecciones = !$_POST['comentarioSeccion'] ? array() : $_POST['comentarioSeccion'];
-                $arrCheckPits = !isset($_POST['checkPits']) ? array() : $_POST['checkPits'];
-                $arrayForm = $_POST;
+                $postarrCalificaciones = Yii::$app->request->post('calificaciones');
+                $postarrTipificaciones = Yii::$app->request->post('tipificaciones');
+                $postarrSubtipificaciones = Yii::$app->request->post('subtipificaciones');
+                $postarrComentariosSecciones = Yii::$app->request->post('comentarioSeccion');
+                $postarrCheckPits = Yii::$app->request->post('checkPits');
+                $arrCalificaciones = !$postarrCalificaciones ? array() : $postarrCalificaciones;
+                $arrTipificaciones = !isset($postarrTipificaciones) ? array() : $postarrTipificaciones;
+                $arrSubtipificaciones = !isset($postarrSubtipificaciones) ? array() : $postarrSubtipificaciones;
+                $arrComentariosSecciones = !$postarrComentariosSecciones ? array() : $postarrComentariosSecciones;
+                $arrCheckPits = !isset($postarrCheckPits) ? array() : $postarrCheckPits;
+                $arrayForm = Yii::$app->request->post();
                 $arrFormulario = [];
                 /* Variables para conteo de bloques */
                 $arrayCountBloques = [];
                 $arrayBloques = [];
                 $count = 0;
                 /* fin de variables */
-                $tmp_id = $_POST['tmp_formulario_id'];
-                $basesatisfaccion_id = $_POST['basesatisfaccion_id'];
-                $arrFormulario["dimension_id"] = $_POST['dimension'];
-                $arrFormulario["dsruta_arbol"] = $_POST['ruta_arbol'];
-                $arrFormulario["dscomentario"] = $_POST['comentarios_gral'];
-                $arrFormulario["dsfuente_encuesta"] = $_POST['fuente'];
-                $arrFormulario["transacion_id"] = $_POST['transacion_id'];
+                $tmp_id = Yii::$app->request->post('tmp_formulario_id');
+                $basesatisfaccion_id = Yii::$app->request->post('basesatisfaccion_id');
+                $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension');
+                $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
+                $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
                 $arrFormulario["sn_mostrarcalculo"] = 1;
-                $view = (isset($_POST['view']))?$_POST['view']:null;
+                $postview = Yii::$app->request->post('view');
+                $view = (!isset($postview]))?null:$postview;
                 $modelBase = BasechatTigo::find()->where(['basesatisfaccion_id' => $basesatisfaccion_id])->one();
 
 
                 
-                $arrFormulario["usua_id_lider"] = $_POST['form_lider_id'];
-                $arrFormulario["equipo_id"] = $_POST['form_equipo_id'];
+                $arrFormulario["usua_id_lider"] = Yii::$app->request->post('form_lider_id');
+                $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
                 
                 //CONSULTA DEL FORMULARIO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
-                if ($_POST['subi_calculo'] != '') {
-                    $data->subi_calculo .=',' . $_POST['subi_calculo'];
+                if (Yii::$app->request->post('subi_calculo') != '') {
+                    $data->subi_calculo .=',' . Yii::$app->request->post('subi_calculo');
                     $data->save();
                 }
 
                 date_default_timezone_set('America/Bogota');
                 if($data['hora_final'] != ""){
-                        $inicial = new DateTime($_POST['hora_modificacion']);
+                        $postHoraModificacion = Yii::$app->request->post('hora_modificacion');
+                        $inicial = new DateTime($postHoraModificacion);
                         $final = new DateTime(date("Y-m-d H:i:s"));
 
                         $dteDiff  = $inicial->diff($final);
@@ -1088,13 +1102,17 @@ use app\models\BasechatMotivos;
                         return $this->redirect(['basechat/showformulariogestion',
                             'basesatisfaccion_id' => $modelBase->idencuesta, 'preview' => 0, 'fill_values' => false, 'aleatorio' => 3, 'banderaescalado' => false]);
                     }
+                    $postResponsabilidad = Yii::$app->request->post('responsabilidad');
+                    $postCanal = Yii::$app->request->post('canal');
+                    $postMarca = Yii::$app->request->post('marca');
+                    $postEquivocacion = Yii::$app->request->post('equivocacion');
                     $modelBase->comentario = $arrFormulario["dscomentario"];
-                    $modelBase->tipologia = $_POST['categoria'];
+                    $modelBase->tipologia = Yii::$app->request->post('categoria');
                     $modelBase->usado = "NO";
-                    $modelBase->responsabilidad = (isset($_POST['responsabilidad'])) ? $_POST['responsabilidad'] : "";
-                    $modelBase->canal = (isset($_POST['canal'])) ? implode(", ", $_POST['canal']) : "";
-                    $modelBase->marca = (isset($_POST['marca'])) ? implode(", ", $_POST['marca']) : "";
-                    $modelBase->equivocacion = (isset($_POST['equivocacion'])) ? implode(", ", $_POST['equivocacion']) : "";
+                    $modelBase->responsabilidad = (!isset($postResponsabilidad)) ? "" : $postResponsabilidad;
+                    $modelBase->canal = (isset($postCanal)) ? "" : implode(", ", $postCanal);
+                    $modelBase->marca = (isset($postMarca)) ? "" : implode(", ", $postMarca);
+                    $modelBase->equivocacion = (isset($postEquivocacion)) ? "" : implode(", ", $postEquivocacion);
                     $modelBase->save();
 
 
