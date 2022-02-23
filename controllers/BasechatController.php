@@ -921,7 +921,7 @@ use \yii\base\Exception;
                 $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
                 $arrFormulario["sn_mostrarcalculo"] = 1;
                 $postview = Yii::$app->request->post('view');
-                $view = (!isset($postview]))?null:$postview;
+                $view = (!isset($postview))?null:$postview;
                 $modelBase = BasechatTigo::find()->where(['basesatisfaccion_id' => $basesatisfaccion_id])->one();
 
 
