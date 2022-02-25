@@ -671,7 +671,7 @@ AppAsset::register($this);
             </div>
         </footer>
 
-        <script>
+        <!-- <script>
             timer = setInterval("logout()", 3600000);
             $('#body').mousemove(function(e){
                 clearInterval(timer);
@@ -685,7 +685,7 @@ AppAsset::register($this);
             function logout() {
                 $.post('/qa_managementv2/web/index.php/site/logout')
             }
-        </script>
+        </script> -->
 
 
         
