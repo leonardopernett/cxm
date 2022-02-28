@@ -117,8 +117,10 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'app\models\User',
+            
+            'autoRenewCookie' => true,
 
-            'enableAutoLogin' => true,
+            'authTimeout' => 3600,
 
             'identityCookie' => [
 
