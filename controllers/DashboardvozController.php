@@ -169,9 +169,13 @@ use app\models\ControlVolumenxencuestasdq;
             $txtDirector = "Actualizar información";
             $txtArbol = "Actualizar información";
 
-            $txtGerentes = Yii::$app->db->createCommand("select group_concat(distinct gerentes order by gerentes asc separator ', ') as concatenar from tbl_voz_seleccion vs where arbol_id = :txtCodigo and anulado = 0 ")
-            ->bindValue(':txtCodigo',$txtCodigo)
-            ->queryScalar();
+            $txtGerentes = Yii::$app->db->createCommand("
+                SELECT pc.gerente_cuenta FROM tbl_proceso_cliente_centrocosto pc
+                    INNER JOIN  tbl_speech_servicios ss ON 
+                        pc.id_dp_clientes = ss.id_dp_clientes
+                    WHERE 
+                        ss.arbol_id IN  ('$txtCodigo')
+                    GROUP BY pc.id_dp_clientes")->queryScalar();
 
             $query =  new Query;
             $query      ->select(['tbl_voz_seleccion.ciudad','tbl_procesos_directores.director_programa','tbl_arbols.name'])->distinct()
@@ -185,6 +189,14 @@ use app\models\ControlVolumenxencuestasdq;
                                 ->andwhere(['tbl_voz_seleccion.anulado' => 0]);
             $command = $query->createCommand();
             $listData = $command->queryAll();  
+
+            $listData = Yii::$app->db->createCommand("
+                SELECT pc.director_programa, pc.ciudad, ss.nameArbol as name FROM tbl_proceso_cliente_centrocosto pc
+                    INNER JOIN  tbl_speech_servicios ss ON 
+                        pc.id_dp_clientes = ss.id_dp_clientes
+                    WHERE 
+                        ss.arbol_id IN ('$txtCodigo')
+                    GROUP BY pc.id_dp_clientes")->queryAll();
 
             foreach ($listData as $key => $value) {
                 $txtCiudad = $value['ciudad'];
