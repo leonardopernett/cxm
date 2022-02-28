@@ -175,7 +175,12 @@ use app\models\ControlVolumenxencuestasdq;
                         pc.id_dp_clientes = ss.id_dp_clientes
                     WHERE 
                         ss.arbol_id IN  ('$txtCodigo')
-                    GROUP BY pc.id_dp_clientes")->queryScalar();
+                    GROUP BY pc.gerente_cuenta")->queryAll();
+            $arrayGerentes = array();
+            foreach ($txtGerentes as $key => $value) {
+                array_push($arrayGerentes, $value['gerente_cuenta']);
+            }
+            $txtGerentes = implode(", ", $arrayGerentes);
 
             $query =  new Query;
             $query      ->select(['tbl_voz_seleccion.ciudad','tbl_procesos_directores.director_programa','tbl_arbols.name'])->distinct()
