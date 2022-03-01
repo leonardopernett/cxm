@@ -96,18 +96,14 @@ use yii\db\Query;
 
 </style>
 <!-- datatable -->
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
-
+<link rel="stylesheet" href="../../js_extensions/datatables/jquery.dataTables.min.css">
 
 <script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
 <script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
 <script src="../../js_extensions/cloudflare/jszip.min.js"></script>
-<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
 <script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
 <script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
 <script src="../../js_extensions/datatables/buttons.print.min.js"></script>
-<script src="../../js_extensions/mijs.js"> </script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
@@ -291,7 +287,7 @@ use yii\db\Query;
 
                                 $paramsCategorias = [':varPcrc'=>$codpcrc,':varCategoria'=>2,':varResponsabilidad'=>1];
                                 $varListCategorias = Yii::$app->db->createCommand('
-                                    SELECT idcategoria, orientacionsmart FROM tbl_speech_categorias 
+                                    SELECT idcategoria, orientacionsmart, responsable FROM tbl_speech_categorias 
                                         WHERE 
                                             cod_pcrc IN (:varPcrc)
                                                 AND idcategorias IN (:varCategoria)
@@ -303,34 +299,42 @@ use yii\db\Query;
                                 $varResultadosIDA = 0;
                                 foreach ($varListCategorias as $key => $value) {
 
-                                    if ($value['orientacionsmart'] == "2") {
-                                        $conteosNegativo = $conteosNegativo + 1;
-                                        $ContarNegativa = (new \yii\db\Query())
-                                            ->select(['idvariable'])
-                                            ->from(['tbl_speech_general'])
-                                            ->where('programacliente = :varServicio',[':varServicio'=>$varBolsita])
-                                            ->andwhere('callId IN (:varCallid)',[':varCallid'=>$varCallid])
-                                            ->andwhere('idvariable IN (:varVariable)',[':varVariable'=>$value['idcategoria']])
-                                            ->andwhere('anulado = :varAnulado',[':varAnulado'=>0])
-                                            ->count();
+                                    if ($value['responsable'] == "1") {
+                                        if ($value['orientacionsmart'] == "2") {
+                                            $conteosNegativo = $conteosNegativo + 1;
+                                            $ContarNegativa = (new \yii\db\Query())
+                                                ->select(['idvariable'])
+                                                ->from(['tbl_speech_general'])
+                                                ->where('programacliente = :varServicio',[':varServicio'=>$varBolsita])
+                                                ->andwhere('callId IN (:varCallid)',[':varCallid'=>$varCallid])
+                                                ->andwhere('idvariable IN (:varVariable)',[':varVariable'=>$value['idcategoria']])
+                                                ->andwhere('anulado = :varAnulado',[':varAnulado'=>0])
+                                                ->count();
 
-                                        if ($ContarNegativa == "1") {
-                                            $conteoNegativas = $conteoNegativas + 1;
+                                            if ($ContarNegativa == "1") {
+                                                $conteoNegativas = $conteoNegativas + 1;
+                                            }
+                                        }else{
+                                            $ContarPositivo = (new \yii\db\Query())
+                                                ->select(['idvariable'])
+                                                ->from(['tbl_speech_general'])
+                                                ->where('programacliente = :varServicio',[':varServicio'=>$varBolsita])
+                                                ->andwhere('callId IN (:varCallid)',[':varCallid'=>$varCallid])
+                                                ->andwhere('idvariable IN (:varVariable)',[':varVariable'=>$value['idcategoria']])
+                                                ->andwhere('anulado = :varAnulado',[':varAnulado'=>0])
+                                                ->count();
+
+                                            if ($conteoPositivas == "1") {
+                                                $conteoPositivas = $conteoPositivas + 1;
+                                            }
                                         }
+
                                     }else{
-                                        $ContarPositivo = (new \yii\db\Query())
-                                            ->select(['idvariable'])
-                                            ->from(['tbl_speech_general'])
-                                            ->where('programacliente = :varServicio',[':varServicio'=>$varBolsita])
-                                            ->andwhere('callId IN (:varCallid)',[':varCallid'=>$varCallid])
-                                            ->andwhere('idvariable IN (:varVariable)',[':varVariable'=>$value['idcategoria']])
-                                            ->andwhere('anulado = :varAnulado',[':varAnulado'=>0])
-                                            ->count();
-
-                                        if ($conteoPositivas == "1") {
-                                            $conteoPositivas = $conteoPositivas + 1;
-                                        }
+                                        $conteoPositivas = 0;
+                                        $conteosNegativo = 0;
+                                        $conteoNegativas = 0;
                                     }
+                                    
                                 }
 
                                 $varTotalVariables = count($varListCategorias);
