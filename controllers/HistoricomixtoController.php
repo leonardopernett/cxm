@@ -597,7 +597,7 @@ use app\models\SpeechParametrizar;
         $vartotalindica = count($varlistaindica);
     //Diego para lo de responsabilidad IDA
         if($varListadorespo) {
-             $lastColumn = 'G';
+             $lastColumn = 'H';
       foreach ($varListIndi as $key => $value) {
     $lastColumn++;
             }
@@ -630,7 +630,7 @@ use app\models\SpeechParametrizar;
     
     // fin Diego
 
-        $lastColumn = 'G'; 
+        $lastColumn = 'H'; 
         $numCell = 5;
         $numcol1 = 0;
         $varlistasigno = array();
@@ -665,7 +665,7 @@ use app\models\SpeechParametrizar;
           
         }
 
-        $lastColumn = 'G'; 
+        $lastColumn = 'H'; 
         $numCell = 6;
         $numcol1 = 0;
         foreach ($varListIndiVari as $key => $value) {

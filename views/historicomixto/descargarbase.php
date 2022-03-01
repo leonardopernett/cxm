@@ -119,7 +119,7 @@ $this->title = 'Histórico Valoraciones Mixtas';
                     var numRta =  JSON.parse(response);                
                     console.log(numRta);
                     if (numRta != 0) {
-                        $("#modal2").modal("hide");
+                        $("#modal1").modal("hide");
                     }                    
                 }
             });  
