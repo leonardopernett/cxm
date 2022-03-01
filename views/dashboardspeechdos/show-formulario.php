@@ -1558,7 +1558,7 @@ function cargarlista(){
             var varPartT = document.getElementById("speechparametrizar-id_dp_clientes"); 
             varPartT.disabled=false;
             var guardarFormulario = $("#guardarFormulario");
-            guardarFormulario.attr('action', '<?php echo Url::to(['dashboardspeech/guardaryenviarformulario']); ?>');
+            guardarFormulario.attr('action', '<?php echo Url::to(['dashboardspeechdos/guardaryenviarformulario']); ?>');
             
             var valid = validarFormulario();
             if (valid) {
