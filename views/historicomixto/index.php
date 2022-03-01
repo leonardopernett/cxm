@@ -179,7 +179,8 @@ use yii\db\Query;
                     <?= Html::a('Aceptar',  ['dashboardspeechdos/index'], ['class' => 'btn btn-success',
                                     'style' => 'display: inline;margin: 3px;height: 34px;display: inline;height: 34px;background-color: #337ab7;',                            
                                     'data-toggle' => 'tooltip',
-                                    'title' => 'Escuchar +'])
+                                    'title' => 'Escuchar +',
+                                    'target' => '_blank'])
                     ?>
                 </div>
             </div>
