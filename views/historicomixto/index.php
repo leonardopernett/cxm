@@ -193,7 +193,8 @@ use yii\db\Query;
                               'title' => 'Buscar Datos',
                               'style' => 'display: inline;margin: 3px;height: 34px;',
                               'id'=>'modalButton1',
-                              'onclick' => 'verifica();']) 
+                              'onclick' => 'verifica();',
+                              'target' => '_blank']) 
                       ?>
                 </div>
             </div>
