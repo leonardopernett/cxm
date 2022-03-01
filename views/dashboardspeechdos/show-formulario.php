@@ -1560,20 +1560,6 @@ function cargarlista(){
             var guardarFormulario = $("#guardarFormulario");
             guardarFormulario.attr('action', '<?php echo Url::to(['dashboardspeech/guardaryenviarformulario']); ?>');
             
-            vardsfuentes = "<?php echo $varFuente; ?>";
-            varsessiones = "<?php echo  $sesiones; ?>";
-            $.ajax({
-                method: "get",
-                url: "guardarfuentes",
-                data : {
-                    varfuentes : vardsfuentes, 
-                    varusuaid : varsessiones,         
-                },
-                success : function(response){ 
-                    var Rta = $.parseJSON(response);
-                }                               
-            });
-            
             var valid = validarFormulario();
             if (valid) {
                 guardarFormulario.submit();
