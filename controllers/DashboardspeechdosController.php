@@ -5756,8 +5756,6 @@ public function actionCantidadentto(){
                     $data->minutes = $dteDiff1->h . ":" . $dteDiff1->i . ":" . $dteDiff1->s;
                 }
 
-                $varFuente = $data->tmp_formulario->dsfuente_encuesta;
-
                 $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$formulario_id'")->queryScalar();
              
 
@@ -5788,7 +5786,6 @@ public function actionCantidadentto(){
                 return $this->render('show-formulario', [
                                                         'data' => $data,                            
                                                         'model' => $model,
-                                                        'varFuente' => $varFuente,
                 ]);
     }
 
@@ -5827,7 +5824,8 @@ public function actionCantidadentto(){
                 $arrFormulario["dimension_id"] = Yii::$app->request->post('dimension_id');
                 $arrFormulario["dsruta_arbol"] = Yii::$app->request->post('ruta_arbol');
                 $arrFormulario["dscomentario"] = Yii::$app->request->post('comentarios_gral');
-                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');
+                $arrFormulario["dsfuente_encuesta"] = Yii::$app->request->post('fuente');      
+                $txtFuentes = Yii::$app->request->post('fuente');  
                 $arrFormulario["transacion_id"] = Yii::$app->request->post('transacion_id');
                 $arrFormulario["sn_mostrarcalculo"] = 1;
                 $postView = Yii::$app->request->post('view');
@@ -6001,6 +5999,29 @@ public function actionCantidadentto(){
 
                 /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
                 $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
+
+                $txtUsuaid = Yii::$app->user->identity->id;
+
+                $dataIdFormulario = (new \yii\db\Query())
+                      ->select(['id'])
+                      ->from(['tbl_ejecucionformularios'])
+                      ->where('created BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>date('Y-m-d').' 00:00:00',':varFechafines'=>date('Y-m-d').' 23:59:59'])
+                      ->andwhere('dsfuente_encuesta IN (:varDsFuente)',[':varDsFuente'=>$txtFuentes])
+                      ->andwhere('usua_id IN (:varUsuaid)',[':varUsuaid'=>$txtUsuaid])
+                      ->scalar();
+
+                $varExtraerData = explode("; ", $txtFuentes);
+                $varCallids = $varExtraerData[0];
+                $varTiempoReal = $varExtraerData[2];
+
+                Yii::$app->db->createCommand()->insert('tbl_speech_mixta',[
+                    'formulario_id' => $dataIdFormulario,
+                    'callid' => $varCallids,
+                    'fechareal' => $varTiempoReal,   
+                    'anulado' => 0,
+                    'usua_id' => $txtUsuaid,
+                    'fechacreacion' => date('Y-m-d'),                                       
+                ])->execute();
 
     //Proceso para guardar clientes y centro de costos
 
@@ -6197,34 +6218,6 @@ public function actionCantidadentto(){
       ]);
     }
 
-    public function actionGuardarfuentes(){
-      $txtFuentes = Yii::$app->request->get('varfuentes');
-      $txtUsuaid = Yii::$app->request->get('varusuaid');
-
-      $dataIdFormulario = (new \yii\db\Query())
-            ->select(['id'])
-            ->from(['tbl_ejecucionformularios'])
-            ->where('created BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>date('Y-m-d').' 00:00:00',':varFechafines'=>date('Y-m-d').' 23:59:59'])
-            ->andwhere('dsfuente_encuesta IN (:varDsFuente)',[':varDsFuente'=>$txtFuentes])
-            ->andwhere('usua_id IN (:varUsuaid)',[':varUsuaid'=>$txtUsuaid])
-            ->scalar();
-
-      $varExtraerData = explode("; ", $txtFuentes);
-      $varCallids = $varExtraerData[0];
-      $varTiempoReal = $varExtraerData[2];
-
-      Yii::$app->db->createCommand()->insert('tbl_speech_mixta',[
-                    'formulario_id' => $dataIdFormulario,
-                    'callid' => $varCallids,
-                    'fechareal' => $varTiempoReal,   
-                    'anulado' => 0,
-                    'usua_id' => $txtUsuaid,
-                    'fechacreacion' => date('Y-m-d'),                                       
-                ])->execute();
-
-      die(json_encode($dataIdFormulario)); 
-
-    }
 
 
   }
