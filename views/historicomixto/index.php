@@ -113,10 +113,20 @@ use yii\db\Query;
     }
 
 </style>
+<!-- datatable -->
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
+<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
+<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
+<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
+<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
+<script src="../../js_extensions/mijs.js"> </script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
