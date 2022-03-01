@@ -5756,6 +5756,8 @@ public function actionCantidadentto(){
                     $data->minutes = $dteDiff1->h . ":" . $dteDiff1->i . ":" . $dteDiff1->s;
                 }
 
+                $varFuente = $data->tmp_formulario->dsfuente_encuesta;
+
                 $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = '$formulario_id'")->queryScalar();
              
 
@@ -5786,6 +5788,7 @@ public function actionCantidadentto(){
                 return $this->render('show-formulario', [
                                                         'data' => $data,                            
                                                         'model' => $model,
+                                                        'varFuente' => $varFuente,
                 ]);
     }
 
@@ -6192,6 +6195,35 @@ public function actionCantidadentto(){
         'txtvarhoras' => $txtvarhoras,
         'txtusuarios' => $txtusuarios,
       ]);
+    }
+
+    public function actionGuardarfuentes(){
+      $txtFuentes = Yii::$app->request->get('varfuentes');
+      $txtUsuaid = Yii::$app->request->get('varusuaid');
+
+      $dataIdFormulario = (new \yii\db\Query())
+            ->select(['id'])
+            ->from(['tbl_ejecucionformularios'])
+            ->where('created BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>date('Y-m-d').' 00:00:00',':varFechafines'=>date('Y-m-d').' 23:59:59'])
+            ->andwhere('dsfuente_encuesta IN (:varDsFuente)',[':varDsFuente'=>$txtFuentes])
+            ->andwhere('usua_id IN (:varUsuaid)',[':varUsuaid'=>$txtUsuaid])
+            ->scalar();
+
+      $varExtraerData = explode("; ", $txtFuentes);
+      $varCallids = $varExtraerData[0];
+      $varTiempoReal = $varExtraerData[2];
+
+      Yii::$app->db->createCommand()->insert('tbl_speech_mixta',[
+                    'formulario_id' => $dataIdFormulario,
+                    'callid' => $varCallids,
+                    'fechareal' => $varTiempoReal,   
+                    'anulado' => 0,
+                    'usua_id' => $txtUsuaid,
+                    'fechacreacion' => date('Y-m-d'),                                       
+                ])->execute();
+
+      die(json_encode($dataIdFormulario)); 
+
     }
 
 
