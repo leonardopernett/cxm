@@ -271,7 +271,7 @@ use app\models\SpeechParametrizar;
             }elseif ($value['ext']!="") {
                 array_push($arrayRn,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['ext']));
             }elseif ($value['usuared']!="") {
-                array_push($arrayRn,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['rn']));
+                array_push($arrayRn,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['usuared']));
             }else{
                 array_push($arrayRn,array("bolsitaservicio"=>"--","extension"=>"--"));
             }
@@ -306,7 +306,7 @@ use app\models\SpeechParametrizar;
             }elseif ($value['ext']!="") {
                 array_push($arrayCalidad,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['ext']));
             }elseif ($value['usuared']!="") {
-                array_push($arrayCalidad,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['rn']));
+                array_push($arrayCalidad,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['usuared']));
             }else{
                 array_push($arrayCalidad,array("bolsitaservicio"=>"--","extension"=>"--"));
             }
@@ -341,7 +341,7 @@ use app\models\SpeechParametrizar;
             }elseif ($value['ext']!="") {
                 array_push($arrayOjt,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['ext']));
             }elseif ($value['usuared']!="") {
-                array_push($arrayOjt,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['rn']));
+                array_push($arrayOjt,array("bolsitaservicio"=>$txtBolsita,"extension"=>$value['usuared']));
             }else{
                 array_push($arrayOjt,array("bolsitaservicio"=>"--","extension"=>"--"));
             }
