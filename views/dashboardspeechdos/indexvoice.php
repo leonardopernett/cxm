@@ -1938,7 +1938,7 @@ $varColorM = null;
     <div class="col-md-2">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> Exportar Reporte: </label>
-        <?= Html::button('Exportar', ['value' => url::to(['categoriasvoice', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codigoPCRC' => $txtCodPcrcok, 'codparametrizar' => $txtCodParametrizar, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
+        <?= Html::button('Exportar', ['value' => url::to(['dashboardspeech/categoriasvoice', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtParametros, 'codigoPCRC' => $txtCodPcrcok, 'codparametrizar' => $txtCodParametrizar, 'indicador' => $varindica, 'nomFechaI' => $txtFechaIni, 'nomFechaF' => $txtFechaFin]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
                         'data-toggle' => 'tooltip',
                         'title' => 'Exportar', 'style' => 'background-color: #337ab7']) ?> 
 
