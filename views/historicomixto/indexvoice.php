@@ -260,6 +260,7 @@ use yii\db\Query;
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Interacción') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Asesor Speech') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Dato Asesor') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Lider') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Automatico Agente') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Calidad  y Consistencia') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Score') ?></label></th>
@@ -273,6 +274,7 @@ use yii\db\Query;
                                 $varCallid = $value['callId'];
                                 $varLogueo = $value['login_id'];
                                 $paramsRed = [':varUsua'=>$value['login_id']];
+                                $varLider = null;
 
                                 if (is_numeric($value['login_id'])) {
                                     $varDocumento = Yii::$app->db->createCommand('
@@ -280,12 +282,36 @@ use yii\db\Query;
                                         WHERE 
                                             e.identificacion IN (:varUsua)
                                         GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+
+                                    $varLider= Yii::$app->db->createCommand('
+                                    SELECT u.usua_nombre FROM tbl_usuarios u 
+                                        INNER JOIN tbl_equipos eq ON
+                                            u.usua_id = eq.usua_id
+                                        INNER JOIN tbl_equipos_evaluados ee ON 
+                                            eq.id = ee.equipo_id
+                                        INNER JOIN tbl_evaluados e ON 
+                                            ee.evaluado_id = e.id
+                                        WHERE 
+                                            e.identificacion IN (:varUsua)
+                                        GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
                                 }else{
                                     $varDocumento = Yii::$app->db->createCommand('
                                     SELECT e.identificacion FROM tbl_evaluados e 
                                         WHERE 
                                             e.dsusuario_red IN (:varUsua)
                                         GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+
+                                    $varLider= Yii::$app->db->createCommand('
+                                    SELECT u.usua_nombre FROM tbl_usuarios u 
+                                        INNER JOIN tbl_equipos eq ON
+                                            u.usua_id = eq.usua_id
+                                        INNER JOIN tbl_equipos_evaluados ee ON 
+                                            eq.id = ee.equipo_id
+                                        INNER JOIN tbl_evaluados e ON 
+                                            ee.evaluado_id = e.id
+                                        WHERE 
+                                            e.dsusuario_red IN (:varUsua)
+                                        GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
                                 }
                                 
 
@@ -370,6 +396,7 @@ use yii\db\Query;
                                 <td><label style="font-size: 12px;"><?php echo  $varCallid; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varLogueo; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varDocumento; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varLider; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varResultadosIDA; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varScoreValoracion; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varPromedioScore; ?></label></td>
