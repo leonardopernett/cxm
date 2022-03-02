@@ -587,6 +587,12 @@ use app\models\SpeechParametrizar;
         $phpExc->getActiveSheet()->getStyle('G6')->applyFromArray($styleArraySubTitle);
         $phpExc->getActiveSheet()->getStyle('G6')->applyFromArray($styleArrayTitle);
 
+        $phpExc->getActiveSheet()->SetCellValue('H6','Datos Lider');
+        $phpExc->getActiveSheet()->getStyle('H6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('H6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('H6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('H6')->applyFromArray($styleArrayTitle);
+
 
 
         $txtcodigoCC = $VarCodsPcrc;
@@ -600,7 +606,7 @@ use app\models\SpeechParametrizar;
         $vartotalindica = count($varlistaindica);
     //Diego para lo de responsabilidad IDA
         if($varListadorespo) {
-             $lastColumn = 'H';
+             $lastColumn = 'I';
       foreach ($varListIndi as $key => $value) {
     $lastColumn++;
             }
@@ -633,7 +639,7 @@ use app\models\SpeechParametrizar;
     
     // fin Diego
 
-        $lastColumn = 'H'; 
+        $lastColumn = 'I'; 
         $numCell = 5;
         $numcol1 = 0;
         $varlistasigno = array();
@@ -668,7 +674,7 @@ use app\models\SpeechParametrizar;
           
         }
 
-        $lastColumn = 'H'; 
+        $lastColumn = 'I'; 
         $numCell = 6;
         $numcol1 = 0;
         foreach ($varListIndiVari as $key => $value) {
@@ -703,7 +709,17 @@ use app\models\SpeechParametrizar;
           // Diego para lo de responsabilidad
           if($varListadorespo) {
             if($vartotalrespo == $numcol1){
-              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' %Total Agente');
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, 'Resultado Automatico Agente');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, 'Resultado Calidad  y Consistencia');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, 'Resultado Score');
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
               $lastColumn++;
@@ -752,6 +768,7 @@ use app\models\SpeechParametrizar;
           $txtCallid = $value['callid'];
           $txtExtensionid = $value['extension'];
           $txtFecha = $value['fechallamada'];
+          $txtFechaReal = $value['fechareal'];
           
           
           $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['fechareal']); 
@@ -775,6 +792,7 @@ use app\models\SpeechParametrizar;
 
           $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $VarCodsPcrc); 
           $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $value['login_id']);
+          $varLider = null;
 
             if (is_numeric($value['login_id'])) {
                 $varDocumento = Yii::$app->db->createCommand('
@@ -782,17 +800,44 @@ use app\models\SpeechParametrizar;
                         WHERE 
                             e.identificacion IN (:varUsua)
                         GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+
+                $varLider = Yii::$app->db->createCommand('
+                                    SELECT u.usua_nombre FROM tbl_usuarios u 
+                                        INNER JOIN tbl_equipos eq ON
+                                            u.usua_id = eq.usua_id
+                                        INNER JOIN tbl_equipos_evaluados ee ON 
+                                            eq.id = ee.equipo_id
+                                        INNER JOIN tbl_evaluados e ON 
+                                            ee.evaluado_id = e.id
+                                        WHERE 
+                                            e.identificacion IN (:varUsua)
+                                        GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
+
             }else{
                 $varDocumento = Yii::$app->db->createCommand('
                     SELECT e.identificacion FROM tbl_evaluados e 
                         WHERE 
                             e.dsusuario_red IN (:varUsua)
                     GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+
+                $varLider = Yii::$app->db->createCommand('
+                                    SELECT u.usua_nombre FROM tbl_usuarios u 
+                                        INNER JOIN tbl_equipos eq ON
+                                            u.usua_id = eq.usua_id
+                                        INNER JOIN tbl_equipos_evaluados ee ON 
+                                            eq.id = ee.equipo_id
+                                        INNER JOIN tbl_evaluados e ON 
+                                            ee.evaluado_id = e.id
+                                        WHERE 
+                                            e.dsusuario_red IN (:varUsua)
+                                        GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
             }
 
             $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varDocumento);
 
-          $lastColumn = 'H';
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varLider);
+
+          $lastColumn = 'I';
           foreach ($varListIndiVari as $key => $value) {
             $varVariables = $value['idcategoria'];
             $varIdcategorias = $value['idcategorias'];
@@ -962,38 +1007,7 @@ use app\models\SpeechParametrizar;
 
             $lastColumn++;
 
-            if($varListadorespo) {
-                $cuentavari++;
-                
-                if($cuentavari > $vartotalindica && $cuentavari <= $vartotalrespo){
-                  if ($varlistaresponsable[$cuentavari - ($vartotalindica + 1)] == 'Agente'){
-                      if($varlistasigno[$cuentavari - 1] == 'Positivo'){
-                        $sumapositivoR = $sumapositivoR + $varConteo;
-                      }
-                      if($varlistasigno[$cuentavari - 1] == 'Negativo'){
-                        $sumanegativoR = $sumanegativoR + $varConteo;
-                        $cuentanegativoR++;
-                      }
-                  }
-                }
-
-                //imprime total porcentaje Agente po callid
-                $varTotalvariables = count($varListIndiVari2);
-                if($cuentavari == ($vartotalrespo)) {
-                  $varaqui = 'Aqui';
-                  if($cuentanegativoR == 0) {
-                    $totalpondeR = round((($sumapositivoR / $varTotalvariables) * 100),2);
-                  }
-                  if($cuentanegativoR == $varTotalvariables) {
-                    $totalpondeR = round(((($cuentanegativoR - $sumanegativoR) / $varTotalvariables) * 100),2);
-                  }
-                  if($cuentanegativoR != $varTotalvariables && $cuentanegativoR > 0) {
-                    $totalpondeR = round(((($sumapositivoR + ($cuentanegativoR - $sumanegativoR)) / $varTotalvariables) * 100),2);
-                  }              
-                  $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $totalpondeR); 
-                $lastColumn++;
-                }
-            }
+           
             
           }
           $numCell++;
