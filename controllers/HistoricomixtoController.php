@@ -373,490 +373,510 @@ use app\models\SpeechParametrizar;
     }
 
     public function actionExportbase(){
-      $var_FechaIni = null;
-      $var_FechaFin = null;
-      $varCorreo = null;
-      $varArbol_idV = null;
-      $varParametros_idV = null;
-      $varCodparametrizar = null;
-      $VarCodsPcrc = null;
+        $var_FechaIni = null;
+        $var_FechaFin = null;
+        $varCorreo = null;
+        $varArbol_idV = null;
+        $varParametros_idV = null;
+        $varCodparametrizar = null;
+        $VarCodsPcrc = null;
 
-      $var_FechaIni = Yii::$app->request->post("var_FechaIni");
-      $var_FechaFin = Yii::$app->request->post("var_FechaFin");
-      $txtServicio = Yii::$app->request->post("varArbol_idV");
-      $txtParametros = Yii::$app->request->post("varParametros_idV");
-      $varCodparametrizar = Yii::$app->request->post("varCodparametrizar");
-      $varCorreo = Yii::$app->request->post("var_Destino");
-      $VarCodsPcrc = Yii::$app->request->post("var_CodsPcrc");
+        $var_FechaIni = Yii::$app->request->post("var_FechaIni");
+        $var_FechaFin = Yii::$app->request->post("var_FechaFin");
+        $txtServicio = Yii::$app->request->post("varArbol_idV");
+        $txtParametros = Yii::$app->request->post("varParametros_idV");
+        $varIndicador = Yii::$app->request->post("varIndicador");
+        $varCodparametrizar = Yii::$app->request->post("varCodparametrizar");
+        $varCorreo = Yii::$app->request->post("var_Destino");
+        $VarCodsPcrc = Yii::$app->request->post("var_CodsPcrc");
 
+        $sessiones = Yii::$app->user->identity->id;
 
-      $varInicioF = $var_FechaIni.' 05:00:00';
-      $varFecha = date('Y-m-d',strtotime($var_FechaFin."+ 1 days"));
-      $varFinF = $varFecha.' 05:00:00';
+        $varInicioF = $var_FechaIni.' 05:00:00';
+        $varFecha = date('Y-m-d',strtotime($var_FechaFin."+ 1 days"));
+        $varFinF = $varFecha.' 05:00:00';
 
+        $fechaComoEntero = strtotime($varInicioF);
+        $fechaIniCat = date("Y", $fechaComoEntero).'-01-01'; 
+        $fechaFinCat = date("Y", $fechaComoEntero).'-12-31'; 
 
-      $varCodigo = $varCodparametrizar;
+        $varCodigo = $varCodparametrizar;
 
-      if ($varCodigo == 1) {
-        $varServicio = Yii::$app->db->createCommand("select distinct nameArbol from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.rn in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
+        if ($varCodigo == 1) {
+          $varServicio = Yii::$app->db->createCommand("select distinct nameArbol from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.rn in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
 
-        $idArbol = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.rn in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
-        
-      }else{
-        if ($varCodigo == 2) {
-          $varServicio = Yii::$app->db->createCommand("select distinct nameArbol from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.ext in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
-
-          $idArbol = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.ext in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
-
-        }else{ 
-          $varServicio = Yii::$app->db->createCommand("select distinct nameArbol from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.usuared in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
-
-          $idArbol = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.usuared in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
-        }
-      }
-
-      $varListPcrc = Yii::$app->db->createCommand("select cod_pcrc, pcrc from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$VarCodsPcrc') group by cod_pcrc, pcrc")->queryAll();
-
-      $varArrayListPcrc = array();
-      foreach ($varListPcrc as $key => $value) {
-        array_push($varArrayListPcrc, $value['cod_pcrc'], $value['pcrc']);
-      }
-      $arrayVariable = implode(" - ", $varArrayListPcrc);
-
-      $phpExc = new \PHPExcel();
-      $phpExc->getProperties()
-              ->setCreator("Konecta")
-              ->setLastModifiedBy("Konecta")
-              ->setTitle("Dashboard Speech - ".$varServicio." -")
-              ->setSubject("Dashboard Speech - ".$varServicio." -")
-              ->setDescription("Este archivo contiene el proceso de las comparaciones con las categorias y las llamadas en Speech,")
-              ->setKeywords("Dashboard Speech - ".$varServicio." -");
-      $phpExc->setActiveSheetIndex(0);
-
-      $phpExc->getActiveSheet()->setShowGridlines(False);
-
-      $styleArray = array(
-              'alignment' => array(
-                  'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ),
-          );
-
-      $styleArraySize = array(
-              'font' => array(
-                      'bold' => true,
-                      'size'  => 15,
-              ),
-              'alignment' => array(
-                      'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-              ), 
-          );
-
-      $styleColor = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '28559B'),
-              )
-          );
-
-      $styleColor2 = array( 
-            'fill' => array( 
-                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                'color' => array('rgb' => 'F7b252'),
-            )
-        );    
-
-      $styleArrayTitle = array(
-              'font' => array(
-                'bold' => false,
-                'color' => array('rgb' => 'FFFFFF')
-              )
-          );
-
-      $styleArraySubTitle = array(              
-              'fill' => array( 
-                      'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                      'color' => array('rgb' => '4298B5'),
-              )
-          );
-
-      $styleArraySubTitle2 = array(              
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'C6C6C6'),
-              )
-          );  
-
-      // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
-      $styleArrayBody = array(
-              'font' => array(
-                  'bold' => false,
-                  'color' => array('rgb' => '2F4F4F')
-              ),
-              'borders' => array(
-                  'allborders' => array(
-                      'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                      'color' => array('rgb' => 'DDDDDD')
-                  )
-              )
-          );
-
-      $styleColorLess = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '92DD5B'),
-              )
-          );
-
-      $styleColorMiddle = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'CED9D5'),
-              )
-          );
-
-      $styleColorhigh = array( 
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => '22CCC4'),
-              )
-          );
-
-      $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
-
-      $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - QA MANAGEMENT');
-      $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
-      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
-      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
-      $phpExc->setActiveSheetIndex(0)->mergeCells('A1:P1');
-
-      $phpExc->getActiveSheet()->SetCellValue('A2','INFORME DASHBOARD SPEECH - '.$varServicio.' -');
-      $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySize);
-      $phpExc->setActiveSheetIndex(0)->mergeCells('A2:P2');
-
-      $phpExc->getActiveSheet()->SetCellValue('A3','INFORMACION GENERAL');
-      $phpExc->setActiveSheetIndex(0)->mergeCells('A3:P3');
-      $phpExc->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
-      $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArray);            
-      $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArrayTitle);
-
-      $phpExc->getActiveSheet()->SetCellValue('A5',$arrayVariable);
-      $phpExc->getActiveSheet()->getStyle('A5')->applyFromArray($styleArray); 
-      $phpExc->setActiveSheetIndex(0)->mergeCells('A5:F5');
-
-      $phpExc->getActiveSheet()->SetCellValue('A6','Fecha llamada');
-      $phpExc->getActiveSheet()->getStyle('A6')->getFont()->setBold(true);
-      $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleArraySubTitle);
-      $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleArrayTitle);
-
-      $phpExc->getActiveSheet()->SetCellValue('B6','Call-Id');
-      $phpExc->getActiveSheet()->getStyle('B6')->getFont()->setBold(true);
-      $phpExc->getActiveSheet()->getStyle('B6')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('B6')->applyFromArray($styleArraySubTitle);
-      $phpExc->getActiveSheet()->getStyle('B6')->applyFromArray($styleArrayTitle);
-
-      $phpExc->getActiveSheet()->SetCellValue('C6','Parametros');
-      $phpExc->getActiveSheet()->getStyle('C6')->getFont()->setBold(true);
-      $phpExc->getActiveSheet()->getStyle('C6')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('C6')->applyFromArray($styleArraySubTitle);
-      $phpExc->getActiveSheet()->getStyle('C6')->applyFromArray($styleArrayTitle);
-
-      $phpExc->getActiveSheet()->SetCellValue('D6','Duracion (Segundos)');
-      $phpExc->getActiveSheet()->getStyle('D6')->getFont()->setBold(true);
-      $phpExc->getActiveSheet()->getStyle('D6')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('D6')->applyFromArray($styleArraySubTitle);
-      $phpExc->getActiveSheet()->getStyle('D6')->applyFromArray($styleArrayTitle);
-
-      $phpExc->getActiveSheet()->SetCellValue('E6','Codigo PCRC');
-      $phpExc->getActiveSheet()->getStyle('E6')->getFont()->setBold(true);
-      $phpExc->getActiveSheet()->getStyle('E6')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('E6')->applyFromArray($styleArraySubTitle);
-      $phpExc->getActiveSheet()->getStyle('E6')->applyFromArray($styleArrayTitle);
-
-      $phpExc->getActiveSheet()->SetCellValue('F6','Usuarios de Red');
-      $phpExc->getActiveSheet()->getStyle('F6')->getFont()->setBold(true);
-      $phpExc->getActiveSheet()->getStyle('F6')->applyFromArray($styleColor);
-      $phpExc->getActiveSheet()->getStyle('F6')->applyFromArray($styleArraySubTitle);
-      $phpExc->getActiveSheet()->getStyle('F6')->applyFromArray($styleArrayTitle);
-
-      $txtcodigoCC = $VarCodsPcrc;
-
-      $varListIndiVari = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria order by idcategorias asc")->queryAll();
-      $varListIndi = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria order by idcategorias asc")->queryAll();
-      $varListadorespo = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') and responsable is not null group by idcategoria order by idcategorias asc")->queryAll();
-      $varlistarespo = Yii::$app->db->createCommand("select responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria,responsable order by idcategorias asc")->queryAll();
-      $varlistaindica = Yii::$app->db->createCommand("select responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria,responsable order by idcategorias asc")->queryAll();
-      $vartotalrespo = count($varlistarespo);
-      $vartotalindica = count($varlistaindica);
-  //Diego para lo de responsabilidad IDA
-      if($varListadorespo) {
-           $lastColumn = 'G';
-    foreach ($varListIndi as $key => $value) {
-  $lastColumn++;
-          }
-         
-          $numCell = 4;
-          $varlistaresponsable = array();
-          foreach ($varListIndiVari as $key => $value) {
-          $varnomresponsable = ''; 
-          $varresponsable = $value['responsable'];
-          $varidcategoria1 = $value['idcategorias'];
-          if ($varresponsable == 1){
-            $varnomresponsable = 'Agente';
-          }
-          if ($varresponsable == 2){
-            $varnomresponsable = 'Canal';
-          }
-          if ($varresponsable == 3){
-            $varnomresponsable = 'Marca';
-          }
-
-          if ($varidcategoria1 == 2) {
-            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varnomresponsable);
-            array_push($varlistaresponsable, $varnomresponsable);
-            $lastColumn++;
-          }
+          $idArbol = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.rn in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
           
-          
-        }
-      }
-  
-  // fin Diego
-
-      $lastColumn = 'G'; 
-      $numCell = 5;
-      $numcol1 = 0;
-      $varlistasigno = array();
-      $varvalormas = 'Positivo';
-      $varvalormenos = 'Negativo';
-      foreach ($varListIndiVari as $key => $value) {
-        $varidCate = $value['idcategoria'];
-        $numcol1++;
-        $varNumero = Yii::$app->db->createCommand("select orientacionsmart from tbl_speech_categorias where anulado = 0 and idcategoria  = $varidCate and cod_pcrc in ('$txtcodigoCC') and programacategoria in ('$txtServicio')")->queryScalar();
-
-        if ($varNumero == 0) {
-          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varidCate.' - N/A'); 
         }else{
-          if ($varNumero == 2) {
-            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varidCate.' - Negativo');              
-            array_push($varlistasigno, $varvalormenos);
+          if ($varCodigo == 2) {
+            $varServicio = Yii::$app->db->createCommand("select distinct nameArbol from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.ext in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
+
+            $idArbol = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.ext in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
+
+          }else{ 
+            $varServicio = Yii::$app->db->createCommand("select distinct nameArbol from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.usuared in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
+
+            $idArbol = Yii::$app->db->createCommand("select distinct arbol_id from tbl_speech_servicios inner join tbl_speech_parametrizar on tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes where tbl_speech_parametrizar.usuared in ('$txtParametros') and tbl_speech_parametrizar.cod_pcrc in ('$VarCodsPcrc')")->queryScalar();
+          }
+        }
+
+        $varListPcrc = Yii::$app->db->createCommand("select cod_pcrc, pcrc from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$VarCodsPcrc') group by cod_pcrc, pcrc")->queryAll();
+
+        $varArrayListPcrc = array();
+        foreach ($varListPcrc as $key => $value) {
+          array_push($varArrayListPcrc, $value['cod_pcrc'], $value['pcrc']);
+        }
+        $arrayVariable = implode(" - ", $varArrayListPcrc);
+
+        $phpExc = new \PHPExcel();
+        $phpExc->getProperties()
+                ->setCreator("Konecta")
+                ->setLastModifiedBy("Konecta")
+                ->setTitle("Dashboard Speech - ".$varServicio." -")
+                ->setSubject("Dashboard Speech - ".$varServicio." -")
+                ->setDescription("Este archivo contiene el proceso de las comparaciones con las categorias y las llamadas en Speech,")
+                ->setKeywords("Dashboard Speech - ".$varServicio." -");
+        $phpExc->setActiveSheetIndex(0);
+
+        $phpExc->getActiveSheet()->setShowGridlines(False);
+
+        $styleArray = array(
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                ),
+            );
+
+        $styleArraySize = array(
+                'font' => array(
+                        'bold' => true,
+                        'size'  => 15,
+                ),
+                'alignment' => array(
+                        'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                ), 
+            );
+
+        $styleColor = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => '28559B'),
+                )
+            );
+
+        $styleColor2 = array( 
+              'fill' => array( 
+                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                  'color' => array('rgb' => 'F7b252'),
+              )
+          );    
+
+        $styleArrayTitle = array(
+                'font' => array(
+                  'bold' => false,
+                  'color' => array('rgb' => 'FFFFFF')
+                )
+            );
+
+        $styleArraySubTitle = array(              
+                'fill' => array( 
+                        'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                        'color' => array('rgb' => '4298B5'),
+                )
+            );
+
+        $styleArraySubTitle2 = array(              
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => 'C6C6C6'),
+                )
+            );  
+
+        // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+        $styleArrayBody = array(
+                'font' => array(
+                    'bold' => false,
+                    'color' => array('rgb' => '2F4F4F')
+                ),
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => array('rgb' => 'DDDDDD')
+                    )
+                )
+            );
+
+        $styleColorLess = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => '92DD5B'),
+                )
+            );
+
+        $styleColorMiddle = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => 'CED9D5'),
+                )
+            );
+
+        $styleColorhigh = array( 
+                'fill' => array( 
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                    'color' => array('rgb' => '22CCC4'),
+                )
+            );
+
+        $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+        $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - QA MANAGEMENT');
+        $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A1:P1');
+
+        $phpExc->getActiveSheet()->SetCellValue('A2','INFORME DASHBOARD SPEECH - '.$varServicio.' -');
+        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySize);
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A2:P2');
+
+        $phpExc->getActiveSheet()->SetCellValue('A3','INFORMACION GENERAL');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A3:P3');
+        $phpExc->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A3')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('A5',$arrayVariable);
+        $phpExc->getActiveSheet()->getStyle('A5')->applyFromArray($styleArray); 
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A5:F5');
+
+        $phpExc->getActiveSheet()->SetCellValue('A6','Fecha llamada');
+        $phpExc->getActiveSheet()->getStyle('A6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('B6','Call-Id');
+        $phpExc->getActiveSheet()->getStyle('B6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('B6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('B6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('B6')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('C6','Parametros');
+        $phpExc->getActiveSheet()->getStyle('C6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('C6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('C6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('C6')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('D6','Duracion (Segundos)');
+        $phpExc->getActiveSheet()->getStyle('D6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('D6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('D6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('D6')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('E6','Codigo PCRC');
+        $phpExc->getActiveSheet()->getStyle('E6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('E6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('E6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('E6')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('F6','Usuarios de Red');
+        $phpExc->getActiveSheet()->getStyle('F6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('F6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('F6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('F6')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('G6','Datos Asesor');
+        $phpExc->getActiveSheet()->getStyle('G6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('G6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('G6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('G6')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('H6','Lider');
+        $phpExc->getActiveSheet()->getStyle('H6')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('H6')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('H6')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('H6')->applyFromArray($styleArrayTitle);
+
+        $txtcodigoCC = $VarCodsPcrc;
+
+        $varListIndiVari = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria order by idcategorias asc")->queryAll();
+        $varListIndi = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria order by idcategorias asc")->queryAll();
+        $varListadorespo = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') and responsable is not null group by idcategoria order by idcategorias asc")->queryAll();
+        $varlistarespo = Yii::$app->db->createCommand("select responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria,responsable order by idcategorias asc")->queryAll();
+        $varlistaindica = Yii::$app->db->createCommand("select responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria,responsable order by idcategorias asc")->queryAll();
+        $vartotalrespo = count($varlistarespo);
+        $vartotalindica = count($varlistaindica);
+    //Diego para lo de responsabilidad IDA
+        if($varListadorespo) {
+             $lastColumn = 'I';
+        foreach ($varListIndi as $key => $value) {
+        $lastColumn++;
+            }
+           
+            $numCell = 4;
+            $varlistaresponsable = array();
+            foreach ($varListIndiVari as $key => $value) {
+            $varnomresponsable = ''; 
+            $varresponsable = $value['responsable'];
+            $varidcategoria1 = $value['idcategorias'];
+            if ($varresponsable == 1){
+              $varnomresponsable = 'Agente';
+            }
+            if ($varresponsable == 2){
+              $varnomresponsable = 'Canal';
+            }
+            if ($varresponsable == 3){
+              $varnomresponsable = 'Marca';
+            }
+
+            if ($varidcategoria1 == 2) {
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varnomresponsable);
+              array_push($varlistaresponsable, $varnomresponsable);
+              $lastColumn++;
+            }
+            
+            
+          }
+        }
+    
+    // fin Diego
+
+        $lastColumn = 'I'; 
+        $numCell = 5;
+        $numcol1 = 0;
+        $varlistasigno = array();
+        $varvalormas = 'Positivo';
+        $varvalormenos = 'Negativo';
+        foreach ($varListIndiVari as $key => $value) {
+          $varidCate = $value['idcategoria'];
+          $numcol1++;
+          $varNumero = Yii::$app->db->createCommand("select orientacionsmart from tbl_speech_categorias where anulado = 0 and idcategoria  = $varidCate and cod_pcrc in ('$txtcodigoCC') and programacategoria in ('$txtServicio')")->queryScalar();
+
+          if ($varNumero == 0) {
+            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varidCate.' - N/A'); 
           }else{
-            if ($varNumero == 1) {
-              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varidCate.' - Positivo');
-              array_push($varlistasigno, $varvalormas); 
+            if ($varNumero == 2) {
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varidCate.' - Negativo');              
+              array_push($varlistasigno, $varvalormenos);
+            }else{
+              if ($varNumero == 1) {
+                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varidCate.' - Positivo');
+                array_push($varlistasigno, $varvalormas); 
+              }
             }
           }
+          $lastColumn++;
+          // Diego para lo de responsabilidad
+          if($varListadorespo) {
+            if($vartotalrespo == $numcol1){
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
+              $lastColumn++;
+            }
+          }  
+          
         }
-        $lastColumn++;
-        // Diego para lo de responsabilidad
-        if($varListadorespo) {
-          if($vartotalrespo == $numcol1){
-            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
-            $lastColumn++;
-          }
-        }  
-        
-      }
 
-      $lastColumn = 'G'; 
-      $numCell = 6;
-      $numcol1 = 0;
-      foreach ($varListIndiVari as $key => $value) {
-        $varidColor = $value['idcategoria'];
-        $numcol1++;
-        $varColor = Yii::$app->db->createCommand("select idcategorias from tbl_speech_categorias where anulado = 0 and idcategoria  = $varidColor and cod_pcrc in ('$txtcodigoCC') and programacategoria in ('$txtServicio')")->queryScalar();
-        
-        if ($varColor == 1) {
-          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre']); 
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
-        }else{
-          if ($varColor == 2) {
+        $lastColumn = 'I'; 
+        $numCell = 6;
+        $numcol1 = 0;
+        foreach ($varListIndiVari as $key => $value) {
+          $varidColor = $value['idcategoria'];
+          $numcol1++;
+          $varColor = Yii::$app->db->createCommand("select idcategorias from tbl_speech_categorias where anulado = 0 and idcategoria  = $varidColor and cod_pcrc in ('$txtcodigoCC') and programacategoria in ('$txtServicio')")->queryScalar();
+          
+          if ($varColor == 1) {
             $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre']); 
             $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
             $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
             $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
-            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayTitle);              
+            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
           }else{
-            if ($varColor == 3) {
+            if ($varColor == 2) {
               $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre']); 
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
-              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorMiddle);
-            }
-          }
-        }
-        $lastColumn++;
-        // Diego para lo de responsabilidad
-        if($varListadorespo) {
-          if($vartotalrespo == $numcol1){
-            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' %Total Agente');
-            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
-            $lastColumn++;
-          }
-        } 
-        
-      }
-
-
-      $numCell = $numCell + 1;
-
-      // Diego Para calculo de porcentahe de Agentes IDA
-    
-    $varListIndiVari2 = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, orientacionsmart, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') and responsable = 1 group by idcategoria order by idcategorias asc")->queryAll();
-                  
-    $arrayListaVar = array();
-    $arraYListaVarMas = array();
-    $arraYListaVarMenos = array();
-    foreach ($varListIndiVari2 as $key => $value) {
-        $varidCate = $value['idcategoria'];
-        $varNumero1 = $value['orientacionsmart'];
-        array_push($arrayListaVar, $value['idcategoria']);
-        if ($varNumero1 == 2) {
-        //    - Negativo
-            array_push($arraYListaVarMas, $value['idcategoria']);
-        }else{
-              if ($varNumero1 == 1) {
-                //     - Positivo
-                  array_push($arraYListaVarMenos, $value['idcategoria']);
-                      
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayTitle);              
+            }else{
+              if ($varColor == 3) {
+                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre']); 
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorMiddle);
               }
             }
-    }
-    $arrayVariableR = implode(", ", $arrayListaVar);
-    $arrayVariableMasR = implode(", ", $arraYListaVarMas);
-    $arrayVariableMenosR = implode(", ", $arraYListaVarMenos);
-    $sumapositivoR = 0;
-    $sumanegativoR = 0;
-    $cuentanegativoR = 0;
-    $cuentavari = 0;
-// fin
-
-      $varListMetadata = Yii::$app->db->createCommand("select callid, extension, fechallamada, login_id, fechareal  from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtParametros') and  fechallamada between '$varInicioF' and '$varFinF' group by callid, extension")->queryAll();
-
-      foreach ($varListMetadata as $key => $value) {
-        $txtCallid = $value['callid'];
-        $txtExtensionid = $value['extension'];
-        $txtFecha = $value['fechallamada'];
-        
-        
-        $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['fechareal']); 
-        $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['callid']); 
-        $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['extension']); 
-
-        $varTimes = Yii::$app->db->createCommand("select round(AVG(callduracion))  from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio')  and fechallamada = '$txtFecha' and callid = $txtCallid and extension in ('$txtExtensionid')")->queryScalar();
-
-        $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varTimes);       
-
-
-        if ($varCodigo == 1) {
-          $varCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where anulado = 0 and rn in ('$txtExtensionid')")->queryScalar();          
-        }else{
-          if ($varCodigo == 2) {
-            $varCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where anulado = 0 and ext in ('$txtExtensionid')")->queryScalar();
-          }else{ 
-            $varCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where anulado = 0 and usuared in ('$txtExtensionid')")->queryScalar();
           }
+          $lastColumn++;
+          // Diego para lo de responsabilidad
+          if($varListadorespo) {
+            if($vartotalrespo == $numcol1){
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, 'Resultado Automatico Agente');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, 'Resultado Calidad  y Consistencia');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, 'Resultado Score');
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+              $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor2);
+              $lastColumn++;
+            }
+          } 
+          
         }
 
-        $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $VarCodsPcrc); 
-        $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $value['login_id']);
 
-        $lastColumn = 'G';
-        foreach ($varListIndiVari as $key => $value) {
-          $varVariables = $value['idcategoria'];
-          $varIdcategorias = $value['idcategorias'];
+        $numCell = $numCell + 1;
 
-          if ($varIdcategorias == 1) {
-
-            $varParametro = Yii::$app->db->createCommand("select distinct tipoparametro from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtcodigoCC') and idcategoria = $varVariables and idcategorias = $varIdcategorias")->queryScalar();
-
-            $varNombre = Yii::$app->db->createCommand("select distinct nombre from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtcodigoCC') and idcategoria = $varVariables and idcategorias = $varIdcategorias")->queryScalar();
-
-            $varListVariables = Yii::$app->db->createCommand("select distinct idcategoria, orientacionsmart from  tbl_speech_categorias where anulado = 0  and cod_pcrc in ('$txtcodigoCC') and idcategorias = 2 and tipoindicador like '$varNombre'")->queryAll();
-
-            $arrayListOfVar = array();
-            $arraYListOfVarMas = array();
-            $arraYListOfVarMenos = array();
-            foreach ($varListVariables as $key => $value) {
-              $varOrienta = $value['orientacionsmart'];
-
-              array_push($arrayListOfVar, $value['idcategoria']);
-
-              if ($varOrienta == 1) {
-                array_push($arraYListOfVarMenos, $value['idcategoria']);
-              }else{
-                if ($varOrienta == 2) {
-                  array_push($arraYListOfVarMas, $value['idcategoria']);
+        // Diego Para calculo de porcentahe de Agentes IDA
+      
+      $varListIndiVari2 = Yii::$app->db->createCommand("select idcategoria, nombre, idcategorias, orientacionsmart, responsable from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2,3) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') and responsable = 1 group by idcategoria order by idcategorias asc")->queryAll();
+                    
+      $arrayListaVar = array();
+      $arraYListaVarMas = array();
+      $arraYListaVarMenos = array();
+      foreach ($varListIndiVari2 as $key => $value) {
+          $varidCate = $value['idcategoria'];
+          $varNumero1 = $value['orientacionsmart'];
+          array_push($arrayListaVar, $value['idcategoria']);
+          if ($varNumero1 == 2) {
+          //    - Negativo
+              array_push($arraYListaVarMas, $value['idcategoria']);
+          }else{
+                if ($varNumero1 == 1) {
+                  //     - Positivo
+                    array_push($arraYListaVarMenos, $value['idcategoria']);
+                        
                 }
-              }                      
+              }
+      }
+      $arrayVariableR = implode(", ", $arrayListaVar);
+      $arrayVariableMasR = implode(", ", $arraYListaVarMas);
+      $arrayVariableMenosR = implode(", ", $arraYListaVarMenos);
+      $sumapositivoR = 0;
+      $sumanegativoR = 0;
+      $cuentanegativoR = 0;
+      $cuentavari = 0;
+  // fin
+
+        $varListMetadata = Yii::$app->db->createCommand("select callid, extension, fechallamada, login_id, fechareal  from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtParametros') and  fechallamada between '$varInicioF' and '$varFinF' group by callid, extension")->queryAll();
+
+        foreach ($varListMetadata as $key => $value) {
+          $txtCallid = $value['callid'];
+          $txtExtensionid = $value['extension'];
+          $txtFecha = $value['fechallamada'];
+          
+          
+          $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['fechareal']); 
+          $phpExc->getActiveSheet()->setCellValue('B'.$numCell, $value['callid']); 
+          $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['extension']); 
+
+          $varTimes = Yii::$app->db->createCommand("select round(AVG(callduracion))  from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio')  and fechallamada = '$txtFecha' and callid = $txtCallid and extension in ('$txtExtensionid')")->queryScalar();
+
+          $phpExc->getActiveSheet()->setCellValue('D'.$numCell, $varTimes);       
+
+
+          if ($varCodigo == 1) {
+            $varCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where anulado = 0 and rn in ('$txtExtensionid')")->queryScalar();          
+          }else{
+            if ($varCodigo == 2) {
+              $varCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where anulado = 0 and ext in ('$txtExtensionid')")->queryScalar();
+            }else{ 
+              $varCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where anulado = 0 and usuared in ('$txtExtensionid')")->queryScalar();
             }
-            $arrayVariable = implode(", ", $arrayListOfVar);
-            $arrayVariableMas = implode(", ", $arraYListOfVarMas);
-            $arrayVariableMenos = implode(", ", $arraYListOfVarMenos);
+          }
 
+          $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $VarCodsPcrc); 
+          $phpExc->getActiveSheet()->setCellValue('F'.$numCell, $value['login_id']);
 
-            if (count($varListVariables) != 0) {
+            $paramsRed = [':varUsua'=>$value['login_id']];
+            $varLider = null;
 
-              if ($varParametro == 2) {
+            if (is_numeric($value['login_id'])) {
+                $varDocumento = Yii::$app->db->createCommand('
+                    SELECT e.dsusuario_red FROM tbl_evaluados e 
+                        WHERE 
+                            e.identificacion IN (:varUsua)
+                    GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
 
-                $varSumarPositivas = 0;
-                $varSumarNegativas = 0;
-                foreach ($varListVariables as $key => $value) {
-                  $varSmart = $value['orientacionsmart'];
+                $varLider= Yii::$app->db->createCommand('
+                    SELECT u.usua_nombre FROM tbl_usuarios u 
+                        INNER JOIN tbl_equipos eq ON
+                            u.usua_id = eq.usua_id
+                        INNER JOIN tbl_equipos_evaluados ee ON 
+                            eq.id = ee.equipo_id
+                        INNER JOIN tbl_evaluados e ON 
+                            ee.evaluado_id = e.id
+                        WHERE 
+                            e.identificacion IN (:varUsua)
+                        GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
+            }else{
+                $varDocumento = Yii::$app->db->createCommand('
+                    SELECT e.identificacion FROM tbl_evaluados e 
+                        WHERE 
+                            e.dsusuario_red IN (:varUsua)
+                GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
 
-                  if ($varSmart == 2) {
-                    $varSumarPositivas = $varSumarPositivas + 1;
-                  }else{
-                    if ($varSmart == 1) {
-                      $varSumarNegativas = $varSumarNegativas + 1;
-                    }
-                  }
-                }
+                $varLider= Yii::$app->db->createCommand('
+                    SELECT u.usua_nombre FROM tbl_usuarios u 
+                        INNER JOIN tbl_equipos eq ON
+                            u.usua_id = eq.usua_id
+                        INNER JOIN tbl_equipos_evaluados ee ON 
+                            eq.id = ee.equipo_id
+                        INNER JOIN tbl_evaluados e ON 
+                            ee.evaluado_id = e.id
+                        WHERE 
+                            e.dsusuario_red IN (:varUsua)
+                        GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
+            }
 
-                $varTotalvariables = count($varListVariables);
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varDocumento);
+            $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $varLider);
 
-                if ($varSumarPositivas == $varTotalvariables) {
-                  $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariable') and idvariable in ('$arrayVariable')")->queryScalar();
+          $lastColumn = 'I';
+          foreach ($varListIndiVari as $key => $value) {
+            $varVariables = $value['idcategoria'];
+            $varIdcategorias = $value['idcategorias'];
 
-                  if ($txtRtaIndicador == 0 || $txtRtaIndicador == null) {
-                    $varConteo = 0;
-                  }else{
-                    $varConteo = 1;
-                  }
+            if ($varIdcategorias == 1) {
 
-                  //Diego para calcular promedio Agente positivas                    
-                  
-                  $vartotalrespo = count($varlistarespo);
-                  $vartotalindica = count($varlistaindica);
-                    //Positivo
-                    $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMasR') and idvariable in ('$arrayVariableMasR')")->queryScalar();
+              $varParametro = Yii::$app->db->createCommand("select distinct tipoparametro from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtcodigoCC') and idcategoria = $varVariables and idcategorias = $varIdcategorias")->queryScalar();
 
-                  // fin Diego
+              $varNombre = Yii::$app->db->createCommand("select distinct nombre from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$txtcodigoCC') and idcategoria = $varVariables and idcategorias = $varIdcategorias")->queryScalar();
 
+              $varListVariables = Yii::$app->db->createCommand("select distinct idcategoria, orientacionsmart from  tbl_speech_categorias where anulado = 0  and cod_pcrc in ('$txtcodigoCC') and idcategorias = 2 and tipoindicador like '$varNombre'")->queryAll();
+
+              $arrayListOfVar = array();
+              $arraYListOfVarMas = array();
+              $arraYListOfVarMenos = array();
+              foreach ($varListVariables as $key => $value) {
+                $varOrienta = $value['orientacionsmart'];
+
+                array_push($arrayListOfVar, $value['idcategoria']);
+
+                if ($varOrienta == 1) {
+                  array_push($arraYListOfVarMenos, $value['idcategoria']);
                 }else{
-                  $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenos') and idvariable in ('$arrayVariableMenos')")->queryScalar();
-
-                  if ($txtRtaIndicador == 0 || $txtRtaIndicador == null) {                            
-                    $varConteo = 1;
-                  }else{                            
-                    $varConteo = 0;
+                  if ($varOrienta == 2) {
+                    array_push($arraYListOfVarMas, $value['idcategoria']);
                   }
+                }                      
+              }
+              $arrayVariable = implode(", ", $arrayListOfVar);
+              $arrayVariableMas = implode(", ", $arraYListOfVarMas);
+              $arrayVariableMenos = implode(", ", $arraYListOfVarMenos);
 
-                  //Negativo
-                  $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenosR') and idvariable in ('$arrayVariableMenosR')")->queryScalar();
 
-                }
+              if (count($varListVariables) != 0) {
 
-              }else{
-                if ($varParametro == 1) {
-                  
+                if ($varParametro == 2) {
+
                   $varSumarPositivas = 0;
                   $varSumarNegativas = 0;
                   foreach ($varListVariables as $key => $value) {
@@ -874,135 +894,210 @@ use app\models\SpeechParametrizar;
                   $varTotalvariables = count($varListVariables);
 
                   if ($varSumarPositivas == $varTotalvariables) {
-
                     $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariable') and idvariable in ('$arrayVariable')")->queryScalar();
 
-                    if ($txtRtaIndicador == $varTotalvariables || $txtRtaIndicador != null) {
-                      $varConteo = 1;
-                    }else{
+                    if ($txtRtaIndicador == 0 || $txtRtaIndicador == null) {
                       $varConteo = 0;
+                    }else{
+                      $varConteo = 1;
                     }
+
+                    //Diego para calcular promedio Agente positivas                    
+                    
+                    $vartotalrespo = count($varlistarespo);
+                    $vartotalindica = count($varlistaindica);
+                      //Positivo
+                      $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMasR') and idvariable in ('$arrayVariableMasR')")->queryScalar();
+
+                    // fin Diego
 
                   }else{
+                    $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenos') and idvariable in ('$arrayVariableMenos')")->queryScalar();
 
-                    $varconteomas = 0;
-                    $varconteomeno = 0;
-
-                    if ($arrayVariableMas != "") {
-                      $varconteomas = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMas') and idvariable in ('$arrayVariableMas')")->queryScalar();
-                    }else{
-                      $varconteomas = 0;
-                    }                            
-
-                    if ($arrayVariableMenos != "") {
-                      $varconteomeno = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenos') and idvariable in ('$arrayVariableMenos')")->queryScalar();
-                    }else{
-                      $varconteomeno = 0;
-                    }
-                          
-
-                    if ($varconteomeno == null || $varconteomeno == 0 && $varconteomas == $varTotalvariables) {
+                    if ($txtRtaIndicador == 0 || $txtRtaIndicador == null) {                            
                       $varConteo = 1;
-                    }else{
+                    }else{                            
                       $varConteo = 0;
                     }
+
+                    //Negativo
+                    $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenosR') and idvariable in ('$arrayVariableMenosR')")->queryScalar();
 
                   }
 
+                }else{
+                  if ($varParametro == 1) {
+                    
+                    $varSumarPositivas = 0;
+                    $varSumarNegativas = 0;
+                    foreach ($varListVariables as $key => $value) {
+                      $varSmart = $value['orientacionsmart'];
+
+                      if ($varSmart == 2) {
+                        $varSumarPositivas = $varSumarPositivas + 1;
+                      }else{
+                        if ($varSmart == 1) {
+                          $varSumarNegativas = $varSumarNegativas + 1;
+                        }
+                      }
+                    }
+
+                    $varTotalvariables = count($varListVariables);
+
+                    if ($varSumarPositivas == $varTotalvariables) {
+
+                      $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariable') and idvariable in ('$arrayVariable')")->queryScalar();
+
+                      if ($txtRtaIndicador == $varTotalvariables || $txtRtaIndicador != null) {
+                        $varConteo = 1;
+                      }else{
+                        $varConteo = 0;
+                      }
+
+                    }else{
+
+                      $varconteomas = 0;
+                      $varconteomeno = 0;
+
+                      if ($arrayVariableMas != "") {
+                        $varconteomas = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMas') and idvariable in ('$arrayVariableMas')")->queryScalar();
+                      }else{
+                        $varconteomas = 0;
+                      }                            
+
+                      if ($arrayVariableMenos != "") {
+                        $varconteomeno = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenos') and idvariable in ('$arrayVariableMenos')")->queryScalar();
+                      }else{
+                        $varconteomeno = 0;
+                      }
+                            
+
+                      if ($varconteomeno == null || $varconteomeno == 0 && $varconteomas == $varTotalvariables) {
+                        $varConteo = 1;
+                      }else{
+                        $varConteo = 0;
+                      }
+
+                    }
+
+                  }
                 }
-              }
 
-            }else{
-              $varConteo = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and callid = $txtCallid   and idcategoria = $varVariables")->queryScalar();
-            }
-
-
-          }else{
-            if ($varIdcategorias == 2) {
-              $varConteo = Yii::$app->db->createCommand("select count(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio')   and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and callid = $txtCallid and idindicador = $varVariables and idvariable = $varVariables")->queryScalar();
-            }else{
-              if ($varIdcategorias == 3) {
+              }else{
                 $varConteo = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and callid = $txtCallid   and idcategoria = $varVariables")->queryScalar();
               }
+
+
+            }else{
+              if ($varIdcategorias == 2) {
+                $varConteo = Yii::$app->db->createCommand("select count(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio')   and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and callid = $txtCallid and idindicador = $varVariables and idvariable = $varVariables")->queryScalar();
+              }else{
+                if ($varIdcategorias == 3) {
+                  $varConteo = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and callid = $txtCallid   and idcategoria = $varVariables")->queryScalar();
+                }
+              }
             }
-          }
-          
+            
 
-          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varConteo);
+            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varConteo);
+                  
+
+            $lastColumn++;
+
+            if($varListadorespo) {
+                $cuentavari++;
+                //calculo % agentes
                 
+                if($cuentavari > $vartotalindica && $cuentavari <= $vartotalrespo){
+                  if ($varlistaresponsable[$cuentavari - ($vartotalindica + 1)] == 'Agente'){
+                      if($varlistasigno[$cuentavari - 1] == 'Positivo'){
+                        $sumapositivoR = $sumapositivoR + $varConteo;
+                      }
+                      if($varlistasigno[$cuentavari - 1] == 'Negativo'){
+                        $sumanegativoR = $sumanegativoR + $varConteo;
+                        $cuentanegativoR++;
+                      }
+                  }
+                }
 
-          $lastColumn++;
-
-          if($varListadorespo) {
-              $cuentavari++;
-              //calculo % agentes
-              
-              if($cuentavari > $vartotalindica && $cuentavari <= $vartotalrespo){
-                if ($varlistaresponsable[$cuentavari - ($vartotalindica + 1)] == 'Agente'){
-                    if($varlistasigno[$cuentavari - 1] == 'Positivo'){
-                      $sumapositivoR = $sumapositivoR + $varConteo;
+                //imprime total porcentaje Agente po callid
+                $varTotalvariables = count($varListIndiVari2);
+                if($cuentavari == ($vartotalrespo)) {
+                    
+                    if($cuentanegativoR == 0) {
+                        $totalpondeR = round((($sumapositivoR / $varTotalvariables) * 100),2);
                     }
-                    if($varlistasigno[$cuentavari - 1] == 'Negativo'){
-                      $sumanegativoR = $sumanegativoR + $varConteo;
-                      $cuentanegativoR++;
+                    if($cuentanegativoR == $varTotalvariables) {
+                        $totalpondeR = round(((($cuentanegativoR - $sumanegativoR) / $varTotalvariables) * 100),2);
                     }
-                }
-              }
+                    if($cuentanegativoR != $varTotalvariables && $cuentanegativoR > 0) {
+                        $totalpondeR = round(((($sumapositivoR + ($cuentanegativoR - $sumanegativoR)) / $varTotalvariables) * 100),2);
+                    }              
+                    $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $totalpondeR); 
+                    $lastColumn++;
 
-              //imprime total porcentaje Agente po callid
-              $varTotalvariables = count($varListIndiVari2);
-              if($cuentavari == ($vartotalrespo)) {
-                $varaqui = 'Aqui';
-                if($cuentanegativoR == 0) {
-                  $totalpondeR = round((($sumapositivoR / $varTotalvariables) * 100),2);
+                    $varScore = (new \yii\db\Query())
+                                    ->select(['round(tbl_ejecucionformularios.score,2) as score'])
+                                    ->from(['tbl_ejecucionformularios'])
+                                    ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                        'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+                                    ->where('tbl_speech_mixta.callId IN (:varCallids)',[':varCallids'=>$txtCallid])
+                                    ->andwhere('tbl_speech_mixta.fechareal IN (:varFechareals)',[':varFechareals'=>$txtFecha])
+                                    ->andwhere('tbl_speech_mixta.anulado = :varAnulado',[':varAnulado'=>0])
+                                    ->scalar();
+
+                    if ($varScore) {
+                        $varScoreValoracion = $varScore;
+                    }else{
+                        $varScoreValoracion = 0;
+                    }
+
+                    $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varScoreValoracion); 
+                    $lastColumn++;
+
+                    $varPromedioScore = round(($totalpondeR + $varScoreValoracion) / 2,2);
+
+                    $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varPromedioScore); 
+                    $lastColumn++;
                 }
-                if($cuentanegativoR == $varTotalvariables) {
-                  $totalpondeR = round(((($cuentanegativoR - $sumanegativoR) / $varTotalvariables) * 100),2);
-                }
-                if($cuentanegativoR != $varTotalvariables && $cuentanegativoR > 0) {
-                  $totalpondeR = round(((($sumapositivoR + ($cuentanegativoR - $sumanegativoR)) / $varTotalvariables) * 100),2);
-                }              
-                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $totalpondeR); 
-              $lastColumn++;
-              }
+            }
+            
           }
+          $numCell++;
+          $cuentavari = 0;
+          $cuentanegativoR = 0;
+          $sumapositivoR = 0;
+          $sumapositivoR = 0;
+          $cuentanegativoR = 0;
+            $sumanegativoR = 0;
           
         }
-        $numCell++;
-        $cuentavari = 0;
-        $cuentanegativoR = 0;
-        $sumapositivoR = 0;
-        $sumapositivoR = 0;
-        $cuentanegativoR = 0;
-        $sumanegativoR = 0;
-        
-      }
 
 
-      $hoy = getdate();
-      $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Speech_".$varServicio;
-            
-      $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+        $hoy = getdate();
+        $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Speech_".$varServicio;
               
-      $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
-      $tmpFile.= ".xls";
+        $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+                
+        $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+        $tmpFile.= ".xls";
 
-      $objWriter->save($tmpFile);
+        $objWriter->save($tmpFile);
 
-      $message = "<html><body>";
-      $message .= "<h3>Se ha realizado el envio correcto del archivo del programa DashBoard Speech.</h3>";
-      $message .= "</body></html>";
+        $message = "<html><body>";
+        $message .= "<h3>Se ha realizado el envio correcto del archivo del programa DashBoard Speech.</h3>";
+        $message .= "</body></html>";
 
-      Yii::$app->mailer->compose()
-                      ->setTo($varCorreo)
-                      ->setFrom(Yii::$app->params['email_satu_from'])
-                      ->setSubject("Envio Dashboard Speech ".$varServicio)
-                      ->attach($tmpFile)
-                      ->setHtmlBody($message)
-                      ->send();
+        Yii::$app->mailer->compose()
+                        ->setTo($varCorreo)
+                        ->setFrom(Yii::$app->params['email_satu_from'])
+                        ->setSubject("Envio Dashboard Speech ".$varServicio)
+                        ->attach($tmpFile)
+                        ->setHtmlBody($message)
+                        ->send();
 
-      $rtaenvio = 1;
-      die(json_encode($rtaenvio));
+        $rtaenvio = 1;
+        die(json_encode($rtaenvio));
     }
 
     
