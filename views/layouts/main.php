@@ -454,7 +454,7 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico Valoraciones Mixtas;n&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico Valoraciones Mixtas&nbsp;&nbsp;'),
                                                     'url' => ['/historicomixto/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
