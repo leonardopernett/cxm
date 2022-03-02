@@ -38,7 +38,7 @@ use app\models\SpeechParametrizar;
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminSistema();
+                            return Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                         },
               ],
             ]
@@ -672,7 +672,7 @@ use app\models\SpeechParametrizar;
             if($vartotalrespo == $numcol1){
               $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
               $lastColumn++;
-              
+
               $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
               $lastColumn++;
 
