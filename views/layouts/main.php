@@ -453,6 +453,11 @@ AppAsset::register($this);
                                                     'url' => ['/reportes/historicosatisfaccion'],
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico Valoraciones Mixtas;n&nbsp;&nbsp;'),
+                                                    'url' => ['/historicomixto/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
                                         '</div>',
                                         '<div class="col-md-3">',
                                             '<li class="dropdown-headercx2">&nbsp;Administrador</li>',
