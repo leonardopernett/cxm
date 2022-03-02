@@ -1,3 +1,4 @@
+
 <?php
 
 namespace app\controllers;
@@ -38,7 +39,7 @@ use app\models\SpeechParametrizar;
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminSistema();
+                            return Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                         },
               ],
             ]
@@ -360,7 +361,6 @@ use app\models\SpeechParametrizar;
         $varFechaF = $nomFechaF;
         $varCodigPcrc = $codigoPCRC;
 
-
       return $this->renderAjax('descargarbase',[
           'model' => $model,
           'varArbol_idV' => $arbol_idV,
@@ -393,7 +393,6 @@ use app\models\SpeechParametrizar;
         $varFecha = date('Y-m-d',strtotime($var_FechaFin."+ 1 days"));
         $varFinF = $varFecha.' 05:00:00';
 
-
         $varCodigo = $varCodparametrizar;
 
         if ($varCodigo == 1) {
@@ -421,7 +420,6 @@ use app\models\SpeechParametrizar;
           array_push($varArrayListPcrc, $value['cod_pcrc'], $value['pcrc']);
         }
         $arrayVariable = implode(" - ", $varArrayListPcrc);
-
 
         $phpExc = new \PHPExcel();
         $phpExc->getProperties()
