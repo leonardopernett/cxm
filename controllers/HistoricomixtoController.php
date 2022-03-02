@@ -672,6 +672,13 @@ use app\models\SpeechParametrizar;
             if($vartotalrespo == $numcol1){
               $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
               $lastColumn++;
+              
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
+              $lastColumn++;
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, ' ');
+              $lastColumn++;
+
             }
           }  
           
