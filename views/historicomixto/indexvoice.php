@@ -130,24 +130,31 @@ use yii\db\Query;
     <br>
     <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card1 mb">
                 <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> Programa/Pcrc Seleccionado</label>
                 <label style="font-size: 15px; text-align: center;"><?php echo $varNombrePcrc; ?></label>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card1 mb">
                 <label><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em> Parametros Seleccionados</label>
                 <label style="text-align: center;"><?php echo "'".$extensiones."'"; ?></label>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card1 mb">
                 <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></em> Rango de Fechas</label>
                 <label style="text-align: center;"><?php echo $rangofecha; ?></label>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card1 mb">
+                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #559FFF;"></em> Cantidad Interacciones</label>
+                <label style="text-align: center;"><?php echo count($varDataLlamadas); ?></label>
             </div>
         </div>
 
