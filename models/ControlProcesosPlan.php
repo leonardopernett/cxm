@@ -83,8 +83,7 @@ class ControlProcesosPlan extends \yii\db\ActiveRecord
      
         $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
         $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-        $varfechainicio = '2022-02-01';
-        $varvarfechafin = '2022-03-05';
+        
         if ($roles == "270" || $roles == "309" || $sesiones == '1173' || $sesiones == '2887' || $sesiones == '3430' || $sesiones == '2652' || $sesiones == '189') {
             $query = ControlProcesos::find()->distinct()                   
                     ->joinWith('ejecucionformularios')
