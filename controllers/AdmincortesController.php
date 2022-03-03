@@ -432,15 +432,6 @@ class AdmincortesController extends \yii\web\Controller {
 						'nameValDias' => $nameValDias,
 			        	]);
 			        }
-
-
-
-
-			return $this->render('_formupdate2', [
-					'model' => $model,
-					'nameVal' => $nameVal,
-					'nameValDias' => $nameValDias,
-				]);			
 		}
 
 		protected function findModel1($idtcs){

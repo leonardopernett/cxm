@@ -364,41 +364,6 @@ class ControlprocesosController extends \yii\web\Controller {
 					'txtvarevaluadoId' => $txtvarevaluadoId,
 			        ]);
 			        }
-
-
-			if (Yii::$app->request->get('id')) {
-				$id_params = Html::encode(Yii::$app->request->get('id'));
-
-				if ((int) $id_params) {
-					$table = ControlParams::findOne($id_params);
-
-					if ($table) {
-						$model->id = $table->id;
-						$model->arbol_id = $table->arbol_id;
-						$model->dimensions = $table->dimensions;
-						$model->cant_valor = $table->cant_valor;
-						$model->evaluados_id = $table->evaluados_id;
-						$model->argumentos = $table->argumentos;
-					}
-					else
-					{
-						return $this->redirect(array('create','usua_id'=>$evaluadoId));
-					}
-				}
-				else
-				{
-					return $this->redirect(array('create','usua_id'=>$evaluadoId));
-				}
-			}
-			else
-			{
-				return $this->redirect(array('create','usua_id'=>$evaluadoId));
-			}
-
-			return $this->render('update', [
-				'model' => $model,
-				'txtvarevaluadoId' => $txtvarevaluadoId,
-				]);
 		}
 
 		/**
@@ -876,38 +841,6 @@ class ControlprocesosController extends \yii\web\Controller {
 			        ]);
 			        }
 
-			if (Yii::$app->request->get('id')) {
-				$id_params = Html::encode(Yii::$app->request->get('id'));
-
-				if ((int) $id_params) {
-					$table = ControlParams::findOne($id_params);
-
-					if ($table) {
-						$model->id = $table->id;
-						$model->arbol_id = $table->arbol_id;
-						$model->dimensions = $table->dimensions;
-						$model->cant_valor = $table->cant_valor;
-						$model->evaluados_id = $table->evaluados_id;
-						$model->argumentos = $table->argumentos;
-					}
-					else
-					{
-						return $this->redirect(['index']);
-					}
-				}
-				else
-				{
-					return $this->redirect(['index']);
-				}
-			}
-			else
-			{
-				return $this->redirect(['index']);
-			}
-
-			return $this->render('update3', [
-				'model' => $model,
-				]);
 		}
 
 		/**
