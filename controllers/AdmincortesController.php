@@ -358,8 +358,8 @@ class AdmincortesController extends \yii\web\Controller {
 			    return $this->redirect(['index']);
 			    
 			} else {
-			        
-			        }
+				#code...
+			}
 
 			if (Yii::$app->request->get('idtc')) {
 				$id_params = Html::encode(Yii::$app->request->get('idtc'));

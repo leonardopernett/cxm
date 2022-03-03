@@ -99,7 +99,7 @@ $contadorSecciones = 0;
                     ?>
                     <?php 
                         $escalado = Yii::$app->request->get("escalado");
-                        if (isset($escalado])): ?>
+                        if (isset($escalado)): ?>
                     <?php if ($escalado== 0): ?>
                     <?= Html::a(Yii::t('app', 'Borrar'), "javascript:void(0)", ['class' => 'btn btn-danger soloCancelar'])
                     ?>

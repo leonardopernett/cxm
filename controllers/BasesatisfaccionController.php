@@ -1325,7 +1325,7 @@ class BasesatisfaccionController extends Controller {
                 $enviararray= array();
                 array_push($enviararray, $nModel->agente);
                 if (empty($usuario->usua_usuario)) {
-                    
+                    #code...
                 }else{
                     if($nModel->tipologia != 'NEUTRO'){
                         array_push($enviararray, $usuario->usua_usuario);
@@ -3134,7 +3134,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         case ($inihoratramo >= '230001') && ($finhoratramo <= '235959'):
                             $tramo = $pcrc['tramo24'];
                             break;
-
+                        default:
+                            # code...
+                            break;
                     }
 
                     
@@ -4856,15 +4858,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
              */
 
             public function actionAlertasvaloracion() {
-
-
-                if(Yii::$app->request->get('prueba') == "exportar"){
-                    
-                }else{
-                    
-                }
-
-                
                 $model = new BaseSatisfaccionSearch();
 
                 $dataProvider = (new \yii\db\Query())

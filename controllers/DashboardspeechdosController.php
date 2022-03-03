@@ -3032,9 +3032,6 @@ $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboar
                 ]);
 
         }
-         public function actioncreateelegirprograma(){
-        }
-
         public function actionGenerarformula(){
           $model = new SpeechServicios();
           $txtanulado = 0;
@@ -5078,6 +5075,7 @@ public function actionCantidadentto(){
         $varNumero = Yii::$app->db->createCommand("select orientacionsmart from tbl_speech_categorias where anulado = 0 and idcategoria  = $varidCate and cod_pcrc in ('$txtcodigoCC') and programacategoria in ('$txtServicio')")->queryScalar();
 
         if ($varNumero == 0) {
+           #code...
         }else{
           if ($varNumero == 2) {             
             array_push($varlistasigno, $varvalormenos);
@@ -5087,13 +5085,6 @@ public function actionCantidadentto(){
             }
           }
         }
-        // Diego para lo de responsabilidad
-        if($varListadorespo) {
-          if($vartotalrespo == $numcol1){
-
-          }
-        }  
-        
       }
 
   // colocar fin comentario aqui

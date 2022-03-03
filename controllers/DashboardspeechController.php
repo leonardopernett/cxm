@@ -3030,8 +3030,6 @@ $numCell = $numCell + 1;
                 ]);
 
         }
-         public function actioncreateelegirprograma(){
-        }
 
         public function actionGenerarformula(){
           $model = new SpeechServicios();
