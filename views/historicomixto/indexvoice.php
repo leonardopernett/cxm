@@ -392,11 +392,15 @@ use yii\db\Query;
                                 if ($varScore) {
                                     $varScoreValoracion = $varScore;
                                 }else{
-                                    $varScoreValoracion = 0;
+                                    $varScoreValoracion = "--";
                                 }
                                 
                                 
-                                $varPromedioScore = round(($varResultadosIDA + $varScoreValoracion) / 2,2);
+                                if ($varScoreValoracion != 0) {
+                                    $varPromedioScore = round(($varResultadosIDA + $varScoreValoracion) / 2,2);
+                                }else{
+                                    $varPromedioScore = $varResultadosIDA;
+                                }
                         ?>
                             <tr>
                                 <td><label style="font-size: 12px;"><?php echo  $varFechaReal; ?></label></td>
