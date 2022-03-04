@@ -357,6 +357,7 @@ use \yii\base\Exception;
                                           'fechareal' => $varDatos[8],
                                           'idredbox'  => $varDatos[9],
                                           'idgrabadora'  => $varDatos[10],
+                                          'connid'  => $varDatos[11],
                                           'fechacreacion' => $txtfechacreacion,
                                           'anulado' => $txtanulado,
                                       ])->execute();                          
