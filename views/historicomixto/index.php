@@ -31,7 +31,22 @@ use yii\db\Query;
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
-    
+    $paramsBusqueda = [':varSesion' => $sesiones, ':anulado' => 0];
+
+    $varConteoExist = Yii::$app->db->createCommand('
+      SELECT d.iddashservicio FROM tbl_dashboardpermisos d 
+        WHERE d.usuaid = :varSesion 
+          AND anulado = :anulado
+        GROUP BY d.iddashservicio')->bindValues($paramsBusqueda)->queryAll();
+
+    $varlistiddpclientes = array();
+    $varservicios = null;
+    if (count($varConteoExist) != 0) {
+      foreach ($varConteoExist as $key => $value) {
+        array_push($varlistiddpclientes, $value['iddashservicio']);
+      }
+      $varservicios = implode(", ", $varlistiddpclientes);
+    }
 ?>
 <style>
     .card1 {
@@ -154,7 +169,8 @@ use yii\db\Query;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <table align="center">
+                    <table class="text-center">
+                        <caption>-</caption>
                         <thead>
                             <tr>
                                 <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
@@ -225,23 +241,50 @@ use yii\db\Query;
                         
                         <div class="col-md-4">
                             <label><em class="fas fa-check" style="font-size: 20px; color: #559FFF;"></em> Seleccionar Cliente: </label>
-                            <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes != 1")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
-                                                [
-                                                    'id' => 'txtidclientes',
-                                                    'prompt'=>'Seleccionar...',
-                                                    'onchange' => '
-                                                        $.get(
-                                                            "' . Url::toRoute('listarpcrcs') . '", 
-                                                            {id: $(this).val()}, 
-                                                            function(res){
-                                                                $("#requester").html(res);
-                                                            }
-                                                        );
-                                                        
-                                                    ',
+                            <?php
+                                if (count($varConteoExist) != 0) {                                  
+                            ?>
+                                <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes in ($varservicios)")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
+                                                    [
+                                                        'id' => 'txtidclientes',
+                                                        'prompt'=>'Seleccionar ',
+                                                        'onchange' => '
+                                                            $.get(
+                                                                "' . Url::toRoute('listarpcrcs') . '", 
+                                                                {id: $(this).val()}, 
+                                                                function(res){
+                                                                    $("#requester").html(res);
+                                                                }
+                                                            );
+                                                            
+                                                        ',
 
-                                                ]
-                                    )->label(''); 
+                                                    ]
+                                        )->label(''); 
+                                ?>
+                            <?php
+                                } else{
+                            ?>
+                                <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes != 1")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
+                                                    [
+                                                        'id' => 'txtidclientes',
+                                                        'prompt'=>'Seleccionar',
+                                                        'onchange' => '
+                                                            $.get(
+                                                                "' . Url::toRoute('listarpcrcs') . '", 
+                                                                {id: $(this).val()}, 
+                                                                function(res){
+                                                                    $("#requester").html(res);
+                                                                }
+                                                            );
+                                                            
+                                                        ',
+
+                                                    ]
+                                        )->label(''); 
+                                ?>
+                            <?php                                    
+                                }                                 
                             ?>
                         </div>
 
@@ -310,8 +353,7 @@ use yii\db\Query;
                                             "id" =>"requester1",
                                             'item'=>function ()
                                             {
-                                                return '<div class="col-md-8">
-                                                        </div>';
+                                                return '<div class="col-md-8"></div>';
                                             }
 
                                       ])->label('');
