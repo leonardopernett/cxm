@@ -232,6 +232,11 @@ use app\models\DistribucionAsesores;
             WHERE 
               u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
+          $varUsuarioLider = Yii::$app->db->createCommand("
+            SELECT u.usua_id FROM tbl_usuarios u
+              WHERE 
+                u.usua_identificacion IN ($varCCLider)")->queryScalar();
+
           if ($varExisteLider == 0) {
             
             $varListDatosLideres = Yii::$app->dbjarvis2->createCommand("
@@ -259,49 +264,42 @@ use app\models\DistribucionAsesores;
 
             }
 
-            $varUsuarioLider = Yii::$app->db->createCommand("
-              SELECT u.usua_id FROM tbl_usuarios u
+            if (varUsuarioLider != 0) {
+              Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
+                  'rel_usua_id' => $varUsuarioLider,
+                  'rel_role_id' => 273,                               
+                ])->execute();
+
+              Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
+                  'usuario_id' => $varUsuarioLider,
+                  'grupo_id' => 1,                               
+                ])->execute();
+            }            
+
+          }
+
+          if ($varUsuarioLider != 0) {
+            $varUsuaNombreLider = Yii::$app->db->createCommand("
+              SELECT u.usua_nombre FROM tbl_usuarios u
                 WHERE 
                   u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
-            Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
-                      'rel_usua_id' => $varUsuarioLider,
-                      'rel_role_id' => 273,                               
-                  ])->execute();
+            $varContarEquipos = Yii::$app->db->createCommand("
+              SELECT COUNT(eq.id) FROM tbl_equipos eq
+                INNER JOIN tbl_usuarios u ON 
+                  eq.usua_id = u.usua_id 
+                WHERE 
+                  u.usua_identificacion IN ($varCCLider)")->queryScalar();
 
-            Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
-                      'usuario_id' => $varUsuarioLider,
-                      'grupo_id' => 1,                               
-                  ])->execute();
-
+            if ($varContarEquipos == 0) {
+              Yii::$app->db->createCommand()->insert('tbl_equipos',[
+                              'name' => $varUsuaNombreLider.'_'.$varNombreCliente,
+                              'nmumbral_verde' => 1, 
+                              'nmumbral_amarillo' => 1,
+                              'usua_id' =>  $varUsuarioLider,                             
+                ])->execute();
+            }
           }
-
-          $varUsuaIdLider = Yii::$app->db->createCommand("
-          SELECT u.usua_id FROM tbl_usuarios u
-            WHERE 
-              u.usua_identificacion IN ($varCCLider)")->queryScalar();
-
-          $varUsuaNombreLider = Yii::$app->db->createCommand("
-          SELECT u.usua_nombre FROM tbl_usuarios u
-            WHERE 
-              u.usua_identificacion IN ($varCCLider)")->queryScalar();
-
-          $varContarEquipos = Yii::$app->db->createCommand("
-          SELECT COUNT(eq.id) FROM tbl_equipos eq
-            INNER JOIN tbl_usuarios u ON 
-              eq.usua_id = u.usua_id 
-                      WHERE 
-                        u.usua_identificacion IN ($varCCLider)")->queryScalar();
-
-          if ($varContarEquipos == 0) {
-            Yii::$app->db->createCommand()->insert('tbl_equipos',[
-                      'name' => $varUsuaNombreLider.'_'.$varNombreCliente,
-                      'nmumbral_verde' => 1, 
-                      'nmumbral_amarillo' => 1,
-                      'usua_id' =>  $varUsuaIdLider,                             
-                  ])->execute();
-          }
-
         }      
 
         return $this->redirect('procesaequipos');
