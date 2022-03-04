@@ -264,7 +264,7 @@ use app\models\DistribucionAsesores;
 
             }
 
-            if (varUsuarioLider != 0) {
+            if ($varUsuarioLider != 0) {
               Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
                   'rel_usua_id' => $varUsuarioLider,
                   'rel_role_id' => 273,                               
