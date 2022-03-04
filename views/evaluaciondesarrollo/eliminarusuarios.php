@@ -185,7 +185,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $varccevaluado = $value['ccevaluado'];
                                     $nameevaluado = Yii::$app->db->createCommand("select nombre_completo from tbl_usuarios_evalua where anulado = 0 and documento = $varccevaluado")->queryScalar();
                                     $motivocs = $value['motivos'];
-                                    $varasunto = "Eliminación del usuario: ".$nameevaluado." - ".$motivocs;;
+                                    $varasunto = "Eliminación del usuario: ".$nameevaluado." - ".$motivocs;
                                 ?>
                                     <tr>
                                         <td><label style="font-size: 12px;"><?php echo  $varidnovedad; ?></label></td>

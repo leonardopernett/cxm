@@ -641,38 +641,14 @@ use \yii\base\Exception;
           $sessiones = Yii::$app->user->identity->id;
 
           $model = $this->findModel($txtServicioCategorias);
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-          Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
-          return $this->redirect('categoriasconfig');
-      } else {
-              return $this->render('categoriasupdate', [
-                'model' => $model,
-              ]);
-      }
-
-          if (Yii::$app->request->get('txtServicioCategorias')) {
-            $id_params = Html::encode(Yii::$app->request->get('txtServicioCategorias'));
-
-            if ((int)$id_params) {
-              $table = Dashboardcategorias::findOne($id_params);
-
-              if ($table) {
-                $model->iddashcategorias = $table->iddashcategorias;
-                $model->idcategoria = $table->idcategoria;
-                $model->nombre = $table->nombre;
-              }else{                
-                return $this->redirect('categoriasconfig');
-              }
-            }else{
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
+              Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
               return $this->redirect('categoriasconfig');
-            }
-          }else{
-            return $this->redirect('categoriasconfig');
+          } else {
+                  return $this->render('categoriasupdate', [
+                    'model' => $model,
+                  ]);
           }
-
-          return $this->render('categoriasupdate',[
-            'model' => $model,
-            ]);
         }
 
         protected function findModel($txtServicioCategorias){
@@ -3056,9 +3032,6 @@ $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboar
                 ]);
 
         }
-         public function actioncreateelegirprograma(){
-        }
-
         public function actionGenerarformula(){
           $model = new SpeechServicios();
           $txtanulado = 0;
@@ -5102,6 +5075,7 @@ public function actionCantidadentto(){
         $varNumero = Yii::$app->db->createCommand("select orientacionsmart from tbl_speech_categorias where anulado = 0 and idcategoria  = $varidCate and cod_pcrc in ('$txtcodigoCC') and programacategoria in ('$txtServicio')")->queryScalar();
 
         if ($varNumero == 0) {
+           #code...
         }else{
           if ($varNumero == 2) {             
             array_push($varlistasigno, $varvalormenos);
@@ -5111,13 +5085,6 @@ public function actionCantidadentto(){
             }
           }
         }
-        // Diego para lo de responsabilidad
-        if($varListadorespo) {
-          if($vartotalrespo == $numcol1){
-
-          }
-        }  
-        
       }
 
   // colocar fin comentario aqui

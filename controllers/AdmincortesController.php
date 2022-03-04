@@ -358,8 +358,8 @@ class AdmincortesController extends \yii\web\Controller {
 			    return $this->redirect(['index']);
 			    
 			} else {
-			        
-			        }
+				#code...
+			}
 
 			if (Yii::$app->request->get('idtc')) {
 				$id_params = Html::encode(Yii::$app->request->get('idtc'));
@@ -432,15 +432,6 @@ class AdmincortesController extends \yii\web\Controller {
 						'nameValDias' => $nameValDias,
 			        	]);
 			        }
-
-
-
-
-			return $this->render('_formupdate2', [
-					'model' => $model,
-					'nameVal' => $nameVal,
-					'nameValDias' => $nameValDias,
-				]);			
 		}
 
 		protected function findModel1($idtcs){
