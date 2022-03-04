@@ -637,7 +637,6 @@ use \yii\base\Exception;
         }
 
         public function actionCategoriasupdate($txtServicioCategorias){
-          $model = new Dashboardcategorias();
           $sessiones = Yii::$app->user->identity->id;
 
           $model = $this->findModel($txtServicioCategorias);
@@ -1050,7 +1049,6 @@ use \yii\base\Exception;
       $arraYListaVarMas = array();
       $arraYListaVarMenos = array();
       foreach ($varListIndiVari2 as $key => $value) {
-          $varidCate = $value['idcategoria'];
           $varNumero1 = $value['orientacionsmart'];
           array_push($arrayListaVar, $value['idcategoria']);
           if ($varNumero1 == 2) {
@@ -1170,11 +1168,6 @@ use \yii\base\Exception;
                     
                     $vartotalrespo = count($varlistarespo);
                     $vartotalindica = count($varlistaindica);
-                      //Positivo
-                      $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMasR') and idvariable in ('$arrayVariableMasR')")->queryScalar();
-
-                      
-
                     // fin Diego
 
                   }else{
@@ -1185,12 +1178,6 @@ use \yii\base\Exception;
                     }else{                            
                       $varConteo = 0;
                     }
-
-                    //Negativo
-                    $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenosR') and idvariable in ('$arrayVariableMenosR')")->queryScalar();
-
-
-
                   }
 
                 }else{
@@ -2253,7 +2240,6 @@ use \yii\base\Exception;
         }
 
   $numCell = $numCell + 1;
-        $lastColumn = 'A';
         $varlogin = "";
         foreach ($varListLogin as $key => $value1) {
           $lastColumn = 'A';
@@ -3144,7 +3130,6 @@ $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboar
 
         public function actionIngresardashboard() {
           $txtvardash = Yii::$app->request->get("vardash");
-          $txtvarcont = Yii::$app->request->get("varcont");
 
           $resultado = intval(preg_replace('/[^0-9]+/', '', $txtvardash), 10);
           $resultadol = substr($txtvardash, -1, 1);
@@ -4756,7 +4741,6 @@ public function actionCantidadentto(){
       $varidgrabadora = Yii::$app->request->get('idgrabadora');
       $varidconnid = Yii::$app->request->get('idconnid');
       $varResultado = null;
-      $vartexto = $varidconnid;
       $varvalencia = null;
 
       if ($varidredbox != "" && $varidgrabadora != "") {
@@ -4830,18 +4814,17 @@ public function actionCantidadentto(){
         if (!$response) {
           $vartexto = "Error al buscar transcipcion";
           $varvalencia = "Error al buscar valencia emocioanl";
-        }
-
-        $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
-
-        if (count($response) == 0) {
-          $vartexto = "Transcripcion no encontrada";
-          $varvalencia = "Valencia emocional no encontrada";
         }else{
-          $vartexto = $response[0]['transcription'];
-          $varvalencia = $response[0]['valencia'];
-        }
+          $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
 
+          if (count($response) == 0) {
+            $vartexto = "Transcripcion no encontrada";
+            $varvalencia = "Valencia emocional no encontrada";
+          }else{
+            $vartexto = $response[0]['transcription'];
+            $varvalencia = $response[0]['valencia'];
+          }
+        }
       }else{
         $vartexto = "No aplica";
         $varvalencia = "No aplica";
@@ -5023,7 +5006,6 @@ public function actionCantidadentto(){
           foreach ($varListPcrc as $key => $value) {
             array_push($varArrayListPcrc, $value['cod_pcrc'], $value['pcrc']);
           }
-          $arrayVariable = implode(" - ", $varArrayListPcrc);
   
           //Calculos  
           $txtcodigoCC = $VarCodsPcrc;
@@ -5042,7 +5024,6 @@ public function actionCantidadentto(){
   
               $varresponsable = $value['responsable'];
               $varidcategoria1 = $value['idcategorias'];
-              $varidCate = $value['idcategoria'];
               if ($varresponsable == 1){
                 $varnomresponsable = 'Agente';
               }
@@ -5098,7 +5079,6 @@ public function actionCantidadentto(){
         $arraYListaVarMas = array();
         $arraYListaVarMenos = array();
         foreach ($varListIndiVari2 as $key => $value) {
-            $varidCate = $value['idcategoria'];
             $varNumero1 = $value['orientacionsmart'];
             array_push($arrayListaVar, $value['idcategoria']);
             if ($varNumero1 == 2) {
@@ -5214,13 +5194,6 @@ public function actionCantidadentto(){
                       
                       $vartotalrespo = count($varlistarespo);
                       $vartotalindica = count($varlistaindica);
-                        //Positivo
-                        $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMasR') and idvariable in ('$arrayVariableMasR')")->queryScalar();
-  
-
-  //colocar fin comentario aqui
-                      // fin Diego
-  
                     }else{
                       $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenos') and idvariable in ('$arrayVariableMenos')")->queryScalar();
   
@@ -5229,12 +5202,6 @@ public function actionCantidadentto(){
                       }else{                            
                         $varConteo = 0;
                       }
-  
-                      //Negativo
-                      $txtRtaIndicador = Yii::$app->db->createCommand("select sum(cantproceso) from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtExtensionid') and fechallamada = '$txtFecha' and  callid = $txtCallid and idindicador in ('$arrayVariableMenosR') and idvariable in ('$arrayVariableMenosR')")->queryScalar();
-  
-
-  //colocra fin comentarioa aqui
                     }
   
                   }else{

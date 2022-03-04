@@ -346,7 +346,6 @@ class AdmincortesController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionUpdate($idtc){
-			$model = new Tipocortes();
 			$model2 = new Tiposdecortes();
 			$dataProvider = null;
 			$nameVal = null;
@@ -417,7 +416,6 @@ class AdmincortesController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionUpdate2($idtcs){
-			$model = new Tiposdecortes();
 			$nameVal = null;
 			$nameValDias = null;
 

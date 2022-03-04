@@ -351,7 +351,6 @@ class ControlprocesosController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionUpdate($id, $evaluadoId){
-			$model = new Controlparams;
 			$txtvarevaluadoId = $evaluadoId;
 			
 			$model = $this->findModel($id);
@@ -821,7 +820,6 @@ class ControlprocesosController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionUpdate3($id){
-			$model = new Controlparams();				
 
 			$model = $this->findModel($id);
 			if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -1266,7 +1264,6 @@ class ControlprocesosController extends \yii\web\Controller {
 		}
 
 		public function actionUpdatespeech($id,$evaluadoId){
-			$model = new ControlFocalizada();
 			$varevaluadoId = $evaluadoId;
 			$varid = $id;
 
@@ -1283,7 +1280,6 @@ class ControlprocesosController extends \yii\web\Controller {
 				]);
 		}
 		public function actionUpdatetwospeech($id,$varfecha,$evaluadoId){
-			$model = new ControlFocalizada();
 			$varevaluadoId = $evaluadoId;
 			$varid = $id;
 			$varselectfecha = $varfecha;

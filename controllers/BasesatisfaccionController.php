@@ -1261,12 +1261,6 @@ class BasesatisfaccionController extends Controller {
                     $idRel = $this->_consultDB($nModel->connid, $server, $user, $pass, $db);
                     $arrayLlamada = "";
                     if (!$idRel) {
-
-                        //CONSULTA EN BD BOGOTA --------------------------------------------
-                        $server = Yii::$app->params["serverBog"];
-                        $user = Yii::$app->params["userBog"];
-                        $pass = Yii::$app->params["passBog"];
-                        $db = Yii::$app->params["dbBog"];
                         if (is_numeric($idRel)) {
                             $wsdl = \Yii::$app->params["wsdl_redbox_bogota"];
                             $arrayLlamada = $formularios->getDataWS($idRel, $wsdl);
@@ -2417,39 +2411,38 @@ class BasesatisfaccionController extends Controller {
                         $vartexto = "Error al buscar transcipcion";
                         $varvalencia = "Error al buscar valencia emocioanl";
                         $varcontenido = 0;
-                    }
-
-                    $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
-
-                    if (count($response) == 0) {
-                        $vartexto = "Transcripcion no encontrada";
-                        $varvalencia = "Valencia emocional no encontrada";
-                        $varcontenido = 0;
                     }else{
-                        $vartexto = $response[0]['transcription'];
-                        $varvalencia = $response[0]['valencia'];
+                        $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
 
-                        if ($varvalencia == "NULL") {
-                            $varvalencia = "Buz? sin informaci?";
-                        }
+                        if (count($response) == 0) {
+                            $vartexto = "Transcripcion no encontrada";
+                            $varvalencia = "Valencia emocional no encontrada";
+                            $varcontenido = 0;
+                        }else{
+                            $vartexto = $response[0]['transcription'];
+                            $varvalencia = $response[0]['valencia'];
 
-                        $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN ('$varConnids')")->queryScalar();
+                            if ($varvalencia == "NULL") {
+                                $varvalencia = "Buz? sin informaci?";
+                            }
 
-                        if ($varverificaconnid == 0) { 
-                            Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
-                                'connid' => $varConnids,
-                                'transcripcion' => $vartexto,
-                                'valencia' => $varvalencia,
-                                'fechagenerada' => $modelBase->fecha_satu,
-                                'fechacreacion' => date("Y-m-d"),
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'anulado' => 0,
-                            ])->execute();
-                        }
+                            $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN ('$varConnids')")->queryScalar();
 
-                        $varcontenido = 1;
-                    } 
+                            if ($varverificaconnid == 0) { 
+                                Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
+                                    'connid' => $varConnids,
+                                    'transcripcion' => $vartexto,
+                                    'valencia' => $varvalencia,
+                                    'fechagenerada' => $modelBase->fecha_satu,
+                                    'fechacreacion' => date("Y-m-d"),
+                                    'usua_id' => Yii::$app->user->identity->id,
+                                    'anulado' => 0,
+                                ])->execute();
+                            }
 
+                            $varcontenido = 1;
+                        } 
+                    }
 
                 return $this->render('showformulariosatisfaccion', [
                             'data' => $data,
@@ -2804,7 +2797,6 @@ class BasesatisfaccionController extends Controller {
                 $satu = new \app\models\ErroresSatu();
                 $satu->created = date('Y-m-d H:i:s');
                 $satu->fecha_satu = date('Y-m-d H:i:s');
-                $horaSatu = '00:00:00';
                 if (isset($datos['hora'])) {
                     if (strlen($datos['hora']) <= 4) {
                         $horaSatu = '00:00:00';
@@ -4273,8 +4265,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             public function actionShowalertadesempeno($form_id, $lider, $jefeop = NULL) {
                 
                 $id = base64_decode($form_id);
-
-                $model = new Notificaciones();
 
                 $model = Notificaciones::findOne($id);
 

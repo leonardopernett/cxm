@@ -87,13 +87,7 @@ use app\models\ControlVolumenxencuestasdq;
             $formData = Yii::$app->request->post();
             if ($model->load($formData)) {
                 $varArbol = $model->arbol_id;
-                $varCiudad = Yii::$app->db->createCommand("select a.name from tbl_arbols a inner join tbl_arbols aa on aa.arbol_id = a.id where aa.id = :varArbol and a.activo = 0")
-                ->bindValue(':varArbol',$varArbol)
-                ->queryScalar();
-
                 return $this->redirect(array('detallevoz','varCodificacion'=>$varArbol));
-
-
             }
 
             return $this->render('index',[

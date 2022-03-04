@@ -216,8 +216,6 @@ class SiteController extends Controller {
 
     public function actionGetgraph($arrIds, $dimension_id, $metrica, $fechaInicio, $fechaFin) {
 
-        $showGraf = (count($arrIds) > 0) ? true : false;
-
         //Tomamos el numero de dias --------------------------------------------
         $step = '+1 day';
         $format = 'd';
