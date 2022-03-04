@@ -47,7 +47,6 @@ class AdmincortesController extends \yii\web\Controller {
 		*/
 		public function actionIndex(){
 			$model = new ControlTipoCortes();
-			$sessiones = Yii::$app->user->identity->id;
 			$dataProvider = $model->searchcortes(Yii::$app->request->post());			
 			
 			return $this->render('index',[
@@ -272,7 +271,6 @@ class AdmincortesController extends \yii\web\Controller {
 			$model = new Tipocortes();			
 			$model2 = new Tiposdecortes();
 			$dataProvider = null;
-			$nameVal = null;
 			$CorteID = $idtc;
 
 			if (Yii::$app->request->get('idtc')) {

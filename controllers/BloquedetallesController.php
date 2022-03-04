@@ -338,10 +338,6 @@ class BloquedetallesController extends Controller {
         //Eliminacion por post--------------------------------------------------
         if (Yii::$app->getRequest()->isPost) {
             $bloqueId = Yii::$app->request->get('bloque_id');
-            if (!empty($bloqueId)) {
-                $filterBloque = true;
-            }
-
             try {
                 $model = $this->findModel($id);
                 if (!$model->delete()) {

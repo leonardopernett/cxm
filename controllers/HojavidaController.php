@@ -384,7 +384,6 @@ use Exception;
     }
 
     public function actionListarciudades(){
-      $txtAnulado = 0; 
       $txtId = Yii::$app->request->get('id');
 
       if ($txtId) {
@@ -400,7 +399,6 @@ use Exception;
                             ->andwhere("tbl_hv_ciudad.anulado = 0")                 
                             ->orderBy(['tbl_hv_ciudad.ciudad' => SORT_DESC])
                             ->all();            
-          $valor = 0;
                     
           foreach ($varListaCiudad as $key => $value) {
             echo "<option value='" . $value->hv_idciudad. "'>" . $value->ciudad. "</option>";
@@ -415,7 +413,6 @@ use Exception;
     }
 
     public function actionListardirectores(){
-      $txtAnulado = 0; 
       $txtId = Yii::$app->request->get('id');
 
       if ($txtId) {
@@ -3083,7 +3080,6 @@ $modelos = new HojavidaDatapersonal();
 
     $sheet = $objPHPExcel->getSheet(0);
     $highestRow = $sheet->getHighestRow();
-    $highestcolumn = $sheet->getHighestColumn();
 
     for ($row=3; $row < $highestRow; $row++) { 
       $varDocumento = $sheet->getCell("A".$row)->getValue();

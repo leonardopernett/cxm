@@ -85,9 +85,6 @@ use \yii\base\Exception;
                                 $fila++;
                                 for ($c=0; $c < $numero; $c++) { 
                                     $varArray = $datos[$c];
-                                    $varDatos = explode(";", utf8_encode($varArray));
-
-                                    
                                 }
                             }
                             fclose($gestor);
@@ -143,7 +140,6 @@ use \yii\base\Exception;
 
                 $sheet = $objPHPExcel->getSheet(0);
                 $highestRow = $sheet->getHighestRow();
-                $highestcolumn = $sheet->getHighestColumn();
 
                 for( $row = 4; $row <= $highestRow; $row++)
                 {
@@ -690,7 +686,6 @@ use \yii\base\Exception;
 
                 $model = BasechatTigo::find()->where(['basesatisfaccion_id' => $id])->one();
                 
-                $redct = 'index';
                 if (Yii::$app->user->identity->username == $model->responsable) {
                     $model->usado = "NO";
                     $model->save();
@@ -1517,7 +1512,6 @@ public function actionElegirimportar(){
 
                 $sheet = $objPHPExcel->getSheet(0);
                 $highestRow = $sheet->getHighestRow();
-                $highestcolumn = $sheet->getHighestColumn();
 
             for( $row = 4; $row <= $highestRow; $row++) {
 
@@ -1586,7 +1580,6 @@ public function actionElegirimportar(){
 
             $sheet = $objPHPExcel->getSheet(0);
             $highestRow = $sheet->getHighestRow();
-            $highestcolumn = $sheet->getHighestColumn();
 
             for( $row = 4; $row <= $highestRow; $row++)
             {
@@ -1721,7 +1714,6 @@ public function actionElegirimportar(){
         $vartipo_producto = null;
         $varvasrchatid = $basechatid;
         $varrta = null;
-        $varpcrc = $pcrc;
         $varcomentario_fcr = null;
 
         $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = $basechatid")->queryAll();
@@ -1770,7 +1762,6 @@ public function actionElegirimportar(){
 
      public function actionExportbol(){
         $varCorreo = Yii::$app->request->get("var_Destino");
-        $sessiones = Yii::$app->user->identity->id;
 	
         $valist = Yii::$app->db->createCommand("select bt.ticked_id 'NumeroTicket', bt.fecha_creacion 'FechaCreacion', bt.fecha_respuesta 'FechaRespuesta', bt.fecha_transaccion 'FechaTransaccion', bt.nombre_cliente 'Cliente', bt.id_agente 'Agente', bt.tipologia 'Tipologia', bt.tipo_producto 'TipoProducto', bt.comentario_adicional 'SentirCliente', bt.nps 'Pregunta1', bt.csat 'Pregunta2', bt.ces 'Pregunta3', bt.fcr 'Pregunta4', bt.conocimiento 'Pregunta5', bf.fechacalificacion 'FechaCalificacion', bf.fechazendeks 'FechaZendesk',  bt.basesatisfaccion_id  'Basesatisfaccion' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on  bc.idlista = bm.idlista   inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista inner join tbl_basechat_tigob bt on bf.ticked_id = bt.ticked_id and bf.basesatisfaccion_id = bt.basesatisfaccion_id where bf.anulado = 0 and bt.anulado = 0 AND bt.pcrc = 3272 group by NumeroTicket, Basesatisfaccion")->queryAll();
 
@@ -1793,16 +1784,6 @@ public function actionElegirimportar(){
                 ),
             );
 
-        $styleArraySize = array(
-                'font' => array(
-                        'bold' => true,
-                        'size'  => 15,
-                ),
-                'alignment' => array(
-                        'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                ), 
-            );
-
         $styleColor = array( 
                 'fill' => array( 
                     'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -1814,13 +1795,6 @@ public function actionElegirimportar(){
                 'font' => array(
                   'bold' => false,
                   'color' => array('rgb' => 'FFFFFF')
-                )
-            );
-
-        $styleArraySubTitle = array(              
-                'fill' => array( 
-                        'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                        'color' => array('rgb' => '4298B5'),
                 )
             );
 
@@ -1844,28 +1818,6 @@ public function actionElegirimportar(){
                     )
                 )
             );
-
-        $styleColorLess = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => '92DD5B'),
-                )
-            );
-
-        $styleColorMiddle = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => 'E3AD48'),
-                )
-            );
-
-        $styleColorhigh = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => 'DD6D5B'),
-                )
-            );
-
         $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
 
         $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT - LISTADO DE GESTION TIGO BOLIVIA');
@@ -2085,16 +2037,12 @@ public function actionElegirimportar(){
                         ->setHtmlBody($message)
                         ->send();
 
-
-        $rtaenvio = 1;
         die(json_encode($varCorreo));
 
       }
 
       public function actionExportcol(){
         $varCorreo = Yii::$app->request->get("var_Destino");
-        $sessiones = Yii::$app->user->identity->id;
-
         $valist = Yii::$app->db->createCommand("select bt.ticked_id 'NumeroTicket', bt.fecha_creacion 'FechaCreacion', bt.fecha_respuesta 'FechaRespuesta', bt.fecha_transaccion 'FechaTransaccion', bt.nombre_cliente 'Cliente', bt.id_agente 'Agente', bt.tipologia 'Tipologia', bt.tipo_producto 'TipoProducto', bt.comentario_adicional 'SentirCliente', bt.nps 'Pregunta1', bt.csat 'Pregunta2', bt.ces 'Pregunta3', bt.fcr 'Pregunta4', bt.conocimiento 'Pregunta5', bf.fechacalificacion 'FechaCalificacion', bf.fechazendeks 'FechaZendesk',  bt.basesatisfaccion_id  'Basesatisfaccion' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on  bc.idlista = bm.idlista   inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista inner join tbl_basechat_tigob bt on bf.ticked_id = bt.ticked_id and bf.basesatisfaccion_id = bt.basesatisfaccion_id where bf.anulado = 0 and bt.anulado = 0 AND bt.pcrc = 3513group by NumeroTicket, Basesatisfaccion")->queryAll();
 
         $phpExc = new \PHPExcel();
@@ -2115,16 +2063,6 @@ public function actionElegirimportar(){
                 ),
             );
 
-        $styleArraySize = array(
-                'font' => array(
-                        'bold' => true,
-                        'size'  => 15,
-                ),
-                'alignment' => array(
-                        'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                ), 
-            );
-
         $styleColor = array( 
                 'fill' => array( 
                     'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -2138,14 +2076,6 @@ public function actionElegirimportar(){
                   'color' => array('rgb' => 'FFFFFF')
                 )
             );
-
-        $styleArraySubTitle = array(              
-                'fill' => array( 
-                        'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                        'color' => array('rgb' => '4298B5'),
-                )
-            );
-
         $styleArraySubTitle2 = array(              
                 'fill' => array( 
                     'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -2164,27 +2094,6 @@ public function actionElegirimportar(){
                         'style' => \PHPExcel_Style_Border::BORDER_THIN,
                         'color' => array('rgb' => 'DDDDDD')
                     )
-                )
-            );
-
-        $styleColorLess = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => '92DD5B'),
-                )
-            );
-
-        $styleColorMiddle = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => 'E3AD48'),
-                )
-            );
-
-        $styleColorhigh = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => 'DD6D5B'),
                 )
             );
 
@@ -2316,7 +2225,6 @@ public function actionElegirimportar(){
         foreach ($valist as $key => $value) {
             $varidticket = $value['NumeroTicket'];
             $varbasesatisfaccion = $value['Basesatisfaccion'];
-            $vartransaccion = $value['FechaTransaccion'];
             $varcliente = $value['Cliente'];
             $varagente = $value['Agente'];
             $vartipologia = $value['Tipologia'];
@@ -2329,7 +2237,6 @@ public function actionElegirimportar(){
             $varpregunta5 = $value['Pregunta5'];
             $varcalificacion = $value['FechaCalificacion'];
             $varzendesk = $value['FechaZendesk'];
-            $varcreacion = $value['FechaCreacion'];
             $varrespuesta = $value['FechaRespuesta'];
 
             $varsolicitud = Yii::$app->db->createCommand("select distinct fsolicitud from tbl_basechat_formulario where anulado = 0 and idlista is null and idbaselista is null and ticked_id = $varidticket and basesatisfaccion_id = $varbasesatisfaccion")->queryScalar();

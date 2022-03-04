@@ -170,7 +170,6 @@ class ControlController extends \yii\web\Controller
                     $filtrosDatos->corte = $model->corte;
                     $filtrosDatos->arbol_ids = $model->arbol;
                     $filtrosDatos->tipo_grafica = $model->tipo_grafica;
-                    $arbIds = $filtrosDatos->arbol_ids;
 
                     $filtrosForm = \app\models\FiltrosFormularios::findOne(['vista' => $controlador . '/' . $vista, 'usua_id' => Yii::$app->user->identity->id]);
 
@@ -1618,7 +1617,6 @@ class ControlController extends \yii\web\Controller
                         $inicioRow = $row;
                         $row++;
                         $row = $inicioRow;
-                        $inicioColumn = $column;
                         /* Se imprimen cortes */
                         foreach ($arrayCortes as $corte) {
                             if (isset($tablaExcel[$value['id']])) {
@@ -2185,7 +2183,6 @@ class ControlController extends \yii\web\Controller
                         $filtrosDatos->rol = $model->rol;
                         $filtrosDatos->valorador = $model->valorador;
                         $filtrosDatos->equiposvalorador = $model->equiposvalorador;
-                        $arbIds = $filtrosDatos->arbol_ids;
 
                         $filtrosForm = \app\models\FiltrosFormularios::findOne(['vista' => $controlador . '/' . $vista, 'usua_id' => Yii::$app->user->identity->id]);
 
@@ -3417,8 +3414,6 @@ class ControlController extends \yii\web\Controller
             ->queryAll();
             $datos = [];
             if (count($resultData) > 0) {
-
-                $dataTabla = [];
 
                 //DATOS DE LA TABAL
                 $datos['datosTablaSepaDim'] = $resultData;

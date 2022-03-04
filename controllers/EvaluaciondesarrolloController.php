@@ -2276,16 +2276,6 @@ use yii\base\Exception;
         $phpExc->getActiveSheet()->setShowGridlines(False);
 
 
-        $styleArraySize = array(
-            'font' => array(
-                    'bold' => true,
-                    'size'  => 15,
-            ),
-            'alignment' => array(
-                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-            ), 
-        );
-
         $styleColor = array( 
                 'fill' => array( 
                     'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
@@ -3760,7 +3750,6 @@ use yii\base\Exception;
             foreach ($varListBloques as $key => $value) {
               $varNombreBloque = $value['NombreBloque'];
               $varIDBloques = $value['IdBloque'];
-              $VarNotaPorBloque = 0;
 
               $varColor = null;
               if ($value['IdBloque'] == "3") {                    
@@ -4456,7 +4445,6 @@ use yii\base\Exception;
             foreach ($varListBloques as $key => $value) {
               $varNombreBloque = $value['NombreBloque'];
               $varIDBloques = $value['IdBloque'];
-              $VarNotaPorBloque = 0;
 
               $varColor = null;
               if ($value['IdBloque'] == "3") {                    

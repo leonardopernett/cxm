@@ -61,9 +61,6 @@ use \yii\base\Exception;
       $model = new Dashboardcategorias(); 
       $model2 = new ProcesosVolumendirector();
       $model3 = new SpeechCategorias();
-      $txtanulado = 0;
-      $txtfechacreacion = date("Y-m-d");
-      $array_cadena = 0; 
       $txtvarNew = null;     
 
       $data = Yii::$app->request->post();     
@@ -99,7 +96,6 @@ use \yii\base\Exception;
         }
 
         $txtFecha = explode(" ", $model3->fechacreacion);
-        $sessiones = Yii::$app->user->identity->id;                
 
         $varFechaInicio = $txtFecha[0].' 05:00:00';
 
@@ -149,13 +145,6 @@ use \yii\base\Exception;
         'txtvarNew' => $txtvarNew,
         ]);
     }
-      
-      public function actionPrueba(){
-        $txtvRta = Yii::$app->request->post("txtvRta");
-
-        die(json_encode($users));
-      }
-
       public function actionImportarexcel(){
         $model = new UploadForm2();
         $txtanulado = 0;
@@ -378,9 +367,6 @@ use \yii\base\Exception;
 
      public function actionCategoriasvoice($arbol_idV, $parametros_idV, $codigoPCRC, $codparametrizar,  $nomFechaI, $nomFechaF){        
         $model = new Dashboardcategorias();       
-        $varArbol_idV = $arbol_idV;
-        $varParametros_idV = $parametros_idV;
-        $varCodparametrizar = $codparametrizar;
         $varFechaI = $nomFechaI;
         $varFechaF = $nomFechaF;
         $varCodigPcrc = $codigoPCRC;
@@ -398,9 +384,6 @@ use \yii\base\Exception;
 
       public function actionCategoriasgeneral($arbol_idV, $parametros_idV, $codparametrizar, $codigoPCRC, $nomFechaI, $nomFechaF){
         $model = new Dashboardcategorias();       
-        $varArbol_idV = $arbol_idV;
-        $varParametros_idV = $parametros_idV;
-        $varCodparametrizar = $codparametrizar;
         $varFechaI = $nomFechaI;
         $varFechaF = $nomFechaF;
         $varCodigPcrc = $codigoPCRC;
@@ -434,7 +417,6 @@ use \yii\base\Exception;
           }
           $varServicios = implode("', '", $varArrayServicio);
 
-          $varOne = substr($txtvfechas, 0, -13);
           $varTwo = substr($txtvfechas, 13);
           $varFechaInicio = $varTwo.' 05:00:00';
 
@@ -451,10 +433,8 @@ use \yii\base\Exception;
       }
 
       public function actionListashijos(){
-        $txtvindicador = Yii::$app->request->get("txtvindicador");
         $txtvvariables = Yii::$app->request->get("txtvvariables");
         $txtvservicios = Yii::$app->request->get("txtvservicios");
-        $txtvparametros = Yii::$app->request->get("txtvparametros");
         $txtvcodigos = Yii::$app->request->get("txtvcodigos");
         $txtidvariables = Yii::$app->db->createCommand("select idcategoria from tbl_speech_categorias where anulado = 0 and idcategorias = 2  and cod_pcrc in ('$txtvcodigos') and programacategoria in ('$txtvservicios') and nombre like '$txtvvariables'")->queryScalar();
 
@@ -464,13 +444,8 @@ use \yii\base\Exception;
       public function actionListashijo(){
               $txtvindicador = Yii::$app->request->get("txtvindicador");
               $txtvservicios = Yii::$app->request->get("txtvservicios");
-              $txtvparametros = Yii::$app->request->get("txtvparametros");
-              $txtvfechainic = Yii::$app->request->get("txtvfechainic");
-              $txtvfechafinc = Yii::$app->request->get("txtvfechafinc");
               $txtvcodigo = Yii::$app->request->get("txtvcodigo");
 
-
-              
               $txtIndicador = Yii::$app->db->createCommand("select distinct nombre from tbl_speech_categorias where anulado = 0 and idcategorias = 1 and idcategoria = $txtvindicador  and programacategoria in ('$txtvservicios')")->queryScalar();
               $txtRta = Yii::$app->db->createCommand("select distinct * from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and tipoindicador in ('$txtIndicador') and cod_pcrc in ('$txtvcodigo') and programacategoria in ('$txtvservicios')")->queryAll();       
 
@@ -485,13 +460,8 @@ use \yii\base\Exception;
 	public function actionListashijo1(){
           $txtvindicador = Yii::$app->request->get("txtvindicador");
           $txtvservicios = Yii::$app->request->get("txtvservicios");
-          $txtvparametros = Yii::$app->request->get("txtvparametros");
-          $txtvfechainic = Yii::$app->request->get("txtvfechainic");
-          $txtvfechafinc = Yii::$app->request->get("txtvfechafinc");
           $txtvcodigo = Yii::$app->request->get("txtvcodigo");
 
-
-          
           $txtIndicador = Yii::$app->db->createCommand("select distinct nombre from tbl_speech_categorias where anulado = 0 and idcategorias = 1 and idcategoria = $txtvindicador  and programacategoria in ('$txtvservicios')")->queryScalar();
           $txtRta = Yii::$app->db->createCommand("select distinct * from tbl_speech_categorias where anulado = 0 and idcategorias = 2 and tipoindicador in ('$txtIndicador') and cod_pcrc in ('$txtvcodigo') and programacategoria in ('$txtvservicios')")->queryAll();       
 
@@ -503,10 +473,8 @@ use \yii\base\Exception;
         die(json_encode($arrayUsu));
         }
 	public function actionListashijos1(){
-        $txtvindicador = Yii::$app->request->get("txtvindicador");
         $txtvvariables = Yii::$app->request->get("txtvvariables");
         $txtvservicios = Yii::$app->request->get("txtvservicios");
-        $txtvparametros = Yii::$app->request->get("txtvparametros");
         $txtvcodigos = Yii::$app->request->get("txtvcodigos");
         $txtidvariables = Yii::$app->db->createCommand("select idcategoria from tbl_speech_categorias where anulado = 0 and idcategorias = 2  and cod_pcrc in ('$txtvcodigos') and programacategoria in ('$txtvservicios') and nombre like '$txtvvariables'")->queryScalar();
 
@@ -555,7 +523,6 @@ use \yii\base\Exception;
           $model = new Dashboardcategorias();
           $txtanulado = 0;
         $txtfechacreacion = date("Y-m-d");
-        $txtVariableCliente = 0;
         $sessiones = Yii::$app->user->identity->id; 
                 
 
@@ -600,7 +567,6 @@ use \yii\base\Exception;
 
         public function actionCategoriasverificar($txtServicioCategorias){
           $model = new SpeechCategorias();
-          $sessiones = Yii::$app->user->identity->id;
 
           $varcod = $txtServicioCategorias;
 
@@ -627,7 +593,6 @@ use \yii\base\Exception;
         }
 
         public function actionCategoriasupdate($txtServicioCategorias){
-          $sessiones = Yii::$app->user->identity->id;
 
           $model = $this->findModel($txtServicioCategorias);
           if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -688,13 +653,10 @@ use \yii\base\Exception;
       }
 
        public function actionExport(){
-        $model = new DashboardtmpSpeech();
 
         $var_FechaIni = null;
         $var_FechaFin = null;
         $varCorreo = null;
-        $varArbol_idV = null;
-        $varParametros_idV = null;
         $varCodparametrizar = null;
         $VarCodsPcrc = null;
 
@@ -702,20 +664,15 @@ use \yii\base\Exception;
         $var_FechaFin = Yii::$app->request->post("var_FechaFin");
         $txtServicio = Yii::$app->request->post("varArbol_idV");
         $txtParametros = Yii::$app->request->post("varParametros_idV");
-        $varIndicador = Yii::$app->request->post("varIndicador");
         $varCodparametrizar = Yii::$app->request->post("varCodparametrizar");
         $varCorreo = Yii::$app->request->post("var_Destino");
         $VarCodsPcrc = Yii::$app->request->post("var_CodsPcrc");
-
-        $sessiones = Yii::$app->user->identity->id;
 
         $varInicioF = $var_FechaIni.' 05:00:00';
         $varFecha = date('Y-m-d',strtotime($var_FechaFin."+ 1 days"));
         $varFinF = $varFecha.' 05:00:00';
 
         $fechaComoEntero = strtotime($varInicioF);
-        $fechaIniCat = date("Y", $fechaComoEntero).'-01-01'; 
-        $fechaFinCat = date("Y", $fechaComoEntero).'-12-31'; 
 
         $varCodigo = $varCodparametrizar;
 
@@ -801,13 +758,6 @@ use \yii\base\Exception;
                 )
             );
 
-        $styleArraySubTitle2 = array(              
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => 'C6C6C6'),
-                )
-            );  
-
         // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
         $styleArrayBody = array(
                 'font' => array(
@@ -819,13 +769,6 @@ use \yii\base\Exception;
                         'style' => \PHPExcel_Style_Border::BORDER_THIN,
                         'color' => array('rgb' => 'DDDDDD')
                     )
-                )
-            );
-
-        $styleColorLess = array( 
-                'fill' => array( 
-                    'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                    'color' => array('rgb' => '92DD5B'),
                 )
             );
 
@@ -1050,7 +993,6 @@ use \yii\base\Exception;
                 }
               }
       }
-      $arrayVariableR = implode(", ", $arrayListaVar);
       $arrayVariableMasR = implode(", ", $arraYListaVarMas);
       $arrayVariableMenosR = implode(", ", $arraYListaVarMenos);
       $sumapositivoR = 0;
@@ -1267,7 +1209,6 @@ use \yii\base\Exception;
                 //imprime total porcentaje Agente po callid
                 $varTotalvariables = count($varListIndiVari2);
                 if($cuentavari == ($vartotalrespo)) {
-                  $varaqui = 'Aqui';
                   if($cuentanegativoR == 0) {
                     $totalpondeR = round((($sumapositivoR / $varTotalvariables) * 100),2);
                   }
@@ -1325,7 +1266,6 @@ use \yii\base\Exception;
         $model = new Dashboardpermisos();
         $txtanulado = 0;
         $txtfechacreacion = date("Y-m-d");        
-        $sessiones = Yii::$app->user->identity->id;                 
 
           $form = Yii::$app->request->post();
 
@@ -1368,25 +1308,20 @@ use \yii\base\Exception;
       } 
 
     public function actionExport2(){
-      $model = new DashboardtmpSpeech();
 
       $var_FechaIni = null;
       $var_FechaFin = null;
       $varCorreo = null;
-      $varArbol_idV = null;
-      $varParametros_idV = null;
       $varCodparametrizar = null;
 
       $var_FechaIni = Yii::$app->request->post("var_FechaIni");
       $var_FechaFin = Yii::$app->request->post("var_FechaFin");
       $txtServicio = Yii::$app->request->post("varArbol_idV");
       $txtParametros = Yii::$app->request->post("varParametros_idV");
-      $varIndicador = Yii::$app->request->post("varIndicador");
       $varCodparametrizar = Yii::$app->request->post("varCodparametrizar");
       $varCorreo = Yii::$app->request->post("var_Destino");
       $txtCodPcrcok = Yii::$app->request->post("var_CodsPcrc");
 
-      $sessiones = Yii::$app->user->identity->id;
 
       $varInicioF = $var_FechaIni.' 05:00:00';
       $varFecha = date('Y-m-d',strtotime($var_FechaFin."+ 1 days"));
@@ -1394,7 +1329,6 @@ use \yii\base\Exception;
 
       $fechaComoEntero = strtotime($varInicioF);
       $fechaIniCat = date("Y", $fechaComoEntero).'-01-01'; 
-      $fechaFinCat = date("Y", $fechaComoEntero).'-12-31'; 
 
       $varCodigo = $varCodparametrizar;
 
@@ -1442,8 +1376,6 @@ use \yii\base\Exception;
           $txtIdCatagoria1 = 1114;
         }
       }  
-
-      $txtConteoIndicador = count($varListIndicadores); 
 
       $txtTotalLlamadas = Yii::$app->db->createCommand("select count(idcategoria) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and idcategoria = $txtIdCatagoria1")->queryScalar();
 
@@ -1495,13 +1427,6 @@ use \yii\base\Exception;
                       'color' => array('rgb' => '4298B5'),
               )
           );
-
-      $styleArraySubTitle2 = array(              
-              'fill' => array( 
-                  'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
-                  'color' => array('rgb' => 'C6C6C6'),
-              )
-          );  
 
       // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
       $styleArrayBody = array(
@@ -1657,24 +1582,12 @@ use \yii\base\Exception;
       $txtRtaProcentaje = 0;
       $lastColumn = 'A';
       foreach ($varListIndicadores as $key => $value) {
-              // $varCodPcrc = $value['cod_pcrc'];
               $txtIdIndicadores = $value['idcategoria'];
-// var_dump($txtIdIndicadores);
               $txtNombreCategoria = $value['nombre']; 
-              $txtTipoSmart2 = $value['orientacionsmart']; 
               $txtTipoFormIndicador = $value['orientacionform'];
-              $txtPrograma = $value['programacategoria']; 
-
-              // $arrayvarCodPcrc = array();
-              // $varListCod_Pcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_categorias where anulado = 0 and programacategoria in ('$txtServicio') and idcategorias = 1 and idcategoria = $txtIdIndicadores")->queryAll();
-
-              // foreach ($varListCod_Pcrc as $key => $value) {
-              //   array_push($arrayvarCodPcrc, $value['cod_pcrc']);
-              // }
               $varCodPcrc = $txtCodPcrcok;
                 
                 if ($varCodigo == 1) {
-                  // var_dump("RN");
                   $varTipoPAram = Yii::$app->db->createCommand("select distinct sc.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sp.rn in ('$txtParametros') and sc.programacategoria in ('$txtServicio') and sc.idcategoria = '$txtIdIndicadores'")->queryScalar();
 
                   $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.rn in ('$txtParametros')    and sc.cod_pcrc in ('$varCodPcrc') group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
@@ -1698,12 +1611,8 @@ use \yii\base\Exception;
                   $arrayVariable = implode(", ", $arrayListOfVar);
                   $arrayVariableMas = implode(", ", $arraYListOfVarMas);
                   $arrayVariableMenos = implode(", ", $arraYListOfVarMenos);
-                  // var_dump($arrayVariableMenos);
-
-
                 }else{
                   if ($varCodigo == 2) {
-                    // var_dump("Ext");
                     $varTipoPAram = Yii::$app->db->createCommand("select distinct sc.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sp.ext in ('$txtParametros') and sc.programacategoria in ('$txtServicio') and sc.idcategoria = '$txtIdIndicadores'")->queryScalar();
 
                     $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.ext in ('$txtParametros')  and sc.cod_pcrc in ('$varCodPcrc') group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
@@ -2020,7 +1929,6 @@ use \yii\base\Exception;
       }
 
       foreach ($txtvDatos as $key => $value) {
-        $txtCodigoPcrc = $value['cod_pcrc'];
         $txtVariables = $value['nombre'];
         $txtIdCatagoria = $value['idcategoria']; 
         $txtTipoindicador = $value['tipoindicador'];                
@@ -2148,7 +2056,6 @@ use \yii\base\Exception;
       $numCell = $numCell + 1;
 
       foreach ($txtvDatosMotivos as $key => $value) {
-        $varMotivos = $value['nombre'];               
         $varIdCatagoria = $value['idcategoria'];
 
         $txtvCantMotivos1 = Yii::$app->db->createCommand("select count(idcategoria) from tbl_dashboardspeechcalls  where idcategoria = '$varIdCatagoria' and servicio in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and anulado = 0")->queryScalar();
@@ -2186,7 +2093,6 @@ use \yii\base\Exception;
             $txtRtaVar = round(($txtcoincidencia / $txtvCantMotivos) * 100,2);
           }else{
             $txtRtaVar = 0;
-            $txtRtaVariable = 0;
           }
 
           $varSmart = Yii::$app->db->createCommand("select orientacionsmart  from tbl_speech_categorias where anulado = 0 and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') and idcategoria = $txtVarIndi")->queryScalar();
@@ -2678,9 +2584,6 @@ $numCell = $numCell + 1;
           if ($model3->load($form)) {
             $varIdPcrc = $model3->cod_pcrc;
             $varPcrc = Yii::$app->db->createCommand("select distinct pcrc from tbl_procesos_volumendirector where cod_pcrc like '$varIdPcrc' and estado = 1 and anulado = 0 ")->queryScalar();
-            $varRn = $model3->rn;
-            $varExt = $model3->extension;
-            $varRed = $model3->usua_usuario;
             $varIdCategoria = $model3->idcategoria;
             $varNombre = $model3->nombre;
             $varIdCategorias = $model3->tipocategoria;
@@ -2725,7 +2628,6 @@ $numCell = $numCell + 1;
             }else{
               $varOrientacion = $varOriF;
             }
-            $varDashboard = $model3->dashboard;
             $VarNomCity = Yii::$app->db->createCommand("select distinct ciudad from tbl_procesos_volumendirector where cod_pcrc = '$varIdPcrc' and estado = 1 and anulado = 0")->queryScalar();
             $varCiudad = 0;
         if ($VarNomCity == 'BOGOTÁ') {
@@ -2804,7 +2706,6 @@ $numCell = $numCell + 1;
         }
 
     public function actionListarpcrc(){            
-            $txtAnulado = 0; 
             $txtId = Yii::$app->request->post('id');           
 
             if ($txtId) {
@@ -2834,7 +2735,6 @@ $numCell = $numCell + 1;
         }
 
         public function actionListarpcrcindex(){            
-            $txtAnulado = 0; 
             $txtId = Yii::$app->request->post('id');                       
 
             if ($txtId) {
@@ -2941,7 +2841,6 @@ $numCell = $numCell + 1;
         }
 
         public function actionListacategorias(){
-          $txtidCategoria = Yii::$app->request->post("txtCategoria");
           $txtidCentroCostos = Yii::$app->request->post("txtCC");
 
           $arrayUsu = array();
@@ -3079,7 +2978,6 @@ $numCell = $numCell + 1;
                   $varIndiCa = $value['llamacategoria'];
                   $varCategoria = $value['catecategoria'];
                   $varConteo = $value['encuentra'];
-                  $varNombre = $value['nombreCategoria'];
                   
                   Yii::$app->db->createCommand()->insert('tbl_speech_general',[
                       'programacliente' => $varServicio,
@@ -3171,7 +3069,6 @@ $numCell = $numCell + 1;
         }
 
         public function actionAutomaticspeecha($varNumber) {
-          $varNumero = $varNumber;          
           $txtProblemas = 0;
           ini_set("max_execution_time", "900");
           ini_set("memory_limit", "1024M");
@@ -3208,10 +3105,7 @@ $numCell = $numCell + 1;
               $txtlistcategorias = implode(", ", $arraylistcategorias);
 
               $varprograma = Yii::$app->get('dbQA')->createCommand("select programacategoria from tbl_speech_categorias where anulado = 0 and cod_pcrc in ('$varIdCodpcrc') group by programacategoria")->queryScalar();
-              $varDiaVencido = date('j') - 1;
-              $varDiaActual = date('j');
 
-              $varMesActual = date('m');
               $varYearActual = date('Y');
 
               $varFechaDiaVencido = $varYearActual.'-11-01 05:00:00';
@@ -3467,8 +3361,6 @@ $numCell = $numCell + 1;
 
         public function actionImportarentto(){
           $model = new UploadForm2();
-          $txtanulado = 0;
-          $txtfechacreacion = date("Y-m-d");
 
           if (Yii::$app->request->isPost) {
             $model->file = UploadedFile::getInstance($model, 'file');
@@ -3674,8 +3566,6 @@ public function actionCantidadentto(){
           $varcategoriae12 = 9542;
           $varcategoriae13 = 9541;
           $varcategoriae14 = 6379;
-
-          $varfechacreacion = date("Y-m-d");
           $varrtas = 0;
 
           if ($varBolsita == "CX_Directv") {
@@ -3764,8 +3654,6 @@ public function actionCantidadentto(){
             if (count($varcategorias) > 0) {
               
               $varListCallidida = Yii::$app->db->createCommand("select callId from tbl_dashboardcategoriascalls where anulado = 0 and idcategoria = 1105 and servicio in ('$varBolsita') and fechallamada between '$txtfechainicio 05:00:00' and '$txtfechafin 05:00:00' and login_id in ('$varUsuarios')")->queryAll();  
-
-              $varlistausuarios = array();
               $varArraycategoriaida = 0;
               $varArraycategoriaidatotal = null;
               foreach ($varcategorias as $key => $value) {
@@ -4172,7 +4060,6 @@ public function actionCantidadentto(){
           $txttxtvarcantllamadasb = 0;
           $varcategoriass = null;   
           $varidloginid = null;       
-          $varconeto = 0;
 
           $paramscalls = Yii::$app->db->createCommand("select ss.idllamada from tbl_speech_servicios ss  inner join tbl_speech_parametrizar sp on ss.id_dp_clientes = sp.id_dp_clientes where sp.anulado = 0 and sp.cod_pcrc in ('$txtvarcodigopcrc') group by sp.cod_pcrc")->queryScalar(); 
 
@@ -4321,7 +4208,6 @@ public function actionCantidadentto(){
         }
 
         public function actionListarvariablesx(){
-          $txtanulado = 0;
           $txtidspeech = Yii::$app->request->get('id');
 
           if ($txtidspeech) {
@@ -4527,8 +4413,6 @@ public function actionCantidadentto(){
       $form = Yii::$app->request->post();
       if ($model->load($form)) {
         $txtiddpcliente = $model->id_dp_clientes;
-        $txtfechacreacion = date("Y-m-d");
-        $sessiones = Yii::$app->user->identity->id; 
 
         $varlistidclientes = Yii::$app->db->createCommand("select * from tbl_speech_parametrizar s where s.id_dp_clientes = $txtiddpcliente and s.anulado = 0")->queryAll();
 
@@ -4613,9 +4497,6 @@ public function actionCantidadentto(){
 
       public function actionTotalizaragentes($arbol_idV, $parametros_idV, $codparametrizar, $codigoPCRC, $nomFechaI, $nomFechaF){
         $model = new Dashboardcategorias();
-        $varArbol_idV = $arbol_idV;
-        $varParametros_idV = $parametros_idV;
-        $varCodparametrizar = $codparametrizar;
         $varFechaI = $nomFechaI;
         $varFechaF = $nomFechaF;
         $varCodigPcrc = $codigoPCRC;
@@ -4630,12 +4511,8 @@ public function actionCantidadentto(){
 
 
 	public function actionTotalagente(){
-          $model = new DashboardtmpSpeech();
           $var_FechaIni = null;
           $var_FechaFin = null;
-          $varCorreo = null;
-          $varArbol_idV = null;
-          $varParametros_idV = null;
           $varCodparametrizar = null;
           $VarCodsPcrc = null;
           $txtServicio = null;
@@ -4644,7 +4521,6 @@ public function actionCantidadentto(){
           $var_FechaFin = Yii::$app->request->get("var_FechaFin");
           $txtServicio = Yii::$app->request->get("varArbol_idV");
           $txtParametros = Yii::$app->request->get("varParametros_idV");
-          $varIndicador = Yii::$app->request->get("varIndicador");
           $varCodparametrizar = Yii::$app->request->get("varCodparametrizar");
           $varCorreo = Yii::$app->request->get("var_Destino");
           $VarCodsPcrc = Yii::$app->request->get("var_CodsPcrc");
@@ -4657,8 +4533,6 @@ public function actionCantidadentto(){
           $varFinF = $varFecha.' 05:00:00';
   
           $fechaComoEntero = strtotime($varInicioF);
-          $fechaIniCat = date("Y", $fechaComoEntero).'-01-01'; 
-          $fechaFinCat = date("Y", $fechaComoEntero).'-12-31'; 
   
           $varCodigo = $varCodparametrizar;
   
@@ -4766,7 +4640,6 @@ public function actionCantidadentto(){
                 }
         }
 
-        $arrayVariableR = implode(", ", $arrayListaVar);
         $arrayVariableMasR = implode(", ", $arraYListaVarMas);
         $arrayVariableMenosR = implode(", ", $arraYListaVarMenos);
         $sumapositivoR = 0;
@@ -4974,7 +4847,6 @@ public function actionCantidadentto(){
                   //imprime total porcentaje Agente po callid
                  $varTotalvariables = count($varListIndiVari2);
                   if($cuentavari == ($vartotalrespo)) {
-                    $varaqui = 'Aqui';
                     if($cuentanegativoR == 0) {
                       $totalpondeR = $sumapositivoR / $varTotalvariables;
                     }
@@ -5103,8 +4975,6 @@ public function actionCantidadentto(){
     }
 
     public function actionGuardarpaso2($preview = 0) {
-      $modelA = new \app\models\Arboles();
-      $modelD = new \app\models\Dimensiones();
       $modelE = new \app\models\Evaluados;
       $modelE->scenario = "monitoreo";
 
@@ -5114,7 +4984,6 @@ public function actionCantidadentto(){
         $arbol_id = $arboles["arbol_id"];
         $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
         $formulario_id = $infoArbol->formulario_id;
-        $dimension = Yii::$app->request->post('Dimensiones');
         $dimension_id = $arboles["dimension_id"];
         $evaluado_id = Yii::$app->request->post("evaluado_id");
         $postTipoInteraccion =  Yii::$app->request->post('tipo_interaccion');

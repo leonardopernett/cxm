@@ -103,19 +103,11 @@ use app\models\Permisosfeedback;
       $varusuario = Yii::$app->request->get('txtusuarios');
       $txtvalida = null;
       $txtidusuario = Yii::$app->db->createCommand("SELECT DISTINCT usua_id FROM tbl_usuarios u WHERE u.usua_usuario = '$varusuario'")->queryScalar();
-      $txtrta = 0;
 
       if ($txtidusuario != "") {
         $txtvalida = Yii::$app->db->createCommand("SELECT COUNT(p.idusuarios) FROM tbl_permisosfeedback p WHERE p.anulado = 0 AND p.idusuarios = $txtidusuario")->queryScalar();
-
-        if ($txtvalida != 0) {
-          $txtrta = 1;
-        }else{
-          $txtrta = 2;
-        }       
-
       }else{
-        $txtrta = 2;
+        #code...
       }
 
       die(json_encode($txtvalida));
