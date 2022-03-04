@@ -358,6 +358,7 @@ use \yii\base\Exception;
                                           'idredbox'  => $varDatos[9],
                                           'idgrabadora'  => $varDatos[10],
                                           'connid'  => $varDatos[11],
+                                          'extensiones'  => $varDatos[12],
                                           'fechacreacion' => $txtfechacreacion,
                                           'anulado' => $txtanulado,
                                       ])->execute();                          
