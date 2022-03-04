@@ -700,7 +700,7 @@ use app\models\SpeechParametrizar;
             $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
           }else{
             if ($varColor == 2) {
-              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre'].' - ('.$value['tipoindicador'].') ']); 
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre'].' - ('.$value['tipoindicador'].') '); 
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
               $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
