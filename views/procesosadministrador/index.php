@@ -154,6 +154,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-paperclip" style="font-size: 15px; color: #ffc034;"></em> Actualizar Url & Transcipciones Encuestas</label>
+                        <?= Html::a('Aceptar',  ['buscarurls'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Actualizar url encuestas']) 
+                        ?>
+                    </div>
+                </div>
             </div>
 
         </div>
