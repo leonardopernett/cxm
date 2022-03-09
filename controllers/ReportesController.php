@@ -933,7 +933,6 @@ class ReportesController extends \yii\web\Controller {
                         $dates = explode(' - ', $model->created);
                         $model->startDate = $dates[0] . " 00:00:00";
                         $model->endDate = $dates[1] . " 23:59:59";
-                        $dataProvider = $model->getReportformulariosamigo(true);
                         $showGrid = true;
                     }
                     if ($model->load(Yii::$app->request->post()) && $model->validate()) {

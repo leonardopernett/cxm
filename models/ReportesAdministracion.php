@@ -226,11 +226,6 @@ class ReportesAdministracion extends Model
     foreach ($txtRta as $key => $value) {
              array_push($arrayazure, $value['azure_content']);
     }    
-
-    $tenant_id = $arrayazure[0];
-    $client_id = $arrayazure[1];
-    $client_secret = $arrayazure[2];
-    $resource = $arrayazure[3];
     $azure_powerbi_api_url =$arrayazure[4];
 
     $client = new GuzzleHttp\Client([

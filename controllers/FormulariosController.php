@@ -2183,7 +2183,6 @@ class FormulariosController extends Controller {
                         /* LIBERO LA VALORACION */
                             $prueba = \app\models\Tmpejecucionformularios::find('basesatisfaccion_id')->where(['id' => $tmp_id])->one();
                             $modelBase = \app\models\BaseSatisfaccion::findOne($prueba->basesatisfaccion_id);
-                            $redct = ($modelBase->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
                             if (Yii::$app->user->identity->username == $modelBase->responsable) {
                                 $modelBase->usado = "NO";
                                 $modelBase->save();

@@ -338,7 +338,6 @@ use PHPExcel_IOFactory;
             $txtvarid_argumentos = Yii::$app->request->get("txtvarid_argumentos");
             $txtvartxtcantidad = Yii::$app->request->get("txtvartxtcantidad");
             $txtvartxtcorreoid = Yii::$app->request->get("txtvartxtcorreoid");
-            $txtvaridtcgeneral = Yii::$app->request->get("txtvaridtcgeneral");
             $txtvaridusua = Yii::$app->request->get("txtvaridusua");
             $txtvarselect2chosen1 = Yii::$app->request->get("txtvarselect2chosen1");
             $txtvartxtcomentariosid = Yii::$app->request->get("txtvartxtcomentariosid");

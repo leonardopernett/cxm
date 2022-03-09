@@ -226,7 +226,6 @@ $this->title = 'Actualizar la Valoraciones';
                                             if ($url == "asda") {
                                                 #code...
                                             }
-                                             $varFechacreacion = date("Y-m-d");
                                             
                                             $varId = $model->id;
 

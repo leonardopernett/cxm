@@ -661,7 +661,6 @@ use app\models\Controlvolumenxvalorador;
             $txtCategoria2 = 1114;
 
             $varMes = date("n");
-            $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -712,7 +711,6 @@ use app\models\Controlvolumenxvalorador;
 
             foreach ($query as $key => $value) {
                 $txtArbolId = $value['arbol_id'];
-                $txtCliente = $value['clientecategoria'];
 
                 if ($txtArbolId == '118' || $txtArbolId == '17') {
                     $querys1 =  new Query;
@@ -1006,7 +1004,6 @@ use app\models\Controlvolumenxvalorador;
             $txtfechacreacion = date("Y-m-d");
 
             $varMes = date("n");
-            $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -1066,8 +1063,6 @@ use app\models\Controlvolumenxvalorador;
 
                     foreach ($query as $key => $value) {
                         $varIdCorte = $value['idtc'];
-                        $varDateBegin = $value['fechainiciotc'];
-                        $varDateLast = $value['fechafintc'];
                         $varMesYear = $value['mesyear'];
 
                         $varNDias = date('t',strtotime($varMesYear));
@@ -1297,7 +1292,6 @@ use app\models\Controlvolumenxvalorador;
             $txtfechacreacion = date("Y-m-d");
 
             $varMes = date("n");
-            $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -1542,7 +1536,6 @@ use app\models\Controlvolumenxvalorador;
         $txtfechacreacion = date("Y-m-d");
 
         $varMes = date("n");
-        $txtMes = null;
             switch ($varMes) {
                 case '1':
                     $txtMes = "Enero";
@@ -1630,8 +1623,6 @@ use app\models\Controlvolumenxvalorador;
                                 if ($varListData != null) {
                                     $varArrayProgram = array();
                                     $varArrayparams = array();
-                                    $txtArbol = null;
-                                    $txtSpeech = null;
                                     $varArbol = null;
                                     $varSpeech = null;
                                     foreach ($varListData as $key => $value) {

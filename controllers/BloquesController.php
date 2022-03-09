@@ -341,9 +341,6 @@ class BloquesController extends Controller {
         //Eliminacion por post--------------------------------------------------
         if (Yii::$app->getRequest()->isPost) {
             $seccionId = Yii::$app->request->get('seccion_id');
-            if (!empty($seccionId)) {
-                $filterSeccion = true;
-            }
 
             try {
                 $model = $this->findModel($id);
