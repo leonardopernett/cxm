@@ -1580,7 +1580,7 @@ use \yii\base\Exception;
           $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $txtnombreParametro);
           $phpExc->setActiveSheetIndex(0)->mergeCells('E'.$numCell.':G'.$numCell);
 
-          $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $txtTotalLlamadas2);
+          $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $txtTotalLlamadas);
           $phpExc->setActiveSheetIndex(0)->mergeCells('H'.$numCell.':J'.$numCell);
 
         }
