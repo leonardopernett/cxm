@@ -1573,6 +1573,7 @@ use \yii\base\Exception;
           }
 
           $numCell++;
+          $txtTotalLlamadas2 = Yii::$app->db->createCommand("select count(idcategoria) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtnombreParametro') and fechallamada between '$varInicioF' and '$varFinF' and idcategoria = $txtIdCatagoria1")->queryScalar();
           
           $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $txtnombrePrograma);
           $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':D'.$numCell);
@@ -1580,7 +1581,7 @@ use \yii\base\Exception;
           $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $txtnombreParametro);
           $phpExc->setActiveSheetIndex(0)->mergeCells('E'.$numCell.':G'.$numCell);
 
-          $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $txtTotalLlamadas);
+          $phpExc->getActiveSheet()->setCellValue('H'.$numCell, $txtTotalLlamadas2);
           $phpExc->setActiveSheetIndex(0)->mergeCells('H'.$numCell.':J'.$numCell);
 
         }
