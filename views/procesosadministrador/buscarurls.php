@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\db\Query;
 
-$this->title = 'Procesos Administrador - Actualizar Url Encuestas';
+$this->title = 'Procesos Administrador - Actualizar Url Encuestas & Transcripciones';
 $this->params['breadcrumbs'][] = $this->title;
 
 $sesiones =Yii::$app->user->identity->id;   
@@ -200,7 +200,7 @@ $roles = $command->queryScalar();
                     <caption>...</caption>
                         <tr>
                             <th scope="col" class="text-center"><div class="loader"> </div></th>
-                            <th scope="col" class="text-center"><label><?= Yii::t('app', ' Actualizando las encuestas para verificar su correspondientes buzones.') ?></label></th>
+                            <th scope="col" class="text-center"><label><?= Yii::t('app', ' Actualizando las encuestas para verificar su correspondientes buzones. Actualizando transcripciones.') ?></label></th>
                         </tr>
                     </table>                                       
                 </div>

@@ -538,70 +538,63 @@ use \yii\base\Exception;
             $txtvaridruta = $value['connid'];
             $txtcreated = $value['fecha_satu'];
 
-            $vartexto = null;
-            $varvalencia = null;
+            $paramsConnid = [':varConnid'=>$txtvaridruta];
+            $varExiste = Yii::$app->db->createCommand('
+                SELECT COUNT(k.connid) FROM tbl_kaliope_transcipcion k 
+                    WHERE 
+                        k.connid IN (:varConnid)')->bindValues($paramsConnid)->queryScalar();
 
-            ob_start();
-            $curl = curl_init();
+            if ($varExiste == 0) {
+                
 
-            curl_setopt_array($curl, array(
-              CURLOPT_SSL_VERIFYPEER=> false,
-              CURLOPT_SSL_VERIFYHOST => false,
-              CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => '',
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 0,
-              CURLOPT_FOLLOWLOCATION => true,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => 'POST',
-              CURLOPT_POSTFIELDS =>'{"connid": "'.$txtvaridruta.'"}',
-              CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-              ),
-            ));
+                ob_start();
+                $curl = curl_init();
 
-            $response = curl_exec($curl);
+                curl_setopt_array($curl, array(
+                  CURLOPT_SSL_VERIFYPEER=> false,
+                  CURLOPT_SSL_VERIFYHOST => false,
+                  CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+                  CURLOPT_RETURNTRANSFER => true,
+                  CURLOPT_ENCODING => '',
+                  CURLOPT_MAXREDIRS => 10,
+                  CURLOPT_TIMEOUT => 0,
+                  CURLOPT_FOLLOWLOCATION => true,
+                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                  CURLOPT_CUSTOMREQUEST => 'POST',
+                  CURLOPT_POSTFIELDS =>'{"connid": "'.$txtvaridruta.'"}',
+                  CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                  ),
+                ));
 
-            curl_close($curl);
-            ob_clean();
+                $response = curl_exec($curl);
 
-            if (!$response) {
-              $vartexto = "Error al buscar transcipcion";
-              $varvalencia = "Error al buscar valencia emocioanl";
-            }
+                curl_close($curl);
+                ob_clean();                
 
-            $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+                $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
 
-            if (count($response) == 0) {
-                $vartexto = "Transcripcion no encontrada";
-                $varvalencia = "Valencia emocional no encontrada";
-            }else{
-                $vartexto = $response[0]['transcription'];
-                $varvalencia = $response[0]['valencia'];
+                if (!empty($response)) {
+                    $vartexto = $response[0]['transcription'];
+                    $varvalencia = $response[0]['valencia'];
 
-                if ($varvalencia == "NULL" || $varvalencia == "") {
-                    $varvalencia = "Buzón sin información";
-                }
-
-                $paramsConnid = [':varConnid'=>$txtvaridruta];
-                $varExiste = Yii::$app->db->createCommand('
-                    SELECT COUNT(k.connid) FROM tbl_kaliope_transcipcion k 
-                        WHERE 
-                            k.connid IN (:varConnid)')->bindValues($paramsConnid)->queryScalar();
-
-                if ($varExiste == 0) {
+                    if ($varvalencia == "NULL" || $varvalencia == "") {
+                        $varvalencia = "Buzón sin información";
+                    }
+                   
                     Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
-                                           'connid' => $txtvaridruta,
-                                           'transcripcion' => $vartexto,
-                                           'valencia' => $varvalencia,
-                                           'fechagenerada' => $txtcreated,
-                                           'fechacreacion' => date("Y-m-d"),
-                                           'anulado' => 0,
-                                           'usua_id' => Yii::$app->user->identity->id,
-                                       ])->execute();
+                                               'connid' => $txtvaridruta,
+                                               'transcripcion' => $vartexto,
+                                               'valencia' => $varvalencia,
+                                               'fechagenerada' => $txtcreated,
+                                               'fechacreacion' => date("Y-m-d"),
+                                               'anulado' => 0,
+                                               'usua_id' => Yii::$app->user->identity->id,
+                                           ])->execute();
+                    
                 }
             }
+            
         }
 
     }
