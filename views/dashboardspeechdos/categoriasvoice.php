@@ -117,7 +117,7 @@ $this->title = 'DashBoard Voz del Cliente';
             return;           
         }else{
             $.ajax({
-                method: "get",
+                method: "post",
                 url: "export2",
                 data : {
                     var_Destino : varDestino,
