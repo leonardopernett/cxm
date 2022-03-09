@@ -1621,12 +1621,8 @@ use \yii\base\Exception;
                     $arrayVariable = implode(", ", $arrayListOfVar);
                     $arrayVariableMas = implode(", ", $arraYListOfVarMas);
                     $arrayVariableMenos = implode(", ", $arraYListOfVarMenos);
-                    // var_dump($arrayVariableMenos);
-
-
                   }else{
                     if ($varCodigo == 2) {
-                      // var_dump("Ext");
                       $varTipoPAram = Yii::$app->db->createCommand("select distinct sc.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sp.ext in ('$txtParametros') and sc.programacategoria in ('$txtServicio') and sc.idcategoria = '$txtIdIndicadores'")->queryScalar();
 
                       $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.ext in ('$txtParametros')  and sc.cod_pcrc in ('$varCodPcrc') group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
@@ -1651,7 +1647,6 @@ use \yii\base\Exception;
                       $arrayVariableMas = implode(", ", $arraYListOfVarMas);
                       $arrayVariableMenos = implode(", ", $arraYListOfVarMenos);
                     }else{
-                      // var_dump("UsuaRed");
                       $varTipoPAram = Yii::$app->db->createCommand("select distinct sc.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 1 and sp.usuared in ('$txtParametros') and sc.programacategoria in ('$txtServicio') and sc.idcategoria = '$txtIdIndicadores'")->queryScalar();
 
                       $varListVariables = Yii::$app->db->createCommand("select sc.idcategoria, sc.orientacionsmart, sc.orientacionform from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on     sc.cod_pcrc = sp.cod_pcrc where sc.anulado = 0 and sc.idcategorias = 2 and sc.tipoindicador in ('$txtNombreCategoria') and sc.programacategoria in ('$txtServicio') and sp.usuared in ('$txtParametros')  and sc.cod_pcrc in ('$varCodPcrc') group by sc.idcategoria, sc.orientacionsmart, sc.orientacionform")->queryAll();
@@ -1810,7 +1805,6 @@ use \yii\base\Exception;
                             array_push($varArrayPromedio, $txtRtaIndicador); 
                           }
                           $varArrayInidicador = array_sum($varArrayPromedio);
-                          // var_dump($varArrayInidicador);
                         }
                       }
                     }
@@ -1825,7 +1819,6 @@ use \yii\base\Exception;
                         $txtCallid = $value['callid'];
 
                         $varcantidadproceso = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid   and idcategoria = $txtIdIndicadores")->queryScalar();
-                        // $varcantidadproceso = Yii::$app->db->createCommand("select cantproceso from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid")->queryScalar();
                         if ($varcantidadproceso == null) {
                           $varcantidadproceso = 0;
                         }
@@ -1844,9 +1837,6 @@ use \yii\base\Exception;
                           $txtCallid = $value['callid'];
 
                           $varcantidadproceso = Yii::$app->db->createCommand("select count(callid) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid   and idcategoria = $txtIdIndicadores")->queryScalar();
-
-                          // $varcantidadproceso = Yii::$app->db->createCommand("select cantproceso from tbl_speech_general where anulado = 0 and programacliente in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and callid = $txtCallid")->queryScalar();
-
                           if ($varcantidadproceso == null) {
                             $varcantidadproceso = 0;
                           }
@@ -1863,11 +1853,9 @@ use \yii\base\Exception;
 
                   if ($varArrayInidicador != 0) { 
                     if ($txtTipoFormIndicador == 0) {
-                      // var_dump($varArrayInidicador);
                       $txtRtaProcentaje = (round(($varArrayInidicador / $txtTotalLlamadas) * 100, 1));
                     }else{
                       if ($txtTipoFormIndicador == 1) {
-                        // var_dump("Hola Uno");
                         $txtRtaProcentaje = (100 - (round(($varArrayInidicador / $txtTotalLlamadas) * 100, 1)));
                       }                      
                     }     
@@ -1975,7 +1963,6 @@ use \yii\base\Exception;
                         $txtParticipacion = round(($txtvCantVari / $txtTotalLlamadas) * 100,2);
                       }else{
                         $txtParticipacion = (100 - (round(($txtvCantVari / $txtTotalLlamadas) * 100, 1)));
-                        // $txtParticipacion = 1 - $txtParticipacion;
 
                       }
                     }
@@ -2039,20 +2026,6 @@ use \yii\base\Exception;
         $phpExc->getActiveSheet()->getStyle('G'.$numCell)->applyFromArray($styleArrayTitle);
 
         
-        // if ($varCodigo == 1) {
-        //   $varListCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where rn in ('$txtParametros')")->queryAll();
-        // }else{
-        //   if ($varCodigo == 2) {
-        //     $varListCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where ext in ('$txtParametros')")->queryAll();
-        //   }else{
-        //     $varListCod = Yii::$app->db->createCommand("select cod_pcrc from tbl_speech_parametrizar where usuared in ('$txtParametros')")->queryAll();
-        //   }
-        // }
-        // $varListArray = array();
-        // foreach ($varListCod as $key => $value) {
-        //   array_push($varListArray, $value['cod_pcrc']);
-        // }
-        // $txtcodigoCC = implode("', '", $varListArray);
         $txtcodigoCC = $txtCodPcrcok;
 
         $varListIndiVari = Yii::$app->db->createCommand("select idcategoria, nombre from tbl_speech_categorias where anulado = 0 and idcategorias in (1,2) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtcodigoCC') group by idcategoria")->queryAll();
@@ -2074,7 +2047,6 @@ use \yii\base\Exception;
 
           $txtvCantMotivos1 = Yii::$app->db->createCommand("select count(idcategoria) from tbl_dashboardspeechcalls  where idcategoria = '$varIdCatagoria' and servicio in ('$txtServicio') and extension in ('$txtParametros') and fechallamada between '$varInicioF' and '$varFinF' and anulado = 0")->queryScalar();
           $txtvCantMotivos = intval($txtvCantMotivos1);
-                  // var_dump($varIdCatagoria);
 
                   if ($txtvCantMotivos != 0 && $txtTotalLlamadas != 0) {
                     $txtParticipación2 = round(($txtvCantMotivos / $txtTotalLlamadas) * 100,2);
