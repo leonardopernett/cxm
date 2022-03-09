@@ -1328,13 +1328,13 @@ use \yii\base\Exception;
         $varCorreo = null;
         $varCodparametrizar = null;
 
-        $var_FechaIni = Yii::$app->request->get("var_FechaIni");
-        $var_FechaFin = Yii::$app->request->get("var_FechaFin");
-        $txtServicio = Yii::$app->request->get("varArbol_idV");
-        $txtParametros = Yii::$app->request->get("varParametros_idV");
-        $varCodparametrizar = Yii::$app->request->get("varCodparametrizar");
-        $varCorreo = Yii::$app->request->get("var_Destino");
-        $txtCodPcrcok = Yii::$app->request->get("var_CodsPcrc");
+        $var_FechaIni = Yii::$app->request->post("var_FechaIni");
+        $var_FechaFin = Yii::$app->request->post("var_FechaFin");
+        $txtServicio = Yii::$app->request->post("varArbol_idV");
+        $txtParametros = Yii::$app->request->post("varParametros_idV");
+        $varCodparametrizar = Yii::$app->request->post("varCodparametrizar");
+        $varCorreo = Yii::$app->request->post("var_Destino");
+        $txtCodPcrcok = Yii::$app->request->post("var_CodsPcrc");
 
         $varInicioF = $var_FechaIni.' 05:00:00';
         $varFecha = date('Y-m-d',strtotime($var_FechaFin."+ 1 days"));
