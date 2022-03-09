@@ -2167,6 +2167,80 @@ use \yii\base\Exception;
 
         }
 
+        $varListLogin = Yii::$app->db->createCommand("
+          SELECT login_id FROM tbl_dashboardspeechcalls
+            WHERE 
+              anulado = 0
+                AND servicio IN ('$txtServicio') 
+                  AND fechallamada BETWEEN '$varInicioF' and '$varFinF'
+                    AND extension IN ('$txtParametros') AND idcategoria IN ($txtIdCatagoria1)
+            GROUP BY login_id")->queryAll();
+
+        $numCell = $numCell + 1;
+        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'TOTAL CATEGORIZACION POR ASESOR');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':J'.$numCell);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+
+        $numCell = $numCell + 1;
+        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Usuario de red');
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+
+        $varListIndiVari = Yii::$app->db->createCommand("select idcategoria, nombre from tbl_speech_categorias where anulado = 0 and idcategorias in (2) and programacategoria in ('$txtServicio') and cod_pcrc in ('$txtCodPcrcok') group by idcategoria")->queryAll();
+
+        $lastColumn = 'B';
+        foreach ($varListIndiVari as $key => $value) {
+
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre']); 
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayTitle);
+          $lastColumn++; 
+
+        }
+
+        $numCell = $numCell + 1;
+        $lastColumn = 'A';
+        $varlogin = "";
+        foreach ($varListLogin as $key => $value) {
+          $lastColumn = 'A';
+          $varlogin = $value['login_id']; 
+
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varlogin);
+          $lastColumn = 'B';
+
+          foreach ($varListIndiVari as $key => $value) {
+            $varidcateg = $value['idcategoria'];
+
+            $varCatidad = Yii::$app->db->createCommand("Select COUNT(*) AS cantidad FROM tbl_dashboardspeechcalls WHERE tbl_dashboardspeechcalls.anulado = 0 AND
+                                          tbl_dashboardspeechcalls.servicio IN('$txtServicio') AND tbl_dashboardspeechcalls.fechallamada BETWEEN '$varInicioF' and '$varFinF'
+                                          AND tbl_dashboardspeechcalls.extension IN ('$txtParametros') AND tbl_dashboardspeechcalls.idcategoria IN($varidcateg) 
+                                          AND tbl_dashboardspeechcalls.login_id = '$varlogin' ORDER BY cantidad")->queryAll();
+
+            foreach ($varCatidad as $key => $value) {
+              $varcanti = $value['cantidad'];
+              if(!$varcanti ) {
+                $varcanti = 0;
+              }
+
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varcanti);
+
+            }
+
+            $lastColumn++;
+
+          }
+
+          $numCell++;
+
+        }
+        
         $varListagente = Yii::$app->db->createCommand("SELECT login_id FROM tbl_dashboardspeechcalls WHERE anulado = 0 AND servicio IN ('$txtServicio') AND extension IN ('$txtParametros') AND fechallamada BETWEEN '$varInicioF' AND '$varFinF' AND idcategoria IN ($txtIdCatagoria1) GROUP BY login_id")->queryAll();
 
         $numCell = $numCell + 1;
