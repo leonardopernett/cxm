@@ -64,7 +64,7 @@ use yii\db\Query;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito", sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -173,9 +173,9 @@ use yii\db\Query;
                         <caption>-</caption>
                         <thead>
                             <tr>
-                                <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
-                                <th><?= Yii::t('app', '') ?></th>
-                                <th class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion de los filtros para buscar los resultados de los asesores...') ?></h4></th>
+                                <th scope="col" class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+                                <th scope="col"><?= Yii::t('app', '') ?></th>
+                                <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion de los filtros para buscar los resultados de los asesores...') ?></h4></th>
                             </tr>            
                         </thead>
                     </table>
