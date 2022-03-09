@@ -578,7 +578,7 @@ use \yii\base\Exception;
                     $vartexto = $response[0]['transcription'];
                     $varvalencia = $response[0]['valencia'];
 
-                    if ($varvalencia == "NULL" || $varvalencia == "") {
+                    if ($varvalencia == "NULL" || $varvalencia == "" || $varvalencia == "null") {
                         $varvalencia = "Buzón sin información";
                     }
                    
