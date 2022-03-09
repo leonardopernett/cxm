@@ -490,6 +490,8 @@ use \yii\base\Exception;
                                         'usua_id' => Yii::$app->user->identity->id,
                                         ])->execute();
 
+            $this->Buscarkaliope($varFechaInicio,$varFechaFin);
+
             return $this->redirect('buscarurls');
         }
 
@@ -513,6 +515,95 @@ use \yii\base\Exception;
         }
         
         return $output;
+    }
+
+    public function Buscarkaliope($varFechaInicio,$varFechaFin){
+
+        ini_set("max_execution_time", "900");
+        ini_set("memory_limit", "1024M");
+        ini_set( 'post_max_size', '1024M' );
+
+        ignore_user_abort(true);
+        set_time_limit(900);
+
+        $paramsBuscar = [':varFechaInicio' => $varFechaInicio,':varFechaFin' => $varFechaFin];
+        $varlista = Yii::$app->db->createCommand('
+            SELECT b.connid, b.fecha_satu FROM tbl_base_satisfaccion b 
+                WHERE 
+                    b.buzon LIKE "%/srv/www/htdocs/qa_managementv2/web/buzones_qa%"
+                        AND b.fecha_satu BETWEEN :varFechaInicio AND :varFechaFin')->bindValues($paramsBuscar)->queryAll();
+
+
+        foreach ($varlista as $key => $value) {
+            $txtvaridruta = $value['connid'];
+            $txtcreated = $value['fecha_satu'];
+
+            $vartexto = null;
+            $varvalencia = null;
+
+            ob_start();
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_SSL_VERIFYPEER=> false,
+              CURLOPT_SSL_VERIFYHOST => false,
+              CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => '',
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 0,
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => 'POST',
+              CURLOPT_POSTFIELDS =>'{"connid": "'.$txtvaridruta.'"}',
+              CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+              ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            ob_clean();
+
+            if (!$response) {
+              $vartexto = "Error al buscar transcipcion";
+              $varvalencia = "Error al buscar valencia emocioanl";
+            }
+
+            $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+            if (count($response) == 0) {
+                $vartexto = "Transcripcion no encontrada";
+                $varvalencia = "Valencia emocional no encontrada";
+            }else{
+                $vartexto = $response[0]['transcription'];
+                $varvalencia = $response[0]['valencia'];
+
+                if ($varvalencia == "NULL" || $varvalencia == "") {
+                    $varvalencia = "Buzón sin información";
+                }
+
+                $paramsConnid = [':varConnid'=>$txtvaridruta];
+                $varExiste = Yii::$app->db->createCommand('
+                    SELECT COUNT(k.connid) FROM tbl_kaliope_transcipcion k 
+                        WHERE 
+                            k.connid IN (:varConnid)')->bindValues($paramsConnid)->queryScalar();
+
+                if ($varExiste == 0) {
+                    Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
+                                           'connid' => $txtvaridruta,
+                                           'transcripcion' => $vartexto,
+                                           'valencia' => $varvalencia,
+                                           'fechagenerada' => $txtcreated,
+                                           'fechacreacion' => date("Y-m-d"),
+                                           'anulado' => 0,
+                                           'usua_id' => Yii::$app->user->identity->id,
+                                       ])->execute();
+                }
+            }
+        }
+
     }
     
 
