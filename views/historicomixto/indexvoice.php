@@ -324,7 +324,7 @@ use yii\db\Query;
 
                                 $paramsCategorias = [':varPcrc'=>$codpcrc,':varCategoria'=>2,':varResponsabilidad'=>1];
                                 $varListCategorias = Yii::$app->db->createCommand('
-                                    SELECT idcategoria, orientacionsmart, responsable FROM tbl_speech_categorias 
+                                    SELECT idcategoria, orientacionsmart, responsable, programacategoria FROM tbl_speech_categorias 
                                         WHERE 
                                             cod_pcrc IN (:varPcrc)
                                                 AND idcategorias IN (:varCategoria)
