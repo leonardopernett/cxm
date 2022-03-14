@@ -330,53 +330,51 @@ use yii\db\Query;
                                                 AND idcategorias IN (:varCategoria)
                                                     AND responsable IN (:varResponsabilidad)')->bindValues($paramsCategorias)->queryAll();
 
-                                $conteoPositivas = null;
-                                $conteoNegativas = null;
-                                $conteosNegativo = null;
                                 $varResultadosIDA = 0;
+                                $varContarNegativas = 0;
+                                $varTotalNegativas = 0;
+                                $varConteoNegativas = 0;
+                                $varContarPositivas = 0;
+                                $varTotalPositivas = 0;
+                                $varConteoPositivas = 0;
+
                                 foreach ($varListCategorias as $key => $value) {
-
-                                    if ($value['responsable'] == "1") {
-                                        if ($value['orientacionsmart'] == "2") {
-                                            $conteosNegativo = $conteosNegativo + 1;
-                                            $ContarNegativa = (new \yii\db\Query())
-                                                ->select(['idvariable'])
-                                                ->from(['tbl_speech_general'])
-                                                ->where('programacliente = :varServicio',[':varServicio'=>$varBolsita])
-                                                ->andwhere('callId IN (:varCallid)',[':varCallid'=>$varCallid])
-                                                ->andwhere('idvariable IN (:varVariable)',[':varVariable'=>$value['idcategoria']])
-                                                ->andwhere('anulado = :varAnulado',[':varAnulado'=>0])
-                                                ->count();
-
-                                            if ($ContarNegativa == "1") {
-                                                $conteoNegativas = $conteoNegativas + 1;
-                                            }
-                                        }else{
-                                            $ContarPositivo = (new \yii\db\Query())
-                                                ->select(['idvariable'])
-                                                ->from(['tbl_speech_general'])
-                                                ->where('programacliente = :varServicio',[':varServicio'=>$varBolsita])
-                                                ->andwhere('callId IN (:varCallid)',[':varCallid'=>$varCallid])
-                                                ->andwhere('idvariable IN (:varVariable)',[':varVariable'=>$value['idcategoria']])
-                                                ->andwhere('anulado = :varAnulado',[':varAnulado'=>0])
-                                                ->count();
-
-                                            if ($conteoPositivas == "1") {
-                                                $conteoPositivas = $conteoPositivas + 1;
-                                            }
+                                    $varorientaciones = $value['orientacionsmart'];
+                    
+                                    $paramsBuscarCategorias = [':varIdCategoria'=>$value['idcategoria'],':varProgramaCategoria'=>$value['programacategoria'],':varAnulado'=>0,':varCallid'=>$varCallid];
+                                                        
+                                    if ($varorientaciones == '2') {
+                                        $varContarNegativas += 1;
+                                        $varTotalNegativas = Yii::$app->db->createCommand('
+                                            SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
+                                                WHERE
+                                                    sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
+                                                        AND sg.programacliente IN (:varProgramaCategoria)
+                                                            AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
+                    
+                                        if ($varTotalNegativas == 1) {
+                                            $varConteoNegativas += 1;
                                         }
-
+                    
                                     }else{
-                                        $conteoPositivas = 0;
-                                        $conteosNegativo = 0;
-                                        $conteoNegativas = 0;
+                                        $varContarPositivas += 1;
+                                        $varTotalPositivas = Yii::$app->db->createCommand('
+                                            SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
+                                                WHERE
+                                                    sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
+                                                        AND sg.programacliente IN (:varProgramaCategoria)
+                                                            AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
+                    
+                                        if ($varTotalPositivas == 1) {
+                                            $varConteoPositivas += 1;
+                                        }
                                     }
-                                    
                                 }
-
-                                $varTotalVariables = count($varListCategorias);
-                                if ($varTotalVariables != 0) {
-                                    $varResultadosIDA = round((($conteoPositivas + ($conteosNegativo - $conteoNegativas)) / $varTotalVariables),2);
+                    
+                                if (count($varListCategorias) != 0 && $varConteoNegativas != 0) {
+                                    $varResultadosIDA = round(((($varConteoPositivas + ($varContarNegativas - $varConteoNegativas)) / count($varListCategorias)) * 100),2);
+                                }else{
+                                    $varResultadosIDA = 0;
                                 }
 
                                 $varScore = (new \yii\db\Query())
@@ -390,14 +388,14 @@ use yii\db\Query;
                                     ->scalar();
 
                                 if ($varScore) {
-                                    $varScoreValoracion = $varScore;
+                                    $varScoreValoracion = round(($varScore * 100), 2);
                                 }else{
                                     $varScoreValoracion = "--";
                                 }
                                 
                                 
                                 if ($varScoreValoracion != 0) {
-                                    $varPromedioScore = round(($varResultadosIDA + $varScoreValoracion) / 2,2);
+                                    $varPromedioScore = round(((($varResultadosIDA + $varScoreValoracion) / 2) * 100),2);
                                 }else{
                                     $varPromedioScore = $varResultadosIDA;
                                 }
