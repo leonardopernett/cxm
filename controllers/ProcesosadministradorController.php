@@ -474,21 +474,7 @@ use \yii\base\Exception;
 
             }
 
-            $paramsBusquedaurl = [':vardateBegin' => $varFechaInicio, ':vardatEnd' => $varFechaFin];
-
-            $varCantidadUrl = Yii::$app->db->createCommand('
-                SELECT COUNT(b.id) FROM tbl_base_satisfaccion b 
-                    WHERE 
-                        b.buzon LIKE "%/srv/www/htdocs/qa_managementv2/web/buzones_qa%"
-                            AND b.fecha_satu BETWEEN :vardateBegin AND :vardatEnd')->bindValues($paramsBusquedaurl)->queryScalar();
-
-            Yii::$app->db->createCommand()->insert('tbl_base_urllogs',[
-                                        'fechaingreso' => date("Y-m-d"),
-                                        'cantidadurls' => $varCantidadUrl,
-                                        'fechacreacion' => date("Y-m-d"),
-                                        'anulado' => 0,
-                                        'usua_id' => Yii::$app->user->identity->id,
-                                        ])->execute();
+            $this->GuardarProcesourl($varFechaInicio,$varFechaFin);
 
             $this->Buscarkaliope($varFechaInicio,$varFechaFin);
 
@@ -499,6 +485,24 @@ use \yii\base\Exception;
             'model' => $model,
             'varDataMax' => $varDataMax,
         ]);
+    }
+
+    public function GuardarProcesourl($varFechaInicio,$varFechaFin){
+        $paramsBusquedaurl = [':vardateBegin' => $varFechaInicio, ':vardatEnd' => $varFechaFin];
+
+        $varCantidadUrl = Yii::$app->db->createCommand('
+            SELECT COUNT(b.id) FROM tbl_base_satisfaccion b 
+                WHERE 
+                    b.buzon LIKE "%/srv/www/htdocs/qa_managementv2/web/buzones_qa%"
+                        AND b.fecha_satu BETWEEN :vardateBegin AND :vardatEnd')->bindValues($paramsBusquedaurl)->queryScalar();
+
+        Yii::$app->db->createCommand()->insert('tbl_base_urllogs',[
+                                        'fechaingreso' => date("Y-m-d"),
+                                        'cantidadurls' => $varCantidadUrl,
+                                        'fechacreacion' => date("Y-m-d"),
+                                        'anulado' => 0,
+                                        'usua_id' => Yii::$app->user->identity->id,
+                                        ])->execute();
     }
 
     private function _buscarArchivoBuzon($fechaEncuesta, $connId) {
