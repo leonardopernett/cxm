@@ -490,14 +490,15 @@ use \yii\base\Exception;
     public function actionCalcularurls($txtfechainicio,$txtfechafin){   
         $model = new BaseSatisfaccion();
 
-        $paramsBusquedaurl = [':vardateBegin' => $txtfechainicio, ':vardatEnd' => $txtfechafin];
+        $varBuzon  = "/srv/www/htdocs/qa_managementv2/web/buzones_qa";
 
-        $varCantidadUrl = Yii::$app->db->createCommand('
-            SELECT COUNT(b.id) FROM tbl_base_satisfaccion b 
-                WHERE 
-                    b.buzon LIKE "%/srv/www/htdocs/qa_managementv2/web/buzones_qa%"
-                        AND b.fecha_satu BETWEEN :vardateBegin AND :vardatEnd')->bindValues($paramsBusquedaurl)->queryScalar();
-
+        $varCantidadUrl = (new \yii\db\Query())
+                                    ->select(['id'])
+                                    ->from(['tbl_base_satisfaccion'])
+                                    ->where(['LIKE','buzon',$varBuzon])
+                                    ->andwhere(['BETWEEN','fecha_satu',$txtfechainicio,$txtfechafin])
+                                    ->count(); 
+                                    
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
             
