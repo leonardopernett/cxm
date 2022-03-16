@@ -36,7 +36,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls'],
             'rules' => [
               [
                 'allow' => true,
@@ -443,10 +443,10 @@ use \yii\base\Exception;
             $varFechaInicio = $varFechaSatu[0] . ' 00:00:00';
             $varFechaFin = $varFechaSatu[1] . ' 23:59:59';
 
-            $allModels = BaseSatisfaccion::find()->where(['tipo_inbox' => 'NORMAL'])
-                    ->andWhere('(buzon = "")')
-                    ->andWhere('fecha_satu BETWEEN "' . $varFechaInicio . '" AND "' . $varFechaFin . '"');
-
+            $allModels = BaseSatisfaccion::find()
+                    ->where(['=','buzon',""])
+                    ->andwhere(['BETWEEN','fecha_satu',$varFechaInicio,$varFechaFin]);
+            
             try {
                 $allModels = $allModels->all();
             } catch (Exception $exc) {
@@ -459,7 +459,7 @@ use \yii\base\Exception;
                 
                 if (is_null($nModel->buzon) || empty($nModel->buzon) || $nModel->buzon == "") {
                     $nModel->buzon = $this->_buscarArchivoBuzon(
-                                sprintf("%02s", $nModel->dia) . "_" . sprintf("%02s", $nModel->mes) . "_" . $nModel->ano, $nModel->connid);
+                                sprintf("%02s", $nModel->dia) . "_" . sprintf("%02s", $nModel->mes) . "_" . $nModel->ano, $nModel->connid);                    
                 }
 
                 if (!is_null($nModel->llamada) || (!empty($nModel->buzon) || $nModel->buzon != "")) {
@@ -474,11 +474,11 @@ use \yii\base\Exception;
 
             }
 
-            $this->GuardarProcesourl($varFechaInicio,$varFechaFin);
+            return $this->redirect(['calcularurls',
+                'txtfechainicio' => $varFechaInicio,
+                'txtfechafin' => $varFechaFin,
+            ]);                       
 
-            $this->Buscarkaliope($varFechaInicio,$varFechaFin);
-
-            return $this->redirect('buscarurls');
         }
 
         return $this->render('buscarurls',[
@@ -487,8 +487,10 @@ use \yii\base\Exception;
         ]);
     }
 
-    public function GuardarProcesourl($varFechaInicio,$varFechaFin){
-        $paramsBusquedaurl = [':vardateBegin' => $varFechaInicio, ':vardatEnd' => $varFechaFin];
+    public function actionCalcularurls($txtfechainicio,$txtfechafin){   
+        $model = new BaseSatisfaccion();
+
+        $paramsBusquedaurl = [':vardateBegin' => $txtfechainicio, ':vardatEnd' => $txtfechafin];
 
         $varCantidadUrl = Yii::$app->db->createCommand('
             SELECT COUNT(b.id) FROM tbl_base_satisfaccion b 
@@ -496,13 +498,32 @@ use \yii\base\Exception;
                     b.buzon LIKE "%/srv/www/htdocs/qa_managementv2/web/buzones_qa%"
                         AND b.fecha_satu BETWEEN :vardateBegin AND :vardatEnd')->bindValues($paramsBusquedaurl)->queryScalar();
 
-        Yii::$app->db->createCommand()->insert('tbl_base_urllogs',[
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            
+            $varFechaInicio = $txtfechainicio;
+            $varFechaFin = $txtfechafin;
+
+            Yii::$app->db->createCommand()->insert('tbl_base_urllogs',[
                                         'fechaingreso' => date("Y-m-d"),
                                         'cantidadurls' => $varCantidadUrl,
                                         'fechacreacion' => date("Y-m-d"),
                                         'anulado' => 0,
                                         'usua_id' => Yii::$app->user->identity->id,
                                         ])->execute();
+
+            $this->Buscarkaliope($varFechaInicio,$varFechaFin);
+
+            return $this->redirect('buscarurls');
+
+        }
+
+        return $this->render('calcularurls',[
+            'model' => $model,
+            'varCantidadUrl' => $varCantidadUrl,
+            'txtfechainicio' => $txtfechainicio,
+            'txtfechafin' => $txtfechafin,
+        ]);
     }
 
     private function _buscarArchivoBuzon($fechaEncuesta, $connId) {
