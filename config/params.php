@@ -55,7 +55,7 @@ return [
     'IdFormEncuestaTele' => 676,
    /*RUTA PARA CONSULA DE BUZON*/
 	'ruta_buzon' => RUTA_BUZON,
-	'email_satu_from' => 'QA@grupokonecta.com.co',
+	'email_satu_from' => 'CXM@grupokonecta.com.co',
     'email_satu_to' => 'gmejiav@grupokonecta.com',
     'email_reporte_desempeno' => 'paazcarate@grupokonecta.co',
 	/* WEBSERVICE PARA NOTIFIACIONES AMIGO */
