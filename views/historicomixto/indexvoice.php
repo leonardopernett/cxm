@@ -378,7 +378,7 @@ use yii\db\Query;
                                 }
 
                                 $varScore = (new \yii\db\Query())
-                                    ->select(['round(tbl_ejecucionformularios.score,2) as score'])
+                                    ->select(['if(tbl_ejecucionformularios.score != "",ROUND(tbl_ejecucionformularios.score,2),0)'])
                                     ->from(['tbl_ejecucionformularios'])
                                     ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
                                         'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
