@@ -761,7 +761,7 @@ class FormulariosController extends Controller {
                         $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
                         INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
                         ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':form_detalle_id'   
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = :form_detalle_id
                         AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                         $command->execute();
                 }
@@ -968,7 +968,7 @@ class FormulariosController extends Controller {
                         $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
                         INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
                         ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':form_detalle_id'   
+                        SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = :form_detalle_id 
                         AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                         $command->execute();
                 }
@@ -1845,11 +1845,11 @@ class FormulariosController extends Controller {
 
                 /* GUARDO SUBTIPIFICACIONES */
                 foreach ($arrSubtipificaciones as $form_detalle_id => $subtipif_array) {
-                    $paramsBusqueda = [':f.form_detalle_id'=>$form_detalle_id];
+                    $paramsBusqueda = [':form_detalle_id'=>$form_detalle_id];
                     $command = \Yii::$app->db->createCommand("UPDATE `tbl_tmpejecucionbloquedetalles_subtipificaciones` a 
                     INNER JOIN tbl_tmpejecucionbloquedetalles_tipificaciones b
                     ON a.tmpejecucionbloquedetalles_tipificacion_id = b.id 
-                    SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':f.form_detalle_id'   
+                    SET a.sncheck = 1 WHERE b.tmpejecucionbloquedetalle_id = ':form_detalle_id'   
                     AND a.tipificaciondetalle_id IN (" . implode(",", $subtipif_array) . ")")->bindValues($paramsBusqueda);
                     $command->execute();
                 }
