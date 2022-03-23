@@ -1429,7 +1429,7 @@ $varColorM = null;
                   <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Responsable'; ?></label></th>
                   <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'C&oacute;digo Pcrc'; ?></label></th>
                   <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo 'Variables'; ?></label></th>
-                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo ' Interacciones'; ?></label></th>
+                  <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo ' Interacciones / Afectaciones'; ?></label></th>
                   <th scope="col" class="text-center"><label style="font-size: 15px;"><?php echo ' % de Participaci&oacute;n'; ?></label></th>
                 </thead>
                 <tbody>
