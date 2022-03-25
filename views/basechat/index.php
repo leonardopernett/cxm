@@ -167,7 +167,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="row">
                         <div class="col-md-4">
                             <label style="font-size: 15px;">Seleccionar tipologia: </label>
-                            <?=  $form->field($model, 'tipologia', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\BasechatTigo::find()->distinct()->where("anulado = 0")->orderBy(['tipologia'=> SORT_ASC])->all(), 'tipologia', 'tipologia'),
+                            <?=  $form->field($model, 'tipologia', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\BasechatTigo::find()->select("tipologia")->distinct()->where("anulado = 0")->orderBy(['tipologia'=> SORT_ASC])->all(), 'tipologia', 'tipologia'),
                                         [
                                             'prompt'=>'Seleccione tipologia...',
                                         ]

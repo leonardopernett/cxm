@@ -213,7 +213,8 @@ class BasechatTigo extends \yii\db\ActiveRecord
                     ->where(['anulado' => '0'])
                     ->orderBy([
                               'fecha_creacion' => SORT_DESC
-                            ]);
+                            ])
+                    ->limit(10000);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
