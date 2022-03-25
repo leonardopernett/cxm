@@ -208,13 +208,27 @@ class BasechatTigo extends \yii\db\ActiveRecord
     }
 
     public function buscarbasechat($params1){
+
+        $varlimitdata = (new \yii\db\Query())
+            ->select(['idbasechat_tigob'])
+            ->from(['tbl_basechat_tigob'])
+            ->where(['=','anulado',0])
+            ->orderBy(['fechacreacion' => SORT_DESC])
+            ->limit(10000)
+            ->All();
+
+        $arrayListLimit = array();
+        foreach ($varlimitdata as $key => $value) {
+            array_push($arrayListLimit, $value['idbasechat_tigob']);
+        }
+        $textArrayLimit = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $arrayListLimit)));
         
         $query = BasechatTigo::find()
-                    ->where(['anulado' => '0'])
+                    ->where(['anulado' => '0'])                    
+                    ->andwhere(['IN','idbasechat_tigob',$textArrayLimit])
                     ->orderBy([
                               'fecha_creacion' => SORT_DESC
-                            ])
-                    ->limit(10000);
+                            ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
