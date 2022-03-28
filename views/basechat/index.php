@@ -155,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-4">
                             <label style="font-size: 15px;">Seleccionar valorado: </label>
-                            <?=  $form->field($model, 'id_agente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\BasechatTigo::find()->distinct()->where("anulado = 0")->orderBy(['id_agente'=> SORT_ASC])->all(), 'id_agente', 'id_agente'),
+                            <?=  $form->field($model, 'id_agente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\BasechatTigo::find()->select("id_agente")->distinct()->where("anulado = 0")->orderBy(['id_agente'=> SORT_ASC])->all(), 'id_agente', 'id_agente'),
                                         [
                                             'prompt'=>'Seleccione valorado...',
                                         ]
@@ -177,7 +177,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-4">
                             <label style="font-size: 15px;">Seleccionar estado: </label>
-                            <?=  $form->field($model, 'estado', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\BasechatTigo::find()->distinct()->where("anulado = 0")->orderBy(['estado'=> SORT_ASC])->all(), 'estado', 'estado'),
+                            <?=  $form->field($model, 'estado', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\BasechatTigo::find()->select("estado")->distinct()->where("anulado = 0")->orderBy(['estado'=> SORT_ASC])->all(), 'estado', 'estado'),
                                         [
                                             'prompt'=>'Seleccione estado...',
                                         ]
@@ -193,7 +193,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="row">
                         <div class="col-md-4">
                             <label style="font-size: 15px;">Seleccionar imputabilidad: </label>
-                            <?=  $form->field($model, 'imputable', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\BasechatTigo::find()->distinct()->where("anulado = 0")->orderBy(['imputable'=> SORT_ASC])->all(), 'imputable', 'imputable'),
+                            <?=  $form->field($model, 'imputable', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\BasechatTigo::find()->select("imputable")->distinct()->where("anulado = 0")->orderBy(['imputable'=> SORT_ASC])->all(), 'imputable', 'imputable'),
                                         [
                                             'prompt'=>'Seleccione imputabilidad...',
                                         ]
@@ -219,12 +219,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="card1 mb">
                                 <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #827DF9;"></em> Importar archivo: </label> 
                                 
-                                <?= Html::button('Importar', ['value' => url::to(['elegirimportar']), 'class' => 'btn btn-success', 'id'=>'modalButton5', 'data-toggle' => 'tooltip', 'title' => 'Importar Archivo', 'style' => 'background-color: #337ab7']) 
+                                <?= Html::button('Importar', ['value' => url::to(['elegirimportar']), 'class' => 'btn btn-success', 'id'=>'modalButton5', 'data-toggle' => 'tooltip', 'title' => 'Importar Archivo', 'style' => 'background-color: #327CBB']) 
                                 ?> 
 
                                 <?php
                                     Modal::begin([
-                                        'header' => '<h4></h4>',
+                                        'header' => '<h4>..</h4>',
                                         'id' => 'modal5',
                                     ]);
 
@@ -247,12 +247,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="col-md-3">
                             <div class="card1 mb">
                                 <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #827DF9;"></em> Descargar gestión: </label>                                 
-                                <?= Html::button('Descargar', ['value' => url::to(['descargargestion']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #337ab7']) 
+                                <?= Html::button('Descargar', ['value' => url::to(['descargargestion']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Descargar', 'style' => 'background-color: #307CBC']) 
                                 ?> 
 
                                 <?php
                                     Modal::begin([
-                                        'header' => '<h4></h4>',
+                                        'header' => '<h4>_</h4>',
                                         'id' => 'modal3',
                                     ]);
 
@@ -334,7 +334,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'template' => '{update}',
                                 'buttons' => 
                                 [
-                                    'update' => function ($url, $model) {
+                                    'update' => function ($model) {
                                                 if ($model->estado != 'Cerrado') {
 						    $varpcrc = $model->pcrc;
                                                     if($varpcrc == 3272) {
@@ -355,7 +355,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'template' => '{update2}',
                                 'buttons' => 
                                 [
-                                    'update2' => function ($url, $model) {
+                                    'update2' => function ($model) {
                                         $varticket = $model->ticked_id;
                                         $varbasesatis = $model->basesatisfaccion_id;
 					$varpcrc = $model->pcrc;
@@ -401,7 +401,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <?= Html::button('Ingresar Categorias', ['value' => url::to(['basechat/registrocategorias']), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Ingresar Categorias', 'style' => 'background-color: #337ab7']) 
+                                <?= Html::button('Ingresar Categorias', ['value' => url::to(['basechat/registrocategorias']), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Ingresar Categorias', 'style' => 'background-color: #327EBF']) 
                                 ?> 
 
                                 <?php
