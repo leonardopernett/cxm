@@ -131,11 +131,17 @@ use yii\bootstrap\Modal;
                             
                             $novedad = Yii::$app->db->createCommand("select count(*) from tbl_plan_escalamientos where anulado = 0 and tecnicolider = $varidevaluado and Estado = 1 and fechacreacion between '$varfechainicio' and '$varfechafin'")->queryScalar();
                             if ($varmeta != 0) {
-if ($novedad >= $varmeta) {
+                                if ($novedad >= $varmeta) {
                                     $novedad = $varmeta - 1;
                                 }
-                                $varcumplimiento = round(($varRealizadas / ($varmeta - $varNovedades)) * 100,2);
 
+                                $varrtas = $varmeta - $varNovedades;
+
+                                if ($varrtas != '0') {
+                                    $varcumplimiento = round(($varRealizadas / ($varmeta - $varNovedades)) * 100,2);
+                                }else{
+                                    $varcumplimiento = 0;
+                                }
                                 
                                 $varcorts1 = round($varmeta / 4) - $varAprobadas_Corte1;
                                 $varcorts2 = round($varmeta / 4) - $varAprobadas_Corte2;
