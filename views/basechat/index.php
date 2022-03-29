@@ -334,7 +334,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'template' => '{update}',
                                 'buttons' => 
                                 [
-                                    'update' => function ($model) {
+                                    'update' => function ($url, $model) {
                                                 if ($model->estado != 'Cerrado') {
 						    $varpcrc = $model->pcrc;
                                                     if($varpcrc == 3272) {
@@ -355,7 +355,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'template' => '{update2}',
                                 'buttons' => 
                                 [
-                                    'update2' => function ($model) {
+                                    'update2' => function ($url, $model) {
                                         $varticket = $model->ticked_id;
                                         $varbasesatis = $model->basesatisfaccion_id;
 					$varpcrc = $model->pcrc;
