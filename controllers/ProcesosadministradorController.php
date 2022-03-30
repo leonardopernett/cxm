@@ -28,6 +28,7 @@ use app\models\BaseUsuariosip;
 use app\models\FormUploadtigo;
 use app\models\BaseSatisfaccion; 
 use \yii\base\Exception;
+use app\models\ControlProcesos;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
