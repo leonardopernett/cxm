@@ -637,6 +637,18 @@ use app\models\ControlProcesos;
 
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
+
+            foreach ($varListBloqueos as $key => $value) {
+                Yii::$app->db->createCommand('
+                            UPDATE tbl_control_parametros 
+                                SET anulado = :varAnulado
+                                    WHERE 
+                                        idcontrolprocesos = :VarId')
+                            ->bindValue(':VarId', $value['idcontrolprocesos'])
+                            ->bindValue(':varAnulado', 1)
+                            ->execute(); 
+            }
+            
             $varFechas = explode(" ", $model->fechacreacion);
 
             $txtFechaInicio = $varFechas[0];

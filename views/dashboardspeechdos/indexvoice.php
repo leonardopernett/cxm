@@ -124,7 +124,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
     if ($fechaIniCat < '2020-01-01') {
       $txtIdCatagoria1 = 2681;
     }else{
-      if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '3263' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436' || $idArbol == '485'  || $idArbol == '3410' || $idArbol == '678' || $idArbol == '2919') {
+      if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '3263' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3436' || $idArbol == '485'  || $idArbol == '3410' || $idArbol == '678' || $idArbol == '2919' || $idArbol == '3310') {
         $txtIdCatagoria1 = 1105;
       }else{
         $txtIdCatagoria1 = 1114;
@@ -396,7 +396,7 @@ $varColorM = null;
     <div class="col-md-3">
       <div class="card mb">
         <?php 
-          $varSelect = Yii::$app->db->createCommand("select distinct servicio from tbl_dashboardspeechcalls where anulado = 0 and fechacreacion > '2020-01-01' and servicio in ('$txtServicio')")->queryScalar();
+          $varSelect = Yii::$app->db->createCommand("SELECT DISTINCT programacategoria FROM tbl_speech_categorias WHERE cod_pcrc IN ('$txtCodPcrcok')")->queryScalar();
           if ($varSelect == "CX_Directv") { 
               $varSelect1 = Yii::$app->db->createCommand("select distinct id_dp_clientes from tbl_speech_parametrizar where anulado = 0 and cod_pcrc in ('$txtCodPcrcok')")->queryScalar();
               $varSelect2 = $varSelect.'_'.$varSelect1;                
@@ -449,7 +449,11 @@ $varColorM = null;
           }
           $varParams = implode(" - ", $vararraynombreParametro);
         ?>    
-        <label><?php echo $varParams; ?></label>
+        <?php if ($varCodigo >= 2) { ?>
+            <label style="font-size: 10px;"><?php echo $varParams; ?></label>
+        <?php }else{ ?>
+            <label ><?php echo $varParams; ?></label>
+        <?php } ?>
       </div>
     </div>
 
