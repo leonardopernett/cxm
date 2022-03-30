@@ -64,7 +64,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	$txtConteo = Yii::$app->db->createCommand("select count(*) from tbl_control_procesos where responsable = $sessiones and anulado = 0 and tipo_corte like '%$txtMes%'")->queryScalar();    
 
+    $varBloqueoInicio = (new \yii\db\Query())
+                                    ->select(['fecha_inicio'])
+                                    ->from(['tbl_control_parametros'])
+                                    ->where(['=','anulado',0])
+                                    ->scalar();  
+    
+    $varBloqueoFin =   (new \yii\db\Query())
+                                    ->select(['fecha_fin'])
+                                    ->from(['tbl_control_parametros'])
+                                    ->where(['=','anulado',0])
+                                    ->scalar();  
 
+    $varHoy = date('Y-m-d');
+
+    if ($varHoy >= $varBloqueoInicio && $varHoy <= $varBloqueoFin) {
+        $varEstados = 1;
+    }else{
+        $varEstados = 0;
+    }
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Nunito');
@@ -179,24 +197,24 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card1 mb">
                 <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
-                    <?php   if($sessiones != 0) { ?>
-                    <div class="col-md-3">
-                        <div class="card1 mb">
-                            <label style="font-size: 15px;"> agregar técnico/lider: </label> 
-                            <?= Html::button('Agregar', ['value' => url::to('selecciontecnico'), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar Valorado', 'style' => 'background-color: #337ab7']) 
-                            ?> 
-                            <?php
-                                 Modal::begin([
-                                    'header' => '<h4>Agregar tecnico</h4>',
-                                    'id' => 'modal1',
-                                ]);
+                    <?php if ($varEstados == 0) { ?>
+                        <div class="col-md-3">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;"> agregar técnico/lider: </label> 
+                                <?= Html::button('Agregar', ['value' => url::to('selecciontecnico'), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar Valorado', 'style' => 'background-color: #337ab7']) 
+                                ?> 
+                                <?php
+                                    Modal::begin([
+                                        'header' => '<h4>Agregar tecnico</h4>',
+                                        'id' => 'modal1',
+                                    ]);
 
-                                echo "<div id='modalContent1'></div>";
-                                                        
-                                Modal::end(); 
-                            ?> 
+                                    echo "<div id='modalContent1'></div>";
+                                                            
+                                    Modal::end(); 
+                                ?> 
+                            </div>
                         </div>
-                    </div>
                     <?php   } ?>
                     <div class="col-md-3">
                         <div class="card1 mb">
@@ -209,37 +227,37 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
 
-                    <?php   if($sessiones != 0) { ?>
-                    <div class="col-md-3">
-                        <div class="card1 mb">
-                            <label style="font-size: 15px;">remover técnico/lider: </label>
-                            <?= Html::button('Desvincular', ['value' => url::to('desvincular'), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Desvincular técinco', 'style' => 'background-color: #337ab7']) 
-                            ?> 
-                            <?php
-                                 Modal::begin([
-                                    'header' => '<h4>Petición para desvincular técnico</h4>',
-                                    'id' => 'modal2',
-                                ]);
+                    <?php if ($varEstados == 0) { ?>
+                        <div class="col-md-3">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;">remover técnico/lider: </label>
+                                <?= Html::button('Desvincular', ['value' => url::to('desvincular'), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Desvincular técinco', 'style' => 'background-color: #337ab7']) 
+                                ?> 
+                                <?php
+                                    Modal::begin([
+                                        'header' => '<h4>Petición para desvincular técnico</h4>',
+                                        'id' => 'modal2',
+                                    ]);
 
-                                echo "<div id='modalContent2'></div>";
-                                                        
-                                Modal::end(); 
-                            ?> 
+                                    echo "<div id='modalContent2'></div>";
+                                                            
+                                    Modal::end(); 
+                                ?> 
+                            </div>
                         </div>
-                    </div>
                     <?php   } ?>
 		
                     <?php if($txtConteo == "0") { ?>
-                    <?php     if($sessiones != 0) { ?>
-                    <div class="col-md-3">
-                        <div class="card1 mb">
-                            <label style="font-size: 15px;"> clonar plan: </label>                            
-                                <div onclick="actualizar();" class="btn btn-primary" style="display:inline; width:auto; background: #337ab7;" method='post' id="botones5" >
-                                    Clonar
-                                </div>                            
-                        </div>
-                    </div>
-                    <?php     } ?>
+                        <?php if ($varEstados == 0) { ?>
+                            <div class="col-md-3">
+                                <div class="card1 mb">
+                                    <label style="font-size: 15px;"> clonar plan: </label>                            
+                                        <div onclick="actualizar();" class="btn btn-primary" style="display:inline; width:auto; background: #337ab7;" method='post' id="botones5" >
+                                            Clonar
+                                        </div>                            
+                                </div>
+                            </div>
+                        <?php } ?>
                     <?php } ?>
 		
                 </div>

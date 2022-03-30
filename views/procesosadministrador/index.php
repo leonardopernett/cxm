@@ -166,6 +166,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
 
+            <br>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 15px; color: #ffc034;"></em> Parametrizar Plan de Valoración</label>
+                        <?= Html::a('Aceptar',  ['parametrizarplan'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Plan Valoración']) 
+                        ?>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

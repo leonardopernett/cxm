@@ -36,7 +36,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol'],
             'rules' => [
               [
                 'allow' => true,
@@ -623,6 +623,52 @@ use \yii\base\Exception;
             
         }
 
+    }
+
+    public function actionParametrizarplan(){
+        $model = new ControlProcesos();
+
+        $varListBloqueos = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_control_parametros'])
+                                    ->orderBy(['fecha_inicio' => SORT_DESC])
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varFechas = explode(" ", $model->fechacreacion);
+
+            $txtFechaInicio = $varFechas[0];
+            $txtFechaFin = date('Y-m-d',strtotime($varFechas[2]));
+
+            Yii::$app->db->createCommand()->insert('tbl_control_parametros',[
+                    'fecha_inicio' => $txtFechaInicio,
+                    'fecha_fin' => $txtFechaFin,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect('parametrizarplan');
+        }
+
+        return $this->render('parametrizarplan',[
+            'model' => $model,
+            'varListBloqueos' => $varListBloqueos,
+        ]);
+    }
+
+    public function actionDeletecontrol($id){
+        $paramsEliminar = [':IdControl'=>$id];          
+
+        Yii::$app->db->createCommand('
+              DELETE FROM tbl_control_parametros 
+                WHERE 
+                  idcontrolprocesos = :IdControl')
+            ->bindValues($paramsEliminar)
+            ->execute();
+
+        return $this->redirect(['parametrizarplan']);
     }
     
 
