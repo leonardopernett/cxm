@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\db\Query;
 
-$this->title = 'Procesos Administrador - Actualizar Url Encuestas & Transcripciones';
+$this->title = 'Procesos Administrador - Actualizar Url Encuestas';
 $this->params['breadcrumbs'][] = $this->title;
 
 $sesiones =Yii::$app->user->identity->id;   
@@ -113,6 +113,16 @@ $roles = $command->queryScalar();
 </header>
 <br><br>
 <div id="capaPrincipal" class="capaPrincipal" style="display: inline;">
+    <div class="row">
+        <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones Actualizar Url Buzones & Transcripciones"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
+
     <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
         
         <div class="row">
@@ -200,7 +210,7 @@ $roles = $command->queryScalar();
                     <caption>...</caption>
                         <tr>
                             <th scope="col" class="text-center"><div class="loader"> </div></th>
-                            <th scope="col" class="text-center"><label><?= Yii::t('app', ' Actualizando las encuestas para verificar su correspondientes buzones. Actualizando transcripciones.') ?></label></th>
+                            <th scope="col" class="text-center"><label><?= Yii::t('app', ' Actualizando las encuestas para verificar su correspondientes buzones con las urls.') ?></label></th>
                         </tr>
                     </table>                                       
                 </div>
@@ -214,9 +224,25 @@ $roles = $command->queryScalar();
     function cargar(){
         var varcapaIniID = document.getElementById("capaPrincipal");
         var varcapaOneID = document.getElementById("capaSecundaria");
+        var varfecha = document.getElementById("basesatisfaccion-fecha_gestion").value;
+        vardatePieces = varfecha.split(" - ");
+
+        if (varfecha == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Se debe de ingresar un rango de fecha.","warning");
+            return;
+        }else{
+          if (vardatePieces[0] != vardatePieces[1]) {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","El rango de fechas no es permitido, solo debe seleccionar un dia.","warning");
+            return;
+          }else{
+            varcapaIniID.style.display = 'none';
+            varcapaOneID.style.display = 'inline';
+          }
+        }
         
-        varcapaIniID.style.display = 'none';
-        varcapaOneID.style.display = 'inline';
+        
     };
 
 </script>

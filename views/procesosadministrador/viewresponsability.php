@@ -50,7 +50,7 @@ $roles = $command->queryScalar();
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
+            font-family: "Nunito";
             font-size: 150%;    
             text-align: left;    
     }
@@ -72,15 +72,16 @@ $roles = $command->queryScalar();
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
-<script src="../../js_extensions/highcharts/highcharts.js"></script>
-<script src="../../js_extensions/highcharts/exporting.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
@@ -91,28 +92,31 @@ $roles = $command->queryScalar();
 </header>
 <br><br>
 <div class="capapp" style="display: inline;">
-    <?php $form = ActiveForm::begin([
-        'options' => ["id" => "buscarMasivos"],
-        'layout' => 'horizontal',
-        'fieldConfig' => [
-            'inputOptions' => ['autocomplete' => 'off']
-          ]
-        ]); ?>
+    <div class="row">
+        <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones de Responsabilidades"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
+
+    <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
     <div class="row">
         <div class="col-md-8">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #fd7e14;"></em> Lista de Responsabilidades: </label>
+                <label style="font-size: 15px;"><i class="fas fa-list" style="font-size: 15px; color: #C148D0;"></i> Lista de Responsabilidades: </label>
                 
                 <?php if (count($varListresponsabilidad ) != null) { ?>
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
-                    <caption>Tabla datos</caption>
                     <thead>
                         <tr>
-                            <th scope="col" colspan="2" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo $varnombrepcrc; ?></label></th>
+                            <th colspan="2" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo $varnombrepcrc; ?></label></th>
                         </tr>
                         <tr>    
-                            <th scope="col" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo "Proceso"; ?></label></th>
-                            <th scope="col" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo "Responsabilidad"; ?></label></th>
+                            <th style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo "Proceso"; ?></label></th>
+                            <th style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo "Responsabilidad"; ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -138,7 +142,7 @@ $roles = $command->queryScalar();
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #559FFF;"></em> Cantidad de Responsabilidades: </label>
+                        <label style="font-size: 15px;"><i class="fas fa-hashtag" style="font-size: 15px; color: #C148D0;"></i> Cantidad de Responsabilidades: </label>
                         <label  style="font-size: 70px; text-align: center;"><?php echo $txtConteo; ?></label>
                     </div>
                 </div>
@@ -147,10 +151,11 @@ $roles = $command->queryScalar();
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-sticky-note" style="font-size: 15px; color: #C148D0;"></em> Buscar Pcrc/Programa... </label>
+                        <label style="font-size: 15px;"><i class="fas fa-sticky-note" style="font-size: 15px; color: #C148D0;"></i> Buscar Pcrc/Programa... </label>
                         <?=
                             $form->field($model, 'procesos', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                         ->widget(Select2::classname(), [
+                                            //'data' => array_merge(["" => ""], $data),
                                             'language' => 'es',
                                             'options' => ['id'=>'idvararbol', 'placeholder' => Yii::t('app', 'Select ...')],
                                             'pluginOptions' => [
@@ -162,6 +167,7 @@ $roles = $command->queryScalar();
                                                     'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                                     'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
                                                 ],
+                                            //'initSelection' => new JsExpression($initScript)
                                             ]
                             ])->label('');
                         ?>  
@@ -178,7 +184,7 @@ $roles = $command->queryScalar();
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 15px; color: #C148D0;"></em> Acciones... </label>
+                        <label style="font-size: 15px;"><i class="fas fa-info" style="font-size: 15px; color: #C148D0;"></i> Acciones... </label>
                         
                         <div class="row">
                             <div class="col-md-12">
@@ -186,6 +192,7 @@ $roles = $command->queryScalar();
                                     <?=
                                         $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                                     ->widget(Select2::classname(), [
+                                                        //'data' => array_merge(["" => ""], $data),
                                                         'language' => 'es',
                                                         'options' => ['id'=>'idvararboltwo', 'placeholder' => Yii::t('app', 'Select ...')],
                                                         'pluginOptions' => [
@@ -197,6 +204,7 @@ $roles = $command->queryScalar();
                                                                 'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                                                 'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
                                                             ],
+                                                        //'initSelection' => new JsExpression($initScript)
                                                         ]
                                         ])->label('');
                                     ?>
@@ -218,7 +226,7 @@ $roles = $command->queryScalar();
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #C148D0;"></em> Cancelar y regresar... </label>
+                        <label style="font-size: 15px;"><i class="fas fa-minus-circle" style="font-size: 15px; color: #C148D0;"></i> Cancelar y regresar... </label>
                         <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -239,7 +247,7 @@ $roles = $command->queryScalar();
 
         if (varidvararbol == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
+            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
             return;
         }
     };
@@ -250,7 +258,7 @@ $roles = $command->queryScalar();
 
         if (varidvararbol == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
+            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar un Pcrc/Programa","warning");
             return;
         }else{
             $.ajax({
@@ -265,7 +273,7 @@ $roles = $command->queryScalar();
 
 					if (numRta == 0) {
 						event.preventDefault();
-			            swal.fire("!!! Advertencia !!!","El Pcrc no quedo registrado en el sistema","warning");
+			            swal.fire("¡¡¡ Advertencia !!!","El Pcrc no quedo registrado en el sistema","warning");
 			            return;
 					}else{
 						window.location.href='index';						

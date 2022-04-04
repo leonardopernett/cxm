@@ -33,20 +33,14 @@ $template = '<div class="col-md-12">'
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
+            font-family: "Nunito";
             font-size: 150%;    
             text-align: left;    
     }
 
 </style>
 <div class="capaPP" style="display: inline;">
-	<?php $form = ActiveForm::begin([
-        'options' => ["id" => "buscarMasivos"],
-        'layout' => 'horizontal',
-        'fieldConfig' => [
-            'inputOptions' => ['autocomplete' => 'off']
-          ]
-        ]); ?>
+	<?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card1 mb">
@@ -54,6 +48,7 @@ $template = '<div class="col-md-12">'
 				<?=
                     $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                 ->widget(Select2::classname(), [
+                                    //'data' => array_merge(["" => ""], $data),
                                     'language' => 'es',
                                     'options' => ['id'=>'idvararbol', 'placeholder' => Yii::t('app', 'Select ...')],
                                     'pluginOptions' => [
@@ -65,6 +60,7 @@ $template = '<div class="col-md-12">'
                                             'data' => new JsExpression('function(term,page) { return {search:term}; }'),
                                             'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
                                         ],
+                                    //'initSelection' => new JsExpression($initScript)
                                     ]
                     ])->label('');
                 ?>

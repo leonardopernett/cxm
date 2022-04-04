@@ -47,7 +47,27 @@ $roles = $command->queryScalar();
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
+            font-family: "Nunito";
+            font-size: 150%;    
+            text-align: left;    
+    }
+
+    .card2 {
+            height: 122px;
+            width: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: #FFFFFF;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;    
+            font-family: "Nunito";
             font-size: 150%;    
             text-align: left;    
     }
@@ -59,6 +79,7 @@ $roles = $command->queryScalar();
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -75,15 +96,30 @@ $roles = $command->queryScalar();
 <br><br>
 <?php if ($roles == '270') { ?>
 <div class="CapaPp" style="display : inline;">
-    <?php $form = ActiveForm::begin([
-        'options' => ["id" => "buscarMasivos"],
-        'layout' => 'horizontal',
-        'fieldConfig' => [
-            'inputOptions' => ['autocomplete' => 'off']
-          ]
-        ]); ?>
     <div class="row">
         <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones de Categorias"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
+
+    <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card2 mb">
+                <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #ffc034;"></em> Cancelar y Regresar...</label>
+                <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                                'style' => 'background-color: #707372',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Regresar']) 
+                ?>
+            </div>
+        </div>
+
+        <div class="col-md-3">
             <div class="card1 mb">
                 <label for=""><em class="fas fa-save" style="font-size: 20px; color: #ffc034;"></em> Ingresar Categorias</label>
                 
@@ -155,6 +191,16 @@ $roles = $command->queryScalar();
 <?php }else{ ?>
 <div class="capaMensaje" style="display: inline;">
     <div class="row">
+        <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Información Importante"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
                 <label for=""><em class="fas fa-info" style="font-size: 40px; color: #ffc034;"></em> Su rol actualmente no tiene permisos para ver este modulo; si necesita verlo solicitar acceso con el administrador de la herramienta.</label>
@@ -172,7 +218,7 @@ $roles = $command->queryScalar();
 
         if (varidtxtcategoria == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debe de ingresar una categoria","warning");
+            swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar una categoria","warning");
             return;
         }
     };
@@ -183,12 +229,12 @@ $roles = $command->queryScalar();
 
         if (varcategoriafeedbacksid == "") {
             event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debe de seleccionar una categoria","warning");
+            swal.fire("¡¡¡ Advertencia !!!","Debe de seleccionar una categoria","warning");
             return;
         }else{
             if (varidtxtcategoriahijo == "") {
                 event.preventDefault();
-                swal.fire("!!! Advertencia !!!","Debe de ingresar una categoria hijo","warning");
+                swal.fire("¡¡¡ Advertencia !!!","Debe de ingresar una categoria hijo","warning");
                 return;
             }
         }
