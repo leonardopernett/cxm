@@ -148,7 +148,7 @@ $roles = $command->queryScalar();
         <?= Html::submitButton("Subir", ["class" => "btn btn-primary", "onclick" => "cargar();"]) ?>
 
       </div>
-
+      
       <br>
 
       <div class="card1 mb">
@@ -162,20 +162,53 @@ $roles = $command->queryScalar();
 
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-4">
       
       <div class="card1 mb">
-        <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
-          <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Histórico de Equipos') ?></label></caption>
+        <label><em class="fas fa-chart-line" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Cantidades Asesores') ?></label>
+        <table id="myTable2" class="table table-hover table-bordered" style="margin-top:20px" >
+          <caption>.</caption>
           <thead>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Equipo') ?></label></th>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Nombre Equipo') ?></label></th>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Lider Equipo') ?></label></th>            
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios') ?></label></th>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Eliminar') ?></label></th>
+            <th>
+              <td  class="text-center" style="background-color: #F5F3F3;" colspan="3"><label style="font-size: 15px;"><?= Yii::t('app', 'Aliados & Cantidades') ?></label></td>
+            </th>
+            <th>
+              <td  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'KONECTA') ?></label></td>
+              <td  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'TLMARK') ?></label></td>
+              <td  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'AST') ?></label></td>
+            </th>
           </thead>
           <tbody>
-            
+            <tr>
+              <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varAsesoresKnt) ?></label></td>
+              <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varAsesoresTlm) ?></label></td>
+              <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varAsesoresAst) ?></label></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+      <div class="card1 mb">
+        <label><em class="fas fa-file" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Archivo Base') ?></label>
+        <a style="font-size: 18px;" rel="stylesheet" type="text/css" href="../../downloadfiles/Cargue_General_Asesores.xlsx" target="_blank">Descargar Archivo Base</a>
+        
+        <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
+          <caption>Información</caption>
+          <thead>
+            <th>
+              <td  class="text-center" style="background-color: #F5F3F3;" colspan="3"><label style="font-size: 15px;"><?= Yii::t('app', 'Es importante indicar que el campo "Aliados" debe de ir la notacion de tres caracteres de la siguiente forma...') ?></label></td>
+            </th>
+          </thead>
+          <tbody>
+            <tr>
+              <td><label style="font-size: 12px;"><?= Yii::t('app', 'KONECTA >> KNT') ?></label></td>
+              <td><label style="font-size: 12px;"><?= Yii::t('app', 'TLMARK >> TLM') ?></label></td>
+              <td><label style="font-size: 12px;"><?= Yii::t('app', 'AST >> AST') ?></label></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -189,25 +222,5 @@ $roles = $command->queryScalar();
 <hr>
 
 <script type="text/javascript">
-  $(document).ready( function () {
-    $('#myTable').DataTable({
-      responsive: true,
-      fixedColumns: true,
-      select: false,
-      "language": {
-        "lengthMenu": "Cantidad de Datos a Mostrar _MENU_ ",
-        "zeroRecords": "No se encontraron datos ",
-        "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
-        "infoEmpty": "No hay datos aun",
-        "infoFiltered": "(Filtrado un _MAX_ total)",
-        "search": "Buscar:",
-        "paginate": {
-          "first":      "Primero",
-          "last":       "Ultimo",
-          "next":       "Siguiente",
-          "previous":   "Anterior"
-        }
-      }
-    });
-  });
+
 </script>
