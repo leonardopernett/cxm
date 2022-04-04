@@ -169,14 +169,14 @@ $roles = $command->queryScalar();
         <table id="myTable2" class="table table-hover table-bordered" style="margin-top:20px" >
           <caption>.</caption>
           <thead>
-            <th>
-              <td  class="text-center" style="background-color: #F5F3F3;" colspan="3"><label style="font-size: 15px;"><?= Yii::t('app', 'Aliados & Cantidades') ?></label></td>
-            </th>
-            <th>
-              <td  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'KONECTA') ?></label></td>
-              <td  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'TLMARK') ?></label></td>
-              <td  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'AST') ?></label></td>
-            </th>
+            <tr>
+              <th class="text-center" style="background-color: #F5F3F3;" colspan="3"><label style="font-size: 15px;"><?= Yii::t('app', 'Aliados & Cantidades') ?></label></th>
+            </tr>
+            <tr>
+              <th  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'KONECTA') ?></label></th>
+              <th  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'TLMARK') ?></label></th>
+              <th  class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'AST') ?></label></th>
+            </tr>
           </thead>
           <tbody>
             <tr>
@@ -199,8 +199,7 @@ $roles = $command->queryScalar();
         <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
           <caption>Información</caption>
           <thead>
-            <th>
-              <td  class="text-center" style="background-color: #F5F3F3;" colspan="3"><label style="font-size: 15px;"><?= Yii::t('app', 'Es importante indicar que el campo "Aliados" debe de ir la notacion de tres caracteres de la siguiente forma...') ?></label></td>
+            <th class="text-center" style="background-color: #F5F3F3;" colspan="3"><label style="font-size: 15px;"><?= Yii::t('app', 'Es importante indicar que el campo "Aliados" debe de ir la notacion de tres caracteres de la siguiente forma...') ?></label>
             </th>
           </thead>
           <tbody>
