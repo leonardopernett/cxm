@@ -316,8 +316,6 @@ use app\models\DistribucionAsesores;
 
       $form = Yii::$app->request->post();
       if($model->load($form)){
-        $modelos = Yii::$app->db->createCommand('DELETE FROM tbl_equipos_evaluados');
-        $modelos->execute();
 
         $varListLider = Yii::$app->db->createCommand("
         SELECT e.id, u.usua_id, da.cedulalider FROM tbl_equipos e
@@ -332,19 +330,39 @@ use app\models\DistribucionAsesores;
           $varIdEquipos = $value['id'];
           $varCcLideres = $value['cedulalider'];
 
-          $varListAsesores = Yii::$app->db->createCommand("
-          SELECT e.id FROM tbl_evaluados e
-            INNER JOIN tbl_distribucion_asesores da ON 
-              e.identificacion = da.cedulaasesor
-            WHERE 
-              da.cedulalider = $varCcLideres")->queryAll();
+          $varEquipoVerifica = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_equipo_parametros'])
+                                    ->where(['=','id_equipo',$varIdEquipos])
+                                    ->count();
+          
+          if ($varEquipoVerifica == "0") {
 
-          foreach ($varListAsesores as $key => $value) {
-            Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
-                      'evaluado_id' => $value['id'],
-                      'equipo_id' => $varIdEquipos,                             
-                  ])->execute();
+            $paramsEliminar = [':IdControlEquipo'=>$varIdEquipos]; 
+
+            Yii::$app->db->createCommand('
+              DELETE FROM tbl_equipos_evaluados 
+                WHERE 
+                  equipo_id = :IdControlEquipo')
+            ->bindValues($paramsEliminar)
+            ->execute();  
+
+            $varListAsesores = Yii::$app->db->createCommand("
+            SELECT e.id FROM tbl_evaluados e
+              INNER JOIN tbl_distribucion_asesores da ON 
+                e.identificacion = da.cedulaasesor
+              WHERE 
+                da.cedulalider = $varCcLideres")->queryAll();
+
+            foreach ($varListAsesores as $key => $value) {
+              Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
+                        'evaluado_id' => $value['id'],
+                        'equipo_id' => $varIdEquipos,                             
+                    ])->execute();
+            }
+            
           }
+          
         }
 
         return $this->redirect('index');
