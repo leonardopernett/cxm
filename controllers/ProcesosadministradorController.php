@@ -740,7 +740,25 @@ use \yii\base\Exception;
     }
 
     public function actionParametrizarasesores(){
-        $model = new FormUploadtigo();
+        $model = new FormUploadtigo();        
+
+        $varAsesoresTlm = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','aliado',"TLM"])
+                                    ->count();
+
+        $varAsesoresAst = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','aliado',"AST"])
+                                    ->count();
+
+        $varAsesoresKnt = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['IS','aliado',null])
+                                    ->count();
 
         if ($model->load(Yii::$app->request->post())) {
                 
@@ -762,6 +780,9 @@ use \yii\base\Exception;
 
         return $this->render('parametrizarasesores',[
             'model' => $model,
+            'varAsesoresTlm' => $varAsesoresTlm,
+            'varAsesoresAst' => $varAsesoresAst,
+            'varAsesoresKnt' => $varAsesoresKnt,
         ]);
     }
 
@@ -792,13 +813,21 @@ use \yii\base\Exception;
 
             if ($varExisteAsesor == "0") {
 
+                $varAliadosExce = $sheet->getCell("E".$row)->getValue();
+                if ($varAliadosExce == "KNT") {
+                    $varAliados = null;
+                }else{
+                    $varAliados = $varAliadosExce;
+                }
+
                 Yii::$app->db->createCommand()->insert('tbl_evaluados',[
                     'name' => $sheet->getCell("A".$row)->getValue(),
                     'dsusuario_red' => $varUsuaioRed,
                     'identificacion' => $sheet->getCell("C".$row)->getValue(),
                     'email' => $sheet->getCell("D".$row)->getValue(),
                     'fechacreacion' => date("Y-m-d"),
-                    'usua_id' => Yii::$app->user->identity->id,
+                    'usua_id' => Yii::$app->user->identity->id,                    
+                    'aliados' => $varAliados,
                 ])->execute();
 
             }
