@@ -72,11 +72,25 @@ $roles = $command->queryScalar();
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 
 </style>
+<!-- datatable -->
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
+<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
+<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
+<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
+<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
+<script src="../../js_extensions/mijs.js"> </script>
+
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css">
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
 <script src="../../js_extensions/highcharts/highcharts.js"></script>
@@ -91,6 +105,15 @@ $roles = $command->queryScalar();
 </header>
 <br><br>
 <div class="CapaCero" id="capaCero" style="display: inline;">
+    <div class="row">
+        <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones de Permisos Escuchar +"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
 
     <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
     <div class="row">
@@ -169,12 +192,14 @@ $roles = $command->queryScalar();
                 <div class="card1 mb">
                     <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #ffc034;"></em> Lista de Datos</label>
 
-                    <table id="tblDatas" class="table table-striped table-bordered tblResDetFreed">
+                    <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
                         <caption>...</caption>
                         <thead>
-                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Servicio"; ?></label></th>
-                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Usuario"; ?></label></th>
-                            <th scope="col" class="text-center"  style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?php echo "Acciones"; ?></label></th>
+                            <tr>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Servicio') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Usuario') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                            </tr>
                         </thead>
                         <tbody>
                             <?php

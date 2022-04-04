@@ -71,6 +71,7 @@ $roles = $command->queryScalar();
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -81,10 +82,11 @@ $roles = $command->queryScalar();
       border-top: 16px solid #3498db;
       width: 80px;
       height: 80px;
-      -webkit-animation: spin 2s linear infinite;
+      -webkit-animation: spin 2s linear infinite; /* Safari */
       animation: spin 2s linear infinite;
     }
 
+    /* Safari */
     @-webkit-keyframes spin {
       0% { -webkit-transform: rotate(0deg); }
       100% { -webkit-transform: rotate(360deg); }
@@ -111,6 +113,16 @@ $roles = $command->queryScalar();
 </header>
 <br><br>
 <div id="capaPrincipal" class="capaPrincipal" style="display: inline;">
+    <div class="row">
+        <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acción de Usuarios .SIP"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
+
     <?php $form = ActiveForm::begin(['options' => ["id" => "buscarMasivos"],  'layout' => 'horizontal']); ?>
         <div class="row">
 
@@ -139,6 +151,7 @@ $roles = $command->queryScalar();
                     <?=
                         $form->field($model, 'evaluados_id')->label(Yii::t('app','Valorado'))
                                 ->widget(Select2::classname(), [
+                                    //'data' => array_merge(["" => ""], $data),
                                     'language' => 'es',
                                     'options' => ['placeholder' => Yii::t('app', 'Seleccionar asesor...')],
                                     'pluginOptions' => [

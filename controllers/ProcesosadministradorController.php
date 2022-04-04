@@ -27,8 +27,9 @@ use app\models\Dashboardpermisos;
 use app\models\BaseUsuariosip;
 use app\models\FormUploadtigo;
 use app\models\BaseSatisfaccion; 
-use \yii\base\Exception;
 use app\models\ControlProcesos;
+use app\models\Equipos;
+use \yii\base\Exception;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
@@ -37,7 +38,7 @@ use app\models\ControlProcesos;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores'],
             'rules' => [
               [
                 'allow' => true,
@@ -490,7 +491,6 @@ use app\models\ControlProcesos;
 
     public function actionCalcularurls($txtfechainicio,$txtfechafin){   
         $model = new BaseSatisfaccion();
-
         $varBuzon  = "/srv/www/htdocs/qa_managementv2/web/buzones_qa";
 
         $varCantidadUrl = (new \yii\db\Query())
@@ -498,8 +498,8 @@ use app\models\ControlProcesos;
                                     ->from(['tbl_base_satisfaccion'])
                                     ->where(['LIKE','buzon',$varBuzon])
                                     ->andwhere(['BETWEEN','fecha_satu',$txtfechainicio,$txtfechafin])
-                                    ->count(); 
-                                    
+                                    ->count();        
+
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
             
@@ -545,6 +545,10 @@ use app\models\ControlProcesos;
     }
 
     public function Buscarkaliope($varFechaInicio,$varFechaFin){
+        $vartexto = null;
+        $varvalencia = null;
+        $txtErrorTranscripcion = "Error al buscar transcipcion";
+        $txtErrorEmocional = "Error al buscar valencia emocioanl";
 
         ini_set("max_execution_time", "900");
         ini_set("memory_limit", "1024M");
@@ -552,27 +556,26 @@ use app\models\ControlProcesos;
 
         ignore_user_abort(true);
         set_time_limit(900);
+        $varBuzon  = "/srv/www/htdocs/qa_managementv2/web/buzones_qa";
 
-        $paramsBuscar = [':varFechaInicio' => $varFechaInicio,':varFechaFin' => $varFechaFin];
-        $varlista = Yii::$app->db->createCommand('
-            SELECT b.connid, b.fecha_satu FROM tbl_base_satisfaccion b 
-                WHERE 
-                    b.buzon LIKE "%/srv/www/htdocs/qa_managementv2/web/buzones_qa%"
-                        AND b.fecha_satu BETWEEN :varFechaInicio AND :varFechaFin')->bindValues($paramsBuscar)->queryAll();
-
+        $varlista = (new \yii\db\Query())
+                                    ->select(['id','fecha_satu'])
+                                    ->from(['tbl_base_satisfaccion'])
+                                    ->where(['LIKE','buzon',$varBuzon])
+                                    ->andwhere(['BETWEEN','fecha_satu',$varFechaInicio,$varFechaFin])
+                                    ->all(); 
 
         foreach ($varlista as $key => $value) {
             $txtvaridruta = $value['connid'];
             $txtcreated = $value['fecha_satu'];
-
+            
             $paramsConnid = [':varConnid'=>$txtvaridruta];
             $varExiste = Yii::$app->db->createCommand('
                 SELECT COUNT(k.connid) FROM tbl_kaliope_transcipcion k 
                     WHERE 
                         k.connid IN (:varConnid)')->bindValues($paramsConnid)->queryScalar();
 
-            if ($varExiste == 0) {
-                
+            if ($varExiste == 0) {               
 
                 ob_start();
                 $curl = curl_init();
@@ -597,11 +600,19 @@ use app\models\ControlProcesos;
                 $response = curl_exec($curl);
 
                 curl_close($curl);
-                ob_clean();                
+                ob_clean();
+
+                if (!$response) {
+                  $vartexto += $txtErrorTranscripcion;
+                  $varvalencia += $txtErrorEmocional;
+                }
 
                 $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
 
-                if (!empty($response)) {
+                if (empty($response)) {
+                    $vartexto = $txtErrorTranscripcion;
+                    $varvalencia = $txtErrorEmocional;
+                }else{
                     $vartexto = $response[0]['transcription'];
                     $varvalencia = $response[0]['valencia'];
 
@@ -648,7 +659,7 @@ use app\models\ControlProcesos;
                             ->bindValue(':varAnulado', 1)
                             ->execute(); 
             }
-            
+
             $varFechas = explode(" ", $model->fechacreacion);
 
             $txtFechaInicio = $varFechas[0];
@@ -682,6 +693,118 @@ use app\models\ControlProcesos;
             ->execute();
 
         return $this->redirect(['parametrizarplan']);
+    }
+
+    public function actionParametrizarequipos(){
+        $model = new Equipos();
+
+        $varListEquipos = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_equipo_parametros'])
+                                    ->orderBy(['fecha_creacion' => SORT_DESC])
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $txtidEquipo = $model->usua_id;
+            $txtComentario = $model->name;
+
+            Yii::$app->db->createCommand()->insert('tbl_equipo_parametros',[
+                    'id_equipo' => $txtidEquipo,
+                    'comentarios' => $txtComentario,
+                    'fecha_creacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['parametrizarequipos']);
+        }
+
+        return $this->render('parametrizarequipos',[
+            'model' => $model,
+            'varListEquipos' => $varListEquipos,
+        ]);
+    }
+
+    public function actionDeleteteamparams($id){
+        $paramsEliminar = [':IdControl'=>$id];          
+
+        Yii::$app->db->createCommand('
+              DELETE FROM tbl_equipo_parametros 
+                WHERE 
+                  idequipo_parametros = :IdControl')
+            ->bindValues($paramsEliminar)
+            ->execute();
+
+        return $this->redirect(['parametrizarequipos']);
+    }
+
+    public function actionParametrizarasesores(){
+        $model = new FormUploadtigo();
+
+        if ($model->load(Yii::$app->request->post())) {
+                
+            $model->file = UploadedFile::getInstances($model, 'file');
+
+            if ($model->file && $model->validate()) {
+                    
+                foreach ($model->file as $file) {
+                    $fecha = date('Y-m-d-h-i-s');
+                    $user = Yii::$app->user->identity->username;
+                    $name = $fecha . '-' . $user;
+                    $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                    $this->Importarasesores($name);
+
+                    return $this->redirect(['parametrizarasesores']);
+                }
+            }
+        }
+
+        return $this->render('parametrizarasesores',[
+            'model' => $model,
+        ]);
+    }
+
+    public function Importarasesores($name){
+        $inputFile = 'categorias/' . $name . '.xlsx';
+
+        try {
+
+            $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($inputFile);
+
+        } catch (Exception $e) {
+            die('Error');
+        }
+
+        $sheet = $objPHPExcel->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+
+        for ($row = 3; $row <= $highestRow; $row++) { 
+            $varUsuaioRed = $sheet->getCell("B".$row)->getValue();
+
+            $varExisteAsesor = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','dsusuario_red',$varUsuaioRed])
+                                    ->count(); 
+
+            if ($varExisteAsesor == "0") {
+
+                Yii::$app->db->createCommand()->insert('tbl_evaluados',[
+                    'name' => $sheet->getCell("A".$row)->getValue(),
+                    'dsusuario_red' => $varUsuaioRed,
+                    'identificacion' => $sheet->getCell("C".$row)->getValue(),
+                    'email' => $sheet->getCell("D".$row)->getValue(),
+                    'fechacreacion' => date("Y-m-d"),
+                    'usua_id' => Yii::$app->user->identity->id,
+                ])->execute();
+
+            }
+
+        }
+
     }
     
 

@@ -27,6 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ->where('tbl_usuarios.usua_id = '.$sesiones.'');                    
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
+
+    
 ?>
 <style>
     .card1 {
@@ -44,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
+            font-family: "Nunito";
             font-size: 150%;    
             text-align: left;    
     }
@@ -66,15 +68,16 @@ $this->params['breadcrumbs'][] = $this->title;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        /*background: #fff;*/
         border-radius: 5px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
 
 </style>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
-<script src="../../js_extensions/highcharts/highcharts.js"></script>
-<script src="../../js_extensions/highcharts/exporting.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
@@ -87,9 +90,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <br><br>
 <div id="IdCapaUno" class="CapaUno" style="display: inline;">
     <div class="row">
+        <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Información"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-star" style="font-size: 40px; color: #ffc034;"></em> Es importante indicar que las acciones que se representan en el actual modulo solo es permitido para usuarios que tengan rol administrativo. </label>
+                <label style="font-size: 15px;"><i class="fas fa-star" style="font-size: 40px; color: #ffc034;"></i> Es importante indicar que las acciones que se representan en el actual módulo solo es permitido para usuarios que tengan rol administrativo. </label>
             </div>
         </div>
     </div>
@@ -98,12 +111,22 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($roles == '270') { ?>
 <div id="IdCapaDos" class="CapaDos" style="display: inline;">
     <div class="row">
+        <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones Administrativas"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
         <div class="col-md-12">
         
             <div class="row">
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-address-card" style="font-size: 15px; color: #ffc034;"></em> Permisos Feedback</label>
+                        <label style="font-size: 15px;"><em class="fas fa-address-card" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Permisos Feedback') ?></label>
                         <?= Html::a('Aceptar',  ['permisosfeedback/index'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Permisos Feedback']) 
@@ -113,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #ffc034;"></em> Categorias Feedback</label>
+                        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Categorias Feedback') ?></label>
                         <?= Html::a('Aceptar',  ['categoriascxm'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Categorias Feedback']) 
@@ -123,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-clone" style="font-size: 15px; color: #ffc034;"></em> Responsabilidades</label>
+                        <label style="font-size: 15px;"><em class="fas fa-clone" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Responsabilidades') ?></label>
                         <?= Html::a('Aceptar',  ['viewresponsability'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Permisos Feedback']) 
@@ -132,12 +155,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
 
-            <br>
+            <hr>
 
             <div class="row">
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-key" style="font-size: 15px; color: #ffc034;"></em> Permisos Servicios Escuchar +</label>
+                        <label style="font-size: 15px;"><em class="fas fa-key" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Permisos Servicios Escuchar +') ?></label>
                         <?= Html::a('Aceptar',  ['viewescucharmas'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Permisos Escuchar +']) 
@@ -147,7 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #ffc034;"></em> Procesos Usuarios .sip (Encuestas)</label>
+                        <label style="font-size: 15px;"><em class="fas fa-user" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Procesos Usuarios .sip (Encuestas)') ?></label>
                         <?= Html::a('Aceptar',  ['viewusuariosencuestas'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Procesos Usuarios .sip']) 
@@ -157,7 +180,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-paperclip" style="font-size: 15px; color: #ffc034;"></em> Actualizar Url & Transcipciones Encuestas</label>
+                        <label style="font-size: 15px;"><em class="fas fa-paperclip" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Actualizar Url & Transcipciones Encuestas') ?></label>
                         <?= Html::a('Aceptar',  ['buscarurls'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Actualizar url encuestas']) 
@@ -166,18 +189,39 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
 
-            <br>
+            <hr>
 
             <div class="row">
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 15px; color: #ffc034;"></em> Parametrizar Plan de Valoración</label>
+                        <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Plan de Valoración') ?></label>
                         <?= Html::a('Aceptar',  ['parametrizarplan'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Parametrizar Plan Valoración']) 
                         ?>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Equipos Fuera de Distribución') ?></label>
+                        <?= Html::a('Aceptar',  ['parametrizarequipos'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Plan Valoración']) 
+                        ?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Agregar Asesores Masivos') ?></label>
+                        <?= Html::a('Aceptar',  ['parametrizarasesores'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Agregar Asesores Masivos']) 
+                        ?>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -186,13 +230,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <hr>
 <?php }else{ ?>
     <div id="IdCapaTres" class="CapaTres" style="display: inline;">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 40px; color: #ffc034;"></em> Para acceder al modulo contactar al administrador de la herramienta para asignar permisos a su usuario. </label>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card1 mb" style="background: #6b97b1; ">
+                    <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Informacón Importante"; ?> </label>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    <label style="font-size: 15px;"><i class="fas fa-info" style="font-size: 40px; color: #ffc034;"></i> Para acceder al modulo contactar al administrador de la herramienta para asignar permisos a su usuario. </label>
+                </div>
             </div>
         </div>
     </div>
-</div>
 <hr>
 <?php } ?>

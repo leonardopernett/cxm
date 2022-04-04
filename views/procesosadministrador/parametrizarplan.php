@@ -276,6 +276,7 @@ $roles = $command->queryScalar();
   <?php ActiveForm::end(); ?>
 
 </div>
+<hr>
 
 <script type="text/javascript">
   function verificar(){
