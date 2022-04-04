@@ -827,7 +827,7 @@ use \yii\base\Exception;
                     'email' => $sheet->getCell("D".$row)->getValue(),
                     'fechacreacion' => date("Y-m-d"),
                     'usua_id' => Yii::$app->user->identity->id,                    
-                    'aliados' => $varAliados,
+                    'aliado' => $varAliados,
                 ])->execute();
 
             }
