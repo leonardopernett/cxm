@@ -35,10 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
     $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year)); 
-    $varfechainicio = '2022-03-01';   
-    $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
-    $varfechafin = '2022-04-05';
-     
+    $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));     
 
     $sessiones = Yii::$app->user->identity->id;
     $sumatoria1 = null;
