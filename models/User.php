@@ -32,6 +32,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
     public $verBA;
     public $verDirectivo;
     public $verAsesormas;
+    public $verUsuatlmast;
     public $hacerValoracion;
     public $grupousuarioid;
     /**
@@ -67,6 +68,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                     . "per_ba as verBA, "
                     . "per_directivo as verDirectivo, "
                     . "per_asesormas as verAsesormas, "
+                    . "per_usuatlmast as verUsuatlmast, "
                     . "per_adminprocesos as adminProcesos, "
                     . "per_editarequiposvalorados as edEqipoValorado, "
                     . "per_inboxaleatorio as verInboxAleatorio, per_realizar_valoracion AS hacerValoracion, "
@@ -136,6 +138,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                 . "per_ba as verBA, "
                 . "per_directivo as verDirectivo, "
                 . "per_asesormas as verAsesormas, "
+                . "per_usuatlmast as verUsuatlmast, "
                 . "per_adminprocesos as adminProcesos, "
                 . "per_editarequiposvalorados as edEqipoValorado, "
                 . "per_inboxaleatorio as verInboxAleatorio, per_realizar_valoracion AS hacerValoracion, "
@@ -433,6 +436,18 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
      */
     public function isVerasesormas() {
         return ($this->verAsesormas) ? true : false;
+    }
+
+    /**
+     * Valida si el usuario tiene permisos para el personal de Tlmark y AST
+     * 
+     * @return boolean
+     * @author Andersson
+     * @copyright Konecta
+     * @version Release: $Id$
+     */
+    public function isVerusuatlmast() {
+        return ($this->verUsuatlmast) ? true : false;
     }
 
     /**

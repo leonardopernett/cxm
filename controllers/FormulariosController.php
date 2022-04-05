@@ -47,7 +47,7 @@ class FormulariosController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                             [
@@ -60,7 +60,7 @@ class FormulariosController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                             [
@@ -68,7 +68,7 @@ class FormulariosController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                             [
@@ -85,7 +85,7 @@ class FormulariosController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno();
+                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                         ],

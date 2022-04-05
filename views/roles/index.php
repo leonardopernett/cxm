@@ -106,7 +106,7 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta accion");
 
                 <?= $form->field($model, 'per_evaluacion')->checkbox() ?>
 
-		<?= $form->field($model, 'per_evaluacion')->checkbox() ?>
+		        <?= $form->field($model, 'per_evaluacion')->checkbox() ?>
 
                 <?= $form->field($model, 'per_externo')->checkbox() ?>
 
@@ -115,6 +115,8 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta accion");
                 <?= $form->field($model, 'per_directivo')->checkbox() ?>
                 
                 <?= $form->field($model, 'per_asesormas')->checkbox() ?>
+
+                <?= $form->field($model, 'per_usuatlmast')->checkbox() ?>
 
             </div>
         </div>
@@ -217,6 +219,9 @@ echo Yii::t("app", "Seleccione Roles y Permisos para realizar esta accion");
                 bandera++;
             }
             if (!($('#roles-per_asesormas').is(':checked'))) {
+                bandera++;
+            }
+            if (!($('#roles-per_usuatlmast').is(':checked'))) {
                 bandera++;
             }
             if (bandera == 9) {

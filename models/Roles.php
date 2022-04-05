@@ -39,7 +39,7 @@ class Roles extends \yii\db\ActiveRecord {
             [['per_cuadrodemando', 'per_estadisticaspersonas',
             'per_hacermonitoreo', 'per_reportes', 'per_modificarmonitoreo',
             'per_adminsistema', 'per_adminprocesos',
-            'per_editarequiposvalorados', 'per_inboxaleatorio', 'per_desempeno', 'per_abogado', 'per_jefeop', 'per_tecdesempeno', 'per_alertas', 'per_evaluacion','per_externo','per_directivo','per_asesormas'], 'integer'],
+            'per_editarequiposvalorados', 'per_inboxaleatorio', 'per_desempeno', 'per_abogado', 'per_jefeop', 'per_tecdesempeno', 'per_alertas', 'per_evaluacion','per_externo','per_directivo','per_asesormas','per_usuatlmast'], 'integer'],
             [['role_nombre', 'role_descripcion'], 'string', 'max' => 50],
             [['role_nombre', 'role_descripcion'], 'required'],
             [['role_nombre', 'role_descripcion'],'filter', 'filter' => function($value){
@@ -74,6 +74,7 @@ class Roles extends \yii\db\ActiveRecord {
             'per_externo' => Yii::t('app', 'Tecnico CX Externo'),
             'per_directivo' => Yii::t('app', 'Rol Directivo'),
             'per_asesormas' => Yii::t('app', 'Rol Asesor'),
+            'per_usuatlmast' => Yii::t('app', 'Rol Usuario Tlmark/Ast'),
             
         ];
     }

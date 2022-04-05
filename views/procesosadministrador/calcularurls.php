@@ -183,13 +183,13 @@ $roles = $command->queryScalar();
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><em class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></em> Actualizar Datos Encuestas...</label>
+                <label><em class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></em> Buscar & Guardar Datos Transcripciones...</label>
                 <div class="col-md-12">
                     <table>
                     <caption>...</caption>
                         <tr>
                             <th scope="col" class="text-center"><div class="loader"> </div></th>
-                            <th scope="col" class="text-center"><label><?= Yii::t('app', ' Actualizando las encuestas para verificar su correspondientes buzones.') ?></label></th>
+                            <th scope="col" class="text-center"><label><?= Yii::t('app', ' Buscando y Guardando las transcipciones de los buzones con urls.') ?></label></th>
                         </tr>
                     </table>                                       
                 </div>

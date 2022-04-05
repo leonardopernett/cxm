@@ -82,7 +82,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],						
 							[
@@ -90,7 +90,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                             [
@@ -98,7 +98,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isVerInboxAleatorio() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isVerInboxAleatorio() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                             [
@@ -106,7 +106,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                             [
@@ -122,7 +122,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isverTecDesempeno() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isverTecDesempeno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                             [
@@ -130,7 +130,7 @@ class BasesatisfaccionController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                             [
