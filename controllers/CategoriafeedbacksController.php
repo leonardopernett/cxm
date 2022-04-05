@@ -37,7 +37,7 @@ class CategoriafeedbacksController extends Controller {
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminProcesos();
+                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                             ],
                         ],

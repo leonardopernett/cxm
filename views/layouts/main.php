@@ -502,47 +502,47 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Formularios'),
                                                     'url' => ['/formularios/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Secciones'),
                                                     'url' => ['/seccions/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Bloques'),
                                                     'url' => ['/bloques/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Bloque Detalle'),
                                                     'url' => ['/bloquedetalles/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Textos'),
                                                     'url' => ['/textos/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Tipificaciones'),
                                                     'url' => ['/tipificaciones/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Programa PCRC'),
                                                     'url' => ['/arboles/index'],
-                                                    'visible' => Yii::$app->user->identity->isEdEqipoValorado(),
+                                                    'visible' => Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Interacciones'),
                                                     'url' => ['/transacions/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Dimensiones'),
                                                     'url' => ['/dimensiones/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Declinaciones'),
@@ -552,12 +552,12 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Calificaciones'),
                                                     'url' => ['/calificacions/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Feedbacks'),
                                                     'url' => ['/categoriafeedbacks/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                         '</div>',
                                         '<div class="col-md-3">',
