@@ -559,7 +559,7 @@ use \yii\base\Exception;
         $varBuzon  = "/srv/www/htdocs/qa_managementv2/web/buzones_qa";
 
         $varlista = (new \yii\db\Query())
-                                    ->select(['id','fecha_satu'])
+                                    ->select(['id','fecha_satu','connid'])
                                     ->from(['tbl_base_satisfaccion'])
                                     ->where(['LIKE','buzon',$varBuzon])
                                     ->andwhere(['BETWEEN','fecha_satu',$varFechaInicio,$varFechaFin])
