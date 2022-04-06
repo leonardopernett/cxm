@@ -14,6 +14,13 @@ use yii\helpers\ArrayHelper;
 
 $varPcrc = $data->tmp_formulario->arbol_id;
 $model = new SpeechParametrizar();
+
+$varVerificaPcrc = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_control_formularios'])
+                                    ->where(['=','arbol_id',$varPcrc])
+                                    ->count(); 
+
 ?>
 
 
@@ -212,6 +219,7 @@ $contadorSecciones = 0;
                                 </tr>
                                 <?php } ?>
 
+                                <?php if ($varVerificaPcrc == '0') { ?>
                                 <tr>
                                     <th scope="row"><?php echo Yii::t("app", "Cliente"); ?></th>
                                     <td> 
@@ -343,6 +351,14 @@ $contadorSecciones = 0;
                                         <?php endif; ?>
                                     </td>
                                 </tr>
+                                <?php }else{ ?>
+                                    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); $model->id_dp_clientes = $data->idcliente;?>
+                                        <?= $form->field($model, 'id_dp_clientes')->textInput(['class' => 'hidden', 'id' => 'speechparametrizar-id_dp_clientes', 'value'=>'0']) ?>
+                                    <?php ActiveForm::end();?>
+                                    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); $model->cod_pcrc = $data->codpcrc;?>
+                                        <?= $form->field($model, 'cod_pcrc')->textInput(['class' => 'hidden', 'id' => 'requester', 'value'=>'0000']) ?>
+                                    <?php ActiveForm::end();?>
+                                <?php } ?>
                                 
                             <tr>
                                 

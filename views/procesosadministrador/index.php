@@ -224,6 +224,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
 
+            <hr>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Formularios que No Guarden Pcrc') ?></label>
+                        <?= Html::a('Aceptar',  ['parametrizarpcrc'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Agregar Formularios Sin Pcrc']) 
+                        ?>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

@@ -816,8 +816,22 @@ class FormulariosController extends Controller {
                 $arrayCountBloques = [];
                 $arrayBloques = [];
 
-                $varid_clientes = Yii::$app->request->post('id_dp_clientes');
-                $varid_centro_costo = Yii::$app->request->post('requester');   
+                $varProgramapcrc = $_POST['arbol_id'];
+                $varVerificaPcrc = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_control_formularios'])
+                                    ->where(['=','arbol_id',$varProgramapcrc])
+                                    ->count(); 
+                                    
+                if ($varVerificaPcrc == '0') {
+                    $varid_clientes = Yii::$app->request->post('id_dp_clientes');
+                    $varid_centro_costo = Yii::$app->request->post('requester');  
+                }else{
+                    $varid_clientes = 0;
+                    $varid_centro_costo = '0000-0';  
+                }
+
+                 
                 $count = 0;
                 $tmp_id = Yii::$app->request->post('tmp_formulario_id');
                 $arrFormulario["equipo_id"] = Yii::$app->request->post('form_equipo_id');
