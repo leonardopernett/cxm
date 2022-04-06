@@ -29,6 +29,7 @@ use app\models\FormUploadtigo;
 use app\models\BaseSatisfaccion; 
 use app\models\ControlProcesos;
 use app\models\Equipos;
+use app\models\ControlParams;
 use \yii\base\Exception;
 
 
@@ -38,7 +39,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc'],
             'rules' => [
               [
                 'allow' => true,
@@ -834,6 +835,50 @@ use \yii\base\Exception;
 
         }
 
+    }
+
+    public function actionParametrizarpcrc(){
+        $model = new ControlParams();
+
+        $varListPcrcs = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_control_formularios'])
+                                    ->orderBy(['fecha_creacion' => SORT_DESC])
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varidArbol = $model->arbol_id;
+            $varComentarios = $model->argumentos;
+
+            Yii::$app->db->createCommand()->insert('tbl_control_formularios',[
+                    'arbol_id' => $varidArbol,
+                    'comentarios' => $varComentarios,
+                    'fecha_creacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['parametrizarpcrc']);
+        }
+
+        return $this->render('parametrizarpcrc',[
+            'model' => $model,
+            'varListPcrcs' => $varListPcrcs,
+        ]);
+    }
+
+    public function actionDeletepcrcscontrol($id){
+        $paramsEliminar = [':IdControl'=>$id];          
+
+        Yii::$app->db->createCommand('
+              DELETE FROM tbl_control_formularios 
+                WHERE 
+                  idcontrol_formularios = :IdControl')
+            ->bindValues($paramsEliminar)
+            ->execute();
+
+        return $this->redirect(['parametrizarpcrc']);
     }
     
 
