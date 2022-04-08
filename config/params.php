@@ -8,6 +8,15 @@ return [
     /* PARAMETROS LDAP */
     'LDAP_SERVER1' => LDAP_SERVER1, //"172.20.1.220",
     'LDAP_accsufix' => '@multienlace.com.co',
+
+    // HORAE - AST
+    'LDAP_SERVERH' => LDAP_SERVERH,
+    'LDAP_accsufixh' => '@ast.local',
+
+    // ODESSA -TELMARK
+    'LDAP_SERVERO' => LDAP_SERVERO,
+    'LDAP_accsufixo' => '@telemark-spain.com',
+
     /* VALORACIONES POR MES */
     'valoracionesMes' => 5,
     /* URL WS REDBOX MEDELLIN */
