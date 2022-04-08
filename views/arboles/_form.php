@@ -69,7 +69,7 @@ SCRIPT;
 ?>
 
 <?php
-    if ($variables == "270" || $variables == "276") {
+    if ($variables == "270" || $variables == "276" || $variables == "311") {
 ?>
         <div class="arboles-form">
 
