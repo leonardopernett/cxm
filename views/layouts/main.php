@@ -368,7 +368,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Notificaciones&nbsp;&nbsp;'),
                                                     'url' => ['/site/segundocalificador'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Analizar y Decidir</li>',
@@ -470,7 +470,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Usuarios&nbsp;&nbsp;'),
                                                     'url' => ['/usuarios/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Grupo de Usuarios&nbsp;&nbsp;'),
