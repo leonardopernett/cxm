@@ -113,23 +113,9 @@ use yii\widgets\Pjax;
     $(function(){
         $('#send_button').on("click", function(e){
             e.preventDefault()
-            
-            
-            var email = document.getElementById("usuarios-usua_email").value
-            var allus = "allus"
-            var multienlace = "multienlace"
-            var grupokonecta = "grupokonecta"
-
-            var numeroAllus = email.includes(allus)
-            var numeroMultienlace = email.includes(multienlace)
-            var numeroGrupokonecta = email.includes(grupokonecta)
-
-            if (numeroAllus != false || numeroMultienlace != false || numeroGrupokonecta != false){
-                $('#w0').submit()
-            } else {
-                Swal.fire('¡¡¡ Advertencia !!!','Por favor ingresar un email corporativo.','warning')
-            }
-           
+                        
+            $('#w0').submit()
+                       
         })
     })
 

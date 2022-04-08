@@ -487,33 +487,54 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
             return $error;
         }
 
-        /* CONEXION A LDAP */
+        /* CONEXION A LDAP - Multienlace*/
         $ldapconn = ldap_connect(\Yii::$app->params["LDAP_SERVER1"]);
 
-        /* BUSQUEDA DE USUARIO */
+        /* BUSQUEDA DE USUARIO - Multienlace*/
         $ldapbind = @ldap_bind($ldapconn, $this->username . \Yii::$app->params["LDAP_accsufix"], utf8_decode($password));
         
         if (!$ldapbind) {
 
-            $ErrNUM = ldap_errno($ldapconn);
+            /* CONEXION LDAP HORAE - AST */
+            $ldapconnh = ldap_connect(\Yii::$app->params["LDAP_SERVERH"]);
 
-            switch ($ErrNUM) {
+            /* BUSQUEDA DE USUARIO - AST */
+            $ldapbindh = @ldap_bind($ldapconnh, $this->username . \Yii::$app->params["LDAP_accsufixh"], utf8_decode($password));
 
-                case 81:
-                    $error->hasError = true;
-                    $error->msgError = \Yii::t("app", "No se puede conectar al servidor LDAP");
-                    break;
-                case 49:
-                    $error->hasError = true;
-                    $error->msgError = \Yii::t("app", "Usuario o contraseña no valida");
-                    break;
+            if (!$ldapbindh) {
+                
+                /* CONEXION LDAP ODESSA - TLMARK */
+                $ldapconno = ldap_connect(\Yii::$app->params["LDAP_SERVERO"]);
 
-                default:
-                    $error->hasError = true;
-                    $error->msgError = \Yii::t("app", "Error en LDAP") . ldap_error($ldapconn);
-                    break;
+                /* BUSQUEDA DE USUARIO ODESSA - TLMARK*/
+                $ldapbindo = @ldap_bind($ldapconno, $this->username . \Yii::$app->params["LDAP_accsufixo"], utf8_decode($password));
+
+                if (!$ldapbindo) {
+                    
+                    $ErrNUM = ldap_errno($ldapbindo);
+
+                    switch ($ErrNUM) {
+
+                        case 81:
+                            $error->hasError = true;
+                            $error->msgError = \Yii::t("app", "No se puede conectar al servidor LDAP");
+                            break;
+                        case 49:
+                            $error->hasError = true;
+                            $error->msgError = \Yii::t("app", "Usuario o contraseña no valida");
+                            break;
+
+                        default:
+                            $error->hasError = true;
+                            $error->msgError = \Yii::t("app", "Error en LDAP") . ldap_error($ldapbindo);
+                            break;
+                    }
+                    return $error;
+
+                }
+
             }
-            return $error;
+            
         }
 
         $error->hasError = false;
