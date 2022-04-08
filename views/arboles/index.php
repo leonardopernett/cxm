@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php
-        if ($variables == "270" || $variables == "276") {
+        if ($variables == "270" || $variables == "276" || $variables == "311") {
     ?>
         <?=
         GridView::widget([
