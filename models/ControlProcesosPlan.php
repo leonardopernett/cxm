@@ -91,7 +91,7 @@ class ControlProcesosPlan extends \yii\db\ActiveRecord
                     ->where(['tbl_control_procesos.anulado' => 'null'])
                     ->andwhere(['between','tbl_control_procesos.fechacreacion', $varfechainicio, $varfechafin]);
         }else{
-            if ($roles == "274" || $roles == "276") {
+            if ($roles == "274" || $roles == "276" || $roles = "311") {
                 $vartipopermiso = Yii::$app->db->createCommand("select tipopermiso from tbl_plan_permisos where anulado = 0 and usuaidpermiso = $sesiones")->queryScalar();
                 $vararbol = Yii::$app->db->createCommand("select arbol_id from tbl_plan_permisos where anulado = 0 and usuaidpermiso = $sesiones")->queryScalar();
 
