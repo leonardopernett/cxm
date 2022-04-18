@@ -154,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 
-<?php if ($roles == "270" || $roles == "276" || $roles == "274" ) {  ?>
+<?php if ($roles == "270" || $roles == "276" || $roles == "274" || $roles == "311" ) {  ?>
 
     <div class="CapaUno" style="display: inline;">
         <div class="row">
