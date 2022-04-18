@@ -8,6 +8,7 @@ use kartik\select2\Select2;
 use yii\web\JsExpression;
 use kartik\daterange\DateRangePicker;
 use yii\bootstrap\Modal;
+use yii\db\Query;
 
 $this->title = 'Equipo de Trabajo';
 $this->params['breadcrumbs'][] = $this->title;
