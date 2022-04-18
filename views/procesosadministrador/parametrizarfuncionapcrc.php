@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\db\Query;
 
-$this->title = 'Procesos Administrador - Parametrizar Formularios, No Guardar Pcrc';
+$this->title = 'Procesos Administrador - Parametrizar Formularios, Agregar No Apica en Valoraciones';
 $this->params['breadcrumbs'][] = $this->title;
 
 $sesiones =Yii::$app->user->identity->id;   
@@ -126,7 +126,7 @@ $roles = $command->queryScalar();
   <div class="row">
     <div class="col-md-6">
       <div class="card1 mb" style="background: #6b97b1; ">
-        <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones Formulario, No Guardar Pcrc"; ?> </label>
+        <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones Formulario, Agregar No Apica en Valoraciones"; ?> </label>
       </div>
     </div>
   </div>
@@ -211,7 +211,7 @@ $roles = $command->queryScalar();
           </thead>
           <tbody>
             <?php
-              foreach ($varListPcrcs as $key => $value) {
+              foreach ($varListfuncionPcrcs as $key => $value) {
                 $varNombrePcrc = (new \yii\db\Query())
                     ->select(['name'])
                     ->from(['tbl_arbols'])
