@@ -229,10 +229,20 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-4">
                     <div class="card1 mb">
-                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Formularios que No Guarden Pcrc') ?></label>
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Formularios, No Guardar Pcrc') ?></label>
                         <?= Html::a('Aceptar',  ['parametrizarpcrc'], ['class' => 'btn btn-primary',                                        
                                         'data-toggle' => 'tooltip',
-                                        'title' => 'Agregar Formularios Sin Pcrc']) 
+                                        'title' => 'Agregar Formularios, Sin Pcrc']) 
+                        ?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Formularios, Agregar No Apica') ?></label>
+                        <?= Html::a('Aceptar',  ['parametrizarfuncionapcrc'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Agregar Formularios, Agregar N/A']) 
                         ?>
                     </div>
                 </div>

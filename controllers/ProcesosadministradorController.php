@@ -39,7 +39,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc','parametrizarfuncionapcrc'],
             'rules' => [
               [
                 'allow' => true,
@@ -843,6 +843,7 @@ use \yii\base\Exception;
         $varListPcrcs = (new \yii\db\Query())
                                     ->select(['*'])
                                     ->from(['tbl_control_formularios'])
+                                    ->where(['=','funciona',1])
                                     ->orderBy(['fecha_creacion' => SORT_DESC])
                                     ->all(); 
 
@@ -857,6 +858,7 @@ use \yii\base\Exception;
                     'fecha_creacion' => date("Y-m-d"),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,
+                    'funciona' => 1,
             ])->execute();
 
             return $this->redirect(['parametrizarpcrc']);
@@ -879,6 +881,39 @@ use \yii\base\Exception;
             ->execute();
 
         return $this->redirect(['parametrizarpcrc']);
+    }
+
+    public function actionParametrizarfuncionapcrc(){
+        $model = new ControlParams();
+
+        $varListfuncionPcrcs = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_control_formularios'])
+                                    ->where(['=','funciona',2])
+                                    ->orderBy(['fecha_creacion' => SORT_DESC])
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varidArbol = $model->arbol_id;
+            $varComentarios = $model->argumentos;
+
+            Yii::$app->db->createCommand()->insert('tbl_control_formularios',[
+                    'arbol_id' => $varidArbol,
+                    'comentarios' => $varComentarios,
+                    'fecha_creacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'funciona' => 2,
+            ])->execute();
+
+            return $this->redirect(['parametrizarfuncionapcrc']);
+        }
+
+        return $this->render('parametrizarfuncionapcrc',[
+            'varListfuncionPcrcs' => $varListfuncionPcrcs,
+            'model' => $model,
+        ]);
     }
     
 
