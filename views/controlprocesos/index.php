@@ -456,7 +456,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-12">
                 <div class="card1 mb">
                     <label><em class="fas fa-info-circle" style="font-size: 20px; color: #2CA5FF;"></em> <?= Yii::t('app', 'Información') ?> </label>
-                    <label><?= Yii::t('app', 'Usuario sin permisos a realizar alguna acción, por favor comunicarse con el adminitrador de la herramienta CXM.') ?> </label>
+                    <label><?= Yii::t('app', 'Usuario sin permisos a realizar alguna acción, por favor comunicarse con el administrador de la herramienta CXM.') ?> </label>
 
                 </div>
             </div>

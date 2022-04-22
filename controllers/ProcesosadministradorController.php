@@ -870,7 +870,7 @@ use \yii\base\Exception;
         ]);
     }
 
-    public function actionDeletepcrcscontrol($id){
+    public function actionDeletepcrcscontrol($id,$valor){
         $paramsEliminar = [':IdControl'=>$id];          
 
         Yii::$app->db->createCommand('
@@ -880,7 +880,11 @@ use \yii\base\Exception;
             ->bindValues($paramsEliminar)
             ->execute();
 
-        return $this->redirect(['parametrizarpcrc']);
+        if ($valor == 1) {
+            return $this->redirect(['parametrizarpcrc']);
+        }else{
+            return $this->redirect(['parametrizarfuncionapcrc']);
+        }
     }
 
     public function actionParametrizarfuncionapcrc(){

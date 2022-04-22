@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\db\Query;
 
-$this->title = 'Procesos Administrador - Parametrizar Formularios, Agregar No Apica en Valoraciones';
+$this->title = 'Procesos Administrador - Parametrizar Formularios, Agregar No Aplica en Valoraciones';
 $this->params['breadcrumbs'][] = $this->title;
 
 $sesiones =Yii::$app->user->identity->id;   
@@ -126,7 +126,7 @@ $roles = $command->queryScalar();
   <div class="row">
     <div class="col-md-6">
       <div class="card1 mb" style="background: #6b97b1; ">
-        <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones Formulario, Agregar No Apica en Valoraciones"; ?> </label>
+        <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones Formulario, Agregar No Aplica en Valoraciones"; ?> </label>
       </div>
     </div>
   </div>
@@ -224,7 +224,7 @@ $roles = $command->queryScalar();
                 <td class="text-center"><label style="font-size: 12px;"><?php echo  $varNombrePcrc; ?></label></td>
                 <td class="text-center"><label style="font-size: 12px;"><?php echo  $varComentarios; ?></label></td>
                 <td class="text-center">
-                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletepcrcscontrol','id'=> $value['idcontrol_formularios']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletepcrcscontrol','id'=> $value['idcontrol_formularios'],'valor'=>2], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                 </td>
               </tr>
             <?php

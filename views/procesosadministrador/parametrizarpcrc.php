@@ -224,7 +224,7 @@ $roles = $command->queryScalar();
                 <td class="text-center"><label style="font-size: 12px;"><?php echo  $varNombrePcrc; ?></label></td>
                 <td class="text-center"><label style="font-size: 12px;"><?php echo  $varComentarios; ?></label></td>
                 <td class="text-center">
-                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletepcrcscontrol','id'=> $value['idcontrol_formularios']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletepcrcscontrol','id'=> $value['idcontrol_formularios'],'valor'=>1], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                 </td>
               </tr>
             <?php
