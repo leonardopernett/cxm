@@ -19,8 +19,15 @@ $varVerificaPcrc = (new \yii\db\Query())
                                     ->select(['*'])
                                     ->from(['tbl_control_formularios'])
                                     ->where(['=','arbol_id',$varPcrc])
+                                    ->andwhere(['=','funciona',1])
                                     ->count(); 
 
+$varFuncionaPcrc = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_control_formularios'])
+                                    ->where(['=','arbol_id',$varPcrc])
+                                    ->andwhere(['=','funciona',2])
+                                    ->count();
 ?>
 
 
@@ -834,7 +841,31 @@ $contadorSecciones = 0;
                                     class="form-control toggleTipificacion droplabel" 
                                     data-id-detalle="<?php echo $detalle->id ?>" 
                                     id="calificacion_<?php echo $detalle->id ?>">
-                                    <option value=""></option>
+
+                                    <?php if ($varFuncionaPcrc != "0") { ?>
+
+                                        <?php 
+                                            foreach ($data->calificaciones[$detalle->calificacion_id] as $key => $value) {
+
+                                                $varidscalificacion = $value['id'];
+                                                $varnamecalificacion = $value['name'];
+                                                
+                                                if ($varnamecalificacion == 'NA' || $varnamecalificacion == '1' || $varnamecalificacion == 'NO'  || $varnamecalificacion == '0') {
+                                                
+                                        ?>
+                                                <option value="<?php echo $varidscalificacion ?>" ><?php echo $varnamecalificacion; ?></option>
+                                        <?php
+                                                }
+                                            }
+                                        ?>                                        
+
+                                    <?php }else{ ?>
+
+                                        <option value=""></option>
+
+                                    <?php } ?>
+
+
                                     <?php if (isset($data->calificaciones[$detalle->calificacion_id])): ?>
                                         <?php foreach ($data->calificaciones[$detalle->calificacion_id] as $id => $c): ?>
                                             <?php $selected = ($detalle->calificaciondetalle_id == $id) ? 'selected="selected"' : '' ?>
