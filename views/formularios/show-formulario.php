@@ -358,13 +358,38 @@ $contadorSecciones = 0;
                                         <?php endif; ?>
                                     </td>
                                 </tr>
-                                <?php }else{ ?>
-                                    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); $model->id_dp_clientes = $data->idcliente;?>
-                                        <?= $form->field($model, 'id_dp_clientes')->textInput(['class' => 'hidden', 'id' => 'speechparametrizar-id_dp_clientes', 'value'=>'0']) ?>
-                                    <?php ActiveForm::end();?>
-                                    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); $model->cod_pcrc = $data->codpcrc;?>
-                                        <?= $form->field($model, 'cod_pcrc')->textInput(['class' => 'hidden', 'id' => 'requester', 'value'=>'0000']) ?>
-                                    <?php ActiveForm::end();?>
+                                <?php }else{ ?>                                    
+
+                                    <?php if ($data->preview) : 
+                                                $data->IdclienteSel='';?>
+
+                                        <?php $form = ActiveForm::begin(['layout' => 'horizontal']);?>
+                                            <?= $form->field($model, 'id_dp_clientes')->textInput(['class' => 'hidden', 'id' => 'speechparametrizar-id_dp_clientes', 'value'=>'0']) ?>
+                                        <?php ActiveForm::end();?>
+
+                                    <?php else: ?>
+
+                                        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); $model->id_dp_clientes = $data->idcliente;?>
+                                            <?= $form->field($model, 'id_dp_clientes')->textInput(['class' => 'hidden', 'id' => 'speechparametrizar-id_dp_clientes', 'value'=>'0']) ?>
+                                        <?php ActiveForm::end();?>
+
+                                    <?php endif; ?>
+
+                                    <?php if ($data->preview) : 
+                                            $data->codpcrc='';?>
+
+                                        <?php $form = ActiveForm::begin(['layout' => 'horizontal']);?>
+                                            <?= $form->field($model, 'cod_pcrc')->textInput(['class' => 'hidden', 'id' => 'requester', 'value'=>'0000']) ?>
+                                        <?php ActiveForm::end();?>
+
+                                    <?php else: ?>
+                                        
+                                        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); $model->cod_pcrc = $data->codpcrc;?>
+                                            <?= $form->field($model, 'cod_pcrc')->textInput(['class' => 'hidden', 'id' => 'requester', 'value'=>'0000']) ?>
+                                        <?php ActiveForm::end();?>
+
+                                    <?php endif; ?>
+                                    
                                 <?php } ?>
                                 
                             <tr>
@@ -850,7 +875,7 @@ $contadorSecciones = 0;
                                                 $varidscalificacion = $value['id'];
                                                 $varnamecalificacion = $value['name'];
                                                 
-                                                if ($varnamecalificacion == 'NA' || $varnamecalificacion == 'No Aplica' || $varnamecalificacion == 'NO APLICA' || $varnamecalificacion == '1' || $varnamecalificacion == 'NO'  || $varnamecalificacion == '0') {
+                                                if ($varnamecalificacion == 'NA' || $varnamecalificacion == 'No Aplica' || $varnamecalificacion == 'NO APLICA') {
                                                 
                                         ?>
                                                 <option value="<?php echo $varidscalificacion ?>" ><?php echo $varnamecalificacion; ?></option>
