@@ -120,7 +120,7 @@ $this->title = 'Dashboard Voz del Cliente';
     if ($fechaIniCat < '2020-01-01') {
       $txtIdCatagoria1 = 2681;
     }else{
-      if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '485' || $idArbol == '3263' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3410' || $idArbol == '3310' || $idArbol == '3436' || $idArbol == '678' || $idArbol == '2919') {
+      if ($idArbol == '17' || $idArbol == '8' || $idArbol == '105' || $idArbol == '2575' || $idArbol == '485' || $idArbol == '3263' || $idArbol == '1371' || $idArbol == '2253' || $idArbol == '675' || $idArbol == '3070' ||  $idArbol == '3071' ||  $idArbol == '3077' || $idArbol == '3069' || $idArbol == '3110' || $idArbol == '2919' || $idArbol == '3350' || $idArbol == '3110' || $idArbol == '3410' || $idArbol == '3310' || $idArbol == '3436' || $idArbol == '678' || $idArbol == '2919' || $idArbol == '679') {
         $txtIdCatagoria1 = 1105;
       }else{
         $txtIdCatagoria1 = 1114;
