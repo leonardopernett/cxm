@@ -4662,6 +4662,7 @@ public function actionCantidadentto(){
       $varidconnid = Yii::$app->request->get('idconnid');
       $varResultado = null;
       $varvalencia = null;
+      $varextensionnum = 0;
 
       if ($varidredbox != "" && $varidgrabadora != "") {
         ob_start();
@@ -4757,6 +4758,7 @@ public function actionCantidadentto(){
         'varResultado' => $varResultado,
         'vartexto' => $vartexto,
         'varvalencia' => $varvalencia,
+        'varextensionnum' => $varextensionnum,
         ]);
     }
 
