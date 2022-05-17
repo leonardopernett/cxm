@@ -598,7 +598,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Regla de Negocios'),
                                                     'url' => ['/reglanegocio/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Informe aleatoriedad'),
