@@ -588,7 +588,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;M&oacute;dulo Parametrizaci&oacute;n'),
                                                     'url' => ['/parametrizacion-encuesta/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Errores Satu'),
@@ -603,7 +603,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Informe aleatoriedad'),
                                                     'url' => ['/informeinboxaleatorio/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
                                         '</div>',
 
