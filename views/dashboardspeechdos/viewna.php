@@ -15,30 +15,23 @@ $this->registerJs(
         });    
 });"
 );
+//  Aqui se genera un cambio con el nuevo Escucha Focalizada
 ?>
 
 <?php
 Modal::begin([
     'header' => Yii::t('app', ''),
     'id' => 'modal',
-    'size' => Modal::SIZE_LARGE,
+    // 'size' => Modal::SIZE_LARGE,
     'clientOptions' => [
         'show' => true,
     ],
 ]);
 ?>
-<div class="dashboardspeech-viewcallstwo">    
+<div class="dashboardspeech-viewnatwo">    
 
     <?=
-    $this->render('viewcallstwo',[
-        'varidlogin' => $varidlogin,
-        'varidredbox' => $varidredbox,
-        'varidgrabadora' => $varidgrabadora,
-        'varResultado' => $varResultado,
-        'vartexto' => $vartexto,
-        'varvalencia' => $varvalencia,
-        'varextensionnum' => $varextensionnum,
-        ])
+    $this->render('viewnatwo')
     ?>
 
 </div>

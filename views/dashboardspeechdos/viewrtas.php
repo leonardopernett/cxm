@@ -21,6 +21,7 @@ $this->registerJs(
 Modal::begin([
     'header' => Yii::t('app', ''),
     'id' => 'modal',
+    'size' => Modal::SIZE_LARGE,
     'clientOptions' => [
         'show' => true,
     ],
@@ -30,17 +31,20 @@ Modal::begin([
 
     <?=
     $this->render('viewrtastwo',[
-        'resultadosIDA' => $resultadosIDA,
-        'countpositivas' => $countpositivas,
-        'countnegativas' => $countnegativas,
-        'countpositicasc' => $countpositicasc,
-        'countnegativasc' => $countnegativasc,
-        'totalvariables' => $totalvariables,
-        'txtejecucion' => $txtejecucion,
-        'txtpromediorta' => $txtpromediorta,
-        'txtvarcallid' => $txtvarcallid,
-        'txtvarhoras' => $txtvarhoras,
-        'txtusuarios' => $txtusuarios,
+        'varResultadosIDA' => $varResultadosIDA,
+        'varScoreValoracion' => $varScoreValoracion,
+        'varPromedioScore' => $varPromedioScore,
+        'varfechareal' => $varfechareal,
+        'varLoginId' => $varLoginId,
+        'varencuestaid' => $varencuestaid,
+        'varbuzones' => $varbuzones,
+        'varExtensiones' => $varExtensiones,
+        'varConnids' => $varConnids,
+        'varCallid' => $varCallid,
+        'varNombreAsesor' => $varNombreAsesor,
+        'varNombreLider' => $varNombreLider,
+        'vartexto' => $vartexto,
+        'varvalencia' => $varvalencia,
         ])
     ?>
 

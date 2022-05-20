@@ -36,7 +36,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes'],
+            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','llamadafocalizada'],
             'rules' => [
               [
                 'allow' => true,
@@ -4660,15 +4660,23 @@ public function actionCantidadentto(){
       $varidredbox = Yii::$app->request->get('idredbox');  
       $varidgrabadora = Yii::$app->request->get('idgrabadora');
       $varidconnid = Yii::$app->request->get('idconnid');
+
+      $varidcallids = Yii::$app->request->get('idcallids');
+      $varvarfechareal = Yii::$app->request->get('varfechareal');
+      $varvarcategolias = Yii::$app->request->get('varcategolias');      
+
       $varResultado = null;
+      $vartexto = $varidconnid;
       $varvalencia = null;
-      $varextensionnum = 0;
+
+      $varConexionLlamadas = 0;
+      $varUrlConexionLlamadas = null;
 
       if ($varidredbox != "" && $varidgrabadora != "") {
         ob_start();
         $curl = curl_init();
         curl_setopt_array($curl, array(
-          CURLOPT_URL => WS_REDBOX,
+          CURLOPT_URL => 'http://172.20.212.12/ASULWSRedboxReproducirAudio/ASULWSREDBOXReproducirAudioPantalla.asmx',
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
@@ -4701,7 +4709,7 @@ public function actionCantidadentto(){
 
       }else{
         $varidredbox = 0;
-        $varidgrabadora = 0;
+        $varidgrabadora = 0;        
       }
 
       if ($varidconnid != null) {
@@ -4712,7 +4720,7 @@ public function actionCantidadentto(){
         curl_setopt_array($curl, array(
           CURLOPT_SSL_VERIFYPEER=> false,
           CURLOPT_SSL_VERIFYHOST => false,
-          CURLOPT_URL => KALIOPE_STATUS_BY_CONNID,
+          CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
@@ -4733,23 +4741,37 @@ public function actionCantidadentto(){
         ob_clean();
 
         if (!$response) {
+          // die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
           $vartexto = "Error al buscar transcipcion";
           $varvalencia = "Error al buscar valencia emocioanl";
-        }else{
-          $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
-
-          if (count($response) == 0) {
-            $vartexto = "Transcripcion no encontrada";
-            $varvalencia = "Valencia emocional no encontrada";
-          }else{
-            $vartexto = $response[0]['transcription'];
-            $varvalencia = $response[0]['valencia'];
-          }
         }
+
+        $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+        if (count($response) == 0) {
+          // die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+          $vartexto = "Transcripcion no encontrada";
+          $varvalencia = "Valencia emocional no encontrada";
+        }else{
+          $vartexto = $response[0]['transcription'];
+          $varvalencia = $response[0]['valencia'];
+        }
+
       }else{
         $vartexto = "No aplica";
         $varvalencia = "No aplica";
       }      
+
+      $paramsBusquedaExtension = [':varCallid' => $varidcallids, ':varFecha' => $varvarfechareal, ':varCategoria' => $varvarcategolias, ':varAnulado' => 0];
+
+      $varextensionnum = Yii::$app->db->createCommand('
+        SELECT d.extensiones FROM tbl_dashboardspeechcalls d
+          WHERE d.anulado = :varAnulado 
+            AND d.callId = :varCallid
+              AND d.fechareal = :varFecha 
+                AND d.idcategoria = :varCategoria
+          GROUP BY d.extensiones
+      ')->bindValues($paramsBusquedaExtension)->queryScalar();     
 
       return $this->renderAjax('viewcalls',[
         'varidlogin' => $varidlogin,
@@ -4760,6 +4782,11 @@ public function actionCantidadentto(){
         'varvalencia' => $varvalencia,
         'varextensionnum' => $varextensionnum,
         ]);
+    }
+
+    public function actionViewna(){
+
+      return $this->renderAjax('viewna');
     }
 
     public function actionClonarextension(){
@@ -5288,25 +5315,41 @@ public function actionCantidadentto(){
                 echo \yii\helpers\Json::encode($out);
     }
 
-    public function actionValoraspeech($idspeechcalls,$varcodpcrc,$varservisioname){
+    public function actionValoraspeech($varloginid,$varinteraccion,$varfechasreals,$varcodpcrc,$varservisioname){
+      // Aqui se genera un cambio con el nuevo Escucha Focalizada
       $modelA = new \app\models\Arboles();
       $modelD = new \app\models\Dimensiones();
       $modelE = new \app\models\Evaluados;
-      $txtidspeechcalls = $idspeechcalls;
-      $txtvarcodpcrc = $varcodpcrc;
+
+      $paramBuscarPcrc = [':varPcrcs'=>$varcodpcrc];
+      
       $txtvarservisioname = $varservisioname;
       $vardocumento = null;
 
+      $txtvarcodpcrc = Yii::$app->db->createCommand('
+        SELECT CONCAT(sc.cod_pcrc," - ",sc.nombre) AS nombre FROM tbl_speech_categorias sc
+          WHERE 
+            sc.cod_pcrc IN (:varPcrcs)
+          GROUP BY sc.cod_pcrc')->bindValues($paramBuscarPcrc)->queryScalar();
 
-      $txtLoginId = Yii::$app->db->createCommand("SELECT DISTINCT d.login_id FROM tbl_dashboardspeechcalls d  WHERE  d.iddashboardspeechcalls in ('$txtidspeechcalls')")->queryScalar();
-
+      $txtLoginId = $varloginid;
+      $paramsBuscarLogin = [':varLoginID'=>$varloginid];
       $varcomprobacion = is_numeric($txtLoginId);
 
       if ($varcomprobacion == false) {
-        $varlistjarvis = Yii::$app->get('dbjarvis2')->createCommand("SELECT ur.documento FROM dp_usuarios_red ur WHERE ur.usuario_red like '$txtLoginId'")->queryScalar();
+        $varlistjarvis = Yii::$app->get('dbjarvis2')->createCommand('
+          SELECT ur.documento FROM dp_usuarios_red ur 
+            WHERE 
+              ur.usuario_red IN (:varLoginID)')->bindValues($paramsBuscarLogin)->queryScalar();
 
         if ($varlistjarvis == "") {
-          $vardocumento = Yii::$app->get('dbjarvis2')->createCommand("SELECT ur.documento FROM dp_usuarios_red ur INNER JOIN dp_usuarios_actualizacion ua ON  ur.documento = ua.documento  WHERE ua.usuario LIKE  '$txtLoginId' GROUP  BY  ua.usuario")->queryScalar();
+          $vardocumento = Yii::$app->get('dbjarvis2')->createCommand('
+            SELECT ur.documento FROM dp_usuarios_red ur 
+              INNER JOIN dp_usuarios_actualizacion ua ON  
+                ur.documento = ua.documento  
+              WHERE 
+                ua.usuario IN (:varLoginID) 
+              GROUP  BY  ua.usuario')->bindValues($paramsBuscarLogin)->queryScalar();
         }else{
           $vardocumento = $varlistjarvis;
         }
@@ -5315,24 +5358,25 @@ public function actionCantidadentto(){
         $vardocumento = $txtLoginId;
       }
 
-      $txtEvaluado = Yii::$app->db->createCommand("SELECT DISTINCT e.name FROM tbl_evaluados e  WHERE  e.identificacion in ('$vardocumento')")->queryScalar();
+      $paramsBuscaDocumento = [':varDocumentos'=>$vardocumento];
 
-      $txtEvaluadoid = Yii::$app->db->createCommand("SELECT DISTINCT e.id FROM tbl_evaluados e  WHERE  e.identificacion in ('$vardocumento')")->queryScalar();
+      $txtEvaluado = Yii::$app->db->createCommand('
+        SELECT DISTINCT e.name FROM tbl_evaluados e  
+          WHERE  e.identificacion IN (:varDocumentos)')->bindValues($paramsBuscaDocumento)->queryScalar();
 
-      $txtConjuntoSpeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$txtidspeechcalls')")->queryScalar();
+      $txtEvaluadoid = Yii::$app->db->createCommand('
+          SELECT DISTINCT e.id FROM tbl_evaluados e  
+            WHERE  e.identificacion IN (:varDocumentos)')->bindValues($paramsBuscaDocumento)->queryScalar();
 
-      $txtconnids = Yii::$app->db->createCommand("SELECT DISTINCT d.connid FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$txtidspeechcalls')")->queryScalar();
-      
+      $txtConjuntoSpeech = $varinteraccion.'; '.$varfechasreals;
 
       return $this->render('valoraspeech',[
-        'txtidspeechcalls' => $txtidspeechcalls,
         'modelA' => $modelA,
         'modelD' => $modelD,
         'modelE' => $modelE,
         'txtEvaluado' => $txtEvaluado,
         'txtConjuntoSpeech' => $txtConjuntoSpeech,
         'txtEvaluadoid' => $txtEvaluadoid,
-        'txtconnids' => $txtconnids,
         'txtvarcodpcrc' => $txtvarcodpcrc,
         'txtvarservisioname' => $txtvarservisioname,
       ]);
@@ -5987,77 +6031,510 @@ public function actionCantidadentto(){
       die(json_encode($varrtas));
     }
 
-    public function actionViewrtas($idspeechcalls,$varcodpcrc){
+    public function actionViewrtas($idspeechcalls,$varcodpcrc,$idvarfechareal,$idvarloginid,$idvarconnid,$idvarextensiones){
+      // Aqui se genera un cambio con el nuevo Escucha Focalizada
       $varcod_pcrc = $varcodpcrc;
-      $varidspeechcalls = $idspeechcalls;
+      $varCallid = $idspeechcalls;
+      $varfechareal = $idvarfechareal;
+      $varLoginId = $idvarloginid;
+      $varConnids = $idvarconnid;
+      $varExtensiones = $idvarextensiones;
+      $varencuestaid = null;
+      $varbuzones = null;
+      $vartexto = null;
+      $varvalencia = null;
+      $varNA = "No Aplica";
 
-      $varCallid = Yii::$app->db->createCommand("SELECT d.callId FROM tbl_dashboardspeechcalls d WHERE d.anulado = 0 AND d.iddashboardspeechcalls = $varidspeechcalls")->queryScalar();
+      $paramsAsesor = [':varAsesores'=>$varLoginId];
+      $varNombreAsesor = Yii::$app->db->createCommand('
+        SELECT e.name FROM tbl_evaluados e 
+          WHERE 
+            e.dsusuario_red IN (:varAsesores)')->bindValues($paramsAsesor)->queryScalar();
 
-      $varlistvariables = Yii::$app->db->createCommand("SELECT sc.idcategoria, sc.orientacionsmart, sc.programacategoria FROM tbl_speech_categorias sc  WHERE sc.anulado = 0 AND sc.cod_pcrc IN ('$varcod_pcrc') AND sc.idcategorias in (2) AND sc.responsable IN (1)")->queryAll();
+      $varNombreLider = Yii::$app->db->createCommand('
+        SELECT u.usua_nombre FROM tbl_usuarios u
+          INNER JOIN tbl_equipos eq ON 
+            u.usua_id = eq.usua_id
+          INNER JOIN tbl_equipos_evaluados ev ON 
+            eq.id = ev.equipo_id
+          INNER JOIN tbl_evaluados e ON 
+            ev.evaluado_id = e.id
+          WHERE 
+            e.dsusuario_red IN (:varAsesores)')->bindValues($paramsAsesor)->queryScalar();
 
-      $countpositivas = 0;
-      $countnegativas = 0;
-      $countpositicasc = 0;
-      $countnegativasc = 0;
+      $paramsCategorias = [':varPcrc'=>$varcod_pcrc,':varCategoria'=>2,':varResponsabilidad'=>1];
 
-      foreach ($varlistvariables as $key => $value) {
+      $varListCategorias = Yii::$app->db->createCommand('
+        SELECT idcategoria, orientacionsmart, responsable, programacategoria FROM tbl_speech_categorias 
+          WHERE 
+            cod_pcrc IN (:varPcrc)
+              AND idcategorias IN (:varCategoria)
+                AND responsable IN (:varResponsabilidad)')->bindValues($paramsCategorias)->queryAll();
+
+      $varResultadosIDA = 0;
+      $varContarNegativas = 0;
+      $varTotalNegativas = 0;
+      $varConteoNegativas = 0;
+      $varTotalPositivas = 0;
+      $varConteoPositivas = 0;
+      foreach ($varListCategorias as $key => $value) {
         $varorientaciones = $value['orientacionsmart'];
-        $varidcategoriav = $value['idcategoria'];
-        $varcategoriap = $value['programacategoria'];
+
+        $paramsBuscarCategorias = [':varIdCategoria'=>$value['idcategoria'],':varProgramaCategoria'=>$value['programacategoria'],':varAnulado'=>0,':varCallid'=>$varCallid];
 
         if ($varorientaciones == '2') {
-          $countnegativas = $countnegativas + 1;
-          $contarnegativas = Yii::$app->db->createCommand("SELECT COUNT(s.idvariable) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$varcategoriap') AND s.callid IN ($varCallid) AND s.idvariable IN ($varidcategoriav)")->queryScalar();
 
-          if ($contarnegativas == '1') {
-            $countnegativasc = $countnegativasc + 1;
+          $varContarNegativas += 1;
+          $varTotalNegativas = Yii::$app->db->createCommand('
+            SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
+              WHERE
+                sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
+                  AND sg.programacliente IN (:varProgramaCategoria)
+                    AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
+
+          if ($varTotalNegativas == 1) {
+            $varConteoNegativas += 1;
           }
-        }else{
-          if ($varorientaciones == '1') {
-            $countpositivas = $countpositivas + 1;
-            $contarpositivas = Yii::$app->db->createCommand("SELECT COUNT(s.idvariable) FROM tbl_speech_general s WHERE s.anulado = 0 AND s.programacliente in ('$varcategoriap') AND s.callid IN ($varCallid) AND s.idvariable IN ($varidcategoriav)")->queryScalar();
 
-            if ($contarpositivas == '1') {
-              $countpositicasc = $countpositicasc + 1;
-            }
+        }else{
+
+          $varTotalPositivas = Yii::$app->db->createCommand('
+            SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
+              WHERE
+                sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
+                  AND sg.programacliente IN (:varProgramaCategoria)
+                    AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
+
+          if ($varTotalPositivas == 1) {
+            $varConteoPositivas += 1;
           }
         }
       }
 
-      $totalvariables = count($varlistvariables);
-      if ($varlistvariables != 0 && $countnegativasc != 0) {
-        $resultadosIDA = round((($countpositicasc + ($countnegativas - $countnegativasc)) / count($varlistvariables)),2);
+      if (count($varListCategorias) != 0 && $varConteoNegativas != 0) {
+        $varResultadosIDA = round(((($varConteoPositivas + ($varContarNegativas - $varConteoNegativas)) / count($varListCategorias)) * 100),2);
       }else{
-        $resultadosIDA = 0;
+        $varResultadosIDA = 0;
       }
+
+
+      $varScore = (new \yii\db\Query())
+          ->select(['if(tbl_ejecucionformularios.score != "",ROUND(tbl_ejecucionformularios.score,2),0)'])
+          ->from(['tbl_ejecucionformularios'])
+          ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                    'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+          ->where('tbl_speech_mixta.callId IN (:varCallids)',[':varCallids'=>$varCallid])
+          ->andwhere('tbl_speech_mixta.fechareal IN (:varFechareals)',[':varFechareals'=>$varfechareal])
+          ->andwhere('tbl_speech_mixta.anulado = :varAnulado',[':varAnulado'=>0])
+          ->scalar();
+
       
-
-      $concatenarspeech = Yii::$app->db->createCommand("SELECT DISTINCT CONCAT(d.callId,'; ',d.fechareal) FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeechcalls')")->queryScalar();
-      $txtejecucion = Yii::$app->db->createCommand("SELECT DISTINCT round(te.score,2) FROM tbl_ejecucionformularios te WHERE te.dsfuente_encuesta = '$concatenarspeech'")->queryScalar();
-      if ($txtejecucion == '') {
-        $txtejecucion = '--';
-        $txtpromediorta = $resultadosIDA;
+      if ($varScore) {
+        $varScoreValoracion = $varScore;
       }else{
-        $txtpromediorta = round(($resultadosIDA + $txtejecucion) / 2,2);
-      }      
+        $varScoreValoracion = "--";
+      }
+                                
+      if ($varScoreValoracion != 0) {
+        $varPromedioScore = round(((($varResultadosIDA + $varScoreValoracion) / 2) * 100),2);
+      }else{
+        $varPromedioScore = $varResultadosIDA;
+      }
 
-      $txtvarcallid = Yii::$app->db->createCommand("SELECT DISTINCT d.callId FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeechcalls')")->queryScalar();
-      $txtvarhoras = Yii::$app->db->createCommand("SELECT DISTINCT d.fechareal FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeechcalls')")->queryScalar();
-      $txtusuarios = Yii::$app->db->createCommand("SELECT DISTINCT d.login_id FROM  tbl_dashboardspeechcalls d WHERE d.iddashboardspeechcalls in ('$varidspeechcalls')")->queryScalar();
+      if ($varConnids != "--") {
+        $paramsBusquedaConnid = [':varConnid' => $varConnids];
+
+        $varencuestaid = Yii::$app->db->createCommand('
+          SELECT b.id FROM tbl_base_satisfaccion b 
+            WHERE 
+              b.connid = :varConnid
+        ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+        $varbuzones = Yii::$app->db->createCommand('
+          SELECT b.buzon FROM tbl_base_satisfaccion b 
+            WHERE 
+              b.connid = :varConnid
+        ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+        $varidconnid = Yii::$app->db->createCommand('
+          SELECT b.connid FROM tbl_base_satisfaccion b 
+            WHERE 
+              b.connid = :varConnid
+        ')->bindValues($paramsBusquedaConnid)->queryScalar();
+
+        ob_start();
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_SSL_VERIFYPEER=> false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS =>'{"connid": "'.$varidconnid.'"}',
+          CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        var_dump($response);
+
+        curl_close($curl);
+        ob_clean();
+
+        $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+        if (empty($response)) {          
+          $vartexto = "Transcripcion no encontrada";
+          $varvalencia = "Valencia emocional no encontrada";
+        }else{
+          $vartexto = $response[0]['transcription'];
+          $varvalencia = $response[0]['valencia'];
+        }
+
+      }else{
+        $varencuestaid = "Sin id Encuesta";
+        $varbuzones = $varNA;
+        $vartexto = $varNA;
+        $varvalencia = $varNA;
+      }
 
       return $this->renderAjax('viewrtas',[
-        'resultadosIDA' => $resultadosIDA,
-        'countpositivas' => $countpositivas,
-        'countnegativas' => $countnegativas,
-        'countpositicasc' => $countpositicasc,
-        'countnegativasc' => $countnegativasc,
-        'totalvariables' => $totalvariables,
-        'txtejecucion' => $txtejecucion,
-        'txtpromediorta' => $txtpromediorta,
-        'txtvarcallid' => $txtvarcallid,
-        'txtvarhoras' => $txtvarhoras,
-        'txtusuarios' => $txtusuarios,
+        'varResultadosIDA' => $varResultadosIDA,
+        'varScoreValoracion' => $varScoreValoracion,
+        'varPromedioScore' => $varPromedioScore,
+        'varfechareal' => $varfechareal,
+        'varLoginId' => $varLoginId,
+        'varencuestaid' => $varencuestaid,
+        'varbuzones' => $varbuzones,
+        'varExtensiones' => $varExtensiones,
+        'varConnids' => $varConnids,
+        'varCallid' => $varCallid,
+        'varNombreAsesor' => $varNombreAsesor,
+        'varNombreLider' => $varNombreLider,
+        'vartexto' => $vartexto,
+        'varvalencia' => $varvalencia,
       ]);
+    }
+
+    public function actionLlamadafocalizada($varprograma,$varcodigopcrc,$varidcategoria,$varextension,$varfechasinicio,$varfechasfin,$vartcantllamadas,$varfechainireal,$varfechafinreal,$varcodigos,$varaleatorios){
+
+      $model = new Dashboardspeechcalls();
+      $paramsvarcodigopcrc = $varcodigopcrc;
+      $paramsvarextension = $varextension;
+      $paramsvarfechasinicio = $varfechasinicio;
+      $paramsvarfechasfin = $varfechasfin;
+      $varcantllamadas = $vartcantllamadas;
+      $varAnulados = 0;
+
+      $datafechas = $varfechainireal.' - '.$varfechafinreal;
+
+      $paramsBuscarCategoriaGeneral = [':varPcrc' => $paramsvarcodigopcrc];
+
+      $arrayExt = str_replace(array("#", "'", ";", " "), '', $paramsvarextension);
+      $arrayExtTwo = explode(",", $arrayExt);
+      
+      $dataidllamada = Yii::$app->db->createCommand('
+        SELECT ss.idllamada FROM tbl_speech_servicios ss
+          INNER JOIN tbl_speech_parametrizar sp ON 
+            ss.id_dp_clientes = sp.id_dp_clientes
+          WHERE 
+            sp.cod_pcrc IN (:varPcrc)
+          GROUP BY sp.cod_pcrc')->bindValues($paramsBuscarCategoriaGeneral)->queryScalar();
+      $dataidgeneral = intval($dataidllamada);
+
+      $datanamearbol = Yii::$app->db->createCommand('
+        SELECT ss.nameArbol FROM tbl_speech_servicios ss
+          INNER JOIN tbl_speech_parametrizar sp ON 
+            ss.id_dp_clientes = sp.id_dp_clientes
+          WHERE 
+            sp.cod_pcrc IN (:varPcrc)
+          GROUP BY sp.cod_pcrc')->bindValues($paramsBuscarCategoriaGeneral)->queryScalar();
+
+      $dataprograma = Yii::$app->db->createCommand('
+        SELECT CONCAT(sc.cod_pcrc," - ",sc.pcrc) AS Programa FROM tbl_speech_categorias sc
+          WHERE 
+            sc.cod_pcrc IN (:varPcrc)
+          GROUP BY sc.cod_pcrc')->bindValues($paramsBuscarCategoriaGeneral)->queryScalar();
+
+      $databolsita = Yii::$app->db->createCommand('
+        SELECT sc.programacategoria AS Programa FROM tbl_speech_categorias sc
+          WHERE 
+            sc.cod_pcrc IN (:varPcrc)
+          GROUP BY sc.cod_pcrc')->bindValues($paramsBuscarCategoriaGeneral)->queryScalar();
+
+      $cantidadAleatoria = Yii::$app->db->createCommand('
+          SELECT sa.cantidad FROM tbl_speech_aleatoridad sa
+            WHERE
+              sa.cod_pcrc IN (:varPcrc)')->bindValues($paramsBuscarCategoriaGeneral)->queryScalar();
+      $cantidadAleatoria = intval($cantidadAleatoria);
+
+
+      $form = Yii::$app->request->post();
+      if ($model->load($form)) {
+        $varindicadores = [':varIndicadores' => $model->idcategoria];
+        $dataIndicador = Yii::$app->db->createCommand('
+          SELECT sc.idcategoria FROM tbl_speech_categorias sc
+            WHERE 
+              sc.idspeechcategoria = :varIndicadores')->bindValues($varindicadores)->queryScalar();
+        $dataVariable = $model->nombreCategoria;
+        $dataMotivo = $model->extension;
+        $dataContenedor = $model->login_id;
+        $dataLider = $model->servicio;
+        $dataAsesor = $model->fechallamada;
+        $dataTipologia = $model->idredbox;
+
+        $arrayIdCategorias = null;
+        $dataCategorias = null;
+        $dataAsesores = null;
+        $dataIdInteraccion = null;
+        
+        // Genero consultas para obtener las categorias
+        if ($dataIndicador != null && $dataVariable == null && $dataMotivo == null) {
+
+          $paramsbuscarvariables = [':varIndicador' => $dataIndicador, ':varCodPcrcs' => $paramsvarcodigopcrc];
+          $listaVariables = Yii::$app->db->createCommand('
+          SELECT scc.idcategoria FROM tbl_speech_categorias scc
+            INNER JOIN tbl_speech_categorias sc ON 
+              scc.tipoindicador = sc.nombre
+            WHERE 
+              sc.idcategoria = :varIndicador
+                AND scc.cod_pcrc IN (:varCodPcrcs)
+            GROUP BY scc.idcategoria')->bindValues($paramsbuscarvariables)->queryAll();
+
+          $arralistvariables = array();
+          foreach ($listaVariables as $key => $value) {
+            array_push($arralistvariables, intval($value['idcategoria']));
+          }
+          $listavariablesarray = implode(", ", $arralistvariables);
+
+          $arrayIdCategorias = intval($dataIndicador).', '.$listavariablesarray;
+          $dataCategorias = explode(",", str_replace(array("#", "'", ";", " "), '', $arrayIdCategorias));
+
+
+        }
+
+        if ($dataIndicador != null && $dataVariable != null && $dataMotivo == null) {
+          $arrayIdCategorias = intval($dataIndicador).', '.intval($dataVariable);
+          $dataCategorias = explode(",", str_replace(array("#", "'", ";", " "), '', $arrayIdCategorias));
+        }
+
+        if ($dataIndicador != null && $dataVariable != null && $dataMotivo != null) {
+          $arrayIdCategorias = intval($dataIndicador).', '.intval($dataVariable).','.intval($dataMotivo);
+          $dataCategorias = explode(",", str_replace(array("#", "'", ";", " "), '', $arrayIdCategorias));
+        }
+
+        if ($dataIndicador == null && $dataVariable == null && $dataMotivo != null) {
+          $arrayIdCategorias = intval($dataMotivo).', 0';
+          $dataCategorias = explode(",", str_replace(array("#", "'", ";", " "), '', $arrayIdCategorias));
+        }
+
+        if ($dataIndicador != null && $dataVariable == null && $dataMotivo != null) {
+          $paramsbuscarvariables = [':varIndicador' => $dataIndicador, ':varCodPcrcs' => $paramsvarcodigopcrc];
+          $listaVariables = Yii::$app->db->createCommand('
+          SELECT scc.idcategoria FROM tbl_speech_categorias scc
+            INNER JOIN tbl_speech_categorias sc ON 
+              scc.tipoindicador = sc.nombre
+            WHERE 
+              sc.idcategoria = :varIndicador
+                AND scc.cod_pcrc IN (:varCodPcrcs)
+            GROUP BY scc.idcategoria')->bindValues($paramsbuscarvariables)->queryAll();
+
+          $arralistvariables = array();
+          foreach ($listaVariables as $key => $value) {
+            array_push($arralistvariables, intval($value['idcategoria']));
+          }
+          $listavariablesarray = implode(", ", $arralistvariables);
+
+          $arrayIdCategorias = intval($dataIndicador).', '.$listavariablesarray.', '.intval($dataMotivo);
+          $dataCategorias = explode(",", str_replace(array("#", "'", ";", " "), '', $arrayIdCategorias));
+        }
+
+        // Genero consultas para obtener los asesores
+        if ($dataLider != null && $dataAsesor == null) {
+          $paramsBuscaAsesores = [':varIdLider' => $dataLider];
+          $listaAsesores = Yii::$app->db->createCommand('
+            SELECT ev.dsusuario_red FROM tbl_evaluados ev
+              INNER JOIN  tbl_equipos_evaluados ee ON 
+                ev.id = ee.evaluado_id
+              INNER JOIN tbl_equipos e ON
+                ee.equipo_id = e.id
+              WHERE 
+                e.id = :varIdLider')->bindValues($paramsBuscaAsesores)->queryAll();
+
+          $arralistasesores = array();
+          foreach ($listaAsesores as $key => $value) {
+            array_push($arralistasesores, $value['dsusuario_red']);
+          }
+          $listaasesoresarray = implode(", ", $arralistasesores);
+
+          $dataAsesores = explode(",", str_replace(array("#", "'", ";", " "), '', $listaasesoresarray));
+
+        }
+
+        if ($dataLider != null && $dataAsesor != null) {
+          $paramsBuscarAsesor = [':varIdAsesor' => $dataAsesor];
+          $usuaRedAsesor = Yii::$app->db->createCommand('
+            SELECT e.dsusuario_red FROM tbl_evaluados e
+              WHERE 
+                e.id = :varIdAsesor')->bindValues($paramsBuscarAsesor)->queryScalar();
+
+          $concatasesor = $usuaRedAsesor.', 0';
+          $dataAsesores = explode(",", str_replace(array("#", "'", ";", " "), '', $concatasesor));
+        }
+
+        // Genero consulta para obtener callids que tenga tipologias
+        if ($dataTipologia != null) {
+          $listaCallIds = (new \yii\db\Query())
+            ->select(['tbl_dashboardspeechcalls.callId'])
+            ->from(['tbl_base_satisfaccion'])
+            ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                  'tbl_base_satisfaccion.connid = tbl_dashboardspeechcalls.connid')
+            ->where(['=','tbl_dashboardspeechcalls.servicio',$databolsita])
+            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])
+            ->andwhere(['=','tbl_dashboardspeechcalls.anulado',$varAnulados])
+            ->andwhere(['IN','tbl_dashboardspeechcalls.extension',$arrayExtTwo])
+            ->andwhere(['=','tbl_base_satisfaccion.tipologia',$dataTipologia])
+            ->All();
+
+            $arralistacallids = array();
+            foreach ($listaCallIds as $key => $value) {
+              array_push($arralistacallids, $value['callId']);
+            }
+            $listacallaidarray = implode(", ", $arralistacallids);
+            $dataIdInteraccion = explode(",", str_replace(array("#", "'", ";", " "), '', $listacallaidarray));
+        }
+
+        
+        // Condicional para buscar las categorizadas y las que no estan categorizadas
+        if ($dataContenedor == "2") {
+          $dataProvider = (new \yii\db\Query())
+            ->select(['*'])
+            ->from(['tbl_dashboardspeechcalls'])
+            ->where(['=','servicio',$databolsita])
+            ->andwhere(['BETWEEN','fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])
+            ->andfilterwhere(['IN','idcategoria',$dataCategorias])
+            ->andwhere(['=','anulado',$varAnulados])
+            ->andwhere(['IN','extension',$arrayExtTwo])
+            ->andfilterwhere(['IN','login_id',$dataAsesores])
+            ->andfilterwhere(['IN','callId',$dataIdInteraccion])
+            ->All();
+
+        }else{
+
+          $dataProvider = (new \yii\db\Query())
+            ->select(['tbl_dashboardspeechcalls.callId','tbl_dashboardspeechcalls.idcategoria','tbl_dashboardspeechcalls.nombreCategoria','tbl_dashboardspeechcalls.extension','tbl_dashboardspeechcalls.login_id','tbl_dashboardspeechcalls.fechallamada','tbl_dashboardspeechcalls.callduracion','tbl_dashboardspeechcalls.servicio','tbl_dashboardspeechcalls.fechareal','tbl_dashboardspeechcalls.idredbox','tbl_dashboardspeechcalls.idgrabadora','tbl_dashboardspeechcalls.connid','tbl_dashboardspeechcalls.extensiones'])
+            ->from(['tbl_speech_general'])
+            ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                  'tbl_speech_general.callid = tbl_dashboardspeechcalls.callid')
+            ->where(['=','tbl_dashboardspeechcalls.servicio',$databolsita])
+            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])            
+            ->andwhere(['=','tbl_dashboardspeechcalls.anulado',$varAnulados])
+            ->andwhere('tbl_dashboardspeechcalls.idcategoria != :varGeneralCategoria',[':varGeneralCategoria'=>$dataidgeneral])
+            ->andwhere(['IN','tbl_dashboardspeechcalls.extension',$arrayExtTwo])
+            ->andfilterwhere(['IN','tbl_dashboardspeechcalls.login_id',$dataAsesores])
+            ->andfilterwhere(['IN','tbl_speech_general.idvariable',$dataCategorias])
+            ->andfilterwhere(['IN','tbl_speech_general.callId',$dataIdInteraccion])
+            ->andwhere(['=','tbl_speech_general.programacliente',$databolsita])
+            ->andwhere(['IN','tbl_speech_general.extension',$arrayExtTwo])            
+            ->groupBy(['tbl_dashboardspeechcalls.callId'])
+            ->All();
+          
+
+        }
+            
+      }else{
+
+        if ($varaleatorios == "1") {
+
+          $dataProvider = (new \yii\db\Query())
+            ->select(['*'])
+            ->from(['tbl_dashboardspeechcalls'])
+            ->where('servicio = :varServicio',[':varServicio'=>$databolsita])
+            ->andwhere('fechallamada BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>$paramsvarfechasinicio,':varFechafines'=>$paramsvarfechasfin])
+            ->andwhere('idcategoria = :varCategoriGeneral',[':varCategoriGeneral'=>$dataidgeneral])
+            ->andwhere('anulado = :varAnulado',[':varAnulado'=>$varAnulados])
+            ->andwhere(['IN','extension',$arrayExtTwo])
+            ->orderBy(['rand()' => SORT_DESC])
+            ->limit($cantidadAleatoria)
+            ->All();
+
+        }else{
+
+          $dataProvider = (new \yii\db\Query())
+            ->select(['*'])
+            ->from(['tbl_dashboardspeechcalls'])
+            ->where('servicio = :varServicio',[':varServicio'=>$databolsita])
+            ->andwhere('fechallamada BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>$paramsvarfechasinicio,':varFechafines'=>$paramsvarfechasfin])
+            ->andwhere('idcategoria = :varCategoriGeneral',[':varCategoriGeneral'=>$dataidgeneral])
+            ->andwhere('anulado = :varAnulado',[':varAnulado'=>$varAnulados])
+            ->andwhere(['IN','extension',$arrayExtTwo])
+            ->All();
+
+        }   
+        
+      }    
+
+       
+
+      return $this->render('llamadafocalizada',[
+        'model' => $model,
+        'dataProvider' => $dataProvider,
+        'datafechas' => $datafechas,
+        'datanamearbol' => $datanamearbol,
+        'dataprograma' => $dataprograma,
+        'paramsvarfechasinicio' => $paramsvarfechasinicio,
+        'paramsvarfechasfin' => $paramsvarfechasfin,
+        'paramsvarcodigopcrc' => $paramsvarcodigopcrc,
+        'dataidgeneral' => $dataidgeneral,
+        'paramsvarextension' => $paramsvarextension,
+        'varcantllamadas' => $varcantllamadas,
+        'varfechainireal' => $varfechainireal,
+        'varfechafinreal' => $varfechafinreal,
+        'varcodigos' => $varcodigos,
+        'databolsita' => $databolsita,
+        'arrayExt' => $arrayExt,
+      ]);
+    }
+
+    public function actionListarlideresx(){
+      $txtanulado = 0;
+      $txtidlider = Yii::$app->request->get('id');
+
+
+      if ($txtidlider) {
+        $txtControl = \app\models\Evaluados::find()->distinct()
+          ->select(['tbl_evaluados.id','tbl_evaluados.name'])
+          ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                              'tbl_evaluados.id = tbl_equipos_evaluados.evaluado_id')
+          ->where(['tbl_equipos_evaluados.equipo_id' => $txtidlider])
+          ->count();
+
+        if ($txtControl > 0) {
+          $varListaLideresx = \app\models\Evaluados::find()->distinct()
+          ->select(['tbl_evaluados.id','tbl_evaluados.name'])
+          ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                              'tbl_evaluados.id = tbl_equipos_evaluados.evaluado_id')
+          ->where(['tbl_equipos_evaluados.equipo_id' => $txtidlider]) 
+          ->orderBy(['tbl_evaluados.name' => SORT_DESC])
+          ->all();   
+
+          echo "<option value='' disabled selected>Seleccionar Asesor...</option>";
+          foreach ($varListaLideresx as $key => $value) {
+            echo "<option value='" . $value->id. "'>" . $value->name . "</option>";
+          }
+        }else{
+          echo "<option>--</option>";
+        }
+      }else{
+        echo "<option>Seleccionar variable</option>";
+      }                    
     }
 
 
