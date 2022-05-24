@@ -38,6 +38,8 @@ Modal::begin([
         'vartexto' => $vartexto,
         'varvalencia' => $varvalencia,
         'varextensionnum' => $varextensionnum,
+        'varidcallids' => $varidcallids,
+        'varvarfechareal' => $varvarfechareal,
         ])
     ?>
 

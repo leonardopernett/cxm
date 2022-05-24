@@ -11,7 +11,22 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\db\Query;
 
-$sesiones =Yii::$app->user->identity->id;   
+$sesiones =Yii::$app->user->identity->id;  
+
+$varEscuchar = (new \yii\db\Query())
+            ->select(['servicio'])
+            ->from(['tbl_dashboardspeechcalls'])
+            ->where(['=','anulado',0])
+            ->andwhere(['=','callid',$varidcallids])
+            ->andwhere(['=','fechareal',$varvarfechareal])
+            ->andwhere(['=','login_id',$varidlogin])
+            ->groupby(['servicio'])
+            ->scalar();
+
+
+if ($varEscuchar == "CX_Directv") {
+    $varResultado = "file:\\172.20.73.205\\store3\\".$varidcallids."_3_1.00.mp3";
+}  
 
 
 ?>
