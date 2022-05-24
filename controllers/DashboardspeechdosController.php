@@ -4669,8 +4669,6 @@ public function actionCantidadentto(){
       $vartexto = $varidconnid;
       $varvalencia = null;
 
-      $varConexionLlamadas = 0;
-      $varUrlConexionLlamadas = null;
 
       if ($varidredbox != "" && $varidgrabadora != "") {
         ob_start();
@@ -4741,7 +4739,7 @@ public function actionCantidadentto(){
         ob_clean();
 
         if (!$response) {
-          // die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+          
           $vartexto = "Error al buscar transcipcion";
           $varvalencia = "Error al buscar valencia emocioanl";
         }
@@ -4749,7 +4747,7 @@ public function actionCantidadentto(){
         $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
 
         if (count($response) == 0) {
-          // die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+          
           $vartexto = "Transcripcion no encontrada";
           $varvalencia = "Valencia emocional no encontrada";
         }else{
@@ -4781,6 +4779,8 @@ public function actionCantidadentto(){
         'vartexto' => $vartexto,
         'varvalencia' => $varvalencia,
         'varextensionnum' => $varextensionnum,
+        'varidcallids' => $varidcallids,
+        'varvarfechareal' => $varvarfechareal,
         ]);
     }
 
