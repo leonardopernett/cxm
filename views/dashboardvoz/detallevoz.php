@@ -733,7 +733,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                     <tr>
                                                         <td class="text-center"><?= Yii::t('app', 'Manual y Autmatica') ?></td>
                                                         <?php 
-                                                            $varControlUnion = Yii::$app->db->createCommand("select sum(sumar) as sumar, mesyear from ((select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = '$txtCodigo' and anuladovxcs = 0 group by mesyear desc limit 5) a order by a.mesyear asc) union all (select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = '$txtCodigo' and anuladovxc = 0  group by mesyear desc limit 5) a order by a.mesyear asc ) ) unidaTables group by mesyear ")->queryAll();
+                                                            $varControlUnion = Yii::$app->db->createCommand("select sum(sumar) as sumar, mesyear from ((select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = '$txtCodigo' and anuladovxcs = 0 group by mesyear desc limit 6) a order by a.mesyear asc) union all (select cantidadvalor as sumar, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclientedq where idservicio = '$txtCodigo' and anuladovxc = 0  group by mesyear desc limit 6) a order by a.mesyear asc ) ) unidaTables group by mesyear ")->queryAll();
 
                                         
                                                             foreach ($varControlUnion as $key => $value) {
@@ -761,7 +761,7 @@ $this->title = 'Escuchar + (Programa VOC - Konecta)';
                                                     <tr>
                                                         <td class="text-center"><?= Yii::t('app', 'Automaticas') ?></td>
                                                         <?php
-                                                            $varControlSpeech = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = '$txtCodigo' and anuladovxcs = 0  group by mesyear desc limit 5) a order by a.mesyear asc")->queryAll();
+                                                            $varControlSpeech = Yii::$app->db->createCommand("select cantidadvalor, mesyear from (select sum(cantidadvalor) as cantidadvalor, mesyear from tbl_control_volumenxclienteds where idservicio = '$txtCodigo' and anuladovxcs = 0  group by mesyear desc limit 6) a order by a.mesyear asc")->queryAll();
                                                             
                                                             foreach ($varControlSpeech as $key => $value) {
                                                                 $txtTotalidad2 = $value['cantidadvalor'];
