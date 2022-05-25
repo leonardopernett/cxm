@@ -1805,7 +1805,10 @@ use app\models\Controlvolumenxvalorador;
 				
                                     $txtExtensiones = implode("', '", $varArrayparams);
 
-                                    $txtTotalLlamadas = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtSerivicios') and fechallamada between '$varFecha 05:00:00' and '$varFinFecha 05:00:00' and idcategoria = 1114 and extension in ('$txtExtensiones')")->queryScalar();
+                                    // Este Codigo es nuevo 2022
+                                    $varcategoriasGeneral = Yii::$app->db->createCommand("select distinct a.idllamada tbl_speech_servicios a where a.arbol_id = '$varIdServicios' and a.anulado = 0")->queryScalar();
+
+                                    $txtTotalLlamadas = Yii::$app->db->createCommand("select count(*) from tbl_dashboardspeechcalls where anulado = 0 and servicio in ('$txtSerivicios') and fechallamada between '$varFecha 05:00:00' and '$varFinFecha 05:00:00' and idcategoria in ('$varcategoriasGeneral') and extension in ('$txtExtensiones')")->queryScalar();
 
                                     $varFechaActual = $varYearActual.'-'.$varMesActual.'-'.$varDiaActual;
 
