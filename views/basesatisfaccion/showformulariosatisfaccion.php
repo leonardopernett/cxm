@@ -188,7 +188,21 @@ $banderaSaltoComentario = true;
                     <td>
                         <div class="row">
                             <div class="col-md-12">
-                                <strong><em class="fas fa-envelope" style="font-size: 25px; color: #002855;"></em> <?= Yii::t('app', 'Transcripción: ') ?></strong> <?php echo $vartexto ?>
+                                <strong><em class="fas fa-envelope" style="font-size: 25px; color: #002855;"></em> <?= Yii::t('app', 'Transcripción: ') ?></strong>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <textarea id="idtranscripcion"  style="font-size: 12px;width: -webkit-fill-available;" rows="2"><?php echo $vartexto ?></textarea>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div onclick="enviartexto();" class="btn btn-primary" style="height: 34px;" method='post' id="botones2" >
+                                        Guardar
+                                    </div>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </td>
@@ -3571,5 +3585,31 @@ $banderaSaltoComentario = true;
                     },
                 });
             }
-        }
+        };
+        
+
+        function enviartexto(){
+            var varidtranscripcion = document.getElementById("idtranscripcion").value;
+            var varconnidtexto = "<?php echo $varConnids; ?>";
+
+            if (varidtranscripcion == "") {
+                event.preventDefault();
+                swal.fire("¡¡¡ Advertencia !!!","La transcripcion no debe estar vacia","warning");
+                return;
+            }else{
+                $.ajax({
+                    method: "post",
+                    url: "enviartextos",
+                    data: {
+                        txtvaridtranscripcion : varidtranscripcion,
+                        txtvarconnidtexto : varconnidtexto,
+                    },
+                    success : function(response){
+                        numRta =   JSON.parse(response);
+                        console.log(numRta);
+                        location.reload();
+                    },
+                });
+            }
+        };
     </script>

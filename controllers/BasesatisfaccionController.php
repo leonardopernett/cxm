@@ -78,7 +78,7 @@ class BasesatisfaccionController extends Controller {
                                     'guardarencuesta', 'index', 'reglanegocio',
                                     'showencuestatelefonica', 'update', 'guardarformulario', 'showsubtipif', 'cancelarformulario', 'declinarformulario',
                                     'reabrirformulariogestionsatisfaccion', 'clientebasesatisfaccion', 'limpiarfiltro', 'buscarllamadas', 'showformulariogestion',
-                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones'],
+                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -5364,6 +5364,42 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 Yii::$app->db->createCommand()->update('tbl_kaliope_transcipcion',[
                                           'valencia' => $varvalencia,
                                       ],'connid = "'.$varconnids.'"')->execute(); 
+                
+                die(json_encode($response));
+            }
+
+            public function actionEnviartextos(){
+                $varTextos = Yii::$app->request->post("txtvaridtranscripcion");
+                $varconnidst = Yii::$app->request->post("txtvarconnidtexto");
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/update/transcription',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_SSL_VERIFYPEER=> false,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS =>'{"connid":"'.$varconnidst.'", "transcription": "'.$varTextos.'"}',
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                  ),
+                ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+
+                $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+                Yii::$app->db->createCommand()->update('tbl_kaliope_transcipcion',[
+                                          'transcripcion' => $varTextos,
+                                      ],'connid = "'.$varconnidst.'"')->execute(); 
                 
                 die(json_encode($response));
             }
