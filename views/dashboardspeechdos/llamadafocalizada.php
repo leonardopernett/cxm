@@ -71,6 +71,14 @@ $this->title = 'Análisis Focalizados - Escuchar +';
 
     $listDatatipologias = ArrayHelper::map($txttipologias, 'tipologia', 'tipologia');
 
+    $varIdClientes = (new \yii\db\Query())
+                        ->select(['id_dp_clientes'])
+                        ->from(['tbl_speech_parametrizar'])
+                        ->where(['=','cod_pcrc',$paramsvarcodigopcrc])
+                        ->andwhere(['=','anulado',0])
+                        ->groupby(['id_dp_clientes'])
+                        ->scalar();   
+
 ?>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css" >
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
@@ -659,6 +667,11 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                 </td>
                                 <td class="text-center">
                                     <?php
+                                        if ($varIdClientes == "255") {
+                                            $txtidredbox = "001";
+                                            $txtidgrabadora = "002";
+                                        }
+                                        
                                        if ($txtidredbox != null && $txtidredbox != "NA" && $txtidgrabadora != null && $txtidgrabadora != "NA") {
                                             
                                     ?>
