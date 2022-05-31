@@ -40,7 +40,7 @@ class EquiposEvaluadosController extends Controller {
                         'roles' => ['@'],
                         'matchCallback' => function() {
                             return Yii::$app->user->identity->isAdminProcesos() 
-                                    || Yii::$app->user->identity->isEdEqipoValorado();
+                                    || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isVerusuatlmast();
                         },
                     ],
                 ],
