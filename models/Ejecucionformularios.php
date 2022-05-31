@@ -359,7 +359,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
                 LEFT JOIN tbl_roles r ON r.role_id = ur.rel_role_id 
 		INNER JOIN tbl_tmpreportes_arbol tra ON tra.arbol_id = t.arbol_id
                 INNER JOIN tbl_dimensions d ON d.id = t.dimension_id                 
-                WHERE t.created >= ' " . $startDate . "' 
+                WHERE t.created >= '" . $startDate . "' 
                 AND t.created <= '" . $endDate . "'" . $and . " 
                 ORDER BY t.created DESC";
 
