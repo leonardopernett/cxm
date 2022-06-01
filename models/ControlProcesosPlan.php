@@ -80,9 +80,29 @@ class ControlProcesosPlan extends \yii\db\ActiveRecord
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
-     
-        $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+
+        $varBloqueoInicios = (new \yii\db\Query())
+                                    ->select(['fecha_inicio'])
+                                    ->from(['tbl_control_parametros'])
+                                    ->where(['=','anulado',0])
+                                    ->scalar(); 
+        $varBloqueoInicio = date('Y-m-01',strtotime($varBloqueoInicios));
+
+        $varBloqueoFin =   (new \yii\db\Query())
+                                        ->select(['fecha_fin'])
+                                        ->from(['tbl_control_parametros'])
+                                        ->where(['=','anulado',0])
+                                        ->scalar();  
+
+        $varHoy = date('Y-m-d');
+
+        if ($varHoy >= $varBloqueoInicio && $varHoy <= $varBloqueoFin) {
+            $varfechainicio = $varBloqueoInicio; 
+            $varfechafin = $varBloqueoFin;
+        }else{
+            $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year)); 
+            $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+        }
         
         if ($roles == "270" || $roles == "309" || $sesiones == '1173' || $sesiones == '2887' || $sesiones == '3430' || $sesiones == '2652' || $sesiones == '189') {
             $query = ControlProcesos::find()->distinct()                   
