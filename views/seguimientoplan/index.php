@@ -34,8 +34,28 @@ $this->params['breadcrumbs'][] = $this->title;
     $year = date('Y');
     $day = date("d", mktime(0,0,0, $month+1, 0, $year));
      
-    $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year)); 
-    $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));       
+    $varBloqueoInicios = (new \yii\db\Query())
+        ->select(['fecha_inicio'])
+        ->from(['tbl_control_parametros'])
+        ->where(['=','anulado',0])
+        ->scalar(); 
+    $varBloqueoInicio = date('Y-m-01',strtotime($varBloqueoInicios));
+
+    $varBloqueoFin =   (new \yii\db\Query())
+        ->select(['fecha_fin'])
+        ->from(['tbl_control_parametros'])
+        ->where(['=','anulado',0])
+        ->scalar();  
+
+    $varHoy = date('Y-m-d');
+
+    if ($varHoy >= $varBloqueoInicio && $varHoy <= $varBloqueoFin) {
+        $varfechainicio = $varBloqueoInicio; 
+        $varfechafin = $varBloqueoFin;
+    }else{
+        $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year)); 
+        $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+    }
 
     $sessiones = Yii::$app->user->identity->id;
     $sumatoria1 = null;

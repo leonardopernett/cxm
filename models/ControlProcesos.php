@@ -130,9 +130,29 @@ class ControlProcesos extends \yii\db\ActiveRecord
 
     public function getRealizadas($opcion) {
         $variableid = $opcion; 
-	$varCero = 0;
+        $varCero = 0;
 
+        $varBloqueoInicios = (new \yii\db\Query())
+                                    ->select(['fecha_inicio'])
+                                    ->from(['tbl_control_parametros'])
+                                    ->where(['=','anulado',0])
+                                    ->scalar(); 
+        $varBloqueoInicio = date('Y-m-01',strtotime($varBloqueoInicios));
+
+        $varBloqueoFin =   (new \yii\db\Query())
+                                        ->select(['fecha_fin'])
+                                        ->from(['tbl_control_parametros'])
+                                        ->where(['=','anulado',0])
+                                        ->scalar();  
+
+        $varHoy = date('Y-m-d');
+
+        if ($varHoy >= $varBloqueoInicio && $varHoy <= $varBloqueoFin) {
+            $varMes = date('n',strtotime($varBloqueoInicio)); 
+        }else{
             $varMes = date("n");
+        }
+        
             $txtMes = null;
             switch ($varMes) {
                 case '1':
@@ -198,7 +218,28 @@ class ControlProcesos extends \yii\db\ActiveRecord
         $variableid = $opcion;
 	    $varCero = 0;
 	    $varsumagestion = 0;
+
+        $varBloqueoInicios = (new \yii\db\Query())
+                                    ->select(['fecha_inicio'])
+                                    ->from(['tbl_control_parametros'])
+                                    ->where(['=','anulado',0])
+                                    ->scalar(); 
+        $varBloqueoInicio = date('Y-m-01',strtotime($varBloqueoInicios));
+
+        $varBloqueoFin =   (new \yii\db\Query())
+                                        ->select(['fecha_fin'])
+                                        ->from(['tbl_control_parametros'])
+                                        ->where(['=','anulado',0])
+                                        ->scalar();  
+
+        $varHoy = date('Y-m-d');
+
+        if ($varHoy >= $varBloqueoInicio && $varHoy <= $varBloqueoFin) {
+            $varMes = date('n',strtotime($varBloqueoInicio)); 
+        }else{
             $varMes = date("n");
+        }
+
             $txtMes = null;
             switch ($varMes) {
                 case '1':
@@ -321,9 +362,29 @@ class ControlProcesos extends \yii\db\ActiveRecord
         $month = date('m');
         $year = date('Y');
         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
-         
-        $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
-        $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+
+        $varBloqueoInicios = (new \yii\db\Query())
+                                    ->select(['fecha_inicio'])
+                                    ->from(['tbl_control_parametros'])
+                                    ->where(['=','anulado',0])
+                                    ->scalar(); 
+        $varBloqueoInicio = date('Y-m-01',strtotime($varBloqueoInicios));
+
+        $varBloqueoFin =   (new \yii\db\Query())
+                                        ->select(['fecha_fin'])
+                                        ->from(['tbl_control_parametros'])
+                                        ->where(['=','anulado',0])
+                                        ->scalar();  
+
+        $varHoy = date('Y-m-d');
+
+        if ($varHoy >= $varBloqueoInicio && $varHoy <= $varBloqueoFin) {
+            $varfechainicio = $varBloqueoInicio; 
+            $varfechafin = $varBloqueoFin;
+        }else{
+            $varfechainicio = date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+            $varfechafin = date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+        }
         
         $data = Yii::$app->db->createCommand("select sum(cantidadjustificar) from tbl_plan_escalamientos where anulado = 0 and tecnicolider = $opcion and Estado = 1 and fechacreacion between '$varfechainicio' and '$varfechafin'")->queryScalar();
 
