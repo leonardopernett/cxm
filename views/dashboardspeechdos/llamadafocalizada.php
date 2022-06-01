@@ -78,6 +78,8 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                         ->andwhere(['=','anulado',0])
                         ->groupby(['id_dp_clientes'])
                         ->scalar();   
+    
+    $varFechaActualInicio = date('Y-m-d');
 
 ?>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css" >
@@ -498,7 +500,7 @@ $this->title = 'Análisis Focalizados - Escuchar +';
 
                                     $varvaloraestado = "Cerrado";
                                 }else{
-                                    $paramsBuscarValoradorTmp = [':varUsuaid' => $sessiones, ':varComentario' => $txtcallid.'; '.$txtfechasreal, ':varFechaInicio'=> $varfechainireal.' 00:00:00', ':varFechaFin' => $varfechafinreal.' 23:59:59'];
+                                    $paramsBuscarValoradorTmp = [':varUsuaid' => $sessiones, ':varComentario' => $txtcallid.'; '.$txtfechasreal, ':varFechaInicio'=> $varFechaActualInicio.' 00:00:00', ':varFechaFin' => $varFechaActualInicio.' 23:59:59'];
                                     $varTmpValorador = Yii::$app->db->createCommand('
                                         SELECT u.usua_nombre FROM tbl_usuarios u 
                                             INNER JOIN tbl_tmpejecucionformularios ef ON 
