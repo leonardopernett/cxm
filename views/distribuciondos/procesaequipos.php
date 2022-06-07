@@ -31,6 +31,16 @@ $this->params['breadcrumbs'][] = $this->title;
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
+    $varFechaMes = date('Y-m-01');
+
+    $varListaCortes = (new \yii\db\Query())
+                      ->select(['idtc','tipocortetc'])
+                      ->from(['tbl_tipocortes'])
+                      ->where(['=','mesyear',$varFechaMes])
+                      ->all(); 
+
+    $listDataCortes = ArrayHelper::map($varListaCortes, 'idtc', 'tipocortetc');
+
 ?>
 <style>
     .card1 {
@@ -80,6 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      /*background: #fff;*/
       border-radius: 5px;
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -155,10 +166,10 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="row">
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
     <div class="col-md-4">
-      <div class="card2 mb">
-        <label style="font-size: 15px;"><em class="fas fa-check-circle" style="font-size: 15px; color: #38d043;"></em> Actualiza Datos Equipos: </label><br>
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-check-circle" style="font-size: 15px; color: #38d043;"></em><?= Yii::t('app', ' Actualiza Datos Equipos') ?> </label>
         
-          <?= $form->field($model, 'anulado', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'idnombreevento', 'class'=>'hidden','value'=>0])?>
+          <?= $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listDataCortes, ['prompt' => 'Seleccionar Corte...', 'id'=>"selectid"])->label('') ?> 
           
           <?= Html::submitButton(Yii::t('app', 'Procesar'),
                                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
@@ -168,16 +179,60 @@ $this->params['breadcrumbs'][] = $this->title;
           ?>
 
       </div>
-    </div>
 
-    <div class="col-md-8">
-      <div class="card2 mb">
+      <br>
+
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #ffc034;"></em> <?= Yii::t('app', ' Finalizar Procesos') ?></label>
+        
+          <?= Html::a('Finalizar',  ['index'], ['class' => 'btn btn-success',
+                                        'style' => 'background-color: #707372',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Finalizar']) 
+          ?>
+
+      </div>
+
+      <br>
+
+      <div class="card1 mb">
         <div class="panel panel-default">
           <div class="panel-body " style="background-color: #f0f8ff; text-align: center; font-size: 15px;">
             <?= Yii::t('app', '* Cuarto Proceso: permite estructurar los equipos de acuerdo a los lideres') ?>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="col-md-8">
+      
+      <div class="row">
+      <?php
+        foreach ($varListaCortes as $key => $value) {
+          
+          $varfechaCarga = (new \yii\db\Query())
+                                    ->select(['MAX(ultimafecha)'])
+                                    ->from(['tbl_distribucion_cortes'])
+                                    ->where(['=','idtc',$value['idtc']])
+                                    ->andwhere(['=','anulado',0])
+                                    ->scalar();
+      ?>
+
+          <div class="col-md-4">
+            <div class="card1 mb">
+              <label style="font-size: 15px;"><em class="fas fa-check-circle" style="font-size: 15px; color: #38d043;"></em><?= Yii::t('app', $value['tipocortetc']) ?> </label>
+              <label style="font-size: 12px;"><?= Yii::t('app', $varfechaCarga) ?> </label>
+            </div>
+            <br>
+
+          </div>
+
+      <?php
+        }
+      ?>
+
+      </div>
+
     </div>
     <?php $form->end() ?>
   </div>

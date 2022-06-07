@@ -91,10 +91,17 @@ use app\models\DistribucionAsesores;
       
       $model = new DistribucionAsesores();
 
+      ini_set("max_execution_time", "900");
+      ini_set("memory_limit", "1024M");
+      ini_set( 'post_max_size', '1024M' );
+
+      ignore_user_abort(true);
+      set_time_limit(900);
+
       $form = Yii::$app->request->post();
       if($model->load($form)){
 
-        $varListSecciones = Yii::$app->dbjarvis2->createCommand("
+        $varListSecciones = Yii::$app->dbjarvis->createCommand("
         SELECT dp.documento AS CedulaAsesor, dp.documento_jefe AS CedulaLider, pc.id_dp_clientes AS id_dp_clientes, 
         dp.cod_pcrc AS CodPcrc, dp.fecha_actual AS FechaJarvis FROM dp_pcrc pc
           INNER JOIN dp_distribucion_personal dp ON 
@@ -108,7 +115,7 @@ use app\models\DistribucionAsesores;
               AND dc.id_dp_funciones IN (322,783,190,909,915,323,324)
                 AND dp.fecha_actual >= DATE_FORMAT(NOW() ,'%Y-%m-01')
                   AND de.tipo = 'ACTIVO'
-                    AND pc.id_dp_pcrc != 0
+                    AND pc.id_dp_clientes != 1
           GROUP BY dp.documento
         ")->queryAll();
 
@@ -152,48 +159,53 @@ use app\models\DistribucionAsesores;
         ignore_user_abort(true);
         set_time_limit(900);
 
-        $varListaAsesores = Yii::$app->db->createCommand("
-          SELECT ds.cedulaasesor AS CCAsesores FROM tbl_distribucion_asesores ds
-            WHERE 
-              ds.anulado = 0")->queryAll();
+        $varListaAsesores = (new \yii\db\Query())
+                                    ->select(['cedulaasesor'])
+                                    ->from(['tbl_distribucion_asesores'])
+                                    ->where(['=','anulado',0])
+                                    ->all(); 
 
         foreach ($varListaAsesores as $key => $value) {
-          $varDocumentoAsesor = $value['CCAsesores'];
+          $varDocumentoAsesor = $value['cedulaasesor'];
 
-          $VarExisteAsesor = Yii::$app->db->createCommand("
-          SELECT COUNT(*) FROM tbl_evaluados e 
-            WHERE 
-              e.identificacion IN ($varDocumentoAsesor)")->queryScalar();
+          $varExisteAsesor = (new \yii\db\Query())
+                                    ->select(['id'])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','identificacion',$varDocumentoAsesor])
+                                    ->count(); 
 
-          if ($VarExisteAsesor == 0) {
-            $varListDatosAsesor = Yii::$app->dbjarvis2->createCommand("
-              SELECT dg.nombre_completo AS Name, ur.usuario_red AS UsuarioRed  FROM dp_actualizacion_datos ad
-                INNER JOIN dp_datos_generales dg ON 
-                  ad.documento = dg.documento
-                INNER JOIN dp_usuarios_red ur ON 
-                  dg.documento = ur.documento
-                WHERE 
-                  ur.documento IN ($varDocumentoAsesor) AND ur.dominio = 'multienlace.com.co'")->queryAll();
+          if ( $varExisteAsesor == '0') {
 
+            $paramsBuscaAsesor = [':DocumentoAsesor'=>$varDocumentoAsesor];
+            
+            $varNombreAsesor = Yii::$app->dbjarvis->createCommand('
+              SELECT CONCAT(dg.primer_apellido," ",dg.segundo_apellido," ",dg.primer_nombre," ",dg.segundo_nombre) AS NombreCompleto, du.usuario_red FROM dp_datos_generales dg
+                INNER JOIN dp_usuarios_red du ON
+                  dg.documento = du.documento 
+              WHERE 
+                du.documento = :DocumentoAsesor ')->bindValues($paramsBuscaAsesor)->queryScalar();
 
-            foreach ($varListDatosAsesor as $key => $value) {
+            $varUsuaredAsesor = Yii::$app->dbjarvis->createCommand('
+              SELECT du.usuario_red FROM  dp_usuarios_red du 
+              WHERE 
+                du.documento = :DocumentoAsesor ')->bindValues($paramsBuscaAsesor)->queryScalar();
+
+            if ($varNombreAsesor != "" && $varUsuaredAsesor != "") {
 
               Yii::$app->db->createCommand()->insert('tbl_evaluados',[
-                      'name' => $value['Name'],
+                      'name' => $varNombreAsesor,
                       'telefono' => null,
-                      'dsusuario_red' => $value['UsuarioRed'],
+                      'dsusuario_red' => $varUsuaredAsesor,
                       'cdestatus' => null,
                       'identificacion' => $varDocumentoAsesor,
-                      'email' => $value['UsuarioRed'].'@grupokonecta.co',  
+                      'email' => $varUsuaredAsesor.'@grupokonecta.co',  
                       'idpcrc' => null,
                       'usua_id' => Yii::$app->user->identity->id,
                       'fechacreacion' => date('Y-m-d'),                                  
                   ])->execute();
 
-            }
-            
+            }            
           }
-
         }
 
         return $this->redirect('procesalideres');
@@ -210,97 +222,79 @@ use app\models\DistribucionAsesores;
 
       $form = Yii::$app->request->post();
       if($model->load($form)){
+        ini_set("max_execution_time", "900");
+        ini_set("memory_limit", "1024M");
+        ini_set( 'post_max_size', '1024M' );
 
-        $varListLideres = Yii::$app->db->createCommand("
-        SELECT da.cedulalider, da.id_dp_clientes FROM tbl_distribucion_asesores da 
-          WHERE 
-            da.anulado = 0
-          GROUP BY da.cedulalider")->queryAll();
+        ignore_user_abort(true);
+        set_time_limit(900);
 
-        foreach ($varListLideres as $key => $value) {
-          $varCCLider = $value['cedulalider'];
-          $varCliente = $value['id_dp_clientes'];
+        $varListaLideres = (new \yii\db\Query())
+                                    ->select(['cedulalider','id_dp_clientes'])
+                                    ->from(['tbl_distribucion_asesores'])
+                                    ->where(['=','anulado',0])
+                                    ->all(); 
 
-          $varNombreCliente = Yii::$app->db->createCommand("
-          SELECT pc.cliente FROM tbl_proceso_cliente_centrocosto pc 
-          WHERE 
-            pc.id_dp_clientes IN ($varCliente)
-          GROUP BY pc.id_dp_clientes")->queryScalar();
+        foreach ($varListaLideres as $key => $value) {
+          $varDocumentoLider = $value['cedulalider'];
+          $varIdCliente = $value['id_dp_clientes'];
 
-          $varExisteLider = Yii::$app->db->createCommand("
-          SELECT COUNT(u.usua_id) FROM tbl_usuarios u
-            WHERE 
-              u.usua_identificacion IN ($varCCLider)")->queryScalar();
+          $varExisteLider = (new \yii\db\Query())
+                                    ->select(['usua_id'])
+                                    ->from(['tbl_usuarios'])
+                                    ->where(['=','usua_identificacion',$varDocumentoLider])
+                                    ->count(); 
 
-          $varUsuarioLider = Yii::$app->db->createCommand("
-            SELECT u.usua_id FROM tbl_usuarios u
-              WHERE 
-                u.usua_identificacion IN ($varCCLider)")->queryScalar();
+          if ($varExisteLider == "0") {
 
-          if ($varExisteLider == 0) {
+            $paramsBuscaLider = [':DocumentoLider'=>$varDocumentoLider];
             
-            $varListDatosLideres = Yii::$app->dbjarvis2->createCommand("
-              SELECT dg.nombre_completo AS Name, ur.usuario_red AS UsuarioRed  FROM dp_actualizacion_datos ad
-                INNER JOIN dp_datos_generales dg ON 
-                  ad.documento = dg.documento
-                INNER JOIN dp_usuarios_red ur ON 
-                  dg.documento = ur.documento
-                WHERE 
-                  ur.documento IN ($varCCLider) AND ur.dominio = 'multienlace.com.co'")->queryAll();
+            $varNombreLider = Yii::$app->dbjarvis->createCommand('
+              SELECT CONCAT(dg.primer_apellido," ",dg.segundo_apellido," ",dg.primer_nombre," ",dg.segundo_nombre) AS NombreCompleto, du.usuario_red FROM dp_datos_generales dg
+                INNER JOIN dp_usuarios_red du ON
+                  dg.documento = du.documento 
+              WHERE 
+                du.documento = :DocumentoLider ')->bindValues($paramsBuscaLider)->queryScalar();
 
-            foreach ($varListDatosLideres as $key => $value) {
-              
-              // Aqui ingresa procesos de usuarios nuevos
+            $varUsuaredLider = Yii::$app->dbjarvis->createCommand('
+              SELECT du.usuario_red FROM  dp_usuarios_red du 
+              WHERE 
+                du.documento = :DocumentoLider ')->bindValues($paramsBuscaLider)->queryScalar();
+
+            if ($varNombreLider != "" && $varUsuaredLider != "") {
+
               Yii::$app->db->createCommand()->insert('tbl_usuarios',[
-                      'usua_usuario' => $value['UsuarioRed'],
-                      'usua_nombre' => $value['Name'],
-                      'usua_email' => $value['UsuarioRed'].'@grupokonecta.com',
-                      'usua_identificacion' => $varCCLider,
+                      'usua_usuario' => $varUsuaredLider,
+                      'usua_nombre' => $varNombreLider,
+                      'usua_email' => $varUsuaredLider.'@grupokonecta.com',
+                      'usua_identificacion' => $varDocumentoLider,
                       'usua_activo' => "S",
                       'usua_estado' => "D",  
                       'usua_fechhoratimeout' => null,
                       'fechacreacion' =>  date('Y-m-d'),                                  
                   ])->execute();
 
-            }
+              $varidUsuarioLider = (new \yii\db\Query())
+                                    ->select(['usua_id'])
+                                    ->from(['tbl_usuarios'])
+                                    ->where(['=','usua_identificacion',$varDocumentoLider])
+                                    ->scalar(); 
 
-            if ($varUsuarioLider != 0) {
               Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
-                  'rel_usua_id' => $varUsuarioLider,
-                  'rel_role_id' => 273,                               
-                ])->execute();
+                      'rel_usua_id' => $varidUsuarioLider,
+                      'rel_role_id' => 273,                               
+                  ])->execute();
 
               Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
-                  'usuario_id' => $varUsuarioLider,
-                  'grupo_id' => 1,                               
-                ])->execute();
-            }            
+                      'usuario_id' => $varidUsuarioLider,
+                      'grupo_id' => 1,                               
+                  ])->execute();
 
-          }
-
-          if ($varUsuarioLider != 0) {
-            $varUsuaNombreLider = Yii::$app->db->createCommand("
-              SELECT u.usua_nombre FROM tbl_usuarios u
-                WHERE 
-                  u.usua_identificacion IN ($varCCLider)")->queryScalar();
-
-            $varContarEquipos = Yii::$app->db->createCommand("
-              SELECT COUNT(eq.id) FROM tbl_equipos eq
-                INNER JOIN tbl_usuarios u ON 
-                  eq.usua_id = u.usua_id 
-                WHERE 
-                  u.usua_identificacion IN ($varCCLider)")->queryScalar();
-
-            if ($varContarEquipos == 0) {
-              Yii::$app->db->createCommand()->insert('tbl_equipos',[
-                              'name' => $varUsuaNombreLider.'_'.$varNombreCliente,
-                              'nmumbral_verde' => 1, 
-                              'nmumbral_amarillo' => 1,
-                              'usua_id' =>  $varUsuarioLider,                             
-                ])->execute();
             }
-          }
-        }      
+            
+          }          
+          
+        }
 
         return $this->redirect('procesaequipos');
 
@@ -312,60 +306,187 @@ use app\models\DistribucionAsesores;
     }
 
     public function actionProcesaequipos(){
+      
       $model = new DistribucionAsesores();
 
       $form = Yii::$app->request->post();
       if($model->load($form)){
+        ini_set("max_execution_time", "900");
+        ini_set("memory_limit", "1024M");
+        ini_set( 'post_max_size', '1024M' );
 
-        $varListLider = Yii::$app->db->createCommand("
-        SELECT e.id, u.usua_id, da.cedulalider FROM tbl_equipos e
-          INNER JOIN tbl_usuarios u ON 
-            e.usua_id = u.usua_id
-          INNER JOIN tbl_distribucion_asesores da ON 
-            u.usua_identificacion = da.cedulalider
-          GROUP BY 
-            da.cedulalider")->queryAll();
+        ignore_user_abort(true);
+        set_time_limit(900);
 
-        foreach ($varListLider as $key => $value) {
-          $varIdEquipos = $value['id'];
-          $varCcLideres = $value['cedulalider'];
+        $varIdCorte = $model->id_dp_clientes;
 
-          $varEquipoVerifica = (new \yii\db\Query())
+        $varGrupoCorte = (new \yii\db\Query())
+                                    ->select(['idgrupocorte'])
+                                    ->from(['tbl_tipocortes'])
+                                    ->where(['=','idtc',$varIdCorte])
+                                    ->scalar();
+
+        if ($varGrupoCorte == "1") {
+          $varIdClientes = [122, 181, 110, 111, 124];          
+        }
+
+        if ($varGrupoCorte == "2") {
+          $varIdClientes = [262, 310, 255];          
+        }
+
+        if ($varGrupoCorte == "3") {
+          $varIdClientes = [112, 115, 120, 129, 134, 136, 149, 171, 172, 185, 214, 221, 224, 228, 230, 246, 232, 258, 266, 274, 276, 282, 283, 287, 291, 292, 293, 294, 298, 299, 300, 301, 302, 303, 305, 306, 307, 308, 309, 311, 312, 315, 316, 317, 319, 320, 321, 322, 323, 324, 325, 331, 332, 334, 335, 336, 337, 342, 343, 401, 404, 406, 411];          
+        }
+
+        if ($varGrupoCorte == "4") {
+          $varIdClientes = [289];          
+        }
+
+        if ($varGrupoCorte == "5") {
+          $varIdClientes = [330, 341];          
+        }
+
+        $varListUsuariosD = (new \yii\db\Query())
+                          ->select(['tbl_usuarios.usua_id','tbl_usuarios.usua_identificacion','tbl_distribucion_asesores.id_dp_clientes'])
+                          ->from(['tbl_usuarios'])
+                          ->join('INNER JOIN', 'tbl_distribucion_asesores', 
+                              'tbl_usuarios.usua_identificacion = tbl_distribucion_asesores.cedulalider')
+                          ->where(['IN','tbl_distribucion_asesores.id_dp_clientes',$varIdClientes])
+                          ->groupby(['tbl_usuarios.usua_id'])
+                          ->all();         
+
+
+        foreach ($varListUsuariosD as $key => $value) {
+          $varUsuarioD = $value['usua_id'];
+          $varClienteD = $value['id_dp_clientes'];
+
+          $varListaEquipoD = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_equipos'])
+                                    ->where(['=','usua_id',$varUsuarioD])
+                                    ->all();
+
+          if (count($varListaEquipoD) != 0) {
+            foreach ($varListaEquipoD as $key => $value) {
+              $varIdEquipoD = $value['id'];
+              $varNombreEquipoD = $value['name'];
+
+              $varNoDistriEquipoD = (new \yii\db\Query())
                                     ->select(['*'])
                                     ->from(['tbl_equipo_parametros'])
-                                    ->where(['=','id_equipo',$varIdEquipos])
+                                    ->where(['=','id_equipo',$varIdEquipoD])
                                     ->count();
-          
-          if ($varEquipoVerifica == "0") {
 
-            $paramsEliminar = [':IdControlEquipo'=>$varIdEquipos]; 
+              if ($varNoDistriEquipoD == "0") {
+                $varValidaD = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_equipos_evaluados'])
+                                    ->where(['=','equipo_id',$varIdEquipoD])
+                                    ->count();
 
-            Yii::$app->db->createCommand('
-              DELETE FROM tbl_equipos_evaluados 
-                WHERE 
-                  equipo_id = :IdControlEquipo')
-            ->bindValues($paramsEliminar)
-            ->execute();  
+                if ($varValidaD != "0") {
 
-            $varListAsesores = Yii::$app->db->createCommand("
-            SELECT e.id FROM tbl_evaluados e
-              INNER JOIN tbl_distribucion_asesores da ON 
-                e.identificacion = da.cedulaasesor
-              WHERE 
-                da.cedulalider = $varCcLideres")->queryAll();
+                  $paramsEliminar = [':IdControlEquipo'=>$varIdEquipoD]; 
 
-            foreach ($varListAsesores as $key => $value) {
+                  Yii::$app->db->createCommand('
+                    DELETE FROM tbl_equipos_evaluados 
+                      WHERE 
+                        equipo_id = :IdControlEquipo')
+                  ->bindValues($paramsEliminar)
+                  ->execute();  
+
+                }else{
+                    
+                    $varNombreUsuaD = (new \yii\db\Query())
+                                    ->select(['usua_nombre'])
+                                    ->from(['tbl_usuarios'])
+                                    ->where(['=','usua_id',$varUsuarioD])
+                                    ->scalar();
+
+                    $varNombreClienteD = (new \yii\db\Query())
+                                  ->select(['CONCAT("_",cliente)'])
+                                  ->from(['tbl_proceso_cliente_centrocosto'])
+                                  ->where(['=','id_dp_clientes',$varClienteD])
+                                  ->groupby(['id_dp_clientes'])
+                                  ->scalar();  
+
+                    if ($varNombreEquipoD == $varNombreUsuaD.'_'.$varNombreClienteD.'(No usar)') {
+                      Yii::$app->db->createCommand()->update('tbl_equipos',[
+                                            'name' => $varNombreUsuaD.'_'.$varNombreClienteD.'(No usar)',
+                                        ],'id ='.$varIdEquipoD.'')->execute();
+                    }                    
+                                   
+                }
+              }                
+
+            }
+
+          }else{
+            
+            $varNombreLiderD = (new \yii\db\Query())
+                                  ->select(['usua_nombre'])
+                                  ->from(['tbl_usuarios'])
+                                  ->where(['=','usua_id',$varUsuarioD])
+                                  ->scalar(); 
+
+            $varClienteNombreD = (new \yii\db\Query())
+                                  ->select(['CONCAT("_",cliente)'])
+                                  ->from(['tbl_proceso_cliente_centrocosto'])
+                                  ->where(['=','id_dp_clientes',$varClienteD])
+                                  ->groupby(['id_dp_clientes'])
+                                  ->scalar();  
+
+            Yii::$app->db->createCommand()->insert('tbl_equipos',[
+                      'name' => $varNombreLiderD.$varClienteNombreD,
+                      'nmumbral_verde' => 1, 
+                      'nmumbral_amarillo' => 1,
+                      'usua_id' =>  $varUsuarioD,                             
+                  ])->execute();
+          }
+
+          $varListaEquipoDOk = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_equipos'])
+                                    ->where(['=','usua_id',$varUsuarioD])
+                                    ->andwhere(['not like','name','No usar'])
+                                    ->all();
+
+          foreach ($varListaEquipoDOk as $key => $value) {
+            $varEquipoIdD = $value['id'];
+            
+            $varListAsesoresD = (new \yii\db\Query())
+                                ->select(['tbl_evaluados.id'])
+                                ->from(['tbl_evaluados'])
+                                ->join('INNER JOIN', 'tbl_distribucion_asesores', 
+                                  'tbl_evaluados.identificacion = tbl_distribucion_asesores.cedulaasesor')
+                                ->join('INNER JOIN', 'tbl_usuarios', 
+                                  'tbl_distribucion_asesores.cedulalider = tbl_usuarios.usua_identificacion')
+                                ->where(['=','tbl_usuarios.usua_id',$varUsuarioD])
+                                ->groupby(['tbl_evaluados.id'])
+                                ->all();
+
+            foreach ($varListAsesoresD as $key => $value) {
               Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
                         'evaluado_id' => $value['id'],
-                        'equipo_id' => $varIdEquipos,                             
+                        'equipo_id' => $varEquipoIdD,                             
                     ])->execute();
             }
             
           }
-          
+            
         }
 
-        return $this->redirect('index');
+
+        Yii::$app->db->createCommand()->insert('tbl_distribucion_cortes',[
+                      'grupocorte' => $varGrupoCorte,
+                      'idtc' => $varIdCorte, 
+                      'ultimafecha' => date('Y-m-d h:i:s'),
+                      'anulado' => 0,
+                      'usua_id' =>  Yii::$app->user->identity->id,   
+                      'fechacreacion' => date('Y-m-d'),                
+                  ])->execute();
+                
+        return $this->redirect(['procesaequipos']);
       }
 
       return $this->render('procesaequipos',[
