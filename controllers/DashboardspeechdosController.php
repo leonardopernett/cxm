@@ -6046,10 +6046,18 @@ public function actionCantidadentto(){
       $varNA = "No Aplica";
 
       $paramsAsesor = [':varAsesores'=>$varLoginId];
+
       $varNombreAsesor = Yii::$app->db->createCommand('
         SELECT e.name FROM tbl_evaluados e 
           WHERE 
             e.dsusuario_red IN (:varAsesores)')->bindValues($paramsAsesor)->queryScalar();
+      
+      if ($varNombreAsesor == "") {
+        $varNombreAsesor = Yii::$app->db->createCommand('
+          SELECT e.name FROM tbl_evaluados e 
+            WHERE 
+              e.identificacion IN (:varAsesores)')->bindValues($paramsAsesor)->queryScalar();
+      }
 
       $varNombreLider = Yii::$app->db->createCommand('
         SELECT u.usua_nombre FROM tbl_usuarios u
@@ -6061,6 +6069,19 @@ public function actionCantidadentto(){
             ev.evaluado_id = e.id
           WHERE 
             e.dsusuario_red IN (:varAsesores)')->bindValues($paramsAsesor)->queryScalar();
+      
+      if ($varNombreLider == "") {
+        $varNombreLider = Yii::$app->db->createCommand('
+          SELECT u.usua_nombre FROM tbl_usuarios u
+            INNER JOIN tbl_equipos eq ON 
+              u.usua_id = eq.usua_id
+            INNER JOIN tbl_equipos_evaluados ev ON 
+              eq.id = ev.equipo_id
+            INNER JOIN tbl_evaluados e ON 
+              ev.evaluado_id = e.id
+            WHERE 
+              e.identificacion IN (:varAsesores)')->bindValues($paramsAsesor)->queryScalar();
+      }
 
       $paramsCategorias = [':varPcrc'=>$varcod_pcrc,':varCategoria'=>2,':varResponsabilidad'=>1];
 
