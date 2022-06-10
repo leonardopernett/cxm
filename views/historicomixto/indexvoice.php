@@ -372,30 +372,34 @@ use yii\db\Query;
                                 }
                     
                                 if (count($varListCategorias) != 0 && $varConteoNegativas != 0) {
-                                    $varResultadosIDA = round(((($varConteoPositivas + ($varContarNegativas - $varConteoNegativas)) / count($varListCategorias)) * 100),2);
+                                    $varResultadosIDA = round(((($varConteoPositivas + ($varContarNegativas - $varConteoNegativas)) / count($varListCategorias))),2);
                                 }else{
                                     $varResultadosIDA = 0;
                                 }
 
                                 $varScore = (new \yii\db\Query())
-                                    ->select(['if(tbl_ejecucionformularios.score != "",ROUND(tbl_ejecucionformularios.score,2),0)'])
-                                    ->from(['tbl_ejecucionformularios'])
-                                    ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
-                                        'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
-                                    ->where('tbl_speech_mixta.callId IN (:varCallids)',[':varCallids'=>$varCallid])
-                                    ->andwhere('tbl_speech_mixta.fechareal IN (:varFechareals)',[':varFechareals'=>$varFechaReal])
-                                    ->andwhere('tbl_speech_mixta.anulado = :varAnulado',[':varAnulado'=>0])
-                                    ->scalar();
+                                            ->select(['round(tbl_ejecucionformularios.score,2)'])
+                                            ->from(['tbl_ejecucionformularios'])
+                                            ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                            'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+                                            ->where(['=','tbl_speech_mixta.callid',$varCallid])
+                                            ->andwhere(['=','tbl_speech_mixta.fechareal',$varFechaReal])
+                                            ->andwhere(['=','tbl_speech_mixta.anulado',0])
+                                            ->scalar(); 
 
                                 if ($varScore) {
-                                    $varScoreValoracion = round(($varScore * 100), 2);
+                                    $varScoreValoracion = $varScore;
                                 }else{
                                     $varScoreValoracion = "--";
                                 }
                                 
                                 
                                 if ($varScoreValoracion != 0) {
-                                    $varPromedioScore = round(((($varResultadosIDA + $varScoreValoracion) / 2) * 100),2);
+                                    if ($varResultadosIDA != 0) {
+                                        $varPromedioScore = round(((($varResultadosIDA + $varScoreValoracion) / 2)),2);
+                                    }else{
+                                        $varPromedioScore = $varScoreValoracion;
+                                    }
                                 }else{
                                     $varPromedioScore = $varResultadosIDA;
                                 }
