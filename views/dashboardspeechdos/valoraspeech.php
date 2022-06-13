@@ -258,7 +258,7 @@ $this->title = 'Análisis Focalizados - Escuchar + (Filtros Valoración)';
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 20px;"><em class="fas fa-ban" style="font-size: 50px; color: #ff5b5b;"></em> <?= Yii::t('app', 'Actualmente el asesor no esta asignado a ningún equipo, por lo tanto no es posible realizar niguna valoración. Por favor cerrar esta éstaña para proseguir con otras acciones.') ?></label>
+                <label style="font-size: 20px;"><em class="fas fa-ban" style="font-size: 50px; color: #ff5b5b;"></em> <?= Yii::t('app', 'Actualmente el asesor no esta asignado a ningún equipo, por lo tanto no es posible realizar niguna valoración. Por favor cerrar esta pestaña del navegador para proseguir con otras acciones.') ?></label>
             </div>
         </div>
     </div>
