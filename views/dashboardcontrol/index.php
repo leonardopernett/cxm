@@ -218,7 +218,7 @@ $this->title = 'Métricas de Productividad/Valoración';
 </div>
 
 <?php
-    if ($sessiones == '7' || $sessiones == '1525' || $sessiones == '2953' || $sessiones == '3205' || $sessiones == '223' || $sessiones == '3205') {
+    if ($sessiones == '7' || $sessiones == '1525' || $sessiones == '2953' || $sessiones == '3205' || $sessiones == '223' || $sessiones == '3205' || $sessiones == '6777') {
 ?>
         <div class="capaUno" style="display: inline">
 
