@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br><br>
 
 <?php
-if ($sesiones == "2953" || $sesiones == "57" || $sesiones == "3468" || $sesiones == "6747" || $sesiones == "6777") {  
+if ($sesiones == "2953" || $sesiones == "57" || $sesiones == "3468" || $sesiones == "6747" || $sesiones == "6777" || $sesiones == "637") {  
 ?>
 
   <div class="capaCero" style="display: none;" id="idCapaCero">
