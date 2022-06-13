@@ -188,13 +188,13 @@ if ($varEscuchar == "CX_Directv") {
     	<div class="col-md-6">
     		<div class="card3 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Instructivo de Uso') ?></label>
-    			<a style="font-size: 13px;" rel="stylesheet" type="text/css" href="../../downloadfiles/Manual Configuración Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
+    			<a style="font-size: 15px;" rel="stylesheet" type="text/css" href="../../downloadfiles/Manual Configuración Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
     		</div>	
     	</div>
 
     	<div class="col-md-6">
     		<div class="card3 mb">
-    			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Url Buzón') ?></label>
+    			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Url Llamada') ?></label>
     			<input type="text" rows="2" class="js-copytextarea form-control" readonly="readonly" value="<?php echo $varResultado; ?>">
     		</div>	
     	</div>    	

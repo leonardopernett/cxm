@@ -37,6 +37,14 @@ $this->title = 'Análisis Focalizados - Escuchar + (Filtros Valoración)';
 
     $txtdsfuente = $txtConjuntoSpeech;
 
+    $varConteoEquipo = (new \yii\db\Query())
+                              ->select(['tbl_equipos_evaluados.equipo_id'])
+                              ->from(['tbl_equipos_evaluados'])   
+                              ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                    'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')         
+                              ->where(['=','tbl_evaluados.id',$txtEvaluadoid])                              
+                              ->count();
+                              
 // Aqui se genera un cambio con el nuevo Escucha Focalizada
 ?>
 <link rel="stylesheet" href="http://127.0.0.1/qa_pruebas/web/css/font-awesome/css/font-awesome.css" >
@@ -133,6 +141,10 @@ $this->title = 'Análisis Focalizados - Escuchar + (Filtros Valoración)';
 </header>
 <br>
 <br>
+
+<?php if ($varConteoEquipo != "0") { ?>
+
+
 <div class="capaInfo" id="idCapaInfo" style="display: inline;">
     <div class="row">
         <div class="col-md-6">
@@ -239,6 +251,22 @@ $this->title = 'Análisis Focalizados - Escuchar + (Filtros Valoración)';
 
     <?php ActiveForm::end(); ?>
 </div>
+
+<?php }else{ ?>
+
+<div class="capaNoUsar" style="display: inline;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <label style="font-size: 20px;"><em class="fas fa-ban" style="font-size: 50px; color: #ff5b5b;"></em> <?= Yii::t('app', 'Actualmente el asesor no esta asignado a ningún equipo, por lo tanto no es posible realizar niguna valoración. Por favor cerrar esta éstaña para proseguir con otras acciones.') ?></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>
+
+
 <hr>
 
 <script type="text/javascript">
