@@ -2710,28 +2710,8 @@ class BasesatisfaccionController extends Controller {
                     $modelBase->save();
 
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Formulario guardado'));
-                    /* TODO: descomentar esta linea cuando se quiera usar las notificaciones a Amigo v1
-                     
-					 * */
-                      $modelEvaluado = \app\models\Evaluados::findOne(["id" => $tmp_ejecucion->evaluado_id]);
-                      $ejecucion = \app\models\Ejecucionformularios::find()->where(['evaluado_id' => $tmp_ejecucion->evaluado_id, 'usua_id' => $tmp_ejecucion->usua_id])->orderBy('id DESC')->all();
-                      $params = [];
-                      $params['titulo'] = 'Te han realizado una valoración';
-                      $params['pcrc'] = '';
-                      $params['descripcion'] = '';
-                      $params['notificacion'] = 'SI';
-                      $params['muro'] = 'NO';
-                      $params['usuariored'] = $modelEvaluado->dsusuario_red;
-                      $params['cedula'] = '';
-                      $params['plataforma'] = 'QA';
-                      $params['url'] = '' . Url::to(['formularios/showformulariodiligenciadoamigo']) . '?form_id=' . base64_encode($ejecucion[0]->id);
-                      $webservicesresponse = null;
-                      $tmp_ejecucion = \app\models\Tmpejecucionformularios::findOne(['id' => $tmp_id]);
-                      if (!$webservicesresponse && $tmp_ejecucion == '') {
+                    // Se quita codigo del proceso de Amigo
                       
-					  
-					  Yii::$app->session->setFlash('danger', Yii::t('app', 'No se pudo realizar conexión con la plataforma Amigo'));				  
-					  }
                 } catch (\Exception $exc) {
                     Yii::$app->session->setFlash('danger', Yii::t('app', 'error exception') . ": " . $exc->getMessage());
                 }

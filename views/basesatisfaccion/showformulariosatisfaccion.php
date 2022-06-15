@@ -3463,6 +3463,34 @@ $banderaSaltoComentario = true;
                         }
                     }
 
+                    //validar responsabilidad SPC               
+                    if ($("#responsabilidadspc").val() === '') {
+                        $("#responsabilidadspc").addClass('field-error');
+                        hayErrores = true;
+                    } else {
+                        $("#responsabilidadspc").removeClass('field-error');
+                        if (($("#responsabilidadspc").val() === 'CANAL' && !$("input[name='canalspc[]']:checked").val()) ||
+                            ($("#responsabilidadspc").val() === 'COMPARTIDA' && !$("input[name='canalspc[]']:checked").val())) {
+                            $("#canalspc").addClass('field-error');
+                            hayErrores = true;
+                        } else {
+                            $("#canalspc").removeClass('field-error');
+                        }
+                        if (($("#responsabilidadspc").val() === 'MARCA' && !$("input[name='marcaspc[]']:checked").val()) ||
+                            ($("#responsabilidadspc").val() === 'COMPARTIDA' && !$("input[name='marcaspc[]']:checked").val())) {
+                            $("#marcaspc").addClass('field-error');
+                            hayErrores = true;
+                        } else {
+                            $("#marcaspc").removeClass('field-error');
+                        }
+                        if ($("#responsabilidadspc").val() === 'EQUIVOCADA' && !$("input[name='equivocacionspc[]']:checked").val()) {
+                            $("#equivocacionspc").addClass('field-error');
+                            hayErrores = true;
+                        } else {
+                            $("#equivocacionspc").removeClass('field-error');
+                        }
+                    }
+
 
 
                     $.each(totalBloques, function(l, sel) {
