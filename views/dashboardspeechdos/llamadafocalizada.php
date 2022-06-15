@@ -603,8 +603,9 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                         GROUP BY e.identificacion')->bindValues($paramsEvaluado)->queryScalar();
                                 }
 
-
-
+                                if ($varEvaluado_id == "" && $varIdClientes == "284") {
+                                    $varEvaluado_id = "0";
+                                }
 
 
                         ?>

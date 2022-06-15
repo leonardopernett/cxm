@@ -2457,6 +2457,133 @@ $banderaSaltoComentario = true;
         $contadorSecciones++;
         ?>
         <?php echo $arrayDivs[0] ?>
+
+        <!-- SECCION RESPONSABILIDAD SPC -->
+        <?php if (!empty($data->responsabilidadspc)) : ?>
+        <div class="row seccion">
+            <div class="col-md-10">
+                <label class="labelseccion">
+                    <?php echo Yii::t("app", "RESPONSABILIDADES SPC"); ?>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <?=
+                Html::a(Html::tag("span", "", ["aria-hidden" => "true",
+                            "class" => "glyphicon glyphicon-chevron-downForm",
+                        ]) . "", "javascript:void(0)"
+                        , ["class" => "openSeccion", "id" => "generalresponsabilidadspc"])
+                ?>
+                <?php $this->registerJs('$("#generalresponsabilidadspc").click(function () {
+                                $("#datosresponsabilidadspc").toggle("slow");
+                            });'); ?>
+            </div>
+        </div>
+        <div id="datosresponsabilidadspc" style="display: none;">
+            <div class="row well">
+                <?php echo Yii::t("app", "Proceso de la mejora"); ?>
+                <?php
+                echo Html::tag('span', Html::img(Url::to("@web/images/Question.png")), [
+                    'data-title' => Yii::t("app", "Bloques Detalles"),
+                    'data-content' => Yii::t("app", "Proceso de la mejora"),
+                    'data-toggle' => 'popover',
+                    'style' => 'cursor:pointer;'
+                ]);
+                ?>                        
+            </div>
+            <div class="form-group">
+                <div class="control-group">
+                    <label class="control-label col-sm-3">
+                        <?php echo Yii::t("app", "Seleccione la responsabilidad SPC"); ?>                        
+                    </label>
+                    <div class="col-sm-9">
+                        <?php
+                        echo Html::dropDownList("responsabilidadspc"
+                                , $data->basesatisfaccion->responsabilidad
+                                , [
+                                    'CANAL' => 'CANAL',
+                                    'EQUIVOCADA' => 'EQUIVOCADA',
+                                    'MARCA' => 'MARCA',
+                                    'NA' => 'N/A'                           
+                                ], 
+                                [
+                                    "id" => "responsabilidadspc",
+                                    "class" => "form-control",
+                                    'prompt' => 'Seleccione ...',
+                                    "disabled" => ($data->preview) ? true : false
+                                ]);
+                        ?>                      
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="divcanalspc" style="display: none">
+                <div class="control-group">
+                    <label class="control-label col-sm-3">
+                        <?php echo Yii::t("app", "Canal"); ?>                        
+                    </label>
+                    <div class="col-sm-9">
+                        <?php
+                        echo Html::checkboxList(
+                                'canalspc[]'
+                                , explode(", ", $data->basesatisfaccion->canal)
+                                , (isset($data->responsabilidadspc['CANAL'])) ? $data->responsabilidadspc['CANAL'] : []
+                                , [
+                            'id' => 'canalspc'
+                            , 'disabled' => ($data->preview) ? true : false
+                            , 'separator' => '<br />'
+                                ]
+                        );
+                        ?>                     
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="divmarcaspc"  style="display: none">
+                <div class="control-group">
+                    <label class="control-label col-sm-3">
+                        <?php echo Yii::t("app", "Marca"); ?>                          
+                    </label>
+                    <div class="col-sm-9">
+                        <?php
+                        echo Html::checkboxList(
+                                'marcaspc[]'
+                                , explode(", ", $data->basesatisfaccion->marca)
+                                , (isset($data->responsabilidadspc['MARCA'])) ? $data->responsabilidadspc['MARCA'] : []
+                                , [
+                            'id' => 'marcaspc'
+                            , 'disabled' => ($data->preview) ? true : false
+                            , 'separator' => '<br />'
+                                ]
+                        );
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="divequivocacionspc" style="display: none">
+                <div class="control-group">
+                    <label class="control-label col-sm-3">
+                        <?php echo Yii::t("app", "Equivocacion"); ?>                        
+                    </label>
+                    <div class="col-sm-9">
+                        <?php
+                        echo Html::checkboxList(
+                                'equivocacionspc[]'
+                                , explode(", ", $data->basesatisfaccion->equivocacion)
+                                , (isset($data->responsabilidadspc['EQUIVOCACION'])) ? $data->responsabilidadspc['EQUIVOCACION'] : []
+                                , [
+                            'id' => 'equivocacionspc'
+                            , 'disabled' => ($data->preview) ? true : false
+                            , 'separator' => '<br />'
+                                ]
+                        );
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
         <?php if (!empty($data->responsabilidad)) : ?>
             <!-- SECCION PROTECCIÓN DE LA EXPERIENCIA -->
             <div class="row seccion">
@@ -3161,6 +3288,63 @@ $banderaSaltoComentario = true;
                         $("#divmarca").show('slow');
                     }
                 }
+
+                /* RESPONSABILIDAD SPC*/
+                $("#responsabilidadspc").change(function () {
+                    if ($(this).val() === 'CANAL') {
+                        $("#divcanalspc").show('slow');
+                        $("#divmarcaspc").hide('slow');
+                        $("#divequivocacionspc").hide('slow');
+                        $("#marcaspc").val('');
+                        $("#equivocacionspc").val('');
+
+                    }
+                    if ($(this).val() === 'MARCA') {
+                        $("#divmarcaspc").show('slow');
+                        $("#divcanalspc").hide('slow');
+                        $("#divequivocacionspc").hide('slow');
+                        $("input[name='canalspc[]']:checked").attr('checked', false);
+                        $("input[name='equivocacionspc[]']:checked").attr('checked', false);
+                    }
+                    if ($(this).val() === 'EQUIVOCADA') {
+                        $("#divequivocacionspc").show('slow');
+                        $("#divcanalspc").hide('slow');
+                        $("#divmarcaspc").hide('slow');
+                        $("input[name='canalspc[]']:checked").attr('checked', false);
+                        $("input[name='marcaspc[]']:checked").attr('checked', false);
+                    }
+                    if ($(this).val() === 'COMPARTIDA') {
+                        $("#divcanalspc").show('slow');
+                        $("#divmarcaspc").show('slow');
+                        $("#divequivocacionspc").hide('slow');
+                        $("input[name='equivocacionspc[]']:checked").attr('checked', false);
+                    }
+                    if ($(this).val() === 'NA') {
+                        $("#divcanalspc").hide('slow');
+                        $("#divmarcaspc").hide('slow');
+                        $("#divequivocacionspc").hide('slow');
+                        $("input[name='equivocacionspc[]']:checked").attr('checked', false);
+                        $("input[name='canalspc[]']:checked").attr('checked', false);
+                        $("input[name='marcaspc[]']:checked").attr('checked', false);
+                    }
+                });
+
+                if ($("#responsabilidadspc").val() !== '') {
+                    if ($("#responsabilidadspc").val() === 'CANAL') {
+                        $("#divcanalspc").show('slow');
+                    }
+                    if ($("#responsabilidadspc").val() === 'MARCA') {
+                        $("#divmarcaspc").show('slow');
+                    }
+                    if ($("#responsabilidadspc").val() === 'EQUIVOCADA') {
+                        $("#divequivocacionspc").show('slow');
+                    }
+                    if ($("#responsabilidadspc").val() === 'COMPARTIDA') {
+                        $("#divcanalspc").show('slow');
+                        $("#divmarcaspc").show('slow');
+                    }
+                }
+
                 $("#activarValoracion").change(function() {
                     if ($(this).is(":checked") == true) {
                         $("#checkformadd").show('slow');

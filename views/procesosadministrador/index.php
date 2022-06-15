@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><i class="fas fa-star" style="font-size: 40px; color: #ffc034;"></i> Es importante indicar que las acciones que se representan en el actual módulo solo es permitido para usuarios que tengan rol administrativo. </label>
+                <label style="font-size: 15px;"><em class="fas fa-star" style="font-size: 40px; color: #ffc034;"></em> Es importante indicar que las acciones que se representan en el actual módulo solo es permitido para usuarios que tengan rol administrativo. </label>
             </div>
         </div>
     </div>
@@ -246,6 +246,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Formularios, Responsabilidades Manuales') ?></label>
+                        <?= Html::a('Aceptar',  ['parametrizarresponsabilidad'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Agregar Formularios con Responsabilidades']) 
+                        ?>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -268,7 +278,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
-                    <label style="font-size: 15px;"><i class="fas fa-info" style="font-size: 40px; color: #ffc034;"></i> Para acceder al modulo contactar al administrador de la herramienta para asignar permisos a su usuario. </label>
+                    <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 40px; color: #ffc034;"></em> Para acceder al modulo contactar al administrador de la herramienta para asignar permisos a su usuario. </label>
                 </div>
             </div>
         </div>
