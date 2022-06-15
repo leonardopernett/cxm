@@ -35,7 +35,7 @@ class SpeechServicios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['arbol_id', 'id_dp_clientes', 'cod_pcrc', 'anulado', 'usua_id'], 'integer'],
+            [['arbol_id', 'id_dp_clientes', 'cod_pcrc',, 'idllamada', 'anulado', 'usua_id'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['nameArbol', 'cliente', 'pcrc', 'comentarios'], 'string', 'max' => 100]
         ];
@@ -54,6 +54,7 @@ class SpeechServicios extends \yii\db\ActiveRecord
             'cliente' => Yii::t('app', ''),
             'cod_pcrc' => Yii::t('app', ''),
             'pcrc' => Yii::t('app', ''),
+            'idllamada' => Yii::t('app', ''),
             'comentarios' => Yii::t('app', ''),
             'fechacreacion' => Yii::t('app', ''),
             'anulado' => Yii::t('app', ''),
