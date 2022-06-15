@@ -1114,6 +1114,21 @@ use app\models\SpeechServicios;
 
     }
 
+    public function actionDeleteresponsabilidad($id){
+        $paramsEliminar = [':IdControl'=>$id];          
+
+        Yii::$app->db->createCommand('
+              DELETE FROM tbl_responsabilidad_manual 
+                WHERE 
+                  id_responsabilidad = :IdControl')
+            ->bindValues($paramsEliminar)
+            ->execute();
+
+        
+        return $this->redirect(['parametrizarresponsabilidad']);
+        
+    }
+
 
 
     
