@@ -2710,7 +2710,7 @@ class BasesatisfaccionController extends Controller {
                     $modelBase->save();
 
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Formulario guardado'));
-                    
+                    // Se quita codigo del proceso de Amigo
                       
                 } catch (\Exception $exc) {
                     Yii::$app->session->setFlash('danger', Yii::t('app', 'error exception') . ": " . $exc->getMessage());
