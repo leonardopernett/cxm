@@ -35,7 +35,7 @@ class SpeechServicios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['arbol_id', 'id_dp_clientes', 'cod_pcrc',, 'idllamada', 'anulado', 'usua_id'], 'integer'],
+            [['arbol_id', 'id_dp_clientes', 'cod_pcrc', 'idllamada', 'anulado', 'usua_id'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['nameArbol', 'cliente', 'pcrc', 'comentarios'], 'string', 'max' => 100]
         ];
