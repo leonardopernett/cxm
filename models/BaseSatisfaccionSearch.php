@@ -612,6 +612,12 @@ WHERE pe.programa = " . $this->pcrc;
         $titulos[41] = ['header' => 'Canal', 'value' => '41'];
         $titulos[42] = ['header' => 'Marca', 'value' => '42'];
         $titulos[43] = ['header' => 'Equivocacion', 'value' => '43'];
+        
+        $titulos[69] = ['header' => 'Responsabilidad SPC', 'value' => '69'];
+        $titulos[70] = ['header' => 'Canal SPC', 'value' => '70'];
+        $titulos[71] = ['header' => 'Marca SPC', 'value' => '71'];
+        $titulos[72] = ['header' => 'Equivocacion SPC', 'value' => '72'];
+
         $titulos[66] = ['header' => 'Fecha gestión ', 'value' => '66'];
         $titulos[44] = ['header' => 'Dimension', 'value' => '44'];
         $titulos[45] = ['header' => 'Programa/PCRC Padre', 'value' => '45'];
@@ -768,7 +774,7 @@ WHERE pe.programa = " . $this->pcrc;
                         $cdpregunta = -1;
                         $cdtipificacion = -1;
                         $newRow++;
-                        $iData = 69;
+                        $iData = 73;
                         unset($data[$i]['id_lider_equipo']);
                         unset($data[$i]['coordinador']);
                         unset($data[$i]['jefe_operaciones']);
@@ -831,6 +837,40 @@ WHERE pe.programa = " . $this->pcrc;
                         $dataProvider[$newRow][41] = $this->vData($data[$i]['canal']);
                         $dataProvider[$newRow][42] = $this->vData($data[$i]['marca']);
                         $dataProvider[$newRow][43] = $this->vData($data[$i]['equivocacion']);
+
+                        $varIdBaseSatu = $this->vData($data[$i]['id']);
+                        $dataProvider[$newRow][69] = (new \yii\db\Query())
+                                                      ->select(['responsabilidad'])
+                                                      ->from(['tbl_responsabilidad_satisfaccion'])
+                                                      ->where(['=','basesatisfaccion_id',$varIdBaseSatu])
+                                                      ->andwhere(['=','anulado',0])
+                                                      ->groupby(['responsabilidad'])
+                                                      ->scalar();   
+
+                        $dataProvider[$newRow][70] = (new \yii\db\Query())
+                                                      ->select(['canal'])
+                                                      ->from(['tbl_responsabilidad_satisfaccion'])
+                                                      ->where(['=','basesatisfaccion_id',$varIdBaseSatu])
+                                                      ->andwhere(['=','anulado',0])
+                                                      ->groupby(['canal'])
+                                                      ->scalar();
+
+                        $dataProvider[$newRow][71] = (new \yii\db\Query())
+                                                      ->select(['marca'])
+                                                      ->from(['tbl_responsabilidad_satisfaccion'])
+                                                      ->where(['=','basesatisfaccion_id',$varIdBaseSatu])
+                                                      ->andwhere(['=','anulado',0])
+                                                      ->groupby(['marca'])
+                                                      ->scalar();
+
+                        $dataProvider[$newRow][72] = (new \yii\db\Query())
+                                                      ->select(['equicovacion'])
+                                                      ->from(['tbl_responsabilidad_satisfaccion'])
+                                                      ->where(['=','basesatisfaccion_id',$varIdBaseSatu])
+                                                      ->andwhere(['=','anulado',0])
+                                                      ->groupby(['equicovacion'])
+                                                      ->scalar(); 
+
                         $dataProvider[$newRow][66] = $this->vData($data[$i]['Fecha']);
                         $dataProvider[$newRow][44] = $this->vData($data[$i]['Dimension']);
                         $dataProvider[$newRow][45] = $this->vData($data[$i]['ArbolPadre']);
