@@ -31,6 +31,8 @@ use app\models\ControlProcesos;
 use app\models\Equipos;
 use app\models\ControlParams;
 use \yii\base\Exception;
+use app\models\IdealServicios;
+use app\models\SpeechServicios;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
@@ -39,7 +41,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc','parametrizarfuncionapcrc'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad'],
             'rules' => [
               [
                 'allow' => true,
@@ -919,6 +921,201 @@ use \yii\base\Exception;
             'model' => $model,
         ]);
     }
+
+    public function actionParametrizarresponsabilidad(){
+        $model = new SpeechServicios();
+        $varListarResponsabilidad = null;
+        $varNombre = null;
+        $varProcesos = 0;
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varidpcrc = $model->idllamada;
+
+            $varNombre = (new \yii\db\Query())
+                          ->select(['name'])
+                          ->from(['tbl_arbols'])
+                          ->where(['=','id',$varidpcrc])
+                          ->scalar(); 
+
+            $varListarResponsabilidad = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_responsabilidad_manual'])
+                          ->where(['=','arbol_id',$varidpcrc])
+                          ->andwhere(['=','anulado',0])
+                          ->all();        
+
+            if (count($varListarResponsabilidad) == 0) {
+                $varProcesos = 0;
+            }else{
+                $varProcesos = 1;
+            }
+            
+        }
+
+        return $this->render('parametrizarresponsabilidad',[
+            'model' => $model,
+            'varListarResponsabilidad' => $varListarResponsabilidad,
+            'varNombre' => $varNombre,
+            'varProcesos' => $varProcesos,
+        ]);
+    }
+
+    public function actionViewresponsabilidad(){
+        $model = new SpeechServicios();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varArbolId = $model->arbol_id;
+            $varTipos = $model->nameArbol;
+            $varResponsabilidad = $model->comentarios;
+
+            Yii::$app->db->createCommand()->insert('tbl_responsabilidad_manual',[
+                    'arbol_id' => $varArbolId,
+                    'responsabilidad' => $varResponsabilidad,
+                    'tipo' => $varTipos,
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'fechacreacion' => date('Y-m-d'),
+                ])->execute();
+
+            return $this->redirect(['parametrizarresponsabilidad']);
+
+        }
+
+        return $this->renderAjax('viewresponsabilidad',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionGuardarclon(){
+        $varidarbolescon = Yii::$app->request->get('txtvaridarbolescon');
+        $varidarbolessin = Yii::$app->request->get('txtvaridarbolessin');
+
+        $varListManual = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_responsabilidad'])
+                          ->where(['=','arbol_id',$varidarbolescon])
+                          ->all(); 
+
+        if (count($varListManual) != 0) {
+            $txtrta = 1;
+
+            foreach ($varListManual as $key => $value) {
+
+                Yii::$app->db->createCommand()->insert('tbl_responsabilidad_manual',[
+                    'arbol_id' => $varidarbolessin,
+                    'responsabilidad' => $value['nombre'],
+                    'tipo' => $value['tipo'],
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'fechacreacion' => date('Y-m-d'),
+                ])->execute();
+
+            }
+
+        }else{
+            $txtrta = 0;
+        }
+        
+
+        die(json_encode($txtrta));
+    }
+
+    public function actionGuardarclonmanual(){
+        $varidarbolescon = Yii::$app->request->get('txtvaridarbolescon');
+        $varidarbolessin = Yii::$app->request->get('txtvaridarbolessin');
+
+        $varListManual = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_responsabilidad_manual'])
+                          ->where(['=','arbol_id',$varidarbolescon])
+                          ->all(); 
+
+        if (count($varListManual) != 0) {
+            $txtrta = 1;
+
+            foreach ($varListManual as $key => $value) {
+
+                Yii::$app->db->createCommand()->insert('tbl_responsabilidad_manual',[
+                    'arbol_id' => $varidarbolessin,
+                    'responsabilidad' => $value['nombre'],
+                    'tipo' => $value['tipo'],
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'fechacreacion' => date('Y-m-d'),
+                ])->execute();
+
+            }
+
+        }else{
+            $txtrta = 0;
+        }
+        
+
+        die(json_encode($txtrta));
+    }
+
+    public function actionSubirresponsabilidad(){
+        $model = new FormUploadtigo();
+
+        if ($model->load(Yii::$app->request->post())){
+            $model->file = UploadedFile::getInstances($model, 'file');
+
+            if ($model->file && $model->validate()) {
+                foreach ($model->file as $file) {
+                    $fecha = date('Y-m-d-h-i-s');
+                    $user = Yii::$app->user->identity->username;
+                    $name = $fecha . '-' . $user;
+                    $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                    $this->Importresponsabilidades($name);
+
+                    return $this->redirect(['parametrizarresponsabilidad']);
+                }
+            }
+        }
+
+        return $this->renderAjax('subirresponsabilidad',[
+            'model' => $model,
+        ]);
+    }
+
+    public function Importresponsabilidades($name){
+        $inputFile = 'categorias/' . $name . '.xlsx';
+
+        try {
+            $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($inputFile);
+        } catch (Exception $e) {
+            die('Error');
+        }
+
+        $sheet = $objPHPExcel->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+
+        for ($row = 2; $row <= $highestRow; $row++) { 
+            
+            if ($sheet->getCell("A".$row)->getValue() != null) {
+
+                Yii::$app->db->createCommand()->insert('tbl_responsabilidad_manual',[
+                    'arbol_id' => $sheet->getCell("A".$row)->getValue(),
+                    'responsabilidad' => $sheet->getCell("B".$row)->getValue(),
+                    'tipo' => $sheet->getCell("C".$row)->getValue(),
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                ])->execute();
+                
+                 
+            }
+
+        }
+
+    }
+
+
+
     
 
   }

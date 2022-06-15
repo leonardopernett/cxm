@@ -2364,6 +2364,15 @@ class BasesatisfaccionController extends Controller {
                                         ])
                                         ->asArray()->all(), 'nombre', 'nombre', 'tipo'
                 );
+
+                $data->responsabilidadspc = ArrayHelper::map(
+                                \app\models\ResponsabilidadManual::find()
+                                    ->where([
+                                        'arbol_id' => $modelBase->pcrc,
+                                    ])
+                                    ->asArray()->all(), 'responsabilidad', 'responsabilidad', 'tipo'
+                );
+
                 $varConnids = $modelBase->connid;
                 $vartexto = null;
                 $varvalencia = null;
@@ -2651,6 +2660,34 @@ class BasesatisfaccionController extends Controller {
                     $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
                     /* validacion de guardado exitoso del tmp y paso a las tablas de ejecucion
                       en caso de no cumplirla, se redirige nuevamente al formulario */
+                    
+                    $varResponsabilidadspc = (isset($_POST['responsabilidadspc'])) ? $_POST['responsabilidadspc'] : "";
+                    $varCanalspc = (isset($_POST['canalspc'])) ? implode(", ", $_POST['canalspc']) : "";
+                    $varMarcaspc = (isset($_POST['marcaspc'])) ? implode(", ", $_POST['marcaspc']) : "";
+                    $varEquispc = (isset($_POST['equivocacionspc'])) ? implode(", ", $_POST['equivocacionspc']) : "";
+
+                    if ($varResponsabilidadspc != "") {                        
+
+                        $varArbolPcrc = (new \yii\db\Query())
+                                          ->select(['pcrc'])
+                                          ->from(['tbl_base_satisfaccion'])
+                                          ->where(['=','id',$modelBase->id])
+                                          ->groupby(['pcrc'])
+                                          ->scalar(); 
+
+                        Yii::$app->db->createCommand()->insert('tbl_responsabilidad_satisfaccion',[
+                                'basesatisfaccion_id' => $modelBase->id,                                
+                                'arbol_id' => $varArbolPcrc,
+                                'responsabilidad' => $varResponsabilidadspc,
+                                'canal' => $varCanalspc,
+                                'marca' => $varMarcaspc,
+                                'equicovacion' => $varEquispc,                                
+                                'anulado' => 0,
+                                'usua_id' => Yii::$app->user->identity->id,
+                                'fechacreacion' => date('Y-m-d'),
+                        ])->execute();
+                                                
+                    }
 
                     if (!$validarPasoejecucionform) {
                         Yii::$app->session->setFlash('danger', Yii::t('app', 'error exception tmpejecucion to ejecucion'));
