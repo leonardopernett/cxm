@@ -199,13 +199,39 @@ class ControlProcesos extends \yii\db\ActiveRecord
         $fechainiC = Yii::$app->db->createCommand("select fechainiciotc from tbl_tipocortes where tipocortetc like '$txtcorte' and anulado = 0")->queryScalar();
         $fechafinC =  Yii::$app->db->createCommand("select fechafintc from tbl_tipocortes where tipocortetc like '$txtcorte' and anulado = 0")->queryScalar();                         
 
+        $dataListParams = (new \yii\db\Query())
+            ->select(['tbl_control_params.arbol_id','tbl_dimensions.id'])
+            ->from(['tbl_dimensions'])
+            ->join('LEFT OUTER JOIN', 'tbl_control_params',
+                    'tbl_dimensions.name = tbl_control_params.dimensions')
+            ->where(['=','tbl_control_params.evaluados_id',$variableid])
+            ->andwhere(['BETWEEN','fechacreacion',$fechainiC,$fechafinC])
+            ->andwhere(['=','anulado',0])
+            ->all();
+
+        $arralistaarbolparams = array();
+        $arralistadimensionparams = array();
+
+        foreach ($dataListParams as $key => $value) {
+            array_push($arralistaarbolparams, $value['arbol_id']);
+            array_push($arralistadimensionparams, $value['id']);
+        }
+        
+        $listaarbolarray = implode(", ", $arralistaarbolparams);
+        $dataIdArboles = explode(",", str_replace(array("#", "'", ";", " "), '', $listaarbolarray));
+
+        $listadimensionsarray = implode(", ", $arralistadimensionparams);
+        $dataIdDimensions = explode(",", str_replace(array("#", "'", ";", " "), '', $listadimensionsarray));
+
         $querys =  new Query;
         $querys     ->select(['tbl_ejecucionformularios.created', 'tbl_usuarios.usua_nombre'])->distinct()
                     ->from('tbl_ejecucionformularios')
                     ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                             'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
                     ->where("tbl_ejecucionformularios.created between '$fechainiC 00:00:00' and '$fechafinC 23:59:59'")
-                    ->andwhere('tbl_usuarios.usua_id = '.$variableid.'');
+                    ->andwhere('tbl_usuarios.usua_id = '.$variableid.'')
+                    ->andWhere(['IN', 'tbl_ejecucionformularios.dimension_id', $dataIdDimensions])
+                    ->andWhere(['IN', 'tbl_ejecucionformularios.arbol_id', $dataIdArboles]);
                     
         $command = $querys->createCommand();
         $queryss = $command->queryAll();   
