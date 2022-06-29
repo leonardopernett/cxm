@@ -161,9 +161,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ->join('LEFT OUTER JOIN', 'tbl_usuarios',
                             'tbl_ejecucionformularios.usua_id = tbl_usuarios.usua_id')
                     ->where("tbl_ejecucionformularios.created between '$fechainiC 00:00:00' and '$fechafinC 23:59:59'")
-                    ->andwhere('tbl_usuarios.usua_id = '.$textoss2.'')
-                    ->andWhere(['IN', 'tbl_ejecucionformularios.dimension_id', $dataIdDimensions])
-                    ->andWhere(['IN', 'tbl_ejecucionformularios.arbol_id', $dataIdArboles]);
+                    ->andwhere('tbl_usuarios.usua_id = '.$textoss2.'');
+                    /* ->andWhere(['IN', 'tbl_ejecucionformularios.dimension_id', $dataIdDimensions])
+                    ->andWhere(['IN', 'tbl_ejecucionformularios.arbol_id', $dataIdArboles]); */
                     
         $command = $querys->createCommand();
         $queryss = $command->queryAll();    
