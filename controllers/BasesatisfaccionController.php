@@ -2668,9 +2668,14 @@ class BasesatisfaccionController extends Controller {
 
                     if ($varResponsabilidadspc != "") {     
                         
-                        Yii::$app->db->createCommand('DELETE FROM tbl_responsabilidad_satisfaccion WHERE basesatisfaccion_id=:id')
-                            ->bindParam(':id',$modelBase->id )
-                            ->execute();
+                        $paramsEliminar = [':IdControl'=>$modelBase->id];          
+
+                        Yii::$app->db->createCommand('
+                                      DELETE FROM tbl_responsabilidad_satisfaccion 
+                                        WHERE 
+                                          basesatisfaccion_id = :IdControl')
+                                    ->bindValues($paramsEliminar)
+                                    ->execute();
 
                         $varArbolPcrc = (new \yii\db\Query())
                                           ->select(['pcrc'])
