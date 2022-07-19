@@ -2460,6 +2460,39 @@ $banderaSaltoComentario = true;
 
         <!-- SECCION RESPONSABILIDAD SPC -->
         <?php if (!empty($data->responsabilidadspc)) : ?>
+            <?php 
+
+                $varIdModels = $data->basesatisfaccion->id;
+
+                $varResponsabilidad =  (new \yii\db\Query())
+                                    ->select(['responsabilidad'])
+                                    ->from(['tbl_responsabilidad_satisfaccion'])            
+                                    ->where(['=','anulado',0])
+                                    ->andwhere(['=','basesatisfaccion_id',$varIdModels])
+                                    ->scalar();
+
+                $varCanal =  (new \yii\db\Query())
+                                    ->select(['canal'])
+                                    ->from(['tbl_responsabilidad_satisfaccion'])            
+                                    ->where(['=','anulado',0])
+                                    ->andwhere(['=','basesatisfaccion_id',$varIdModels])
+                                    ->scalar();
+
+                $varMarca =  (new \yii\db\Query())
+                                    ->select(['marca'])
+                                    ->from(['tbl_responsabilidad_satisfaccion'])            
+                                    ->where(['=','anulado',0])
+                                    ->andwhere(['=','basesatisfaccion_id',$varIdModels])
+                                    ->scalar();
+
+                $varEquivocacion =  (new \yii\db\Query())
+                                    ->select(['equicovacion'])
+                                    ->from(['tbl_responsabilidad_satisfaccion'])            
+                                    ->where(['=','anulado',0])
+                                    ->andwhere(['=','basesatisfaccion_id',$varIdModels])
+                                    ->scalar();
+
+            ?>
         <div class="row seccion">
             <div class="col-md-10">
                 <label class="labelseccion">
@@ -2498,7 +2531,7 @@ $banderaSaltoComentario = true;
                     <div class="col-sm-9">
                         <?php
                         echo Html::dropDownList("responsabilidadspc"
-                                , $data->basesatisfaccion->responsabilidad
+                                , $varResponsabilidad
                                 , [
                                     'CANAL' => 'CANAL',
                                     'EQUIVOCADA' => 'EQUIVOCADA',
@@ -2525,7 +2558,7 @@ $banderaSaltoComentario = true;
                         <?php
                         echo Html::checkboxList(
                                 'canalspc[]'
-                                , explode(", ", $data->basesatisfaccion->canal)
+                                , explode(", ", $varCanal)
                                 , (isset($data->responsabilidadspc['CANAL'])) ? $data->responsabilidadspc['CANAL'] : []
                                 , [
                             'id' => 'canalspc'
@@ -2547,7 +2580,7 @@ $banderaSaltoComentario = true;
                         <?php
                         echo Html::checkboxList(
                                 'marcaspc[]'
-                                , explode(", ", $data->basesatisfaccion->marca)
+                                , explode(", ", $varMarca)
                                 , (isset($data->responsabilidadspc['MARCA'])) ? $data->responsabilidadspc['MARCA'] : []
                                 , [
                             'id' => 'marcaspc'
@@ -2569,7 +2602,7 @@ $banderaSaltoComentario = true;
                         <?php
                         echo Html::checkboxList(
                                 'equivocacionspc[]'
-                                , explode(", ", $data->basesatisfaccion->equivocacion)
+                                , explode(", ", $varEquivocacion)
                                 , (isset($data->responsabilidadspc['EQUIVOCACION'])) ? $data->responsabilidadspc['EQUIVOCACION'] : []
                                 , [
                             'id' => 'equivocacionspc'
