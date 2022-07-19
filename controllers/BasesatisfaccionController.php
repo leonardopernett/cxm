@@ -2668,31 +2668,18 @@ class BasesatisfaccionController extends Controller {
 
                     if ($varResponsabilidadspc != "") {     
                         
-                        $varContarSPC = (new \yii\db\Query())
-                                          ->select(['*'])
-                                          ->from(['tbl_responsabilidad_satisfaccion'])
-                                          ->where(['=','basesatisfaccion_id',$modelBase->id])
-                                          ->count();
+                        Yii::$app->db->createCommand('DELETE FROM tbl_responsabilidad_satisfaccion WHERE basesatisfaccion_id=:id')
+                            ->bindParam(':id',$modelBase->id )
+                            ->execute();
 
-                        if ($varContarSPC != 0) {
-
-                            Yii::$app->db->createCommand()->update('tbl_responsabilidad_satisfaccion',[
-                                'responsabilidad' => $varResponsabilidadspc,
-                                'canal' => $varCanalspc,
-                                'marca' => $varMarcaspc,
-                                'equicovacion' => $varEquispc,
-                            ],'basesatisfaccion_id ='.$modelBase->id.'')->execute();
-
-                        }else{
-
-                            $varArbolPcrc = (new \yii\db\Query())
+                        $varArbolPcrc = (new \yii\db\Query())
                                           ->select(['pcrc'])
                                           ->from(['tbl_base_satisfaccion'])
                                           ->where(['=','id',$modelBase->id])
                                           ->groupby(['pcrc'])
                                           ->scalar(); 
 
-                            Yii::$app->db->createCommand()->insert('tbl_responsabilidad_satisfaccion',[
+                        Yii::$app->db->createCommand()->insert('tbl_responsabilidad_satisfaccion',[
                                     'basesatisfaccion_id' => $modelBase->id,                                
                                     'arbol_id' => $varArbolPcrc,
                                     'responsabilidad' => $varResponsabilidadspc,
@@ -2703,8 +2690,7 @@ class BasesatisfaccionController extends Controller {
                                     'usua_id' => Yii::$app->user->identity->id,
                                     'fechacreacion' => date('Y-m-d'),
                             ])->execute();
-
-                        }                        
+                                               
                                                 
                     }
 
