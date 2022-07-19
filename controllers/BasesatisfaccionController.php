@@ -2666,26 +2666,45 @@ class BasesatisfaccionController extends Controller {
                     $varMarcaspc = (isset($_POST['marcaspc'])) ? implode(", ", $_POST['marcaspc']) : "";
                     $varEquispc = (isset($_POST['equivocacionspc'])) ? implode(", ", $_POST['equivocacionspc']) : "";
 
-                    if ($varResponsabilidadspc != "") {                        
+                    if ($varResponsabilidadspc != "") {     
+                        
+                        $varContarSPC = (new \yii\db\Query())
+                                          ->select(['*'])
+                                          ->from(['tbl_responsabilidad_satisfaccion'])
+                                          ->where(['=','basesatisfaccion_id',$modelBase->id])
+                                          ->count();
 
-                        $varArbolPcrc = (new \yii\db\Query())
+                        if ($varContarSPC != 0) {
+
+                            Yii::$app->db->createCommand()->update('tbl_responsabilidad_satisfaccion',[
+                                'responsabilidad' => $varResponsabilidadspc,
+                                'canal' => $varCanalspc,
+                                'marca' => $varMarcaspc,
+                                'equicovacion' => $varEquispc,
+                            ],'basesatisfaccion_id ='.$modelBase->id.'')->execute();
+
+                        }else{
+
+                            $varArbolPcrc = (new \yii\db\Query())
                                           ->select(['pcrc'])
                                           ->from(['tbl_base_satisfaccion'])
                                           ->where(['=','id',$modelBase->id])
                                           ->groupby(['pcrc'])
                                           ->scalar(); 
 
-                        Yii::$app->db->createCommand()->insert('tbl_responsabilidad_satisfaccion',[
-                                'basesatisfaccion_id' => $modelBase->id,                                
-                                'arbol_id' => $varArbolPcrc,
-                                'responsabilidad' => $varResponsabilidadspc,
-                                'canal' => $varCanalspc,
-                                'marca' => $varMarcaspc,
-                                'equicovacion' => $varEquispc,                                
-                                'anulado' => 0,
-                                'usua_id' => Yii::$app->user->identity->id,
-                                'fechacreacion' => date('Y-m-d'),
-                        ])->execute();
+                            Yii::$app->db->createCommand()->insert('tbl_responsabilidad_satisfaccion',[
+                                    'basesatisfaccion_id' => $modelBase->id,                                
+                                    'arbol_id' => $varArbolPcrc,
+                                    'responsabilidad' => $varResponsabilidadspc,
+                                    'canal' => $varCanalspc,
+                                    'marca' => $varMarcaspc,
+                                    'equicovacion' => $varEquispc,                                
+                                    'anulado' => 0,
+                                    'usua_id' => Yii::$app->user->identity->id,
+                                    'fechacreacion' => date('Y-m-d'),
+                            ])->execute();
+
+                        }                        
                                                 
                     }
 
