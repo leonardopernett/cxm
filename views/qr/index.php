@@ -7,16 +7,40 @@ use yii\bootstrap\ActiveForm;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use kartik\daterange\DateRangePicker;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
-use app\models\ControlProcesosPlan;
-use yii\db\Query;
 
+$this->title = 'Quejas y Reclamos';
+$this->params['breadcrumbs'][] = $this->title;
+
+$template = '<div class="col-md-12">'
+. ' {input}{error}{hint}</div>';
 
 ?>
 
 <style>
-     .masthead {
+    .card1 {
+            height: auto;
+            width: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: #FFFFFF;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;    
+            font-family: "Nunito";
+            font-size: 150%;    
+            text-align: left;    
+    }
+
+    .masthead {
         height: 25vh;
         min-height: 100px;
         background-image: url('../../images/ADMINISTRADOR-GENERAL.png');
@@ -86,7 +110,7 @@ use yii\db\Query;
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
-
+<!-- Extensiones -->
 <script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
 <script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
 <script src="../../js_extensions/cloudflare/jszip.min.js"></script>
@@ -94,9 +118,8 @@ use yii\db\Query;
 <script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
 <script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
 <script src="../../js_extensions/datatables/buttons.print.min.js"></script>
+<script src="../../js_extensions/mijs.js"> </script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-
-
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
@@ -105,93 +128,97 @@ use yii\db\Query;
     </div>
   </div>
 </header>
-<br><br>
+<br>
+<br>
+<div class="capaInformacion" id="capaIdInfo" style="display: inline;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <label><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Listado Quejas y Reclamos') ?></label>
 
-<div class="breadcrumb">
-<ul>
+                <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
+                    <caption>.</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Número del Caso ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Dato ') ?></label></th>                            
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Nombre Usuario ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Documento Usuario ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Correo Electrónico ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Estado ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Creación ') ?></label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                            foreach ($model as $key => $value) {
+                                $varIdCaso = $value['idcaso'];
+                                $varNumCaso = $value['numero_caso'];
+                                $varTipoDato = $value['tipo_de_dato'];
+                                $varComentarios = $value['comentario'];
+                                $varCliente = $value['cliente'];
+                                $varUsuario = $value['nombre'];
+                                $varDocUsuario = $value['documento'];
+                                $varEmail = $value['correo'];
+                                $varEstado = $value['estado'];
+                                $varIdEstado = $value['idestado'];
+                                $varFechaCreacion = $value['fecha_creacion'];
 
-<li>
-       <a href="<?= Url::to(['/'])  ?>">Inicio</a>
-   </li>
+                        ?>
+                            <tr>
+                                <td><label style="font-size: 12px;"><?php echo  $varIdCaso; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varNumCaso; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varTipoDato; ?></label></td>                                
+                                <td><label style="font-size: 12px;"><?php echo  $varCliente; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varUsuario; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varDocUsuario; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varEmail; ?></label></td>
 
-   <li>
-       <a  class="active">Quejas y reclamos</a>
-   </li>
-   
-   </ul>
-   
+                                <?php
+                                    if ($varIdEstado == '1') {
+                                ?>
+                                        <td><label style="font-size: 12px; color: #559FFF"><?php echo  $varEstado; ?></label></td>
+                                <?php
+                                    }
+                                ?>
 
-   
+                                <?php
+                                    if ($varIdEstado == '3') {
+                                ?>
+                                        <td><label style="font-size: 12px; color: #00968F"><?php echo  $varEstado; ?></label></td>
+                                <?php
+                                    }
+                                ?>
+
+                                <?php
+                                    if ($varIdEstado == '2') {
+                                ?>
+                                        <td><label style="font-size: 12px; color: #D01E53"><?php echo  $varEstado; ?></label></td>
+                                <?php
+                                    }
+                                ?>
+
+
+
+                                
+                                <td><label style="font-size: 12px;"><?php echo  $varComentarios; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  Yii::$app->formatter->asDate($varFechaCreacion); ?></label></td>
+                            </tr>
+                        <?php 
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-<table class="table table-bordered" id="myTable">
-<caption>Tabla datos</caption>
-    <thead>
-        <tr>
-            <th scope="col"><span> Id casos</span> </th>
-            <th scope="col"><span>Tipos</span></th>
-            <th scope="col"> <span>Areas</span> </th>
-            <th scope="col"><span>Tipificación</span></th>
-            <th scope="col"><span>Comentarios</span></th>
-            <th scope="col"><span>Clientes</span></th>
-            <th scope="col"><span>Nombre</span></th>
-            <th scope="col"><span>Cedula</span></th>
-            <th scope="col"><span>Correo</span></th>
-            <th scope="col"><span>Estados</span></th>
-            <th scope="col"><span>Fecha de creación</span></th>
-            <th scope="col">
-                <span>Acciones</span>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($casos as $caso): ?>
-            <tr>
-                <td><span><?= $caso['id']  ?></span> </td>
-                <td><span><?= $caso['tipo_de_dato'] ?></span> </td>
-                <td><span><?= $caso['area'] ?></span> </td>
-                <td><span><?= $caso['tipologia'] ?></span> </td>
-                <td><span><?= $caso['comentario'] ?></span> </td>
-                <td><span><?= $caso['clientes'] ?></span> </td>
-                <td><span><?= $caso['nombre'] ?></span> </td>
-                <td><span><?= $caso['documento'] ?></span> </td>
-                <td><span><?= $caso['correo'] ?></span> </td>
-                <td>
-                    <?php if ($caso['estado'] =='abierto'): ?>
-                         <div class="redondo-primary">
-                            <?= $caso['estado'] ?>
-                        </div>
-                    <?php endif ?>
-
-                    <?php if ($caso['estado'] =='en gestion'): ?>
-                        <div class="redondo-success">
-                            <?= $caso['estado'] ?>
-                        </div>
-                    <?php endif ?>
-
-                    <?php if ($caso['estado'] =='cerrado'): ?>
-                        <div class="redondo-danger">
-                            <?= $caso['estado'] ?>
-                        </div>
-                    <?php endif ?>
-                    
-                </td>
-                <td><span><?= Yii::$app->formatter->asDate($caso['fecha_creacion'], 'd-M-Y')  ?> </span></td>
-                <td class="text-center">
-                    <a href="#">
-                        <em class="fa fa-search fa-2x"></em>
-                    </a>
-                </td>
-            </tr>
-        <?php endforeach ?>
-    </tbody>
-</table>
-
-
-
-<script>
-    $(function(){
+<script type="text/javascript">
+    $(document).ready( function () {
         $('#myTable').DataTable({
             responsive: true,
             fixedColumns: true,
@@ -200,27 +227,26 @@ use yii\db\Query;
                 { 
                   extend: 'excel',
                   dom: 'Bfrtip',
-                  text:'Export excel',
+                  text:'Exportar a excel',
                   className: 'btn btn-primary',
                   title:'Quejas-reclamos'
                 } 
              ],
             select: true,
-             "language": {
-                  "lengthMenu": "Display _MENU_ records per page",
-                  "zeroRecords": "No se encontraron datos ",
-                  "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
-                  "infoEmpty": "No hay datos aun",
-                  "infoFiltered": "(Filtrado un _MAX_ total)",
-                  "search": "Buscar:",
-                  "paginate": {
+            "language": {
+                "lengthMenu": "Cantidad de Datos a Mostrar _MENU_ ",
+                "zeroRecords": "No se encontraron datos ",
+                "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+                "infoEmpty": "No hay datos aun",
+                "infoFiltered": "(Filtrado un _MAX_ total)",
+                "search": "Buscar:",
+                "paginate": {
                     "first":      "Primero",
                     "last":       "Ultimo",
                     "next":       "Siguiente",
                     "previous":   "Anterior"
-
-                  }
-              } 
-          });
-    })
+                }
+            } 
+        });
+    });
 </script>

@@ -3,36 +3,64 @@
 namespace app\controllers;
 
 use Yii;
-use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
+use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\db\Query;
 use yii\db\mssql\PDO;
 use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\helpers\Url;
-use app\models\UploadForm2;
-use GuzzleHttp;
-use app\models\HvInfopersonal;
-use app\models\Hobbies;
 use PHPExcel;
 use PHPExcel_IOFactory;
-use PHPExcel_Reader_DefaultReadFilter;
-use PHPExcel_Shared_Date;
+use GuzzleHttp;
 
 
-class QrController extends Controller {
+  class QrController extends \yii\web\Controller {
 
+    public function behaviors(){
+      return[
+        'access' => [
+            'class' => AccessControl::classname(),
+            'only' => ['index'],
+            'rules' => [
+              [
+                'allow' => true,
+                'roles' => ['@'],
+                'matchCallback' => function() {
+                            return Yii::$app->user->identity->isCuadroMando();
+                        },
+              ],
+            ]
+          ],
+        'verbs' => [          
+          'class' => VerbFilter::className(),
+          'actions' => [
+            'delete' => ['post'],
+          ],
+        ],
+      ];
+    }
     
-    public function actionIndex(){
-       $casos = Yii::$app->db->createCommand('SELECT c.numero_caso as id, a.nombre as area, s.tipo_de_dato, t.tipologia , comentario, cli.clientes, c.nombre, c.documento, c.correo, es.estado, c.fecha_creacion  FROM tbl_qr_casos c INNER JOIN  tbl_qr_tipos_de_solicitud s ON c.id_solicitud = s.id INNER JOIN  tbl_qr_tipologias t ON t.id = c.id_tipologia INNER JOIN tbl_qr_areas a ON a.id = t.id_areas INNER JOIN  tbl_qr_clientes cli ON cli.id = c.id_cliente INNER JOIN  tbl_qr_estados_casos es ON es.id = c.id_estado_caso')->queryAll();
 
-       return $this->render('index',[
-           'casos'=>$casos
-       ]);
-   }
+    public function actionIndex(){ 
+        $model = (new \yii\db\Query())
+                  ->select(['tbl_qr_casos.id as idcaso','tbl_qr_casos.numero_caso','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_casos.comentario','tbl_qr_casos.cliente','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo','tbl_qr_estados_casos.estado','tbl_qr_estados_casos.id as idestado','tbl_qr_casos.fecha_creacion'])
+                  ->from(['tbl_qr_casos'])
+                  ->join('LEFT OUTER JOIN', 'tbl_qr_tipos_de_solicitud',
+                                  'tbl_qr_casos.id_solicitud = tbl_qr_tipos_de_solicitud.id') 
+                  ->join('LEFT OUTER JOIN', 'tbl_qr_estados_casos',
+                                  'tbl_qr_casos.id_estado_caso = tbl_qr_estados_casos.id')     
+                  ->All();
+      
+        return $this->render('index',[
+            'model' => $model,
+        ]);
+    }
 
-}
+  }
+
+?>
