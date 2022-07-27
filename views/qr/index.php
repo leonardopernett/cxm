@@ -141,7 +141,7 @@ $template = '<div class="col-md-12">'
                     <thead>
                         <tr>
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Número del Caso ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Identificación del Caso ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Dato ') ?></label></th>                            
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Nombre Usuario ') ?></label></th>
