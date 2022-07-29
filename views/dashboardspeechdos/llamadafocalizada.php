@@ -33,7 +33,7 @@ $this->title = 'Análisis Focalizados - Escuchar +';
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
-    $paramsBuscarLider = [':varCodPcrcs' => $paramsvarcodigopcrc, ':varRoles' => 273];
+    $paramsBuscarLider = [':varCodPcrcs' => $paramsvarcodigopcrc, ':varRoles' => 273, ':varNombres' => '%No usar%'];
 
     $txtListLideres = Yii::$app->db->createCommand("
         SELECT DISTINCT u.usua_id, u.usua_nombre, e.id FROM tbl_roles r
@@ -54,6 +54,7 @@ $this->title = 'Análisis Focalizados - Escuchar +';
             WHERE
                 sp.cod_pcrc IN (:varCodPcrcs)
                     AND r.role_id = :varRoles
+                        AND e.name NOT LIKE :varNombres
                 ORDER BY u.usua_nombre ASC
 
         ")->bindValues($paramsBuscarLider)->queryAll();
