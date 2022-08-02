@@ -346,6 +346,27 @@ use app\models\DistribucionAsesores;
           $varIdClientes = [330, 341];          
         }
 
+        // Hago proceso de borrado sobre el lider o equipo que cada asesor tenga.
+        $varListAsesoresEliminar = (new \yii\db\Query())
+                                  ->select(['tbl_evaluados.id','tbl_distribucion_asesores.cedulaasesor'])
+                                  ->from(['tbl_evaluados'])
+                                  ->join('INNER JOIN', 'tbl_distribucion_asesores', 
+                                      'tbl_evaluados.identificacion = tbl_distribucion_asesores.cedulaasesor')
+                                  ->where(['IN','tbl_distribucion_asesores.id_dp_clientes',$varIdClientes])
+                                  ->groupby(['tbl_evaluados.id'])
+                                  ->all();
+
+        foreach ($varListAsesoresEliminar as $key => $value) {          
+          $paramsEliminarEquipos = [':varIdEvaluado'=>$value['id']]; 
+
+                  Yii::$app->db->createCommand('
+                    DELETE FROM tbl_equipos_evaluados 
+                      WHERE 
+                        evaluado_id = :varIdEvaluado')
+                  ->bindValues($paramsEliminarEquipos)
+                  ->execute();  
+        }
+
         $varListUsuariosD = (new \yii\db\Query())
                           ->select(['tbl_usuarios.usua_id','tbl_usuarios.usua_identificacion','tbl_distribucion_asesores.id_dp_clientes'])
                           ->from(['tbl_usuarios'])
