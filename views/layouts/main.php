@@ -210,7 +210,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Hoja de Vida del Cliente&nbsp;&nbsp;'),
                                                     'url' => ['/hojavida/index'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX(),
                                                 ],                                              
                                             
                                         '</div>',  
