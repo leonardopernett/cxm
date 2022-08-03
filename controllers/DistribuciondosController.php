@@ -356,15 +356,27 @@ use app\models\DistribucionAsesores;
                                   ->groupby(['tbl_evaluados.id'])
                                   ->all();
 
-        foreach ($varListAsesoresEliminar as $key => $value) {          
-          $paramsEliminarEquipos = [':varIdEvaluado'=>$value['id']]; 
+        foreach ($varListAsesoresEliminar as $key => $value) {
+          $varAsesorId = $value['id'];          
+          $paramsEliminarEquipos = [':varIdEvaluado'=>$varAsesorId]; 
 
-                  Yii::$app->db->createCommand('
+          $varValdiaParams = (new \yii\db\Query())
+                            ->select(['tbl_equipo_parametros.idequipo_parametros'])
+                            ->from(['tbl_equipo_parametros'])
+                            ->join('INNER JOIN', 'tbl_equipos_evaluados', 
+                                    'tbl_equipo_parametros.id_equipo = tbl_equipos_evaluados.equipo_id')
+                            ->where(['IN','tbl_equipos_evaluados.evaluado_id',$varAsesorId])
+                            ->count();
+
+          if ($varValdiaParams == "0") {
+            Yii::$app->db->createCommand('
                     DELETE FROM tbl_equipos_evaluados 
                       WHERE 
                         evaluado_id = :varIdEvaluado')
                   ->bindValues($paramsEliminarEquipos)
-                  ->execute();  
+                  ->execute();
+          }
+
         }
 
         $varListUsuariosD = (new \yii\db\Query())
