@@ -110,6 +110,7 @@ $roles = $command->queryScalar();
                 
                 <?php if (count($varListresponsabilidad ) != null) { ?>
                 <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?= Yii::t('app', '...') ?></caption>
                     <thead>
                         <tr>
                             <th scope="col" colspan="2" style="text-align: center; background-color: #d2d0d0;"><label style="font-size: 13px;"><?php echo $varnombrepcrc; ?></label></th>
