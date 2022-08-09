@@ -608,6 +608,10 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                     $varEvaluado_id = "0";
                                 }
 
+                                if ($varEvaluado_id == "" && $varIdClientes == "303") {
+                                    $varEvaluado_id = "0";
+                                }
+
 
                         ?>
                             <tr>
