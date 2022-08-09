@@ -30,6 +30,13 @@ if ($varEscuchar == "CX_Directv") {
 
 
 ?>
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
+<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
+<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
+<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
+
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css" >
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 <style type="text/css">
