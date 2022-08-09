@@ -168,7 +168,7 @@ if ($varEscuchar == "CX_Directv") {
     	<div class="col-md-6">
     		<div class="card3 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Copiar Url') ?></label>
-    			<div onclick="generated();" class="btn btn-primary" style="display:inline;background-color: #c5cbd0;color: black;" method='post' id="botones2" ><i class="fas fa-play-circle" style="font-size: 17px; color: #ff3838;"></i>
+    			<div onclick="generated();" class="btn btn-primary" style="display:inline;background-color: #c5cbd0;color: black;" method='post' id="botones2" ><em class="fas fa-play-circle" style="font-size: 17px; color: #ff3838;"></em>
 				    Copiar Url Llamada
 				</div> 
     		</div>	
