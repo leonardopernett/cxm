@@ -44,7 +44,6 @@ use app\models\Hojavidaroles;
 use app\models\Hojavidainforme;
 use app\models\Hojavidaperiocidad;
 use app\models\Hojavidametricas;
-use app\models\UploadForm2;
 use Exception;
 
   class HojavidaController extends Controller {
