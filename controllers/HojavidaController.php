@@ -52,7 +52,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion','tiposeventos',,'informacioncontrato','contratorol','contratoinforme','contratopriocidad','contratometrica','importarpersona'],
+              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion','tiposeventos','informacioncontrato','contratorol','contratoinforme','contratopriocidad','contratometrica','importarpersona'],
               'rules' => [
                 [
                   'allow' => true,
