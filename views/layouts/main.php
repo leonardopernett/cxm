@@ -578,6 +578,11 @@ AppAsset::register($this);
                                                     'url' => ['/procesosadministrador/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Parametrizar Escuchar +&nbsp;&nbsp;'),
+                                                    'url' => ['/dashboardspeech/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
                                                 '<br>',                                            
                                                 '<li class="dropdown-headercx">&nbsp;Encuestas de Satisfacci&oacute;n</li>',
                                                 [
@@ -599,11 +604,6 @@ AppAsset::register($this);
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Informe aleatoriedad'),
                                                     'url' => ['/informeinboxaleatorio/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Parametrizar Escuchar +&nbsp;&nbsp;'),
-                                                    'url' => ['/dashboardspeech/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                         '</div>',
 
