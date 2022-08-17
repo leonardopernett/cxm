@@ -39,6 +39,13 @@ use app\models\HojavidaDatacomplementos;
 use app\models\ProcesosClienteCentrocosto;
 use app\models\HojavidaDataclasificacion;
 use app\models\HojavidaTipoeventos;
+use app\models\HojavidaDatapersonal;
+use app\models\HvInfopersonal;
+use app\models\Hojavidaroles;
+use app\models\Hojavidainforme;
+use app\models\Hojavidaperiocidad;
+use app\models\Hojavidametricas;
+use app\models\UploadForm2;
 use Exception;
 
   class HojavidaController extends Controller {
@@ -47,7 +54,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion','tiposeventos'],
+              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion','tiposeventos',,'informacioncontrato','contratorol','contratoinforme','contratopriocidad','contratometrica','importarpersona'],
               'rules' => [
                 [
                   'allow' => true,
@@ -107,7 +114,93 @@ use Exception;
       }
   }
    
-    public function actionIndex(){
+    public function actionIndex(){      
+      // Procesos para calcular el resumen
+      $arrayIdCiudades = [1,2];
+      $varListaClientesResumen = (new \yii\db\Query())
+                                ->select(['if(clasificacion=1,"Bogota","Medellín") AS Ciudad',' COUNT(clasificacion) AS Conteo'])
+                                ->from(['tbl_hojavida_datapersonal'])            
+                                ->where(['IN','clasificacion',$arrayIdCiudades])
+                                ->andwhere(['=','anulado',0])
+                                ->groupby(['clasificacion'])
+                                ->all();
+
+      $varListaDecisores = (new \yii\db\Query())
+                        ->select(['if(tbl_hojavida_datapersonal.clasificacion=1,"Bogota","Medellín") AS Ciudad',' COUNT(tbl_hojavida_datapersonal.clasificacion) AS Conteo'])
+                        ->from(['tbl_hojavida_datapersonal']) 
+                        ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 'tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datalaboral.hv_idpersonal')  
+                        ->join('INNER JOIN', 'tbl_hojavida_datatipoafinidad', 'tbl_hojavida_datalaboral.tipo_afinidad = tbl_hojavida_datatipoafinidad.hv_idtipoafinidad')          
+                        ->where(['IN','tbl_hojavida_datapersonal.clasificacion',$arrayIdCiudades])
+                        ->andwhere(['=','tbl_hojavida_datatipoafinidad.hv_idtipoafinidad',1])
+                        ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
+                        ->groupby(['tbl_hojavida_datapersonal.clasificacion'])
+                        ->all();
+
+      $varListaDecisorEstrategico = (new \yii\db\Query())
+                        ->select(['if(tbl_hojavida_datapersonal.clasificacion=1,"Bogota","Medellín") AS Ciudad',' COUNT(tbl_hojavida_datapersonal.clasificacion) AS Conteo'])
+                        ->from(['tbl_hojavida_datapersonal']) 
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 'tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datalaboral.hv_idpersonal')  
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datanivelafinidad', 'tbl_hojavida_datalaboral.nivel_afinidad = tbl_hojavida_datanivelafinidad.hv_idinvelafinidad')   
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datatipoafinidad', 'tbl_hojavida_datalaboral.tipo_afinidad = tbl_hojavida_datatipoafinidad.hv_idtipoafinidad')  
+
+                        ->where(['IN','tbl_hojavida_datapersonal.clasificacion',$arrayIdCiudades])
+                        ->andwhere(['=','tbl_hojavida_datatipoafinidad.hv_idtipoafinidad',1])
+                        ->andwhere(['=','tbl_hojavida_datanivelafinidad.hv_idinvelafinidad',1])
+                        ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
+                        ->groupby(['tbl_hojavida_datapersonal.clasificacion'])
+                        ->all();
+
+      $varListaDecisorOperativo = (new \yii\db\Query())
+                        ->select(['if(tbl_hojavida_datapersonal.clasificacion=1,"Bogota","Medellín") AS Ciudad',' COUNT(tbl_hojavida_datapersonal.clasificacion) AS Conteo'])
+                        ->from(['tbl_hojavida_datapersonal']) 
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 'tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datalaboral.hv_idpersonal')  
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datanivelafinidad', 'tbl_hojavida_datalaboral.nivel_afinidad = tbl_hojavida_datanivelafinidad.hv_idinvelafinidad')   
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datatipoafinidad', 'tbl_hojavida_datalaboral.tipo_afinidad = tbl_hojavida_datatipoafinidad.hv_idtipoafinidad')  
+
+                        ->where(['IN','tbl_hojavida_datapersonal.clasificacion',$arrayIdCiudades])
+                        ->andwhere(['=','tbl_hojavida_datatipoafinidad.hv_idtipoafinidad',1])
+                        ->andwhere(['=','tbl_hojavida_datanivelafinidad.hv_idinvelafinidad',2])
+                        ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
+                        ->groupby(['tbl_hojavida_datapersonal.clasificacion'])
+                        ->all();
+
+      $varListaDirectores = (new \yii\db\Query())
+                        ->select(['if(tbl_hojavida_datadirector.ccdirector="","Sin Definir",tbl_hojavida_datadirector.ccdirector) AS CcDirector','(SELECT p.director_programa FROM tbl_proceso_cliente_centrocosto p WHERE p.documento_director = tbl_hojavida_datadirector.ccdirector LIMIT 1) AS NombreDirector','COUNT(tbl_hojavida_datadirector.ccdirector) AS ConteoDirector'])
+                        ->from(['tbl_hojavida_datadirector'])
+                        ->where(['!=','tbl_hojavida_datadirector.ccdirector',''])
+                        ->andwhere(['!=','tbl_hojavida_datadirector.ccdirector','-'])
+                        ->groupby(['tbl_hojavida_datadirector.ccdirector'])
+                        ->all();
+
+      $arrayListaDirector = array();
+      $arrayListaDirectorCantidad = array();
+      foreach ($varListaDirectores as $key => $value) {
+        array_push($arrayListaDirector, $value['NombreDirector']);
+        array_push($arrayListaDirectorCantidad, $value['ConteoDirector']);
+      }
+
+      $varListaClientes = (new \yii\db\Query())
+                        ->select(['if(tbl_hojavida_datapcrc.id_dp_cliente="","Sin Definir",tbl_hojavida_datapcrc.id_dp_cliente) AS IdClientes','(SELECT p.cliente FROM tbl_proceso_cliente_centrocosto p WHERE p.id_dp_clientes = tbl_hojavida_datapcrc.id_dp_cliente LIMIT 1) AS NombreCliente','COUNT(tbl_hojavida_datapcrc.id_dp_cliente) AS ConteoClientes'])
+                        ->from(['tbl_hojavida_datapcrc'])
+                        ->where(['!=','tbl_hojavida_datapcrc.id_dp_cliente',''])
+                        ->andwhere(['!=','tbl_hojavida_datapcrc.id_dp_cliente',1])
+                        ->groupby(['tbl_hojavida_datapcrc.id_dp_cliente'])
+                        ->all();   
+
+      $arrayListaCliente = array();
+      $arrayListaClienteCantidad = array();
+      foreach ($varListaClientes as $key => $value) {
+        array_push($arrayListaCliente, $value['NombreCliente']);
+        array_push($arrayListaClienteCantidad, $value['ConteoClientes']);
+      }
+
+      // Procesos para generar el listado de los calculos
       $sesiones = Yii::$app->user->identity->id;
       $modelos = new HojavidaDatapersonal();
       $rol =  new Query;
@@ -197,15 +290,645 @@ use Exception;
         ")
         ->bindValue(':varidclientes',$varidclientes)
         ->queryAll();
-
       }
 
-      
+      if ($roles == "270") {
+        $varListaContratos = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_hojavida_contratogeneral'])
+                                ->where(['=','anulado',0])
+                                ->all();
+      }else{
+        $varListaContratos = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_hojavida_contratogeneral'])
+                                ->where(['=','usua_id',$sesiones])
+                                ->andwhere(['=','anulado',0])
+                                ->all();
+      }      
       
       return $this->render('index',[
         'dataProviderhv' => $dataProviderhv,
-        'modelos' =>  $modelos
+        'modelos' =>  $modelos,
+        'varListaClientesResumen' => $varListaClientesResumen,
+        'varListaDecisores' => $varListaDecisores,
+        'varListaDecisorEstrategico' => $varListaDecisorEstrategico,
+        'varListaDecisorOperativo' => $varListaDecisorOperativo,
+        'arrayListaDirector' => $arrayListaDirector,
+        'arrayListaDirectorCantidad' => $arrayListaDirectorCantidad,
+        'arrayListaCliente' => $arrayListaCliente,
+        'arrayListaClienteCantidad' => $arrayListaClienteCantidad,
+        'varListaContratos' => $varListaContratos,
       ]);
+    }
+
+    public function actionSeleccioncontrato(){
+      $model = new HvInfopersonal();
+
+      $form = Yii::$app->request->post();
+      if($model->load($form)){
+        $varIdClientes = $model->cliente;
+        $varLitaPcrc = $model->pcrc;
+        $varListaDirectorCc = $model->director;
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_contratogeneral',[
+                    'id_dp_clientes' => $varIdClientes,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute();
+
+        $varIdContratoGeneral = (new \yii\db\Query())
+                                ->select(['max(id_contratogeneral)'])
+                                ->from(['tbl_hojavida_contratogeneral'])
+                                ->scalar();
+
+        $varListasPcrc = (new \yii\db\Query())
+                          ->select(['cod_pcrc'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])
+                          ->where(['IN','cod_pcrc',$varLitaPcrc])
+                          ->andwhere(['=','estado',1])
+                          ->andwhere(['=','anulado',0])
+                          ->groupby(['cod_pcrc'])
+                          ->all();
+
+        foreach ($varListasPcrc as $key => $value) {
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_contratopcrc',[
+                    'id_contratogeneral' => $varIdContratoGeneral,
+                    'cod_pcrc' => $value['cod_pcrc'],
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute();
+        }
+
+        $varListasDirectores = (new \yii\db\Query())
+                          ->select(['documento_director'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])
+                          ->where(['IN','documento_director',$varListaDirectorCc])
+                          ->andwhere(['=','estado',1])
+                          ->andwhere(['=','anulado',0])
+                          ->groupby(['documento_director'])
+                          ->all();
+
+        foreach ($varListasDirectores as $key => $value) {
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_contratodirector',[
+                    'id_contratogeneral' => $varIdContratoGeneral,
+                    'director_cedula' => $value['documento_director'],
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute();
+        }        
+
+        return $this->redirect(array('informacioncontrato','id_contrato'=>$varIdContratoGeneral));
+        
+      }
+
+      return $this->renderAjax('seleccioncontrato',[
+        'model' => $model,
+      ]);
+    }
+
+    public function actionInformacioncontrato($id_contrato){
+      $model = new HvInfopersonal();
+
+      $varNombreCliente = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratogeneral',
+                              'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_hojavida_contratogeneral.id_dp_clientes')
+                          ->where(['=','tbl_hojavida_contratogeneral.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_contratogeneral.anulado',0])
+                          ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                          ->Scalar();
+
+      $varNombrePcrcs = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.pcrc','tbl_proceso_cliente_centrocosto.cod_pcrc'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratopcrc',
+                              'tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_hojavida_contratopcrc.cod_pcrc')
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratogeneral',
+                              'tbl_hojavida_contratopcrc.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+                          ->where(['=','tbl_hojavida_contratogeneral.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_contratogeneral.anulado',0])
+                          ->groupby(['tbl_proceso_cliente_centrocosto.pcrc'])
+                          ->All();
+
+      $varNombreDirectores = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])
+
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratodirector',
+                              'tbl_proceso_cliente_centrocosto.documento_director = tbl_hojavida_contratodirector.director_cedula')
+
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratogeneral',
+                              'tbl_hojavida_contratodirector.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+
+                          ->where(['=','tbl_hojavida_contratogeneral.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_contratogeneral.anulado',0])
+                          ->groupby(['tbl_proceso_cliente_centrocosto.director_programa'])
+                          ->All();
+
+      $vardataProviderPersona = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloquepersona'])
+                          ->where(['=','tbl_hojavida_bloquepersona.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloquepersona.anulado',0])
+                          ->All();
+
+      $vardataProviderentregable = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloqueinformes'])
+                          ->where(['=','tbl_hojavida_bloqueinformes.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloqueinformes.anulado',0])
+                          ->All();
+
+      $vardataProviderherramientas = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloqueherramienta'])
+                          ->where(['=','tbl_hojavida_bloqueherramienta.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloqueherramienta.anulado',0])
+                          ->All();
+
+      $vardataProvidermetricas = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloquekpis'])
+                          ->where(['=','tbl_hojavida_bloquekpis.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloquekpis.anulado',0])
+                          ->All();
+
+      $vardataExclusivas = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloquesalas'])
+                          ->where(['=','tbl_hojavida_bloquesalas.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloquesalas.anulado',0])
+                          ->All();
+
+      $form = Yii::$app->request->post();     
+      if($model->load($form)){
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_bloquesalas',[
+                      'exclusivas' => $model->cliente,
+                      'comentarios' => $model->director,
+                      'id_contratogeneral' => $id_contrato,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,                                       
+                  ])->execute(); 
+
+        return $this->redirect(['index']);
+      }
+
+
+
+      return $this->render('informacioncontrato',[
+        'model' => $model,
+        'varNombreCliente' => $varNombreCliente,
+        'varNombrePcrcs' => $varNombrePcrcs,
+        'varNombreDirectores' => $varNombreDirectores,
+        'vardataProviderPersona' => $vardataProviderPersona,
+        'id_contrato' => $id_contrato,
+        'vardataProviderentregable' => $vardataProviderentregable,
+        'vardataProviderherramientas' => $vardataProviderherramientas,
+        'vardataProvidermetricas' => $vardataProvidermetricas,
+        'vardataExclusivas' => $vardataExclusivas,
+      ]);
+    }
+
+    public function actionImportarpersona($id){
+      $modelpersona = new HojavidaDatapersonal(); 
+      $model = new UploadForm2();
+      $ruta = null;
+
+      $form = Yii::$app->request->post();     
+
+      if($model->load($form)){
+
+        $model->file = UploadedFile::getInstance($model, 'file');
+        var_dump("Ingresa");
+        if ($model->file && $model->validate()) {
+          var_dump("Ingresa");
+          foreach ($model->file as $file) {
+            $ruta = 'images/contratos/'."bloque1_".$id."_".time()."_".$model->file->baseName. ".".$model->file->extension;
+            $model->file->saveAs( $ruta ); 
+          }
+        } 
+         
+        if ($ruta != null) {
+          $varRutaAnexoBone = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_archivos'])
+                          ->where(['=','anulado',0])
+                          ->andwhere(['=','bloques',1])
+                          ->andwhere(['=','anexo',$ruta])
+                          ->count();
+
+          if ($varRutaAnexoBone == 0) {
+            Yii::$app->db->createCommand()->insert('tbl_hojavida_archivos',[
+                      'bloques' => 1,
+                      'anexo' => $ruta,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,                                       
+                  ])->execute(); 
+          }
+        }else{
+          $ruta = null;
+        }
+
+      }
+
+      if ($modelpersona->load($form)) {
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_bloquepersona',[
+                    'id_contratogeneral' => $id,
+                    'id_hvroles' => $modelpersona->clasificacion,
+                    'perfil' => $modelpersona->direccion_oficina,
+                    'funciones' => $modelpersona->email,
+                    'salario' => $modelpersona->numero_movil,
+                    'variable' => $modelpersona->direccion_casa,
+                    'totalsalario' => $modelpersona->identificacion,
+                    'tramocontrol' => $modelpersona->numero_fijo,
+                    'ratiopricing' => $modelpersona->nombre_full,
+                    'rutaanexo' => $ruta,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute(); 
+
+        return $this->redirect(array('informacioncontrato','id_contrato'=>$id));
+      }
+      
+      return $this->renderAjax('importarpersona',[
+        'modelpersona' => $modelpersona,
+        'model' => $model,
+        'id' => $id,
+      ]);
+    }
+
+    public function actionImportarentregables($id){
+      $modelpersona = new HojavidaDatapersonal(); 
+      $model = new UploadForm2();
+      $ruta = null;
+
+      $form = Yii::$app->request->post();     
+
+      if($model->load($form)){
+
+        $model->file = UploadedFile::getInstance($model, 'file');
+        var_dump("Ingresa");
+        if ($model->file && $model->validate()) {
+          var_dump("Ingresa");
+          foreach ($model->file as $file) {
+            $ruta = 'images/contratos/'."bloque1_".$id."_".time()."_".$model->file->baseName. ".".$model->file->extension;
+            $model->file->saveAs( $ruta ); 
+          }
+        }            
+
+         
+        if ($ruta != null) {
+          $varRutaAnexoBone = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_archivos'])
+                          ->where(['=','anulado',0])
+                          ->andwhere(['=','bloques',2])
+                          ->andwhere(['=','anexo',$ruta])
+                          ->count();
+
+          if ($varRutaAnexoBone == 0) {
+            Yii::$app->db->createCommand()->insert('tbl_hojavida_archivos',[
+                      'bloques' => 2,
+                      'anexo' => $ruta,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,                                       
+                  ])->execute(); 
+          }
+        }else{
+          $ruta = null;
+        }
+
+      }
+
+      if ($modelpersona->load($form)) {
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_bloqueinformes',[
+                    'id_contratogeneral' => $id,
+                    'id_hvinforme' => $modelpersona->clasificacion,
+                    'alcance' => $modelpersona->numero_fijo,
+                    'id_hvperiocidad' => $modelpersona->nombre_full,
+                    'detalle' => $modelpersona->email,
+                    'rutaanexoinforme' => $ruta,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute(); 
+
+        return $this->redirect(array('informacioncontrato','id_contrato'=>$id));
+      }
+      
+      return $this->renderAjax('importarentregables',[
+        'modelpersona' => $modelpersona,
+        'model' => $model,
+        'id' => $id,
+      ]);
+    }
+
+    public function actionImportarherramientas($id){
+      $modelpersona = new HojavidaDatapersonal(); 
+      $model = new UploadForm2();
+      $ruta = null;
+
+      $form = Yii::$app->request->post();     
+
+      if($model->load($form)){
+
+        $model->file = UploadedFile::getInstance($model, 'file');
+        var_dump("Ingresa");
+        if ($model->file && $model->validate()) {
+          var_dump("Ingresa");
+          foreach ($model->file as $file) {
+            $ruta = 'images/contratos/'."bloque1_".$id."_".time()."_".$model->file->baseName. ".".$model->file->extension;
+            $model->file->saveAs( $ruta ); 
+          }
+        }            
+
+         
+        if ($ruta != null) {
+          $varRutaAnexoBone = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_archivos'])
+                          ->where(['=','anulado',0])
+                          ->andwhere(['=','bloques',3])
+                          ->andwhere(['=','anexo',$ruta])
+                          ->count();
+
+          if ($varRutaAnexoBone == 0) {
+            Yii::$app->db->createCommand()->insert('tbl_hojavida_archivos',[
+                      'bloques' => 3,
+                      'anexo' => $ruta,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,                                       
+                  ])->execute(); 
+          }
+        }else{
+          $ruta = null;
+        }
+
+      }
+
+      if ($modelpersona->load($form)) {
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_bloqueherramienta',[
+                    'id_contratogeneral' => $id,
+                    'alcance' => $modelpersona->clasificacion,
+                    'funcionalidades' => $modelpersona->numero_fijo,
+                    'detalle' => $modelpersona->email,
+                    'rutaanexoherramienta' => $ruta,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute(); 
+
+        return $this->redirect(array('informacioncontrato','id_contrato'=>$id));
+      }
+      
+      return $this->renderAjax('importarherramientas',[
+        'modelpersona' => $modelpersona,
+        'model' => $model,
+        'id' => $id,
+      ]);
+    }
+
+    public function actionImportarmetricas($id){
+      $modelpersona = new HojavidaDatapersonal(); 
+      $model = new UploadForm2();
+      $ruta = null;
+
+      $form = Yii::$app->request->post();     
+
+      if($model->load($form)){
+
+        $model->file = UploadedFile::getInstance($model, 'file');
+        var_dump("Ingresa");
+        if ($model->file && $model->validate()) {
+          var_dump("Ingresa");
+          foreach ($model->file as $file) {
+            $ruta = 'images/contratos/'."bloque1_".$id."_".time()."_".$model->file->baseName. ".".$model->file->extension;
+            $model->file->saveAs( $ruta ); 
+          }
+        }            
+
+         
+        if ($ruta != null) {
+          $varRutaAnexoBone = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_archivos'])
+                          ->where(['=','anulado',0])
+                          ->andwhere(['=','bloques',4])
+                          ->andwhere(['=','anexo',$ruta])
+                          ->count();
+
+          if ($varRutaAnexoBone == 0) {
+            Yii::$app->db->createCommand()->insert('tbl_hojavida_archivos',[
+                      'bloques' => 4,
+                      'anexo' => $ruta,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,                                       
+                  ])->execute(); 
+          }
+        }else{
+          $ruta = null;
+        }
+
+      }
+
+      if ($modelpersona->load($form)) {
+
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_bloquekpis',[
+                    'id_contratogeneral' => $id,
+                    'id_hvmetrica' => $modelpersona->clasificacion,
+                    'obtjetivo' => $modelpersona->numero_fijo,
+                    'penalizacion' => $modelpersona->email,
+                    'rango' => $modelpersona->direccion_oficina,
+                    'rutaanexokpis' => $ruta,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute(); 
+
+        return $this->redirect(array('informacioncontrato','id_contrato'=>$id));
+      }
+      
+      return $this->renderAjax('importarmetricas',[
+        'modelpersona' => $modelpersona,
+        'model' => $model,
+        'id' => $id,
+      ]);
+    }
+
+    public function actionContratorol(){
+      $model = new Hojavidaroles();
+
+      $vardataProviderRol = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_roles'])
+                          ->where(['=','anulado',0])
+                          ->All();
+
+      $form = Yii::$app->request->post();
+      if($model->load($form)){
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_roles',[
+                    'hvroles' => $model->hvroles,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute();
+
+        return $this->redirect('contratorol');
+      }
+
+      return $this->render('contratorol',[
+        'model' => $model,
+        'vardataProviderRol' => $vardataProviderRol,
+      ]);
+    }
+
+    public function actionEliminarbloquepersona($id,$id_contrato){
+      Yii::$app->db->createCommand('DELETE FROM tbl_hojavida_bloquepersona WHERE id_bloquepersona=:id')->bindParam(':id',$id)->execute();
+
+      return $this->redirect(array('informacioncontrato','id_contrato'=>$id_contrato));
+    }
+
+    public function actionEliminarbloqueentregable($id,$id_contrato){
+      Yii::$app->db->createCommand('DELETE FROM tbl_hojavida_bloqueinformes WHERE id_bloqueinformes=:id')->bindParam(':id',$id)->execute();
+
+      return $this->redirect(array('informacioncontrato','id_contrato'=>$id_contrato));
+    }
+
+    public function actionEliminarbloqueherramienta($id,$id_contrato){
+      Yii::$app->db->createCommand('DELETE FROM tbl_hojavida_bloqueherramienta WHERE id_bloqueherramienta=:id')->bindParam(':id',$id)->execute();
+
+      return $this->redirect(array('informacioncontrato','id_contrato'=>$id_contrato));
+    }
+
+    public function actionEliminarbloquekpis($id,$id_contrato){
+      Yii::$app->db->createCommand('DELETE FROM tbl_hojavida_bloquekpis WHERE id_bloquekpis=:id')->bindParam(':id',$id)->execute();
+
+      return $this->redirect(array('informacioncontrato','id_contrato'=>$id_contrato));
+    }
+
+    public function actionEliminarbloqueexclusiva($id,$id_contrato){
+      Yii::$app->db->createCommand('DELETE FROM tbl_hojavida_bloquesalas WHERE id_bloquesalas=:id')->bindParam(':id',$id)->execute();
+
+      return $this->redirect(array('informacioncontrato','id_contrato'=>$id_contrato));
+    }
+
+    public function actionEliminarrol($id){
+      Hojavidaroles::findOne($id)->delete();
+
+      return $this->redirect(['contratorol']);
+    }
+
+    public function actionContratoinforme(){
+      $model = new Hojavidainforme();
+
+      $vardataProviderInforme = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_informe'])
+                          ->where(['=','anulado',0])
+                          ->All();
+
+      $form = Yii::$app->request->post();
+      if($model->load($form)){
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_informe',[
+                    'hvinforme' => $model->hvinforme,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute();
+
+        return $this->redirect('contratoinforme');
+      }
+
+      return $this->render('contratoinforme',[
+        'model' => $model,
+        'vardataProviderInforme' => $vardataProviderInforme,
+      ]);
+    }
+
+    public function actionEliminarinforme($id){
+      Hojavidainforme::findOne($id)->delete();
+
+      return $this->redirect(['contratoinforme']);
+    }
+
+    public function actionContratopriocidad(){
+      $model = new Hojavidaperiocidad();
+
+      $vardataProviderperiocidad = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_periocidad'])
+                          ->where(['=','anulado',0])
+                          ->All();
+
+      $form = Yii::$app->request->post();
+      if($model->load($form)){
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_periocidad',[
+                    'hvperiocidad' => $model->hvperiocidad,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute();
+
+        return $this->redirect('contratopriocidad');
+      }
+
+      return $this->render('contratopriocidad',[
+        'model' => $model,
+        'vardataProviderperiocidad' => $vardataProviderperiocidad,
+      ]);
+    }
+
+    public function actionEliminarperiocidad($id){
+      Hojavidaperiocidad::findOne($id)->delete();
+
+      return $this->redirect(['contratopriocidad']);
+    }
+
+    public function actionContratometrica(){
+      $model = new Hojavidametricas();
+
+      $vardataProvidermetrica = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_metricas'])
+                          ->where(['=','anulado',0])
+                          ->All();
+
+      $form = Yii::$app->request->post();
+      if($model->load($form)){
+        Yii::$app->db->createCommand()->insert('tbl_hojavida_metricas',[
+                    'hvmetrica' => $model->hvmetrica,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                                       
+                ])->execute();
+
+        return $this->redirect('contratometrica');
+      }
+
+      return $this->render('contratometrica',[
+        'model' => $model,
+        'vardataProvidermetrica' => $vardataProvidermetrica,
+      ]);
+    }
+
+    public function actionEliminarmetrica($id){
+      Hojavidametricas::findOne($id)->delete();
+
+      return $this->redirect(['contratometrica']);
     }
 
     public function actionEventos(){

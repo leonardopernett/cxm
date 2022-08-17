@@ -208,7 +208,7 @@ AppAsset::register($this);
                                                 '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',    
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hoja de Vida del Cliente&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestor del Cliente&nbsp;&nbsp;'),
                                                     'url' => ['/hojavida/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX(),
                                                 ],                                              

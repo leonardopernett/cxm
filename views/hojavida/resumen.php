@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Hoja de Vida - Resumen General';
+$this->title = 'Gestor de Clientes - Resumen General';
 $this->params['breadcrumbs'][] = $this->title;
 
 $varCiudad = "Ciudad";

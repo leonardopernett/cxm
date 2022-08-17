@@ -12,7 +12,7 @@ use yii\bootstrap\Modal;
 use app\models\ControlProcesosPlan;
 use yii\db\Query;
 
-$this->title = 'Hoja de Vida - Datos Complementarios';
+$this->title = 'Gestor de Clientes - Datos Complementarios';
 $this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-12">'
