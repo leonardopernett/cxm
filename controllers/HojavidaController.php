@@ -39,7 +39,6 @@ use app\models\HojavidaDatacomplementos;
 use app\models\ProcesosClienteCentrocosto;
 use app\models\HojavidaDataclasificacion;
 use app\models\HojavidaTipoeventos;
-use app\models\HojavidaDatapersonal;
 use app\models\HvInfopersonal;
 use app\models\Hojavidaroles;
 use app\models\Hojavidainforme;
