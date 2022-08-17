@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Hoja de Vida - Modalidad';
+$this->title = 'Gestor de Clientes - Modalidad';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

@@ -12,7 +12,7 @@ use yii\bootstrap\Modal;
 use app\models\ControlProcesosPlan;
 use yii\db\Query;
 
-$this->title = 'Hoja de Vida - Datos Academicos';
+$this->title = 'Gestor de Clientes - Datos Academicos';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

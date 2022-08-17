@@ -13,7 +13,7 @@ use app\models\ControlProcesosPlan;
 use yii\db\Query;
 use app\models\HvPais;
 
-$this->title = 'Hoja de Vida - Pais & Ciudad';
+$this->title = 'Gestor de Clientes - Pais & Ciudad';
 $this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-12">'
