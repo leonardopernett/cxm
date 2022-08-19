@@ -303,7 +303,44 @@ use Exception;
                                 ->where(['=','usua_id',$sesiones])
                                 ->andwhere(['=','anulado',0])
                                 ->all();
-      }      
+      }     
+
+      $varServiciosRegistrados = (new \yii\db\Query())
+                                ->select(['id_dp_clientes'])
+                                ->from(['tbl_hojavida_contratogeneral'])
+                                ->where(['=','anulado',0])
+                                ->groupby(['id_dp_clientes'])
+                                ->count();
+
+      $varServiciosCompletos = (new \yii\db\Query())
+                                ->select(['id_dp_clientes'])
+                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','estado',1])
+                                ->groupby(['id_dp_clientes'])
+                                ->count();
+
+      $varServiciosNoRegistrados = $varServiciosCompletos - $varServiciosRegistrados;
+
+      $varPcrcRegistrados = (new \yii\db\Query())
+                                ->select(['cod_pcrc'])
+                                ->from(['tbl_hojavida_contratopcrc'])
+                                ->where(['=','anulado',0])
+                                ->groupby(['cod_pcrc'])
+                                ->count();
+
+      $varPcrcCompletos = (new \yii\db\Query())
+                                ->select(['cod_pcrc'])
+                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','estado',1])
+                                ->groupby(['cod_pcrc'])
+                                ->count();
+
+      $varPcrcNoRegistrados = $varPcrcCompletos - $varPcrcRegistrados;
+
+      $varPorcentajeServicios = round(($varServiciosRegistrados / 100) * $varServiciosCompletos, 2);
+      $varRestantesPorcentaje = round(100 - $varPorcentajeServicios, 2); 
       
       return $this->render('index',[
         'dataProviderhv' => $dataProviderhv,
@@ -317,6 +354,12 @@ use Exception;
         'arrayListaCliente' => $arrayListaCliente,
         'arrayListaClienteCantidad' => $arrayListaClienteCantidad,
         'varListaContratos' => $varListaContratos,
+        'varServiciosRegistrados' => $varServiciosRegistrados,
+        'varServiciosNoRegistrados' => $varServiciosNoRegistrados,
+        'varPcrcRegistrados' => $varPcrcRegistrados,
+        'varPcrcNoRegistrados' => $varPcrcNoRegistrados,
+        'varPorcentajeServicios' => $varPorcentajeServicios,
+        'varRestantesPorcentaje' => $varRestantesPorcentaje,
       ]);
     }
 
@@ -927,6 +970,357 @@ use Exception;
       Hojavidametricas::findOne($id)->delete();
 
       return $this->redirect(['contratometrica']);
+    }
+
+    public function actionDescargaservicio($id_contrato){
+      $model = new HojavidaDatapersonal();
+
+      $varNombreClienteServicio = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratogeneral',
+                              'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_hojavida_contratogeneral.id_dp_clientes')
+                          ->where(['=','tbl_hojavida_contratogeneral.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_contratogeneral.anulado',0])
+                          ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                          ->Scalar();
+
+      $varNombrePcrcsServicio = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.pcrc','tbl_proceso_cliente_centrocosto.cod_pcrc'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratopcrc',
+                              'tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_hojavida_contratopcrc.cod_pcrc')
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratogeneral',
+                              'tbl_hojavida_contratopcrc.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+                          ->where(['=','tbl_hojavida_contratogeneral.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_contratogeneral.anulado',0])
+                          ->groupby(['tbl_proceso_cliente_centrocosto.pcrc'])
+                          ->All();
+
+      $varNombreDirectoresServicio = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])
+
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratodirector',
+                              'tbl_proceso_cliente_centrocosto.documento_director = tbl_hojavida_contratodirector.director_cedula')
+
+                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratogeneral',
+                              'tbl_hojavida_contratodirector.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+
+                          ->where(['=','tbl_hojavida_contratogeneral.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_contratogeneral.anulado',0])
+                          ->groupby(['tbl_proceso_cliente_centrocosto.director_programa'])
+                          ->All();
+
+      $vardataProviderPersonaServicio = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloquepersona'])
+                          ->where(['=','tbl_hojavida_bloquepersona.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloquepersona.anulado',0])
+                          ->All();
+
+      $vardataProviderentregableServicio = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloqueinformes'])
+                          ->where(['=','tbl_hojavida_bloqueinformes.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloqueinformes.anulado',0])
+                          ->All();
+
+      $vardataProviderherramientasServicio = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloqueherramienta'])
+                          ->where(['=','tbl_hojavida_bloqueherramienta.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloqueherramienta.anulado',0])
+                          ->All();
+
+      $vardataProvidermetricasServicio = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloquekpis'])
+                          ->where(['=','tbl_hojavida_bloquekpis.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloquekpis.anulado',0])
+                          ->All();
+
+      $vardataExclusivasServicio = (new \yii\db\Query())
+                          ->select(['*'])
+                          ->from(['tbl_hojavida_bloquesalas'])
+                          ->where(['=','tbl_hojavida_bloquesalas.id_contratogeneral',$id_contrato])
+                          ->andwhere(['=','tbl_hojavida_bloquesalas.anulado',0])
+                          ->All();
+      
+
+      return $this->renderAjax('descargaservicio',[
+        'model' => $model,
+        'varNombreClienteServicio' => $varNombreClienteServicio,
+        'varNombrePcrcsServicio' => $varNombrePcrcsServicio,
+        'varNombreDirectoresServicio' => $varNombreDirectoresServicio,
+        'vardataProviderPersonaServicio' => $vardataProviderPersonaServicio,
+        'vardataProviderentregableServicio' => $vardataProviderentregableServicio,
+        'vardataProviderherramientasServicio' => $vardataProviderherramientasServicio,
+        'vardataProvidermetricasServicio' => $vardataProvidermetricasServicio,
+        'vardataExclusivasServicio' => $vardataExclusivasServicio,
+        'id_contrato' => $id_contrato,
+      ]);
+    }
+
+    public function actionDescargageneral(){
+      $model = new HojavidaDatapersonal();
+
+      $form = Yii::$app->request->post();
+      if($model->load($form)){
+        $varCorreo = $model->file;
+
+        $varSessionesGeneral = Yii::$app->user->identity->id;
+        
+        $varRolGeneral =  new Query;
+        $varRolGeneral     ->select(['tbl_roles.role_id'])
+                    ->from('tbl_roles')
+                    ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                                'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+                    ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
+                    ->where('tbl_usuarios.usua_id = :sesiones')
+                    ->addParams([':sesiones'=>$varSessionesGeneral]);                    
+        $command = $varRolGeneral->createCommand();
+        $varRolesGeneral = $command->queryScalar();
+
+        if ($varRolesGeneral == "270") {
+          $varListaContratosGeneral = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_hojavida_contratogeneral'])
+                                ->where(['=','anulado',0])
+                                ->all();
+        }else{
+          $varListaContratosGeneral = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_hojavida_contratogeneral'])
+                                ->where(['=','usua_id',$varSessionesGeneral])
+                                ->andwhere(['=','anulado',0])
+                                ->all();
+        }
+
+        $phpExc = new \PHPExcel();
+        $phpExc->getProperties()
+            ->setCreator("Konecta")
+            ->setLastModifiedBy("Konecta")
+            ->setTitle("Archivo - Lista General de Servicios con Contrato")
+            ->setSubject("Procesos de Contrato para servicio Registrados")
+            ->setDescription("El actual archivo permite verificar de forma general los servicios que tiene registrado contratos.")
+            ->setKeywords("Listado de Servicios con Contrato");
+        $phpExc->setActiveSheetIndex(0);
+
+        $phpExc->getActiveSheet()->setShowGridlines(False);
+
+        $styleArray = array(
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ),
+        );
+
+        $styleColor = array( 
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => '28559B'),
+            )
+        );
+
+        $styleArrayTitle = array(
+            'font' => array(
+              'bold' => false,
+              'color' => array('rgb' => 'FFFFFF')
+            )
+        );
+
+        $styleArraySubTitle2 = array(              
+            'fill' => array( 
+                'type' => \PHPExcel_Style_Fill::FILL_SOLID, 
+                'color' => array('rgb' => 'C6C6C6'),
+            )
+        );  
+
+        // ARRAY STYLE FONT COLOR AND TEXT ALIGN CENTER
+        $styleArrayBody = array(
+            'font' => array(
+                'bold' => false,
+                'color' => array('rgb' => '2F4F4F')
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array('rgb' => 'DDDDDD')
+                )
+            )
+        );
+
+        $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
+
+        $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
+        $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A1:h1');
+
+        $phpExc->getActiveSheet()->SetCellValue('A2','SERVICIO DEL CONTRATO');
+        $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle2);
+
+        $phpExc->getActiveSheet()->SetCellValue('B2','USUARIO REGISTRADO');
+        $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
+
+        $phpExc->getActiveSheet()->SetCellValue('C2','FECHA INGRESO CONTRATO');
+        $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
+
+        $phpExc->getActiveSheet()->SetCellValue('D2','REQUERIMIENTOS SOBRE ROLES');
+        $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArraySubTitle2);
+
+        $phpExc->getActiveSheet()->SetCellValue('E2','REQUERIMIENTOS SOBRE ENTREGABLES');
+        $phpExc->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArraySubTitle2);
+
+        $phpExc->getActiveSheet()->SetCellValue('F2','REQUERIMIENTOS SOBRE HERRAMIENTAS');
+        $phpExc->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);
+
+        $phpExc->getActiveSheet()->SetCellValue('G2','REQUERIMIENTOS SOBRE METRICAS');
+        $phpExc->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);
+
+        $phpExc->getActiveSheet()->SetCellValue('H2','REQUERIMIENTOS SOBRE RECURSOS FISICOS');
+        $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArraySubTitle2);
+
+        $numCellGeneral = 3;
+        foreach ($varListaContratosGeneral as $key => $value) {
+          $numCellGeneral++;
+
+          $varServicioNombre = (new \yii\db\Query())
+                              ->select(['cliente'])
+                              ->from(['tbl_proceso_cliente_centrocosto'])
+                              ->where(['=','id_dp_clientes',$value['id_dp_clientes']])
+                              ->andwhere(['=','estado',1])
+                              ->andwhere(['=','anulado',0])
+                              ->groupby(['cliente'])
+                              ->Scalar();
+
+          $varUsuanombre = (new \yii\db\Query())
+                          ->select(['usua_nombre'])
+                          ->from(['tbl_usuarios'])
+                          ->where(['=','usua_id',$value['usua_id']])
+                          ->groupby(['usua_nombre'])
+                          ->Scalar();
+
+          $varBloquePersona = (new \yii\db\Query())
+                              ->select(['*'])
+                              ->from(['tbl_hojavida_bloquepersona'])
+                              ->where(['=','id_contratogeneral',$value['id_contratogeneral']])
+                              ->andwhere(['=','anulado',0])
+                              ->count();
+
+          $varBloqueEntregable = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_hojavida_bloqueinformes'])
+                                ->where(['=','id_contratogeneral',$value['id_contratogeneral']])
+                                ->andwhere(['=','anulado',0])
+                                ->count();
+
+          $varBloqueHerramienta = (new \yii\db\Query())
+                                  ->select(['*'])
+                                  ->from(['tbl_hojavida_bloqueherramienta'])
+                                  ->where(['=','id_contratogeneral',$value['id_contratogeneral']])
+                                  ->andwhere(['=','anulado',0])
+                                  ->count();
+
+          $varBloqueMetricas = (new \yii\db\Query())
+                              ->select(['*'])
+                              ->from(['tbl_hojavida_bloquekpis'])
+                              ->where(['=','id_contratogeneral',$value['id_contratogeneral']])
+                              ->andwhere(['=','anulado',0])
+                              ->count();
+
+          $varSalasExclusivas = (new \yii\db\Query())
+                                ->select(['if(exclusivas=1,"Si","No") as Exclusiva'])
+                                ->from(['tbl_hojavida_bloquesalas'])
+                                ->where(['=','id_contratogeneral',$value['id_contratogeneral']])
+                                ->andwhere(['=','anulado',0])
+                                ->Scalar();
+
+          $phpExc->getActiveSheet()->setCellValue('A'.$numCellGeneral, $varServicioNombre); 
+          $phpExc->getActiveSheet()->setCellValue('B'.$numCellGeneral, $varUsuanombre); 
+          $phpExc->getActiveSheet()->setCellValue('C'.$numCellGeneral, $value['fechacreacion']); 
+          if ($varBloquePersona != 0) {
+            $phpExc->getActiveSheet()->setCellValue('D'.$numCellGeneral, 'X'); 
+          }else{
+            $phpExc->getActiveSheet()->setCellValue('D'.$numCellGeneral, '-'); 
+          }
+          if ($varBloqueEntregable != 0) {
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCellGeneral, 'X'); 
+          }else{
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCellGeneral, '-'); 
+          }
+          if ($varBloqueHerramienta != 0) {
+            $phpExc->getActiveSheet()->setCellValue('F'.$numCellGeneral, 'X'); 
+          }else{
+            $phpExc->getActiveSheet()->setCellValue('F'.$numCellGeneral, '-'); 
+          }
+          if ($varBloqueMetricas != 0) {
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCellGeneral, 'X'); 
+          }else{
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCellGeneral, '-'); 
+          }
+          if ($varSalasExclusivas != 0) {
+            $phpExc->getActiveSheet()->setCellValue('H'.$numCellGeneral, 'X'); 
+          }else{
+            $phpExc->getActiveSheet()->setCellValue('H'.$numCellGeneral, '-'); 
+          }
+        }
+
+        $hoy = getdate();
+        $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."ListadoGeneral_ServiciosContratos";
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+
+        $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+        $tmpFile.= ".xls";
+
+        $objWriter->save($tmpFile);
+
+        $message = "<html><body>";
+        $message .= "<h3>Listado General de Servicio Con Contrato Registrados en CXM.</h3>";
+        $message .= "</body></html>";
+
+        Yii::$app->mailer->compose()
+                    ->setTo($varCorreo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Archivo Listado General - Servicios Con Contrato CXM")
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
+
+        return $this->redirect(['index']);
+      }
+
+      return $this->renderAjax('descargageneral',[
+        'model' => $model,
+      ]);
     }
 
     public function actionEventos(){
