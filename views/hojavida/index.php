@@ -814,7 +814,52 @@ $this->title = 'Gestor de Clientes';
 									        ?>
                 			</div>
                 		</div>
+
+                        <div class="col-md-6">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Descarga General') ?></label>
+                                <?= Html::button('Aceptar', ['value' => url::to(['descargageneral']), 'class' => 'btn btn-success', 'id'=>'modalButton1',
+                                    'data-toggle' => 'tooltip',
+                                    'title' => 'Desacarga General']) ?> 
+
+                                <?php
+                                    Modal::begin([
+                                        'header' => '<h4>Envio de Información Por Correo</h4>',
+                                        'id' => 'modal1',
+                                    ]);
+
+                                    echo "<div id='modalContent1'></div>";
+                                                                                                  
+                                    Modal::end(); 
+                                ?>
+                            </div>
+                        </div>
                 	</div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Porcentajes de Servicios Ingresados con Contrato') ?></label>
+                                <div id="containerPorcentaje" class="highcharts-container" style="height: 150px;"></div>
+                            </div>  
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Cantidades - Contratos por Servicios') ?></label>
+                                <div id="containerS" class="highcharts-container" style="height: 150px;"></div>
+                            </div>  
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Cantidades - Contratos por PCRC') ?></label>
+                                <div id="containerP" class="highcharts-container" style="height: 150px;"></div>
+                            </div>                            
+                        </div>
+                    </div>
 
                 	<hr>
 
@@ -924,7 +969,27 @@ $this->title = 'Gestor de Clientes';
                                         </td>
                                         <td><label style="font-size: 12px;"><?php echo  $varSalasExclusivas; ?></label></td>
                                         <td class="text-center">
-                                            <?= Html::a('<em class="fas fa-edit" style="font-size: 15px; color: #4298B4;"></em>',  ['informacioncontrato','id_contrato'=>$value['id_contratogeneral']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Verificar Contrato']) ?>
+                                            <?= Html::a('<em class="fas fa-edit" style="font-size: 15px; color: #4298B4;"></em>',  ['informacioncontrato','id_contrato'=>$value['id_contratogeneral']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700; border-color: #4298b500 !important; color:#000000;", 'title' => 'Verificar Contrato']) 
+                                            ?>
+
+                                            <?= 
+                                                Html::a(Yii::t('app', '<em id="idimage" class="fas fa-download" style="font-size: 15px; color: #4298B4;"></em>'),
+                                                                'javascript:void(0)',
+                                                                [
+                                                                    'title' => Yii::t('app', 'Descargar Servicio'),
+                                                                    'onclick' => "    
+                                                                        $.ajax({
+                                                                            type     :'get',
+                                                                            cache    : false,
+                                                                            url  : '" . Url::to(['descargaservicio',
+                                                                            'id_contrato' => $value['id_contratogeneral']]) . "',
+                                                                            success  : function(response) {
+                                                                                $('#ajax_result').html(response);
+                                                                            }
+                                                                        });
+                                                                    return false;",
+                                                                ]);
+                                    ?>
                                         </td>
                                     </tr>
                                     <?php
@@ -950,6 +1015,10 @@ $this->title = 'Gestor de Clientes';
   <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+    echo Html::tag('div', '', ['id' => 'ajax_result']);
+?>
 
 <hr>
 
@@ -1256,7 +1325,7 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
       fixedColumns: true,
       select: true,
       "language": {
-        "lengthMenu": "Display _MENU_ records per page",
+        "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
         "zeroRecords": "No se encontraron datos ",
         "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
         "infoEmpty": "No hay datos aun",
@@ -1276,7 +1345,7 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
       fixedColumns: true,
       select: true,
       "language": {
-        "lengthMenu": "Display _MENU_ records per page",
+        "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
         "zeroRecords": "No se encontraron datos ",
         "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
         "infoEmpty": "No hay datos aun",
@@ -1455,5 +1524,180 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
       type: 'doughnut',
       data: oilDataA
   });
+
+    Highcharts.chart('containerS', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '<label style="font-size: 20px;"><?php echo $varServiciosRegistrados.''; ?></label>',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 60
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '110%'],
+                size: '220%',
+                width: '200%'
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '',
+            innerSize: '50%',
+            data: [
+                {
+                    name: 'Servicios Registrados en Contrato',
+                    y: parseFloat("<?php echo $varServiciosRegistrados;?>"),
+                    color: '#4298B5',
+                    dataLabels: {
+                        enabled: false
+                    }
+                },{
+                    name: 'Servicios No Registrados en Contrato',
+                    y: parseFloat("<?php echo $varServiciosNoRegistrados;?>"),
+                    color: '#FBCE52',
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            ]
+        }]
+    });
+
+    Highcharts.chart('containerP', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '<label style="font-size: 20px;"><?php echo $varPcrcRegistrados.''; ?></label>',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 60
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '110%'],
+                size: '220%',
+                width: '200%'
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '',
+            innerSize: '50%',
+            data: [
+                {
+                    name: 'Pcrc Registrados en Contrato',
+                    y: parseFloat("<?php echo $varPcrcRegistrados;?>"),
+                    color: '#4298B5',
+                    dataLabels: {
+                        enabled: false
+                    }
+                },{
+                    name: 'Pcrc No Registrados en Contrato',
+                    y: parseFloat("<?php echo $varPcrcNoRegistrados;?>"),
+                    color: '#FBCE52',
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            ]
+        }]
+    });
+
+    Highcharts.chart('containerPorcentaje', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '<label style="font-size: 20px;"><?php echo $varPorcentajeServicios.'%'; ?></label>',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 60
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '110%'],
+                size: '220%',
+                width: '200%'
+            }
+        },
+        series: [{
+            type: 'pie',
+            yValueFormatString: "#,##0.0\"%\"",
+            name: '',
+            innerSize: '50%',
+            data: [
+                {
+                    name: 'Porcentaje Servicios con Contrato',
+                    y: parseFloat("<?php echo $varPorcentajeServicios;?>"),
+                    color: '#4298B5',
+                    dataLabels: {
+                        enabled: false
+                    }
+                },{
+                    name: 'Porcentaje Servicios sin Contrato',
+                    y: parseFloat("<?php echo $varRestantesPorcentaje;?>"),
+                    color: '#FBCE52',
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            ]
+        }]
+    });
 
 </script>

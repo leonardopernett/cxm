@@ -168,7 +168,7 @@ $this->registerJs($js);
   </div>
 </header>
 <br><br>
-<?php if ($sessiones = "6777" || $sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465" || $sessiones == "6080" || $sessiones == "57") { ?>
+<?php if ($sessiones = "6777" || $sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465" || $sessiones == "6080" || $sessiones == "57" || $sessiones == "69") { ?>
 
 <div class="capaPP" style="display: inline;">
     <div class="row">
