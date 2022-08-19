@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 <?php
-if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2915" || $sessiones == "2953" || $sessiones == "57" || $sessiones == "4043" || $sessiones == "611" || $sessiones == "4040" || $sessiones == "4090" || $sessiones == "4045" || $sessiones == "4039" || $sessiones == "4041" || $sessiones == "4443" || $sessiones == "4458" || $sessiones == "6544" || $sessiones == "6706"){ ?>
+if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2915" || $sessiones == "2953" || $sessiones == "57" || $sessiones == "4043" || $sessiones == "611" || $sessiones == "4040" || $sessiones == "4090" || $sessiones == "4045" || $sessiones == "4039" || $sessiones == "4041" || $sessiones == "4443" || $sessiones == "4458" || $sessiones == "6544" || $sessiones == "6706" || $sessiones == "69"){ ?>
 <div class="capaCinco">
     <?php $form = ActiveForm::begin([
       'layout' => 'horizontal',
