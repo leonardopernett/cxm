@@ -169,7 +169,7 @@ $this->title = 'Gestor de Clientes - Requerimientos del Contrato';
 
         <div class="col-md-4">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Lista de Diretor') ?></label>
+                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Lista de Director') ?></label>
 
                 <div class="col-md-12 text-center">          
                     <div onclick="opennovedaddir();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbndir1" >

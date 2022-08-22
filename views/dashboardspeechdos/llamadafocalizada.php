@@ -683,6 +683,16 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                             $txtidredbox = "001";
                                             $txtidgrabadora = "002";
                                         }
+
+                                        if ($varIdClientes == "310") {
+                                            $txtidredbox = "001";
+                                            $txtidgrabadora = "002";
+                                        }
+
+                                        if ($varIdClientes == "262") {
+                                            $txtidredbox = "001";
+                                            $txtidgrabadora = "002";
+                                        }
                                         
                                        if ($txtidredbox != null && $txtidredbox != "NA" && $txtidgrabadora != null && $txtidgrabadora != "NA") {
                                             
