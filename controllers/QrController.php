@@ -31,7 +31,7 @@ use GuzzleHttp;
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isCuadroMando();
+                            return Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerdirectivo();
                         },
               ],
             ]

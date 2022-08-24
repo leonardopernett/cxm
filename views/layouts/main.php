@@ -169,7 +169,7 @@ AppAsset::register($this);
                         'options' => ['class' => 'navbar-nav navbar-right'],
                         'items' => [ 
                             [                              
-                                'label' => '<img src="/qa_managementv2/web/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;DASHBOARD BI&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'label' => '<img src="/qa_managementv2/web/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;RESULTADOS BI&nbsp;&nbsp;&nbsp;&nbsp;'),                                
                                 'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo(),                                
                                 'items' => [
                                     '<div class="row">',
@@ -189,7 +189,7 @@ AppAsset::register($this);
 
                                 'class' => 'ico1',
                                 'label' => '<img src="/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
-                                'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerDesempeno(),
+                                'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerdirectivo(),
                                 'items' => [
                                     '<div class="row">',
 
@@ -203,14 +203,14 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Quejas y Reclamos &nbsp;&nbsp;'),
                                                     'url' => ['/qr/index'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',    
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gestor del Cliente&nbsp;&nbsp;'),
                                                     'url' => ['/hojavida/index'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],                                              
                                             
                                         '</div>',  
