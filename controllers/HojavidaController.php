@@ -58,7 +58,7 @@ use Exception;
                   'allow' => true,
                   'roles' => ['@'],
                   'matchCallback' => function() {
-                              return Yii::$app->user->identity->isAdminSistema() ||  Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isControlProcesoCX();
+                              return Yii::$app->user->identity->isAdminSistema() ||  Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                           },
                 ],
               ]
