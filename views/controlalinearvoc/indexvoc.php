@@ -164,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <br>
 <?php
-if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessiones == "438" || $sessiones == "3595" || $sessiones == "312" || $sessiones == "3205" || $sessiones == "1023" || $sessiones == "64" || $sessiones == "3042" || $sessiones == "1659" || $sessiones == "20" || $sessiones == "2215" || $sessiones == "3260" || $sessiones == "2915") {
+if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "1525" || $sessiones == "438" || $sessiones == "3595" || $sessiones == "312" || $sessiones == "3205" || $sessiones == "1023" || $sessiones == "64" || $sessiones == "3042" || $sessiones == "1659" || $sessiones == "20" || $sessiones == "2215" || $sessiones == "3260" || $sessiones == "2915" || $sessiones == "1083") {
 ?>
 <div class="formularios-form">
     <div class="row">
