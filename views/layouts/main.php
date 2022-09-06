@@ -384,7 +384,7 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
                                                 ],                                                
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Procesos Q&S&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Informe Q&S&nbsp;&nbsp;'),
                                                     'url' => ['/procesosqys/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
                                                 ],
