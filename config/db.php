@@ -3,8 +3,8 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=172.20.1.36;dbname=ci_monitoreov2',
-    'username' => 'root',
-    'password' => 'qx4fdh9z',
+    'username' => 'ci_monitoreo',
+    'password' => 'monit000r300',
     'charset' => 'utf8',
 
     'on afterOpen' =>function ($event) {
