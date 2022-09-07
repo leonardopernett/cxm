@@ -47,13 +47,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-md-6">
                         <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span><?= Yii::t('app', ' Seleccionar Cliente') ?></label>
 
-                        <?=  $form->field($model, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                        <?=  $form->field($model, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                           [
                                             'id' => 'idinfocliente',
                                             'prompt'=>'Seleccionar...',
                                             'onchange' => '
-                                                $.post(
-                                                    "' . Url::toRoute('formulariovoc/listarpcrcindex') . '", 
+                                                $.get(
+                                                    "' . Url::toRoute('hojavida/listarpcrcindex') . '", 
                                                     {id: $(this).val()}, 
                                                     function(res){
                                                         $("#requester").html(res);

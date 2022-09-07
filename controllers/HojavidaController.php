@@ -1527,6 +1527,34 @@ use Exception;
 
     }
 
+    public function actionListarpcrcindex(){
+      $txtId = Yii::$app->request->get('id');
+
+      if ($txtId) {
+        $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
+                          ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
+                          ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1")
+                          ->count();            
+        if ($txtControl > 0) {
+          $varListaCiudad = \app\models\ProcesosClienteCentrocosto::find()
+                          ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
+                            ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
+                            ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1") 
+                            ->all();            
+      
+          foreach ($varListaCiudad as $key => $value) {
+            echo "<option value='" . $value->cod_pcrc. "'>" . $value->cod_pcrc." - ".$value->pcrc. "</option>";
+          }
+        }else{
+          echo "<option>-</option>";
+        }
+      }else{
+        echo "<option>No hay datos</option>";
+      }
+
+    }
+
+
     public function actionListardirectores(){
       $txtId = Yii::$app->request->get('id');
 
