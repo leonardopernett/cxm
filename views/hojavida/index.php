@@ -1023,7 +1023,7 @@ $this->title = 'Gestor de Clientes';
 <hr>
 
 <?php
-if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessiones == "637" || $sessiones == "5658" || $sessiones == "0" || $sessiones == "4395") {
+if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessiones == "637" || $sessiones == "5658" || $sessiones == "0" || $sessiones == "4395" || $sessiones == "69") {
 ?>
 <!-- Capa Procesos Adminitrativos -->
 <div id="capaIdAdmin" class="capaAdmin" style="display: inline;">
