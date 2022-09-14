@@ -58,7 +58,7 @@ Modal::begin([
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <?=
-            Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+            Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','onclick'=>'varVerificaData();'])
             ?>            
         </div>        
     </div>
@@ -68,4 +68,32 @@ Modal::begin([
 </div>
 <?php Modal::end(); ?> 
 
+<script type="text/javascript">
+    function varVerificaData(){
+        var varProblema = document.getElementById("ejecucionfeedbacks-dsaccion_correctiva").value;
+        var varCausaRaiz = document.getElementById("ejecucionfeedbacks-dscausa_raiz").value;
+        var varMejora = document.getElementById("ejecucionfeedbacks-dscompromiso").value;
+        var varGestionado = document.getElementById("ejecucionfeedbacks-dscompromiso").value;
 
+        if (varProblema == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un comentario tipo problema","warning");
+            return;
+        }
+        if (varCausaRaiz == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un comentario tipo causa raiz","warning");
+            return;
+        }
+        if (varMejora == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Debe de ingresar un comentario dtipo accion para la mejora","warning");
+            return;
+        }
+        if (varGestionado == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Debe de seleccionar un estado de tipo gestionado","warning");
+            return;
+        }
+    };
+</script>
