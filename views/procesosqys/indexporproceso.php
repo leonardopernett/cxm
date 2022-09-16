@@ -36,6 +36,8 @@ use app\models\ProcesosClienteCentrocosto;
   $varBueno = '#00968F';
   $varEstable = '#FFC72C';
 
+  $varSinData = '-';
+
   // Procesos Manuales
   $varManualPEC = 0;
   $varManualPENC = 0;
@@ -73,6 +75,12 @@ use app\models\ProcesosClienteCentrocosto;
 
   $varDataFormularios = array();
 
+  $varCantidadFeedbacks = 0;
+  $varArrayConteoGestionada = 0;
+  $varArrayConteoNoGestionada = 0;
+  $varArrayConteoEstadoOk = 0;
+  $varArrayConteoEstadoKo = 0;
+  $varCantidadSegundo = 0;
 
   $titulos = array();
 
@@ -977,9 +985,9 @@ $this->registerJs($js);
                               </thead>
                               <tbody>
                                 <tr>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorGeneralIdealP ?>"><?php echo  $varGeneralConsistenciaIdealP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorMixtaAIdealP ?>"><?php echo  $varListarMixtasIdealP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAutoIdealP ?>"><?php echo  $varArrayAutomaticoP; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorGeneralIdealP ?>"><?php echo  $varGeneralConsistenciaIdealP.' %'; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorMixtaAIdealP ?>"><?php echo  $varListarMixtasIdealP.' %'; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAutoIdealP ?>"><?php echo  $varArrayAutomaticoP.' %'; ?></label></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -1001,9 +1009,9 @@ $this->registerJs($js);
                               <tbody>
                                 <tr>
                                   <td class="text-center"><label style="font-size: 12px;"><?php echo  $varCantidadLlamadasIdealP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAgenteIdealP; ?>"><?php echo  $varAgentePersonaP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorMarcaIdealP; ?>"><?php echo  $varMarcaPersonaP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorCanalIdealP; ?>"><?php echo  $varCanalPersonaP; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAgenteIdealP; ?>"><?php echo  $varAgentePersonaP.' %'; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorMarcaIdealP; ?>"><?php echo  $varMarcaPersonaP.' %'; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorCanalIdealP; ?>"><?php echo  $varCanalPersonaP.' %'; ?></label></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -1024,8 +1032,8 @@ $this->registerJs($js);
                               <tbody>
                                 <tr>
                                   <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorFeebackP; ?>"><?php echo  $varTotalFeedbacksP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  '0'; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  '0'; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorFeebackP; ?>"><?php echo  '0'; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorFeebackP; ?>"><?php echo  '0'; ?></label></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -1189,7 +1197,7 @@ $this->registerJs($js);
                               
                                   <tr>
                                     <td class="text-center"><label style="font-size: 12px;"><?php echo  $varNombreIndicador; ?></label></td>
-                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalesIndicador; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalesIndicador.' %'; ?></label></td>
                                     <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorAgenteIndicador ?>"><?php echo  $varAgenteIndicador.' %'; ?></label></td>
                                     <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorMarcaIndicador ?>"><?php echo  $varMarcaIndicador.' %'; ?></label></td>
                                     <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorCanalIndicador ?>"><?php echo  $varCanalIndicador.' %'; ?></label></td>                                    
@@ -1246,8 +1254,8 @@ $this->registerJs($js);
                                       
                                       var yValues = [<?= implode(",", $arrayNumeros); ?>];
                                       var barColors = [
-                                        "#00aba9",
-                                        "#b91d47"
+                                        "#559FFF",
+                                        "#C6C6C6"
                                       ];
 
                                       new Chart("<?php echo $prueba; ?>", {
@@ -1530,15 +1538,15 @@ $this->registerJs($js);
                                       $varLiderCantidad = count($varListaGeneralFormulariosL);
 
                                     }else{
-                                      $varLiderPEC = "-";
-                                      $varLiderPENC = "-";
-                                      $varLiderSFC = "-";
-                                      $varLiderProceso = "-";
-                                      $varLiderExp = "-";
-                                      $varLiderProm = "-";
-                                      $varLiderScore = "-";
+                                      $varLiderPEC = $varSinData;
+                                      $varLiderPENC = $varSinData;
+                                      $varLiderSFC = $varSinData;
+                                      $varLiderProceso = $varSinData;
+                                      $varLiderExp = $varSinData;
+                                      $varLiderProm = $varSinData;
+                                      $varLiderScore = $varSinData;
 
-                                      $varLiderCantidad = "-";
+                                      $varLiderCantidad = $varSinData;
                                     }
                                 ?>
 
@@ -1701,7 +1709,234 @@ $this->registerJs($js);
             </div>
 
             <!-- Proceso Mejora -->
-            <div id="Mejora" class="w3-container city" style="display:inline;">
+            <div id="Mejora" class="w3-container city" style="display:none;">
+
+              <?php
+                foreach ($varListasClienteIdealP as $key => $value) {
+                  $varCentrosCostosMejora = $value['cod_pcrc'];
+                  
+                  $varNombreCentroCostosMejora = (new \yii\db\Query())
+                                                ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
+                                                ->from(['tbl_speech_categorias'])            
+                                                ->where(['=','anulado',0])
+                                                ->andwhere(['in','cod_pcrc',$varCentrosCostosMejora])
+                                                ->groupby(['cod_pcrc'])
+                                                ->Scalar();
+
+
+                  $varListaFormulariosMejora = (new \yii\db\Query())
+                                                ->select(['formulario_id'])
+                                                ->from(['tbl_ideal_novedades'])            
+                                                ->where(['=','tbl_ideal_novedades.id_dp_cliente',$varIdDpCliente])
+                                                ->andwhere(['=','tbl_ideal_novedades.cod_pcrc',$varCentrosCostosMejora])
+                                                ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechainicial.' 05:00:00'])
+                                                ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
+                                                ->andwhere(['=','tbl_ideal_novedades.anulado',0])
+                                                ->groupby(['formulario_id'])
+                                                ->All();  
+                                              
+                  if (count($varListaFormulariosMejora) != 0) {
+                    $varArrayForms = array();
+                    foreach ($varListaFormulariosMejora as $key => $value) {
+                      array_push($varArrayForms, $value['formulario_id']);
+                    }
+
+                    $varArrayListarForms = implode(", ", $varArrayForms);
+
+                    $varFormulariosListas = intval($varArrayListarForms);
+                    $varDataFormulariosMejoras = explode(",", str_replace(array("#", "'", ";", " "), '', $varFormulariosListas));
+
+                    $varListaGeneralFormulariosMejora = (new \yii\db\Query())
+                                                ->select(['*'])
+                                                ->from(['tbl_ejecucionfeedbacks'])            
+                                                ->where(['in','tbl_ejecucionfeedbacks.ejecucionformulario_id',$varDataFormulariosMejoras])
+                                                ->All();
+
+                    $varCantidadFeedbacks = count($varListaGeneralFormulariosMejora);
+
+                    $varArrayConteoGestionada = 0;
+                    $varArrayConteoNoGestionada = 0;
+                    $varArrayConteoEstadoOk = 0;
+                    $varArrayConteoEstadoKo = 0;
+                    foreach ($varListaGeneralFormulariosMejora as $key => $value) {
+                      if ($value['snaviso_revisado'] == 1) {
+                        $varArrayConteoGestionada += 1;
+                      }
+
+                      if ($value['snaviso_revisado'] == 0) {
+                        $varArrayConteoNoGestionada += 1;
+                      }
+                    }
+
+                    $varListaSegundoclificadorMejora = (new \yii\db\Query())
+                                                ->select(['*'])
+                                                ->from(['tbl_segundo_calificador'])            
+                                                ->where(['in','tbl_segundo_calificador.id_ejecucion_formulario',$varDataFormulariosMejoras])
+                                                ->All();
+
+                    $varCantidadSegundo = count($varListaSegundoclificadorMejora);
+
+                    foreach ($varListaSegundoclificadorMejora as $key => $value) {
+                      if ($value['estado_sc'] == 'Abierto') {
+                        $varArrayConteoEstadoOk += 1;
+                      }
+                      if ($value['estado_sc'] == 'Aceptado') {
+                        $varArrayConteoEstadoKo += 1;
+                      }
+                    }
+
+                    $varProcentajeGestionFeedback = round(($varArrayConteoGestionada/$varCantidadFeedbacks) * 100, 2);
+
+                    $varProcentajeGestionSegundo = round(($varArrayConteoEstadoKo/$varCantidadFeedbacks) * 100, 2);
+
+                    $varConteoAlertas = (new \yii\db\Query())
+                                      ->select(['tbl_alertascx.id'])
+                                      ->from(['tbl_alertascx'])  
+                                      ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                          'tbl_alertascx.pcrc = tbl_ejecucionformularios.arbol_id')
+                                      ->where(['in','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
+                                      ->count();
+
+                    $varConteoAlertas = (new \yii\db\Query())
+                                      ->select(['tbl_alertascx.id'])
+                                      ->from(['tbl_alertascx'])  
+                                      ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                          'tbl_alertascx.pcrc = tbl_ejecucionformularios.arbol_id')
+                                      ->where(['in','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
+                                      ->count();
+
+                    $varConteoAlCalibraciones = (new \yii\db\Query())
+                                      ->select(['tbl_arbols.id'])
+                                      ->from(['tbl_arbols'])  
+                                      ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                          'tbl_arbols.id = tbl_ejecucionformularios.arbol_id')
+                                      ->where(['in','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
+                                      ->andwhere(['like','tbl_arbols.name','alibracion'])
+                                      ->count();
+
+                  }else{
+                    $varCantidadFeedbacks = $varSinData;
+                    $varCantidadSegundo = $varSinData;
+                    $varArrayConteoGestionada = $varSinData;
+                    $varArrayConteoNoGestionada = $varSinData;
+                    $varArrayConteoEstadoOk = $varSinData;
+                    $varArrayConteoEstadoKo = $varSinData;
+                    $varProcentajeGestionFeedback = $varSinData;
+                    $varProcentajeGestionSegundo = $varSinData;
+                    $varConteoAlertas = $varSinData;
+                    $varConteoAlCalibraciones = $varSinData;
+                  }                            
+              ?>
+
+                <br>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card1 mb">
+                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 15px; color: #559FFF;"></em> <?= Yii::t('app', $varNombreCentroCostosMejora) ?></label>
+
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="card1 mb">
+                            <table id="myTableMejoraFeedback" class="table table-hover table-bordered" style="margin-top:10px" >
+                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Resultados Cantidades Feedbacks') ?></label></caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '% de Gestión') ?></label></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varCantidadFeedbacks; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varProcentajeGestionFeedback; ?></label></td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestionadas') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Pendientes') ?></label></th>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varArrayConteoGestionada; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varArrayConteoNoGestionada; ?></label></td>
+                                  </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="card1 mb">
+                            <table id="myTableMejoraSegundo" class="table table-hover table-bordered" style="margin-top:10px" >
+                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Resultados Segundo Calificador') ?></label></caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '% de Gestión') ?></label></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varCantidadSegundo; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varProcentajeGestionSegundo; ?></label></td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gestionadas') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Pendientes') ?></label></th>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varArrayConteoEstadoKo; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varArrayConteoEstadoOk; ?></label></td>
+                                  </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="card1 mb">
+                            <table id="myTableMejoraAlertas" class="table table-hover table-bordered" style="margin-top:10px" >
+                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Resultados Alertas del Proceso') ?></label></caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varCantidadSegundo; ?></label></td>
+                                  </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="card1 mb">
+                            <table id="myTableMejoraCalibraciones" class="table table-hover table-bordered" style="margin-top:10px" >
+                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Resultados Calibraciones') ?></label></caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varConteoAlCalibraciones; ?></label></td>
+                                  </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              <?php
+                }
+              ?>
+
             </div>
 
         </div>
