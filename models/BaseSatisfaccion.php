@@ -243,6 +243,7 @@ class BaseSatisfaccion extends \yii\db\ActiveRecord {
             $categorias[] = ["value" => "CRITICA POR BUZÓN", "label" => "CRITICA POR BUZÓN"];
             $categorias[] = ["value" => "FELICITACIÓN CON BUZÓN", "label" => "FELICITACIÓN CON BUZÓN"];
             $categorias[] = ["value" => "FELICITACION", "label" => "FELICITACION"];
+            $categorias[] = ["value" => "BUZÓN POSITIVO", "label" => "BUZÓN POSITIVO"];
             return ArrayHelper::map($categorias, 'value', 'label');
         } catch (Exception $e) {
             \Yii::error($e->getMessage(), 'exception');
