@@ -383,11 +383,11 @@ AppAsset::register($this);
                                                     'url' => ['/dashboardspeechdos/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
                                                 ],                                                
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Informe Q&S&nbsp;&nbsp;'),
-                                                //     'url' => ['/procesosqys/index'],
-                                                //     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
-                                                // ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Informe Q&S&nbsp;&nbsp;'),
+                                                    'url' => ['/procesosqys/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
+                                                ],
 
                                                 '<br>',
                                                 '<li class="dropdown-headercx ico1">&nbsp;Informes - Control de Procesos&nbsp;&nbsp;</li>',
