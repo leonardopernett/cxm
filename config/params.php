@@ -47,15 +47,16 @@ return [
         556,//brandon.rodriguez.g
         1251,//jarlem.salcedo.du
         473,//jonathan.lopera.g 
-	2953,//Andersson Moreno
-	882, //Monica.Acosta.l
+	    2953,//Andersson Moreno
+	    882, //Monica.Acosta.l
         2271, //Juliana.montes
         1650, //Jesica.mendoza
-	881, //carolina.zapata
-	3468, //geraldin.vargas
-	3229, //engie.guerrero
-	57, //yancy.ruiz
-	637, //andres.vanegas.a
+	    881, //carolina.zapata
+	    3468, //geraldin.vargas
+	    3229, //engie.guerrero
+	    57, //yancy.ruiz
+	    1475, //karen.guaman.r
+        3205, //diego.montoya.o
 
     ],
     /* LIMITE PARA PARTIR EL QUERY DE EXTRACTAR FORMULARIO */
