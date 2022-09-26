@@ -50,21 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?=  $form->field($model, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                           [
                                             'id' => 'idinfocliente',
-                                            'prompt'=>'Seleccionar...',
+                                            'prompt'=>'Seleccionar Servicio...',
                                             'onchange' => '
-                                                $.get(
-                                                    "' . Url::toRoute('hojavida/listarpcrcindex') . '", 
-                                                    {id: $(this).val()}, 
-                                                    function(res){
-                                                        $("#requester").html(res);
-                                                    }
-                                                );
-
                                                 $.get(
                                                     "' . Url::toRoute('hojavida/listardirectores') . '", 
                                                     {id: $(this).val()}, 
                                                     function(res){
-                                                          $("#requester2").html(res);
+                                                        $("#requester2").html(res);
                                                     }
                                                 );
                                             ',
@@ -85,31 +77,43 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span><?= Yii::t('app', ' Seleccionar Centro de Costos') ?></label>
-                        <?= $form->field($model,'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
-                                        [],
-                                        [
-                                            'prompt' => 'Seleccionar...',
-                                            'id' => 'requester',
-                                            'multiple' => true,
-                                        ]
-                                    )->label('');
-                        ?>
-                    </div>
 
                     <div class="col-md-6">
                         <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span><?= Yii::t('app', ' Seleccionar Director') ?></label>
                         <?= $form->field($model,'director', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
                                         [],
                                         [
-                                            'prompt' => 'Seleccionar...',
+                                            'prompt' => 'Seleccionar Director...',
                                             'id' => 'requester2',
+                                            'multiple' => true,
+                                            'onclick' => '
+                                                
+                                                $.get(
+                                                    "' . Url::toRoute('hojavida/listarpcrcindex') . '", 
+                                                    {id: $(this).val()}, 
+                                                    function(res){
+                                                          $("#requester").html(res);
+                                                    }
+                                                );
+                                            ',
+                                        ]
+                                    )->label('');
+                        ?>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span><?= Yii::t('app', ' Seleccionar Centro de Costos') ?></label>
+                        <?= $form->field($model,'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
+                                        [],
+                                        [
+                                            'prompt' => 'Seleccionar Pcrc...',
+                                            'id' => 'requester',
                                             'multiple' => true,
                                         ]
                                     )->label('');
                         ?>
                     </div>
+                    
                 </div>
 
             </div>
