@@ -386,6 +386,11 @@ use Exception;
         $varLitaPcrc = $model->pcrc;
         $varListaDirectorCc = $model->director;
 
+        $arrayDataDirector = array();
+        for ($i=0; $i < count($varListaDirectorCc); $i++) { 
+          array_push($arrayDataDirector, substr($varListaDirectorCc[$i],0,-4));
+        }
+
         Yii::$app->db->createCommand()->insert('tbl_hojavida_contratogeneral',[
                     'id_dp_clientes' => $varIdClientes,
                     'fechacreacion' => date('Y-m-d'),
@@ -420,7 +425,7 @@ use Exception;
         $varListasDirectores = (new \yii\db\Query())
                           ->select(['documento_director'])
                           ->from(['tbl_proceso_cliente_centrocosto'])
-                          ->where(['IN','documento_director',$varListaDirectorCc])
+                          ->where(['IN','documento_director',$arrayDataDirector])
                           ->andwhere(['=','estado',1])
                           ->andwhere(['=','anulado',0])
                           ->groupby(['documento_director'])
@@ -1544,16 +1549,30 @@ use Exception;
     public function actionListarpcrcindex(){
       $txtId = Yii::$app->request->get('id');
 
+      $varClienteID = null;
+      $varDirectorCC = null;
+
+      $varStingData = implode(";", $txtId);
+      $varListData = explode(";", $varStingData);
+      for ($i=0; $i < count($varListData); $i++) { 
+        $varDirectorCC = $varListData[0];
+        $varClienteID = $varListData[1];
+      }
+
       if ($txtId) {
         $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
-                          ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
-                          ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1")
-                          ->count();            
+                    ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varClienteID])
+                    ->andwhere(['=','tbl_proceso_cliente_centrocosto.documento_director',$varDirectorCC ])
+                    ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1")
+                    ->count();          
+
         if ($txtControl > 0) {
           $varListaCiudad = \app\models\ProcesosClienteCentrocosto::find()
-                          ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
-                            ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
+                            ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
+                            ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varClienteID])
+                            ->andwhere(['=','tbl_proceso_cliente_centrocosto.documento_director',$varDirectorCC ])
                             ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1") 
+                            ->groupby(['tbl_proceso_cliente_centrocosto.cod_pcrc'])
                             ->all();            
       
           foreach ($varListaCiudad as $key => $value) {
@@ -1587,7 +1606,7 @@ use Exception;
           
                     
           foreach ($varListaCiudad as $key => $value) {
-            echo "<option value='" . $value->documento_director. "'>" . $value->director_programa. "</option>";
+            echo "<option value='" . $value->documento_director.";".$txtId. "'>" . $value->director_programa. "</option>";
           }
         }else{
           echo "<option>-</option>";
