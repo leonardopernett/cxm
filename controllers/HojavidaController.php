@@ -262,32 +262,46 @@ use Exception;
         }
 
       }else{
-        $paramsuser = [':idsesion' => $sesiones ];
-        $varidclientes = Yii::$app->db->createCommand('
-          SELECT GROUP_CONCAT(id_dp_clientes SEPARATOR", ") servicios 
-            FROM tbl_hojavida_permisoscliente hp
-              WHERE   
-                hp.usuario_registro = :idsesion')->bindValues($paramsuser)->queryScalar(); 
+        $varidclientes = (new \yii\db\Query())
+                                ->select(['id_dp_clientes'])
+                                ->from(['tbl_hojavida_permisoscliente'])
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','usuario_registro',$sesiones])
+                                ->groupby(['id_dp_clientes'])
+                                ->all();
+                                
 
-        $dataProviderhv = Yii::$app->db->createCommand("
-        SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrategico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
-        INNER JOIN tbl_hojavida_datalaboral dl ON 
-          dl.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_hv_pais hp ON 
-          hp.hv_idpais = dp.hv_idpais
-        LEFT JOIN tbl_hojavida_dataacademica da ON 
-          da.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_hojavida_datapcrc dc ON 
-          dc.hv_idpersonal = dp.hv_idpersonal
-        LEFT JOIN tbl_proceso_cliente_centrocosto pc ON 
-          pc.id_dp_clientes = dc.id_dp_cliente
-        WHERE 
-          dc.id_dp_cliente IN (:varidclientes)
-            AND dp.anulado = 0
-          GROUP BY dp.hv_idpersonal
-        ")
-        ->bindValue(':varidclientes',$varidclientes)
-        ->queryAll();
+        $varArrayClientes = array();
+        foreach ($varidclientes as $key => $value) {
+          array_push($varArrayClientes, intval($value['id_dp_clientes']));
+        }
+        $varClienteListV = implode(", ", $varArrayClientes);
+        $arrayCliente_downV = str_replace(array("#", "'", ";", " "), '', $varClienteListV);
+        $varDataClienteJ = explode(",", $arrayCliente_downV);
+
+        $dataProviderhv = (new \yii\db\Query())
+                                ->select(['tbl_hojavida_datapersonal.hv_idpersonal as idHojaVida','tbl_proceso_cliente_centrocosto.cliente','if(tbl_hojavida_datalaboral.tipo_afinidad = 1, "Decisor","No Decisor") as tipo','if(tbl_hojavida_datalaboral.nivel_afinidad = 1, "Estrategico","Operativo") as nivel','tbl_hojavida_datapersonal.nombre_full','tbl_hojavida_datalaboral.rol','tbl_hv_pais.pais','if(tbl_hojavida_dataacademica.activo = 1, "Activo","No Activo") as estado'])
+
+                                ->from(['tbl_hojavida_datapersonal'])  
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_datalaboral',
+                                  'tbl_hojavida_datalaboral.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hv_pais',
+                                  ' tbl_hv_pais.hv_idpais = tbl_hojavida_datapersonal.hv_idpais') 
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_dataacademica',
+                                  ' tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_datapcrc',
+                                  ' tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
+                                  ' tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_hojavida_datapcrc.id_dp_cliente') 
+
+                                ->where(['in','tbl_hojavida_datapcrc.id_dp_cliente',$varDataClienteJ])
+                                ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                                ->All();
       }
 
       if ($roles == "270") {
