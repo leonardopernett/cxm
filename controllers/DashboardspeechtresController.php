@@ -2186,6 +2186,82 @@ use app\models\Formularios;
           }
 
         }
+        
+
+        $numCell = $numCell + 1;
+
+        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'CATEGORIAS POR LLAMADAS');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':J'.$numCell);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+        $numCell = $numCell + 1;
+
+        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Motivos de llamadas');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':B'.$numCell);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('C'.$numCell,'% de Llamadas');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('C'.$numCell.':D'.$numCell);
+        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('C'.$numCell)->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('E'.$numCell,'Cantidad de llamadas');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('E'.$numCell.':F'.$numCell);
+        $phpExc->getActiveSheet()->getStyle('E'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('E'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('E'.$numCell)->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('E'.$numCell)->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('G'.$numCell,'Promedio de duracion');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('G'.$numCell.':H'.$numCell);
+        $phpExc->getActiveSheet()->getStyle('G'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('G'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('G'.$numCell)->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('G'.$numCell)->applyFromArray($styleArrayTitle);
+
+        $varListCategoriasExports = (new \yii\db\Query())
+                                ->select(['idcategoria','nombre'])
+                                ->from(['tbl_speech_categorias'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
+                                ->andwhere(['in','idcategorias',[1,2]])
+                                ->all();
+
+        $lastColumn = 'I';
+        foreach ($varListCategoriasExports as $key => $value) {
+
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre']); 
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayTitle);
+          $lastColumn++; 
+
+        }
+        $numCell = $numCell + 1;
+
+        $varidClienteExport = (new \yii\db\Query())
+                                ->select(['id_dp_clientes'])
+                                ->from(['tbl_speech_parametrizar'])          
+                                ->where(['in','tbl_speech_parametrizar.cod_pcrc',$varListaCodPcrcExport])
+                                ->andwhere(['=','tbl_speech_parametrizar.anulado',0])
+                                ->groupby(['id_dp_clientes'])
+                                ->Scalar();
+
+        $varlistaMotivosTmp = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_speech_tmpmotivos'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
+                                ->andwhere(['=','id_dp_cliente',$varidClienteExport])
+                                ->All();
 
         $hoy = getdate();
         $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Escuchar+_".$varNombreServicioExport;
