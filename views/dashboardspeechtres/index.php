@@ -294,7 +294,7 @@ $this->title = 'Dashboard Escuchar +';
 
             <div class="col-md-4">
               <label style="font-size: 15px;"><em class="fas fa-hand-pointer" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Dimensión') ?></label><br>
-                <?= $form->field($model3, 'dashboard', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varextensiones, ['prompt' => 'Seleccionar procesos...', 'id'=>'iddashboard']) ?>
+                <?= $form->field($model3, 'idciudad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varextensiones, ['prompt' => 'Seleccionar procesos...', 'id'=>'iddashboard']) ?>
                 <br>
                 <label style="font-size: 15px;"><em class="fas fa-check-square" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Parámetros') ?></label><br>
                 <label id="labeltodos" style="display: none;">

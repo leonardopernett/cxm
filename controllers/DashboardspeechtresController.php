@@ -69,7 +69,7 @@ use app\models\Formularios;
 
         $varIdDpCliente = $model3->clientecategoria;
         $varListaCodPcrc = explode(",", str_replace(array("#", "'", ";", " "), '', $model3->cod_pcrc));
-        $varTipoDashboard = $model3->dashboard;
+        $varTipoDashboard = $model3->idciudad;
         $varListaExtensiones = explode(",", str_replace(array("#", "'", ";", " "), '', $model3->pcrc));
         $varFechaIdeal = explode(" ", $model3->fechacreacion);
 
