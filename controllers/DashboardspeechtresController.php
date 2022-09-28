@@ -1736,10 +1736,10 @@ use app\models\Formularios;
         $phpExc->getProperties()
                 ->setCreator("Konecta")
                 ->setLastModifiedBy("Konecta")
-                ->setTitle("Dashboard Escuchar + ".$varNombreServicioExport)
-                ->setSubject("Procesos Dashboard Escuchar + ".$varNombreServicioExport)
+                ->setTitle("Dashboard Escuchar + ".$txtServicio)
+                ->setSubject("Procesos Dashboard Escuchar + ".$txtServicio)
                 ->setDescription("Este archivo contiene el proceso de las comparaciones con las categorias y las llamadas en Speech,")
-                ->setKeywords("Archivo Escuchar + ".$varNombreServicioExport);
+                ->setKeywords("Archivo Escuchar + ".$txtServicio);
         $phpExc->setActiveSheetIndex(0);
 
         $phpExc->getActiveSheet()->setShowGridlines(False);
@@ -1832,7 +1832,7 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
         $phpExc->setActiveSheetIndex(0)->mergeCells('A1:J1');
 
-        $phpExc->getActiveSheet()->SetCellValue('A2','INFORME ESCUCHAR + '.$varNombreServicioExport);
+        $phpExc->getActiveSheet()->SetCellValue('A2','INFORME ESCUCHAR + '.$txtServicio);
         $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySize);
         $phpExc->setActiveSheetIndex(0)->mergeCells('A2:J2');
 
@@ -1849,7 +1849,7 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('A4')->applyFromArray($styleColor);
         $phpExc->getActiveSheet()->getStyle('A4')->applyFromArray($styleArraySubTitle);
         $phpExc->getActiveSheet()->getStyle('A4')->applyFromArray($styleArrayTitle);
-        $phpExc->getActiveSheet()->setCellValue('A5', $varNombreServicioExport);
+        $phpExc->getActiveSheet()->setCellValue('A5', $txtServicio);
         $phpExc->setActiveSheetIndex(0)->mergeCells('A5:D5');
 
         $phpExc->getActiveSheet()->SetCellValue('E4','Rango de fechas');
@@ -1876,7 +1876,7 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleColor);
         $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleArraySubTitle);
         $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleArrayTitle);
-        $phpExc->getActiveSheet()->setCellValue('A7', $varNombrePcrcExport);
+        $phpExc->getActiveSheet()->setCellValue('A7', $txtCodPcrcok);
         $phpExc->setActiveSheetIndex(0)->mergeCells('A7:D7');
 
         $phpExc->getActiveSheet()->SetCellValue('E6','Parametros Seleccionados');
@@ -1905,7 +1905,6 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('A8')->applyFromArray($styleArrayTitle);
 
         $lastColumn = 'A';
-        $numCell = 9;
         foreach ($varListarIndicadoresExport as $key => $value) {
           $txtIdIndicadores = $value['idcategoria'];
           $varNombreIndicador = $value['nombre'];
@@ -1930,6 +1929,7 @@ use app\models\Formularios;
 
           foreach ($varListVariablesIExport as $key => $value) {
             $varOrienta = $value['orientacionsmart'];
+            $varResponsable = $value['responsable'];
             array_push($arrayListOfVar, $value['idcategoria']);
 
             if ($varOrienta == 1) {
@@ -2052,21 +2052,19 @@ use app\models\Formularios;
             }
           }
 
-          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varNombreIndicador);           
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayTitle); 
-
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.'9', $varNombreIndicador);           
+          $phpExc->getActiveSheet()->getStyle($lastColumn.'9')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.'9')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.'9')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.'9')->applyFromArray($styleArrayTitle); 
+          
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.'10', $txtRtaProcentaje); 
           $lastColumn++;
-          $numCell = $numCell + 1;
-          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaProcentaje); 
-          $lastColumn++;
-          $numCell = $numCell + 1;
         }
+        $numCell = $numCell + 1;
 
         $hoy = getdate();
-        $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Escuchar+_".$varNombreServicioExport;
+        $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Escuchar+_".$txtServicio;
               
         $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
                 
@@ -2082,7 +2080,7 @@ use app\models\Formularios;
         Yii::$app->mailer->compose()
                         ->setTo($varCorreo)
                         ->setFrom(Yii::$app->params['email_satu_from'])
-                        ->setSubject("Envio Dashboard Escuchar + ".$varNombreServicioExport)
+                        ->setSubject("Envio Dashboard Escuchar + ".$txtServicio)
                         ->attach($tmpFile)
                         ->setHtmlBody($message)
                         ->send();
