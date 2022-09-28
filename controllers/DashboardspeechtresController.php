@@ -2061,7 +2061,131 @@ use app\models\Formularios;
           $phpExc->getActiveSheet()->setCellValue($lastColumn.'10', $txtRtaProcentaje); 
           $lastColumn++;
         }
-        $numCell = $numCell + 1;
+        
+        $phpExc->getActiveSheet()->SetCellValue('A11','INDICADORES POR VARIABLE');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A11:J11');
+        $phpExc->getActiveSheet()->getStyle('A11')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A11')->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('A11')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A11')->applyFromArray($styleArrayTitle);
+        
+
+        $phpExc->getActiveSheet()->SetCellValue('A12','Indicador');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A12:B12');
+        $phpExc->getActiveSheet()->getStyle('A12')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A12')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A12')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('A12')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('C12','Variable');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('C12:D12');
+        $phpExc->getActiveSheet()->getStyle('C12')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('C12')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('C12')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('C12')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('E12','% de participacion');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('E12:F12');
+        $phpExc->getActiveSheet()->getStyle('E12')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('E12')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('E12')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('E12')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('G12','Cantidad de llamadas');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('G12:H12');
+        $phpExc->getActiveSheet()->getStyle('G12')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('G12')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('G12')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('G12')->applyFromArray($styleArrayTitle);
+
+        $phpExc->getActiveSheet()->SetCellValue('I12','Duracion (Segundos)');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('I12:J12');
+        $phpExc->getActiveSheet()->getStyle('I12')->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('I12')->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('I12')->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('I12')->applyFromArray($styleArrayTitle);
+        
+        $lastColumn = 'A';
+        $numCell = 13;
+        foreach ($varListarIndicadoresExport as $key => $value) {
+          $txtIdIndicadoresExport = $value['idcategoria'];
+          $varNombreIndicadorExport = $value['nombre'];
+
+          $varListVariablesV = (new \yii\db\Query())
+                                  ->select(['idcategoria','nombre','tipoparametro','orientacionsmart','orientacionform','responsable'])
+                                  ->from(['tbl_speech_categorias'])            
+                                  ->where(['=','anulado',0])
+                                  ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
+                                  ->andwhere(['=','idcategorias',2])
+                                  ->andwhere(['=','tipoindicador',$varNombreIndicadorExport])
+                                  ->all();
+
+          foreach ($varListVariablesV as $key => $value) {
+            $varVariables = $value['idcategoria'];
+            $varNombreVariable = $value['nombre'];
+
+            $varConteoPorVariable =  (new \yii\db\Query())
+                                            ->select(['callid','SUM(cantproceso)'])
+                                            ->from(['tbl_speech_general'])            
+                                            ->where(['=','anulado',0])
+                                            ->andwhere(['=','programacliente',$txtServicio])
+                                            ->andwhere(['in','extension',$varListaExtensionesExport])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                            ->andwhere(['in','callid',$varCallidsIndicadoresExport])
+                                            ->andwhere(['in','idindicador',$varVariables])
+                                            ->andwhere(['in','idvariable',$varVariables])
+                                            ->groupby(['callid'])
+                                            ->count();
+
+            if ($varConteoPorVariable != 0 && $varCantidadExport != 0) {
+              if ($txtTipoFormIndicador == 0) {
+                $txtRtaPorcentajeVariable = (round(($varConteoPorVariable / $varCantidadExport) * 100, 1));
+              }else{
+                $txtRtaPorcentajeVariable = (100 - (round(($varConteoPorVariable / $varCantidadExport) * 100, 1)));
+              }
+            }else{
+              $txtRtaPorcentajeVariable = 0;
+            }
+
+            $varLlamadasVariable =  (new \yii\db\Query())
+                                            ->select(['idcategoria'])
+                                            ->from(['tbl_dashboardspeechcalls'])            
+                                            ->where(['=','anulado',0])
+                                            ->andwhere(['=','servicio',$txtServicio])
+                                            ->andwhere(['in','extension',$varListaExtensionesExport])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                            ->andwhere(['in','idcategoria',$varVariables])
+                                            ->groupby(['callid'])
+                                            ->count();
+
+            $varLlamadasVariableSegundos =  (new \yii\db\Query())
+                                            ->select(['avg(callduracion)'])
+                                            ->from(['tbl_dashboardspeechcalls'])            
+                                            ->where(['=','anulado',0])
+                                            ->andwhere(['=','servicio',$txtServicio])
+                                            ->andwhere(['in','extension',$varListaExtensionesExport])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                            ->andwhere(['in','idcategoria',$varVariables])
+                                            ->Scalar();
+
+            $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $varNombreIndicadorExport); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':B'.$numCell);
+
+            $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $varNombreVariable); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('C'.$numCell.':D'.$numCell);
+
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $txtRtaPorcentajeVariable.' %'); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('E'.$numCell.':F'.$numCell);
+
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $varConteoPorVariable); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('G'.$numCell.':H'.$numCell);
+
+            $phpExc->getActiveSheet()->setCellValue('I'.$numCell, round($varLlamadasVariableSegundos)); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('I'.$numCell.':J'.$numCell);
+            $numCell++;
+          }
+
+        }
 
         $hoy = getdate();
         $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Escuchar+_".$varNombreServicioExport;
