@@ -2052,18 +2052,16 @@ use app\models\Formularios;
             }
           }
 
-          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varNombreIndicador);           
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
-          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayTitle); 
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.'9', $varNombreIndicador);           
+          $phpExc->getActiveSheet()->getStyle($lastColumn.'9')->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.'9')->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.'9')->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.'9')->applyFromArray($styleArrayTitle); 
 
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.'10', $txtRtaProcentaje); 
           $lastColumn++;
-          $numCell = $numCell + 1;
-          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaProcentaje); 
-          $lastColumn++;
-          $numCell = $numCell + 1;
         }
+        $numCell = $numCell + 1;
 
         $hoy = getdate();
         $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Escuchar+_".$varNombreServicioExport;
