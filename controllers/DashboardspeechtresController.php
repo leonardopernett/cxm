@@ -1658,8 +1658,6 @@ use app\models\Formularios;
         $varCorreo = Yii::$app->request->get("var_Destino");
         $txtCodPcrcok = Yii::$app->request->get("var_CodsPcrc");              
 
-        var_dump("--------------------------------------");
-
         $varListaCodPcrcExport = explode(",", str_replace(array("#", "'", ";", " "), '', $txtCodPcrcok));
 
         $varidLllamadaExport = (new \yii\db\Query())
@@ -1733,22 +1731,15 @@ use app\models\Formularios;
                                 ->andwhere(['=','idcategorias',1])
                                 ->all();
 
-        var_dump($varNombreServicioExport);
-
-        
-
-
-
-        die(json_encode("Aqui vamos"));
 
         $phpExc = new \PHPExcel();
         $phpExc->getProperties()
                 ->setCreator("Konecta")
                 ->setLastModifiedBy("Konecta")
-                ->setTitle("Dashboard Escuchar + ".$txtServicio)
-                ->setSubject("Procesos Dashboard Escuchar + ".$txtServicio)
+                ->setTitle("Dashboard Escuchar + ".$varNombreServicioExport)
+                ->setSubject("Procesos Dashboard Escuchar + ".$varNombreServicioExport)
                 ->setDescription("Este archivo contiene el proceso de las comparaciones con las categorias y las llamadas en Speech,")
-                ->setKeywords("Archivo Escuchar + ".$txtServicio);
+                ->setKeywords("Archivo Escuchar + ".$varNombreServicioExport);
         $phpExc->setActiveSheetIndex(0);
 
         $phpExc->getActiveSheet()->setShowGridlines(False);
@@ -1841,7 +1832,7 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
         $phpExc->setActiveSheetIndex(0)->mergeCells('A1:J1');
 
-        $phpExc->getActiveSheet()->SetCellValue('A2','INFORME ESCUCHAR + '.$txtServicio);
+        $phpExc->getActiveSheet()->SetCellValue('A2','INFORME ESCUCHAR + '.$varNombreServicioExport);
         $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySize);
         $phpExc->setActiveSheetIndex(0)->mergeCells('A2:J2');
 
@@ -1858,7 +1849,7 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('A4')->applyFromArray($styleColor);
         $phpExc->getActiveSheet()->getStyle('A4')->applyFromArray($styleArraySubTitle);
         $phpExc->getActiveSheet()->getStyle('A4')->applyFromArray($styleArrayTitle);
-        $phpExc->getActiveSheet()->setCellValue('A5', $txtServicio);
+        $phpExc->getActiveSheet()->setCellValue('A5', $varNombreServicioExport);
         $phpExc->setActiveSheetIndex(0)->mergeCells('A5:D5');
 
         $phpExc->getActiveSheet()->SetCellValue('E4','Rango de fechas');
@@ -1885,7 +1876,7 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleColor);
         $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleArraySubTitle);
         $phpExc->getActiveSheet()->getStyle('A6')->applyFromArray($styleArrayTitle);
-        $phpExc->getActiveSheet()->setCellValue('A7', $txtCodPcrcok);
+        $phpExc->getActiveSheet()->setCellValue('A7', $varNombrePcrcExport);
         $phpExc->setActiveSheetIndex(0)->mergeCells('A7:D7');
 
         $phpExc->getActiveSheet()->SetCellValue('E6','Parametros Seleccionados');
@@ -1914,6 +1905,7 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('A8')->applyFromArray($styleArrayTitle);
 
         $lastColumn = 'A';
+        $numCell = 9;
         foreach ($varListarIndicadoresExport as $key => $value) {
           $txtIdIndicadores = $value['idcategoria'];
           $varNombreIndicador = $value['nombre'];
@@ -1936,9 +1928,8 @@ use app\models\Formularios;
           $varSumarPositivas = 0;
           $varSumarNegativas = 0;
 
-          foreach ($varListVariablesI as $key => $value) {
+          foreach ($varListVariablesIExport as $key => $value) {
             $varOrienta = $value['orientacionsmart'];
-            $varResponsable = $value['responsable'];
             array_push($arrayListOfVar, $value['idcategoria']);
 
             if ($varOrienta == 1) {
@@ -1963,6 +1954,7 @@ use app\models\Formularios;
           $arrayVariableMenos_down = str_replace(array("#", "'", ";", " "), '', $arrayVariableMenosList);
           $arrayVariableMenos = explode(",", $arrayVariableMenos_down);
 
+          $varTotalvariables = count($varListVariablesIExport);
 
           if ($varTipoParametro == "2") {
             
@@ -1979,14 +1971,124 @@ use app\models\Formularios;
                                           ->andwhere(['in','idvariable',$arrayVariable])
                                           ->groupby(['callid'])
                                           ->count();
+
+              if ($varconteo == null) {
+                $varconteo = 0;
+              }
+
             }else{
               
+              $varconteo = (new \yii\db\Query())  
+                                          ->select(['callid','SUM(cantproceso)'])
+                                          ->from(['tbl_speech_general'])            
+                                          ->where(['=','anulado',0])
+                                          ->andwhere(['=','programacliente',$txtServicio])
+                                          ->andwhere(['in','extension',$varListaExtensionesExport])
+                                          ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                          ->andwhere(['in','callid',$varListCallidsExport])
+                                          ->andwhere(['in','idindicador',$arrayVariableMenos])
+                                          ->andwhere(['in','idvariable',$arrayVariableMenos])
+                                          ->groupby(['callid'])
+                                          ->count();
+
+              if ($varconteo != null) {
+                $varconteo = round(count($varListCallidsExport) - $varconteo);                
+              }else{
+                $varconteo = 0;
+              }
+
+            }
+
+          }else{
+
+            if ($arrayVariableMas != "") {
+              $varconteo = (new \yii\db\Query())
+                                          ->select(['callid','SUM(cantproceso)'])
+                                          ->from(['tbl_speech_general'])            
+                                          ->where(['=','anulado',0])
+                                          ->andwhere(['=','programacliente',$txtServicio])
+                                          ->andwhere(['in','extension',$varListaExtensionesExport])
+                                          ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                          ->andwhere(['in','callid',$varListCallidsExport])
+                                          ->andwhere(['in','idindicador',$arrayVariableMas])
+                                          ->andwhere(['in','idvariable',$arrayVariableMas])
+                                          ->groupby(['callid'])
+                                          ->count();
+            }else{
+              $varconteo = 0;
+            }
+
+            if ($arrayVariableMenos != "") {
+              $varconteo = (new \yii\db\Query())
+                                          ->select(['callid','SUM(cantproceso)'])
+                                          ->from(['tbl_speech_general'])            
+                                          ->where(['=','anulado',0])
+                                          ->andwhere(['=','programacliente',$txtServicio])
+                                          ->andwhere(['in','extension',$varListaExtensionesExport])
+                                          ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                          ->andwhere(['in','callid',$varListCallidsExport])
+                                          ->andwhere(['in','idindicador',$arrayVariableMenos])
+                                          ->andwhere(['in','idvariable',$arrayVariableMenos])
+                                          ->groupby(['callid'])
+                                          ->count();
+            }else{
+              $varconteo = 0;
             }
 
           }
 
 
+          if ($varconteo != 0 && $varCantidadExport != 0) {
+            if ($txtTipoFormIndicador == 0) {
+              $txtRtaProcentaje = (round(($varconteo / $varCantidadExport) * 100, 1));
+            }else{
+              $txtRtaProcentaje = (100 - (round(($varconteo / $varCantidadExport) * 100, 1)));
+            }
+          }else{
+            if ($txtTipoFormIndicador == 0) {
+              $txtRtaProcentaje = 100;
+            }else{
+              $txtRtaProcentaje = 0;
+            }
+          }
+
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varNombreIndicador);           
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
+          $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayTitle); 
+
+          $lastColumn++;
+          $numCell = $numCell + 1;
+          $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaProcentaje); 
+          $lastColumn++;
+          $numCell = $numCell + 1;
         }
+
+        $hoy = getdate();
+        $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Escuchar+_".$varNombreServicioExport;
+              
+        $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
+                
+        $tmpFile = tempnam(sys_get_temp_dir(), $hoy);
+        $tmpFile.= ".xls";
+
+        $objWriter->save($tmpFile);
+
+        $message = "<html><body>";
+        $message .= "<h3>Se ha realizado el envio correcto del archivo del programa DashBoard Escuchar +</h3>";
+        $message .= "</body></html>";
+
+        Yii::$app->mailer->compose()
+                        ->setTo($varCorreo)
+                        ->setFrom(Yii::$app->params['email_satu_from'])
+                        ->setSubject("Envio Dashboard Escuchar + ".$varNombreServicioExport)
+                        ->attach($tmpFile)
+                        ->setHtmlBody($message)
+                        ->send();
+
+        $rtaenvio = 1;
+        die(json_encode($rtaenvio));
   
     }
 
