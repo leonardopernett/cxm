@@ -2227,7 +2227,7 @@ use app\models\Formularios;
         $phpExc->getActiveSheet()->getStyle('G'.$numCell)->applyFromArray($styleArrayTitle);
 
         $varListCategoriasExports = (new \yii\db\Query())
-                                ->select(['idcategoria','nombre'])
+                                ->select(['idcategoria','nombre','orientacionsmart'])
                                 ->from(['tbl_speech_categorias'])            
                                 ->where(['=','anulado',0])
                                 ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
@@ -2261,7 +2261,87 @@ use app\models\Formularios;
                                 ->where(['=','anulado',0])
                                 ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
                                 ->andwhere(['=','id_dp_cliente',$varidClienteExport])
-                                ->All();
+                                ->All(); 
+
+        foreach ($varlistaMotivosTmp as $key => $value) {
+          $varMotivoVoice = intval($value['id_motivo']);
+          
+          $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['motivo']); 
+          $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':B'.$numCell);
+
+          $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['porcentaje'].' %'); 
+          $phpExc->setActiveSheetIndex(0)->mergeCells('C'.$numCell.':D'.$numCell);
+
+          $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $value['cantidadmotivos']); 
+          $phpExc->setActiveSheetIndex(0)->mergeCells('E'.$numCell.':F'.$numCell);
+
+          $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['duracionllamada']); 
+          $phpExc->setActiveSheetIndex(0)->mergeCells('G'.$numCell.':H'.$numCell);
+
+          $lastColumn = 'I';
+          foreach ($varListCategoriasExports as $key => $value) {
+            $varVariableId = intval($value['idcategoria']);
+            $varArregloCategoria = [$varMotivoVoice,$varVariableId];
+            $varSmart = $value['orientacionsmart'];
+
+            $varConteoPorMotivosVariable =  (new \yii\db\Query())
+                                            ->select(['callid'])
+                                            ->from(['tbl_dashboardspeechcalls'])            
+                                            ->where(['=','anulado',0])
+                                            ->andwhere(['=','servicio',$txtServicio])
+                                            ->andwhere(['in','extension',$varListaExtensionesExport])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                            ->andwhere(['in','idcategoria',$varArregloCategoria])
+                                            ->groupby(['callid'])
+                                            ->count();
+
+
+            if ($varConteoPorMotivosVariable != 0 && $varCantidadExport != 0) {
+              if ($varConteoPorMotivosVariable != null) {
+                $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $varCantidadExport) * 100, 1));
+              }else{
+                $txtRtaPorcentajeMotivoVariable = 0;
+              }
+            }else{
+              $txtRtaPorcentajeMotivoVariable = 0;
+            }
+
+            if ($varSmart == 1) {
+              if ($txtRtaPorcentajeMotivoVariable <= 10) {
+                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
+              }else{
+                if ($txtRtaPorcentajeMotivoVariable >= 20) {
+                  $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorLess);
+                }else{
+                  $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorMiddle);
+                }
+              }
+            }else{
+              if ($varSmart == 2) {
+                if ($txtRtaPorcentajeMotivoVariable <= 80) {
+                  $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorLess);
+                }else{
+                  if ($txtRtaPorcentajeMotivoVariable >= 90) {
+                    $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
+                  }else{
+                    $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorMiddle);
+                  }
+                }
+              }
+            }
+
+            $lastColumn++; 
+
+          }          
+
+          $numCell++;
+        }
 
         $hoy = getdate();
         $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Escuchar+_".$varNombreServicioExport;
