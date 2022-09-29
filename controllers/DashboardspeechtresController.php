@@ -2264,84 +2264,126 @@ use app\models\Formularios;
                                 ->All(); 
 
         foreach ($varlistaMotivosTmp as $key => $value) {
-          $varMotivoVoice = intval($value['id_motivo']);
-          
-          $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['motivo']); 
-          $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':B'.$numCell);
-
-          $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['porcentaje'].' %'); 
-          $phpExc->setActiveSheetIndex(0)->mergeCells('C'.$numCell.':D'.$numCell);
-
-          $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $value['cantidadmotivos']); 
-          $phpExc->setActiveSheetIndex(0)->mergeCells('E'.$numCell.':F'.$numCell);
-
-          $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['duracionllamada']); 
-          $phpExc->setActiveSheetIndex(0)->mergeCells('G'.$numCell.':H'.$numCell);
-
-          $lastColumn = 'I';
-          foreach ($varListCategoriasExports as $key => $value) {
-            $varVariableId = intval($value['idcategoria']);
-            $varArregloCategoria = [$varMotivoVoice,$varVariableId];
-            $varSmart = $value['orientacionsmart'];
-
-            $varConteoPorMotivosVariable =  (new \yii\db\Query())
-                                            ->select(['callid'])
-                                            ->from(['tbl_dashboardspeechcalls'])            
-                                            ->where(['=','anulado',0])
-                                            ->andwhere(['=','servicio',$txtServicio])
-                                            ->andwhere(['in','extension',$varListaExtensionesExport])
-                                            ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
-                                            ->andwhere(['in','idcategoria',$varArregloCategoria])
-                                            ->groupby(['callid'])
-                                            ->count();
-
-
-            if ($varConteoPorMotivosVariable != 0 && $varCantidadExport != 0) {
-              if ($varConteoPorMotivosVariable != null) {
-                $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $varCantidadExport) * 100, 1));
-              }else{
-                $txtRtaPorcentajeMotivoVariable = 0;
-              }
-            }else{
-              $txtRtaPorcentajeMotivoVariable = 0;
-            }
-
-            if ($varSmart == 1) {
-              if ($txtRtaPorcentajeMotivoVariable <= 10) {
-                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
-                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
-              }else{
-                if ($txtRtaPorcentajeMotivoVariable >= 20) {
-                  $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
-                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorLess);
+            $varMotivoVoice = intval($value['id_motivo']);
+                                    
+            $phpExc->getActiveSheet()->setCellValue('A'.$numCell, $value['motivo']); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':B'.$numCell);
+                          
+            $phpExc->getActiveSheet()->setCellValue('C'.$numCell, $value['porcentaje'].' %'); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('C'.$numCell.':D'.$numCell);
+                          
+            $phpExc->getActiveSheet()->setCellValue('E'.$numCell, $value['cantidadmotivos']); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('E'.$numCell.':F'.$numCell);
+                          
+            $phpExc->getActiveSheet()->setCellValue('G'.$numCell, $value['duracionllamada']); 
+            $phpExc->setActiveSheetIndex(0)->mergeCells('G'.$numCell.':H'.$numCell);
+                          
+            $lastColumn = 'I';
+            foreach ($varListCategoriasExports as $key => $value) {
+                $varVariableId = intval($value['idcategoria']);
+                
+                $varSmart = $value['orientacionsmart'];
+                          
+                $txtRtaPorcentajeMotivoVariable =  (new \yii\db\Query())
+                                                    ->select(['porcentaje'])
+                                                    ->from(['tbl_speech_tmpmotivosvariables'])            
+                                                    ->where(['=','anulado',0])
+                                                    ->andwhere(['=','id_dp_cliente',$varidClienteExport])
+                                                    ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
+                                                    ->andwhere(['=','id_motivo',$varMotivoVoice])
+                                                    ->andwhere(['=','id_categoria',$varVariableId])
+                                                    ->scalar();
+                          
+                          
+                if ($varSmart == 1) {
+                    if ($txtRtaPorcentajeMotivoVariable <= 10) {
+                        $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                        $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
+                    }else{
+                        if ($txtRtaPorcentajeMotivoVariable >= 20) {
+                            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorLess);
+                        }else{
+                            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorMiddle);
+                        }
+                    }
                 }else{
-                  $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
-                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorMiddle);
+                    if ($varSmart == 2) {
+                        if ($txtRtaPorcentajeMotivoVariable <= 80) {
+                            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorLess);
+                        }else{
+                            if ($txtRtaPorcentajeMotivoVariable >= 90) {
+                                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
+                            }else{
+                                $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
+                                $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorMiddle);
+                            }
+                        }
+                    }
                 }
-              }
-            }else{
-              if ($varSmart == 2) {
-                if ($txtRtaPorcentajeMotivoVariable <= 80) {
-                  $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
-                  $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorLess);
-                }else{
-                  if ($txtRtaPorcentajeMotivoVariable >= 90) {
-                    $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorhigh);
-                  }else{
-                    $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $txtRtaPorcentajeMotivoVariable.' %'); 
-                    $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColorMiddle);
-                  }
-                }
-              }
-            }
-
-            $lastColumn++; 
-
-          }          
-
-          $numCell++;
+                          
+                $lastColumn++; 
+                          
+            }          
+                          
+            $numCell++;
         }
+                          
+        $numCell = $numCell + 1;
+        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'TOTAL CATEGORIZACION POR ASESOR');
+        $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':J'.$numCell);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArray);            
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+                          
+        $numCell = $numCell + 1;
+        $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'Usuario de red');
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleColor);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArraySubTitle);
+        $phpExc->getActiveSheet()->getStyle('A'.$numCell)->applyFromArray($styleArrayTitle);
+                          
+        $varListSoloVariablesExports = (new \yii\db\Query())
+                                        ->select(['idcategoria','nombre','orientacionsmart'])
+                                        ->from(['tbl_speech_categorias'])            
+                                        ->where(['=','anulado',0])
+                                        ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
+                                        ->andwhere(['=','idcategorias',2])
+                                        ->all();
+                          
+        $lastColumn = 'B';
+        foreach ($varListSoloVariablesExports as $key => $value) {
+            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $value['nombre']); 
+            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->getFont()->setBold(true);
+            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleColor);
+            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArraySubTitle);
+            $phpExc->getActiveSheet()->getStyle($lastColumn.$numCell)->applyFromArray($styleArrayTitle);
+            $lastColumn++; 
+        }
+                          
+        $varListAsesoresExport =  (new \yii\db\Query())
+                                    ->select(['login_id'])
+                                    ->from(['tbl_dashboardspeechcalls'])            
+                                    ->where(['=','anulado',0])
+                                    ->andwhere(['=','servicio',$txtServicio])
+                                    ->andwhere(['in','extension',$varListaExtensionesExport])
+                                    ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                    ->groupby(['login_id'])
+                                    ->all();
+                          
+        $lastColumn = 'A';
+        $numCell = $numCell + 1;
+        foreach ($varListAsesoresExport as $key => $value) {
+            $varlogin = $value['login_id'];
+            $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varlogin);
+            $numCell++;
+        }
+                          
+        $numCell = $numCell + 1;
 
         $hoy = getdate();
         $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."_DashBoard_Escuchar+_".$varNombreServicioExport;
