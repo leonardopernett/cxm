@@ -2378,8 +2378,30 @@ use app\models\Formularios;
         $lastColumn = 'A';
         $numCell = $numCell + 1;
         foreach ($varListAsesoresExport as $key => $value) {
+            $lastColumn = 'A';
             $varlogin = $value['login_id'];
             $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varlogin);
+
+            $lastColumn = 'B';
+            foreach ($varListSoloVariablesExports as $key => $value) {
+              $varidcateg = $value['idcategoria'];
+  
+              $varCatidad =  (new \yii\db\Query())
+                                              ->select(['callid'])
+                                              ->from(['tbl_dashboardspeechcalls'])            
+                                              ->where(['=','anulado',0])
+                                              ->andwhere(['=','servicio',$txtServicio])
+                                              ->andwhere(['in','extension',$varListaExtensionesExport])
+                                              ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                              ->andwhere(['=','login_id',$varlogin])
+                                              ->andwhere(['=','idcategoria',$varidcateg])
+                                              ->groupby(['callid'])
+                                              ->count();
+  
+              $phpExc->getActiveSheet()->setCellValue($lastColumn.$numCell, $varCatidad);
+              $lastColumn++;
+            }
+  
             $numCell++;
         }
                           
