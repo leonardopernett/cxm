@@ -2789,35 +2789,33 @@ use \yii\base\Exception;
 
          public function actionListarprogramaindex(){            
            
-            $txtvariddashboard = Yii::$app->request->post("txtvariddashboard");
-            $txtCodpcrc = Yii::$app->request->post('cod_pcrc');
+          $txtvariddashboard = Yii::$app->request->get("txtvariddashboard");
+          $txtCodpcrc = Yii::$app->request->get('cod_pcrc');
 
-            if ($txtvariddashboard == 3) {
-              $txtRta = Yii::$app->db->createCommand("select distinct sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sp.cod_pcrc in ('$txtCodpcrc') and sp.anulado = 0")->queryAll();
+          if ($txtvariddashboard == 3) {
+            $txtRta = Yii::$app->db->createCommand("select distinct sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sp.cod_pcrc in ('$txtCodpcrc') and sp.anulado = 0")->queryAll();
+          }else{
+            if ($txtvariddashboard == 0) {
+              $txtRta = Yii::$app->db->createCommand("select distinct sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sp.cod_pcrc in ('$txtCodpcrc') and sp.anulado = 0 and sp.tipoparametro is null")->queryAll();
             }else{
-              if ($txtvariddashboard == 0) {
-                $txtRta = Yii::$app->db->createCommand("select distinct sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sp.cod_pcrc in ('$txtCodpcrc') and sp.anulado = 0 and sp.tipoparametro is null")->queryAll();
-              }else{
-                $txtRta = Yii::$app->db->createCommand("select distinct sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sp.cod_pcrc in ('$txtCodpcrc') and sp.anulado = 0 and sp.tipoparametro = $txtvariddashboard")->queryAll();
-              }
+              $txtRta = Yii::$app->db->createCommand("select distinct sc.programacategoria, sp.rn, sp.ext, sp.usuared, sp.tipoparametro from tbl_speech_categorias sc inner join tbl_speech_parametrizar sp on sc.cod_pcrc = sp.cod_pcrc where sp.cod_pcrc in ('$txtCodpcrc') and sp.anulado = 0 and sp.tipoparametro = $txtvariddashboard")->queryAll();
             }
+          }
 
-            
+          
 
-            $arrayUsu = array();
-            foreach ($txtRta as $key => $value) {
-              if($value['rn']!=""){
-                  array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['rn'],"tipoparametro"=>$value['tipoparametro']));
-              }elseif($value['ext']!=""){
-                  array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['ext'],"tipoparametro"=>$value['tipoparametro']));
-              }elseif($value['usuared']!=""){
-                  array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['usuared'],"tipoparametro"=>$value['tipoparametro']));
-              }else {
-                #code
-              }
+          $arrayUsu = array();
+          foreach ($txtRta as $key => $value) {
+            if($value['rn']!=""){
+                array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['rn'],"tipoparametro"=>$value['tipoparametro']));
+            }elseif($value['ext']!=""){
+                array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['ext'],"tipoparametro"=>$value['tipoparametro']));
+            }elseif($value['usuared']!=""){
+                array_push($arrayUsu, array("programacategoria"=>$value['programacategoria'],"rn"=>$value['usuared'],"tipoparametro"=>$value['tipoparametro']));
             }
+          }
 
-            die(json_encode($arrayUsu)); 
+          die(json_encode($arrayUsu)); 
         }
         public function actionParametrizardatos(){
           $model = new SpeechServicios;
