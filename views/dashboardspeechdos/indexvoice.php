@@ -1598,7 +1598,7 @@ $this->title = 'Dashboard Escuchar +';
     <div class="col-md-2">
         <div class="card1 mb">
             <label style="font-size: 15px;"><em class="fas fa-phone-square" style="font-size: 15px; color: #FFC72C;"></em> <?= Yii::t('app', 'Análisis Focalizado') ?> </label>
-            <?= Html::a('Interacciones',  ['llamadafocalizada', 'varprograma'=>$txtServicio, 'varcodigopcrc'=>$txtCodPcrcs, 'varidcategoria'=>$varidLllamada, 'varextension'=>$txtExtensiones, 'varfechasinicio'=>$varFechaInicioVoice, 'varfechasfin'=>$varFechaFinTresVoice, 'varcantllamadas'=>$txtCantidad, 'varfechainireal'=>$varFechaInicioFocalizado, 'varfechafinreal'=>$varFechaFinFocalizado,'varcodigos'=>1, 'varaleatorios' => 0], ['class' => 'btn btn-success',
+            <?= Html::a('Interacciones',  ['llamadafocalizada', 'varprograma'=>$txtServicio, 'varcodigopcrc'=>$txtCodPcrcs, 'varidcategoria'=>$varidLllamada, 'varextension'=>$txtExtensiones, 'varfechasinicio'=>$varFechaInicioVoice, 'varfechasfin'=>$varFechaFinTresVoice, 'vartcantllamadas'=>$txtCantidad, 'varfechainireal'=>$varFechaInicioFocalizado, 'varfechafinreal'=>$varFechaFinFocalizado,'varcodigos'=>1, 'varaleatorios' => 0], ['class' => 'btn btn-success',
                           'style' => 'background-color: #337ab7', 'target' => "_blank",
                           'data-toggle' => 'tooltip',
                           'title' => 'Buscar llamadas']) 
