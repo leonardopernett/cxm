@@ -59,9 +59,6 @@ use app\models\Formularios;
       $model = new Dashboardcategorias(); 
       $model2 = new ProcesosVolumendirector();
       $model3 = new SpeechCategorias();
-      $txtanulado = 0;
-      $txtfechacreacion = date("Y-m-d");
-      $array_cadena = 0; 
       $txtvarNew = null; 
 
       $data = Yii::$app->request->post();     

@@ -13,10 +13,10 @@ use yii\bootstrap\Modal;
 use app\models\Dashboardcategorias;
 use app\models\Dashboardservicios;
 
-$this->title = 'Dashboard Escuchar + 2.0';
+$this->title = 'Dashboard Escuchar +';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->title = 'Dashboard Escuchar + 2.0';
+$this->title = 'Dashboard Escuchar +';
 
     $template = '<div class="col-md-12">'
     . ' {input}{error}{hint}</div>';
@@ -55,6 +55,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
       }
       $varservicios = implode(", ", $varlistiddpclientes);
     }
+
 ?>
 <style>
     .lds-ring {
@@ -108,7 +109,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
+            font-family: "Nunito";
             font-size: 150%;    
             text-align: left;    
     }
@@ -120,6 +121,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      /*background: #fff;*/
       border-radius: 5px;
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
     }
@@ -138,36 +140,27 @@ $this->title = 'Dashboard Escuchar + 2.0';
 <?php
   if ($txtvarNew == null) {
 ?>
-<br>
-<br>
 <div class="capaLoader" id="idCapa" style="display: none;">
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <table style="margin: auto;">
-        <caption>...</caption>
+        <table align="center">
           <thead>
             <tr>
-              <th scope="col" class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
-              <th scope="col"><?= Yii::t('app', '') ?></th>
-              <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informaci&oacute;n de los filtros para el Dashboard Escuchar + en la versi&oacute;n 2.0...') ?></h4></th>
+              <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+              <th><?= Yii::t('app', '') ?></th>
+              <th class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion de los filtros para el Dashboard Escuchar + ...') ?></h4></th>
             </tr>            
           </thead>
         </table>
       </div>
     </div>
   </div>
-  <br>
   <hr>
 </div>
 
 <div class="capaForm" id="idCapa0" style="display: inline;">
-  <?php $form = ActiveForm::begin([
-    'layout' => 'horizontal',
-    'fieldConfig' => [
-      'inputOptions' => ['autocomplete' => 'off']
-    ]
-    ]); ?>
+  <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
   <!-- Aqui va lacapa de los botones -->
   <div class="capabtn1" style="display: inline;">
@@ -179,7 +172,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
             <div id="recarga1" style="display: none;" class="col-md-6">
               <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-spinner" style="font-size: 20px; color: #FFC72C;"></em> Nueva b&uacute;squeda </label>
+                <label style="font-size: 15px;"><em class="fas fa-spinner" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Nueva Búsqueda') ?> </label>
                 <?= Html::a('Nuevo',  ['index'], ['class' => 'btn btn-success',
                                 'style' => 'display: inline;margin: 3px;height: 34px;display: inline;height: 34px;background-color: #707372;',                            
                                 'data-toggle' => 'tooltip',
@@ -191,7 +184,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
             <div id="botones2" style="display:inline;" class="col-md-6">
               <div class="card1 mb">       
-                <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 20px; color: #FFC72C;"></em> Buscar programa </label>        
+                <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Buscar Programa/Pcrc') ?> </label>        
                 <div onclick="carga_programa();" class="btn btn-success"  style="display:inline;  margin: 3px; height: 34px;" method='post'  >
                     Buscar 
                 </div>
@@ -200,7 +193,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
             <div id="idBlock1" style="display: none;" class="col-md-6">
               <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #FFC72C;"></em> Buscar dashboard </label>
+                <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Buscar Dashboard') ?> </label>
                   <?= Html::submitButton(Yii::t('app', 'Buscar'),
                       ['class' => $model3->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                           'data-toggle' => 'tooltip',
@@ -225,32 +218,34 @@ $this->title = 'Dashboard Escuchar + 2.0';
     <div class="row">
       <div class="col-md-12">
         <div class="card1 mb">
+          <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Selección de Filtros') ?></label><br>
 
           <div class="row">
             <div class="col-md-4">
-              <label><em class="fas fa-check" style="font-size: 20px; color: #559FFF;"></em> Seleccionar cliente: </label>
-              
+              <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Servicio') ?></label><br>
+
               <?php
                 if (count($varConteoExist) != 0) {
                   
               ?>
 
                 <?=  $form->field($model3, 'clientecategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes in ($varservicios)")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
-                                          [
-                                              'prompt'=>'Seleccione Cliente Speech...',
-                                              'onchange' => '
-                                                  $.post(
-                                                      "' . Url::toRoute('dashboardspeech/listarpcrcindex') . '", 
-                                                      {id: $(this).val()}, 
-                                                      function(res){
-                                                          $("#requester").html(res);
-                                                      }
-                                                  );
-                                              ',
+                                        [
+                                            'prompt'=>'Seleccione Servicio...',
+                                            'onchange' => '
+                                                $.post(
+                                                    "' . Url::toRoute('listarpcrcindex') . '", 
+                                                    {id: $(this).val()}, 
+                                                    function(res){
+                                                        $("#requester").html(res);
+                                                    }
+                                                );
+                                            ',
 
-                                          ]
-                                  )->label(''); 
+                                        ]
+                                )->label(''); 
                 ?>
+
 
               <?php
                 }else{
@@ -258,10 +253,10 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
                 <?=  $form->field($model3, 'clientecategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                         [
-                                            'prompt'=>'Seleccione Cliente Speech...',
+                                            'prompt'=>'Seleccione Servicio...',
                                             'onchange' => '
                                                 $.post(
-                                                    "' . Url::toRoute('dashboardspeech/listarpcrcindex') . '", 
+                                                    "' . Url::toRoute('listarpcrcindex') . '", 
                                                     {id: $(this).val()}, 
                                                     function(res){
                                                         $("#requester").html(res);
@@ -277,14 +272,16 @@ $this->title = 'Dashboard Escuchar + 2.0';
                 }
               ?>
 
+
+              
                 <br>
-                <label ><em class="fas fa-check-square" style="font-size: 20px; color: #559FFF;"></em> Seleccionar centro de costos: </label>
+                <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Programa/Pcrc') ?></label><br>
                 <?=
                     $form->field($model3, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->checkboxList(
                         [],
                         [
                             "id" =>"requester",
-                            'item'=>function ($label)
+                            'item'=>function ($index, $label, $name, $checked, $value)
                             {
                                 return '<div class="col-md-12">
                                             <input type="checkbox"/>'.$label.'
@@ -296,12 +293,12 @@ $this->title = 'Dashboard Escuchar + 2.0';
             </div>
 
             <div class="col-md-4">
-              <label><em class="fas fa-hand-pointer" style="font-size: 20px; color: #559FFF;"></em> Seleccionar proceso: </label>
-                <?= $form->field($model3, 'dashboard', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varextensiones, ['prompt' => 'Seleccionar procesos...', 'id'=>'iddashboard']) ?>
+              <label style="font-size: 15px;"><em class="fas fa-hand-pointer" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Dimensión') ?></label><br>
+                <?= $form->field($model3, 'idciudad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varextensiones, ['prompt' => 'Seleccionar procesos...', 'id'=>'iddashboard']) ?>
                 <br>
-                <label ><em class="fas fa-paperclip" style="font-size: 20px; color: #559FFF;"></em> Seleccionar par&aacute;metros: </label>
+                <label style="font-size: 15px;"><em class="fas fa-check-square" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Parámetros') ?></label><br>
                 <label id="labeltodos" style="display: none;">
-                <input type="checkbox" value="todos" id="todos"  onclick="selectodo()" style="padding-right: 390px; display: none;" /> Todos</label>
+                <input type="checkbox" value="todos" id="todos"  onclick="selectodo()" style="padding-right: 390px; display: none;" /> <?= Yii::t('app', 'Todos') ?></label>
                 <?=
                     $form->field($model3, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-8'], 'template' => $template])->checkboxList(
                         [],
@@ -322,14 +319,14 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
             
             <div class="col-md-4">
-              <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></em> Seleccionar rango de fecha: </label>
+              <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Rango de Fecha') ?></label><br>
               <?=
                     $form->field($model3, 'fechacreacion', [
                         'labelOptions' => ['class' => 'col-md-12'],
                         'template' => 
                          '<div class="col-md-12"><div class="input-group">'
                         . '<span class="input-group-addon" id="basic-addon1">'
-                        . '<i class="glyphicon glyphicon-calendar"></i>'
+                        . '<em class="glyphicon glyphicon-calendar"></em>'
                         . '</span>{input}</div>{error}{hint}</div>',
                         'inputOptions' => ['aria-describedby' => 'basic-addon1'],
                         'options' => ['class' => 'drp-container form-group']
@@ -371,9 +368,9 @@ $this->title = 'Dashboard Escuchar + 2.0';
     <div class="col-md-12">
       <div class="card1 mb">
 
-        <div class="panel-body">
-          <p class="text-center"><strong>Importante: </strong> No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta. </p>
-          <div class="row" style="text-align: center;">
+        <div class="panel-body"><center>
+          <p><b><?= Yii::t('app', ' Importante') ?></b> <?= Yii::t('app', ' No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta.') ?> </p></center>
+          <div class="row" align="center">
             <?= Html::a('Nueva consulta',  ['index'], ['class' => 'btn btn-success',
                             'style' => 'background-color: #707372',
                             'data-toggle' => 'tooltip',
@@ -394,7 +391,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 <script type="text/javascript">
     function soloadmin(){
       event.preventDefault();
-      swal.fire("!!! Advertencia !!!","Acci�n no permitida, acceso para usuarios especificos.","warning");
+      swal.fire("¡¡¡ Advertencia !!!","Acción no permitida, acceso para usuarios especificos.","warning");
       return;
     };
 
@@ -476,6 +473,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
 
      document.getElementById("txtIdCod_pcrc").value = varpcrc;
      var variddashboard = document.getElementById("iddashboard").value;
+     console.log(variddashboard);
 
      if (varpcrc == "") {
             event.preventDefault();
@@ -501,8 +499,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
      varPartT4.style.display = 'inline';  
 
      $.ajax({
-              method: "post",
-
+              method: "get",
               url: "listarprogramaindex",
               data : {
                 cod_pcrc : varpcrc,     
@@ -511,7 +508,7 @@ $this->title = 'Dashboard Escuchar + 2.0';
                success : function(response){ 
                           var Rta = $.parseJSON(response);                         
                        //   var Rta =   JSON.parse(response);    
-                          console.log(Rta);
+                          // console.log(Rta);
                           document.getElementById("requester2").innerHTML = "";
                          
                           //var div = document.createElement('input');
@@ -523,14 +520,9 @@ $this->title = 'Dashboard Escuchar + 2.0';
                                 checkbox.setAttribute("class", "prog1");
                                 checkbox.setAttribute("name", "txtprograma_"+(i+1));
                                 checkbox.setAttribute("id", "txtprograma_"+(i+1));
-                                checkbox.setAttribute("value", Rta[i].programacategoria + "," + Rta[i].rn);
+                                checkbox.setAttribute("value", Rta[i].rn);
                                
-                                var varparams = Rta[i].tipoparametro;
-                                // console.log(varparams);
-                              /*  checkbox.type = "checkbox"; 
-                                checkbox.name = "txtprograma_"+(i+1); 
-                                checkbox.value = Rta[i].programacategoria; 
-                                checkbox.id = "txtprograma_"+(i+1);*/                                  
+                                var varparams = Rta[i].tipoparametro;                                 
                                 
                                 var label = document.createElement('label'); 
                                 
