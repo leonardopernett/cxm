@@ -47,6 +47,35 @@ use yii\web\JsExpression;
     ]);
     ?>
 
+    <?=    
+        $form->field($model, 'arbol_id')
+                    ->widget(Select2::classname(), [
+                        'language' => 'es',
+                        'options' => ['id'=>'idselectarbol','placeholder' => Yii::t('app', 'Select ...')],
+                        'pluginOptions' => [
+                            'multiple' => true,
+                            'allowClear' => true,
+                            'minimumInputLength' => 3,
+                            'ajax' => [
+                                'url' => \yii\helpers\Url::to(['reportes/getarboles']),
+                                'dataType' => 'json',
+                                'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                            ],
+                            'initSelection' => new JsExpression('function (element, callback) {
+                                var id=$(element).val();
+                                if (id !== "") {
+                                    $.ajax("' . Url::to(['getarboles']) . '?id=" + id, {
+                                        dataType: "json",
+                                        type: "post"
+                                    }).done(function(data) { callback(data.results);});
+                                }
+                            }')
+                        ]
+                            ]
+            );            
+    ?>
+    
     <?php
     if (!$ajax) {
         echo $form->field($model, 'usua_id_lider')

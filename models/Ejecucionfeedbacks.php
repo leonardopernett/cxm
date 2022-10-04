@@ -26,6 +26,8 @@ use yii\data\ActiveDataProvider;
  * @property string $dscompromiso
  * @property string $dscomentario
  * @property integer $basessatisfaccion_id
+ * @property integer $express
+ * @property string $cod_pcrc
  *
  * @property TblEjecucionformularios $ejecucionformulario
  * @property TblTipofeedbacks $tipofeedback
@@ -55,9 +57,9 @@ class Ejecucionfeedbacks extends \yii\db\ActiveRecord {
             [['usua_id', 'catfeedback', 'tipofeedback_id', 'dscomentario'], 'required', 'on' => 'crearAjax'],
             [['created'], 'required', 'on' => 'reporte'],
             [['tipofeedback_id', 'ejecucionformulario_id', 'usua_id', 'usua_id_lider',
-            'evaluado_id', 'snavisar', 'snaviso_revisado', 'nmescalamiento', 'basessatisfaccion_id', 'dimension_id'], 'integer'],
+            'evaluado_id', 'snavisar', 'snaviso_revisado', 'nmescalamiento', 'basessatisfaccion_id', 'dimension_id', 'express'], 'integer'],
             [['created', 'feaccion_correctiva', 'feescalamiento', 'arbol_id'], 'safe'],
-            [['dsaccion_correctiva', 'dscausa_raiz', 'dscompromiso', 'dscomentario'],'string'],
+            [['dsaccion_correctiva', 'dscausa_raiz', 'dscompromiso', 'dscomentario', 'cod_pcrc'],'string'],
             [['dsaccion_correctiva', 'dscausa_raiz', 'dscompromiso', 'dscomentario'],'filter', 'filter' => function($value){
                 return filter_var($value,FILTER_SANITIZE_STRING) ;
              }],
@@ -89,6 +91,8 @@ class Ejecucionfeedbacks extends \yii\db\ActiveRecord {
             'basessatisfaccion_id' => Yii::t('app', 'basessatisfaccion_id'),
             'arbol_id' => Yii::t('app', 'Arbol'),
             'dimension_id' => Yii::t('app', 'Dimension'),
+            'express' => Yii::t('app', ''),
+            'cod_pcrc' => Yii::t('app', 'Programa/PCRC'),
             
         ];
     }

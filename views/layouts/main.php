@@ -17,7 +17,7 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <!--Fontawesome CDN-->
-        <link rel="stylesheet" href="/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
+        <link rel="stylesheet" href="../web/css/font-awesome/css/font-awesome.css"  >
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -41,7 +41,7 @@ AppAsset::register($this);
             .dropdown {
                 font-family: "Nunito",sans-serif;                
                 font-weight: bold;
-                font-size: 150%;
+                font-size: 130%;
                 margin-top: 8px;
             }
             .dropdown-menu {
@@ -152,7 +152,7 @@ AppAsset::register($this);
             <?php
                 NavBar::begin([
                     'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
-                            ["alt" => "home QA","style" => "width: 200px; margin-top: 10px"]),
+                            ["alt" => "home CXM","style" => "width: 200px; margin-top: 15px"]),
                     'brandUrl' => Yii::$app->homeUrl,
                     'options' => [
                         'class' => 'navbar navbar-inverse navbar-static-top',
@@ -169,7 +169,7 @@ AppAsset::register($this);
                         'options' => ['class' => 'navbar-nav navbar-right'],
                         'items' => [ 
                             [                              
-                                'label' => '<img src="/qa_managementv2/web/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;RESULTADOS BI&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;RESULTADOS&nbsp;&nbsp;&nbsp;&nbsp;'), 
                                 'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo(),                                
                                 'items' => [
                                     '<div class="row">',
@@ -188,7 +188,7 @@ AppAsset::register($this);
                             [
 
                                 'class' => 'ico1',
-                                'label' => '<img src="/qa_managementv2/web/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
+                                'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/Vocn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOC&nbsp;&nbsp;&nbsp;&nbsp;'),
                                 'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerdirectivo(),
                                 'items' => [
                                     '<div class="row">',
@@ -221,7 +221,7 @@ AppAsset::register($this);
                             ], 
                             [
                                 
-                                'label' => '<img src="/qa_managementv2/web/images/Voen.png" width="40" height="25">'.Yii::t('app','&nbsp;VOE&nbsp;&nbsp;&nbsp;&nbsp;'),
+                                'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/Voen.png" width="40" height="25">'.Yii::t('app','&nbsp;VOE&nbsp;&nbsp;&nbsp;&nbsp;'),
                                 'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                 'items' => [
                                     '<div class="row">',
@@ -279,12 +279,12 @@ AppAsset::register($this);
                                 
                             ], 
                             [                              
-                                'label' => '<img src="/qa_managementv2/web/images/Vouxn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOUX&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/Vouxn.png" width="40" height="25">'.Yii::t('app', '&nbsp;VOUX&nbsp;&nbsp;&nbsp;&nbsp;'),                                
                                 'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),                                
                                 'items' => [
                                     '<div class="row">',
                                         
-                                        '<div class="col-md-3">',
+                                        '<div class="col-md-6">',
                                             '<li class="dropdown-headercx2">&nbsp;Planear</li>',
                                                 '<li class="dropdown-headercx ico1">&nbsp;Planeaci&oacute;n del Responsable CX&nbsp;&nbsp;</li>',
                                                 [
@@ -363,7 +363,7 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isHacerMonitoreo()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                         '</div>',
-                                        '<div class="col-md-3">',                                                
+                                        '<div class="col-md-6">',                                                
                                                 '<li class="dropdown-headercx ico1">&nbsp;Segundo Calificador&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Notificaciones&nbsp;&nbsp;'),
@@ -372,7 +372,7 @@ AppAsset::register($this);
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Analizar y Decidir</li>',
-                                                '<li class="dropdown-headercx ico1">&nbsp;Informes - Resultados de Procesos&nbsp;&nbsp;</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Informes-Resultados de Procesos&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Ejecutivo&nbsp;&nbsp;'),
                                                     'url' => ['/dashboardvoz/index'],
@@ -383,11 +383,11 @@ AppAsset::register($this);
                                                     'url' => ['/dashboardspeechdos/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
                                                 ],                                                
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Informe Q&S&nbsp;&nbsp;'),
-                                                    'url' => ['/procesosqys/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
-                                                ],
+                                                // [
+                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Informe Q&S&nbsp;&nbsp;'),
+                                                //     'url' => ['/procesosqys/index'],
+                                                //     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
+                                                // ],
 
                                                 '<br>',
                                                 '<li class="dropdown-headercx ico1">&nbsp;Informes - Control de Procesos&nbsp;&nbsp;</li>',
@@ -459,7 +459,17 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                         '</div>',
-                                        '<div class="col-md-3">',
+                                            
+                                    '</div>',
+                                ],
+
+                            ],
+                            [
+                                'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/admin.png" width="35" height="20">'.Yii::t('app', '&nbsp;ADMIN&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),                                
+                                'items' => [
+                                    '<div class="row" >',
+                                        '<div class="col-md-6">',
                                             '<li class="dropdown-headercx2">&nbsp;Administrador</li>',
                                                 '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n de Usuarios&nbsp;&nbsp;</li>',
                                                 [
@@ -560,8 +570,8 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                         '</div>',
-                                        '<div class="col-md-3">',
-                                                '<li class="dropdown-headercx">Gesti&oacute;n BD - P&uacute;blico Objetivo&nbsp;&nbsp;</li>',
+                                        '<div class="col-md-6">',
+                                                '<li class="dropdown-headercx">Gesti&oacute;n BD-P&uacute;blico Objetivo&nbsp;&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Administrar Cortes'),
                                                     'url' => ['/admincortes/index'],
@@ -633,7 +643,7 @@ AppAsset::register($this);
             <div class='luces'></div>
         </nav>
 
-            <script defer src="/qa_managementv2/web/font_awesome_local/js.js"></script>
+            <script defer src="../web/font_awesome_local/js.js"></script>
             
         <div class="wrap">
             <div class="container-fluid">		
@@ -649,7 +659,7 @@ AppAsset::register($this);
             
         <footer class="footer2">
             <div class="container1">
-                <div class="col-md-12" style="background-image: url('/qa_managementv2/web/images/link.png');
+                <div class="col-md-12" style="background-image: url('../web/images/link.png');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;"><br>
@@ -661,7 +671,7 @@ AppAsset::register($this);
                             
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/nik_update.png"); ?>" style="height: 106px; width: 190px;" alt="Card image cap"></a>
+                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link80.png"); ?>" style="height: 106px; width: 215px;" alt="Card image cap"></a>
                         </div>
                         <div class="col-md-2">                
                             <a class="direccionar" href="https://galeria.allus.com.co/galeriaexperiencias/index.php/component/users/?view=login" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link2.png"); ?>" alt="Card image cap"></a>

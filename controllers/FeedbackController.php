@@ -115,10 +115,15 @@ class FeedbackController extends \yii\web\Controller {
                         $varusua_id_lider = $model->usua_id_lider;
                         $varModel = explode(",", $model->evaluado_id);
                         $vardscomentario = $model->dscomentario;
+                        $varcod_pcrc = $model->cod_pcrc;
+                        $varexpress = 0;
+                        if ($varcod_pcrc) {
+                            $varexpress = 1; 
+                        }
                         $arrayUsu = array();
 
                         foreach ($varModel as $key => $value) {
-                            array_push($arrayUsu, array("tipofeedback_id"=>$vartipofeedback_id,"usua_id_lider"=>$varusua_id_lider,"evaluado_id"=>$value,"dscomentario"=>$vardscomentario));
+                            array_push($arrayUsu, array("tipofeedback_id"=>$vartipofeedback_id,"usua_id_lider"=>$varusua_id_lider,"evaluado_id"=>$value,"dscomentario"=>$vardscomentario,"express"=>$varexpress,"cod_pcrc"=>$varcod_pcrc));
                         }
 
                         foreach ($arrayUsu as $key => $value) {
@@ -126,6 +131,9 @@ class FeedbackController extends \yii\web\Controller {
                             $musua_id_lider = $value["usua_id_lider"];
                             $mevaluado_id = $value["evaluado_id"];
                             $mdscomentario = $value["dscomentario"];
+                            $mexpress = $value["express"];
+                            $mcod_pcrc = $value["cod_pcrc"];
+                            
 
                             Yii::$app->db->createCommand()->insert('tbl_ejecucionfeedbacks',[
                                 'tipofeedback_id' => $mtipofeedback_id,
@@ -134,6 +142,8 @@ class FeedbackController extends \yii\web\Controller {
                                 'dscomentario' => $mdscomentario,
                                 'usua_id' => Yii::$app->user->identity->id,
                                 'created' => date("Y-m-d H:i:s"),
+                                'express' => $mexpress,
+                                'cod_pcrc' => $mcod_pcrc,
                             ])->execute();                            
 
                         }
