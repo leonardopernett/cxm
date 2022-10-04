@@ -2150,7 +2150,7 @@ use \yii\base\Exception;
           $numCell++;
         }
 
-        $numCell = $numCell + 1;
+        
         $phpExc->getActiveSheet()->SetCellValue('A'.$numCell,'TOTAL CATEGORIZACION POR ASESOR');
         $phpExc->setActiveSheetIndex(0)->mergeCells('A'.$numCell.':J'.$numCell);
         $phpExc->getActiveSheet()->getStyle('A'.$numCell)->getFont()->setBold(true);
