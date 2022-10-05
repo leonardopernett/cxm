@@ -17,7 +17,7 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <!--Fontawesome CDN-->
-        <link rel="stylesheet" href="../web/css/font-awesome/css/font-awesome.css"  >
+        <link rel="stylesheet" href="../../web/css/font-awesome/css/font-awesome.css"  >
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -152,7 +152,7 @@ AppAsset::register($this);
             <?php
                 NavBar::begin([
                     'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
-                            ["alt" => "home CXM","style" => "width: 200px; margin-top: 15px"]),
+                            ["alt" => "home CXM","style" => "width: 150px; margin-top: 15px"]),
                     'brandUrl' => Yii::$app->homeUrl,
                     'options' => [
                         'class' => 'navbar navbar-inverse navbar-static-top',
@@ -643,7 +643,7 @@ AppAsset::register($this);
             <div class='luces'></div>
         </nav>
 
-            <script defer src="../web/font_awesome_local/js.js"></script>
+            <script defer src="../../web/font_awesome_local/js.js"></script>
             
         <div class="wrap">
             <div class="container-fluid">		
