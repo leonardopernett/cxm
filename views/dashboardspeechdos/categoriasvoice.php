@@ -52,16 +52,9 @@ $this->title = 'DashBoard Voz del Cliente';
     $fechaIniCat = date("Y", $fechaComoEntero).'-01-01'; 
     $fechaFinCat = date("Y", $fechaComoEntero).'-12-31';
 
-
-    
 ?>
 <div class="control-procesos-index" style="display: inline" id="IdCapaCero">
-    <?php $form = ActiveForm::begin([
-        'options' => ['enctype' => 'multipart/form-data'],
-        'fieldConfig' => [
-            'inputOptions' => ['autocomplete' => 'off']
-          ]
-        ]) ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
          <div class="form-group">
             <label class="control-label col-xs-3">Destinatario:</label>
                 <div class="col-xs-9">
@@ -101,8 +94,15 @@ $this->title = 'DashBoard Voz del Cliente';
         varIdCapaCero.style.display = 'none';
         varIdCapaUno.style.display = 'inline';
 
-        varrevision = /@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-        if (!varrevision.exec(varDestino)) {
+        var varWord1 = "allus";
+        var varWord2 = "multienlace";
+        var varWord3 = "grupokonecta";
+
+        var nvarWord1 = varDestino.indexOf(varWord1);
+        var nvarWord2 = varDestino.indexOf(varWord2);
+        var nvarWord3 = varDestino.indexOf(varWord3);
+
+        if (nvarWord3 <= 0) {
             event.preventDefault();
                 swal.fire("!!! Advertencia !!!","Error con el correo, por favor ingrese correo corporativo.","warning");
                 varIdCapaCero.style.display = 'inline';
@@ -117,7 +117,7 @@ $this->title = 'DashBoard Voz del Cliente';
             return;           
         }else{
             $.ajax({
-                method: "post",
+                method: "get",
                 url: "export2",
                 data : {
                     var_Destino : varDestino,
@@ -134,7 +134,7 @@ $this->title = 'DashBoard Voz del Cliente';
                     var numRta =  JSON.parse(response);                
                     console.log(numRta);
                     if (numRta != 0) {
-			location.reload();
+                        location.reload();                        
                     }                    
                 }
             });  
