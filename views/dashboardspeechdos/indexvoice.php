@@ -1376,7 +1376,7 @@ $this->title = 'Dashboard Escuchar +';
                                             ->groupby(['callid'])
                                             ->count();
 
-                              $varCantidadMotivosVoice =  (new \yii\db\Query())
+                                $txtvCantMotivos = (new \yii\db\Query())
                                             ->select(['callid'])
                                             ->from(['tbl_dashboardspeechcalls'])            
                                             ->where(['=','anulado',0])
@@ -1384,17 +1384,18 @@ $this->title = 'Dashboard Escuchar +';
                                             ->andwhere(['in','extension',$varListaExtensionesVoice])
                                             ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
                                             ->andwhere(['=','idcategoria',$varMotivoVoice])
+                                            ->groupby(['callid'])
                                             ->count();
 
-                              if ($varConteoPorMotivosVariable != 0 && $txtCantidad != 0) {
-                                if ($varConteoPorMotivosVariable != null) {
-                                  $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $txtCantidad) * 100, 1));
+                                if ($varConteoPorMotivosVariable != 0 && $txtvCantMotivos != 0) {
+                                    if ($varConteoPorMotivosVariable != null) {
+                                        $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $txtvCantMotivos), 1));
+                                    }else{
+                                        $txtRtaPorcentajeMotivoVariable = 0;
+                                    }
                                 }else{
-                                  $txtRtaPorcentajeMotivoVariable = 0;
+                                    $txtRtaPorcentajeMotivoVariable = 0;
                                 }
-                              }else{
-                                $txtRtaPorcentajeMotivoVariable = 0;
-                              }
 
                             }else{
                               $varConteoPorMotivosVariable = 0;
