@@ -1601,7 +1601,7 @@ $this->title = 'Dashboard Escuchar +';
     <div class="col-md-2">
         <div class="card1 mb">
             <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> <?= Yii::t('app', 'Exportar Reporte') ?> </label>
-            <?= Html::button('Exportar', ['value' => url::to(['categoriasvoice', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtExtensiones, 'codigoPCRC' => $txtCodPcrcs, 'codparametrizar' => 1, 'indicador' => 0, 'nomFechaI' => $varFechaInicioFocalizado, 'nomFechaF' => $varFechaFinFocalizado]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
+            <?= Html::button('Exportar', ['value' => url::to(['categoriasvoice', 'arbol_idV' => $txtServicio, 'parametros_idV' => $txtExtensiones, 'codigoPCRC' => $txtCodPcrcs, 'codparametrizar' => 1, 'indicador' => $txtTipoparametros, 'nomFechaI' => $varFechaInicioFocalizado, 'nomFechaF' => $varFechaFinFocalizado]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
                         'data-toggle' => 'tooltip',
                         'title' => 'Exportar', 'style' => 'background-color: #337ab7']) ?> 
 
