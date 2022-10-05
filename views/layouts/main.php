@@ -17,7 +17,7 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <!--Fontawesome CDN-->
-        <link rel="stylesheet" href="././css/font-awesome/css/font-awesome.css"  >
+        <link rel="stylesheet" href="https://qa.grupokonecta.local/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -643,7 +643,7 @@ AppAsset::register($this);
             <div class='luces'></div>
         </nav>
 
-            <script defer src="././font_awesome_local/js.js"></script>
+            <script defer src="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/js.js"></script>
             
         <div class="wrap">
             <div class="container-fluid">		
