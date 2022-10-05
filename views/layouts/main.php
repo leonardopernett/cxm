@@ -152,7 +152,7 @@ AppAsset::register($this);
             <?php
                 NavBar::begin([
                     'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
-                            ["alt" => "home CXM","style" => "width: 150px; margin-top: 15px"]),
+                            ["alt" => "home CXM","style" => "width: 160px;margin-top: 20px;margin-left: -30px;"]),
                     'brandUrl' => Yii::$app->homeUrl,
                     'options' => [
                         'class' => 'navbar navbar-inverse navbar-static-top',
