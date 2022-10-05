@@ -1386,7 +1386,7 @@ $this->title = 'Dashboard Escuchar +';
                                             ->andwhere(['=','idcategoria',$varMotivoVoice])
                                             ->count();
 
-                              if ($varConteoPorMotivosVariable != 0 && $varCantidadMotivosVoic != 0) {
+                              if ($varConteoPorMotivosVariable != 0 && $varCantidadMotivosVoice != 0) {
                                 if ($varConteoPorMotivosVariable != null) {
                                   $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $varCantidadMotivosVoice) * 100, 1));
                                 }else{
