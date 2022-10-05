@@ -581,8 +581,11 @@ use \yii\base\Exception;
 
       }
 
-     public function actionCategoriasvoice($arbol_idV, $parametros_idV, $codigoPCRC, $codparametrizar,  $nomFechaI, $nomFechaF){        
+      public function actionCategoriasvoice($arbol_idV, $parametros_idV, $codigoPCRC, $codparametrizar,  $nomFechaI, $nomFechaF){        
         $model = new Dashboardcategorias();       
+        $varArbol_idV = $arbol_idV;
+        $varParametros_idV = $parametros_idV;
+        $varCodparametrizar = $codparametrizar;
         $varFechaI = $nomFechaI;
         $varFechaF = $nomFechaF;
         $varCodigPcrc = $codigoPCRC;
