@@ -671,7 +671,7 @@ AppAsset::register($this);
                             
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link80.png"); ?>" style="height: 100px;width: 150px;margin: 10px;" alt="Card image cap"></a>
+                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/nik_update.png"); ?>" style="height: 100px;width: 150px;margin: 10px;" alt="Card image cap"></a>
                         </div>
                         <div class="col-md-2">                
                             <a class="direccionar" href="https://galeria.allus.com.co/galeriaexperiencias/index.php/component/users/?view=login" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link2.png"); ?>" alt="Card image cap"></a>
