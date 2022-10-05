@@ -1376,11 +1376,25 @@ $this->title = 'Dashboard Escuchar +';
                                             ->groupby(['callid'])
                                             ->count();
 
+                              $varCantidadMotivosVoice =  (new \yii\db\Query())
+                                            ->select(['callid'])
+                                            ->from(['tbl_dashboardspeechcalls'])            
+                                            ->where(['=','anulado',0])
+                                            ->andwhere(['=','servicio',$txtServicio])
+                                            ->andwhere(['in','extension',$varListaExtensionesVoice])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                            ->andwhere(['=','idcategoria',$varMotivoVoice])
+                                            ->count();
+
+                              if ($varConteoPorMotivosVariable != 0 && $varCantidadMotivosVoic != 0) {
                                 if ($varConteoPorMotivosVariable != null) {
-                                    $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $varCantidadMotivosVoice) * 100, 1));
+                                  $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $varCantidadMotivosVoice) * 100, 1));
                                 }else{
-                                    $txtRtaPorcentajeMotivoVariable = 0;
+                                  $txtRtaPorcentajeMotivoVariable = 0;
                                 }
+                              }else{
+                                $txtRtaPorcentajeMotivoVariable = 0;
+                              }
 
                             }else{
                               $varConteoPorMotivosVariable = 0;
