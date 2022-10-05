@@ -954,8 +954,13 @@ $this->title = 'Dashboard Escuchar +';
                     }
                   }
 
-                  $varResponsableCanal = round(array_sum($arraySumCanalVoice)/$varConteoCanalVoice,2);
-                  $totalvieCanal = 100 - $varResponsableCanal;
+                  if (array_sum($arraySumCanalVoice) != 0 && $varConteoCanalVoice) {
+                    $varResponsableCanal = round(array_sum($arraySumCanalVoice)/$varConteoCanalVoice,2);
+                    $totalvieCanal = 100 - $varResponsableCanal;
+                  }else{
+                    $varResponsableCanal = 0;
+                    $totalvieCanal = 100 - $varResponsableCanal;
+                  }
                   if ($varResponsableCanal < '80') {
                     $varTColorC = '#D01E53';
                   }else{
@@ -966,13 +971,8 @@ $this->title = 'Dashboard Escuchar +';
                     }
                   }
 
-                  if (array_sum($arraySumCanalVoice) != 0 && $varConteoCanalVoice) {
-                    $varResponsableCanal = round(array_sum($arraySumCanalVoice)/$varConteoCanalVoice,2);
-                    $totalvieCanal = 100 - $varResponsableCanal;
-                  }else{
-                    $varResponsableCanal = 0;
-                    $totalvieCanal = 100 - $varResponsableCanal;
-                  }
+                  $varResponsableGeneral = round(($varResponsableAgente + $varResponsableMarca + $varResponsableCanal) / 3, 2);
+                  $totalvieK = 100 - $varResponsableGeneral;
                   if ($varResponsableGeneral < '80') {
                     $varTColorK = '#D01E53';
                   }else{
