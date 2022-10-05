@@ -87,6 +87,7 @@ $this->title = 'DashBoard Voz del Cliente';
         var varFechaFin = "<?php echo $varFechaF; ?>";
         var varCodPcrc = "<?php echo $txtvarCodigo; ?>";
         var varCodsPcrc = "<?php echo $varCodigPcrc; ?>";
+        var varextensionparams = "<?php echo $varExensionParams; ?>";
 
         var varIdCapaCero = document.getElementById("IdCapaCero");
         var varIdCapaUno = document.getElementById("IdCapaUno");
@@ -129,6 +130,7 @@ $this->title = 'DashBoard Voz del Cliente';
                     var_FechaFin : varFechaFin,
                     var_codPcrc : varCodPcrc,
                     var_CodsPcrc : varCodsPcrc,
+                    var_extensionparams : varextensionparams,
                 },
                 success : function(response){ 
                     var numRta =  JSON.parse(response);                

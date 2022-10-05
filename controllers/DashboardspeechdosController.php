@@ -479,6 +479,7 @@ use \yii\base\Exception;
         'varListAsesores' => $varListAsesores,
         'varidLllamada' => $varidLllamada,
         'txtidcliente' => $txtidcliente,
+        'txtTipoparametros' => $txtTipoparametros,
       ]);
     }
 
@@ -581,7 +582,7 @@ use \yii\base\Exception;
 
       }
 
-      public function actionCategoriasvoice($arbol_idV, $parametros_idV, $codigoPCRC, $codparametrizar,  $nomFechaI, $nomFechaF){        
+      public function actionCategoriasvoice($arbol_idV, $parametros_idV, $codigoPCRC, $codparametrizar,  $nomFechaI, $nomFechaF,$indicador){        
         $model = new Dashboardcategorias();       
         $varArbol_idV = $arbol_idV;
         $varParametros_idV = $parametros_idV;
@@ -589,6 +590,7 @@ use \yii\base\Exception;
         $varFechaI = $nomFechaI;
         $varFechaF = $nomFechaF;
         $varCodigPcrc = $codigoPCRC;
+        $varExensionParams = $indicador;
 
       return $this->renderAjax('categoriasvoice',[
           'model' => $model,
@@ -598,6 +600,7 @@ use \yii\base\Exception;
           'varFechaI' => $varFechaI,
           'varFechaF' => $varFechaF,
           'varCodigPcrc' => $varCodigPcrc,
+          'varExensionParams' => $varExensionParams,
           ]);
       }
 
@@ -1545,7 +1548,8 @@ use \yii\base\Exception;
       $txtServicio = Yii::$app->request->get("varArbol_idV");
       $txtParametros = Yii::$app->request->get("varParametros_idV");
       $varCorreo = Yii::$app->request->get("var_Destino");
-      $txtCodPcrcok = Yii::$app->request->get("var_CodsPcrc");              
+      $txtCodPcrcok = Yii::$app->request->get("var_CodsPcrc");  
+      $txtextensionParams = Yii::$app->request->get("var_extensionparams");            
 
       $varListaCodPcrcExport = explode(",", str_replace(array("#", "'", ";", " "), '', $txtCodPcrcok));
 
@@ -2150,6 +2154,10 @@ use \yii\base\Exception;
                               ->where(['=','anulado',0])
                               ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
                               ->andwhere(['=','id_dp_cliente',$varidClienteExport])
+                              ->andwhere(['>=','fechainiciotmp',$varFechaInicioExport])
+                              ->andwhere(['<=','fechafintmp',$varFechaFinExport])
+                              ->andwhere(['=','extension',$txtextensionParams])
+                              ->groupby(['id_motivo'])
                               ->All(); 
 
       foreach ($varlistaMotivosTmp as $key => $value) {
