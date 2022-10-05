@@ -919,8 +919,14 @@ $this->title = 'Dashboard Escuchar +';
                 <?php
                   }
 
-                  $varResponsableAgente = round(array_sum($arraySumAgenteVoice)/$varConteoAgenteVoice,2);
-                  $totalvieAgente = 100 - $varResponsableAgente;
+                  if (array_sum($arraySumAgenteVoice) != 0 && $varConteoAgenteVoice != 0) {
+                    $varResponsableAgente = round(array_sum($arraySumAgenteVoice)/$varConteoAgenteVoice,2);
+                    $totalvieAgente = 100 - $varResponsableAgente;
+                  }else{
+                    $varResponsableAgente = 0;
+                    $totalvieAgente = 100 - $varResponsableAgente;
+                  }
+
                   if ($varResponsableAgente < '80') {
                     $varTColorA = '#D01E53';
                   }else{
@@ -931,8 +937,13 @@ $this->title = 'Dashboard Escuchar +';
                     }
                   }
 
-                  $varResponsableMarca = round(array_sum($arraySumMarcaVoice)/$varConteoMarvaVoice,2);
-                  $totalvieMarca = 100 - $varResponsableMarca;
+                  if (array_sum($arraySumMarcaVoice) != 0 && $varConteoMarvaVoice != 0) {
+                    $varResponsableMarca = round(array_sum($arraySumMarcaVoice)/$varConteoMarvaVoice,2);
+                    $totalvieMarca = 100 - $varResponsableMarca;
+                  }else{
+                    $varResponsableMarca = 0;
+                    $totalvieMarca = 100 - $varResponsableMarca;
+                  }
                   if ($varResponsableMarca < '80') {
                     $varTColorM = '#D01E53';
                   }else{
@@ -955,8 +966,13 @@ $this->title = 'Dashboard Escuchar +';
                     }
                   }
 
-                  $varResponsableGeneral = round(($varResponsableAgente + $varResponsableMarca + $varResponsableCanal) / 3, 2);
-                  $totalvieK = 100 - $varResponsableGeneral;
+                  if (array_sum($arraySumCanalVoice) != 0 && $varConteoCanalVoice) {
+                    $varResponsableCanal = round(array_sum($arraySumCanalVoice)/$varConteoCanalVoice,2);
+                    $totalvieCanal = 100 - $varResponsableCanal;
+                  }else{
+                    $varResponsableCanal = 0;
+                    $totalvieCanal = 100 - $varResponsableCanal;
+                  }
                   if ($varResponsableGeneral < '80') {
                     $varTColorK = '#D01E53';
                   }else{
