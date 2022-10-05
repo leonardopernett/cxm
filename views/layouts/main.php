@@ -659,7 +659,7 @@ AppAsset::register($this);
             
         <footer class="footer2">
             <div class="container1">
-                <div class="col-md-12" style="background-image: url('../web/images/link.png');
+                <div class="col-md-12" style="background-image: url('https://qa.grupokonecta.local/qa_managementv2/web/images/link.png');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;"><br>
