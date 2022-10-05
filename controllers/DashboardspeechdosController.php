@@ -2170,7 +2170,7 @@ use \yii\base\Exception;
           $lastColumn = 'I';
           foreach ($varListCategoriasExports as $key => $value) {
               $varVariableId = intval($value['idcategoria']);
-              
+              $varArregloCategoria = [$varMotivoVoice,$varVariableId];
               $varSmart = $value['orientacionsmart'];
                         
               $txtRtaPorcentajeMotivoVariable =  (new \yii\db\Query())
@@ -2182,6 +2182,36 @@ use \yii\base\Exception;
                                                   ->andwhere(['=','id_motivo',$varMotivoVoice])
                                                   ->andwhere(['=','id_categoria',$varVariableId])
                                                   ->scalar();
+
+              if ($txtRtaPorcentajeMotivoVariable == null) {
+                $varConteoPorMotivosVariable =  (new \yii\db\Query())
+                                                ->select(['callid'])
+                                                ->from(['tbl_dashboardspeechcalls'])            
+                                                ->where(['=','anulado',0])
+                                                ->andwhere(['=','servicio',$txtServicio])
+                                                ->andwhere(['in','extension',$varListaExtensionesExport])
+                                                ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                                ->andwhere(['in','idcategoria',$varArregloCategoria])
+                                                ->groupby(['callid'])
+                                                ->count();
+                                      
+                $txtvCantMotivos = (new \yii\db\Query())
+                                    ->select(['callid'])
+                                    ->from(['tbl_dashboardspeechcalls'])            
+                                    ->where(['=','anulado',0])
+                                    ->andwhere(['=','servicio',$txtServicio])
+                                    ->andwhere(['in','extension',$varListaExtensionesExport])
+                                    ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
+                                    ->andwhere(['=','idcategoria',$varMotivoVoice])
+                                    ->groupby(['callid'])
+                                    ->count();
+                                      
+                if ($varConteoPorMotivosVariable != 0 && $txtvCantMotivos != 0) {
+                  $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $txtvCantMotivos), 1));
+                }else{
+                  $txtRtaPorcentajeMotivoVariable = 0;
+                }
+              }
                         
                         
               if ($varSmart == 1) {
