@@ -57,6 +57,26 @@ $sesiones =Yii::$app->user->identity->id;
             text-align: left;    
     }
 
+    .card3 {
+            height: 100px;
+            width: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            background: #FFFFFF;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+            -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;    
+            font-family: "Nunito",sans-serif;
+            font-size: 150%;    
+            text-align: left;    
+    }
+
     .card:hover .card1:hover {
         top: -15%;
     }
@@ -200,28 +220,28 @@ $sesiones =Yii::$app->user->identity->id;
     ?>
     <div class="row">
     	<div class="col-md-3">
-    		<div class="card1 mb">
+    		<div class="card3 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Automatico Agente') ?></label>
-    			<label style="text-align: center;"><?php echo $varResultadosIDA.' %'; ?></label>
+    			<label style="text-align: center;"><?php echo $varResultadosIDA; ?></label>
     		</div>	
     	</div>
 
         <div class="col-md-3">
-            <div class="card1 mb">
+            <div class="card3 mb">
                 <label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Automatico Pec') ?></label>
-                <label style="text-align: center;"><?php echo $varResultPec.' %'; ?></label>
+                <label style="text-align: center;"><?php echo $varResultPec; ?></label>
             </div>  
         </div>
 
     	<div class="col-md-3">
-    		<div class="card1 mb">
+    		<div class="card3 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Calidad  y Consistencia') ?></label>
-    			<label style="text-align: center;"><?php echo $varScoreValoracion.' %'; ?></label>
+    			<label style="text-align: center;"><?php echo $varScoreValoracion; ?></label>
     		</div>	
     	</div>
 
     	<div class="col-md-3">
-    		<div class="card1 mb">
+    		<div class="card3 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Score') ?></label>
     			<label style="text-align: center;"><?php echo $varPromedioScore; ?></label>
     		</div>	
