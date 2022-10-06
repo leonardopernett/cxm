@@ -6032,28 +6032,15 @@ public function actionCantidadentto(){
       $varNA = "No Aplica";
       $varResultPec = null;
 
-      // Proceso para saber si esta dentro de el indicador de la variable de auditoria
-      $varListarCallidGeneral = (new \yii\db\Query())
-                                ->select(['idvariable'])
-                                ->from(['tbl_speech_general'])            
-                                ->where(['=','anulado',0])
-                                ->andwhere(['=','callid',$varCallid])
-                                ->all();
-
-      $arrayVarListarCategorias = array();
-      foreach ($varListarCallidGeneral as $key => $value) {
-        array_push($arrayVarListarCategorias, $value['idvariable']);
-      }
-      $varCallidsListCategoria = implode(", ", $arrayVarListarCategorias);
-      $arrayCallids_downC = str_replace(array("#", "'", ";", " "), '', $varCallidsListCategoria);
-      $varCallidsVarPec = explode(",", $arrayCallids_downC);
-
+      // Proceso para saber si esta dentro de el indicador de la variable de auditoria      
       $varPecProceso = (new \yii\db\Query())
-                                ->select(['id_variable'])
-                                ->from(['tbl_speech_pecservicios'])            
-                                ->where(['=','anulado',0])
-                                ->andwhere(['in','id_variable',$varCallidsVarPec])
-                                ->count();
+                      ->select(['tbl_speech_pecservicios.id_variable'])
+                      ->from(['tbl_speech_pecservicios'])
+                      ->join('LEFT OUTER JOIN', 'tbl_speech_general',
+                                'tbl_speech_pecservicios.id_variable = tbl_speech_general.idvariable')
+                      ->where(['=','tbl_speech_general.callid',$varCallid])
+                      ->andwhere(['=','tbl_speech_pecservicios.cod_pcrc',$varcod_pcrc])
+                      ->count(); 
       if ($varPecProceso == null) {
         $varPecProceso = 0;
       }
@@ -6151,7 +6138,7 @@ public function actionCantidadentto(){
         $varResultadosIDA = 0;
       }
       
-      if ($varResultadosIDA == 0) {
+      if ($varPecProceso == 0) {
         $varResultPec = 100;
       }else{
         $varResultPec = 0;
