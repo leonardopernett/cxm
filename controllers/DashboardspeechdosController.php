@@ -6030,6 +6030,33 @@ public function actionCantidadentto(){
       $vartexto = null;
       $varvalencia = null;
       $varNA = "No Aplica";
+      $varResultPec = null;
+
+      // Proceso para saber si esta dentro de el indicador de la variable de auditoria
+      $varListarCallidGeneral = (new \yii\db\Query())
+                                ->select(['idvariable'])
+                                ->from(['tbl_speech_general'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','callid',$varCallid])
+                                ->all();
+
+      $arrayVarListarCategorias = array();
+      foreach ($varListarCallidGeneral as $key => $value) {
+        array_push($arrayVarListarCategorias, $value['idvariable']);
+      }
+      $varCallidsListCategoria = implode(", ", $arrayVarListarCategorias);
+      $arrayCallids_downC = str_replace(array("#", "'", ";", " "), '', $varCallidsListCategoria);
+      $varCallidsVarPec = explode(",", $arrayCallids_downC);
+
+      $varPecProceso = (new \yii\db\Query())
+                                ->select(['id_variable'])
+                                ->from(['tbl_speech_pecservicios'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['in','id_variable',$varCallidsVarPec])
+                                ->count();
+      if ($varPecProceso == null) {
+        $varPecProceso = 0;
+      }
 
       $paramsAsesor = [':varAsesores'=>$varLoginId];
 
@@ -6123,7 +6150,12 @@ public function actionCantidadentto(){
       }else{
         $varResultadosIDA = 0;
       }
-
+      
+      if ($varResultadosIDA == 0) {
+        $varResultPec = 100;
+      }else{
+        $varResultPec = 0;
+      }
 
       $varScore = (new \yii\db\Query())
                 ->select(['round(tbl_ejecucionformularios.score,2)'])
@@ -6232,6 +6264,8 @@ public function actionCantidadentto(){
         'varNombreLider' => $varNombreLider,
         'vartexto' => $vartexto,
         'varvalencia' => $varvalencia,
+        'varResultPec' => $varResultPec,
+        'varPecProceso' => $varPecProceso,
       ]);
     }
 

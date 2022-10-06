@@ -45,6 +45,8 @@ Modal::begin([
         'varNombreLider' => $varNombreLider,
         'vartexto' => $vartexto,
         'varvalencia' => $varvalencia,
+        'varResultPec' => $varResultPec,
+        'varPecProceso' => $varPecProceso,
         ])
     ?>
 
