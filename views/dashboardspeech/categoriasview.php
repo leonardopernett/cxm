@@ -90,7 +90,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7'],
-                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio}',
+                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec}',
                         'buttons' => 
                         [ 
                             'view' => function ($url, $model) {
@@ -138,6 +138,16 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                                         'class' => '',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Programar Aleatorio',
+                                        'data' => [
+                                            'method' => 'post',
+                                        ],
+                                ]);          
+                            },
+                            'btnpec' => function($url, $model) {
+                                return Html::a('<em class="fas fa-check"" style="font-size: 18px;"></em>',['paramspecservicio', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                        'class' => '',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Programar PEC',
                                         'data' => [
                                             'method' => 'post',
                                         ],

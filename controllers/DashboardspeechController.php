@@ -28,6 +28,8 @@ use app\models\SpeechCategorias;
 use app\models\SpeechParametrizar;
 use app\models\Dashboardspeechcalls;
 use app\models\Formularios;
+use app\models\SpeechAleatoridad;
+use app\models\Speechpecservicios;
 use \yii\base\Exception;
 
 
@@ -37,7 +39,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','paramsaleatorio'],
+            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','paramsaleatorio','paramspecservicio'],
             'rules' => [
               [
                 'allow' => true,
@@ -5692,6 +5694,127 @@ public function actionCantidadentto(){
         SpeechAleatoridad::findOne($id)->delete();
 
         return $this->redirect(array('paramsaleatorio','txtServicioCategorias'=>$codpcrc));
+    }
+
+    public function actionParamspecservicio($txtServicioCategorias){
+      $model = new Speechpecservicios();
+      $varListaCodPcrcVoice = $txtServicioCategorias;
+      $txtIdDpClientes = (new \yii\db\Query())
+                              ->select(['id_dp_clientes'])
+                              ->from(['tbl_speech_parametrizar'])            
+                              ->where(['=','cod_pcrc',$varListaCodPcrcVoice])
+                              ->andwhere(['=','anulado',0])
+                              ->groupby(['id_dp_clientes'])
+                              ->Scalar();
+
+      $txtBolsasServicios = (new \yii\db\Query())
+                              ->select(['programacategoria'])
+                              ->from(['tbl_speech_categorias'])            
+                              ->where(['=','cod_pcrc',$varListaCodPcrcVoice])
+                              ->andwhere(['=','anulado',0])
+                              ->groupby(['programacategoria'])
+                              ->Scalar();
+      
+      $data = Yii::$app->request->post();     
+      if ($model->load($data)) {
+        $idindicadorvar = $model->id_indicador;
+        $txtidindicadores = (new \yii\db\Query())
+                              ->select(['idcategoria'])
+                              ->from(['tbl_speech_categorias'])            
+                              ->where(['=','idspeechcategoria',$idindicadorvar])
+                              ->andwhere(['=','anulado',0])
+                              ->groupby(['idcategoria'])
+                              ->Scalar();
+
+        $txtidvariables = $model->id_variable;
+        $txtcomentarios = $model->comentarios;
+
+        Yii::$app->db->createCommand()->insert('tbl_speech_pecservicios',[
+                      'id_dp_cliente' => $txtIdDpClientes,
+                      'cod_pcrc' => $varListaCodPcrcVoice,
+                      'bolsita' => $txtBolsasServicios,
+                      'id_indicador' => $txtidindicadores,
+                      'id_variable' => $txtidvariables,
+                      'comentarios' => $txtcomentarios,
+                      'usua_id' => Yii::$app->user->identity->id,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,                        
+            ])->execute(); 
+
+        return $this->redirect(array('paramspecservicio','txtServicioCategorias'=>$varListaCodPcrcVoice));
+      }
+
+      $varListarProcesos = (new \yii\db\Query())
+                              ->select(['tbl_speech_pecservicios.id_pecservicios','tbl_speech_categorias.cod_pcrc', 'tbl_speech_categorias.pcrc', 'tbl_speech_categorias.tipoindicador','tbl_speech_categorias.nombre'])
+                              ->from(['tbl_speech_categorias']) 
+                              ->join('LEFT OUTER JOIN', 'tbl_speech_pecservicios',
+                                  ' tbl_speech_categorias.cod_pcrc = tbl_speech_pecservicios.cod_pcrc
+                                      AND tbl_speech_categorias.idcategoria = tbl_speech_pecservicios.id_variable')           
+                              ->where(['=','tbl_speech_pecservicios.cod_pcrc',$varListaCodPcrcVoice])
+                              ->andwhere(['=','tbl_speech_pecservicios.anulado',0])
+                              ->all();
+      
+
+      return $this->render('paramspecservicio',[
+        'model' => $model,
+        'varListaCodPcrcVoice' => $varListaCodPcrcVoice,
+        'txtIdDpClientes' => $txtIdDpClientes,
+        'varListarProcesos' => $varListarProcesos,
+      ]);
+    }
+
+    public function actionDeletepecservicio($id,$codpcrc){
+        Speechpecservicios::findOne($id)->delete();
+
+        return $this->redirect(array('paramspecservicio','txtServicioCategorias'=>$codpcrc));
+    }
+
+    public function actionListarvariables(){
+      $txtanulado = 0;
+      $txtid = Yii::$app->request->get('id');
+
+      if ($txtid) {
+        $txtControl = (new \yii\db\Query())
+                                ->select(['idspeechcategoria'])
+                                ->from(['tbl_speech_categorias'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','idspeechcategoria',$txtid])
+                                ->count(); 
+
+        if ($txtControl > 0) {
+          $varIndicadorNombre = (new \yii\db\Query())
+                                ->select(['nombre'])
+                                ->from(['tbl_speech_categorias'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','idspeechcategoria',$txtid])
+                                ->scalar(); 
+
+          $varCentroCostos = (new \yii\db\Query())
+                                ->select(['cod_pcrc'])
+                                ->from(['tbl_speech_categorias'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','idspeechcategoria',$txtid])
+                                ->scalar(); 
+          
+          $varListaVariable = (new \yii\db\Query())
+                                ->select(['idcategoria','nombre'])
+                                ->from(['tbl_speech_categorias'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','tipoindicador',$varIndicadorNombre])
+                                ->andwhere(['=','idcategorias',2])
+                                ->andwhere(['=','cod_pcrc',$varCentroCostos])
+                                ->all();
+
+              echo "<option value='' disabled selected>Seleccionar Variable...</option>";
+              foreach ($varListaVariable as $key => $value) {
+                echo "<option value='" . $value['idcategoria']. "'>" . $value['nombre']. "</option>";
+              }
+            }else{
+              echo "<option>--</option>";
+            }
+          }else{
+            echo "<option>Seleccionar...</option>";
+          }          
     }
 
 

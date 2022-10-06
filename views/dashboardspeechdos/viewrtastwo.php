@@ -195,28 +195,66 @@ $sesiones =Yii::$app->user->identity->id;
 
     <br>
 
+    <?php
+        if ($varPecProceso != 0) {
+    ?>
     <div class="row">
-    	<div class="col-md-4">
+    	<div class="col-md-3">
     		<div class="card1 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Automatico Agente') ?></label>
-    			<label style="text-align: center;"><?php echo $varResultadosIDA; ?></label>
+    			<label style="text-align: center;"><?php echo $varResultadosIDA.' %'; ?></label>
     		</div>	
     	</div>
 
-    	<div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card1 mb">
+                <label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Automatico Pec') ?></label>
+                <label style="text-align: center;"><?php echo $varResultPec.' %'; ?></label>
+            </div>  
+        </div>
+
+    	<div class="col-md-3">
     		<div class="card1 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Calidad  y Consistencia') ?></label>
-    			<label style="text-align: center;"><?php echo $varScoreValoracion; ?></label>
+    			<label style="text-align: center;"><?php echo $varScoreValoracion.' %'; ?></label>
     		</div>	
     	</div>
 
-    	<div class="col-md-4">
+    	<div class="col-md-3">
     		<div class="card1 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Score') ?></label>
     			<label style="text-align: center;"><?php echo $varPromedioScore; ?></label>
     		</div>	
     	</div>
     </div>
+    <?php
+        }else{
+    ?>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card1 mb">
+                <label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Automatico Agente') ?></label>
+                <label style="text-align: center;"><?php echo $varResultadosIDA; ?></label>
+            </div>  
+        </div>
+
+        <div class="col-md-4">
+            <div class="card1 mb">
+                <label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Calidad  y Consistencia') ?></label>
+                <label style="text-align: center;"><?php echo $varScoreValoracion; ?></label>
+            </div>  
+        </div>
+
+        <div class="col-md-4">
+            <div class="card1 mb">
+                <label><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Score') ?></label>
+                <label style="text-align: center;"><?php echo $varPromedioScore; ?></label>
+            </div>  
+        </div>
+    </div>
+    <?php
+        }
+    ?>
 
     <hr>
 
