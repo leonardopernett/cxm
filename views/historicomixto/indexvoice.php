@@ -172,31 +172,7 @@ use yii\db\Query;
     </div>
     <br>
     <div class="row">
-        <div class="col-md-3">
-            <div class="card1 mb">
-                <label><em class="fas fa-at" style="font-size: 20px; color: #559FFF;"></em> Descargar Base</label>
-
-                <?= Html::button('Aceptar', ['value' => url::to(['descargarbase', 'arbol_idV' => $bolsitacxm, 'parametros_idV' => $extensiones, 'codparametrizar' => $varCod, 'codigoPCRC' => $codpcrc, 'indicador' => null, 'nomFechaI' => $varFechaInicioReal, 'nomFechaF' => $varFechaFinReal]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
-                        'data-toggle' => 'tooltip',
-                        'title' => 'Descargar Base', 'style' => 'background-color: #337ab7']) 
-                ?> 
-
-                <?php
-                    Modal::begin([
-                      'header' => '<h4>Envio de datos al correo corporativo...</h4>',
-                      'id' => 'modal1',
-                    ]);
-
-                    echo "<div id='modalContent1'></div>";
-                                                  
-                    Modal::end(); 
-                ?>
-
-            </div>
-        </div>
-        <?php if ($sesiones == '2953') { ?>
-
-        <div class="col-md-3">
+    <div class="col-md-3">
             <div class="card1 mb">
                 <label><em class="fas fa-download" style="font-size: 20px; color: #559FFF;"></em> Descargar Tabla</label>                
                 
@@ -207,18 +183,43 @@ use yii\db\Query;
 
                 <?php
                     Modal::begin([
-                    'header' => '<h4>Envio de datos al correo corporativo...</h4>',
-                    'id' => 'modal2',
-                    // 'size' => 'modal-lg',
+                      'header' => '<h4>Procesando información...</h4>',
+                      'id' => 'modal2',
+                      // 'size' => 'modal-lg',
                     ]);
 
                     echo "<div id='modalContent2'></div>";
-                                                
+                                                  
                     Modal::end(); 
                 ?>
                     
             </div>
         </div>
+        
+        <?php if ($sesiones == '2953') { ?>
+
+            <div class="col-md-3">
+                <div class="card1 mb">
+                    <label><em class="fas fa-at" style="font-size: 20px; color: #559FFF;"></em> Descargar Base</label>
+
+                    <?= Html::button('Aceptar', ['value' => url::to(['descargarbase', 'arbol_idV' => $bolsitacxm, 'parametros_idV' => $extensiones, 'codparametrizar' => $varCod, 'codigoPCRC' => $codpcrc, 'indicador' => null, 'nomFechaI' => $varFechaInicioReal, 'nomFechaF' => $varFechaFinReal]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
+                            'data-toggle' => 'tooltip',
+                            'title' => 'Descargar Base', 'style' => 'background-color: #337ab7']) 
+                    ?> 
+
+                    <?php
+                        Modal::begin([
+                        'header' => '<h4>Envio de datos al correo corporativo...</h4>',
+                        'id' => 'modal1',
+                        ]);
+
+                        echo "<div id='modalContent1'></div>";
+                                                    
+                        Modal::end(); 
+                    ?>
+
+                </div>
+            </div>        
 
         <?php } ?>
 

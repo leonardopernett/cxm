@@ -1188,12 +1188,20 @@ use app\models\SpeechParametrizar;
                               ->All();
       }      
 
+      $varVerificaServicio = (new \yii\db\Query())
+                        ->select(['*'])
+                        ->from(['tbl_speech_pecservicios'])
+                        ->where(['=','tbl_speech_pecservicios.cod_pcrc',$codigoPCRC])
+                        ->count();
+
       return $this->renderAjax('descargartabla',[
         'varConteoListarCategorias' => $varConteoListarCategorias,
         'varServicioNombre' => $varServicioNombre,
         'varListarCategorias' => $varListarCategorias,
         'varNombrePcrcs' => $varNombrePcrcs,
         'varListarCallid' => $varListarCallid,
+        'varcodigoPCRC' => $codigoPCRC,
+        'varVerificaServicio' => $varVerificaServicio,
       ]);
     }
 
