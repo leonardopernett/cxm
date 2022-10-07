@@ -216,7 +216,7 @@ $sesiones =Yii::$app->user->identity->id;
     <br>
 
     <?php
-        if ($varPecProceso != 0) {
+        if ($varVerificaServicio != 0) {
     ?>
     <div class="row">
     	<div class="col-md-3">

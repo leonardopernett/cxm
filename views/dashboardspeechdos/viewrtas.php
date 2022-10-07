@@ -47,6 +47,7 @@ Modal::begin([
         'varvalencia' => $varvalencia,
         'varResultPec' => $varResultPec,
         'varPecProceso' => $varPecProceso,
+        'varVerificaServicio' => $varVerificaServicio,
         ])
     ?>
 

@@ -6032,7 +6032,13 @@ public function actionCantidadentto(){
       $varNA = "No Aplica";
       $varResultPec = null;
 
-      // Proceso para saber si esta dentro de el indicador de la variable de auditoria      
+      // Proceso para saber si esta dentro de el indicador de la variable de auditoria    
+      $varVerificaServicio = (new \yii\db\Query())
+                        ->select(['*'])
+                        ->from(['tbl_speech_pecservicios'])
+                        ->where(['=','tbl_speech_pecservicios.cod_pcrc',$varcod_pcrc])
+                        ->count();
+                        
       $varPecProceso = (new \yii\db\Query())
                       ->select(['tbl_speech_pecservicios.id_variable'])
                       ->from(['tbl_speech_pecservicios'])
@@ -6253,6 +6259,7 @@ public function actionCantidadentto(){
         'varvalencia' => $varvalencia,
         'varResultPec' => $varResultPec,
         'varPecProceso' => $varPecProceso,
+        'varVerificaServicio' => $varVerificaServicio,
       ]);
     }
 
