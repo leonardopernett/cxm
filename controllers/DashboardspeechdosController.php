@@ -245,7 +245,7 @@ use \yii\base\Exception;
       $varFechaIdealVoice = explode(" ", $txtFechas);
 
       $varFechaInicioVoice = $varFechaIdealVoice[0];
-      $varFechaFinTresVoice = date('Y-m-d',strtotime($varFechaIdealVoice[1]."+ 1 days"));
+      $varFechaFinTresVoice = date('Y-m-d',strtotime($varFechaIdealVoice[2]."+ 1 days"));
 
       $varListaExtensionesVoice = explode(",", str_replace(array("#", "'", ";", " "), '', $txtExtensiones));
 
