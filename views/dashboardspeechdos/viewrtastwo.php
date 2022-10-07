@@ -221,7 +221,11 @@ $sesiones =Yii::$app->user->identity->id;
             if ($varScoreValoracion != 0 && $varResultPec != 0) {
                 $varPromedioScore = 100;
             }else{
-                $varPromedioScore = 0;
+                if ($varScoreValoracion == '--' && $varResultPec != 0) {
+                    $varPromedioScore = 100;
+                }else{
+                    $varPromedioScore = 0;
+                }                
             }
     ?>
     <div class="row">
