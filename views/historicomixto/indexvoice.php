@@ -194,26 +194,26 @@ use yii\db\Query;
 
             </div>
         </div>
-        <?php if ($sesiones == 0) { ?>
+        <?php if ($sesiones == '2953') { ?>
 
         <div class="col-md-3">
             <div class="card1 mb">
                 <label><em class="fas fa-download" style="font-size: 20px; color: #559FFF;"></em> Descargar Tabla</label>                
                 
-                <?= Html::button('Aceptar', ['value' => url::to(['descargartabla', 'servicio' => $bolsitacxm, 'extensiones' => $extensiones, 'llamadageneral' => $varLlamadasGeneral,  'fechainicio' => $dateini, 'fechafin' => $datefin]), 'class' => 'btn btn-success', 'id'=>'modalButton2',
+                <?= Html::button('Aceptar', ['value' => url::to(['descargartabla', 'servicio' => $bolsitacxm, 'extensiones' => $extensiones, 'llamadageneral' => $varLlamadasGeneral,  'fechainicio' => $dateini, 'fechafin' => $datefin,'codigoPCRC' => $codpcrc]), 'class' => 'btn btn-success', 'id'=>'modalButton2',
                         'data-toggle' => 'tooltip',
                         'title' => 'Descargar Tabla', 'style' => 'background-color: #337ab7']) 
                 ?> 
 
                 <?php
                     Modal::begin([
-                      'header' => '<h4>Envio de datos al correo corporativo...</h4>',
-                      'id' => 'modal2',
-                      // 'size' => 'modal-lg',
+                    'header' => '<h4>Envio de datos al correo corporativo...</h4>',
+                    'id' => 'modal2',
+                    // 'size' => 'modal-lg',
                     ]);
 
                     echo "<div id='modalContent2'></div>";
-                                                  
+                                                
                     Modal::end(); 
                 ?>
                     

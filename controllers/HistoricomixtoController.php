@@ -1122,6 +1122,81 @@ use app\models\SpeechParametrizar;
       die(json_encode($rtaenvio));
     }
 
+    public function actionDescargartabla($servicio,$extensiones,$llamadageneral,$fechainicio,$fechafin,$codigoPCRC){
+      $varConteoListarCategorias = 0;
+
+      $varIdDpClientes = (new \yii\db\Query())
+                              ->select(['id_dp_clientes'])
+                              ->from(['tbl_speech_parametrizar'])            
+                              ->where(['=','cod_pcrc',$codigoPCRC])
+                              ->andwhere(['=','anulado',0])
+                              ->groupby(['id_dp_clientes'])
+                              ->Scalar();
+
+      $varNombrePcrcs = (new \yii\db\Query())
+                              ->select(['CONCAT(cod_pcrc," - ",pcrc)'])
+                              ->from(['tbl_speech_categorias'])            
+                              ->where(['=','cod_pcrc',$codigoPCRC])
+                              ->andwhere(['=','anulado',0])
+                              ->groupby(['cod_pcrc'])
+                              ->Scalar();
+
+      $varServicioNombre = (new \yii\db\Query())
+                              ->select(['nameArbol'])
+                              ->from(['tbl_speech_servicios'])            
+                              ->where(['=','id_dp_clientes',$varIdDpClientes])
+                              ->andwhere(['=','anulado',0])
+                              ->groupby(['nameArbol'])
+                              ->Scalar();
+      
+      $varListarCategorias = (new \yii\db\Query())
+                              ->select(['*'])
+                              ->from(['tbl_speech_categorias'])            
+                              ->where(['=','cod_pcrc',$codigoPCRC])
+                              ->andwhere(['=','anulado',0])
+                              ->andwhere(['in','idcategorias',[1,2]])
+                              ->All();
+
+      $varConteoListarCategorias = count($varListarCategorias) + 12;
+
+      $varListaExtensiones = explode(",", str_replace(array("#", "'", ";", " "), '', $extensiones));
+
+      $varListarCallid = (new \yii\db\Query())
+                              ->select(['tbl_dashboardspeechcalls.fechallamada', 'tbl_dashboardspeechcalls.callId','tbl_dashboardspeechcalls.extension', 'tbl_dashboardspeechcalls.callduracion', 'tbl_dashboardspeechcalls.login_id','tbl_evaluados.identificacion', 'tbl_evaluados.dsusuario_red'])
+                              ->from(['tbl_evaluados']) 
+                              ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                  'tbl_evaluados.identificacion = tbl_dashboardspeechcalls.login_id
+                                    OR tbl_evaluados.dsusuario_red = tbl_dashboardspeechcalls.login_id')            
+                              ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                              ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$servicio])
+                              ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$llamadageneral])
+                              ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varListaExtensiones])
+                              ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$fechainicio.' 05:00:00',$fechafin.' 05:00:00'])
+                              ->groupby(['tbl_dashboardspeechcalls.callId'])
+                              ->All();
+
+      if ($varListarCallid == null) {
+        $varListarCallid = (new \yii\db\Query())
+                              ->select(['tbl_dashboardspeechcalls.fechallamada', 'tbl_dashboardspeechcalls.callId','tbl_dashboardspeechcalls.extension', 'tbl_dashboardspeechcalls.callduracion', 'tbl_dashboardspeechcalls.login_id','"NA" as identificacion', '"NA" as dsusuario_red'])
+                              ->from(['tbl_dashboardspeechcalls'])            
+                              ->where(['=','anulado',0])
+                              ->andwhere(['=','servicio',$servicio])
+                              ->andwhere(['=','idcategoria',$llamadageneral])
+                              ->andwhere(['in','extension',$varListaExtensiones])
+                              ->andwhere(['between','fechallamada',$fechainicio.' 05:00:00',$fechafin.' 05:00:00'])
+                              ->groupby(['callId'])
+                              ->All();
+      }      
+
+      return $this->renderAjax('descargartabla',[
+        'varConteoListarCategorias' => $varConteoListarCategorias,
+        'varServicioNombre' => $varServicioNombre,
+        'varListarCategorias' => $varListarCategorias,
+        'varNombrePcrcs' => $varNombrePcrcs,
+        'varListarCallid' => $varListarCallid,
+      ]);
+    }
+
     
 
   }
