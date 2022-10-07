@@ -236,7 +236,7 @@ use \yii\base\Exception;
 
       $varNombrePcrcVoice =   (new \yii\db\Query())
                               ->select(['CONCAT(cod_pcrc," - ",pcrc) as NombrePcrc'])
-                              ->from(['tbl_proceso_cliente_centrocosto'])            
+                              ->from(['tbl_speech_categorias'])            
                               ->where(['in','cod_pcrc',$varListaCodPcrcVoice])
                               ->andwhere(['=','anulado',0])
                               ->groupby(['cod_pcrc'])
@@ -275,6 +275,7 @@ use \yii\base\Exception;
                                 ->where(['=','anulado',0])
                                 ->andwhere(['in','cod_pcrc',$varListaCodPcrcVoice])
                                 ->andwhere(['=','idcategorias',1])
+                                ->groupby(['idcategoria'])
                                 ->all();
 
       $data = Yii::$app->request->post();     
@@ -311,6 +312,7 @@ use \yii\base\Exception;
                                 ->where(['=','anulado',0])
                                 ->andwhere(['in','cod_pcrc',$varListaCodPcrcVoice])
                                 ->andwhere(['=','idcategorias',3])
+                                ->groupby(['idcategoria'])
                                 ->all(); 
 
       $varArrayMotivosV = array();
@@ -408,6 +410,7 @@ use \yii\base\Exception;
                                       ->where(['=','anulado',0])
                                       ->andwhere(['in','cod_pcrc',$varListaCodPcrcVoice])
                                       ->andwhere(['in','idcategorias',[1,2]])
+                                      ->groupby(['idecategoria'])
                                       ->all(); 
 
         }
@@ -423,6 +426,7 @@ use \yii\base\Exception;
                                 ->andwhere(['=','extension',$txtTipoparametros])
                                 ->andwhere(['>=','fechainiciotmp',$varFechaInicioVoice])
                                 ->andwhere(['<=','fechafintmp',$varFechaFinTresVoice])
+                                ->groupby(['id_motivo'])
                                 ->All(); 
 
       if ($model3->load($data)) {
