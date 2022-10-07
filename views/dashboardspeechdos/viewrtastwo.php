@@ -217,6 +217,12 @@ $sesiones =Yii::$app->user->identity->id;
 
     <?php
         if ($varVerificaServicio != 0) {
+
+            if ($varScoreValoracion != 0 && $varResultPec != 0) {
+                $varPromedioScore = 100;
+            }else{
+                $varPromedioScore = 0;
+            }
     ?>
     <div class="row">
     	<div class="col-md-3">
