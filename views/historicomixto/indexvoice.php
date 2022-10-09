@@ -123,7 +123,7 @@ use yii\db\Query;
     <div class="row">
         <div class="col-md-6">
             <div class="card2 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;">Ficha T&eacute;cnica - <?php echo $varNombreServicio; ?> </label>
+                <label style="font-size: 20px; color: #FFFFFF;"><?= Yii::t('app', 'Ficha Técnica - '.$varNombreServicio) ?> </label>
             </div>
         </div>
     </div>
@@ -132,28 +132,28 @@ use yii\db\Query;
 
         <div class="col-md-3">
             <div class="card1 mb">
-                <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> Programa/Pcrc Seleccionado</label>
+                <label><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Programa/Pcrc Seleccionado') ?></label>
                 <label style="font-size: 15px; text-align: center;"><?php echo $varNombrePcrc; ?></label>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="card1 mb">
-                <label><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em> Parametros Seleccionados</label>
+                <label><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Dimensión Seleccionado') ?></label>
                 <label style="text-align: center;"><?php echo "'".$extensiones."'"; ?></label>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="card1 mb">
-                <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></em> Rango de Fechas</label>
+                <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Rengo de Fechas') ?></label>
                 <label style="text-align: center;"><?php echo $rangofecha; ?></label>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="card1 mb">
-                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #559FFF;"></em> Cantidad Interacciones</label>
+                <label><em class="fas fa-hashtag" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Cantidad Interacciones') ?></label>
                 <label style="text-align: center;"><?php echo count($varDataLlamadas); ?></label>
             </div>
         </div>
@@ -166,15 +166,16 @@ use yii\db\Query;
     <div class="row">
         <div class="col-md-6">
             <div class="card2 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;">Acciones</label>
+                <label style="font-size: 20px; color: #FFFFFF;"><?= Yii::t('app', 'Acciones') ?></label>
             </div>
         </div>
     </div>
     <br>
     <div class="row">
-    <div class="col-md-3">
+
+        <div class="col-md-3">
             <div class="card1 mb">
-                <label><em class="fas fa-download" style="font-size: 20px; color: #559FFF;"></em> Descargar Tabla</label>                
+                <label><em class="fas fa-download" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Interacciones Información') ?></label>                
                 
                 <?= Html::button('Aceptar', ['value' => url::to(['descargartabla', 'servicio' => $bolsitacxm, 'extensiones' => $extensiones, 'llamadageneral' => $varLlamadasGeneral,  'fechainicio' => $dateini, 'fechafin' => $datefin,'codigoPCRC' => $codpcrc]), 'class' => 'btn btn-success', 'id'=>'modalButton2',
                         'data-toggle' => 'tooltip',
@@ -198,35 +199,37 @@ use yii\db\Query;
         
         <?php if ($sesiones == '2953') { ?>
 
-            <div class="col-md-3">
-                <div class="card1 mb">
-                    <label><em class="fas fa-at" style="font-size: 20px; color: #559FFF;"></em> Descargar Base</label>
+        <div class="col-md-3">
+            <div class="card1 mb">
+                <label><em class="fas fa-at" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Descargar Base') ?></label>
 
-                    <?= Html::button('Aceptar', ['value' => url::to(['descargarbase', 'arbol_idV' => $bolsitacxm, 'parametros_idV' => $extensiones, 'codparametrizar' => $varCod, 'codigoPCRC' => $codpcrc, 'indicador' => null, 'nomFechaI' => $varFechaInicioReal, 'nomFechaF' => $varFechaFinReal]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
-                            'data-toggle' => 'tooltip',
-                            'title' => 'Descargar Base', 'style' => 'background-color: #337ab7']) 
-                    ?> 
+                <?= Html::button('Aceptar', ['value' => url::to(['descargarbase', 'arbol_idV' => $bolsitacxm, 'parametros_idV' => $extensiones, 'codparametrizar' => $varCod, 'codigoPCRC' => $codpcrc, 'indicador' => null, 'nomFechaI' => $varFechaInicioReal, 'nomFechaF' => $varFechaFinReal]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
+                        'data-toggle' => 'tooltip',
+                        'title' => 'Descargar Base', 'style' => 'background-color: #337ab7']) 
+                ?> 
 
-                    <?php
-                        Modal::begin([
-                        'header' => '<h4>Envio de datos al correo corporativo...</h4>',
-                        'id' => 'modal1',
-                        ]);
+                <?php
+                    Modal::begin([
+                      'header' => '<h4>Envio de datos al correo corporativo...</h4>',
+                      'id' => 'modal1',
+                    ]);
 
-                        echo "<div id='modalContent1'></div>";
-                                                    
-                        Modal::end(); 
-                    ?>
+                    echo "<div id='modalContent1'></div>";
+                                                  
+                    Modal::end(); 
+                ?>
 
-                </div>
-            </div>        
+            </div>
+        </div>
+
+        
 
         <?php } ?>
 
         <div class="col-md-3">
             <div class="card1 mb">
-                <label><em class="fas fa-search" style="font-size: 20px; color: #559FFF;"></em> Interacciones Focalizadas</label>
-                <?= Html::a('Aceptar',  ['dashboardspeechdos/searchllamadas', 'varprograma'=>$bolsitacxm, 'varcodigopcrc'=>$codpcrc, 'varidcategoria'=>$varLlamadasGeneral, 'varextension'=>$extensiones, 'varfechasinicio'=>$dateini, 'varfechasfin'=>$datefin, 'varcantllamadas'=>$varCantidadLlamadas, 'varfechainireal'=>$varFechaInicioReal, 'varfechafinreal'=>$varFechaFinReal,'varcodigos'=>$varCod, 'varaleatorios' => 0], ['class' => 'btn btn-success',
+                <label><em class="fas fa-search" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Interacciones Focalizadas') ?></label>
+                <?= Html::a('Aceptar',  ['dashboardspeechdos/llamadafocalizada', 'varprograma'=>$bolsitacxm, 'varcodigopcrc'=>$codpcrc, 'varidcategoria'=>$varLlamadasGeneral, 'varextension'=>$extensiones, 'varfechasinicio'=>$dateini, 'varfechasfin'=>$datefin, 'vartcantllamadas'=>$varCantidadLlamadas, 'varfechainireal'=>$varFechaInicioReal, 'varfechafinreal'=>$varFechaFinReal,'varcodigos'=>$varCod, 'varaleatorios' => 0], ['class' => 'btn btn-success',
                           'style' => 'background-color: #337ab7', 'target' => "_blank",
                           'data-toggle' => 'tooltip',
                           'title' => 'Interacciones Focalizadas']) 
@@ -236,7 +239,7 @@ use yii\db\Query;
 
         <div class="col-md-3">
             <div class="card1 mb">
-                <label><em class="fas fa-minus-circle" style="font-size: 20px; color: #559FFF;"></em> Nueva Búsqueda</label>
+                <label><em class="fas fa-minus-circle" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Nueva Búsqueda') ?></label>
                 <?= Html::a('Aceptar',  ['index'], ['class' => 'btn btn-success',
                                'style' => 'background-color: #707372',                        
                                 'data-toggle' => 'tooltip',
@@ -252,177 +255,376 @@ use yii\db\Query;
     <div class="row">
         <div class="col-md-6">
             <div class="card2 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;">Resultados</label>
+                <label style="font-size: 20px; color: #FFFFFF;"><?= Yii::t('app', 'Resultados') ?></label>
             </div>
         </div>
     </div>
     <br>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card1 mb">
-                <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
-                    <caption>.</caption>
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Interacción') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Asesor Speech') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Dato Asesor') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Lider') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Automatico Agente') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Calidad  y Consistencia') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Score') ?></label></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            foreach ($varDataLlamadas as $key => $value) {
-                                $varFechaReal = $value['fechareal'];                                
-                                $varBolsita = $value['servicio'];
-                                $varCallid = $value['callId'];
-                                $varLogueo = $value['login_id'];
-                                $paramsRed = [':varUsua'=>$value['login_id']];
-                                $varLider = null;
 
-                                if (is_numeric($value['login_id'])) {
-                                    $varDocumento = Yii::$app->db->createCommand('
-                                    SELECT e.dsusuario_red FROM tbl_evaluados e 
-                                        WHERE 
-                                            e.identificacion IN (:varUsua)
-                                        GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+    <?php
+        if ($varVerificaServicio == 0) {        
+    ?>
 
-                                    $varLider= Yii::$app->db->createCommand('
-                                    SELECT u.usua_nombre FROM tbl_usuarios u 
-                                        INNER JOIN tbl_equipos eq ON
-                                            u.usua_id = eq.usua_id
-                                        INNER JOIN tbl_equipos_evaluados ee ON 
-                                            eq.id = ee.equipo_id
-                                        INNER JOIN tbl_evaluados e ON 
-                                            ee.evaluado_id = e.id
-                                        WHERE 
-                                            e.identificacion IN (:varUsua)
-                                        GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
-                                }else{
-                                    $varDocumento = Yii::$app->db->createCommand('
-                                    SELECT e.identificacion FROM tbl_evaluados e 
-                                        WHERE 
-                                            e.dsusuario_red IN (:varUsua)
-                                        GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
-
-                                    $varLider= Yii::$app->db->createCommand('
-                                    SELECT u.usua_nombre FROM tbl_usuarios u 
-                                        INNER JOIN tbl_equipos eq ON
-                                            u.usua_id = eq.usua_id
-                                        INNER JOIN tbl_equipos_evaluados ee ON 
-                                            eq.id = ee.equipo_id
-                                        INNER JOIN tbl_evaluados e ON 
-                                            ee.evaluado_id = e.id
-                                        WHERE 
-                                            e.dsusuario_red IN (:varUsua)
-                                        GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
-                                }
-                                
-
-                                $paramsCategorias = [':varPcrc'=>$codpcrc,':varCategoria'=>2,':varResponsabilidad'=>1];
-                                $varListCategorias = Yii::$app->db->createCommand('
-                                    SELECT idcategoria, orientacionsmart, responsable, programacategoria FROM tbl_speech_categorias 
-                                        WHERE 
-                                            cod_pcrc IN (:varPcrc)
-                                                AND idcategorias IN (:varCategoria)
-                                                    AND responsable IN (:varResponsabilidad)')->bindValues($paramsCategorias)->queryAll();
-
-                                $varResultadosIDA = 0;
-                                $varContarNegativas = 0;
-                                $varTotalNegativas = 0;
-                                $varConteoNegativas = 0;
-                                $varContarPositivas = 0;
-                                $varTotalPositivas = 0;
-                                $varConteoPositivas = 0;
-
-                                foreach ($varListCategorias as $key => $value) {
-                                    $varorientaciones = $value['orientacionsmart'];
-                    
-                                    $paramsBuscarCategorias = [':varIdCategoria'=>$value['idcategoria'],':varProgramaCategoria'=>$value['programacategoria'],':varAnulado'=>0,':varCallid'=>$varCallid];
-                                                        
-                                    if ($varorientaciones == '2') {
-                                        $varContarNegativas += 1;
-                                        $varTotalNegativas = Yii::$app->db->createCommand('
-                                            SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
-                                                WHERE
-                                                    sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
-                                                        AND sg.programacliente IN (:varProgramaCategoria)
-                                                            AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
-                    
-                                        if ($varTotalNegativas == 1) {
-                                            $varConteoNegativas += 1;
-                                        }
-                    
-                                    }else{
-                                        $varContarPositivas += 1;
-                                        $varTotalPositivas = Yii::$app->db->createCommand('
-                                            SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
-                                                WHERE
-                                                    sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
-                                                        AND sg.programacliente IN (:varProgramaCategoria)
-                                                            AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
-                    
-                                        if ($varTotalPositivas == 1) {
-                                            $varConteoPositivas += 1;
-                                        }
-                                    }
-                                }
-                    
-                                if (count($varListCategorias) != 0 && $varConteoNegativas != 0) {
-                                    $varResultadosIDA = round(((($varConteoPositivas + ($varContarNegativas - $varConteoNegativas)) / count($varListCategorias))),2);
-                                }else{
-                                    $varResultadosIDA = 0;
-                                }
-
-                                $varScore = (new \yii\db\Query())
-                                            ->select(['round(tbl_ejecucionformularios.score,2)'])
-                                            ->from(['tbl_ejecucionformularios'])
-                                            ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
-                                            'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
-                                            ->where(['=','tbl_speech_mixta.callid',$varCallid])
-                                            ->andwhere(['=','tbl_speech_mixta.fechareal',$varFechaReal])
-                                            ->andwhere(['=','tbl_speech_mixta.anulado',0])
-                                            ->scalar(); 
-
-                                if ($varScore) {
-                                    $varScoreValoracion = $varScore;
-                                }else{
-                                    $varScoreValoracion = "--";
-                                }
-                                
-                                
-                                if ($varScoreValoracion != 0) {
-                                    if ($varResultadosIDA != 0) {
-                                        $varPromedioScore = round(((($varResultadosIDA + $varScoreValoracion) / 2)),2);
-                                    }else{
-                                        $varPromedioScore = $varScoreValoracion;
-                                    }
-                                }else{
-                                    $varPromedioScore = $varResultadosIDA;
-                                }
-                        ?>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
+                        <caption>.</caption>
+                        <thead>
                             <tr>
-                                <td><label style="font-size: 12px;"><?php echo  $varFechaReal; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varCallid; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varLogueo; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varDocumento; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varLider; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varResultadosIDA; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varScoreValoracion; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varPromedioScore; ?></label></td>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Interacción') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Asesor Speech') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Dato Asesor') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Lider') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Automatico Agente') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Calidad  y Consistencia') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Score') ?></label></th>
                             </tr>
-                        <?php
-                            }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                                foreach ($varDataLlamadas as $key => $value) {
+                                    $varFechaReal = $value['fechareal'];                                
+                                    $varBolsita = $value['servicio'];
+                                    $varCallid = $value['callId'];
+                                    $varLogueo = $value['login_id'];
+                                    $paramsRed = [':varUsua'=>$value['login_id']];
+                                    $varLider = null;
+
+                                    if (is_numeric($value['login_id'])) {
+                                        $varDocumento = Yii::$app->db->createCommand('
+                                        SELECT e.dsusuario_red FROM tbl_evaluados e 
+                                            WHERE 
+                                                e.identificacion IN (:varUsua)
+                                            GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+
+                                        $varLider= Yii::$app->db->createCommand('
+                                        SELECT u.usua_nombre FROM tbl_usuarios u 
+                                            INNER JOIN tbl_equipos eq ON
+                                                u.usua_id = eq.usua_id
+                                            INNER JOIN tbl_equipos_evaluados ee ON 
+                                                eq.id = ee.equipo_id
+                                            INNER JOIN tbl_evaluados e ON 
+                                                ee.evaluado_id = e.id
+                                            WHERE 
+                                                e.identificacion IN (:varUsua)
+                                            GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
+                                    }else{
+                                        $varDocumento = Yii::$app->db->createCommand('
+                                        SELECT e.identificacion FROM tbl_evaluados e 
+                                            WHERE 
+                                                e.dsusuario_red IN (:varUsua)
+                                            GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+
+                                        $varLider= Yii::$app->db->createCommand('
+                                        SELECT u.usua_nombre FROM tbl_usuarios u 
+                                            INNER JOIN tbl_equipos eq ON
+                                                u.usua_id = eq.usua_id
+                                            INNER JOIN tbl_equipos_evaluados ee ON 
+                                                eq.id = ee.equipo_id
+                                            INNER JOIN tbl_evaluados e ON 
+                                                ee.evaluado_id = e.id
+                                            WHERE 
+                                                e.dsusuario_red IN (:varUsua)
+                                            GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
+                                    }
+                                    
+
+                                    $paramsCategorias = [':varPcrc'=>$codpcrc,':varCategoria'=>2,':varResponsabilidad'=>1];
+                                    $varListCategorias = Yii::$app->db->createCommand('
+                                        SELECT idcategoria, orientacionsmart, responsable, programacategoria FROM tbl_speech_categorias 
+                                            WHERE 
+                                                cod_pcrc IN (:varPcrc)
+                                                    AND idcategorias IN (:varCategoria)
+                                                        AND responsable IN (:varResponsabilidad)')->bindValues($paramsCategorias)->queryAll();
+
+                                    $varResultadosIDA = 0;
+                                    $varContarNegativas = 0;
+                                    $varTotalNegativas = 0;
+                                    $varConteoNegativas = 0;
+                                    $varContarPositivas = 0;
+                                    $varTotalPositivas = 0;
+                                    $varConteoPositivas = 0;
+
+                                    foreach ($varListCategorias as $key => $value) {
+                                        $varorientaciones = $value['orientacionsmart'];
+                        
+                                        $paramsBuscarCategorias = [':varIdCategoria'=>$value['idcategoria'],':varProgramaCategoria'=>$value['programacategoria'],':varAnulado'=>0,':varCallid'=>$varCallid];
+                                                            
+                                        if ($varorientaciones == '2') {
+                                            $varContarNegativas += 1;
+                                            $varTotalNegativas = Yii::$app->db->createCommand('
+                                                SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
+                                                    WHERE
+                                                        sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
+                                                            AND sg.programacliente IN (:varProgramaCategoria)
+                                                                AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
+                        
+                                            if ($varTotalNegativas == 1) {
+                                                $varConteoNegativas += 1;
+                                            }
+                        
+                                        }else{
+                                            $varContarPositivas += 1;
+                                            $varTotalPositivas = Yii::$app->db->createCommand('
+                                                SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
+                                                    WHERE
+                                                        sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
+                                                            AND sg.programacliente IN (:varProgramaCategoria)
+                                                                AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
+                        
+                                            if ($varTotalPositivas == 1) {
+                                                $varConteoPositivas += 1;
+                                            }
+                                        }
+                                    }
+                        
+                                    if (count($varListCategorias) != 0 && $varConteoNegativas != 0) {
+                                        $varResultadosIDA = round(((($varConteoPositivas + ($varContarNegativas - $varConteoNegativas)) / count($varListCategorias))),2);
+                                    }else{
+                                        $varResultadosIDA = 0;
+                                    }
+
+                                    $varScore = (new \yii\db\Query())
+                                                ->select(['round(tbl_ejecucionformularios.score,2)'])
+                                                ->from(['tbl_ejecucionformularios'])
+                                                ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+                                                ->where(['=','tbl_speech_mixta.callid',$varCallid])
+                                                ->andwhere(['=','tbl_speech_mixta.fechareal',$varFechaReal])
+                                                ->andwhere(['=','tbl_speech_mixta.anulado',0])
+                                                ->scalar(); 
+
+                                    if ($varScore) {
+                                        $varScoreValoracion = $varScore;
+                                    }else{
+                                        $varScoreValoracion = "--";
+                                    }
+                                    
+                                    
+                                    if ($varScoreValoracion != 0) {
+                                        if ($varResultadosIDA != 0) {
+                                            $varPromedioScore = round(((($varResultadosIDA + $varScoreValoracion) / 2)),2);
+                                        }else{
+                                            $varPromedioScore = $varScoreValoracion;
+                                        }
+                                    }else{
+                                        $varPromedioScore = $varResultadosIDA;
+                                    }
+                            ?>
+                                <tr>
+                                    <td><label style="font-size: 12px;"><?php echo  $varFechaReal; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varCallid; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varLogueo; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varDocumento; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varLider; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varResultadosIDA; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varScoreValoracion; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varPromedioScore; ?></label></td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+
+    <?php 
+        }else{
+    ?>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
+                        <caption>.</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Interacción') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Asesor Speech') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Dato Asesor') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Lider') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Automatico Agente') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Automatico PEC') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Calidad  y Consistencia') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultados Score') ?></label></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                foreach ($varDataLlamadas as $key => $value) {
+                                    $varFechaReal = $value['fechareal'];                                
+                                    $varBolsita = $value['servicio'];
+                                    $varCallid = $value['callId'];
+                                    $varLogueo = $value['login_id'];
+                                    $paramsRed = [':varUsua'=>$value['login_id']];
+                                    $varLider = null;
+
+                                    if (is_numeric($value['login_id'])) {
+                                        $varDocumento = Yii::$app->db->createCommand('
+                                        SELECT e.dsusuario_red FROM tbl_evaluados e 
+                                            WHERE 
+                                                e.identificacion IN (:varUsua)
+                                            GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+
+                                        $varLider= Yii::$app->db->createCommand('
+                                        SELECT u.usua_nombre FROM tbl_usuarios u 
+                                            INNER JOIN tbl_equipos eq ON
+                                                u.usua_id = eq.usua_id
+                                            INNER JOIN tbl_equipos_evaluados ee ON 
+                                                eq.id = ee.equipo_id
+                                            INNER JOIN tbl_evaluados e ON 
+                                                ee.evaluado_id = e.id
+                                            WHERE 
+                                                e.identificacion IN (:varUsua)
+                                            GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
+                                    }else{
+                                        $varDocumento = Yii::$app->db->createCommand('
+                                        SELECT e.identificacion FROM tbl_evaluados e 
+                                            WHERE 
+                                                e.dsusuario_red IN (:varUsua)
+                                            GROUP BY e.identificacion')->bindValues($paramsRed)->queryScalar();
+
+                                        $varLider= Yii::$app->db->createCommand('
+                                        SELECT u.usua_nombre FROM tbl_usuarios u 
+                                            INNER JOIN tbl_equipos eq ON
+                                                u.usua_id = eq.usua_id
+                                            INNER JOIN tbl_equipos_evaluados ee ON 
+                                                eq.id = ee.equipo_id
+                                            INNER JOIN tbl_evaluados e ON 
+                                                ee.evaluado_id = e.id
+                                            WHERE 
+                                                e.dsusuario_red IN (:varUsua)
+                                            GROUP BY u.usua_id')->bindValues($paramsRed)->queryScalar();
+                                    }
+                                    
+
+                                    $paramsCategorias = [':varPcrc'=>$codpcrc,':varCategoria'=>2,':varResponsabilidad'=>1];
+                                    $varListCategorias = Yii::$app->db->createCommand('
+                                        SELECT idcategoria, orientacionsmart, responsable, programacategoria FROM tbl_speech_categorias 
+                                            WHERE 
+                                                cod_pcrc IN (:varPcrc)
+                                                    AND idcategorias IN (:varCategoria)
+                                                        AND responsable IN (:varResponsabilidad)')->bindValues($paramsCategorias)->queryAll();
+
+                                    $varResultadosIDA = 0;
+                                    $varContarNegativas = 0;
+                                    $varTotalNegativas = 0;
+                                    $varConteoNegativas = 0;
+                                    $varContarPositivas = 0;
+                                    $varTotalPositivas = 0;
+                                    $varConteoPositivas = 0;
+
+                                    foreach ($varListCategorias as $key => $value) {
+                                        $varorientaciones = $value['orientacionsmart'];
+                        
+                                        $paramsBuscarCategorias = [':varIdCategoria'=>$value['idcategoria'],':varProgramaCategoria'=>$value['programacategoria'],':varAnulado'=>0,':varCallid'=>$varCallid];
+                                                            
+                                        if ($varorientaciones == '2') {
+                                            $varContarNegativas += 1;
+                                            $varTotalNegativas = Yii::$app->db->createCommand('
+                                                SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
+                                                    WHERE
+                                                        sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
+                                                            AND sg.programacliente IN (:varProgramaCategoria)
+                                                                AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
+                        
+                                            if ($varTotalNegativas == 1) {
+                                                $varConteoNegativas += 1;
+                                            }
+                        
+                                        }else{
+                                            $varContarPositivas += 1;
+                                            $varTotalPositivas = Yii::$app->db->createCommand('
+                                                SELECT COUNT(sg.idvariable) FROM tbl_speech_general sg
+                                                    WHERE
+                                                        sg.anulado = :varAnulado AND sg.callid IN (:varCallid)
+                                                            AND sg.programacliente IN (:varProgramaCategoria)
+                                                                AND sg.idvariable IN (:varIdCategoria)')->bindValues($paramsBuscarCategorias)->queryScalar();
+                        
+                                            if ($varTotalPositivas == 1) {
+                                                $varConteoPositivas += 1;
+                                            }
+                                        }
+                                    }
+                        
+                                    if (count($varListCategorias) != 0 && $varConteoNegativas != 0) {
+                                        $varResultadosIDA = round(((($varConteoPositivas + ($varContarNegativas - $varConteoNegativas)) / count($varListCategorias))),2);
+                                    }else{
+                                        $varResultadosIDA = 0;
+                                    }
+
+                                    $varScore = (new \yii\db\Query())
+                                                ->select(['round(tbl_ejecucionformularios.score,2)'])
+                                                ->from(['tbl_ejecucionformularios'])
+                                                ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+                                                ->where(['=','tbl_speech_mixta.callid',$varCallid])
+                                                ->andwhere(['=','tbl_speech_mixta.fechareal',$varFechaReal])
+                                                ->andwhere(['=','tbl_speech_mixta.anulado',0])
+                                                ->scalar(); 
+
+                                    if ($varScore) {
+                                        $varScoreValoracion = $varScore;
+                                    }else{
+                                        $varScoreValoracion = "--";
+                                    }
+
+                                    $varPecProceso = (new \yii\db\Query())
+                                                      ->select(['tbl_speech_pecservicios.id_variable'])
+                                                      ->from(['tbl_speech_pecservicios'])
+                                                      ->join('LEFT OUTER JOIN', 'tbl_speech_general',
+                                                                'tbl_speech_pecservicios.id_variable = tbl_speech_general.idvariable')
+                                                      ->where(['=','tbl_speech_general.callid',$varCallid])
+                                                      ->andwhere(['=','tbl_speech_pecservicios.cod_pcrc',$codpcrc])
+                                                      ->count(); 
+                                    if ($varPecProceso == null) {
+                                        $varPecProceso = 0;
+                                    }
+
+                                    if ($varPecProceso == 1) {
+                                        $varResultPec = 100;
+                                    }else{
+                                        $varResultPec = 0;
+                                    }
+
+                                    if ($varScoreValoracion != 0 && $varResultPec != 0) {
+                                        $varPromedioScore = 100;
+                                    }else{
+                                        if ($varScoreValoracion == '--' && $varResultPec != 0) {
+                                            $varPromedioScore = $varResultPec;
+                                        }else{
+                                            $varPromedioScore = 0;
+                                        }                
+                                    }
+
+                                    
+                            ?>
+                                <tr>
+                                    <td><label style="font-size: 12px;"><?php echo  $varFechaReal; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varCallid; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varLogueo; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varDocumento; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varLider; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varResultadosIDA; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varResultPec; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varScoreValoracion; ?></label></td>
+                                    <td><label style="font-size: 12px;"><?php echo  $varPromedioScore; ?></label></td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <?php
+        }
+    ?>
 </div>
 <hr>
 

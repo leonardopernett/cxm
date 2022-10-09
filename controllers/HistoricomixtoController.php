@@ -151,6 +151,12 @@ use app\models\SpeechParametrizar;
         $varFechaInicioReal = $varFechaReal[0];
         $varFechaFinReal = date('Y-m-d',strtotime($varFechaReal[2]));
 
+        $varVerificaServicio = (new \yii\db\Query())
+                        ->select(['*'])
+                        ->from(['tbl_speech_pecservicios'])
+                        ->where(['=','tbl_speech_pecservicios.cod_pcrc',$codpcrc])
+                        ->count();
+
         $varNombreServicio = (new \yii\db\Query())
             ->select(['nameArbol'])
             ->from(['tbl_speech_servicios'])
@@ -207,6 +213,7 @@ use app\models\SpeechParametrizar;
             'datefin' => $datefin,
             'varDataLlamadas' => $varDataLlamadas,
             'codpcrc' => $codpcrc,
+            'varVerificaServicio' => $varVerificaServicio,
         ]);
     }
 
