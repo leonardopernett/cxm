@@ -6148,7 +6148,7 @@ public function actionCantidadentto(){
         $varResultadosIDA = 0;
       }
       
-      if ($varPecProceso == 0) {
+      if ($varPecProceso == 1) {
         $varResultPec = 100;
       }else{
         $varResultPec = 0;
