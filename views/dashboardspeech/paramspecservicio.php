@@ -159,6 +159,26 @@ $roles = $command->queryScalar();
                                               )->label('');
                 ?>
                 <br>
+                <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 15px; color: #FFC72C;"></em> <?= Yii::t('app', 'Programa/Pcrc') ?> </label> 
+                <?=
+                    $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
+                                ->widget(Select2::classname(), [
+                                    //'data' => array_merge(["" => ""], $data),
+                                    'language' => 'es',
+                                    'options' => ['id'=>'idvararbol', 'placeholder' => Yii::t('app', 'Select ...')],
+                                    'pluginOptions' => [
+                                        'allowClear' => false,
+                                        'minimumInputLength' => 3,
+                                        'ajax' => [
+                                            'url' => \yii\helpers\Url::to(['getarbolesbyrolespec']),
+                                            'dataType' => 'json',
+                                            'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                            'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                                        ],
+                                    ]
+                    ])->label('');
+                ?>
+                <br>
                 <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 15px; color: #FFC72C;"></em> <?= Yii::t('app', 'Comentarios') ?> </label> 
                 <?= $form->field($model, 'comentarios', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id' => 'idcomentarios', 'placeholder'=>'Ingresar Comentarios']) ?>
                 <br>
@@ -191,6 +211,7 @@ $roles = $command->queryScalar();
                             <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Pcrc') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Indicador') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Variable') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Programa/Pcrc') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                         </tr>
                     </thead>
@@ -205,6 +226,7 @@ $roles = $command->queryScalar();
                             <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $value['pcrc']) ?></label></td>
                             <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $value['tipoindicador']) ?></label></td>
                             <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $value['nombre']) ?></label></td>
+                            <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $value['name']) ?></label></td>
                             <td class="text-center">
                                         <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletepecservicio','id'=> $varids,'codpcrc'=> $varcodigos], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                                     </td>

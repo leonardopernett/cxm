@@ -5728,6 +5728,7 @@ public function actionCantidadentto(){
 
         $txtidvariables = $model->id_variable;
         $txtcomentarios = $model->comentarios;
+        $txtArbol_id = $model->usua_id;
 
         Yii::$app->db->createCommand()->insert('tbl_speech_pecservicios',[
                       'id_dp_cliente' => $txtIdDpClientes,
@@ -5736,6 +5737,7 @@ public function actionCantidadentto(){
                       'id_indicador' => $txtidindicadores,
                       'id_variable' => $txtidvariables,
                       'comentarios' => $txtcomentarios,
+                      'arbol_id' => $txtArbol_id,
                       'usua_id' => Yii::$app->user->identity->id,
                       'fechacreacion' => date('Y-m-d'),
                       'anulado' => 0,                        
@@ -5745,14 +5747,16 @@ public function actionCantidadentto(){
       }
 
       $varListarProcesos = (new \yii\db\Query())
-                              ->select(['tbl_speech_pecservicios.id_pecservicios','tbl_speech_categorias.cod_pcrc', 'tbl_speech_categorias.pcrc', 'tbl_speech_categorias.tipoindicador','tbl_speech_categorias.nombre'])
-                              ->from(['tbl_speech_categorias']) 
-                              ->join('LEFT OUTER JOIN', 'tbl_speech_pecservicios',
-                                  ' tbl_speech_categorias.cod_pcrc = tbl_speech_pecservicios.cod_pcrc
-                                      AND tbl_speech_categorias.idcategoria = tbl_speech_pecservicios.id_variable')           
-                              ->where(['=','tbl_speech_pecservicios.cod_pcrc',$varListaCodPcrcVoice])
-                              ->andwhere(['=','tbl_speech_pecservicios.anulado',0])
-                              ->all();
+                          ->select(['tbl_speech_pecservicios.id_pecservicios','tbl_speech_categorias.cod_pcrc', 'tbl_speech_categorias.pcrc', 'tbl_speech_categorias.tipoindicador','tbl_speech_categorias.nombre','tbl_arbols.name'])
+                          ->from(['tbl_speech_categorias']) 
+                          ->join('LEFT OUTER JOIN', 'tbl_speech_pecservicios',
+                              ' tbl_speech_categorias.cod_pcrc = tbl_speech_pecservicios.cod_pcrc
+                                  AND tbl_speech_categorias.idcategoria = tbl_speech_pecservicios.id_variable')      
+                          ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                              ' tbl_arbols.id = tbl_speech_pecservicios.arbol_id')       
+                          ->where(['=','tbl_speech_pecservicios.cod_pcrc',$varListaCodPcrcVoice])
+                          ->andwhere(['=','tbl_speech_pecservicios.anulado',0])
+                          ->all();
       
 
       return $this->render('paramspecservicio',[
@@ -5815,6 +5819,47 @@ public function actionCantidadentto(){
           }else{
             echo "<option>Seleccionar...</option>";
           }          
+    }
+
+    public function actionGetarbolesbyrolespec($search = null, $id = null) {
+                $out = ['more' => false];
+                $grupo = Yii::$app->user->identity->grupousuarioid;
+                if (!is_null($search)) {
+                    $data = \app\models\Arboles::find()
+                            ->joinWith('permisosGruposArbols')
+                            ->join('INNER JOIN', 'tbl_grupos_usuarios', 'tbl_permisos_grupos_arbols.grupousuario_id = tbl_grupos_usuarios.grupos_id')
+                            ->select(['id' => 'tbl_arbols.id', 'text' => 'UPPER(tbl_arbols.dsname_full)'])
+                            ->where([
+                                "sncrear_formulario" => 1,
+                                "snhoja" => 1,
+                                "grupousuario_id" => $grupo])
+                            ->andWhere(['not', ['formulario_id' => null]])
+                            ->andWhere('name LIKE "%' . $search . '%" ')
+                            ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
+                            ->orderBy("dsorden ASC")
+                            ->asArray()
+                            ->all();
+                    $out['results'] = array_values($data);
+                } elseif (!empty($id)) {
+                    $data = \app\models\Arboles::find()
+                            ->joinWith('permisosGruposArbols')
+                            ->join('INNER JOIN', 'tbl_grupos_usuarios', 'tbl_permisos_grupos_arbols.grupousuario_id = tbl_grupos_usuarios.grupos_id')
+                            ->select(['id' => 'tbl_arbols.id', 'text' => 'UPPER(tbl_arbols.dsname_full)'])
+                            ->where([
+                                "sncrear_formulario" => 1,
+                                "snhoja" => 1,
+                                "grupousuario_id" => $grupo])
+                            ->andWhere(['not', ['formulario_id' => null]])
+                            ->andWhere('tbl_arbols.id = ' . $id)
+                            ->andWhere('tbl_grupos_usuarios.per_realizar_valoracion = 1')
+                            ->orderBy("dsorden ASC")
+                            ->asArray()
+                            ->all();
+                    $out['results'] = array_values($data);
+                } else {
+                    $out['results'] = ['id' => 0, 'text' => Yii::t('app', 'No matching records found')];
+                }
+                echo \yii\helpers\Json::encode($out);
     }
 
 

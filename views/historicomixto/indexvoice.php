@@ -569,6 +569,14 @@ use yii\db\Query;
 
                                     if ($varScore) {
                                         $varScoreValoracion = $varScore;
+
+                                        if ($varScore == 1) {
+                                            $varScoreValoracion = 100;
+                                        }
+                                        if ($varScore == 0) {
+                                            $varScoreValoracion = 0;
+                                        }
+
                                     }else{
                                         $varScoreValoracion = "--";
                                     }
@@ -586,9 +594,9 @@ use yii\db\Query;
                                     }
 
                                     if ($varPecProceso == 1) {
-                                        $varResultPec = 100;
-                                    }else{
                                         $varResultPec = 0;
+                                    }else{
+                                        $varResultPec = 100;
                                     }
 
                                     if ($varScoreValoracion != 0 && $varResultPec != 0) {
