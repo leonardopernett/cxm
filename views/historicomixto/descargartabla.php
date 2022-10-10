@@ -50,6 +50,28 @@ use yii\db\Query;
 
 <?php
 if ($varVerificaServicio != 0) {
+
+    $varListaItems = (new \yii\db\Query())
+                    ->select(['tbl_bloquedetalles.id', 'tbl_bloquedetalles.name'])
+                    ->from(['tbl_bloquedetalles'])
+                    ->join('LEFT OUTER JOIN', 'tbl_bloques',
+                            'tbl_bloquedetalles.bloque_id = tbl_bloques.id')
+
+                    ->join('LEFT OUTER JOIN', 'tbl_seccions',
+                            'tbl_bloques.seccion_id = tbl_seccions.id')
+
+                    ->join('LEFT OUTER JOIN', 'tbl_formularios',
+                            'tbl_seccions.formulario_id = tbl_formularios.id')
+
+                    ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                            'tbl_formularios.id = tbl_arbols.formulario_id')
+
+                    ->join('LEFT OUTER JOIN', 'tbl_speech_pecservicios',
+                            'tbl_arbols.id = tbl_speech_pecservicios.arbol_id')
+
+                    ->where(['=','tbl_speech_pecservicios.cod_pcrc',$varcodigoPCRC])
+                    ->all(); 
+
 ?>
 
 <div id="capaTablePecId" class="capaTablePec" style="display: none;">
@@ -148,6 +170,15 @@ if ($varVerificaServicio != 0) {
                             <th scope="col" class="text-center" style="background-color: #FFC72C;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultado Automatico PEC') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #FFC72C;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultado Calidad & Consistencia') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #FFC72C;"><label style="font-size: 15px;"><?= Yii::t('app', 'Resultado Score') ?></label></th>
+                            <?php
+                                foreach ($varListaItems as $key => $value) {
+                                    
+                            ?>
+                                <th scope="col" class="text-center" style="background-color: #cfcfcf;"><label style="font-size: 15px;"><?= Yii::t('app', $value['name']) ?></label></th>
+                            <?php
+                                }
+                            ?>
+                            <th scope="col" class="text-center" style="background-color: #FFC72C;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios Valoración') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -272,12 +303,11 @@ if ($varVerificaServicio != 0) {
                                         }else{
                                             if ($varProcesoScoreOk == 0) {
                                                 $varProcesoScore = 0;
-                                            }else{
-                                                $varProcesoScore = $varProcesoScoreOk;
                                             } 
                                         }             
                                     }
 
+                                    
                                     
                                     $varPecProcesosPec = (new \yii\db\Query())
                                         ->select(['tbl_speech_pecservicios.id_variable'])
@@ -287,26 +317,75 @@ if ($varVerificaServicio != 0) {
                                         ->where(['=','tbl_speech_general.callid',$varLlamadaId])
                                         ->andwhere(['=','tbl_speech_pecservicios.cod_pcrc',$varcodigoPCRC])
                                         ->count(); 
-                                    
-                                    if ($varPecProcesosPec == null) {
-                                        $varPecProceso = $varPecProcesosPec * 100;
+
+                                    if ($varPecProcesosPec == 0) {
+                                        $varPecProceso = 100;
                                     }else{
                                         $varPecProceso = 0;
                                     }
-
+                                    
                                     if ($varProcesoScore != 0 && $varPecProceso != 0) {
                                         $varPromedioScore = 100;
                                     }else{
                                         if ($varProcesoScore == '--' && $varPecProceso != 0) {
-                                            $varPromedioScore = $varPecProceso;
+                                            $varPromedioScore = 100;
                                         }else{
-                                            $varPromedioScore = 0;
+                                            if ($varProcesoScore != 100 && $varPecProceso != 0) {
+                                                $varPromedioScore = 0;
+                                            }else{
+                                                $varPromedioScore = 0;
+                                            }                                          
                                         }                
                                     }
+                                    
                                 ?>
                                 <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $varPecProceso) ?></label></td>
                                 <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $varProcesoScore) ?></label></td>
                                 <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $varPromedioScore) ?></label></td>
+                                <?php
+                                    foreach ($varListaItems as $key => $value) {
+                                        $varIDListaItems = $value['id'];
+
+                                        $varRtaFormularios = (new \yii\db\Query())
+                                        ->select(['tbl_calificaciondetalles.name'])
+                                        ->from(['tbl_calificaciondetalles'])
+                                        ->join('LEFT OUTER JOIN', 'tbl_ejecucionbloquedetalles',
+                                                'tbl_calificaciondetalles.id = tbl_ejecucionbloquedetalles.calificaciondetalle_id')
+
+                                        ->join('LEFT OUTER JOIN', 'tbl_ejecucionbloques',
+                                                'tbl_ejecucionbloquedetalles.ejecucionbloque_id = tbl_ejecucionbloques.id')
+
+                                        ->join('LEFT OUTER JOIN', 'tbl_ejecucionseccions',
+                                                'tbl_ejecucionbloques.ejecucionseccion_id = tbl_ejecucionseccions.id')
+
+                                        ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                'tbl_ejecucionseccions.ejecucionformulario_id = tbl_ejecucionformularios.id')
+
+                                        ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                                        ->where(['=','tbl_speech_mixta.callid',$varLlamadaId])
+                                        ->andwhere(['=','tbl_ejecucionbloquedetalles.bloquedetalle_id',$varIDListaItems])
+                                        ->Scalar();
+
+                                        if ($varRtaFormularios == null) {
+                                            $varRtaFormularios = '--';
+                                        }
+
+                                ?>
+                                    <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $varRtaFormularios) ?></label></td>
+                                <?php
+                                    }
+
+                                    $varComentarios = (new \yii\db\Query())
+                                        ->select(['tbl_ejecucionformularios.dscomentario'])
+                                        ->from(['tbl_ejecucionformularios'])
+                                        ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                            'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+                                        ->where(['=','tbl_speech_mixta.callid',$varLlamadaId])
+                                        ->Scalar(); 
+                                ?>
+                                <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $varComentarios) ?></label></td>
                             </tr>
                         <?php
                             }
@@ -595,7 +674,9 @@ var tableToExcel = (function () {
     function download(){
         $(document).find('tfoot').remove();
         var name = document.getElementById("name");
-        tableToExcel('myTableVariable', 'Archivo Base Escuchar + ', name+'.xls');
+        tableToExcel('myTableVariable', 'Archivo Base Escuchar + ', name+'.xls')
+        //setTimeout("window.location.reload()",0.0000001);
+
     }
     var btn = document.getElementById("btn");
     btn.addEventListener("click",download);
