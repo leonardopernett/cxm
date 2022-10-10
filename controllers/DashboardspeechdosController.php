@@ -410,7 +410,7 @@ use \yii\base\Exception;
                                       ->where(['=','anulado',0])
                                       ->andwhere(['in','cod_pcrc',$varListaCodPcrcVoice])
                                       ->andwhere(['in','idcategorias',[1,2]])
-                                      ->groupby(['idecategoria'])
+                                      ->groupby(['idcategoria'])
                                       ->all(); 
 
         }
