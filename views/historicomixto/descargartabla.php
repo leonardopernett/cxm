@@ -256,16 +256,26 @@ if ($varVerificaServicio != 0) {
                                 <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $varConteoAgente) ?></label></td>
                                 <?php
 
-                                    $varProcesoScore = (new \yii\db\Query())
-                                        ->select(['round(tbl_ejecucionformularios.score,2)'])
+                                    $varProcesoScoreOk = (new \yii\db\Query())
+                                        ->select(['round(tbl_ejecucionformularios.score,1)'])
                                         ->from(['tbl_ejecucionformularios'])
                                         ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
                                             'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
                                         ->where(['=','tbl_speech_mixta.callid',$varLlamadaId])
                                         ->Scalar(); 
 
-                                    if ($varProcesoScore == null) {
+                                    if ($varProcesoScoreOk == null) {
                                         $varProcesoScore = '--';
+                                    }else{
+                                        if ($varProcesoScoreOk == 1) {
+                                            $varProcesoScore = 100;
+                                        }else{
+                                            if ($varProcesoScoreOk == 0) {
+                                                $varProcesoScore = 0;
+                                            }else{
+                                                $varProcesoScore = $varProcesoScoreOk;
+                                            } 
+                                        }             
                                     }
 
                                     
@@ -279,9 +289,9 @@ if ($varVerificaServicio != 0) {
                                         ->count(); 
                                     
                                     if ($varPecProcesosPec == null) {
-                                        $varPecProceso = 0;
-                                    }else{
                                         $varPecProceso = $varPecProcesosPec * 100;
+                                    }else{
+                                        $varPecProceso = 0;
                                     }
 
                                     if ($varProcesoScore != 0 && $varPecProceso != 0) {
