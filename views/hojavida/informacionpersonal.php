@@ -625,255 +625,263 @@ $this->params['breadcrumbs'][] = $this->title;
 
     }else{
 
-      $.ajax({
-        method: "get",
-        url: "verificacedula",
-        data: {
-          txtvarididentificacion : varididentificacion,
-        },
-        success : function(response){
-          numRta =   JSON.parse(response);
-          
-          if (numRta != "0") {
-            event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Usuario ya esta registrado en el sistema","warning");
-            return;
-          }else{
-                        
-            if (varidnombrefull == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de ingresar el nombre completo","warning");
-              return;
-            }
-            if (varidemail == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de ingresar el correo corporativo","warning");
-              return;
-            }
-            if (varidnumeromovil == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de ingresar el numero movil","warning");
-              return;
-            }
-            if (varidmdoalidad == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar la modalidad","warning");
-              return;
-            }
-            if (variddireccionoficiona == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de ingresar el direccion oficina","warning");
-              return;
-            }
-            if (variddireccioncasa == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de ingresar el direccion casa","warning");
-              return;
-            }
-            if (varidautoriza == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar la autorizacion","warning");
-              return;
-            }
-            if (varidpais == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar el pais","warning");
-              return;
-            }
-            if (varididciudad == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar la ciudad","warning");
-              return;
-            }
-            if (varclasificacion == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar una clasificacion de konecta","warning");
-              return;
-            }
+      if (varididentificacion.length <= 5) {
 
-            // Esta accion permite guardar el primer bloque...
-            $.ajax({
-              method: "get",
-              url: "guardarpersonal",
-              data: {
-                txtvaridnombrefull: varidnombrefull,
-                txtvarididentificacion : varididentificacion,
-                txtvaridemail : varidemail,
-                txtvaridnumeromovil : varidnumeromovil,
-                txtvaridnumerooficina : varidnumerooficina,
-                txtvaridmdoalidad : varidmdoalidad,
-                txtvariddireccionoficiona : variddireccionoficiona,
-                txtvariddireccioncasa : variddireccioncasa,
-                txtvaridautoriza : varidautoriza,
-                txtvaridpais : varidpais,
-                txtvarididciudad : varididciudad,
-                txtvaridsusceptible : varidsusceptible,
-                txtvaridsatu : varidsatu,
-                txtvarclasificacion : varclasificacion,
-                txtvarfechacumple : varfechacumple,
-              },
-              success : function(response){
-                numRta =   JSON.parse(response);
-              }
-            });
+        event.preventDefault();
+        swal.fire("!!! Advertencia !!!","Cantidad de caracteres no permitidos, ingrese el documento de identidad.","warning");
+        return;
 
-            var varidrol = document.getElementById("idrol").value;
-            var varidantiguedad = document.getElementById("hojavidadatalaboral-hv_id_antiguedad").value;
-            var varidfechainicio = document.getElementById("idfechainicio").value;
-            var varidnombrejefe = document.getElementById("idnombrejefe").value;
-            var varidcargojefe = document.getElementById("idcargojefe").value;
-            var varidtrabajoanterior = document.getElementById("idtrabajoanterior").value;
-            var varidafinidad = document.getElementById("idafinidad").value;
-            var varidtipoafinidad = document.getElementById("idtipoafinidad").value;
-            var varidnivelafinidad = document.getElementById("idnivelafinidad").value;
-            var varidareatrabajo = document.getElementById("idareatrabajo").value;
+      }else{
 
-            if (varidrol == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de ingresa el rol","warning");
-              return;
-            }
-            if (varidantiguedad == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar la antiguedad","warning");
-              return;
-            }
-            if (varidafinidad == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar la afinidad","warning");
-              return;
-            }
-
-            // Esta accion permite guardar el segundo bloque...
-            $.ajax({
-              method: "get",
-              url: "guardarlaboral",
-              data: {
-                txtvarautoincrement : varautoincrement,
-                txtvarididentificacion : varididentificacion,
-                txtvaridrol : varidrol,
-                txtvaridantiguedad : varidantiguedad,
-                txtvaridfechainicio : varidfechainicio,
-                txtvaridnombrejefe : varidnombrejefe,
-                txtvaridcargojefe : varidcargojefe,
-                txtvaridtrabajoanterior : varidtrabajoanterior,
-                txtvaridafinidad : varidafinidad,
-                txtvaridtipoafinidad : varidtipoafinidad,
-                txtvaridnivelafinidad : varidnivelafinidad,
-                txtvaridareatrabajo : varidareatrabajo,
-              },
-              success : function(response){
-                numRta =   JSON.parse(response);
-              }
-            });
+        $.ajax({
+          method: "get",
+          url: "verificacedula",
+          data: {
+            txtvarididentificacion : varididentificacion,
+          },
+          success : function(response){
+            numRta =   JSON.parse(response);
             
-            var varid_dp_cliente = document.getElementById("hojavidadatapcrc-id_dp_cliente").value;
-            var varidrequester = document.getElementById("requester").value;
-            var varcodpcrc = document.querySelectorAll('#requester option:checked');
-            var varlistcodpcrc = Array.from(varcodpcrc).map(el => el.value);
-            var varidrequester2 = document.getElementById("requester2").value;
-            var vardirector = document.querySelectorAll('#requester2 option:checked');
-            var varlistdirector = Array.from(vardirector).map(el => el.value);
-            var varidrequester3 = document.getElementById("requester3").value;
-            var vargerente = document.querySelectorAll('#requester3 option:checked');
-            var varlistgerente = Array.from(vargerente).map(el => el.value);
-
-            if (varid_dp_cliente == "") {
+            if (numRta != "0") {
               event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar un cliente","warning");
-              return;
-            }
-            if (varidrequester == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar al menos un pcrc","warning");
-              return;
-            }
-            if (varidrequester2 == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar el menos un gerente","warning");
-              return;
-            }
-            if (varidrequester3 == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar al menos un director","warning");
-              return;
-            }
-
-            // Esta accion permite guardar el tercer bloque...
-            $.ajax({
-              method: "get",
-              url: "guardarcuentas",
-              data: {
-                txtvarautoincrement : varautoincrement,
-                txtvarid_dp_cliente : varid_dp_cliente,
-                txtvaridrequester : varlistcodpcrc,
-                txtvaridrequester2 : varlistdirector,
-                txtvaridrequester3 : varlistgerente,
-
-              },
-              success : function(response){
-                numRta =   JSON.parse(response);
-              }
-            });
-
-            var vareventos = document.querySelectorAll('#hojavidadataacademica-usua_id option:checked');
-            var varlisteventos = Array.from(vareventos).map(el => el.value);
-
-            // Esta accion permite guardar el tercer bloque...
-            if (vareventos != "") {              
-              $.ajax({
-                method: "get",
-                url: "aplicareventos",
-                data: {
-                  txtvarautoincrement : varautoincrement,
-                  txtvarlisteventos : varlisteventos,
-
-                },
-                success : function(response){
-                  numRta =   JSON.parse(response);
-                }
-              });
-            }
-
-
-            var varidprofesion = document.getElementById("hojavidadataacademica-idhvcursosacademico").value;
-            var varidespecializacion = document.getElementById("hojavidadataacademica-anulado").value;
-            var varidmaestria = document.getElementById("hojavidadataacademica-hv_idpersonal").value;
-            var variddoctorado = document.getElementById("hojavidadataacademica-usua_id").value;
-            var varidestado = document.getElementById("idestado").value;
-
-            // Esta accion permite guardar el cuarto bloque...
-            if (varidestado == "") {
-              event.preventDefault();
-              swal.fire("!!! Advertencia !!!","Debe de seleccionar un estado","warning");
+              swal.fire("!!! Advertencia !!!","Usuario ya esta registrado en el sistema","warning");
               return;
             }else{
+                          
+              if (varidnombrefull == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresar el nombre completo","warning");
+                return;
+              }
+              if (varidemail == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresar el correo corporativo","warning");
+                return;
+              }
+              if (varidnumeromovil == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresar el numero movil","warning");
+                return;
+              }
+              if (varidmdoalidad == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar la modalidad","warning");
+                return;
+              }
+              if (variddireccionoficiona == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresar el direccion oficina","warning");
+                return;
+              }
+              if (variddireccioncasa == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresar el direccion casa","warning");
+                return;
+              }
+              if (varidautoriza == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar la autorizacion","warning");
+                return;
+              }
+              if (varidpais == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar el pais","warning");
+                return;
+              }
+              if (varididciudad == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar la ciudad","warning");
+                return;
+              }
+              if (varclasificacion == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar una clasificacion de konecta","warning");
+                return;
+              }
+
+              // Esta accion permite guardar el primer bloque...
               $.ajax({
                 method: "get",
-                url: "guardaracademicos",
+                url: "guardarpersonal",
+                data: {
+                  txtvaridnombrefull: varidnombrefull,
+                  txtvarididentificacion : varididentificacion,
+                  txtvaridemail : varidemail,
+                  txtvaridnumeromovil : varidnumeromovil,
+                  txtvaridnumerooficina : varidnumerooficina,
+                  txtvaridmdoalidad : varidmdoalidad,
+                  txtvariddireccionoficiona : variddireccionoficiona,
+                  txtvariddireccioncasa : variddireccioncasa,
+                  txtvaridautoriza : varidautoriza,
+                  txtvaridpais : varidpais,
+                  txtvarididciudad : varididciudad,
+                  txtvaridsusceptible : varidsusceptible,
+                  txtvaridsatu : varidsatu,
+                  txtvarclasificacion : varclasificacion,
+                  txtvarfechacumple : varfechacumple,
+                },
+                success : function(response){
+                  numRta =   JSON.parse(response);
+                }
+              });
+
+              var varidrol = document.getElementById("idrol").value;
+              var varidantiguedad = document.getElementById("hojavidadatalaboral-hv_id_antiguedad").value;
+              var varidfechainicio = document.getElementById("idfechainicio").value;
+              var varidnombrejefe = document.getElementById("idnombrejefe").value;
+              var varidcargojefe = document.getElementById("idcargojefe").value;
+              var varidtrabajoanterior = document.getElementById("idtrabajoanterior").value;
+              var varidafinidad = document.getElementById("idafinidad").value;
+              var varidtipoafinidad = document.getElementById("idtipoafinidad").value;
+              var varidnivelafinidad = document.getElementById("idnivelafinidad").value;
+              var varidareatrabajo = document.getElementById("idareatrabajo").value;
+
+              if (varidrol == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresa el rol","warning");
+                return;
+              }
+              if (varidantiguedad == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar la antiguedad","warning");
+                return;
+              }
+              if (varidafinidad == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar la afinidad","warning");
+                return;
+              }
+
+              // Esta accion permite guardar el segundo bloque...
+              $.ajax({
+                method: "get",
+                url: "guardarlaboral",
                 data: {
                   txtvarautoincrement : varautoincrement,
-                  txtvaridprofesion : varidprofesion,
-                  txtvaridespecializacion : varidespecializacion,
-                  txtvaridmaestria : varidmaestria,
-                  txtvariddoctorado : variddoctorado,
-                  txtvaridestado : varidestado,
+                  txtvarididentificacion : varididentificacion,
+                  txtvaridrol : varidrol,
+                  txtvaridantiguedad : varidantiguedad,
+                  txtvaridfechainicio : varidfechainicio,
+                  txtvaridnombrejefe : varidnombrejefe,
+                  txtvaridcargojefe : varidcargojefe,
+                  txtvaridtrabajoanterior : varidtrabajoanterior,
+                  txtvaridafinidad : varidafinidad,
+                  txtvaridtipoafinidad : varidtipoafinidad,
+                  txtvaridnivelafinidad : varidnivelafinidad,
+                  txtvaridareatrabajo : varidareatrabajo,
+                },
+                success : function(response){
+                  numRta =   JSON.parse(response);
+                }
+              });
+              
+              var varid_dp_cliente = document.getElementById("hojavidadatapcrc-id_dp_cliente").value;
+              var varidrequester = document.getElementById("requester").value;
+              var varcodpcrc = document.querySelectorAll('#requester option:checked');
+              var varlistcodpcrc = Array.from(varcodpcrc).map(el => el.value);
+              var varidrequester2 = document.getElementById("requester2").value;
+              var vardirector = document.querySelectorAll('#requester2 option:checked');
+              var varlistdirector = Array.from(vardirector).map(el => el.value);
+              var varidrequester3 = document.getElementById("requester3").value;
+              var vargerente = document.querySelectorAll('#requester3 option:checked');
+              var varlistgerente = Array.from(vargerente).map(el => el.value);
+
+              if (varid_dp_cliente == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar un cliente","warning");
+                return;
+              }
+              if (varidrequester == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar al menos un pcrc","warning");
+                return;
+              }
+              if (varidrequester2 == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar el menos un gerente","warning");
+                return;
+              }
+              if (varidrequester3 == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar al menos un director","warning");
+                return;
+              }
+
+              // Esta accion permite guardar el tercer bloque...
+              $.ajax({
+                method: "get",
+                url: "guardarcuentas",
+                data: {
+                  txtvarautoincrement : varautoincrement,
+                  txtvarid_dp_cliente : varid_dp_cliente,
+                  txtvaridrequester : varlistcodpcrc,
+                  txtvaridrequester2 : varlistdirector,
+                  txtvaridrequester3 : varlistgerente,
 
                 },
                 success : function(response){
                   numRta =   JSON.parse(response);
                 }
               });
-            }
-            
 
-            window.open('../hojavida/index','_self');
+              var vareventos = document.querySelectorAll('#hojavidadataacademica-usua_id option:checked');
+              var varlisteventos = Array.from(vareventos).map(el => el.value);
+
+              // Esta accion permite guardar el tercer bloque...
+              if (vareventos != "") {              
+                $.ajax({
+                  method: "get",
+                  url: "aplicareventos",
+                  data: {
+                    txtvarautoincrement : varautoincrement,
+                    txtvarlisteventos : varlisteventos,
+
+                  },
+                  success : function(response){
+                    numRta =   JSON.parse(response);
+                  }
+                });
+              }
+
+
+              var varidprofesion = document.getElementById("hojavidadataacademica-idhvcursosacademico").value;
+              var varidespecializacion = document.getElementById("hojavidadataacademica-anulado").value;
+              var varidmaestria = document.getElementById("hojavidadataacademica-hv_idpersonal").value;
+              var variddoctorado = document.getElementById("hojavidadataacademica-usua_id").value;
+              var varidestado = document.getElementById("idestado").value;
+
+              // Esta accion permite guardar el cuarto bloque...
+              if (varidestado == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar un estado","warning");
+                return;
+              }else{
+                $.ajax({
+                  method: "get",
+                  url: "guardaracademicos",
+                  data: {
+                    txtvarautoincrement : varautoincrement,
+                    txtvaridprofesion : varidprofesion,
+                    txtvaridespecializacion : varidespecializacion,
+                    txtvaridmaestria : varidmaestria,
+                    txtvariddoctorado : variddoctorado,
+                    txtvaridestado : varidestado,
+
+                  },
+                  success : function(response){
+                    numRta =   JSON.parse(response);
+                  }
+                });
+              }
+              
+
+              window.open('../hojavida/index','_self');
+
+            }
 
           }
-
-        }
-      });
-
+        });
+      }
     }
 
 
