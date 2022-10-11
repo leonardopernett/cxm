@@ -978,6 +978,15 @@ $this->params['breadcrumbs'][] = $this->title;
       return;
 
     }else{
+
+      if (varididentificacion.length <= 5) {
+
+        event.preventDefault();
+        swal.fire("!!! Advertencia !!!","Cantidad de caracteres no permitidos, ingrese el documento de identidad.","warning");
+        return;
+
+      }else{
+
             if (varidnombrefull == "") {
               event.preventDefault();
               swal.fire("!!! Advertencia !!!","Debe de ingresar el nombre completo","warning");
@@ -1145,7 +1154,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 success : function(response){
                   numRta =   JSON.parse(response);
-                  // console.log(numRta);
                 }
               });
             }
@@ -1179,6 +1187,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
 
             window.open('../hojavida/index','_self');
+      }
     }
 
   };
