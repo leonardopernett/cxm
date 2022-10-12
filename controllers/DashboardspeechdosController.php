@@ -346,7 +346,7 @@ use \yii\base\Exception;
                                 ->groupby(['cantidadllamada'])
                                 ->Scalar(); 
 
-      if ($varVerificarCantidadLlamadas != $varListCallidsVoice) {
+      if ($varVerificarCantidadLlamadas != $txtCantidad) {
 
         Yii::$app->db->createCommand('DELETE FROM tbl_speech_tmpmotivos WHERE cod_pcrc=:id AND extension=:idparams AND fechainiciotmp >= :idfechaini AND fechafintmp <= :idfechafin')->bindParam(':id',$txtCodPcrcs)->bindParam(':idparams',$txtTipoparametros)->bindParam(':idfechaini',$varFechaInicioVoice)->bindParam(':idfechafin',$varFechaFinTresVoice)->execute();
 
@@ -396,7 +396,7 @@ use \yii\base\Exception;
                       'porcentaje' => $txtRtaPorcentajeMotivo,
                       'cantidadmotivos' => $varConteoPorMotivosVoice,
                       'duracionllamada' => $varDuracionLlamadaVoice,
-                      'cantidadllamada' => $varListCallidsVoice,
+                      'cantidadllamada' => $txtCantidad,
                       'fechainiciotmp' => $varFechaInicioVoice,
                       'fechafintmp' => $varFechaFinTresVoice,
                       'usua_id' => Yii::$app->user->identity->id,
@@ -422,7 +422,7 @@ use \yii\base\Exception;
                                 ->where(['=','anulado',0])
                                 ->andwhere(['in','cod_pcrc',$varListaCodPcrcVoice])
                                 ->andwhere(['=','id_dp_cliente',$txtidcliente])
-                                ->andwhere(['=','cantidadllamada',$varListCallidsVoice])
+                                ->andwhere(['=','cantidadllamada',$txtCantidad])
                                 ->andwhere(['=','extension',$txtTipoparametros])
                                 ->andwhere(['>=','fechainiciotmp',$varFechaInicioVoice])
                                 ->andwhere(['<=','fechafintmp',$varFechaFinTresVoice])
