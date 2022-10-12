@@ -482,12 +482,11 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                     $varbaseid = $varsindata;
                                 }
                                 
-                                $paramsBuscarValoracion = [':varCallids' => $txtcallid, ':varFechaReal' => $txtfechasreal];
+                                $paramsBuscarValoracion = [':varCallids' => $txtcallid];
                                 $varFormularioId = Yii::$app->db->createCommand('
                                     SELECT sm.formulario_id FROM tbl_speech_mixta sm
                                         WHERE 
-                                            sm.callid IN (:varCallids)
-                                                AND sm.fechareal = :varFechaReal')->bindValues($paramsBuscarValoracion)->queryScalar();                                
+                                            sm.callid IN (:varCallids)')->bindValues($paramsBuscarValoracion)->queryScalar();                                
 
                                 if ($varFormularioId != null) {
                                     $paramsBuscarValorador = [':varIdFormulario' => $varFormularioId];
