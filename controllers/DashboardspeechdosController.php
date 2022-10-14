@@ -2204,7 +2204,8 @@ use \yii\base\Exception;
                                                 ->andwhere(['in','extension',$varListaExtensionesExport])
                                                 ->andwhere(['between','fechallamada',$varFechaInicioExport.' 05:00:00',$varFechaFinExport.' 05:00:00'])
                                                 ->andwhere(['in','idcategoria',$varArregloCategoria])
-                                                ->groupby(['callid'])
+                                                ->groupby(['callid'])                                                
+                                                ->having(['>','COUNT(1)',1])
                                                 ->count();
                                       
                 $txtvCantMotivos = (new \yii\db\Query())
@@ -2219,7 +2220,7 @@ use \yii\base\Exception;
                                     ->count();
                                       
                 if ($varConteoPorMotivosVariable != 0 && $txtvCantMotivos != 0) {
-                  $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $txtvCantMotivos), 1));
+                  $txtRtaPorcentajeMotivoVariable = round(($varConteoPorMotivosVariable / $txtvCantMotivos) * 100,2);
                 }else{
                   $txtRtaPorcentajeMotivoVariable = 0;
                 }

@@ -1374,6 +1374,7 @@ $this->title = 'Dashboard Escuchar +';
                                             ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
                                             ->andwhere(['in','idcategoria',$varArregloCategoria])
                                             ->groupby(['callid'])
+                                            ->having(['>','COUNT(1)',1])
                                             ->count();
 
                                 $txtvCantMotivos = (new \yii\db\Query())
@@ -1389,7 +1390,7 @@ $this->title = 'Dashboard Escuchar +';
 
                                 if ($varConteoPorMotivosVariable != 0 && $txtvCantMotivos != 0) {
                                     if ($varConteoPorMotivosVariable != null) {
-                                        $txtRtaPorcentajeMotivoVariable = (round(($varConteoPorMotivosVariable / $txtvCantMotivos), 1));
+                                        $txtRtaPorcentajeMotivoVariable = round(($varConteoPorMotivosVariable / $txtvCantMotivos) * 100,2);
                                     }else{
                                         $txtRtaPorcentajeMotivoVariable = 0;
                                     }
