@@ -1311,6 +1311,55 @@ class ControlprocesosController extends \yii\web\Controller {
 	    	return $this->redirect(array('update2','id'=>$varsoluciones,'evaluados_id'=>$varevaluadoId));
 	    }
 
+		public function actionUpdatededicacion($idcontrol){
+	    	$model = new ControlProcesos();
+
+	    	$varDedicadion = (new \yii\db\Query())
+                              ->select(['Dedic_valora'])
+                              ->from(['tbl_control_procesos'])            
+                              ->where(['=','id',$idcontrol])
+                              ->Scalar();
+
+			$data = Yii::$app->request->post();     
+			if ($model->load($data)) {
+				$varFechaActual = (new \yii\db\Query())
+								->select(['fechacreacion'])
+								->from(['tbl_control_procesos'])            
+								->where(['=','id',$idcontrol])
+								->Scalar();
+
+				$varCantidadNueva = $model->cant_valor;
+				$varComentarios = $model->tipo_corte;
+
+				$varEvalua = (new \yii\db\Query())
+								->select(['evaluados_id'])
+								->from(['tbl_control_procesos'])            
+								->where(['=','id',$idcontrol])
+								->Scalar();
+
+				Yii::$app->db->createCommand()->insert('tbl_control_dedicacion',[
+						'id_controlprocesos' => $idcontrol,
+						'cantidadactual' => $varDedicadion,
+						'fechacantidad' => $varFechaActual,
+						'cantidadnueva' => $varCantidadNueva,
+						'fechamodifica' => date('Y-m-d'),
+						'comentarios' => $varComentarios,
+						'usua_id' => Yii::$app->user->identity->id,
+						'fechacreacion' => date('Y-m-d'),
+						'anulado' => 0,                        
+				])->execute();
+
+				Yii::$app->db->createCommand('UPDATE tbl_control_procesos SET Dedic_valora = :valornuevo WHERE id=:id')->bindParam(':id',$idcontrol)->bindParam(':valornuevo',$varCantidadNueva)->execute();
+
+				return $this->redirect(array('update2','id'=>$idcontrol,'evaluados_id'=>$varEvalua));
+			}
+
+	    	return $this->renderAjax('updatededicacion',[
+	    		'model' => $model,
+	    		'varDedicadion' => $varDedicadion 
+	    	]);
+	    }
+
 
 
 	}
