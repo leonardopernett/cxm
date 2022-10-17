@@ -10,6 +10,7 @@ use kartik\daterange\DateRangePicker;
 use \app\models\ControlProcesos;
 use app\models\Tipocortes;
 use yii\helpers\ArrayHelper;
+use yii\bootstrap\Modal;
 
 $this->title = 'Actualizar la Valoraciones';
 
@@ -155,6 +156,26 @@ $this->title = 'Actualizar la Valoraciones';
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Regresar']) 
+                            ?> 
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card1 mb">
+                            <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #FFC72C;"></em> Modificar dedicacion: </label>
+                            
+                            <?= 
+                                Html::button('Modificar', ['value' => url::to(['updatededicacion','idcontrol'=>$txtIdParams]), 'class' => 'btn btn-danger', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Agregar'                                        
+                                    ])
+                            ?>
+                            <?php
+                                 Modal::begin([
+                                    'header' => '<h4>Agregar Pcrc-dimension</h4>',
+                                    'id' => 'modal1',
+                                ]);
+
+                                echo "<div id='modalContent1'></div>";
+                                                        
+                                Modal::end(); 
                             ?> 
                         </div>
                     </div>
