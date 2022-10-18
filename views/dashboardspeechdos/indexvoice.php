@@ -1148,6 +1148,9 @@ $this->title = 'Dashboard Escuchar +';
                         $varNombreVariable = $value['nombre'];
                         $varResponsables = $value['responsable'];
 
+                        $varSmart = $value['orientacionsmart'];
+                        $varForm = $value['orientacionform'];
+
                         if ($varResponsables == 1) {
                           $txtResponsable = 'Agente';
                         }elseif ($varResponsables == 2) {
@@ -1172,10 +1175,14 @@ $this->title = 'Dashboard Escuchar +';
                                             ->count();
 
                         if ($varConteoPorVariable != 0 && $txtCantidad != 0) {
-                          if ($txtTipoFormIndicador == 0) {
+                          if ($varSmart ==  2 && $varForm == 0) {
                             $txtRtaPorcentajeVariable = (round(($varConteoPorVariable / $txtCantidad) * 100, 1));
                           }else{
-                            $txtRtaPorcentajeVariable = (100 - (round(($varConteoPorVariable / $txtCantidad) * 100, 1)));
+                            if ($varSmart ==  1 && $varForm == 1) {
+                              $txtRtaPorcentajeVariable = (round(($varConteoPorVariable / $txtCantidad) * 100, 1));
+                            }else{
+                              $txtRtaPorcentajeVariable = (100 - (round(($varConteoPorVariable / $txtCantidad) * 100, 1)));
+                            }                            
                           }
                         }else{
                           $txtRtaPorcentajeVariable = 0;

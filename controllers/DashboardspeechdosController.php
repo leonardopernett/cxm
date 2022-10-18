@@ -2021,6 +2021,9 @@ use \yii\base\Exception;
           $varVariables = $value['idcategoria'];
           $varNombreVariable = $value['nombre'];
 
+          $varSmart = $value['orientacionsmart'];
+          $varForm = $value['orientacionform'];
+
           $varConteoPorVariable =  (new \yii\db\Query())
                                           ->select(['callid','SUM(cantproceso)'])
                                           ->from(['tbl_speech_general'])            
@@ -2035,10 +2038,14 @@ use \yii\base\Exception;
                                           ->count();
 
           if ($varConteoPorVariable != 0 && $varCantidadExport != 0) {
-            if ($txtTipoFormIndicador == 0) {
+            if ($varSmart ==  2 && $varForm == 0) {
               $txtRtaPorcentajeVariable = (round(($varConteoPorVariable / $varCantidadExport) * 100, 1));
             }else{
-              $txtRtaPorcentajeVariable = (100 - (round(($varConteoPorVariable / $varCantidadExport) * 100, 1)));
+              if ($varSmart ==  1 && $varForm == 1) {
+                $txtRtaPorcentajeVariable = (round(($varConteoPorVariable / $varCantidadExport) * 100, 1));
+              }else{
+                $txtRtaPorcentajeVariable = (100 - (round(($varConteoPorVariable / $varCantidadExport) * 100, 1)));
+              }              
             }
           }else{
             $txtRtaPorcentajeVariable = 0;
