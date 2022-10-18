@@ -2185,17 +2185,7 @@ use \yii\base\Exception;
               $varArregloCategoria = [$varMotivoVoice,$varVariableId];
               $varSmart = $value['orientacionsmart'];
                         
-              $txtRtaPorcentajeMotivoVariable =  (new \yii\db\Query())
-                                                  ->select(['porcentaje'])
-                                                  ->from(['tbl_speech_tmpmotivosvariables'])            
-                                                  ->where(['=','anulado',0])
-                                                  ->andwhere(['=','id_dp_cliente',$varidClienteExport])
-                                                  ->andwhere(['in','cod_pcrc',$varListaCodPcrcExport])
-                                                  ->andwhere(['=','id_motivo',$varMotivoVoice])
-                                                  ->andwhere(['=','id_categoria',$varVariableId])
-                                                  ->scalar();
-
-              if ($txtRtaPorcentajeMotivoVariable == null) {
+              
                 $varConteoPorMotivosVariable =  (new \yii\db\Query())
                                                 ->select(['callid'])
                                                 ->from(['tbl_dashboardspeechcalls'])            
@@ -2224,7 +2214,7 @@ use \yii\base\Exception;
                 }else{
                   $txtRtaPorcentajeMotivoVariable = 0;
                 }
-              }
+              
                         
                         
               if ($varSmart == 1) {
