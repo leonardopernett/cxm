@@ -584,20 +584,22 @@ use app\models\SpeechServicios;
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
-                  CURLOPT_SSL_VERIFYPEER=> false,
-                  CURLOPT_SSL_VERIFYHOST => false,
-                  CURLOPT_URL => 'https://api-kaliope.analiticagrupokonectacloud.com/status-by-connid',
-                  CURLOPT_RETURNTRANSFER => true,
-                  CURLOPT_ENCODING => '',
-                  CURLOPT_MAXREDIRS => 10,
-                  CURLOPT_TIMEOUT => 0,
-                  CURLOPT_FOLLOWLOCATION => true,
-                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                  CURLOPT_CUSTOMREQUEST => 'POST',
-                  CURLOPT_POSTFIELDS =>'{"connid": "'.$txtvaridruta.'"}',
-                  CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json'
-                  ),
+
+                    CURLOPT_SSL_VERIFYPEER=> false,
+                    CURLOPT_SSL_VERIFYHOST => false,
+                    CURLOPT_URL => 'https://api-kaliope-cxm.analiticagrupokonectacloud.com/status-by-connid',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS =>'{"connid": "'.$txtvaridruta.'"}',
+                    CURLOPT_HTTPHEADER => array(
+                      'x-api-key: gFMiqdNjw55uel1Sxvszka2mArOfrcDhPoNjEZyi',
+                      'Content-Type: application/json'
+                    ),
                 ));
 
                 $response = curl_exec($curl);
