@@ -166,9 +166,10 @@ use app\models\Formularios;
       $curl = curl_init();
 
       curl_setopt_array($curl, array(
+
         CURLOPT_SSL_VERIFYPEER=> false,
         CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_URL => KALIOPE_STATUS_BY_CONNID,
+        CURLOPT_URL => 'https://api-kaliope-cxm.analiticagrupokonectacloud.com/status-by-connid',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -178,6 +179,7 @@ use app\models\Formularios;
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS =>'{"connid": "'.$txtvaridruta.'"}',
         CURLOPT_HTTPHEADER => array(
+          'x-api-key: gFMiqdNjw55uel1Sxvszka2mArOfrcDhPoNjEZyi',
           'Content-Type: application/json'
         ),
       ));
