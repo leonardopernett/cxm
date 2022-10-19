@@ -364,6 +364,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 success : function(response){ 
                     numRta =   JSON.parse(response);
                     console.log(numRta);
+                    document.getElementById("idtxtrta").value = numRta;
                 }
             });
         }
