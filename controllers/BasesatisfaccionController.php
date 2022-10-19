@@ -2394,8 +2394,9 @@ class BasesatisfaccionController extends Controller {
                             CURLOPT_CUSTOMREQUEST => 'POST',
                             CURLOPT_POSTFIELDS =>'{"connid": "'.$varConnids.'"}',
                             CURLOPT_HTTPHEADER => array(
-                              'Content-Type: application/json'
-                                ),
+                                'x-api-key: gFMiqdNjw55uel1Sxvszka2mArOfrcDhPoNjEZyi',
+                                'Content-Type: application/json'
+                            ),
                         ));
 
                     $response = curl_exec($curl);

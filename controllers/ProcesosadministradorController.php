@@ -587,7 +587,7 @@ use app\models\SpeechServicios;
 
                     CURLOPT_SSL_VERIFYPEER=> false,
                     CURLOPT_SSL_VERIFYHOST => false,
-                    CURLOPT_URL => 'https://api-kaliope-cxm.analiticagrupokonectacloud.com/status-by-connid',
+                    CURLOPT_URL => KALIOPE_STATUS_BY_CONNID,
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => '',
                     CURLOPT_MAXREDIRS => 10,
