@@ -160,7 +160,7 @@ use app\models\Formularios;
     }
 
     public function actionTranscripcionkaliope(){
-      $txtvaridruta = Yii::$app->request->GET("txtvaridruta");
+      $txtvaridruta = Yii::$app->request->get("txtvaridruta");
 
       ob_start();
       $curl = curl_init();

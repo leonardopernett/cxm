@@ -356,7 +356,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         }else{
             $.ajax({
-                method: "post",
+                method: "get",
                 url: "transcripcionkaliope",
                 data: {
                     txtvaridruta : varidtxtconnid,
