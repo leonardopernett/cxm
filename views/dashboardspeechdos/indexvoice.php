@@ -1627,12 +1627,7 @@ $this->title = 'Dashboard Escuchar +';
         </div>
     </div>
 
-    <div class="col-md-2">
-        <div class="card1 mb">
-            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> <?= Yii::t('app', 'Exportar Base') ?> </label>
     
-        </div>
-    </div>
 
     <div class="col-md-2">
         <div class="card1 mb">
