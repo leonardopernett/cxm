@@ -3104,7 +3104,8 @@ use Exception;
     pa.pais AS hvpais , ci.ciudad AS hvciudad , m.modalidad AS hvmodalidadtrabajo, p.indicador_satu,
     p.fechacreacion, a.afinidad AS afinidad , t.tipoafinidad AS tipo , n.nivelafinidad , c.cantidadhijos ,
     civ.estadocivil, c.NombreHijos , h.text AS hobbie , g.text AS gustos, cla.ciudadclasificacion, ant.antiguedad,
-    l.nombre_jefe, l.cargo_jefe, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial
+    l.nombre_jefe, l.cargo_jefe, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial,
+    if(p.tratamiento_data=1,'NO',if(p.tratamiento_data=2,'Si','NA')) AS tratamiento
     
     FROM tbl_hojavida_datapersonal p
     
@@ -3394,6 +3395,12 @@ use Exception;
       $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleColor);
       $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AB2','AUTORIZA TRATAMIENTO DE DATOS');
+      $phpExc->getActiveSheet()->getStyle('AB2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AB2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AB2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AB2')->applyFromArray($styleArraySubTitle2);
   
     
    
@@ -3437,6 +3444,7 @@ use Exception;
       $phpExc->getActiveSheet()->setCellValue('Y'.$numCell, $value['trabajo_anterior']); 
       $phpExc->getActiveSheet()->setCellValue('Z'.$numCell, $value['fecha_inicio_contacto']); 
       $phpExc->getActiveSheet()->setCellValue('AA'.$numCell, $value['estilosocial']);
+      $phpExc->getActiveSheet()->setCellValue('AB'.$numCell, $value['tratamiento']);
 
 
     }
