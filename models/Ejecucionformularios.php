@@ -363,7 +363,7 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
                 AND t.created <= '" . $endDate . "'" . $and . " 
                 ORDER BY t.created DESC";
 
-        $count = Yii::$app->get('dbslave')->createCommand("SELECT DISTINCT t.id, t.created,e.name evaluado, 
+        $count = Yii::$app->db->createCommand("SELECT DISTINCT t.id, t.created,e.name evaluado, 
                 e.identificacion eidentificacion, f.name formulario, t.dsruta_arbol nmarbol,
                 u.usua_nombre usuario, u.usua_identificacion ident_valorador, r.role_nombre, d.name dimension,
                 t.usua_id_lider, ul.usua_nombre usuarioLider, eq.name equipoName,
