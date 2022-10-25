@@ -3104,8 +3104,10 @@ use Exception;
     pa.pais AS hvpais , ci.ciudad AS hvciudad , m.modalidad AS hvmodalidadtrabajo, p.indicador_satu,
     p.fechacreacion, a.afinidad AS afinidad , t.tipoafinidad AS tipo , n.nivelafinidad , c.cantidadhijos ,
     civ.estadocivil, c.NombreHijos , h.text AS hobbie , g.text AS gustos, cla.ciudadclasificacion, ant.antiguedad,
-    l.nombre_jefe, l.cargo_jefe, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial,
-    if(p.tratamiento_data=1,'NO',if(p.tratamiento_data=2,'Si','NA')) AS tratamiento
+    l.nombre_jefe, l.cargo_jefe, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial, 
+    if(p.tratamiento_data=1,'NO',if(p.tratamiento_data=2,'Si','NA')) AS tratamiento,
+    pcc.director_programa AS director, pcc.documento_director AS documentodirector,
+   pcc.gerente_cuenta AS gerente, pcc.documento_gerente AS documentogerente, pcc.cliente AS cliente
     
     FROM tbl_hojavida_datapersonal p
     
@@ -3149,16 +3151,24 @@ use Exception;
     on social.idestilosocial = c.idestilosocial
     
     LEFT JOIN tbl_hojavida_datacivil civ
-    ON civ.hv_idcivil = c.hv_idcivil")->queryAll();
+    ON civ.hv_idcivil = c.hv_idcivil
+    
+    LEFT JOIN tbl_hojavida_datapcrc hp
+    ON hp.hv_idpersonal = p.hv_idpersonal
+    
+    LEFT JOIN tbl_proceso_cliente_centrocosto pcc
+    ON pcc.id_dp_clientes = hp.id_dp_cliente
+        
+   GROUP BY p.identificacion")->queryAll();
 
     $phpExc = new \PHPExcel();
     $phpExc->getProperties()
             ->setCreator("Konecta")
             ->setLastModifiedBy("Konecta")
-            ->setTitle("Lista de usuarios - Evaluacion Desarrollo")
-            ->setSubject("Evaluacion de Desarrollo")
+            ->setTitle("Lista de procesos - Gestor de Clientes")
+            ->setSubject("Gestor de Clientes")
             ->setDescription("Este archivo contiene el listado de los usuarios registrados para maestro cliente")
-            ->setKeywords("Lista de usuarios");
+            ->setKeywords("Lista de Procesos");
     $phpExc->setActiveSheetIndex(0);
    
     $phpExc->getActiveSheet()->setShowGridlines(False);
@@ -3402,6 +3412,36 @@ use Exception;
       $phpExc->getActiveSheet()->getStyle('AB2')->applyFromArray($styleColor);
       $phpExc->getActiveSheet()->getStyle('AB2')->applyFromArray($styleArraySubTitle2);
   
+      $phpExc->getActiveSheet()->SetCellValue('AC2','DIRECTOR');
+      $phpExc->getActiveSheet()->getStyle('AC2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AD2','DOCUMENTO DIRECTOR');
+      $phpExc->getActiveSheet()->getStyle('AD2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AD2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AD2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AD2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AE2','GERENTE');
+      $phpExc->getActiveSheet()->getStyle('AE2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AE2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AE2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AE2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AF2','DOCUMENTO GERENTE');
+      $phpExc->getActiveSheet()->getStyle('AF2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AF2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AF2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AF2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AG2','CLIENTE');
+      $phpExc->getActiveSheet()->getStyle('AG2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleArraySubTitle2);
+  
     
    
     $numCell = 3;
@@ -3445,13 +3485,19 @@ use Exception;
       $phpExc->getActiveSheet()->setCellValue('Z'.$numCell, $value['fecha_inicio_contacto']); 
       $phpExc->getActiveSheet()->setCellValue('AA'.$numCell, $value['estilosocial']);
       $phpExc->getActiveSheet()->setCellValue('AB'.$numCell, $value['tratamiento']);
+      
+      $phpExc->getActiveSheet()->setCellValue('AC'.$numCell, $value['director']);
+      $phpExc->getActiveSheet()->setCellValue('AD'.$numCell, $value['documentodirector']);
+      $phpExc->getActiveSheet()->setCellValue('AE'.$numCell, $value['gerente']);
+      $phpExc->getActiveSheet()->setCellValue('AF'.$numCell, $value['documentogerente']);
+      $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $value['cliente']);
 
 
     }
     $numCell = $numCell;
 
     $hoy = getdate();
-    $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."ListadoUsuarios_Evaluacion_Desarrollo";
+    $hoy = $hoy['year']."_".$hoy['month']."_".$hoy['mday']."ListadoProcesos_GestorClientes_Contactos";
           
     $objWriter = \PHPExcel_IOFactory::createWriter($phpExc, 'Excel5');
             
@@ -3461,13 +3507,13 @@ use Exception;
     $objWriter->save($tmpFile);
 
     $message = "<html><body>";
-    $message .= "<h3>Adjunto del archivo listado usuario maestro cliente</h3>";
+    $message .= "<h3>Adjunto del archivo sobre los contactos del gestor de clientes - CXM</h3>";
     $message .= "</body></html>";
 
     Yii::$app->mailer->compose()
                     ->setTo($varCorreo)
                     ->setFrom(Yii::$app->params['email_satu_from'])
-                    ->setSubject("Envio Listado de usuarios registrado - Hoja de Vida")
+                    ->setSubject("Envio Listado de Contactos - Gestor Clientes")
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
