@@ -3109,7 +3109,7 @@ use Exception;
     if(da.activo=1,'Activo','No Activo') AS estados,    
     if(p.suceptible=1,'No','Si') AS suceptible,
     pcc.director_programa AS director, pcc.documento_director AS documentodirector,
-   pcc.gerente_cuenta AS gerente, pcc.documento_gerente AS documentogerente, pcc.cliente AS cliente
+    pcc.gerente_cuenta AS gerente, pcc.documento_gerente AS documentogerente, pcc.cliente AS cliente
     
     FROM tbl_hojavida_datapersonal p
     
@@ -3161,10 +3161,17 @@ use Exception;
     LEFT JOIN tbl_hojavida_datapcrc hp
     ON hp.hv_idpersonal = p.hv_idpersonal
     
+    LEFT JOIN tbl_hojavida_datadirector dt
+    ON dt.hv_idpersonal = p.hv_idpersonal
+	 
+	  LEFT JOIN tbl_hojavida_datagerente dg
+	  ON dg.hv_idpersonal = p.hv_idpersonal
+    
     LEFT JOIN tbl_proceso_cliente_centrocosto pcc
-    ON pcc.id_dp_clientes = hp.id_dp_cliente
+    ON pcc.documento_director = dt.ccdirector
+    		AND pcc.documento_gerente = dg.ccgerente
         
-   GROUP BY p.identificacion")->queryAll();
+    GROUP BY p.identificacion")->queryAll();
 
     $phpExc = new \PHPExcel();
     $phpExc->getProperties()
