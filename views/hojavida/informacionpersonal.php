@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
 
           <div  class="col-md-4">
-            <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> N&uacute;mero de Identidad: </label>
+            <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Documento de Identidad: </label>
             <?= $form->field($model, 'identificacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'ididentificacion', 'placeholder'=>'Ingresar Documento de Identidad','onkeypress' => 'return valida(event)'])?>
           </div>
 
