@@ -10,6 +10,7 @@ use kartik\daterange\DateRangePicker;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use app\models\ControlProcesosPlan;
+use app\models\ProcesosClienteCentrocosto;
 use yii\db\Query;
 
 $this->title = 'Gestor de Clientes - Permisos';
@@ -77,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<div class="col-md-12">
 				<div class="card1 mb">
 					<label><em class="fas fa-cogs" style="font-size: 20px; color: #2CA5FF;"></em> Seleccionar Permisos Servicios & Pcrc: </label>
-					<?=  $form->field($model2, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+					<?=  $form->field($model2, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
 	                                          [
 	                                              'prompt'=>'Seleccionar...',
 	                                              'multiple' => true,
