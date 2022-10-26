@@ -10,6 +10,7 @@ use kartik\daterange\DateRangePicker;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use app\models\ControlProcesosPlan;
+use app\models\ProcesosClienteCentrocosto;
 use yii\db\Query;
 
 $this->title = 'Gestor de Clientes - Permisos';
@@ -252,7 +253,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row">
                                 <div class="col-md-12">
                                     <label>Seleccionar Servicio </label>
-                                    <?=  $form->field($model2, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                    <?=  $form->field($model2, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                           [
                                               'prompt'=>'Seleccionar...',
                                               'multiple' => true,
