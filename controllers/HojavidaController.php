@@ -3106,6 +3106,7 @@ use Exception;
     civ.estadocivil, c.NombreHijos , h.text AS hobbie , g.text AS gustos, cla.ciudadclasificacion, ant.antiguedad,
     l.nombre_jefe, l.rol, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial, 
     if(p.tratamiento_data=1,'NO',if(p.tratamiento_data=2,'Si','NA')) AS tratamiento,
+    if(da.activo=1,'Activo','No Activo') AS estados,
     pcc.director_programa AS director, pcc.documento_director AS documentodirector,
    pcc.gerente_cuenta AS gerente, pcc.documento_gerente AS documentogerente, pcc.cliente AS cliente
     
@@ -3158,6 +3159,9 @@ use Exception;
     
     LEFT JOIN tbl_proceso_cliente_centrocosto pcc
     ON pcc.id_dp_clientes = hp.id_dp_cliente
+
+    LEFT JOIN tbl_hojavida_dataacademica da
+    ON da.hv_idpersonal = p.hv_idpersonal
         
    GROUP BY p.identificacion")->queryAll();
 
@@ -3441,6 +3445,12 @@ use Exception;
       $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleColor);
       $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AH2','ESTADO CONTACTO');
+      $phpExc->getActiveSheet()->getStyle('AH2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleArraySubTitle2);
   
     
    
@@ -3492,6 +3502,7 @@ use Exception;
       $phpExc->getActiveSheet()->setCellValue('AF'.$numCell, $value['documentogerente']);
       $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $value['cliente']);
 
+      $phpExc->getActiveSheet()->setCellValue('AH'.$numCell, $value['estados']);
 
     }
     $numCell = $numCell;
