@@ -3106,7 +3106,8 @@ use Exception;
     civ.estadocivil, c.NombreHijos , h.text AS hobbie , g.text AS gustos, cla.ciudadclasificacion, ant.antiguedad,
     l.nombre_jefe, l.rol, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial, 
     if(p.tratamiento_data=1,'NO',if(p.tratamiento_data=2,'Si','NA')) AS tratamiento,
-    if(da.activo=1,'Activo','No Activo') AS estados,
+    if(da.activo=1,'Activo','No Activo') AS estados,    
+    if(p.suceptible=1,'No','Si') AS suceptible,
     pcc.director_programa AS director, pcc.documento_director AS documentodirector,
    pcc.gerente_cuenta AS gerente, pcc.documento_gerente AS documentogerente, pcc.cliente AS cliente
     
@@ -3153,15 +3154,15 @@ use Exception;
     
     LEFT JOIN tbl_hojavida_datacivil civ
     ON civ.hv_idcivil = c.hv_idcivil
+
+    LEFT JOIN tbl_hojavida_dataacademica da
+    ON da.hv_idpersonal = p.hv_idpersonal
     
     LEFT JOIN tbl_hojavida_datapcrc hp
     ON hp.hv_idpersonal = p.hv_idpersonal
     
     LEFT JOIN tbl_proceso_cliente_centrocosto pcc
     ON pcc.id_dp_clientes = hp.id_dp_cliente
-
-    LEFT JOIN tbl_hojavida_dataacademica da
-    ON da.hv_idpersonal = p.hv_idpersonal
         
    GROUP BY p.identificacion")->queryAll();
 
@@ -3451,6 +3452,12 @@ use Exception;
       $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleColor);
       $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AI2','SUCEPTBILE ENCUESTAR');
+      $phpExc->getActiveSheet()->getStyle('AI2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleArraySubTitle2);
   
     
    
@@ -3503,6 +3510,8 @@ use Exception;
       $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $value['cliente']);
 
       $phpExc->getActiveSheet()->setCellValue('AH'.$numCell, $value['estados']);
+
+      $phpExc->getActiveSheet()->setCellValue('AI'.$numCell, $value['suceptible']);
 
     }
     $numCell = $numCell;
