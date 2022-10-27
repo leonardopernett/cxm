@@ -38,6 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
     $varNivel = ['1' => 'Estratégico', '2' => 'Operativo'];
     $varEstado = ['1' => 'Activo', '2' => 'No Activo'];
     $varidCity = $model->hv_idciudad;
+
+    if ($varActivo == 1) {
+      $varEstados = "Activo";
+    }else{
+      $varEstados = "No Activo";
+    }
 ?>
 <style>
     .card1 {
@@ -226,6 +232,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <label style="font-size: 15px;"> Fecha de Cumpleaños</label>
             <?= $form->field($model, 'fechacumple', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->widget(\yii\jui\DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control', 'id'=>'idfechacumple'],]) ?>
 
+          </div>
+
+          <div class="col-md-4">
+            <label style="font-size: 15px;"> Estado Actual: <?php echo $varEstados; ?> </label>
+            <?= $form->field($model3, "activo", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varEstado, ['prompt' => 'Seleccionar...', 'id'=>"idestado"]) ?>
           </div>
         </div>
 
@@ -528,7 +539,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
           <div class="col-md-4">
               <table id="tblDataCuentasgerente" class="table table-striped table-bordered tblResDetFreed">
-                <caption><?php echo "Resultados Director"; ?></caption>
+                <caption><?php echo "Resultados Gerente"; ?></caption>
                 <thead>
                   <tr>
                     <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gerente') ?></label></th>
@@ -618,10 +629,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
           </div>
 
-          <div class="col-md-4">
-            <label style="font-size: 15px;"> Estado: </label>
-            <?= $form->field($model3, "activo", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varEstado, ['prompt' => 'Seleccionar...', 'id'=>"idestado"]) ?>
-          </div>
+          
         </div>
 
         <div class="row">
@@ -1165,8 +1173,7 @@ $this->params['breadcrumbs'][] = $this->title;
             var variddoctorado = document.getElementById("hojavidadataacademica-usua_id").value;
             var varidestado = document.getElementById("idestado").value;
 
-            // Esta accion permite guardar el cuarto bloque...
-            
+            if (varidprofesion != "" || varidmaestria != "" || varidespecializacion != "" || variddoctorado != "") {
               $.ajax({
                 method: "get",
                 url: "guardaracademicos",
@@ -1183,7 +1190,20 @@ $this->params['breadcrumbs'][] = $this->title;
                   numRta =   JSON.parse(response);
                 }
               });
-            
+            }else{
+              $.ajax({
+                  method: "get",
+                  url: "actualizaacademicos",
+                  data: {
+                    txtvarautoincrement : varautoincrement,
+                    txtvaridestado : varidestado,
+
+                  },
+                  success : function(response){
+                    numRta =   JSON.parse(response);
+                  }
+              });
+            }
             
 
             window.open('../hojavida/index','_self');

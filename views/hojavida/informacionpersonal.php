@@ -200,7 +200,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="row">
               <div class="col-md-6">
-                <label style="font-size: 15px;"> Es Susceptibe a Encuestar: </label>
+                <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Es Susceptibe a Encuestar: </label>
                 <?= $form->field($model, "suceptible", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varRespuesta, ['prompt' => 'Seleccionar...', 'id'=>"idsusceptible"]) ?>
               </div>
 
@@ -228,7 +228,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <label style="font-size: 15px;"> Fecha de Cumpleaños</label>
             <?= $form->field($model, 'fechacumple', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->widget(\yii\jui\DatePicker::className(), ['dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control', 'id'=>'idfechacumple'],]) ?>
           </div>
+
+          <div class="col-md-4">
+            <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Estado Actual: </label>
+            <?= $form->field($model3, "activo", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varEstado, ['prompt' => 'Seleccionar...', 'id'=>"idestado"]) ?>
+          </div>
         </div>
+        
 
       </div>
     </div>
@@ -459,10 +465,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
           </div>
 
-          <div class="col-md-4">
-            <label style="font-size: 15px;"> Estado: </label>
-            <?= $form->field($model3, "activo", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varEstado, ['prompt' => 'Seleccionar...', 'id'=>"idestado"]) ?>
-          </div>
+          
         </div>
 
       </div>
@@ -696,6 +699,11 @@ $this->params['breadcrumbs'][] = $this->title;
               if (varclasificacion == "") {
                 event.preventDefault();
                 swal.fire("!!! Advertencia !!!","Debe de seleccionar una clasificacion de konecta","warning");
+                return;
+              }              
+              if (varidsusceptible == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar una respuesta a si es suceptible a encuestar","warning");
                 return;
               }
 
