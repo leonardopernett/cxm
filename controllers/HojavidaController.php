@@ -1746,6 +1746,20 @@ use Exception;
       die(json_encode($txtrta));
     }
 
+    public function actionActualizaacademicos(){
+      $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
+      $txtvaridestado = Yii::$app->request->get("txtvaridestado");
+
+      $txtrta = 0;
+
+      Yii::$app->db->createCommand()->update('tbl_hojavida_dataacademica',[
+                    'activo' => $txtvaridestado,                                                
+                ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
+
+      die(json_encode($txtrta));
+
+    }
+
     public function actionGuardaracademicos(){
       $txtvarautoincrement = Yii::$app->request->get("txtvarautoincrement");
       $txtvaridprofesion = Yii::$app->request->get("txtvaridprofesion");
@@ -2342,6 +2356,15 @@ use Exception;
           dl.hv_idpersonal = :idinfos
             GROUP BY dl.hv_idlaboral
             ')->bindValues($paramsmodel2)->queryScalar();
+            
+      $varActivo = (new \yii\db\Query())
+            ->select(['activo'])
+            ->from(['tbl_hojavida_dataacademica'])
+            ->where(['=','anulado',0])
+            ->andwhere(['=','hv_idpersonal',$idinfo])
+            ->groupby(['activo'])
+            ->Scalar();
+
       $model2 = HojavidaDatalaboral::findOne($varinfolaboral);
       $model3 = new HojavidaDataacademica();
       $model4 = new HojavidaDatapcrc();
@@ -2359,6 +2382,7 @@ use Exception;
         'model6' => $model6,
         'model7' => $model7,
         'idinfo' => $idinfo,
+        'varActivo' => $varActivo,
       ]);
     }
 
