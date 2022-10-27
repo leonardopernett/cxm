@@ -147,7 +147,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="col-md-6">
             <div class="card2 mb">
-                <?= Html::a('Cancelar',  ['index'], ['class' => 'btn btn-success',
+                <?= Html::a('Cancelar',  ['adminmensajes'], ['class' => 'btn btn-success',
                                'style' => 'background-color: #707372',                        
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Nuevo'])
