@@ -3169,7 +3169,8 @@ use Exception;
     
     LEFT JOIN tbl_proceso_cliente_centrocosto pcc
     ON pcc.documento_director = dt.ccdirector
-    		AND pcc.documento_gerente = dg.ccgerente
+    	AND pcc.documento_gerente = dg.ccgerente
+        AND pcc.id_dp_clientes = hp.id_dp_cliente
         
     GROUP BY p.identificacion")->queryAll();
 
