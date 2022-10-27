@@ -33,6 +33,7 @@ use app\models\ControlParams;
 use \yii\base\Exception;
 use app\models\IdealServicios;
 use app\models\SpeechServicios;
+use app\models\Encuestaspersonalsatu;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
@@ -41,7 +42,7 @@ use app\models\SpeechServicios;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad','adminmensajes','listarnombres'],
             'rules' => [
               [
                 'allow' => true,
@@ -1129,6 +1130,340 @@ use app\models\SpeechServicios;
         
         return $this->redirect(['parametrizarresponsabilidad']);
         
+    }
+
+    public function actionAdminmensajes(){
+        $model = new Encuestaspersonalsatu();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+
+            $paramsBusqueda = [':varPosicionDirector' => '21',':varPosicionGerente' => '24'];
+
+            $varDataJarvis = Yii::$app->dbjarvis->createCommand('
+                SELECT
+                    dp_posicion.id_dp_posicion, dp_posicion.posicion, dp_datos_generales.nombre_completo, dp_actualizacion_datos.documento, dp_actualizacion_datos.email_corporativo, dp_actualizacion_datos.celular1
+                    FROM dp_datos_generales
+                        LEFT JOIN dp_actualizacion_datos ON 
+                            dp_datos_generales.documento = dp_actualizacion_datos.documento
+                        LEFT JOIN dp_distribucion_personal ON 
+                            dp_actualizacion_datos.documento = dp_distribucion_personal.documento
+                        LEFT JOIN dp_cargos ON 
+                            dp_cargos.id_dp_cargos = dp_distribucion_personal.id_dp_cargos
+                        LEFT JOIN dp_posicion ON 
+                            dp_cargos.id_dp_posicion = dp_posicion.id_dp_posicion                    
+                        LEFT JOIN dp_estados ON 
+                            dp_estados.id_dp_estados = dp_distribucion_personal.id_dp_estados
+                    WHERE
+                        dp_distribucion_personal.fecha_actual >= DATE_FORMAT(NOW() ,"%Y-%m-01")
+                            AND dp_posicion.id_dp_posicion IN (:varPosicionDirector,:varPosicionGerente)
+                GROUP BY dp_distribucion_personal.documento
+            ')->bindValues($paramsBusqueda)->queryAll();
+
+            // Yii::$app->db->createCommand()->truncateTable('tbl_encuestas_personalsatu')->execute();
+
+            $id = 1;
+
+            Yii::$app->db->createCommand('DELETE FROM tbl_encuestas_personalsatu WHERE distribucion=:id')->bindParam(':id',$id)->execute();
+
+            foreach ($varDataJarvis as $key => $value) {
+
+                $usua_idS = (new \yii\db\Query())
+                        ->select(['usua_id'])
+                        ->from(['tbl_usuarios'])            
+                        ->where(['=','usua_identificacion',$value['documento']])
+                        ->groupby(['usua_id'])
+                        ->Scalar();
+
+
+                Yii::$app->db->createCommand()->insert('tbl_encuestas_personalsatu',[
+                      'id_dp_posicion' => $value['id_dp_posicion'],
+                      'posicion' => $value['posicion'],
+                      'personalsatu' => $value['nombre_completo'],  
+                      'documentopersonalsatu' => $value['documento'],
+                      'correosatu' => $value['email_corporativo'],
+                      'movilsatu' => $value['celular1'],
+                      'usua_id_satu' => $usua_idS,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,  
+                      'distribucion' => 1,                                     
+                  ])->execute();
+            }
+
+            return $this->redirect('adminmensajes');
+            
+        }
+
+        return $this->render('adminmensajes',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionAddpersonal(){
+        $model = new Encuestaspersonalsatu();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varPosicionesId = $model->id_dp_posicion;
+            if ($varPosicionesId == '21') {
+                $varPosiciones = "Director";
+            }
+            if ($varPosicionesId == '24') {
+                $varPosiciones = "Gerente";
+            }
+            $varNombrePersonal = $model->personalsatu;
+            $varDocumentoPersonal = $model->documentopersonalsatu;
+
+            $varUsuaid = (new \yii\db\Query())
+                        ->select(['usua_id'])
+                        ->from(['tbl_usuarios'])            
+                        ->where(['=','usua_identificacion',$varDocumentoPersonal])
+                        ->groupby(['usua_id'])
+                        ->Scalar();
+
+            $varCorreo = $model->correosatu;
+
+            Yii::$app->db->createCommand()->insert('tbl_encuestas_personalsatu',[
+                      'id_dp_posicion' => $varPosicionesId,
+                      'posicion' => $varPosiciones,
+                      'personalsatu' => $varNombrePersonal,  
+                      'documentopersonalsatu' => $varDocumentoPersonal,
+                      'correosatu' => $varCorreo,
+                      'movilsatu' => null,
+                      'usua_id_satu' => $varUsuaid,
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,  
+                      'distribucion' => 2,                                     
+                  ])->execute();
+
+            return $this->redirect('adminmensajes');
+
+        }
+
+        return $this->render('addpersonal',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionListarnombres(){
+        $txtidposicion = Yii::$app->request->get('id');
+
+          if ($txtidposicion) {
+            $txtControl = (new \yii\db\Query())
+                        ->select(['personalsatu'])
+                        ->from(['tbl_encuestas_personalsatu'])            
+                        ->where(['=','id_dp_posicion',$txtidposicion])
+                        ->count();
+
+            if ($txtControl > 0) {
+              $varListaLideresx = (new \yii\db\Query())
+                        ->select(['id_personalsatu','personalsatu'])
+                        ->from(['tbl_encuestas_personalsatu'])            
+                        ->where(['=','id_dp_posicion',$txtidposicion])
+                        ->all();
+
+              echo "<option value='' disabled selected>Seleccionar...</option>";
+              foreach ($varListaLideresx as $key => $value) {
+                echo "<option value='" . $value['id_personalsatu']. "'>" . $value['personalsatu']. "</option>";
+              }
+            }else{
+              echo "<option>--</option>";
+            }
+          }else{
+            echo "<option>Seleccionar...</option>";
+          }          
+    }
+
+    public function actionSendalerts(){
+        $model = new Encuestaspersonalsatu();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varIdPersonal = $model->personalsatu;
+
+            $varObtenerCorreo = (new \yii\db\Query())
+                                ->select(['correosatu'])
+                                ->from(['tbl_encuestas_personalsatu'])            
+                                ->where(['=','id_personalsatu',$varIdPersonal])
+                                ->scalar();
+
+            if ($varObtenerCorreo != null) {
+
+                $varObtenerDocumento = (new \yii\db\Query())
+                                ->select(['documentopersonalsatu'])
+                                ->from(['tbl_encuestas_personalsatu'])            
+                                ->where(['=','id_personalsatu',$varIdPersonal])
+                                ->scalar();
+
+                $varObtenerUsua = (new \yii\db\Query())
+                                ->select(['usua_id_satu'])
+                                ->from(['tbl_encuestas_personalsatu'])            
+                                ->where(['=','id_personalsatu',$varIdPersonal])
+                                ->scalar();
+
+                Yii::$app->db->createCommand()->insert('tbl_encuestas_logsenvios',[
+                    'documentopersonalsatu' => $varObtenerDocumento,
+                    'correosatu' => $varObtenerCorreo,
+                    'usua_id_satu' => $varObtenerUsua,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                      
+                ])->execute();
+
+                
+                $message = "<html><body>";
+                $message .= "<h3>CX-MANAGEMENT</h3>";
+                $message .= "</body></html>";
+
+                Yii::$app->mailer->compose()
+                    ->setTo($varObtenerCorreo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Informe Encuestas de Satisfacción - CX-MANAGEMENT")
+                    ->setHtmlBody($message)
+                    ->send();
+
+                return $this->redirect('adminmensajes');
+
+            }
+
+        }
+
+        return $this->render('sendalerts',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionEnviomasivo(){
+
+        $varListaCorreos = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_encuestas_personalsatu'])            
+                                ->where(['=','anulado',0])
+                                ->all();
+
+        foreach ($varListaCorreos as $key => $value) {
+            $varObtenerCorreoMasivo = $value['correosatu'];
+            
+            Yii::$app->db->createCommand()->insert('tbl_encuestas_logsenvios',[
+                    'documentopersonalsatu' => $value[''],
+                    'correosatu' => $varObtenerCorreoMasivo,
+                    'usua_id_satu' => $value['usua_id_satu'],
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                      
+            ])->execute();
+
+            $message = "<html><body>";
+            $message .= "<h3>CX-MANAGEMENT</h3>";
+            $message .= "</body></html>";
+
+            Yii::$app->mailer->compose()
+                    ->setTo($varObtenerCorreoMasivo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Informe Encuestas de Satisfacción - CX-MANAGEMENT")
+                    ->setHtmlBody($message)
+                    ->send();
+
+        }
+
+
+        return $this->redirect('adminmensajes');
+    }
+
+    public function actionSendalertsmore(){
+        $model = new FormUploadtigo();
+
+        if ($model->load(Yii::$app->request->post())) {
+                
+            $model->file = UploadedFile::getInstances($model, 'file');
+
+            if ($model->file && $model->validate()) {
+                    
+                foreach ($model->file as $file) {
+                    $fecha = date('Y-m-d-h-i-s');
+                    $user = Yii::$app->user->identity->username;
+                    $name = $fecha . '-' . $user;
+                    $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                    $this->Enviomasivos($name);
+
+                    return $this->redirect(['adminmensajes']);
+                }
+            }
+        }
+
+        return $this->render('sendalertsmore',[
+            'model' => $model,
+        ]);
+    }
+
+    public function Enviomasivos($name){
+        $inputFile = 'categorias/' . $name . '.xlsx';
+
+        try {
+
+            $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($inputFile);
+
+        } catch (Exception $e) {
+            die('Error');
+        }
+
+        $sheet = $objPHPExcel->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+
+        for ($row = 2; $row <= $highestRow; $row++) { 
+            $varObtenerDocumento = $sheet->getCell("A".$row)->getValue();
+
+            $varExisteCorreo = (new \yii\db\Query())
+                                ->select(['correosatu'])
+                                ->from(['tbl_encuestas_personalsatu'])            
+                                ->where(['=','documentopersonalsatu',$varObtenerDocumento])
+                                ->scalar();
+
+            if ($varExisteCorreo != '') {
+
+                $varObtenerUsua = (new \yii\db\Query())
+                                ->select(['usua_id_satu'])
+                                ->from(['tbl_encuestas_personalsatu'])            
+                                ->where(['=','id_personalsatu',$varIdPersonal])
+                                ->scalar();
+
+                $message = "<html><body>";
+                $message .= "<h3>CX-MANAGEMENT</h3>";
+                $message .= "</body></html>";
+
+                Yii::$app->mailer->compose()
+                    ->setTo($varExisteCorreo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Informe Encuestas de Satisfacción - CX-MANAGEMENT")                    
+                    ->setHtmlBody($message)
+                    ->send();
+
+                Yii::$app->db->createCommand()->insert('tbl_encuestas_logsenvios',[
+                    'documentopersonalsatu' => $varObtenerDocumento,
+                    'correosatu' => $varExisteCorreo,
+                    'usua_id_satu' => $varObtenerUsua,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                      
+                ])->execute();
+
+            }else{
+
+                Yii::$app->db->createCommand()->insert('tbl_encuestas_logsnoenvios',[
+                    'documentopersonalsatu' => $varObtenerDocumento,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                      
+                ])->execute();
+
+            }
+
+        }
+
     }
 
 
