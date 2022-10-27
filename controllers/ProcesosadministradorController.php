@@ -1428,7 +1428,7 @@ use app\models\Encuestaspersonalsatu;
                 $varObtenerUsua = (new \yii\db\Query())
                                 ->select(['usua_id_satu'])
                                 ->from(['tbl_encuestas_personalsatu'])            
-                                ->where(['=','id_personalsatu',$varIdPersonal])
+                                ->where(['=','documentopersonalsatu',$varObtenerDocumento])
                                 ->scalar();
 
                 $message = "<html><body>";
