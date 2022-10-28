@@ -1466,6 +1466,62 @@ use app\models\Encuestaspersonalsatu;
 
     }
 
+    public function actionEnviarreportes(){
+        $model = new Encuestaspersonalsatu();
+
+        $varDataListReport = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_encuestas_logsenvios'])            
+                                ->All();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varFechas = explode(" ", $model->fechacreacion);
+
+            $varFechaInicio = $varFechas[0];;
+            $varFechaFin = date('Y-m-d',strtotime($varFechas[2]));;
+
+            $varDataListReport = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_encuestas_logsenvios'])            
+                                ->where(['between','fechacreacion',$varFechaInicio,$varFechaFin])
+                                ->All();
+        }
+
+        return $this->render('enviarreportes',[
+            'model' => $model,
+            'varDataListReport' => $varDataListReport,
+        ]);
+    }
+
+    public function actionEnviarnoreportes(){
+        $model = new Encuestaspersonalsatu();
+
+        $varDataListNoReport = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_encuestas_logsnoenvios'])            
+                                ->All();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varFechas = explode(" ", $model->fechacreacion);
+
+            $varFechaInicio = $varFechas[0];;
+            $varFechaFin = date('Y-m-d',strtotime($varFechas[2]));;
+
+            $varDataListNoReport = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_encuestas_logsnoenvios'])            
+                                ->where(['between','fechacreacion',$varFechaInicio,$varFechaFin])
+                                ->All();
+        }
+
+        return $this->render('enviarnoreportes',[
+            'model' => $model,
+            'varDataListNoReport' => $varDataListNoReport,
+        ]);
+    }
+
 
 
     
