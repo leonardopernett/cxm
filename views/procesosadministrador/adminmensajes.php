@@ -7,9 +7,10 @@ use yii\bootstrap\ActiveForm;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use kartik\daterange\DateRangePicker;
-use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
+
+use yii\db\Query;
 use app\models\SpeechCategorias;
 use app\models\Dashboardservicios;
 
@@ -31,6 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 ->where(['=','tbl_usuarios.usua_id',$sessiones]);                    
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
+
+    $varListDias = array();
+    $varListCantidad = array();
+    foreach ($varDataList as $key => $value) {
+        array_push($varListDias, $value['fecha']);
+        array_push($varListCantidad, $value['conteo']);
+    }
 
 ?>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
@@ -291,8 +299,39 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="col-md-9">
-        <div class="card1 mb">
-            <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Gráficas de Envio') ?></label>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Última Fecha de Envio') ?></label>
+                    <label  style="font-size: 40px; text-align: center;"><?php echo $varUltimaFecha; ?></label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Cantidad de Usuarios Registrados') ?></label>
+                    <label  style="font-size: 40px; text-align: center;"><?php echo $varConteoRegistrados; ?></label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Cantidad de USuarios No Registrados') ?></label>
+                    <label  style="font-size: 40px; text-align: center;"><?php echo $varConteoNoResgitrados; ?></label>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Gráficas de Envio') ?></label>
+                    <div id="conatinergeneric" class="highcharts-container" style="height: 350px;"></div>
+                </div>
+            </div>
         </div>
 
 
@@ -310,4 +349,72 @@ $this->params['breadcrumbs'][] = $this->title;
     echo Html::tag('div', '', ['id' => 'ajax_result']);
     echo Html::tag('div', '', ['id' => 'ajax_result_send']);
     echo Html::tag('div', '', ['id' => 'ajax_result_sendmore']);
+    echo Html::tag('div', '', ['id' => 'ajax_result_sendreports']);
+    echo Html::tag('div', '', ['id' => 'ajax_result_sendnoreports']);
 ?>
+
+<script type="text/javascript">
+    $(function(){
+        var Listado = "<?php echo implode($varListDias,",");?>";
+        Listado = Listado.split(",");
+        //console.log(Listado);
+
+        Highcharts.setOptions({
+                lang: {
+                  numericSymbols: null,
+                  thousandsSep: ','
+                }
+        });
+
+        $('#conatinergeneric').highcharts({
+            chart: {
+                borderColor: '#DAD9D9',
+                borderRadius: 7,
+                borderWidth: 1,
+                type: 'line'
+            },
+
+            yAxis: {
+              title: {
+                text: 'Cantidad De Envios'
+              }
+            }, 
+
+            title: {
+              text: '',
+            style: {
+                    color: '#3C74AA'
+              }
+
+            },
+
+            xAxis: {
+                  categories: Listado,
+                  title: {
+                      text: null
+                  }
+                },
+
+            series: [{
+              name: 'Cantidad de Envios',
+              data: [<?= join($varListCantidad, ',')?>],
+              color: '#559FFF'
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+          });
+    });
+</script>
