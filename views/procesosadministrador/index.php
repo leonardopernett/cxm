@@ -258,6 +258,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
 
+            <hr>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-envelope" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Enviar Mensajes - Encuestas de Satisfacción') ?></label>
+                        <?= Html::a('Aceptar',  ['adminmensajes'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Enviar Mensajes']) 
+                        ?>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
