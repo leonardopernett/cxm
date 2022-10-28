@@ -1133,7 +1133,28 @@ use app\models\Encuestaspersonalsatu;
     }
 
     public function actionAdminmensajes(){
-        $model = new Encuestaspersonalsatu();
+        $model = new Encuestaspersonalsatu();       
+
+        $varDataList = (new \yii\db\Query())
+                        ->select(['COUNT(documentopersonalsatu) AS conteo', 'fechacreacion as fecha'])
+                        ->from(['tbl_encuestas_logsenvios'])            
+                        ->groupby(['fechacreacion'])
+                        ->All();
+
+        $varUltimaFecha = (new \yii\db\Query())
+                        ->select(['MAX(fechacreacion) AS maximo'])
+                        ->from(['tbl_encuestas_logsenvios']) 
+                        ->Scalar();
+
+        $varConteoRegistrados = (new \yii\db\Query())
+                        ->select(['*'])
+                        ->from(['tbl_encuestas_personalsatu']) 
+                        ->count();
+
+        $varConteoNoResgitrados = (new \yii\db\Query())
+                        ->select(['*'])
+                        ->from(['tbl_encuestas_logsnoenvios']) 
+                        ->count();
 
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
@@ -1159,8 +1180,6 @@ use app\models\Encuestaspersonalsatu;
                             AND dp_posicion.id_dp_posicion IN (:varPosicionDirector,:varPosicionGerente)
                 GROUP BY dp_distribucion_personal.documento
             ')->bindValues($paramsBusqueda)->queryAll();
-
-            // Yii::$app->db->createCommand()->truncateTable('tbl_encuestas_personalsatu')->execute();
 
             $id = 1;
 
@@ -1197,6 +1216,10 @@ use app\models\Encuestaspersonalsatu;
 
         return $this->render('adminmensajes',[
             'model' => $model,
+            'varDataList' => $varDataList,
+            'varUltimaFecha' => $varUltimaFecha,
+            'varConteoRegistrados' => $varConteoRegistrados,
+            'varConteoNoResgitrados' => $varConteoNoResgitrados,
         ]);
     }
 
