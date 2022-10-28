@@ -256,6 +256,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="card1 mb">
             <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Reportes de Envios') ?></label>
+
+            <?= Html::a('Reportes de Envios',  ['enviarreportes'], ['class' => 'btn btn-success',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Enviar Reportes']) 
+            ?>
+           
+
+        </div>
+
+        <br>
+
+        <div class="card1 mb">
+            <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Reportes de No Envios') ?></label>
+
+            <?= Html::a('Reportes de No Envios',  ['enviarnoreportes'], ['class' => 'btn btn-success',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Enviar No Reportes']) 
+            ?>
+
         </div>
 
         <br>
