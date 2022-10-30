@@ -547,6 +547,7 @@ $this->registerJs($js);
                                             ->where(['=','anulado',0])
                                             ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
                                             ->andwhere(['=','cod_pcrc',$varCentrosCostos])
+                                            ->andwhere(['=','extension',$varIdExtensionc])
                                             ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
                                             ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
                                             ->all(); 
@@ -564,6 +565,7 @@ $this->registerJs($js);
                                               ->where(['=','anulado',0])
                                               ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
                                               ->andwhere(['=','cod_pcrc',$varCentrosCostos])
+                                              ->andwhere(['=','extension',$varIdExtensionc])
                                               ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
                                               ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
                                               ->groupby(['formulario_id'])
@@ -738,6 +740,7 @@ $this->registerJs($js);
                                 ->where(['=','anulado',0])
                                 ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
                                 ->andwhere(['=','cod_pcrc',$varCentrosCostosMixtos])
+                                ->andwhere(['=','tipoextension',$varIdExtensionc])
                                 ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
                                 ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
                                 ->Scalar(); 
@@ -748,6 +751,7 @@ $this->registerJs($js);
                                             ->where(['=','anulado',0])
                                             ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
                                             ->andwhere(['=','cod_pcrc',$varCentrosCostosMixtos])
+                                            ->andwhere(['=','extension',$varIdExtensionc])
                                             ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
                                             ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
                                             ->all(); 
@@ -807,6 +811,7 @@ $this->registerJs($js);
                                             ->where(['=','anulado',0])
                                             ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
                                             ->andwhere(['=','cod_pcrc',$varCentrosCostosMixtos])
+                                            ->andwhere(['=','extension',$varIdExtensionc])
                                             ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
                                             ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
                                             ->groupby(['formulario_id'])
@@ -1075,6 +1080,15 @@ $this->registerJs($js);
                         </div>
                       </div>
 
+                      <br>
+
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card4 mb">
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -1312,6 +1326,7 @@ $this->registerJs($js);
                                               ->andwhere(['<=','tbl_ideal_variables.fechafin',$varFechaFinal.' 05:00:00'])
                                               ->andwhere(['=','tbl_ideal_variables.id_categoria_indicador',$varIdIndicadorAuto])
                                               ->andwhere(['=','tbl_ideal_variables.anulado',0])
+                                              ->andwhere(['=','tbl_ideal_variables.extension',$varIdExtensionc])
                                               ->All();
 
 
@@ -1391,6 +1406,7 @@ $this->registerJs($js);
                                               ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechainicial.' 05:00:00'])
                                               ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
                                               ->andwhere(['=','tbl_ideal_novedades.anulado',0])
+                                              ->andwhere(['=','tbl_ideal_novedades.extension',$varIdExtensionc])
                                               ->groupby(['formulario_id'])
                                               ->All();
 
@@ -1625,6 +1641,7 @@ $this->registerJs($js);
                                                       ->andwhere(['>=','tbl_ideal_llamadas.fechainicio',$varFechaInicioResta.' 05:00:00'])
                                                       ->andwhere(['<=','tbl_ideal_llamadas.fechafin',$varFechaFinal.' 05:00:00'])
                                                       ->andwhere(['=','tbl_ideal_llamadas.anulado',0])
+                                                      ->andwhere(['=','tbl_ideal_llamadas.extension',$varIdExtensionc])
                                                       ->groupby(['Mes'])
                                                       ->orderby(['Mes'=>SORT_DESC])
                                                       ->All();
@@ -1637,6 +1654,7 @@ $this->registerJs($js);
                                                       ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechaInicioResta.' 05:00:00'])
                                                       ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
                                                       ->andwhere(['=','tbl_ideal_novedades.anulado',0])
+                                                      ->andwhere(['=','tbl_ideal_novedades.extension',$varIdExtensionc])
                                                       ->groupby(['Mes'])
                                                       ->orderby(['Mes'=>SORT_DESC])
                                                       ->All();
@@ -1736,6 +1754,7 @@ $this->registerJs($js);
                                                 ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechainicial.' 05:00:00'])
                                                 ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
                                                 ->andwhere(['=','tbl_ideal_novedades.anulado',0])
+                                                ->andwhere(['=','tbl_ideal_novedades.extension',$varIdExtensionc])
                                                 ->groupby(['formulario_id'])
                                                 ->All();  
                                               
@@ -1800,6 +1819,9 @@ $this->registerJs($js);
                     }else{
                       $varProcentajeGestionSegundo = 0;
                     }
+                    
+
+                    
 
                     $varConteoAlertas = (new \yii\db\Query())
                                       ->select(['tbl_alertascx.id'])
