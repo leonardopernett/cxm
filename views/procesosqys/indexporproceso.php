@@ -1112,6 +1112,8 @@ $this->registerJs($js);
                                               ->andwhere(['>=','tbl_ideal_indicadores.fechainicio',$varFechainicial.' 05:00:00'])
                                               ->andwhere(['<=','tbl_ideal_indicadores.fechafin',$varFechaFinal.' 05:00:00'])
                                               ->andwhere(['=','tbl_ideal_indicadores.anulado',0])
+                                              ->andwhere(['=','tbl_ideal_indicadores.extension',$varIdExtensionc])
+                                              ->groupby(['tbl_ideal_indicadores.id_indicadores'])
                                               ->All();
 
                 $varListaIndicadoresAuto = (new \yii\db\Query())
@@ -1124,6 +1126,8 @@ $this->registerJs($js);
                                               ->andwhere(['>=','tbl_ideal_indicadores.fechainicio',$varFechainicial.' 05:00:00'])
                                               ->andwhere(['<=','tbl_ideal_indicadores.fechafin',$varFechaFinal.' 05:00:00'])
                                               ->andwhere(['=','tbl_ideal_indicadores.anulado',0])
+                                              ->andwhere(['=','tbl_ideal_indicadores.extension',$varIdExtensionc])
+                                              ->groupby(['tbl_ideal_indicadores.id_indicadores'])
                                               ->All();
 
                 
@@ -1785,9 +1789,17 @@ $this->registerJs($js);
                       }
                     }
 
-                    $varProcentajeGestionFeedback = round(($varArrayConteoGestionada/$varCantidadFeedbacks) * 100, 2);
+                    if ($varCantidadFeedbacks != 0) {
+                      $varProcentajeGestionFeedback = round(($varArrayConteoGestionada/$varCantidadFeedbacks) * 100, 2);
+                    }else{
+                      $varProcentajeGestionFeedback = 0;
+                    }
 
-                    $varProcentajeGestionSegundo = round(($varArrayConteoEstadoKo/$varCantidadFeedbacks) * 100, 2);
+                    if ($varCantidadFeedbacks != 0) {
+                      $varProcentajeGestionSegundo = round(($varArrayConteoEstadoKo/$varCantidadFeedbacks) * 100, 2);
+                    }else{
+                      $varProcentajeGestionSegundo = 0;
+                    }
 
                     $varConteoAlertas = (new \yii\db\Query())
                                       ->select(['tbl_alertascx.id'])
