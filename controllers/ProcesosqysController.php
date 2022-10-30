@@ -429,6 +429,7 @@ use app\models\SpeechParametrizar;
         'varArrayMarcaP' => $varArrayMarcaP,
         'varArrayCanalP' => $varArrayCanalP,
         'varLlamada' => $varLlamada,
+        'varIdExtensionc' => $varIdExtensionc,
       ]);
     }
     
