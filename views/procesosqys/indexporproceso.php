@@ -805,17 +805,18 @@ $this->registerJs($js);
                   }
                 }
 
-                $vaListarFormulariosIdealP = (new \yii\db\Query())
-                                            ->select(['formulario_id'])
-                                            ->from(['tbl_ideal_novedades'])            
-                                            ->where(['=','anulado',0])
-                                            ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
-                                            ->andwhere(['=','cod_pcrc',$varCentrosCostosMixtos])
-                                            ->andwhere(['=','extension',$varIdExtensionc])
-                                            ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
-                                            ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
-                                            ->groupby(['formulario_id'])
-                                            ->All(); 
+                $vaListarFormulariosIdealP =  (new \yii\db\Query())
+                                              ->select(['formulario_id'])
+                                              ->from(['tbl_ideal_novedades'])            
+                                              ->where(['=','tbl_ideal_novedades.id_dp_cliente',$varIdDpCliente])
+                                              ->andwhere(['=','tbl_ideal_novedades.cod_pcrc',$varCentrosCostosMixtos])
+                                              ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechainicial.' 05:00:00'])
+                                              ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
+                                              ->andwhere(['=','tbl_ideal_novedades.anulado',0])
+                                              ->andwhere(['=','tbl_ideal_novedades.extension',$varIdExtensionc])
+                                              ->groupby(['formulario_id'])
+                                              ->All();
+
 
                 $varArrayValoracionesP = array();
                 $varArrayCallidsIdealP = array();
@@ -834,7 +835,6 @@ $this->registerJs($js);
                                   ->select(['score'])
                                   ->from(['tbl_ejecucionformularios'])         
                                   ->where(['=','id',$varFormularioIdIdealP])
-                                  ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                   ->scalar();
                   array_push($varArrayCallidsIdealP, $varScoreIdealP);
 
@@ -842,7 +842,6 @@ $this->registerJs($js);
                                                 ->select(['id'])
                                                 ->from(['tbl_ejecucionfeedbacks'])         
                                                 ->where(['=','ejecucionformulario_id',$varFormularioIdIdealP])
-                                                ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                                 ->count();
                   array_push($varArrayFeedbacksP, $varCantidadFeedbacksIdealP);
 
@@ -850,7 +849,6 @@ $this->registerJs($js);
                                   ->select(['i1_nmcalculo'])
                                   ->from(['tbl_ejecucionformularios'])         
                                   ->where(['=','id',$varFormularioIdIdealP])
-                                  ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                   ->scalar();
                   array_push($varArrayPECP, $varPecIdealP);
 
@@ -858,7 +856,6 @@ $this->registerJs($js);
                                   ->select(['i2_nmcalculo'])
                                   ->from(['tbl_ejecucionformularios'])         
                                   ->where(['=','id',$varFormularioIdIdealP])
-                                  ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                   ->scalar();
                   array_push($varArrayPENCP, $varPencIdealP);
 
@@ -866,7 +863,6 @@ $this->registerJs($js);
                                   ->select(['i3_nmcalculo'])
                                   ->from(['tbl_ejecucionformularios'])         
                                   ->where(['=','id',$varFormularioIdIdealP])
-                                  ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                   ->scalar();
                   array_push($varArraySFCP, $varSfcIdealP);
 
@@ -874,7 +870,6 @@ $this->registerJs($js);
                                   ->select(['i5_nmcalculo'])
                                   ->from(['tbl_ejecucionformularios'])         
                                   ->where(['=','id',$varFormularioIdIdealP])
-                                  ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                   ->scalar();
                   array_push($varArrayProcesoP, $varProcesoIdealP);
 
@@ -882,7 +877,6 @@ $this->registerJs($js);
                                   ->select(['i6_nmcalculo'])
                                   ->from(['tbl_ejecucionformularios'])         
                                   ->where(['=','id',$varFormularioIdIdealP])
-                                  ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                   ->scalar();
                   array_push($varArrayExperienciaP, $varExpIdealP);
 
@@ -890,7 +884,6 @@ $this->registerJs($js);
                                   ->select(['i7_nmcalculo'])
                                   ->from(['tbl_ejecucionformularios'])         
                                   ->where(['=','id',$varFormularioIdIdealP])
-                                  ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                   ->scalar();
                   array_push($varArrayPromesaP, $varPromIdealP);
                 }
@@ -1398,6 +1391,15 @@ $this->registerJs($js);
                                               ->groupby(['cod_pcrc'])
                                               ->Scalar();
 
+                $varNombreServicioSpeech = (new \yii\db\Query())
+                                              ->select(['programacategoria'])
+                                              ->from(['tbl_speech_categorias'])            
+                                              ->where(['=','anulado',0])
+                                              ->andwhere(['in','cod_pcrc',$varCentrosCostosManual])
+                                              ->groupby(['programacategoria'])
+                                              ->Scalar();
+
+
                 $varListaIdFormularios = (new \yii\db\Query())
                                               ->select(['formulario_id'])
                                               ->from(['tbl_ideal_novedades'])            
@@ -1410,39 +1412,134 @@ $this->registerJs($js);
                                               ->groupby(['formulario_id'])
                                               ->All();
 
+                // $varListaIdFormularios = (new \yii\db\Query())
+                //                                   ->select(['tbl_speech_mixta.formulario_id'])
+
+                //                                   ->from(['tbl_speech_mixta']) 
+
+                //                                   ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                //                                     'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')    
+
+                //                                   ->where(['=','tbl_dashboardspeechcalls.nulado',0])
+                //                                   ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreServicioSpeech])
+                //                                   ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                //                                   ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varIdExtensionc])
+                //                                   ->groupby(['tbl_speech_mixta.formulario_id'])
+                //                                   ->All();
+
+
+
                 if (count($varListaIdFormularios) != 0) {
                   $arralistforms = array();
                   foreach ($varListaIdFormularios as $key => $value) {
                     array_push($arralistforms, intval($value['formulario_id']));
                   }
-                  $listaformsarray = implode(", ", $arralistforms);
+                  $listaformsarray = implode(", ", $arralistforms);                  
 
                   $arrayIdFormularios= intval($listaformsarray);
-                  $varDataFormularios = explode(",", str_replace(array("#", "'", ";", " "), '', $arrayIdFormularios));
+                  $varDataFormularios = explode(",", str_replace(array("#", "'", ";", " "), '', $listaformsarray));
 
                   $varListaGeneralFormularios = (new \yii\db\Query())
-                                                ->select(['*'])
-                                                ->from(['tbl_ejecucionformularios'])            
-                                                ->where(['in','tbl_ejecucionformularios.id',$varDataFormularios])                                    
-                                                ->All();
+                                                  ->select(['tbl_usuarios.usua_nombre', 'COUNT(tbl_ejecucionformularios.id) AS cantidad', 
+                                                    'ROUND(AVG(tbl_ejecucionformularios.score),2) AS score',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo),2) AS pec',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo),2) AS penc',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo),2) AS sfc_frc',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo),2) AS indiceproceso',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo),2) AS indiceexperiencia',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo),2) AS indicepromesa'])
 
+                                                  ->from(['tbl_usuarios']) 
+
+                                                  ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_usuarios.usua_id = tbl_ejecucionformularios.usua_id_lider')    
+
+                                                  ->where(['IN','tbl_ejecucionformularios.id',$varDataFormularios])
+                                                  ->groupby(['tbl_usuarios.usua_id'])
+                                                  ->All();
+
+                  $varScoreConteo = 0;
+                  $varPecConteo = 0;
+                  $varPencConteo = 0;
+                  $varSfcConteo = 0;
+                  $varIndiceProcesoConteo = 0;
+                  $varExperienciaConteo = 0;
+                  $varPromesaConteo = 0;
                   foreach ($varListaGeneralFormularios as $key => $value) {
-                    array_push($varManualScorearray, $value['score']);
-                    array_push($varManualPECarray, $value['i1_nmcalculo']);
-                    array_push($varManualPENCarray, $value['i2_nmcalculo']);
-                    array_push($varManualSFCarray, $value['i3_nmcalculo']);
-                    array_push($varManualProcesoarray, $value['i5_nmcalculo']);
-                    array_push($varManualExparray, $value['i6_nmcalculo']);
-                    array_push($varManualPromarray, $value['i7_nmcalculo']);
+                    if ($value['score'] != '') {
+                      array_push($varManualScorearray, $value['score']);
+                      $varScoreConteo += 1;
+                    }
+
+                    if ($value['pec'] != '') {
+                      array_push($varManualPECarray, $value['pec']);
+                      $varPecConteo += 1;
+                    }
+                    
+                    if ($value['penc'] != '') {
+                      array_push($varManualPENCarray, $value['penc']);
+                      $varPencConteo += 1;
+                    }
+                    
+                    if ($value['sfc_frc'] != '') {
+                      array_push($varManualSFCarray, $value['sfc_frc']);
+                      $varSfcConteo += 1;
+                    }
+                    
+                    if ($value['indiceproceso'] != '') {
+                      array_push($varManualProcesoarray, $value['indiceproceso']);
+                      $varIndiceProcesoConteo += 1;
+                    }
+                    
+                    if ($value['indiceexperiencia'] != '') {
+                      array_push($varManualExparray, $value['indiceexperiencia']);
+                      $varExperienciaConteo += 1;
+                    }
+                    
+                    if ($value['indicepromesa'] != '') {
+                      array_push($varManualPromarray, $value['indicepromesa']);
+                      $varPromesaConteo += 1;
+                    }
+                    
                   }
 
-                  $varManualPEC = round((array_sum($varManualPECarray) / count($varListaGeneralFormularios)),2);
-                  $varManualPENC = round((array_sum($varManualPENCarray) / count($varListaGeneralFormularios)),2);
-                  $varManualSFC = round((array_sum($varManualSFCarray) / count($varListaGeneralFormularios)),2);
-                  $varManualProceso = round((array_sum($varManualProcesoarray) / count($varListaGeneralFormularios)),2);
-                  $varManualExp = round((array_sum($varManualExparray) / count($varListaGeneralFormularios)),2);
-                  $varManualProm = round((array_sum($varManualPromarray) / count($varListaGeneralFormularios)),2);
-                  $varManualScore = round((array_sum($varManualScorearray) / count($varListaGeneralFormularios)),2);
+                  if ($varPecConteo != 0) {
+                    $varManualPEC = round((array_sum($varManualPECarray) / $varPecConteo),2);
+                  }else{
+                    $varManualPEC = 0;
+                  }
+
+                  if ($varPencConteo != 0) {
+                    $varManualPENC = round((array_sum($varManualPENCarray) / $varPencConteo),2);
+                  }else{
+                    $varManualPENC = 0;
+                  }
+                  
+                  if ($varSfcConteo != 0) {
+                    $varManualSFC = round((array_sum($varManualSFCarray) / $varSfcConteo),2);
+                  }else{
+                    $varManualSFC = 0;
+                  }
+                  
+                  if ($varIndiceProcesoConteo != 0) {
+                    $varManualProceso = round((array_sum($varManualProcesoarray) / $varIndiceProcesoConteo),2);
+                  }else{
+                    $varManualProceso = 0;
+                  }
+                  
+                  if ($varExperienciaConteo != 0) {
+                    $varManualExp = round((array_sum($varManualExparray) / $varExperienciaConteo),2);
+                  }else{
+                    $varManualExp = 0;
+                  }
+                  
+                  if ($varPromesaConteo != 0) {
+                    $varManualProm = round((array_sum($varManualPromarray) / $varPromesaConteo),2);
+                  }else{
+                    $varManualProm = 0;
+                  }
+                  
+                  $varManualScore = round((array_sum($varManualScorearray) / $varScoreConteo),2);
 
 
                 }else{
@@ -1514,72 +1611,42 @@ $this->registerJs($js);
                               </thead>
                               <tbody>
                                 <?php 
-                                  $varListadoLideres = (new \yii\db\Query())
-                                                  ->select(['tbl_usuarios.usua_id', 'tbl_usuarios.usua_nombre'])
-                                                  ->from(['tbl_usuarios'])  
-                                                  ->join('LEFT OUTER JOIN', 'tbl_distribucion_asesores',
-                                                    'tbl_usuarios.usua_identificacion = tbl_distribucion_asesores.cedulalider')            
-                                                  ->where(['=','tbl_distribucion_asesores.id_dp_clientes',$varIdDpCliente])
-                                                  ->andwhere(['not like','tbl_usuarios.usua_usuario','no usar'])
+
+                                  $varResultadosLideresMixto = (new \yii\db\Query())
+                                                  ->select(['tbl_usuarios.usua_id', 'tbl_usuarios.usua_nombre', 'COUNT(tbl_ejecucionformularios.id) AS cantidad', 
+                                                    'ROUND(AVG(tbl_ejecucionformularios.score),2) AS score',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo),2) AS pec',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo),2) AS penc',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo),2) AS sfc_frc',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo),2) AS indiceproceso',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo),2) AS indiceexperiencia',
+                                                    'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo),2) AS indicepromesa'])
+
+                                                  ->from(['tbl_usuarios']) 
+
+                                                  ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_usuarios.usua_id = tbl_ejecucionformularios.usua_id_lider')    
+
+                                                  ->where(['IN','tbl_ejecucionformularios.id',$varDataFormularios])
                                                   ->groupby(['tbl_usuarios.usua_id'])
                                                   ->All();
 
-                                  foreach ($varListadoLideres as $key => $value) {
-                                    $varNombreLider = $value['usua_nombre'];
-                                    $varIdUsuaLider = $value['usua_id'];
 
-                                    $varListaGeneralFormulariosL = (new \yii\db\Query())
-                                                ->select(['*'])
-                                                ->from(['tbl_ejecucionformularios'])            
-                                                ->where(['in','tbl_ejecucionformularios.id',$varDataFormularios])
-                                                ->andwhere(['=','usua_id_lider',$varIdUsuaLider])
-                                                ->All();
+                                  foreach ($varResultadosLideresMixto as $key => $value) {
 
-                                    if (count($varListaGeneralFormulariosL) != 0) {
-                                      
-                                      foreach ($varListaGeneralFormulariosL as $key => $value) {
-                                        array_push($varLiderScorearray, $value['score']);
-                                        array_push($varLiderPECarray, $value['i1_nmcalculo']);
-                                        array_push($varLiderPENCarray, $value['i2_nmcalculo']);
-                                        array_push($varLiderSFCarray, $value['i3_nmcalculo']);
-                                        array_push($varLiderProcesoarray, $value['i5_nmcalculo']);
-                                        array_push($varLiderExparray, $value['i6_nmcalculo']);
-                                        array_push($varLiderPromarray, $value['i7_nmcalculo']);
-                                      }
 
-                                      $varLiderPEC = round((array_sum($varLiderPECarray) / count($varListaGeneralFormulariosL)),2);
-                                      $varLiderPENC = round((array_sum($varLiderPENCarray) / count($varListaGeneralFormulariosL)),2);
-                                      $varLiderSFC = round((array_sum($varLiderSFCarray) / count($varListaGeneralFormulariosL)),2);
-                                      $varLiderProceso = round((array_sum($varLiderProcesoarray) / count($varListaGeneralFormulariosL)),2);
-                                      $varLiderExp = round((array_sum($varLiderExparray) / count($varListaGeneralFormulariosL)),2);
-                                      $varLiderProm = round((array_sum($varLiderPromarray) / count($varListaGeneralFormulariosL)),2);
-                                      $varLiderScore = round((array_sum($varLiderScorearray) / count($varListaGeneralFormulariosL)),2);
-
-                                      $varLiderCantidad = count($varListaGeneralFormulariosL);
-
-                                    }else{
-                                      $varLiderPEC = $varSinData;
-                                      $varLiderPENC = $varSinData;
-                                      $varLiderSFC = $varSinData;
-                                      $varLiderProceso = $varSinData;
-                                      $varLiderExp = $varSinData;
-                                      $varLiderProm = $varSinData;
-                                      $varLiderScore = $varSinData;
-
-                                      $varLiderCantidad = $varSinData;
-                                    }
                                 ?>
 
                                   <tr>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varNombreLider; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderCantidad; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderScore; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderPEC; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderPENC; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderSFC; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderProceso; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderExp; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderProm; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['usua_nombre']; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['cantidad']; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['score']; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['pec']; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['penc']; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['sfc_frc']; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['indiceproceso']; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['indiceexperiencia']; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['indicepromesa']; ?></label></td>
                                   </tr>
 
                                 <?php
@@ -1766,14 +1833,19 @@ $this->registerJs($js);
 
                     $varArrayListarForms = implode(", ", $varArrayForms);
 
-                    $varFormulariosListas = intval($varArrayListarForms);
-                    $varDataFormulariosMejoras = explode(",", str_replace(array("#", "'", ";", " "), '', $varFormulariosListas));
+                    $varDataFormulariosMejoras = explode(",", str_replace(array("#", "'", ";", " "), '', $varArrayListarForms));
+
 
                     $varListaGeneralFormulariosMejora = (new \yii\db\Query())
-                                                ->select(['*'])
-                                                ->from(['tbl_ejecucionfeedbacks'])            
-                                                ->where(['in','tbl_ejecucionfeedbacks.ejecucionformulario_id',$varDataFormulariosMejoras])
-                                                ->All();
+                                                  ->select(['tbl_ejecucionfeedbacks.snaviso_revisado'])
+
+                                                  ->from(['tbl_ejecucionfeedbacks']) 
+
+                                                  ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_ejecucionfeedbacks.ejecucionformulario_id = tbl_ejecucionformularios.id')    
+
+                                                  ->where(['IN','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
+                                                  ->All();
 
                     $varCantidadFeedbacks = count($varListaGeneralFormulariosMejora);
 
@@ -1792,10 +1864,15 @@ $this->registerJs($js);
                     }
 
                     $varListaSegundoclificadorMejora = (new \yii\db\Query())
-                                                ->select(['*'])
-                                                ->from(['tbl_segundo_calificador'])            
-                                                ->where(['in','tbl_segundo_calificador.id_ejecucion_formulario',$varDataFormulariosMejoras])
-                                                ->All();
+                                                  ->select(['tbl_segundo_calificador.estado_sc'])
+
+                                                  ->from(['tbl_segundo_calificador']) 
+
+                                                  ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios.id')    
+
+                                                  ->where(['IN','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
+                                                  ->All();
 
                     $varCantidadSegundo = count($varListaSegundoclificadorMejora);
 
@@ -1822,14 +1899,6 @@ $this->registerJs($js);
                     
 
                     
-
-                    $varConteoAlertas = (new \yii\db\Query())
-                                      ->select(['tbl_alertascx.id'])
-                                      ->from(['tbl_alertascx'])  
-                                      ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
-                                          'tbl_alertascx.pcrc = tbl_ejecucionformularios.arbol_id')
-                                      ->where(['in','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
-                                      ->count();
 
                     $varConteoAlertas = (new \yii\db\Query())
                                       ->select(['tbl_alertascx.id'])
