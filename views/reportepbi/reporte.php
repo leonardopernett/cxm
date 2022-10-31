@@ -135,7 +135,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
                 <label><em class="far fa-edit" style="font-size: 20px; color: #559FFF;"></em> &Aacuterea de trabajo:</label>
                 <br>
                 <label>Seleccione Nombre:</label>
-                <select class ='form-control' id="txtAreatrabajo" data-toggle="tooltip" title="Area de trabajo" onchange="nombreareatrab();">
+                <select class ='form-control' id="txtAreatrabajos" data-toggle="tooltip" title="Area de trabajo" onchange="nombreareatrab();">
                               <option value="" disabled selected>Seleccionar...</option>  
                                <?php                          
                                     foreach ($listaworkspaces as $key => $value) {
@@ -174,7 +174,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     </div>
   </div>
   <br>
-<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
   
   <br>
   <h3>&nbsp;</h3>
@@ -261,7 +261,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               </div>
           </div>
  <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
+<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
 
           <div class="col-md-2">
               <div class="card mb">            
@@ -274,7 +274,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               </div>
           </div>
 <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
 
           <div class="col-md-2">
               <div class="card mb">           
@@ -312,7 +312,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
 
     
     function listarep(){
-      var varareatrabajoid = document.getElementById("txtAreatrabajo").value;
+      var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
      
      if (varareatrabajoid == "") {
 			event.preventDefault();
@@ -349,7 +349,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     }
 
     function eliminarws(){
-      var varareatrabajoid = document.getElementById("txtAreatrabajo").value;
+      var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
      if (varareatrabajoid == "") {
 			event.preventDefault();
 				swal.fire("!!! Advertencia !!!","Debe seleccionar un area de trabajo.","warning");
@@ -374,7 +374,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
         }
     }
     function eliminarrep(){
-      var varareatrabajoid = document.getElementById("txtAreatrabajo").value;
+      var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
       var varreporteid = document.getElementById("txtReportes").value;
       var tipo = 1;
       var new_name_report = "na"
@@ -405,11 +405,11 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     }
 
     function nombreareatrab(){
-      var varareatrab = document.getElementById("txtAreatrabajo").value;
+      var varareatrab = document.getElementById("txtAreatrabajos").value;
     }
 
     function Permisorep(){
-      var varareatrabajoid = document.getElementById("txtAreatrabajo").value;
+      var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
       var varreporteid = document.getElementById("txtReportes").value;
       var lista = document.getElementById("txtReportes");
       var varnombrerep = lista.options[lista.selectedIndex].text;
@@ -435,9 +435,9 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     }
 
     function Permisocolab(){
-      var varareatrabajoid = document.getElementById("txtAreatrabajo").value;      
+      var varareatrabajoid = document.getElementById("txtAreatrabajos").value;      
       var varreporteid = document.getElementById("txtReportes").value;
-      var lista = document.getElementById("txtAreatrabajo");
+      var lista = document.getElementById("txtReportes");
       var varnombrerep = lista.options[lista.selectedIndex].text;
      if (varareatrabajoid == "") {
 			event.preventDefault();
@@ -462,8 +462,14 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     }
     
     function generarepor(){
-      var varareatrabajoid = document.getElementById("txtAreatrabajo").value;
+      var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
+      var listaarea = document.getElementById("txtAreatrabajos");
+      var indice = listaarea.selectedIndex;
+      var opcionSeleccionada = listaarea.options[indice];
+      var varnombrearea = opcionSeleccionada.text;
       var varreporteid = document.getElementById("txtReportes").value;
+      var lista = document.getElementById("txtReportes");
+      var varnombrerep = lista.options[lista.selectedIndex].text;      
       
      if (varareatrabajoid == "" || varreporteid == "") {
 			event.preventDefault();
@@ -476,6 +482,8 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               data : {
                 report_id : varreporteid,
                 workspace_id : varareatrabajoid,
+                reportname : varnombrerep,
+                areaname : varnombrearea,
               },
               success : function(response){ 
                     var txtRta =   JSON.parse(response); 
@@ -496,6 +504,8 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
           }); 
       }  
     }
+
+    
    
 </script>
 <!-- Modal -->

@@ -286,7 +286,7 @@ AppAsset::register($this);
                                         
                                         '<div class="col-md-6">',
                                             '<li class="dropdown-headercx2">&nbsp;Planear</li>',
-                                                '<li class="dropdown-headercx ico1">&nbsp;Planeaci&oacute;n del Responsable CX&nbsp;&nbsp;</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Asignar Plan de Valoraci&oacute;n&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Crear Dimensionamiento&nbsp;&nbsp;'),
                                                     'url' => ['/controldimensionamiento/index'],
@@ -304,7 +304,7 @@ AppAsset::register($this);
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Escuchar</li>',
-                                                '<li class="dropdown-headercx ico1">&nbsp;Procesos de Valoraci&oacute;n&nbsp;&nbsp;</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n del Valorador&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Encuestas Tigo&nbsp;&nbsp;'),
                                                     'url' => ['/basechat/index'],
@@ -337,7 +337,7 @@ AppAsset::register($this);
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Proteger y Mejorar</li>',
-                                                '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n de Alertas&nbsp;&nbsp;</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Alertas&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Crear Alertas&nbsp;&nbsp;'),
                                                     'url' => ['basesatisfaccion/alertas'],
@@ -372,7 +372,7 @@ AppAsset::register($this);
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Analizar y Decidir</li>',
-                                                '<li class="dropdown-headercx ico1">&nbsp;Informes-Resultados de Procesos&nbsp;&nbsp;</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Resultado de Procesos&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Ejecutivo&nbsp;&nbsp;'),
                                                     'url' => ['/dashboardvoz/index'],
@@ -412,7 +412,7 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 '<br>',  
-                                                '<li class="dropdown-headercx ico1">&nbsp;Data Para Creaci&oacute;n de Reportes&nbsp;&nbsp;</li>',                                              
+                                                '<li class="dropdown-headercx ico1">&nbsp;Bases de Informaci&oacute;n Operativos&nbsp;&nbsp;&nbsp;&nbsp;</li>',                                              
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Extractar Formularios&nbsp;&nbsp;'),
                                                     'url' => ['/reportes/extractarformulario'],
@@ -465,7 +465,7 @@ AppAsset::register($this);
 
                             ],
                             [
-                                'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/admin.png" width="35" height="20">'.Yii::t('app', '&nbsp;ADMIN&nbsp;&nbsp;&nbsp;&nbsp;'),                                
+                                'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/admin.png" width="27" height="27">'.Yii::t('app', '&nbsp;ADMIN&nbsp;&nbsp;&nbsp;&nbsp;'),                                
                                 'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),                                
                                 'items' => [
                                     '<div class="row" >',
@@ -571,7 +571,7 @@ AppAsset::register($this);
                                                 ],
                                         '</div>',
                                         '<div class="col-md-6">',
-                                                '<li class="dropdown-headercx">Gesti&oacute;n BD-P&uacute;blico Objetivo&nbsp;&nbsp;&nbsp;</li>',
+                                                '<li class="dropdown-headercx">Gesti&oacute;n BD-P&uacute;blico Objetivo&nbsp;&nbsp;&nbsp;&nbsp;</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Administrar Cortes'),
                                                     'url' => ['/admincortes/index'],

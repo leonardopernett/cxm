@@ -24,7 +24,7 @@ use app\models\ControlProcesosEquipos;
             return[
                 'access' => [
                         'class' => AccessControl::classname(),
-                        'only' => ['reporte', 'get_reports_by_workspace', 'search_report', 'reporteframe', 'crearworkspace', 'delete_workspace', 'alter_report', 'duplicarreporte', 'permisoreporteusua', 'permisosreporte', 'eliminarpermi', 'crearpermiso', 'create_workspace', 'search_workspace_contributors', 'permisocolaborador', 'permisocolabora'],
+                        'only' => ['reporte', 'get_reports_by_workspace', 'search_report', 'reporteframe', 'crearworkspace', 'delete_workspace', 'alter_report', 'duplicarreporte', 'permisoreporteusua', 'permisosreporte', 'eliminarpermi', 'crearpermiso', 'create_workspace', 'search_workspace_contributors', 'permisocolaborador', 'permisocolabora', 'crearlogpbi'],
                         'rules' => [
                             [
                                 'allow' => true,
@@ -320,6 +320,8 @@ use app\models\ControlProcesosEquipos;
     // Obtener el ID del workspace para consumir sus reportes
     $report_id = Yii::$app->request->post("report_id");
     $workspace_id = Yii::$app->request->post("workspace_id");
+    $reportname = Yii::$app->request->post("reportname");
+    $areaname = Yii::$app->request->post("areaname");
 
     // Validar ID del workspace indicado por el cliente
     if(!isset($workspace_id) || empty($workspace_id)){
@@ -343,6 +345,14 @@ use app\models\ControlProcesosEquipos;
       #code
     }
     
+    // Se guarda log de uso de reportes
+    Yii::$app->db->createCommand()->insert('tbl_logs_pbi', [
+      'usua_id' =>Yii::$app->user->identity->id,
+      'area' => $areaname,
+      'reporte' => $reportname,
+      'fecha_creacion' => date('Y-m-d h:i:s')
+    ])->execute();
+
     // Obtener embed token
     $result = $model->search_report($accessToken, $workspace_id, $report_id);
     die( json_encode( array("status"=>"1","data"=>$result) ) );
@@ -350,6 +360,22 @@ use app\models\ControlProcesosEquipos;
   }
  // FUNCTION SEARCH AND SHOW A REPORTEND
 
+ // crear Log para seleccion de reportes
+ public function actionCrearlogpbi(){
+  $model = new ControlProcesosEquipos();
+  $varnombrereporte = Yii::$app->request->post("report_name");
+  $varnombrearea = Yii::$app->request->post("area_name");
+  $varusua_id = '3205';
+
+  Yii::$app->db->createCommand()->insert('tbl_logs_pbi', [
+    'usua_id' =>Yii::$app->user->identity->id,
+    'area' => $varnombrearea,
+    'reporte' => $varnombrereporte,
+    'fecha_creacion' => date('Y-m-d h:i:s')
+  ])->execute();
+
+die(json_encode($model));
+}
   //  FUNCTION SEARCH USER PERMITS
   public function search_user_permits (){
     $model = new ReportesAdministracion();
