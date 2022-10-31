@@ -327,7 +327,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
           <div class="col-md-4">
             <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Cliente: </label>
-            <?=  $form->field($model4, 'id_dp_cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+            <?=  $form->field($model4, 'id_dp_cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                           [
                                               'prompt'=>'Seleccionar...',
                                               'onchange' => '
