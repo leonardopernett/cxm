@@ -1855,7 +1855,7 @@ use Exception;
 
       $array_director = count($txtvaridrequester2);
       for ($i=0; $i < $array_director; $i++) { 
-        $vardirector = $txtvaridrequester2[$i];
+        $vardirector = substr($txtvaridrequester2[$i], 0, -4);
 
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
                     'hv_idpersonal' => $txtvarautoincrement,
@@ -2598,7 +2598,7 @@ use Exception;
 
       $array_director = count($txtvaridrequester2);
       for ($i=0; $i < $array_director; $i++) { 
-        $vardirector = $txtvaridrequester2[$i];
+        $vardirector = substr($txtvaridrequester2[$i], 0, -4);
 
         $paramsAutoDirector = [':VarAuto'=>$txtvarautoincrement];
         $varVerificarAutoDirector = Yii::$app->db->createCommand('
