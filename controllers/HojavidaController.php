@@ -3642,7 +3642,7 @@ use Exception;
                         'tbl_hojavida_dataclasificacion.ciudadclasificacion', 
                         'tbl_hv_antiguedad_rol.antiguedad',
                         'tbl_hojavida_datalaboral.nombre_jefe', 
-                        'tbl_hojavida_datalaboral.rol', 
+                        'tbl_hojavida_datalaboral.rol  as cargo_jefe', 
                         'tbl_hojavida_datalaboral.trabajo_anterior', 
                         'tbl_hojavida_datalaboral.fecha_inicio_contacto', 
                         'tbl_hv_estilosocial.estilosocial', 
