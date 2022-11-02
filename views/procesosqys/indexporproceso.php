@@ -1078,6 +1078,50 @@ $this->registerJs($js);
                       <div class="row">
                         <div class="col-md-12">
                           <div class="card4 mb">
+                          <table id="myTableEquipos" class="table table-hover table-bordered" style="margin-top:10px" >
+                              <caption><label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Listado de Equipos') ?></label></caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lider') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Asesor') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Interacciones') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php                                  
+
+                                  foreach ($varListarEquipos as $key => $value) {
+                                    $varValorSpeech = $value['varAsesorSpeech'];
+
+                                    $varListaIdFormularios = (new \yii\db\Query())
+                                                  ->select(['tbl_speech_mixta.formulario_id'])
+
+                                                  ->from(['tbl_speech_mixta']) 
+
+                                                  ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                                    'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')    
+
+                                                  ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                                  ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                                                  ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                                  ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesM])
+                                                  ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                                                  ->andwhere(['=','tbl_dashboardspeechcalls.login_id',$varValorSpeech])
+                                                  ->groupby(['tbl_speech_mixta.formulario_id'])
+                                                  ->All();
+                                ?>
+                                  <tr>
+                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $value['varLider']; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $varValorSpeech; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $value['varCantidad']; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  count($varListaIdFormularios); ?></label></td>
+                                  </tr>
+                                <?php
+                                  }
+                                ?>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       </div>

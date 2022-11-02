@@ -373,7 +373,7 @@ use app\models\SpeechParametrizar;
                             ->where(['=','anulado',0])
                             ->andwhere(['in','cod_pcrc',$varListaCC])
                             ->groupby(['cod_pcrc'])
-                            ->All(); 
+                            ->Scalar(); 
 
       if ($varIdExtensionc == "0") {
         $varTextoDimensionp = "Procesos";
@@ -385,6 +385,171 @@ use app\models\SpeechParametrizar;
 
       if ($varIdExtensionc == "2") {
         $varTextoDimensionp = "Ojt";
+      }
+
+      $varTipoParametroM = $varIdExtensionc;
+
+          if ($varTipoParametroM != '1') {
+            $varRnIdealM =  (new \yii\db\Query())
+                                ->select(['rn'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['in','cod_pcrc',$varListaCC])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','rn',''])
+                                ->andwhere(['=','tipoparametro',$varTipoParametroM])
+                                ->groupby(['rn'])
+                                ->all();
+          }else{
+            $varRnIdealM =  (new \yii\db\Query())
+                                ->select(['rn'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['in','cod_pcrc',$varListaCC])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','rn',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['rn'])
+                                ->all();
+          }
+
+          if (count($varRnIdealM) != 0) {
+             $varArrayRnM = array();
+            foreach ($varRnIdealM as $key => $value) {
+              array_push($varArrayRnM, $value['rn']);
+            }
+
+            $varExtensionesArraysM = implode("', '", $varArrayRnM);
+            $arrayExtensiones_downM = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysM);
+            $varExtensionesM = explode(",", $arrayExtensiones_downM);
+          }else{
+
+            if ($varTipoParametroM != '1') {
+              $varExtM =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['in','cod_pcrc',$varListaCC])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','ext',''])
+                                ->andwhere(['=','tipoparametro',$varTipoParametroM])
+                                ->groupby(['ext'])
+                                ->all();
+            }else{
+              $varExtM =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['in','cod_pcrc',$varListaCC])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','ext',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['ext'])
+                                ->all();
+            }
+
+            if (count($varExtM) != 0) {
+              $varArrayExtM = array();
+              foreach ($varExtM as $key => $value) {
+                array_push($varArrayExtM, $value['ext']);
+              }
+
+              $varExtensionesArraysM = implode("', '", $varArrayExtM);
+              $arrayExtensiones_downM = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysM);
+              $varExtensionesM = explode(",", $arrayExtensiones_downM);
+            }else{
+
+              if ($varTipoParametroM != '1') {
+                $varUsuaM =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['in','cod_pcrc',$varListaCC])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','usuared',''])
+                                ->andwhere(['=','tipoparametro',$varTipoParametroM])
+                                ->groupby(['usuared'])
+                                ->all();
+              }else{
+                $varUsuaM =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['in','cod_pcrc',$varListaCC])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','usuared',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['usuared'])
+                                ->all();
+              }
+
+
+              if (count($varUsuaM) != 0) {
+                $varArrayUsuaM = array();
+                foreach ($varUsuaM as $key => $value) {
+                  array_push($varArrayUsuaM, $value['usuared']);
+                }
+
+                $varExtensionesArraysM = implode("', '", $varArrayUsuaM);
+                $arrayExtensiones_downM = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysM);
+                $varExtensionesM = explode(",", $arrayExtensiones_downM);
+              }else{
+                $varExtensionesM = "N0A";
+              }
+            }
+          }
+
+      $varListarEquipos = (new \yii\db\Query())
+                          ->select(['tbl_usuarios.usua_id AS varLiderId', 'tbl_usuarios.usua_nombre AS varLider', 'tbl_evaluados.id AS varAsesor', 'tbl_dashboardspeechcalls.login_id AS varAsesorSpeech','COUNT(tbl_dashboardspeechcalls.callId) AS varCantidad'])
+
+                          ->from(['tbl_usuarios']) 
+
+                          ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                'tbl_usuarios.usua_id = tbl_equipos.usua_id')  
+
+                          ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                'tbl_equipos.id = tbl_equipos_evaluados.equipo_id') 
+
+                          ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id') 
+
+                          ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                'tbl_evaluados.dsusuario_red = tbl_dashboardspeechcalls.login_id')   
+
+                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesM])
+                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                          ->groupby(['tbl_dashboardspeechcalls.login_id'])
+                          ->orderBy(['tbl_usuarios.usua_usuario' => SORT_DESC])
+                          ->All();
+
+      if ($varListarEquipos == null) {
+        $varListarEquipos = (new \yii\db\Query())
+                          ->select(['tbl_usuarios.usua_id AS varLiderId', 'tbl_usuarios.usua_nombre AS varLider', 'tbl_evaluados.id AS varAsesor', 'tbl_dashboardspeechcalls.login_id AS varAsesorSpeech','COUNT(tbl_dashboardspeechcalls.callId) AS varCantidad'])
+
+                          ->from(['tbl_usuarios']) 
+
+                          ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                'tbl_usuarios.usua_id = tbl_equipos.usua_id')  
+
+                          ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                'tbl_equipos.id = tbl_equipos_evaluados.equipo_id') 
+
+                          ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id') 
+
+                          ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                'tbl_evaluados.identificacion = tbl_dashboardspeechcalls.login_id')   
+
+                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesM])
+                          ->groupby(['tbl_dashboardspeechcalls.login_id'])
+                          ->orderBy(['tbl_usuarios.usua_usuario' => SORT_DESC])
+                          ->All();
       }
 
       $varListasClienteIdealP = (new \yii\db\Query())
@@ -430,6 +595,9 @@ use app\models\SpeechParametrizar;
         'varArrayCanalP' => $varArrayCanalP,
         'varLlamada' => $varLlamada,
         'varIdExtensionc' => $varIdExtensionc,
+        'varExtensionesM' => $varExtensionesM,
+        'varNombreSpeech' => $varNombreSpeech,
+        'varListarEquipos' => $varListarEquipos,
       ]);
     }
     
