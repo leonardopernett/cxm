@@ -397,7 +397,7 @@ use app\models\SpeechParametrizar;
 
       $varTipoParametroM = $varIdExtensionc;
 
-          if ($varTipoParametroM != '1') {
+          if ($varTipoParametroM > '1') {
             $varRnIdealM =  (new \yii\db\Query())
                                 ->select(['rn'])
                                 ->from(['tbl_speech_parametrizar'])            
@@ -432,7 +432,7 @@ use app\models\SpeechParametrizar;
             $varExtensionesM = explode(",", $arrayExtensiones_downM);
           }else{
 
-            if ($varTipoParametroM != '1') {
+            if ($varTipoParametroM > '1') {
               $varExtM =  (new \yii\db\Query())
                                 ->select(['ext'])
                                 ->from(['tbl_speech_parametrizar'])            
@@ -467,7 +467,7 @@ use app\models\SpeechParametrizar;
               $varExtensionesM = explode(",", $arrayExtensiones_downM);
             }else{
 
-              if ($varTipoParametroM != '1') {
+              if ($varTipoParametroM > '1') {
                 $varUsuaM =  (new \yii\db\Query())
                                 ->select(['usuared'])
                                 ->from(['tbl_speech_parametrizar'])            
