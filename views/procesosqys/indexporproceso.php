@@ -1077,7 +1077,7 @@ $this->registerJs($js);
 
                       <div class="row">
                         <div class="col-md-12">
-                          <div class="card4 mb">
+                          <div class="card1 mb">
                           <table id="myTableEquipos" class="table table-hover table-bordered" style="margin-top:10px" >
                               <caption><label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Listado de Equipos') ?></label></caption>
                               <thead>
