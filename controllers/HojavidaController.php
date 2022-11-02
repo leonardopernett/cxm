@@ -4649,6 +4649,38 @@ $modelos = new HojavidaDatapersonal();
 
   }
 
+  public function actionListarpcrcindexhoja(){            
+    $txtAnulado = 0; 
+    $txtId = Yii::$app->request->post('id');                       
+
+    if ($txtId) {
+      $txtControl = (new \yii\db\Query())
+                            ->select(['*'])
+                            ->from(['tbl_proceso_cliente_centrocosto'])            
+                            ->where(['=','id_dp_clientes',$txtId])
+                            ->count();             
+
+      if ($txtControl > 0) {
+        $varListaPcrc = (new \yii\db\Query())
+                            ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])
+                            ->from(['tbl_proceso_cliente_centrocosto'])            
+                            ->where(['=','id_dp_clientes',$txtId])
+                            ->All(); 
+
+        $valor = 0;
+                    
+        foreach ($varListaPcrc as $key => $value) {
+          echo "<option value='" . $value['cod_pcrc']. "'>" . $value['cod_pcrc']." - ".$value['pcrc'] . "</option>";
+        }
+      }else{
+        echo "<option>-</option>";
+      }
+    }else{
+      echo "<option>No hay datos</option>";
+    }
+
+  }
+
 }
 
 ?>

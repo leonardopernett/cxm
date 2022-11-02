@@ -385,7 +385,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                               'prompt'=>'Seleccionar...',
                                               'onchange' => '
                                                   $.post(
-                                                      "' . Url::toRoute('formulariovoc/listarpcrcindex') . '", 
+                                                      "' . Url::toRoute('hojavida/listarpcrcindexhoja') . '", 
                                                       {id: $(this).val()}, 
                                                       function(res){
                                                           $("#requester").html(res);
