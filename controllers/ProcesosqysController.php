@@ -373,7 +373,7 @@ use app\models\SpeechParametrizar;
                             ->where(['=','anulado',0])
                             ->andwhere(['in','cod_pcrc',$varListaCC])
                             ->groupby(['cod_pcrc'])
-                            ->Scalar();       
+                            ->All();       
 
       $varNombreSpeech = (new \yii\db\Query())
                             ->select(['programacategoria'])
