@@ -1220,7 +1220,7 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
                       <button  class="btn btn-success">Agregar <em class="fa fa-plus" style="padding-top:5px"></em> </button>
                   </div>
             <?php ActiveForm::end() ?>
-            <a href="../../archivos/Plantilla-Maestro.xlsx" download>Descargar Plantilla de ejemplo</a><em class="fa fa-upload"></em>
+            <a href="../../archivos/Plantilla-GestorClientes.xlsx" download>Descargar Plantilla de ejemplo</a><em class="fa fa-upload"></em>
       </div>
       
     </div>
