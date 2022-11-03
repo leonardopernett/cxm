@@ -644,6 +644,7 @@ $this->params['breadcrumbs'][] = $this->title;
           },
           success : function(response){
             numRta =   JSON.parse(response);
+            numRta = 0;
             
             if (numRta != "0") {
               event.preventDefault();
