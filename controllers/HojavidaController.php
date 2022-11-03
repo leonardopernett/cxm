@@ -1883,35 +1883,60 @@ use Exception;
     }
 
     public function actionViewinfo($idinfo){
-      $paramsinfo = [':varInfo' => $idinfo];
-      $dataProviderInfo = Yii::$app->db->createCommand('
-        SELECT 
-          dp.hv_idpersonal, dp.nombre_full AS NombreFull, dp.identificacion AS Identificacion,
-          dp.email AS Email, dp.numero_movil AS Movil, dp.numero_fijo AS Fijo, dp.direccion_oficina AS DireccioOficina,
-          dp.direccion_casa AS DireccionCasa, p.pais AS Pais, c.ciudad AS Ciudad, m.modalidad AS Modalidad,
-          if(dp.tratamiento_data = 1,"No","Si") AS TratamientoDatos, if(dp.suceptible = 1,"No","Si") AS Susceptible,
-          dp.indicador_satu AS IndicadorSatu, l.rol AS Rol, a.antiguedad AS Antiguedad, l.fecha_inicio_contacto AS FechaContacto,
-          l.nombre_jefe AS NombreJefe, l.cargo_jefe AS CargoJefe, l.trabajo_anterior AS TrabajoAnterior,
-          if(l.afinidad = 1,"RelaciÃƒÂ³n Directa","RelaciÃƒÂ³n de Interes") AS Afinidad,  dp.clasificacion,
-          if(l.tipo_afinidad = 1,"Decisor","No Decisor") AS TipoAfinidad, if(l.nivel_afinidad = 1,"EstratÃƒÂ©gio","Operativo") AS NivelAfinidad,
-          pc.id_dp_cliente AS IdCliente, dp.fechacumple, l.areatrabajo
-           FROM tbl_hojavida_datapersonal dp
-            INNER JOIN tbl_hv_pais p ON 
-              dp.hv_idpais = p.hv_idpais
-            INNER JOIN tbl_hv_ciudad c ON 
-              p.hv_idpais = c.pais_id
-            INNER JOIN tbl_hv_modalidad_trabajo m ON 
-              dp.hv_idmodalidad = m.hv_idmodalidad
-            INNER JOIN tbl_hojavida_datalaboral l ON 
-              dp.hv_idpersonal = l.hv_idpersonal
-            INNER JOIN tbl_hv_antiguedad_rol a ON 
-              l.hv_id_antiguedad = a.hv_id_antiguedad
-            INNER JOIN tbl_hojavida_datapcrc pc ON 
-              dp.hv_idpersonal = pc.hv_idpersonal
-            WHERE 
-              dp.hv_idpersonal = :varInfo
-            GROUP BY dp.hv_idpersonal               
-            ')->bindValues($paramsinfo)->queryAll();
+      $dataProviderInfo = (new \yii\db\Query())
+                      ->select([
+                        'tbl_hojavida_datapersonal.hv_idpersonal',
+                        'tbl_hojavida_datapersonal.nombre_full AS NombreFull',
+                        'tbl_hojavida_datapersonal.identificacion AS Identificacion',
+                        'tbl_hojavida_datapersonal.email AS Email',
+                        'tbl_hojavida_datapersonal.numero_movil AS Movil',
+                        'tbl_hojavida_datapersonal.numero_fijo AS Fijo',
+                        'tbl_hojavida_datapersonal.direccion_oficina AS DireccioOficina',
+                        'tbl_hojavida_datapersonal.direccion_casa AS DireccionCasa',
+                        'tbl_hv_pais.pais AS Pais',
+                        'tbl_hv_ciudad.ciudad AS Ciudad',
+                        'tbl_hv_modalidad_trabajo.modalidad AS Modalidad',
+                        'if(tbl_hojavida_datapersonal.tratamiento_data=1,"No","Si") AS TratamientoDatos',
+                        'if(tbl_hojavida_datapersonal.suceptible=1,"No","Si") AS Susceptible',
+                        'tbl_hojavida_datapersonal.indicador_satu AS IndicadorSatu',
+                        'tbl_hojavida_datalaboral.rol AS Rol',
+                        'tbl_hv_antiguedad_rol.antiguedad AS Antiguedad',
+                        'tbl_hojavida_datalaboral.fecha_inicio_contacto AS FechaContacto',
+                        'tbl_hojavida_datalaboral.nombre_jefe AS NombreJefe',
+                        'tbl_hojavida_datalaboral.cargo_jefe AS CargoJefe',
+                        'tbl_hojavida_datalaboral.trabajo_anterior AS TrabajoAnterior',
+                        'if(tbl_hojavida_datalaboral.afinidad=1,"Relación Directa","Relación de Interes") AS Afinidad',
+                        'tbl_hojavida_datapersonal.clasificacion',
+                        'if(tbl_hojavida_datalaboral.tipo_afinidad=1,"Decisor","No Decisor") AS TipoAfinidad',
+                        'if(tbl_hojavida_datalaboral.nivel_afinidad=1,"Estratégico","Operativo") AS NivelAfinidad',
+                        'tbl_hojavida_datapcrc.id_dp_cliente AS IdCliente',
+                        'tbl_hojavida_datapersonal.fechacumple',
+                        'tbl_hojavida_datalaboral.areatrabajo'
+                      ])
+
+                      ->from(['tbl_hojavida_datapersonal']) 
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hv_pais',
+                          'tbl_hv_pais.hv_idpais = tbl_hojavida_datapersonal.hv_idpais') 
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hv_ciudad',
+                          'tbl_hv_ciudad.hv_idciudad = tbl_hojavida_datapersonal.hv_idciudad')
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hv_modalidad_trabajo',
+                          'tbl_hv_modalidad_trabajo.hv_idmodalidad = tbl_hojavida_datapersonal.hv_idmodalidad') 
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_datalaboral',
+                          'tbl_hojavida_datalaboral.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal')
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hv_antiguedad_rol',
+                          'tbl_hv_antiguedad_rol.hv_id_antiguedad = tbl_hojavida_datalaboral.hv_id_antiguedad') 
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_datapcrc',
+                          'tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                      ->where(['=','tbl_hojavida_datapersonal.hv_idpersonal',$idinfo])
+                      ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                      ->All();
 
       return $this->render('viewinfo',[
         'dataProviderInfo' => $dataProviderInfo,
@@ -2365,6 +2390,14 @@ use Exception;
             ->groupby(['activo'])
             ->Scalar();
 
+      $varServicioClienteId = (new \yii\db\Query())
+            ->select(['id_dp_cliente'])
+            ->from(['tbl_hojavida_datapcrc'])
+            ->where(['=','anulado',0])
+            ->andwhere(['=','hv_idpersonal',$idinfo])
+            ->groupby(['id_dp_cliente'])
+            ->Scalar();
+
       $model2 = HojavidaDatalaboral::findOne($varinfolaboral);
       $model3 = new HojavidaDataacademica();
       $model4 = new HojavidaDatapcrc();
@@ -2383,6 +2416,7 @@ use Exception;
         'model7' => $model7,
         'idinfo' => $idinfo,
         'varActivo' => $varActivo,
+        'varServicioClienteId' => $varServicioClienteId,
       ]);
     }
 
@@ -2569,55 +2603,53 @@ use Exception;
       $txtvaridrequester2 = Yii::$app->request->get("txtvaridrequester2");
       $txtvaridrequester3 = Yii::$app->request->get("txtvaridrequester3");
       
-      $txtrta = 0;      
+      $txtrta = 0;  
 
       $array_codpcrc = count($txtvaridrequester);
       for ($i=0; $i < $array_codpcrc; $i++) { 
         $varcodpcrc = $txtvaridrequester[$i];
 
-        $paramsAutopcrc = [':VarAuto'=>$txtvarautoincrement];
-        $varVerificarAutopcrc = Yii::$app->db->createCommand('
-          SELECT COUNT(hd.hv_idpcrc) FROM tbl_hojavida_datapcrc hd 
-            WHERE hd.hv_idpersonal = :VarAuto
-            ')->bindValues($paramsAutopcrc)->queryScalar();
-        
-        if ($varVerificarAutopcrc != "0") {
-          Yii::$app->db->createCommand()->update('tbl_hojavida_datapcrc',[
-            'id_dp_cliente' => $txtvarid_dp_cliente,
-            'cod_pcrc' => $varcodpcrc,                                       
-          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
-        }else{
-          Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
-            'id_dp_cliente' => $txtvarid_dp_cliente,
-            'cod_pcrc' => $varcodpcrc,                                       
-          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
-        }
+        $varVerificarAutopcrc = (new \yii\db\Query())
+                                ->select(['hv_idpcrc'])
+                                ->from(['tbl_hojavida_datapcrc'])            
+                                ->where(['=','hv_idpersonal',$txtvarautoincrement])
+                                ->andwhere(['=','cod_pcrc',$varcodpcrc])
+                                ->count();
 
+        if ($varVerificarAutopcrc == "0") {
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc', [
+            'hv_idpersonal' => $txtvarautoincrement,
+            'id_dp_cliente' => $txtvarid_dp_cliente,
+            'cod_pcrc' => $varcodpcrc,
+            'anulado' => 0,
+            'fechacreacion' => date('Y-m-d'),
+            'usua_id' => Yii::$app->user->identity->id,
+          ])->execute();
+        }
           
       }
 
       $array_director = count($txtvaridrequester2);
       for ($i=0; $i < $array_director; $i++) { 
-        $vardirector = substr($txtvaridrequester2[$i], 0, -4);
+        $vardirector = $txtvaridrequester2[$i];
 
-        $paramsAutoDirector = [':VarAuto'=>$txtvarautoincrement];
-        $varVerificarAutoDirector = Yii::$app->db->createCommand('
-          SELECT COUNT(hd.hv_iddirector) FROM tbl_hojavida_datadirector hd 
-            WHERE hd.hv_idpersonal = :VarAuto
-            ')->bindValues($paramsAutoDirector)->queryScalar();
+        $varVerificarAutoDirector = (new \yii\db\Query())
+                                ->select(['hv_idpcrc'])
+                                ->from(['tbl_hojavida_datadirector'])            
+                                ->where(['=','hv_idpersonal',$txtvarautoincrement])
+                                ->andwhere(['=','ccdirector',$vardirector])
+                                ->count();
 
-        if ($varVerificarAutoDirector != "0") {
-          Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
-            'ccdirector' => $vardirector,                                      
-          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
-        }else{
-          Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
+        if ($varVerificarAutoDirector == "0") {
+
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector', [
             'hv_idpersonal' => $txtvarautoincrement,
-            'ccdirector' => $vardirector,       
+            'ccdirector' => $vardirector,
             'anulado' => 0,
-            'fechacreacion' => date('Y-m-d'), 
-            'usua_id' => Yii::$app->user->identity->id,                     
-          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
+            'fechacreacion' => date('Y-m-d'),
+            'usua_id' => Yii::$app->user->identity->id,
+          ])->execute();
+
         }
 
       }
@@ -2626,28 +2658,26 @@ use Exception;
       for ($i=0; $i < $array_gerente; $i++) { 
         $vargerente = $txtvaridrequester3[$i];
 
-        $paramsAutoGerente = [':VarAuto'=>$txtvarautoincrement];
-        $varVerificarAutoGerente = Yii::$app->db->createCommand('
-          SELECT COUNT(hd.hv_idgerente) FROM tbl_hojavida_datagerente hd 
-            WHERE hd.hv_idpersonal = :VarAuto
-            ')->bindValues($paramsAutoGerente)->queryScalar();
+        $varVerificarAutoGerente = (new \yii\db\Query())
+                                ->select(['hv_idpcrc'])
+                                ->from(['tbl_hojavida_datagerente'])            
+                                ->where(['=','hv_idpersonal',$txtvarautoincrement])
+                                ->andwhere(['=','ccgerente',$vargerente])
+                                ->count();
 
-        if ($varVerificarAutoGerente != "0") {
-          Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
-            'ccgerente' => $vargerente,                                       
-          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
-        }else{
-          Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
+        if ($varVerificarAutoGerente == "0") {
+
+          Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente', [
             'hv_idpersonal' => $txtvarautoincrement,
-            'ccgerente' => $vargerente,       
+            'ccgerente' => $vargerente,
             'anulado' => 0,
-            'fechacreacion' => date('Y-m-d'), 
-            'usua_id' => Yii::$app->user->identity->id,                                
-          ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute(); 
-        }
+            'fechacreacion' => date('Y-m-d'),
+            'usua_id' => Yii::$app->user->identity->id,
+          ])->execute();
 
+        }
           
-      }          
+      }       
 
       die(json_encode($txtrta));
     }
@@ -4583,6 +4613,21 @@ $modelos = new HojavidaDatapersonal();
                   'usua_id' => Yii::$app->user->identity->id, 
                   'areatrabajo' => $varNA,                                  
               ])->execute(); 
+
+      if ( $sheet->getCell("M".$row)->getValue() == "Activo") {
+        $ExisteActivo = 1;
+      }else{
+        $ExisteActivo = 2;
+      }
+        
+      Yii::$app->db->createCommand()->insert('tbl_hojavida_dataacademica',[                  
+                          'hv_idpersonal' => $varIdInfoPersonal,
+                          'idhvcursosacademico' => null,
+                          'activo' => $ExisteActivo,
+                          'fechacreacion' => date('Y-m-d'),
+                          'anulado' => 0,
+                          'usua_id' => Yii::$app->user->identity->id,               
+                      ])->execute(); 
 
 
       $arrayDirectores = count($varListDirector);
