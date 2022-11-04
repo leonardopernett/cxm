@@ -139,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tratamiento de Datos Personales') ?></label></th>
                 <td><label style="font-size: 12px;"><?php echo  $value['TratamientoDatos']; ?></label></td>
-                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Susceptibe a Encuestar') ?></label></th>
+                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Susceptible a Encuestar') ?></label></th>
                 <td><label style="font-size: 12px;"><?php echo  $value['Susceptible']; ?></label></td>
               </tr>
               <tr>
