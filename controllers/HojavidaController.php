@@ -3227,7 +3227,7 @@ use Exception;
       tbl_hojavida_datacomplementos.cantidadhijos,
       tbl_hojavida_datacivil.estadocivil, 
       tbl_hojavida_datacomplementos.NombreHijos,
-      tbl_hv_hobbies.text AS hobbies,
+      tbl_hv_hobbies.text AS hobbie,
       tbl_hv_gustos.text AS gustos,
       tbl_hojavida_dataclasificacion.ciudadclasificacion,
       tbl_hv_antiguedad_rol.antiguedad,
