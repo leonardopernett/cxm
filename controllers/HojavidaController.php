@@ -224,7 +224,7 @@ use Exception;
 
         if ($varidclientes != null) {
           $dataProviderhv = Yii::$app->db->createCommand("
-          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrategico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrategico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado', dp.suceptible FROM tbl_hojavida_datapersonal dp
           INNER JOIN tbl_hojavida_datalaboral dl ON 
             dl.hv_idpersonal = dp.hv_idpersonal
           LEFT JOIN tbl_hv_pais hp ON 
@@ -244,7 +244,7 @@ use Exception;
           ->queryAll();
         }else{
           $dataProviderhv = Yii::$app->db->createCommand("
-          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrategico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado' FROM tbl_hojavida_datapersonal dp
+          SELECT dp.hv_idpersonal 'idHojaVida', pc.cliente, if(dl.tipo_afinidad = 1, 'Decisor','No Decisor') 'tipo', if(dl.nivel_afinidad = 1, 'Estrategico','Operativo') 'nivel', dp.nombre_full, dl.rol, hp.pais, if(da.activo = 1, 'Activo','No Activo') 'estado', dp.suceptible FROM tbl_hojavida_datapersonal dp
           INNER JOIN tbl_hojavida_datalaboral dl ON 
             dl.hv_idpersonal = dp.hv_idpersonal
           LEFT JOIN tbl_hv_pais hp ON 
@@ -280,7 +280,7 @@ use Exception;
         $varDataClienteJ = explode(",", $arrayCliente_downV);
 
         $dataProviderhv = (new \yii\db\Query())
-                                ->select(['tbl_hojavida_datapersonal.hv_idpersonal as idHojaVida','tbl_proceso_cliente_centrocosto.cliente','if(tbl_hojavida_datalaboral.tipo_afinidad = 1, "Decisor","No Decisor") as tipo','if(tbl_hojavida_datalaboral.nivel_afinidad = 1, "Estrategico","Operativo") as nivel','tbl_hojavida_datapersonal.nombre_full','tbl_hojavida_datalaboral.rol','tbl_hv_pais.pais','if(tbl_hojavida_dataacademica.activo = 1, "Activo","No Activo") as estado'])
+                                ->select(['tbl_hojavida_datapersonal.hv_idpersonal as idHojaVida','tbl_proceso_cliente_centrocosto.cliente','if(tbl_hojavida_datalaboral.tipo_afinidad = 1, "Decisor","No Decisor") as tipo','if(tbl_hojavida_datalaboral.nivel_afinidad = 1, "Estrategico","Operativo") as nivel','tbl_hojavida_datapersonal.nombre_full','tbl_hojavida_datalaboral.rol','tbl_hv_pais.pais','if(tbl_hojavida_dataacademica.activo = 1, "Activo","No Activo") as estado','tbl_hojavida_datapersonal.suceptible'])
 
                                 ->from(['tbl_hojavida_datapersonal'])  
 

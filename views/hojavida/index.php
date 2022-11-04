@@ -696,6 +696,7 @@ $this->title = 'Gestor de Clientes';
                               <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cargo') ?></label></th>
                               <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Pais') ?></label></th>
                               <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado') ?></label></th>
+                              <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Suceptible a encuestar') ?></label></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -709,6 +710,7 @@ $this->title = 'Gestor de Clientes';
                                 $varRol = $value['rol'];
                                 $varPais = $value['pais'];
                                 $varEstado = $value['estado'];
+                                $varSuceptible = $value['suceptible'];
                                 
                                 $paramspcrc = [':codpcrc' => $varIdHv ];
                                 $varVerifica = Yii::$app->db->createCommand('
@@ -742,6 +744,12 @@ $this->title = 'Gestor de Clientes';
                                 }
                                 $varGerentes = implode("; ", $vararraygerente);
 
+                                if ($varSuceptible == 1) {
+                                  $varSuceptible = 'No';
+                                }else{
+                                  $varSuceptible = 'Si';
+                                }
+
                             ?>
                               <tr>
                                 <td class="text-center">
@@ -766,6 +774,7 @@ $this->title = 'Gestor de Clientes';
                                 <td><label style="font-size: 12px;"><?php echo  $varRol; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varPais; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varEstado; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varSuceptible; ?></label></td>
                               </tr>
                             <?php
                               }
