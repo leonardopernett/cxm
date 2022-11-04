@@ -3654,7 +3654,7 @@ use Exception;
       $varNombreDirector = (new \yii\db\Query())
                           ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
                           ->from(['tbl_proceso_cliente_centrocosto'])            
-                          ->where(['=','tbl_proceso_cliente_centrocosto.documento_director',$value['director']])
+                          ->where(['=','tbl_proceso_cliente_centrocosto.documento_director',$value['documentodirector']])
                           ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
                           ->groupby(['tbl_proceso_cliente_centrocosto.director_programa'])
                           ->Scalar(); 
