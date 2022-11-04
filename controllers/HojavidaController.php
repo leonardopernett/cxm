@@ -2436,7 +2436,9 @@ use Exception;
     }
 
     public function actionDeletedirector($id,$idsinfo){
-      HojavidaDatadirector::findOne($id)->delete();
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
+          'ccdirector' => null,                                                 
+      ],'hv_idpersonal ='.$idsinfo.'')->execute();
 
       Yii::$app->db->createCommand()->insert('tbl_logs', [
         'usua_id' => Yii::$app->user->identity->id,
@@ -2451,7 +2453,9 @@ use Exception;
     }
 
     public function actionDeletegerente($id,$idsinfo){
-      HojavidaDatagerente::findOne($id)->delete();
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
+          'ccgerente' => null,                                                 
+      ],'hv_idpersonal ='.$idsinfo.'')->execute();
 
       Yii::$app->db->createCommand()->insert('tbl_logs', [
         'usua_id' => Yii::$app->user->identity->id,
