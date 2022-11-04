@@ -380,7 +380,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     dp.hv_idpersonal = :idhvaccion
                   GROUP BY dc.id_dp_cliente')->bindValues($paramsidcliente)->queryScalar();
             ?>
-            <?=  $form->field($model4, 'id_dp_cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes = $varIdCliente")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+            <?=  $form->field($model4, 'id_dp_cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                           [
                                               'prompt'=>'Seleccionar...',
                                               'onchange' => '
