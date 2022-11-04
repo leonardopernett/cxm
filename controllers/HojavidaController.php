@@ -3655,8 +3655,7 @@ use Exception;
                           ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
                           ->from(['tbl_proceso_cliente_centrocosto'])            
                           ->where(['=','tbl_proceso_cliente_centrocosto.documento_director',$value['documentodirector']])
-                          ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
-                          ->groupby(['tbl_proceso_cliente_centrocosto.director_programa'])
+                          ->limit(1)
                           ->Scalar(); 
 
       $phpExc->getActiveSheet()->setCellValue('AC'.$numCell, $varNombreDirector);      
@@ -3666,8 +3665,7 @@ use Exception;
                           ->select(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
                           ->from(['tbl_proceso_cliente_centrocosto'])            
                           ->where(['=','tbl_proceso_cliente_centrocosto.documento_gerente',$value['documentogerente']])
-                          ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
-                          ->groupby(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
+                          ->limit(1)
                           ->Scalar(); 
       $phpExc->getActiveSheet()->setCellValue('AE'.$numCell, $varNombreGerente);
       $phpExc->getActiveSheet()->setCellValue('AF'.$numCell, $value['documentogerente']);
