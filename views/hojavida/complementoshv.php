@@ -338,6 +338,49 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
       </div>
+      <br>
+
+      <div class="row">   
+        <div class="col-md-6">
+          <div class="card1 mb">
+            <label style="font-size: 15px;"><em class="fas fa-external-link-square-alt" style="font-size: 15px; color: #FFC72C;"></em> Intereses / Gustos </label>
+
+            <?= $form->field($model6, 'sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idsociedades', 'placeholder'=>'Ingresar Sociedad'])?>
+
+            <div onclick="generatedsociedad();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
+                  Guardar
+            </div>
+            <br>
+            <table id="tblDatasociedades" class="table table-striped table-bordered tblResDetFreed">
+              <caption>Resultados</caption>
+              <thead>
+                <tr>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'ID') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sociedad') ?></label></th>
+                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  foreach ($dataProviderSociedades as $key => $value) {                    
+                ?>
+                  <tr>
+                    <td><label style="font-size: 12px;"><?php echo  $value['id_sociedad']; ?></label></td>
+                    <td><label style="font-size: 12px;"><?php echo  $value['sociedad']; ?></label></td>
+                    <td class="text-center">
+                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarsociedades','id'=> $value['id_sociedad']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                    </td>
+                  </tr>
+                <?php
+                  }
+                ?>
+              </tbody>
+            </table>
+
+
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -490,6 +533,28 @@ $this->params['breadcrumbs'][] = $this->title;
         url: "ingresarclasificar",
         data: {
           txtvaridclasificar : varidclasificar,
+        },
+        success : function(response){
+          numRta =   JSON.parse(response);          
+          location.reload();
+        }
+      });
+    }
+  };
+
+  function generatedsociedad(){
+    var varidsociedades = document.getElementById("idsociedades").value;
+    
+    if (varidsociedades == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Debe de ingresar una sociedad","warning");
+      return;
+    }else{
+      $.ajax({
+        method: "get",
+        url: "ingresarsociedades",
+        data: {
+          txtvaridsociedades : varidsociedades,
         },
         success : function(response){
           numRta =   JSON.parse(response);          

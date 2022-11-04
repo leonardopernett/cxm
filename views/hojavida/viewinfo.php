@@ -157,6 +157,8 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha de Cumpleaños') ?></label></th>
                 <td><label style="font-size: 12px;"><?php echo  $varCumple; ?></label></td>
+                <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sociedad') ?></label></th>
+                <td><label style="font-size: 12px;"><?php echo  $value['sociedad']; ?></label></td>
               </tr>
             </tbody>
           </table>

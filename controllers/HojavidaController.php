@@ -44,6 +44,7 @@ use app\models\Hojavidaroles;
 use app\models\Hojavidainforme;
 use app\models\Hojavidaperiocidad;
 use app\models\Hojavidametricas;
+use app\models\Hojavidasociedad;
 use Exception;
 
   class HojavidaController extends Controller {
@@ -1669,6 +1670,7 @@ use Exception;
       $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
       $txtvarfechacumple = Yii::$app->request->get("txtvarfechacumple");
+      $txtvaridsociedad = Yii::$app->request->get("txtvaridsociedad");
 
       $txtrta = 0;
       Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
@@ -1689,7 +1691,8 @@ use Exception;
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,  
-                    'fechacumple' => $txtvarfechacumple,                                             
+                    'fechacumple' => $txtvarfechacumple,   
+                    'id_sociedad' => $txtvaridsociedad,                                             
                 ])->execute();
 
 
@@ -1911,7 +1914,8 @@ use Exception;
                         'if(tbl_hojavida_datalaboral.nivel_afinidad=1,"Estratégico","Operativo") AS NivelAfinidad',
                         'tbl_hojavida_datapcrc.id_dp_cliente AS IdCliente',
                         'tbl_hojavida_datapersonal.fechacumple',
-                        'tbl_hojavida_datalaboral.areatrabajo'
+                        'tbl_hojavida_datalaboral.areatrabajo',
+                        'tbl_hojavida_sociedad.sociedad'
                       ])
 
                       ->from(['tbl_hojavida_datapersonal']) 
@@ -1934,6 +1938,9 @@ use Exception;
                       ->join('LEFT OUTER JOIN', 'tbl_hojavida_datapcrc',
                           'tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
 
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_sociedad',
+                          'tbl_hojavida_sociedad.id_sociedad = tbl_hojavida_datapersonal.id_sociedad') 
+
                       ->where(['=','tbl_hojavida_datapersonal.hv_idpersonal',$idinfo])
                       ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
                       ->All();
@@ -1950,6 +1957,7 @@ use Exception;
       $model3 = new HvHobbies();
       $model4 = new HvGustos();
       $model5 = new HojavidaDataclasificacion();
+      $model6 = new Hojavidasociedad();
 
       $dataProviderCivil = HojavidaDatacivil::find()
                             ->asArray()
@@ -1975,6 +1983,10 @@ use Exception;
                                     ->asArray()
                                     ->all();
 
+      $dataProviderSociedades = Hojavidasociedad::find()
+                                ->asArray()
+                                ->all();
+
       return $this->render('complementoshv',[
         'model' => $model,
         'dataProviderCivil' => $dataProviderCivil,
@@ -1988,6 +2000,8 @@ use Exception;
         'dataProvidergustos' => $dataProvidergustos,
         'model5' => $model5,
         'dataProviderClasificacion' => $dataProviderClasificacion,
+        'model6' => $model6,
+        'dataProviderSociedades' => $dataProviderSociedades,
 
       ]);
     }
@@ -2404,6 +2418,7 @@ use Exception;
       $model5 = new HojavidaDatadirector();
       $model6 = new HojavidaDatagerente();
       $model7 = new HojavidaEventos();
+      $model8 = new Hojavidasociedad();
 
 
       return $this->render('editinfo',[
@@ -2417,6 +2432,7 @@ use Exception;
         'idinfo' => $idinfo,
         'varActivo' => $varActivo,
         'varServicioClienteId' => $varServicioClienteId,
+        'model8' => $model8,
       ]);
     }
 
@@ -2547,6 +2563,7 @@ use Exception;
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
       $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
       $txtvarfechacumple = Yii::$app->request->get("txtvarfechacumple");
+      $txtvarsociedad = Yii::$app->request->get("txtvarsociedad");
 
       $txtrta = 0;
       
@@ -2566,7 +2583,8 @@ use Exception;
                     'suceptible' => $txtvaridsusceptible,
                     'indicador_satu' => $txtvaridsatu,
                     'clasificacion' => $txtvarclasificacion,
-                    'fechacumple' => $txtvarfechacumple,                                                 
+                    'fechacumple' => $txtvarfechacumple,   
+                    'id_sociedad' => $txtvarsociedad,                                                   
                 ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
 
       
@@ -4773,6 +4791,26 @@ $modelos = new HojavidaDatapersonal();
                 ])->execute(); 
 
     die(json_encode($txtvaridclasificar));
+
+  }
+
+  public function actionEliminarsociedades($id){
+      Hojavidasociedad::findOne($id)->delete();
+
+      return $this->redirect(['complementoshv']);
+  }
+
+  public function actionIngresarsociedades(){
+    $txtvaridsociedades = Yii::$app->request->get("txtvaridsociedades");
+
+    Yii::$app->db->createCommand()->insert('tbl_hojavida_sociedad',[
+                    'sociedad' => $txtvaridsociedades,
+                    'anulado' => 0,
+                    'fechacreacion' => date('Y-m-d'),
+                    'usua_id' => Yii::$app->user->identity->id,                                 
+                ])->execute(); 
+
+    die(json_encode($txtvaridsociedades));
 
   }
 

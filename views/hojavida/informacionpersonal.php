@@ -247,6 +247,18 @@ $this->params['breadcrumbs'][] = $this->title;
             <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Estado Actual: </label>
             <?= $form->field($model3, "activo", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varEstado, ['prompt' => 'Seleccionar...', 'id'=>"idestado"]) ?>
           </div>
+        </div>        
+
+        <div class="row">
+          <div class="col-md-4">
+            <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Sociedad: </label>
+            <?=  $form->field($model, 'id_sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Hojavidasociedad::find()->distinct()->orderBy(['id_sociedad'=> SORT_ASC])->all(), 'id_sociedad', 'sociedad'),
+                                        [
+                                            'prompt'=>'Seleccionar...',
+                                        ]
+                            )->label(''); 
+            ?>
+          </div>
         </div>
         
 
@@ -638,6 +650,7 @@ $this->params['breadcrumbs'][] = $this->title;
     var varFechaDia = document.getElementById("IdDiaFecha").value;
 
     var varfechacumple = varFechaMes+'; '+varFechaDia;
+    var varidsociedad = document.getElementById("hojavidadatapersonal-id_sociedad").value;
 
     if (varididentificacion == "") {
 
@@ -813,6 +826,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   txtvaridsatu : varidsatu,
                   txtvarclasificacion : varclasificacion,
                   txtvarfechacumple : varfechacumple,
+                  txtvaridsociedad : varidsociedad,
                 },
                 success : function(response){
                   numRta =   JSON.parse(response);
