@@ -3206,81 +3206,113 @@ use Exception;
     $varCorreo = Yii::$app->request->post("email");
 
 
-    $varlistusuarios = Yii::$app->db->createCommand("SELECT p.nombre_full AS nombre, p.identificacion AS identificacion,
-    p.direccion_oficina AS hvdireccionoficina , p.direccion_casa AS hvdireccioncasa,
-    p.email AS hvemailcorporativo , p.numero_movil AS hvmovil, p.numero_fijo AS hvcontactooficina,
-    pa.pais AS hvpais , ci.ciudad AS hvciudad , m.modalidad AS hvmodalidadtrabajo, p.indicador_satu,
-    p.fechacreacion, a.afinidad AS afinidad , t.tipoafinidad AS tipo , n.nivelafinidad , c.cantidadhijos ,
-    civ.estadocivil, c.NombreHijos , h.text AS hobbie , g.text AS gustos, cla.ciudadclasificacion, ant.antiguedad,
-    l.nombre_jefe, l.rol, l.trabajo_anterior, l.fecha_inicio_contacto, social.estilosocial, 
-    if(p.tratamiento_data=1,'NO',if(p.tratamiento_data=2,'Si','NA')) AS tratamiento,
-    if(da.activo=1,'Activo','No Activo') AS estados,    
-    if(p.suceptible=1,'No','Si') AS suceptible,
-    pcc.director_programa AS director, pcc.documento_director AS documentodirector,
-    pcc.gerente_cuenta AS gerente, pcc.documento_gerente AS documentogerente, pcc.cliente AS cliente
-    
-    FROM tbl_hojavida_datapersonal p
-    
-    LEFT JOIN   tbl_hojavida_dataclasificacion cla
-    ON cla.hv_idclasificacion = p.clasificacion
-    
-    LEFT JOIN   tbl_hojavida_datalaboral l
-    ON p.hv_idpersonal = l.hv_idpersonal
-    
-    LEFT JOIN tbl_hv_antiguedad_rol ant
-    ON ant.hv_id_antiguedad = l.hv_id_antiguedad
-    
-    LEFT JOIN  tbl_hv_pais pa
-    ON pa.hv_idpais = p.hv_idpais
-    
-    LEFT JOIN  tbl_hv_ciudad ci
-    ON ci.hv_idciudad = p.hv_idciudad
-    
-    LEFT JOIN tbl_hojavida_dataafinidad a
-    ON a.hv_idafinidad = l.afinidad
-    
-    LEFT JOIN tbl_hojavida_datatipoafinidad t
-    on t.hv_idtipoafinidad = l.tipo_afinidad
-    
-    LEFT JOIN tbl_hojavida_datanivelafinidad n
-    ON n.hv_idinvelafinidad = l.tipo_afinidad
-    
-    LEFT JOIN tbl_hv_modalidad_trabajo m
-    ON m.hv_idmodalidad = p.hv_idmodalidad
-    
-    LEFT JOIN tbl_hojavida_datacomplementos c
-    ON c.hv_idpersonal = p.hv_idpersonal
-    
-    LEFT JOIN tbl_hv_hobbies h
-    ON h.id = c.idhobbies
-    
-    LEFT JOIN tbl_hv_gustos g
-    on g.id = c.idgustos
-    
-    LEFT JOIN  tbl_hv_estilosocial social
-    on social.idestilosocial = c.idestilosocial
-    
-    LEFT JOIN tbl_hojavida_datacivil civ
-    ON civ.hv_idcivil = c.hv_idcivil
+    $varlistusuarios = Yii::$app->db->createCommand("
+    SELECT
+      tbl_hojavida_datapersonal.hv_idpersonal ,
+      tbl_hojavida_datapersonal.nombre_full AS nombre,
+      tbl_hojavida_datapersonal.identificacion AS identificacion,
+      tbl_hojavida_datapersonal.direccion_oficina AS hvdireccionoficina,
+      tbl_hojavida_datapersonal.direccion_casa AS hvdireccioncasa,
+      tbl_hojavida_datapersonal.email AS hvemailcorporativo,
+      tbl_hojavida_datapersonal.numero_movil AS hvmovil,
+      tbl_hojavida_datapersonal.numero_fijo AS hvcontactooficina,
+      tbl_hv_pais.pais AS hvpais,
+      tbl_hv_ciudad.ciudad AS hvciudad,
+      tbl_hv_modalidad_trabajo.modalidad AS hvmodalidadtrabajo,
+      tbl_hojavida_datapersonal.indicador_satu,
+      tbl_hojavida_datapersonal.fechacreacion,
+      tbl_hojavida_dataafinidad.afinidad AS afinidad,
+      tbl_hojavida_datatipoafinidad.tipoafinidad AS tipo,
+      tbl_hojavida_datanivelafinidad.nivelafinidad,
+      tbl_hojavida_datacomplementos.cantidadhijos,
+      tbl_hojavida_datacivil.estadocivil, 
+      tbl_hojavida_datacomplementos.NombreHijos,
+      tbl_hv_hobbies.text AS hobbies,
+      tbl_hv_gustos.text AS gustos,
+      tbl_hojavida_dataclasificacion.ciudadclasificacion,
+      tbl_hv_antiguedad_rol.antiguedad,
+      tbl_hojavida_datalaboral.nombre_jefe,
+      tbl_hojavida_datalaboral.rol,
+      tbl_hojavida_datalaboral.trabajo_anterior,
+      tbl_hojavida_datalaboral.fecha_inicio_contacto,
+      tbl_hv_estilosocial.estilosocial,
+      if(tbl_hojavida_datapersonal.tratamiento_data=1,'No','Si') AS tratamiento,
+      tbl_hojavida_datadirector.ccdirector AS documentodirector,
+      tbl_hojavida_datagerente.ccgerente AS documentogerente,
+      tbl_proceso_cliente_centrocosto.cliente AS cliente,
+      if(tbl_hojavida_dataacademica.activo=1,'Activo','No Activo') AS estados,
+      if(tbl_hojavida_datapersonal.suceptible=1,'No','Si') AS suceptible  
+  
+    FROM tbl_hojavida_datapersonal
 
-    LEFT JOIN tbl_hojavida_dataacademica da
-    ON da.hv_idpersonal = p.hv_idpersonal
-    
-    LEFT JOIN tbl_hojavida_datapcrc hp
-    ON hp.hv_idpersonal = p.hv_idpersonal
-    
-    LEFT JOIN tbl_hojavida_datadirector dt
-    ON dt.hv_idpersonal = p.hv_idpersonal
-	 
-	  LEFT JOIN tbl_hojavida_datagerente dg
-	  ON dg.hv_idpersonal = p.hv_idpersonal
-    
-    LEFT JOIN tbl_proceso_cliente_centrocosto pcc
-    ON pcc.documento_director = dt.ccdirector
-    	AND pcc.documento_gerente = dg.ccgerente
-        AND pcc.id_dp_clientes = hp.id_dp_cliente
+    LEFT JOIN tbl_hv_pais ON 
+      tbl_hv_pais.hv_idpais = tbl_hojavida_datapersonal.hv_idpais
+      
+    LEFT JOIN tbl_hv_ciudad ON 
+      tbl_hv_ciudad.hv_idciudad = tbl_hojavida_datapersonal.hv_idciudad
+      
+    LEFT JOIN tbl_hv_modalidad_trabajo ON 
+      tbl_hv_modalidad_trabajo.hv_idmodalidad = tbl_hojavida_datapersonal.hv_idmodalidad
+      
+    LEFT JOIN tbl_hojavida_datalaboral ON 
+      tbl_hojavida_datalaboral.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+      
+    LEFT JOIN tbl_hojavida_dataafinidad ON 
+      tbl_hojavida_dataafinidad.hv_idafinidad = tbl_hojavida_datalaboral.afinidad
+      
+    LEFT JOIN tbl_hojavida_datatipoafinidad ON 
+      tbl_hojavida_datatipoafinidad.hv_idtipoafinidad = tbl_hojavida_datalaboral.tipo_afinidad
+      
+    LEFT JOIN tbl_hojavida_datanivelafinidad ON 
+      tbl_hojavida_datanivelafinidad.hv_idinvelafinidad = tbl_hojavida_datalaboral.nivel_afinidad
+      
+    LEFT JOIN tbl_hojavida_dataclasificacion ON 
+      tbl_hojavida_dataclasificacion.hv_idclasificacion = tbl_hojavida_datapersonal.clasificacion
+      
+    LEFT JOIN tbl_hojavida_datacomplementos ON 
+      tbl_hojavida_datacomplementos.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+      
+    LEFT JOIN tbl_hojavida_datacivil ON 
+      tbl_hojavida_datacivil.hv_idcivil = tbl_hojavida_datacomplementos.hv_idcivil
+      
+    LEFT JOIN tbl_hv_hobbies ON 
+      tbl_hv_hobbies.id = tbl_hojavida_datacomplementos.idhobbies
+      
+    LEFT JOIN tbl_hv_gustos ON 
+      tbl_hv_gustos.id = tbl_hojavida_datacomplementos.idgustos
+      
+    LEFT JOIN tbl_hv_antiguedad_rol ON 
+      tbl_hv_antiguedad_rol.hv_id_antiguedad = tbl_hojavida_datalaboral.hv_id_antiguedad
+      
+    LEFT JOIN tbl_hv_estilosocial ON 
+      tbl_hv_estilosocial.idestilosocial = tbl_hojavida_datacomplementos.idestilosocial
+      
+    INNER JOIN tbl_hojavida_datadirector ON 
+      tbl_hojavida_datadirector.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+        AND tbl_hojavida_datadirector.anulado = 0
+          AND tbl_hojavida_datadirector.ccdirector != ''
         
-    GROUP BY p.identificacion")->queryAll();
+    LEFT JOIN tbl_hojavida_datagerente ON 
+      tbl_hojavida_datagerente.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+        AND tbl_hojavida_datagerente.anulado = 0
+          AND tbl_hojavida_datagerente.ccgerente != ''
+          
+    LEFT JOIN tbl_hojavida_datapcrc ON 
+      tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+        AND tbl_hojavida_datapcrc.anulado = 0
+        
+    INNER JOIN tbl_proceso_cliente_centrocosto ON 
+      tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_hojavida_datapcrc.id_dp_cliente
+      
+          
+    LEFT JOIN tbl_hojavida_dataacademica ON 
+      tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+        AND tbl_hojavida_dataacademica.anulado = 0
+        
+    
+    WHERE 
+      tbl_hojavida_datapersonal.anulado = 0
+    GROUP BY tbl_hojavida_datapersonal.hv_idpersonal")->queryAll();
 
     $phpExc = new \PHPExcel();
     $phpExc->getProperties()
@@ -3619,9 +3651,25 @@ use Exception;
       $phpExc->getActiveSheet()->setCellValue('AA'.$numCell, $value['estilosocial']);
       $phpExc->getActiveSheet()->setCellValue('AB'.$numCell, $value['tratamiento']);
       
-      $phpExc->getActiveSheet()->setCellValue('AC'.$numCell, $value['director']);
+      $varNombreDirector = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])            
+                          ->where(['=','tbl_proceso_cliente_centrocosto.documento_director',$value['director']])
+                          ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                          ->groupby(['tbl_proceso_cliente_centrocosto.director_programa'])
+                          ->Scalar(); 
+
+      $phpExc->getActiveSheet()->setCellValue('AC'.$numCell, $varNombreDirector);      
       $phpExc->getActiveSheet()->setCellValue('AD'.$numCell, $value['documentodirector']);
-      $phpExc->getActiveSheet()->setCellValue('AE'.$numCell, $value['gerente']);
+
+      $varNombreGerente = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])            
+                          ->where(['=','tbl_proceso_cliente_centrocosto.documento_gerente',$value['gerente']])
+                          ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                          ->groupby(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
+                          ->Scalar(); 
+      $phpExc->getActiveSheet()->setCellValue('AE'.$numCell, $varNombreGerente);
       $phpExc->getActiveSheet()->setCellValue('AF'.$numCell, $value['documentogerente']);
       $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $value['cliente']);
 
@@ -3703,59 +3751,55 @@ use Exception;
 
     $varlistusuarios = (new \yii\db\Query())
                       ->select([
-                        'tbl_hojavida_datapersonal.nombre_full AS nombre', 
+                        'tbl_hojavida_datapersonal.hv_idpersonal',
+                        'tbl_hojavida_datapersonal.nombre_full AS nombre',
                         'tbl_hojavida_datapersonal.identificacion AS identificacion',
-                        'tbl_hojavida_datapersonal.direccion_oficina AS hvdireccionoficina', 
+                        'tbl_hojavida_datapersonal.direccion_oficina AS hvdireccionoficina',
                         'tbl_hojavida_datapersonal.direccion_casa AS hvdireccioncasa',
-                        'tbl_hojavida_datapersonal.email AS hvemailcorporativo', 
-                        'tbl_hojavida_datapersonal.numero_movil AS hvmovil', 
+                        'tbl_hojavida_datapersonal.email AS hvemailcorporativo',
+                        'tbl_hojavida_datapersonal.numero_movil AS hvmovil',
                         'tbl_hojavida_datapersonal.numero_fijo AS hvcontactooficina',
-                        'tbl_hv_pais.pais AS hvpais', 
-                        'tbl_hv_ciudad.ciudad AS hvciudad', 
-                        'tbl_hv_modalidad_trabajo.modalidad AS hvmodalidadtrabajo', 
+                        'tbl_hv_pais.pais AS hvpais',
+                        'tbl_hv_ciudad.ciudad AS hvciudad',
+                        'tbl_hv_modalidad_trabajo.modalidad AS hvmodalidadtrabajo',
                         'tbl_hojavida_datapersonal.indicador_satu',
-                        'tbl_hojavida_datapersonal.fechacreacion', 
-                        'tbl_hojavida_dataafinidad.afinidad AS afinidad', 
-                        'tbl_hojavida_datatipoafinidad.tipoafinidad AS tipo', 
-                        'tbl_hojavida_datanivelafinidad.nivelafinidad', 
+                        'tbl_hojavida_datapersonal.fechacreacion',
+                        'tbl_hojavida_dataafinidad.afinidad AS afinidad',
+                        'tbl_hojavida_datatipoafinidad.tipoafinidad AS tipo',
+                        'tbl_hojavida_datanivelafinidad.nivelafinidad',
                         'tbl_hojavida_datacomplementos.cantidadhijos',
                         'tbl_hojavida_datacivil.estadocivil', 
-                        'tbl_hojavida_datacomplementos.NombreHijos', 
-                        'tbl_hv_hobbies.text AS hobbie', 
-                        'tbl_hv_gustos.text AS gustos', 
-                        'tbl_hojavida_dataclasificacion.ciudadclasificacion', 
+                        'tbl_hojavida_datacomplementos.NombreHijos',
+                        'tbl_hv_hobbies.text AS hobbies',
+                        'tbl_hv_gustos.text AS gustos',
+                        'tbl_hojavida_dataclasificacion.ciudadclasificacion',
                         'tbl_hv_antiguedad_rol.antiguedad',
-                        'tbl_hojavida_datalaboral.nombre_jefe', 
-                        'tbl_hojavida_datalaboral.rol  as cargo_jefe', 
-                        'tbl_hojavida_datalaboral.trabajo_anterior', 
-                        'tbl_hojavida_datalaboral.fecha_inicio_contacto', 
-                        'tbl_hv_estilosocial.estilosocial', 
-                        'if(tbl_hojavida_datapersonal.tratamiento_data=1,"NO",if(tbl_hojavida_datapersonal.tratamiento_data=2,"Si","NA")) AS tratamiento',
+                        'tbl_hojavida_datalaboral.nombre_jefe',
+                        'tbl_hojavida_datalaboral.rol',
+                        'tbl_hojavida_datalaboral.trabajo_anterior',
+                        'tbl_hojavida_datalaboral.fecha_inicio_contacto',
+                        'tbl_hv_estilosocial.estilosocial',
+                        'if(tbl_hojavida_datapersonal.tratamiento_data=1,"No","Si") AS tratamiento',
+                        'tbl_hojavida_datadirector.ccdirector AS documentodirector',
+                        'tbl_hojavida_datagerente.ccgerente AS documentogerente',
+                        'tbl_proceso_cliente_centrocosto.cliente AS cliente',
                         'if(tbl_hojavida_dataacademica.activo=1,"Activo","No Activo") AS estados',
-                        'if(tbl_hojavida_datapersonal.suceptible=1,"No","Si") AS suceptible',
-                        'tbl_proceso_cliente_centrocosto.director_programa AS director', 
-                        'tbl_proceso_cliente_centrocosto.documento_director AS documentodirector',
-                        'tbl_proceso_cliente_centrocosto.gerente_cuenta AS gerente', 
-                        'tbl_proceso_cliente_centrocosto.documento_gerente AS documentogerente', 
-                        'tbl_proceso_cliente_centrocosto.cliente AS cliente'
+                        'if(tbl_hojavida_datapersonal.suceptible=1,"No","Si") AS suceptible'
                       ])
 
                       ->from(['tbl_hojavida_datapersonal']) 
 
-                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_dataclasificacion',
-                          'tbl_hojavida_dataclasificacion.hv_idclasificacion = tbl_hojavida_datapersonal.clasificacion') 
-
-                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_datalaboral',
-                          'tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datalaboral.hv_idpersonal')
-
-                      ->join('LEFT OUTER JOIN', 'tbl_hv_antiguedad_rol',
-                          'tbl_hv_antiguedad_rol.hv_id_antiguedad = tbl_hojavida_datalaboral.hv_id_antiguedad') 
-
                       ->join('LEFT OUTER JOIN', 'tbl_hv_pais',
-                          'tbl_hv_pais.hv_idpais = tbl_hojavida_datapersonal.hv_idpais')
+                          'tbl_hv_pais.hv_idpais = tbl_hojavida_datapersonal.hv_idpais') 
 
                       ->join('LEFT OUTER JOIN', 'tbl_hv_ciudad',
                           'tbl_hv_ciudad.hv_idciudad = tbl_hojavida_datapersonal.hv_idciudad') 
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hv_modalidad_trabajo',
+                          'tbl_hv_modalidad_trabajo.hv_idmodalidad = tbl_hojavida_datapersonal.hv_idmodalidad') 
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_datalaboral',
+                          'tbl_hojavida_datalaboral.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
 
                       ->join('LEFT OUTER JOIN', 'tbl_hojavida_dataafinidad',
                           'tbl_hojavida_dataafinidad.hv_idafinidad = tbl_hojavida_datalaboral.afinidad') 
@@ -3764,13 +3808,16 @@ use Exception;
                           'tbl_hojavida_datatipoafinidad.hv_idtipoafinidad = tbl_hojavida_datalaboral.tipo_afinidad') 
 
                       ->join('LEFT OUTER JOIN', 'tbl_hojavida_datanivelafinidad',
-                          'tbl_hojavida_datanivelafinidad.hv_idinvelafinidad = tbl_hojavida_datalaboral.tipo_afinidad') 
+                          'tbl_hojavida_datanivelafinidad.hv_idinvelafinidad = tbl_hojavida_datalaboral.nivel_afinidad') 
 
-                      ->join('LEFT OUTER JOIN', 'tbl_hv_modalidad_trabajo',
-                          'tbl_hv_modalidad_trabajo.hv_idmodalidad = tbl_hojavida_datapersonal.hv_idmodalidad') 
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_dataclasificacion',
+                          'tbl_hojavida_dataclasificacion.hv_idclasificacion = tbl_hojavida_datapersonal.clasificacion') 
 
                       ->join('LEFT OUTER JOIN', 'tbl_hojavida_datacomplementos',
                           'tbl_hojavida_datacomplementos.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_datacivil',
+                          'tbl_hojavida_datacivil.hv_idcivil = tbl_hojavida_datacomplementos.hv_idcivil') 
 
                       ->join('LEFT OUTER JOIN', 'tbl_hv_hobbies',
                           'tbl_hv_hobbies.id = tbl_hojavida_datacomplementos.idhobbies') 
@@ -3778,23 +3825,36 @@ use Exception;
                       ->join('LEFT OUTER JOIN', 'tbl_hv_gustos',
                           'tbl_hv_gustos.id = tbl_hojavida_datacomplementos.idgustos') 
 
+                      ->join('LEFT OUTER JOIN', 'tbl_hv_antiguedad_rol',
+                          'tbl_hv_antiguedad_rol.hv_id_antiguedad = tbl_hojavida_datalaboral.hv_id_antiguedad') 
+
                       ->join('LEFT OUTER JOIN', 'tbl_hv_estilosocial',
                           'tbl_hv_estilosocial.idestilosocial = tbl_hojavida_datacomplementos.idestilosocial') 
 
-                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_datacivil',
-                          'tbl_hojavida_datacivil.hv_idcivil = tbl_hojavida_datacomplementos.hv_idcivil') 
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_datadirector',
+                          'tbl_hojavida_datadirector.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+                            AND tbl_hojavida_datadirector.anulado = 0
+                              AND tbl_hojavida_datadirector.ccdirector != ""') 
 
-                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_dataacademica',
-                          'tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_datagerente',
+                          'tbl_hojavida_datagerente.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+                            AND tbl_hojavida_datagerente.anulado = 0
+                              AND tbl_hojavida_datagerente.ccgerente != ""') 
 
                       ->join('LEFT OUTER JOIN', 'tbl_hojavida_datapcrc',
-                          'tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal')
+                          'tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+                            AND tbl_hojavida_datapcrc.anulado = 0') 
 
                       ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
-                          'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_hojavida_datapcrc.id_dp_cliente')
+                          'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_hojavida_datapcrc.id_dp_cliente') 
 
-                      ->where(['IN','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varDataPermisos])
-                      ->groupby(['tbl_hojavida_datapersonal.identificacion'])
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_dataacademica',
+                          'tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
+                            AND tbl_hojavida_dataacademica.anulado = 0') 
+
+                      ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                      ->andwhere(['in','tbl_hojavida_datapcrc.id_dp_cliente',$varDataPermisos])
+                      ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
                       ->All();
 
     $phpExc = new \PHPExcel();
