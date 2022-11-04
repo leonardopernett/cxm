@@ -1036,13 +1036,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     }else{
 
-      if (varididentificacion.length <= 5) {
-
-        event.preventDefault();
-        swal.fire("!!! Advertencia !!!","Cantidad de caracteres no permitidos, ingrese el documento de identidad.","warning");
-        return;
-
-      }else{
+      
 
             if (varidnombrefull == "") {
               event.preventDefault();
@@ -1260,7 +1254,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
 
             window.open('../hojavida/index','_self');
-      }
+      
     }
 
   };
