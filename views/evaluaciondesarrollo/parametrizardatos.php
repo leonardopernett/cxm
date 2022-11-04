@@ -411,7 +411,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="card1 mb">
-                                        <?php if($sessiones == '2953' || $sessiones == '0' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229' || $sessiones == '6080') { ?>
+                                        <?php if($sessiones == '2953' || $sessiones == '0' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229' || $sessiones == '6080' || $sessiones == '69' || $sessiones == '5658') { ?>
                                             <label style="font-size: 15px;"> Ingresar Nombre Evaluacion: </label>
                                             <?= $form->field($model2, 'nombreeval')->textInput(['maxlength' => 250, 'id'=>'IdEvaluacion']) ?>
                                             <br>
@@ -451,7 +451,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <div class="col-md-6">
                                     <div class="card1 mb">
-                                        <?php if($sessiones == '2953' || $sessiones == '0' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229' || $sessiones == '6080') { ?>
+                                        <?php if($sessiones == '2953' || $sessiones == '0' || $sessiones == '3205' || $sessiones == '3468' || $sessiones == '3229' || $sessiones == '6080' || $sessiones == '69' || $sessiones == '5658') { ?>
                                             <label style="font-size: 15px;"> Ingresar Tipo Evaluacion: </label>
                                             <?= $form->field($model3, 'tipoevaluacion')->textInput(['maxlength' => 250,  'id'=>'IdTipoEvaluacion']) ?>
                                             <br>
