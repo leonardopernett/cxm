@@ -2421,7 +2421,10 @@ use Exception;
     }
 
     public function actionDeletepcrc($id,$idsinfo){
-      HojavidaDatapcrc::findOne($id)->delete();
+      Yii::$app->db->createCommand()->update('tbl_hojavida_datapcrc',[
+        'cod_pcrc' => null,    
+        'anulado' => 1,                                             
+      ],'hv_idpersonal ='.$idsinfo.' AND hv_idpcrc ='.$id.'')->execute();
 
       Yii::$app->db->createCommand()->insert('tbl_logs', [
         'usua_id' => Yii::$app->user->identity->id,
@@ -2437,8 +2440,9 @@ use Exception;
 
     public function actionDeletedirector($id,$idsinfo){
       Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
-          'ccdirector' => null,                                                 
-      ],'hv_idpersonal ='.$idsinfo.'')->execute();
+        'ccdirector' => null,  
+        'anulado' => 1,                                               
+      ],'hv_idpersonal ='.$idsinfo.' AND hv_iddirector = '.$id.'')->execute();
 
       Yii::$app->db->createCommand()->insert('tbl_logs', [
         'usua_id' => Yii::$app->user->identity->id,
@@ -2454,8 +2458,9 @@ use Exception;
 
     public function actionDeletegerente($id,$idsinfo){
       Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
-          'ccgerente' => null,                                                 
-      ],'hv_idpersonal ='.$idsinfo.'')->execute();
+        'ccgerente' => null,            
+        'anulado' => 1,                                     
+      ],'hv_idpersonal ='.$idsinfo.' AND hv_idgerente = '.$id.'')->execute();
 
       Yii::$app->db->createCommand()->insert('tbl_logs', [
         'usua_id' => Yii::$app->user->identity->id,
@@ -2607,44 +2612,56 @@ use Exception;
       $txtvaridrequester2 = Yii::$app->request->get("txtvaridrequester2");
       $txtvaridrequester3 = Yii::$app->request->get("txtvaridrequester3");
       
-      $txtrta = 0;  
+      $txtrta = 0; 
 
-      $array_codpcrc = count($txtvaridrequester);
-      for ($i=0; $i < $array_codpcrc; $i++) { 
-        $varcodpcrc = $txtvaridrequester[$i];
+      if ($txtvaridrequester != "") {
 
-        $varVerificarAutopcrc = (new \yii\db\Query())
-                                ->select(['hv_idpcrc'])
-                                ->from(['tbl_hojavida_datapcrc'])            
-                                ->where(['=','hv_idpersonal',$txtvarautoincrement])
-                                ->andwhere(['=','cod_pcrc',$varcodpcrc])
-                                ->count();
+        $array_codpcrc = count($txtvaridrequester);
+        for ($i=0; $i < $array_codpcrc; $i++) { 
+          $varcodpcrc = $txtvaridrequester[$i];
 
-        if ($varVerificarAutopcrc == "0") {
-          Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc', [
-            'hv_idpersonal' => $txtvarautoincrement,
-            'id_dp_cliente' => $txtvarid_dp_cliente,
-            'cod_pcrc' => $varcodpcrc,
-            'anulado' => 0,
-            'fechacreacion' => date('Y-m-d'),
-            'usua_id' => Yii::$app->user->identity->id,
-          ])->execute();
+          $varVerificarAutopcrc = (new \yii\db\Query())
+                                  ->select(['hv_idpcrc'])
+                                  ->from(['tbl_hojavida_datapcrc'])            
+                                  ->where(['=','hv_idpersonal',$txtvarautoincrement])
+                                  ->andwhere(['=','cod_pcrc',$varcodpcrc])  
+                                  ->andwhere(['=','anulado',0])                              
+                                  ->all();
+
+          if (count($varVerificarAutopcrc) == "0") {
+            Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc', [
+              'hv_idpersonal' => $txtvarautoincrement,
+              'id_dp_cliente' => $txtvarid_dp_cliente,
+              'cod_pcrc' => $varcodpcrc,
+              'anulado' => 0,
+              'fechacreacion' => date('Y-m-d'),
+              'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+          }else{
+            foreach ($varVerificarAutopcrc as $key => $value) {
+              Yii::$app->db->createCommand()->update('tbl_hojavida_datapcrc',[
+                'cod_pcrc' => $varcodpcrc,                                                 
+              ],'hv_idpcrc ='.$value['hv_idpcrc'].'')->execute();
+            }          
+          }
+            
         }
-          
       }
+      
 
       $array_director = count($txtvaridrequester2);
       for ($i=0; $i < $array_director; $i++) { 
-        $vardirector = $txtvaridrequester2[$i];
+        $vardirector = substr($txtvaridrequester2[$i],0,-4);
 
         $varVerificarAutoDirector = (new \yii\db\Query())
-                                ->select(['hv_idpcrc'])
+                                ->select(['hv_iddirector'])
                                 ->from(['tbl_hojavida_datadirector'])            
                                 ->where(['=','hv_idpersonal',$txtvarautoincrement])
                                 ->andwhere(['=','ccdirector',$vardirector])
-                                ->count();
+                                ->andwhere(['=','anulado',0]) 
+                                ->all();
 
-        if ($varVerificarAutoDirector == "0") {
+        if (count($varVerificarAutoDirector) == "0") {
 
           Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector', [
             'hv_idpersonal' => $txtvarautoincrement,
@@ -2654,6 +2671,12 @@ use Exception;
             'usua_id' => Yii::$app->user->identity->id,
           ])->execute();
 
+        }else{          
+          foreach ($varVerificarAutoDirector as $key => $value) {
+            Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
+              'ccdirector' => $vardirector,                                                 
+            ],'hv_iddirector ='.$value['hv_iddirector'].'')->execute();
+          }
         }
 
       }
@@ -2662,14 +2685,16 @@ use Exception;
       for ($i=0; $i < $array_gerente; $i++) { 
         $vargerente = $txtvaridrequester3[$i];
 
+
         $varVerificarAutoGerente = (new \yii\db\Query())
-                                ->select(['hv_idpcrc'])
+                                ->select(['hv_idgerente'])
                                 ->from(['tbl_hojavida_datagerente'])            
                                 ->where(['=','hv_idpersonal',$txtvarautoincrement])
                                 ->andwhere(['=','ccgerente',$vargerente])
-                                ->count();
+                                ->andwhere(['=','anulado',0]) 
+                                ->all();
 
-        if ($varVerificarAutoGerente == "0") {
+        if (count($varVerificarAutoGerente) == "0") {
 
           Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente', [
             'hv_idpersonal' => $txtvarautoincrement,
@@ -2679,9 +2704,16 @@ use Exception;
             'usua_id' => Yii::$app->user->identity->id,
           ])->execute();
 
+        }else{
+          foreach ($varVerificarAutoGerente as $key => $value) {
+            Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
+              'ccgerente' => $vargerente,                                                 
+            ],'hv_idgerente ='.$value['hv_idgerente'].'')->execute();
+          }
         }
+
           
-      }       
+      }    
 
       die(json_encode($txtrta));
     }
