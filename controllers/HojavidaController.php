@@ -3665,7 +3665,7 @@ use Exception;
       $varNombreGerente = (new \yii\db\Query())
                           ->select(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
                           ->from(['tbl_proceso_cliente_centrocosto'])            
-                          ->where(['=','tbl_proceso_cliente_centrocosto.documento_gerente',$value['gerente']])
+                          ->where(['=','tbl_proceso_cliente_centrocosto.documento_gerente',$value['documentogerente']])
                           ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
                           ->groupby(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
                           ->Scalar(); 
