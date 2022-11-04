@@ -4762,6 +4762,20 @@ $modelos = new HojavidaDatapersonal();
 
   }
 
+  public function actionIngresarclasificar(){
+    $txtvaridclasificar = Yii::$app->request->get("txtvaridclasificar");
+
+    Yii::$app->db->createCommand()->insert('tbl_hojavida_dataclasificacion',[
+                    'ciudadclasificacion' => $txtvaridclasificar,
+                    'anulado' => 0,
+                    'fechacreacion' => date('Y-m-d'),
+                    'usua_id' => Yii::$app->user->identity->id,                                 
+                ])->execute(); 
+
+    die(json_encode($txtvaridclasificar));
+
+  }
+
 }
 
 ?>
