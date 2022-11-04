@@ -238,6 +238,18 @@ $this->params['breadcrumbs'][] = $this->title;
             <label style="font-size: 15px;"> Estado Actual: <?php echo $varEstados; ?> </label>
             <?= $form->field($model3, "activo", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varEstado, ['prompt' => 'Seleccionar...', 'id'=>"idestado"]) ?>
           </div>
+        </div>        
+
+        <div class="row">
+          <div class="col-md-4">
+            <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> Sociedad: </label>
+            <?=  $form->field($model, 'id_sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Hojavidasociedad::find()->distinct()->orderBy(['id_sociedad'=> SORT_ASC])->all(), 'id_sociedad', 'sociedad'),
+                                        [
+                                            'prompt'=>'Seleccionar...',
+                                        ]
+                            )->label(''); 
+            ?>
+          </div>
         </div>
 
         <div class="row">
@@ -1027,6 +1039,8 @@ $this->params['breadcrumbs'][] = $this->title;
     var varautoincrement = "<?php echo $idinfo; ?>";
     var varclasificacion = document.getElementById("hojavidadatapersonal-clasificacion").value;
     var varfechacumple = document.getElementById("idfechacumple").value;
+    
+    var varsociedad = document.getElementById("hojavidadatapersonal-id_sociedad").value;
 
     if (varididentificacion == "") {
 
@@ -1155,6 +1169,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvaridsatu : varidsatu,
                 txtvarclasificacion : varclasificacion,
                 txtvarfechacumple : varfechacumple,
+                txtvarsociedad : varsociedad,
               },
               success : function(response){
                 numRta =   JSON.parse(response);
