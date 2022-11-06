@@ -1227,7 +1227,7 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
                     </div>
                     <?php ActiveForm::end() ?>
                     <br>
-                    <a href="../../archivos/Plantilla-Maestro.xlsx" download><?= Yii::t('app', 'Descargar Plantilla de Ejemplo') ?></a>
+                    <a href="../../archivos/Plantilla-GestorClientes.xlsx" download><?= Yii::t('app', 'Descargar Plantilla de Ejemplo') ?></a>
                 </div>
             </div>
         </div>
