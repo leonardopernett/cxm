@@ -1202,38 +1202,36 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
 }
 ?>
 <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="exampleModalLabel">Agregar Carga Masiva</h3>
-
-      </div>
-      <div class="modal-body body">
-          
-            <?php $form = ActiveForm::begin([
-            'action'=>['hojavida/export'],
-            'method'=>'POST',
-            'options'=>['enctype'=>'multipart/form-data'],
-            'fieldConfig' => [
-              'inputOptions' => ['autocomplete' => 'off']
-            ]
-            ]) ?>
-                <div class="input-area">
-                      <div class="input-text" id="text">Seleccione o arrastre el archivo</div>
-                      <em class="fa fa-upload"></em>
-                      <?= $form->field($modelos, 'file')->fileInput(["class"=>"input-file" ,'id'=>'file']) ?>
-                  </div> 
-                   
-
-                  <div class="button">
-                      <button  class="btn btn-success">Agregar <em class="fa fa-plus" style="padding-top:5px"></em> </button>
-                  </div>
-            <?php ActiveForm::end() ?>
-            <a href="../../archivos/Plantilla-GestorClientes.xlsx" download>Descargar Plantilla de ejemplo</a><em class="fa fa-upload"></em>
-      </div>
-      
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel"><?= Yii::t('app', 'Agregar Carga Masiva') ?></h3>
+            </div>
+            <div class="modal-body body">
+                <div class="card1 mb">
+                    <?php $form = ActiveForm::begin([
+                        'action'=>['hojavida/export'],
+                        'method'=>'POST',
+                        'options'=>['enctype'=>'multipart/form-data'],
+                        'fieldConfig' => [
+                          'inputOptions' => ['autocomplete' => 'off']
+                        ]]) 
+                    ?>
+                    <div class="input-area">
+                        <div class="input-text" id="text"> <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 15px; color: #FFC72C;"></em> <?= Yii::t('app', 'Seleccione o arrastre el archivo') ?> </label></div>
+                        <?= $form->field($modelos, 'file')->fileInput(["class"=>"input-file" ,'id'=>'file']) ?>
+                    </div> 
+                    <br>
+                    <div class="button">
+                        <button  class="btn btn-success">Agregar Archivo <em class="fa fa-plus" style="padding-top:5px"></em> </button>
+                    </div>
+                    <?php ActiveForm::end() ?>
+                    <br>
+                    <a href="../../archivos/Plantilla-Maestro.xlsx" download><?= Yii::t('app', 'Descargar Plantilla de Ejemplo') ?></a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
