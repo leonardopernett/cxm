@@ -1605,23 +1605,6 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
 
   });
 
-  var chartContainer = document.getElementById("chartContainer");
-  var oilDataA = {
-          datasets: [
-            {
-                
-                data: ["<?php echo $varMedResumen; ?>","<?php echo $varBogResumen; ?>"],
-                backgroundColor: [
-                    "#FBCE52",
-                    "#4298B5"
-                ]
-            }]
-  };
-
-  var pieChart = new Chart(chartContainer, {
-      type: 'doughnut',
-      data: oilDataA
-  });
 
     Highcharts.chart('containerS', {
         chart: {
