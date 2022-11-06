@@ -4584,223 +4584,257 @@ $modelos = new HojavidaDatapersonal();
     $sheet = $objPHPExcel->getSheet(0);
     $highestRow = $sheet->getHighestRow();
 
-    for ($row=3; $row < $highestRow; $row++) { 
-      $varDocumento = $sheet->getCell("A".$row)->getValue();
+    for ($row=3; $row <= $highestRow ; $row++) { 
       
-      $paramsPais = [':TextPais' => $sheet->getCell("G".$row)->getValue()];
-      $varIdPais = Yii::$app->db->createCommand('
-      SELECT if(hp.hv_idpais = "",4,hp.hv_idpais) AS Pais_ids FROM tbl_hv_pais hp 
-        WHERE 
-          hp.anulado = 0 
-            AND hp.pais IN (:TextPais)')->bindValues($paramsPais)->queryScalar();
+      $varDocumento = $sheet->getCell("A".$row)->getValue();
 
-      $paramsCiudad = [':TextCiudad' => $sheet->getCell("H".$row)->getValue()];
-      $varIdCiudad = Yii::$app->db->createCommand('
-      SELECT if(hc.hv_idciudad="",9,hc.hv_idciudad) AS Ciudad_ids FROM tbl_hv_ciudad hc
-        WHERE 
-          hc.anulado = 0
-            AND hc.ciudad IN (:TextCiudad)')->bindValues($paramsCiudad)->queryScalar();
+      $varNombreContacto = $sheet->getCell("B".$row)->getValue();
 
-      $paramsModalidad = [':TextModalidad' => $sheet->getCell("J".$row)->getValue()];
-      $varIdModalidad = Yii::$app->db->createCommand('
-      SELECT if(mt.modalidad = "",2,mt.hv_idmodalidad) AS resultadoModalidad FROM tbl_hv_modalidad_trabajo mt
-        WHERE 
-          mt.anulado = 0
-            AND mt.modalidad IN (:TextModalidad)')->bindValues($paramsModalidad)->queryScalar();
+      $varCorreoOficiona = $sheet->getCell("C".$row)->getValue();
 
-      $varAutoriza = null;
-      $varTextAutoriza = $sheet->getCell("K".$row)->getValue();
-      if ($varTextAutoriza == "Si" || $varTextAutoriza == "SI" || $varTextAutoriza == "si") {
-        $varAutoriza = 2;
-      }else{
-        $varAutoriza = 1;
+      $varNumeroMovil = $sheet->getCell("D".$row)->getValue();
+
+      $varNumeroFijo = $sheet->getCell("E".$row)->getValue();
+
+      $varDireccionDomicilio = $sheet->getCell("F".$row)->getValue();
+
+      $varPaisOficina = $sheet->getCell("G".$row)->getValue();
+
+      $varCiudadOficina = $sheet->getCell("H".$row)->getValue();
+
+      $varDireccionOficina = $sheet->getCell("I".$row)->getValue();
+
+      $varModalidadTrabajo = $sheet->getCell("J".$row)->getValue();
+
+      $varAutorizaDatos = $sheet->getCell("K".$row)->getValue();
+
+      $varSusceptible = $sheet->getCell("L".$row)->getValue();
+
+      $varEstadoGestor = $sheet->getCell("M".$row)->getValue();
+
+      $varClasificaciones = $sheet->getCell("N".$row)->getValue();
+
+      $varAfinidades = $sheet->getCell("O".$row)->getValue();
+
+      $varTipoAfinidades = $sheet->getCell("P".$row)->getValue();
+
+      $varNivelAfinidades = $sheet->getCell("Q".$row)->getValue();
+
+      $varDirectorGestor = $sheet->getCell("R".$row)->getValue();
+
+      $varGerentesGestor = $sheet->getCell("S".$row)->getValue();
+
+      $varClientesGestor = $sheet->getCell("T".$row)->getValue();
+
+      $varCentroCostosGestor = $sheet->getCell("U".$row)->getValue();
+
+      $varSociendadGestor = $sheet->getCell("V".$row)->getValue();
+
+
+      // Procesos Data Personal
+      $varIdPaisHvPersonal = (new \yii\db\Query())
+                            ->select(['tbl_hv_pais.hv_idpais'])
+                            ->from(['tbl_hv_pais'])            
+                            ->where(['like','tbl_hv_pais.pais',$varPaisOficina])
+                            ->Scalar(); 
+
+
+      $varIdCiudadHvPersonal = (new \yii\db\Query())
+                            ->select(['tbl_hv_ciudad.hv_idciudad'])
+                            ->from(['tbl_hv_ciudad'])            
+                            ->where(['like','tbl_hv_ciudad.ciudad',$varCiudadOficina])
+                            ->Scalar();
+
+      $varIdModalidadPersonal = (new \yii\db\Query())
+                            ->select(['tbl_hv_modalidad_trabajo.hv_idmodalidad'])
+                            ->from(['tbl_hv_modalidad_trabajo'])            
+                            ->where(['like','tbl_hv_modalidad_trabajo.modalidad',$varModalidadTrabajo])
+                            ->Scalar();
+
+      if ($varIdModalidadPersonal == "") {
+        $varIdModalidadPersonal = 4;
       }
 
-      $varSusceptible = null;
-      $varTextsusceptible = $sheet->getCell("L".$row)->getValue();
-      if ($varTextsusceptible == "Si" || $varTextsusceptible == "SI" || $varTextsusceptible == "si") {
-        $varSusceptible = 2;
-      }else{
-        $varSusceptible = 1;
+      $varAutorizaDatosId = 1;
+      if ($varAutorizaDatos == "Si" || $varAutorizaDatos == "si") {
+        $varAutorizaDatosId = 2;
       }
 
-      $paramsClasificacion = [':TextClasificacion' => $sheet->getCell("N".$row)->getValue()];
-      $varIdClasificacion = Yii::$app->db->createCommand('
-      SELECT if(dc.hv_idclasificacion="",1,dc.hv_idclasificacion) FROM tbl_hojavida_dataclasificacion dc 
-        WHERE 
-          dc.anulado = 0
-            AND dc.ciudadclasificacion IN  (:TextClasificacion)')->bindValues($paramsClasificacion)->queryScalar();
-
-      $varTextAfinidad = null;
-      $varAfinidad = $sheet->getCell("O".$row)->getValue();
-      if ($varAfinidad == "Relaci0n Directa" ||$varAfinidad == "relacion directa" || $varAfinidad == "Relacion directa") {
-        $varTextAfinidad = 1;
-      }else{
-        $varTextAfinidad = 2;
+      $varSusceptibleId = 1;
+      if ($varSusceptible == "Si" || $varSusceptible == "si") {
+        $varSusceptibleId = 2;
       }
 
-      $varTextTipoAfinidad = null;
-      $varTipoAfinidad = $sheet->getCell("P".$row)->getValue();
-      if ($varTipoAfinidad == "Decisor" || $varTipoAfinidad == "decisor") {
-        $varTextTipoAfinidad = 1;
-      }else{
-        $varTextTipoAfinidad = 2;
+      $varClasificacionesId = (new \yii\db\Query())
+                            ->select(['tbl_hojavida_dataclasificacion.hv_idclasificacion'])
+                            ->from(['tbl_hojavida_dataclasificacion'])            
+                            ->where(['like','tbl_hojavida_dataclasificacion.ciudadclasificacion',$varClasificaciones])
+                            ->Scalar();
+
+      if ($varClasificacionesId == "") {
+        $varClasificacionesId = 12;
       }
 
-      $varTextNivelAfinidad = null;
-      $varNivelAfinidad = $sheet->getCell("Q".$row)->getValue();
-      if ($varNivelAfinidad == "Operativo" || $varNivelAfinidad == "operativo") {
-        $varTextNivelAfinidad = 2;
-      }else{
-        $varTextNivelAfinidad = 1;
+      $varSociendadGestorId = (new \yii\db\Query())
+                            ->select(['tbl_hojavida_sociedad.id_sociedad'])
+                            ->from(['tbl_hojavida_sociedad'])            
+                            ->where(['like','tbl_hojavida_sociedad.sociedad',$varSociendadGestor])
+                            ->Scalar();
+
+      if ($varSociendadGestorId == "") {
+        $varSociendadGestorId = 4;
       }
-
-      $varDirectores = $sheet->getCell("R".$row)->getValue();
-      $varListDirector = explode(", ", $varDirectores);
-
-      $varGerentes = $sheet->getCell("S".$row)->getValue();
-      $varListGerentes = explode(", ", $varGerentes);
-
-      $varnombrecliente = $sheet->getCell("T".$row)->getValue();
-      if ($varnombrecliente == "Directv") {
-        $varIdCliente = "255";
-      }else{
-        if ($varnombrecliente == "Metro") {
-          $varIdCliente = "308";
-        }else{
-          $paramsCliente = [':TextCliente' => $varnombrecliente];
-          $varIdCliente = Yii::$app->db->createCommand('
-          SELECT DISTINCT cc.id_dp_clientes, cc.cliente FROM tbl_proceso_cliente_centrocosto cc
-            WHERE 
-              cc.cliente IN (:TextCliente)')->bindValues($paramsCliente)->queryScalar();
-        }        
-      }     
-
-      $varPcrcs = $sheet->getCell("U".$row)->getValue();
-      $varListPcrcs = explode(", ", $varPcrcs);
 
       Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
-                  'nombre_full' => $sheet->getCell("B".$row)->getValue(),
                   'identificacion' => $varDocumento,
-                  'email' => $sheet->getCell("C".$row)->getValue(),
-                  'numero_movil' => $sheet->getCell("D".$row)->getValue(),
-                  'numero_fijo' => $sheet->getCell("E".$row)->getValue(),
-                  'direccion_oficina' => $sheet->getCell("I".$row)->getValue(),
-                  'direccion_casa' => $sheet->getCell("F".$row)->getValue(),
-                  'hv_idpais' => $varIdPais,
-                  'hv_idciudad' => $varIdCiudad,
-                  'hv_idmodalidad' => $varIdModalidad,
-                  'tratamiento_data' => $varAutoriza,
-                  'suceptible' => $varSusceptible,
-                  'indicador_satu' => null,
-                  'clasificacion' => $varIdClasificacion,
+                  'nombre_full' => $varNombreContacto,                  
+                  'email' => $varCorreoOficiona,
+                  'numero_movil' => $varNumeroMovil,
+                  'numero_fijo' => $varNumeroFijo,
+                  'direccion_oficina' => $varDireccionOficina,
+                  'direccion_casa' => $varDireccionDomicilio,
+                  'hv_idpais' => $varIdPaisHvPersonal,
+                  'hv_idciudad' => $varIdCiudadHvPersonal,
+                  'hv_idmodalidad' => $varIdModalidadPersonal,
+                  'tratamiento_data' => $varAutorizaDatosId,
+                  'suceptible' => $varSusceptibleId,
+                  'clasificacion' => $varClasificacionesId,
                   'fechacreacion' => date('Y-m-d'),
                   'anulado' => 0,
                   'usua_id' => Yii::$app->user->identity->id, 
-                  'fechacumple' => null,                                   
+                  'id_sociedad' => $varSociendadGestorId,                              
+              ])->execute();
+
+      // Id Data Personal
+      $varIdDataPersonalHV = (new \yii\db\Query())
+                            ->select(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                            ->from(['tbl_hojavida_datapersonal'])            
+                            ->where(['=','tbl_hojavida_datapersonal.nombre_full',$varNombreContacto])
+                            ->andwhere(['=','tbl_hojavida_datapersonal.email',$varCorreoOficiona])
+                            ->andwhere(['=','tbl_hojavida_datapersonal.id_sociedad',$varSociendadGestorId])
+                            ->Scalar();
+
+      
+      // Procesos Data Estado
+      $varEstadoGestorId = 2;
+      if ($varEstadoGestor == "Activo" || $varEstadoGestor == "activo") {
+        $varEstadoGestorId = 1;
+      }
+
+
+      Yii::$app->db->createCommand()->insert('tbl_hojavida_dataacademica',[
+                  'hv_idpersonal' => $varIdDataPersonalHV,
+                  'activo' => $varEstadoGestorId,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                          
+              ])->execute();
+      
+
+      // Procesos Data Laboral
+      $varRolGestor = "Sin Información";
+      $varAntiguedadId = 1;
+
+      $varAfinidadesId = (new \yii\db\Query())
+                            ->select(['tbl_hojavida_dataafinidad.hv_idafinidad'])
+                            ->from(['tbl_hojavida_dataafinidad'])            
+                            ->where(['like','tbl_hojavida_dataafinidad.afinidad',$varAfinidades])
+                            ->Scalar();
+
+      if ($varAfinidadesId == "") {
+        $varAfinidadesId = 2;
+      }
+
+
+      if ($varAfinidadesId == 1) {
+        $varTipoAfinidadesId = (new \yii\db\Query())
+                            ->select(['tbl_hojavida_datatipoafinidad.hv_idtipoafinidad'])
+                            ->from(['tbl_hojavida_datatipoafinidad'])            
+                            ->where(['like','tbl_hojavida_datatipoafinidad.tipoafinidad',$varTipoAfinidades])
+                            ->Scalar();
+
+        $varNivelAfinidadesId = (new \yii\db\Query())
+                            ->select(['tbl_hojavida_datanivelafinidad.hv_idinvelafinidad'])
+                            ->from(['tbl_hojavida_datanivelafinidad'])            
+                            ->where(['like','tbl_hojavida_datanivelafinidad.nivelafinidad',$varNivelAfinidades])
+                            ->Scalar();
+
+      }else{
+        $varTipoAfinidadesId = "";
+        $varNivelAfinidadesId = "";
+      }
+
+      Yii::$app->db->createCommand()->insert('tbl_hojavida_datalaboral',[
+                  'hv_idpersonal' => $varIdDataPersonalHV,
+                  'rol' => $varRolGestor,
+                  'hv_id_antiguedad' => $varAntiguedadId,
+                  'afinidad' => $varAfinidadesId,
+                  'tipo_afinidad' => $varTipoAfinidadesId,
+                  'nivel_afinidad' => $varNivelAfinidadesId,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                          
+              ])->execute();
+
+      // Procesos Data Pcrc
+      $varClientesGestorId = (new \yii\db\Query())
+                            ->select(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                            ->from(['tbl_proceso_cliente_centrocosto'])            
+                            ->where(['like','tbl_proceso_cliente_centrocosto.cliente',$varClientesGestor])
+                            ->limit(1)
+                            ->Scalar();
+
+      Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
+                  'hv_idpersonal' => $varIdDataPersonalHV,
+                  'id_dp_cliente' => $varClientesGestorId,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                          
               ])->execute();
 
 
-      $paramsInfoPersonal = [':DocumentoInfo' => $varDocumento];
-      $varIdInfoPersonal = Yii::$app->db->createCommand('
-      SELECT dp.hv_idpersonal FROM tbl_hojavida_datapersonal dp 
-        WHERE 
-          dp.identificacion = :DocumentoInfo ')->bindValues($paramsInfoPersonal)->queryScalar();
-
-      $varNA = "Sin datos";
-
-      Yii::$app->db->createCommand()->insert('tbl_hojavida_datalaboral',[
-                  'rol' => $varNA,
-                  'hv_idpersonal' => $varIdInfoPersonal,
-                  'hv_id_antiguedad' => 1,
-                  'fecha_inicio_contacto' => null,
-                  'nombre_jefe' => $varNA,
-                  'cargo_jefe' => $varNA,
-                  'trabajo_anterior' => $varNA,
-                  'afinidad' => $varTextAfinidad,
-                  'tipo_afinidad' => $varTextTipoAfinidad,
-                  'nivel_afinidad' => $varTextNivelAfinidad,
-                  'fechacreacion' => date('Y-m-d'),
-                  'anulado' => 0,
-                  'usua_id' => Yii::$app->user->identity->id, 
-                  'areatrabajo' => $varNA,                                  
-              ])->execute(); 
-
-      if ( $sheet->getCell("M".$row)->getValue() == "Activo") {
-        $ExisteActivo = 1;
-      }else{
-        $ExisteActivo = 2;
-      }
-        
-      Yii::$app->db->createCommand()->insert('tbl_hojavida_dataacademica',[                  
-                          'hv_idpersonal' => $varIdInfoPersonal,
-                          'idhvcursosacademico' => null,
-                          'activo' => $ExisteActivo,
-                          'fechacreacion' => date('Y-m-d'),
-                          'anulado' => 0,
-                          'usua_id' => Yii::$app->user->identity->id,               
-                      ])->execute(); 
-
-
-      $arrayDirectores = count($varListDirector);
-      for ($i=0; $i < $arrayDirectores; $i++) { 
-        $varDocDirector = $varListDirector[$i];
-
-        Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
-                  'hv_idpersonal' => $varIdInfoPersonal,
-                  'ccdirector' => $varDocDirector,
-                  'fechacreacion' => date('Y-m-d'),
-                  'anulado' => 0,
-                  'usua_id' => Yii::$app->user->identity->id,                                       
-              ])->execute(); 
+      // Procesos Data Director
+      if ($varDirectorGestor == "" || !is_numeric($varDirectorGestor) ) {
+        $varDirectorGestor = (new \yii\db\Query())
+                            ->select(['tbl_proceso_cliente_centrocosto.documento_director'])
+                            ->from(['tbl_proceso_cliente_centrocosto'])            
+                            ->where(['like','tbl_proceso_cliente_centrocosto.cliente',$varClientesGestor])
+                            ->limit(1)
+                            ->Scalar();
       }
 
+      Yii::$app->db->createCommand()->insert('tbl_hojavida_datadirector',[
+                  'hv_idpersonal' => $varIdDataPersonalHV,
+                  'ccdirector' => $varDirectorGestor,
+                  'fechacreacion' => date('Y-m-d'),
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,                          
+              ])->execute();
+
+      // Procesos Data Gerente
+      if ($varGerentesGestor == "" || !is_numeric($varGerentesGestor)) {
+        $varGerentesGestor = (new \yii\db\Query())
+                            ->select(['tbl_proceso_cliente_centrocosto.documento_gerente'])
+                            ->from(['tbl_proceso_cliente_centrocosto'])            
+                            ->where(['like','tbl_proceso_cliente_centrocosto.cliente',$varClientesGestor])
+                            ->limit(1)
+                            ->Scalar();
+      }
+
+      $varListGerentes = explode(", ", $varGerentesGestor);
       $arrayGerentes = count($varListGerentes);
       for ($i=0; $i < $arrayGerentes; $i++) { 
         $varDocGerente = $varListGerentes[$i];
-        
+
         Yii::$app->db->createCommand()->insert('tbl_hojavida_datagerente',[
-                  'hv_idpersonal' => $varIdInfoPersonal,
+                  'hv_idpersonal' => $varIdDataPersonalHV,
                   'ccgerente' => $varDocGerente,
                   'fechacreacion' => date('Y-m-d'),
                   'anulado' => 0,
                   'usua_id' => Yii::$app->user->identity->id,                                       
-              ])->execute();  
-      }
-
-      if(count($varIdCliente) != 0) {
-        Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
-                  'hv_idpersonal' => $varIdInfoPersonal,
-                  'id_dp_cliente' => $varIdCliente,
-                  'cod_pcrc' => null,
-                  'fechacreacion' => date('Y-m-d'),
-                  'anulado' => 0,
-                  'usua_id' => Yii::$app->user->identity->id,                                       
-              ])->execute(); 
-      } else{
-        #code
-    }
-
-
-      $arrayPcrc = count($varListPcrcs);
-      for ($i=0; $i < $arrayPcrc; $i++) { 
-
-        $paramsPcrc = [':varCodPcrcs' => $varListPcrcs[$i]];
-
-        $varCentroCostos = Yii::$app->db->createCommand('
-        SELECT DISTINCT if(pc.cod_pcrc = "",NULL,pc.cod_pcrc)  FROM tbl_proceso_cliente_centrocosto pc
-          WHERE 
-            pc.pcrc IN (:varCodPcrcs)')->bindValues($paramsPcrc)->queryScalar();
-
-        Yii::$app->db->createCommand()->insert('tbl_hojavida_datapcrc',[
-                  'hv_idpersonal' => $varIdInfoPersonal,
-                  'id_dp_cliente' => $varIdCliente,
-                  'cod_pcrc' => $varCentroCostos,
-                  'fechacreacion' => date('Y-m-d'),
-                  'anulado' => 0,
-                  'usua_id' => Yii::$app->user->identity->id,                                       
               ])->execute(); 
       }
+
 
     }
 
