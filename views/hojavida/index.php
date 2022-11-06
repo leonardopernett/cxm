@@ -1482,19 +1482,19 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
       series: [
         {
           name: 'Resultados Por Clientes',
-          data: [<?= $varSumaResumen ?>],
+          data: [<?= $varSumarClientes ?>],
           color: '#FBCE52'
         },{
           name: 'Total Decisores',
-          data: [<?= $varSumaDecisores ?>],
+          data: [<?= $varSumarDecisores ?>],
           color: '#4298B5'
         },{
           name: 'Total Estratégicos',
-          data: [<?= $varSumaEstrategicos ?>],
+          data: [<?= $varSumarEstrategico ?>],
           color: '#C6C6C6'
         },{
           name: 'Total Operativos',
-          data: [<?= $varSumaOperativos ?>],
+          data: [<?= $varSumarOperativo ?>],
           color: '#559FFF'
         }
       ]
