@@ -53,6 +53,9 @@ $this->title = 'Gestor de Clientes';
     $varCargar = $value['hvcasrgamasiva'];
     $varEditar = $value['hveditar'];
   }
+  
+  $varArrayCiudadCliente = array();
+  $varArrayConteoCliente = array();
 
 ?>
 <style>
@@ -384,167 +387,236 @@ $this->title = 'Gestor de Clientes';
 
                   <!-- Proceso Total Servicios -->
                   <div class="row">
-
-                    <div class="col-md-3">
-                      <div class="card1 mb">
-
-                        <table id="myTableService" class="table table-hover table-bordered" style="margin-top:20px">
-                          <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Resultados Por Clientes') ?></label></caption>
-                          <thead>
-                            <tr>
-                              <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
-                              <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Total') ?></label></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          	<?php
-		                          $varSumaResumen = 0;
-		                          $varMedResumen = 0;
-		                          $varBogResumen = 0;
-		                          foreach ($varListaClientesResumen as $key => $value) {
-		                            $varCiudadResumen = $value['Ciudad'];
-		                            $varTotalResumen = $value['Conteo'];
-
-		                            $varSumaResumen += $varTotalResumen;
-
-		                            if ($varCiudadResumen == "Medellín") {
-		                              $varMedResumen = $varTotalResumen;
-		                            }else{
-		                              $varBogResumen = $varTotalResumen;                              
-		                            }
-		                        ?>
-			                        <tr>
-		                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varCiudadResumen) ?></label></td>
-		                            <td style="text-align:center"><label style="font-size: 13px;"><?= Yii::t('app', $varTotalResumen) ?></label></td>
-		                          </tr>
-	                          <?php
-		                          }
-		                        ?> 
-		                        <tr>
-	                            <td><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></td>
-	                            <td style="text-align:center"><label style="font-size: 13px;"><?= Yii::t('app', $varSumaResumen) ?></label></td>
-	                          </tr>
-                          </tbody>
-                        </table>
-
-                      </div>
-                    </div>
-
-                  	<!-- Proceso Total Decisores -->
-                    <div class="col-md-3">
-                      <div class="card1 mb">
                         
-                        <table id="myTableDecisores" class="table table-hover table-bordered" style="margin-top:20px">
-                          <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Resultados Por Decisores') ?></label></caption>
-                          <thead>
-                            <tr>
-                              <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
-                              <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Total') ?></label></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          	<?php
-		                          $varSumaDecisores = 0;
-		                          foreach ($varListaDecisores as $key => $value) {
-		                            $varCiudadDecisores = $value['Ciudad'];
-		                            $varTotalDecisores = $value['Conteo'];
+                        <div class="col-md-3">
+                            <div class="card1 mb">
+                                <table id="myTableResultadoClientes" class="table table-hover table-bordered" style="margin-top:20px">
+                                    <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Resultados Por Clientes') ?></label></caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
+                                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Total') ?></label></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $varSumarClientes = 0;
+                                        foreach ($varListarClientes as $key => $value) {
+                                            $varCiudadCliente = $value['ciudadclasificacion'];
 
-		                            $varSumaDecisores += $varTotalDecisores;
-		                        ?>
-		                          <tr>
-		                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varCiudadDecisores) ?></label></td>
-		                            <td style="text-align:center"><label style="font-size: 13px;"><?= Yii::t('app', $varTotalDecisores) ?></label></td>
-		                          </tr>
-		                        <?php
-		                          }
-		                        ?>
-		                        <tr>
-	                            <td><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></td>
-	                            <td style="text-align:center"><label style="font-size: 13px;"><?= Yii::t('app', $varSumaDecisores) ?></label></td>
-	                          </tr>
-                          </tbody>
-                        </table>
+                                            $varConteoClientes = (new \yii\db\Query())
+                                                ->select([
+                                                  'tbl_hojavida_datapersonal.hv_idpersonal'])
+                                                ->from(['tbl_hojavida_datapersonal']) 
 
-                      </div>
+                                                ->join('INNER JOIN', 'tbl_hojavida_dataacademica', 
+                                                  ' tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_dataclasificacion', 
+                                                  'tbl_hojavida_dataclasificacion.hv_idclasificacion = tbl_hojavida_datapersonal.clasificacion') 
+
+                                                ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                                                ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                                                ->andwhere(['=','tbl_hojavida_datapersonal.clasificacion',$value['hv_idclasificacion']])
+                                                ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                                                ->count();
+
+                                            $varSumarClientes += $varConteoClientes;
+
+                                            array_push($varArrayCiudadCliente, $varCiudadCliente);
+                                            array_push($varArrayConteoCliente, $varConteoClientes);
+                                        ?>
+                                        <tr>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varCiudadCliente) ?></label></td>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varConteoClientes) ?></label></td>
+                                        </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                        <tr>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></td>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varSumarClientes) ?></label></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card1 mb">
+                                <table id="myTableResultadoDecisores" class="table table-hover table-bordered" style="margin-top:20px">
+                                    <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Resultados Por Decisores') ?></label></caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
+                                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Total') ?></label></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $varSumarDecisores = 0;
+                                        foreach ($varListarClientes as $key => $value) {
+                                            $varCiudadDecisores = $value['ciudadclasificacion'];
+
+                                            $varConteoDecisores = (new \yii\db\Query())
+                                                ->select([
+                                                  'tbl_hojavida_datapersonal.hv_idpersonal'])
+                                                ->from(['tbl_hojavida_datapersonal']) 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_dataacademica', 
+                                                  ' tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_dataclasificacion', 
+                                                  'tbl_hojavida_dataclasificacion.hv_idclasificacion = tbl_hojavida_datapersonal.clasificacion') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 
+                                                  'tbl_hojavida_datalaboral.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_datatipoafinidad', 
+                                                  'tbl_hojavida_datatipoafinidad.hv_idtipoafinidad = tbl_hojavida_datalaboral.tipo_afinidad')
+
+                                                ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                                                ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                                                ->andwhere(['=','tbl_hojavida_datapersonal.clasificacion',$value['hv_idclasificacion']])
+                                                ->andwhere(['=','tbl_hojavida_datatipoafinidad.hv_idtipoafinidad',1])
+                                                ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                                                ->count();
+
+                                            $varSumarDecisores += $varConteoDecisores;
+                                        ?>
+                                        <tr>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varCiudadDecisores) ?></label></td>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varConteoDecisores) ?></label></td>
+                                        </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                        <tr>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></td>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varSumarDecisores) ?></label></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card1 mb">
+                                <table id="myTableResultadoEstrategicos" class="table table-hover table-bordered" style="margin-top:20px">
+                                    <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Resultados Por Clientes Estratégicos') ?></label></caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
+                                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Total') ?></label></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $varSumarEstrategico = 0;
+                                        foreach ($varListarClientes as $key => $value) {
+                                            $varCiudadEstrategico= $value['ciudadclasificacion'];
+
+                                            $varConteoEstrategico = (new \yii\db\Query())
+                                                ->select([
+                                                  'tbl_hojavida_datapersonal.hv_idpersonal'])
+                                                ->from(['tbl_hojavida_datapersonal']) 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_dataacademica', 
+                                                  ' tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_dataclasificacion', 
+                                                  'tbl_hojavida_dataclasificacion.hv_idclasificacion = tbl_hojavida_datapersonal.clasificacion') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 
+                                                  'tbl_hojavida_datalaboral.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_datanivelafinidad', 
+                                                  'tbl_hojavida_datanivelafinidad.hv_idinvelafinidad = tbl_hojavida_datalaboral.nivel_afinidad')
+
+                                                ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                                                ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                                                ->andwhere(['=','tbl_hojavida_datapersonal.clasificacion',$value['hv_idclasificacion']])
+                                                ->andwhere(['=','tbl_hojavida_datanivelafinidad.hv_idinvelafinidad',1])
+                                                ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                                                ->count();
+
+                                            $varSumarEstrategico += $varConteoEstrategico;
+                                        ?>
+                                        <tr>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varCiudadEstrategico) ?></label></td>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varConteoEstrategico) ?></label></td>
+                                        </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                        <tr>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></td>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varSumarEstrategico) ?></label></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card1 mb">
+                                <table id="myTableResultadoOperativos" class="table table-hover table-bordered" style="margin-top:20px">
+                                    <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Resultados Por Clientes Opertivos') ?></label></caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
+                                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Total') ?></label></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $varSumarOperativo = 0;
+                                        foreach ($varListarClientes as $key => $value) {
+                                            $varCiudadOperativo = $value['ciudadclasificacion'];
+
+                                            $varConteoOperativo = (new \yii\db\Query())
+                                                ->select([
+                                                  'tbl_hojavida_datapersonal.hv_idpersonal'])
+                                                ->from(['tbl_hojavida_datapersonal']) 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_dataacademica', 
+                                                  ' tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_dataclasificacion', 
+                                                  'tbl_hojavida_dataclasificacion.hv_idclasificacion = tbl_hojavida_datapersonal.clasificacion') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 
+                                                  'tbl_hojavida_datalaboral.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                                ->join('INNER JOIN', 'tbl_hojavida_datanivelafinidad', 
+                                                  'tbl_hojavida_datanivelafinidad.hv_idinvelafinidad = tbl_hojavida_datalaboral.nivel_afinidad')
+
+                                                ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                                                ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                                                ->andwhere(['=','tbl_hojavida_datapersonal.clasificacion',$value['hv_idclasificacion']])
+                                                ->andwhere(['=','tbl_hojavida_datanivelafinidad.hv_idinvelafinidad',2])
+                                                ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                                                ->count();
+
+                                            $varSumarOperativo += $varConteoOperativo;
+                                        ?>
+                                        <tr>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varCiudadOperativo) ?></label></td>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varConteoOperativo) ?></label></td>
+                                        </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                        <tr>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></td>
+                                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varSumarOperativo) ?></label></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
-
-                  	<!-- Proceso Total Estrategicos -->
-                    <div class="col-md-3">
-                      <div class="card1 mb">
-                        
-                        <table id="myTableEstrategicos" class="table table-hover table-bordered" style="margin-top:20px">
-                          <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Total Clientes Estratégicos') ?></label></caption>
-                          <thead>
-                            <tr>
-                              <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
-                              <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Total') ?></label></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          	<?php
-		                          $varSumaEstrategicos = 0;
-		                          foreach ($varListaDecisorEstrategico as $key => $value) {
-		                            $varCiudadEstrategicos = $value['Ciudad'];
-		                            $varTotalEstrategicos = $value['Conteo'];
-
-		                            $varSumaEstrategicos += $varTotalEstrategicos;
-		                        ?>
-		                          <tr>
-		                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varCiudadEstrategicos) ?></label></td>
-		                            <td style="text-align:center"><label style="font-size: 13px;"><?= Yii::t('app', $varTotalEstrategicos) ?></label></td>
-		                          </tr>
-		                        <?php
-		                          }
-		                        ?>
-		                        <tr>
-	                            <td><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></td>
-	                            <td style="text-align:center"><label style="font-size: 13px;"><?= Yii::t('app', $varSumaEstrategicos) ?></label></td>
-	                          </tr>
-                          </tbody>
-                        </table>
-
-                      </div>
-                    </div>
-
-                    <!-- Proceso Total Operativos -->
-                    <div class="col-md-3">
-                      <div class="card1 mb">
-                        
-                        <table id="myTableOperativos" class="table table-hover table-bordered" style="margin-top:20px">
-                          <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Total Clientes Operativos') ?></label></caption>
-                          <thead>
-                            <tr>
-                              <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
-                              <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Total') ?></label></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          	<?php
-		                          $varSumaOperativos = 0;
-		                          foreach ($varListaDecisorOperativo as $key => $value) {
-		                            $varCiudadOperativos = $value['Ciudad'];
-		                            $varTotalOperativos = $value['Conteo'];
-
-		                            $varSumaOperativos += $varTotalOperativos;
-		                        ?>
-		                          <tr>
-		                            <td><label style="font-size: 13px;"><?= Yii::t('app', $varCiudadOperativos) ?></label></td>
-		                            <td style="text-align:center"><label style="font-size: 13px;"><?= Yii::t('app', $varTotalOperativos) ?></label></td>
-		                          </tr>
-		                        <?php
-		                          }
-		                        ?>  
-		                        <tr>
-	                            <td><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></td>
-	                            <td style="text-align:center"><label style="font-size: 13px;"><?= Yii::t('app', $varSumaOperativos) ?></label></td>
-	                          </tr>
-                          </tbody>
-                        </table>
-
-                      </div>
-                    </div>
-
-                  </div>
 
                 </div>
               </div>
@@ -567,25 +639,7 @@ $this->title = 'Gestor de Clientes';
                     <div class="col-md-6">
                       <div class="card2 mb">
                         <label  style="font-size: 15px;" ><em class="fas fa-chart-bar" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Gráfica: Resultados Por Cliente') ?></label>
-                        <div style="width: 180px; height: 180px;  display:block; margin:auto;"><canvas id="chartContainer"></canvas></div><span style="font-size: 15px;"><?php echo ''; ?></span>
-
-                        <br>
-                        
-                        <div class="panel panel-default">
-                          <div class="panel-body" style="background-color: #f0f8ff;">
-                            
-                            <div class="row">
-                              <div class="col-md-6">
-                                <label  style="font-size: 15px;" ><em class="fas fa-square" style="font-size: 20px; color: #FBCE52;"></em><?= Yii::t('app', ' Total Clientes Medellín: '.$varMedResumen) ?></label>
-                              </div>
-                              <div class="col-md-6">
-                                <label  style="font-size: 15px;" ><em class="fas fa-square" style="font-size: 20px; color: #4298B5;"></em><?= Yii::t('app', ' Total Clientes Bogotá: '.$varBogResumen) ?></label>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-
+                        <div id="chartContainerCiudadCliente" class="highcharts-container" style="height: 300px;"></div>
                       </div>
                     </div>
 
@@ -1391,6 +1445,9 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
     var ClienteListado = "<?php echo implode($arrayListaCliente,",");?>";
     ClienteListado = ClienteListado.split(",");
 
+    var CiudadClienteListado = "<?php echo implode($varArrayCiudadCliente, ","); ?>";
+    CiudadClienteListado = CiudadClienteListado.split(",");
+
     Highcharts.setOptions({
       lang: {
         numericSymbols: null,
@@ -1438,6 +1495,40 @@ if ($sessiones == "2953" || $sessiones == "3468" || $sessiones == "57" || $sessi
         },{
           name: 'Total Operativos',
           data: [<?= $varSumaOperativos ?>],
+          color: '#559FFF'
+        }
+      ]
+
+    });
+
+    $('#chartContainerCiudadCliente').highcharts({
+
+      chart: {
+        borderColor: '#DAD9D9',
+        borderRadius: 7,
+        borderWidth: 1,
+        type: 'column'
+      }, 
+
+      title: {
+        text: 'Cantidades Por Ciudad',
+        style: {
+          color: '#3C74AA'
+        }
+      },
+
+      xAxis: {
+        categories: CiudadClienteListado,
+        title: {
+          text: null
+        },
+        crosshair: true
+      },
+
+      series: [
+        {
+          name: 'Resultados Por Ciudad',
+          data: [<?= join($varArrayConteoCliente, ',')?>],
           color: '#559FFF'
         }
       ]

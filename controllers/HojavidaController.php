@@ -114,89 +114,119 @@ use Exception;
   }
    
     public function actionIndex(){      
-      // Procesos para calcular el resumen
-      $arrayIdCiudades = [1,2];
-      $varListaClientesResumen = (new \yii\db\Query())
-                                ->select(['if(clasificacion=1,"Bogota","Medellín") AS Ciudad',' COUNT(clasificacion) AS Conteo'])
-                                ->from(['tbl_hojavida_datapersonal'])            
-                                ->where(['IN','clasificacion',$arrayIdCiudades])
-                                ->andwhere(['=','anulado',0])
-                                ->groupby(['clasificacion'])
+      $varListarClientes = (new \yii\db\Query())
+                                ->select([
+                                  'tbl_hojavida_dataclasificacion.hv_idclasificacion',
+                                  'tbl_hojavida_dataclasificacion.ciudadclasificacion'])
+                                ->from(['tbl_hojavida_dataacademica']) 
+
+                                ->join('INNER JOIN', 'tbl_hojavida_datapersonal', 
+                                  'tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                                ->join('INNER JOIN', 'tbl_hojavida_dataclasificacion', 
+                                  'tbl_hojavida_datapersonal.clasificacion = tbl_hojavida_dataclasificacion.hv_idclasificacion') 
+
+                                ->where(['!=','tbl_hojavida_dataclasificacion.hv_idclasificacion',12])
+                                ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
+                                ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                                ->groupby(['tbl_hojavida_dataclasificacion.hv_idclasificacion'])
                                 ->all();
 
-      $varListaDecisores = (new \yii\db\Query())
-                        ->select(['if(tbl_hojavida_datapersonal.clasificacion=1,"Bogota","Medellín") AS Ciudad',' COUNT(tbl_hojavida_datapersonal.clasificacion) AS Conteo'])
-                        ->from(['tbl_hojavida_datapersonal']) 
-                        ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 'tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datalaboral.hv_idpersonal')  
-                        ->join('INNER JOIN', 'tbl_hojavida_datatipoafinidad', 'tbl_hojavida_datalaboral.tipo_afinidad = tbl_hojavida_datatipoafinidad.hv_idtipoafinidad')          
-                        ->where(['IN','tbl_hojavida_datapersonal.clasificacion',$arrayIdCiudades])
-                        ->andwhere(['=','tbl_hojavida_datatipoafinidad.hv_idtipoafinidad',1])
-                        ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
-                        ->groupby(['tbl_hojavida_datapersonal.clasificacion'])
-                        ->all();
-
-      $varListaDecisorEstrategico = (new \yii\db\Query())
-                        ->select(['if(tbl_hojavida_datapersonal.clasificacion=1,"Bogota","Medellín") AS Ciudad',' COUNT(tbl_hojavida_datapersonal.clasificacion) AS Conteo'])
-                        ->from(['tbl_hojavida_datapersonal']) 
-
-                        ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 'tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datalaboral.hv_idpersonal')  
-
-                        ->join('INNER JOIN', 'tbl_hojavida_datanivelafinidad', 'tbl_hojavida_datalaboral.nivel_afinidad = tbl_hojavida_datanivelafinidad.hv_idinvelafinidad')   
-
-                        ->join('INNER JOIN', 'tbl_hojavida_datatipoafinidad', 'tbl_hojavida_datalaboral.tipo_afinidad = tbl_hojavida_datatipoafinidad.hv_idtipoafinidad')  
-
-                        ->where(['IN','tbl_hojavida_datapersonal.clasificacion',$arrayIdCiudades])
-                        ->andwhere(['=','tbl_hojavida_datatipoafinidad.hv_idtipoafinidad',1])
-                        ->andwhere(['=','tbl_hojavida_datanivelafinidad.hv_idinvelafinidad',1])
-                        ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
-                        ->groupby(['tbl_hojavida_datapersonal.clasificacion'])
-                        ->all();
-
-      $varListaDecisorOperativo = (new \yii\db\Query())
-                        ->select(['if(tbl_hojavida_datapersonal.clasificacion=1,"Bogota","Medellín") AS Ciudad',' COUNT(tbl_hojavida_datapersonal.clasificacion) AS Conteo'])
-                        ->from(['tbl_hojavida_datapersonal']) 
-
-                        ->join('INNER JOIN', 'tbl_hojavida_datalaboral', 'tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datalaboral.hv_idpersonal')  
-
-                        ->join('INNER JOIN', 'tbl_hojavida_datanivelafinidad', 'tbl_hojavida_datalaboral.nivel_afinidad = tbl_hojavida_datanivelafinidad.hv_idinvelafinidad')   
-
-                        ->join('INNER JOIN', 'tbl_hojavida_datatipoafinidad', 'tbl_hojavida_datalaboral.tipo_afinidad = tbl_hojavida_datatipoafinidad.hv_idtipoafinidad')  
-
-                        ->where(['IN','tbl_hojavida_datapersonal.clasificacion',$arrayIdCiudades])
-                        ->andwhere(['=','tbl_hojavida_datatipoafinidad.hv_idtipoafinidad',1])
-                        ->andwhere(['=','tbl_hojavida_datanivelafinidad.hv_idinvelafinidad',2])
-                        ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
-                        ->groupby(['tbl_hojavida_datapersonal.clasificacion'])
-                        ->all();
 
       $varListaDirectores = (new \yii\db\Query())
-                        ->select(['if(tbl_hojavida_datadirector.ccdirector="","Sin Definir",tbl_hojavida_datadirector.ccdirector) AS CcDirector','(SELECT p.director_programa FROM tbl_proceso_cliente_centrocosto p WHERE p.documento_director = tbl_hojavida_datadirector.ccdirector LIMIT 1) AS NombreDirector','COUNT(tbl_hojavida_datadirector.ccdirector) AS ConteoDirector'])
-                        ->from(['tbl_hojavida_datadirector'])
-                        ->where(['!=','tbl_hojavida_datadirector.ccdirector',''])
-                        ->andwhere(['!=','tbl_hojavida_datadirector.ccdirector','-'])
+                        ->select(['tbl_hojavida_datadirector.ccdirector'])
+                        ->from(['tbl_hojavida_datapersonal'])
+
+                        ->join('INNER JOIN', 'tbl_hojavida_dataacademica', 
+                                  'tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datadirector', 
+                                  'tbl_hojavida_datadirector.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                        ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                        ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                        ->andwhere(['!=','tbl_hojavida_datadirector.ccdirector',''])
                         ->groupby(['tbl_hojavida_datadirector.ccdirector'])
                         ->all();
 
       $arrayListaDirector = array();
       $arrayListaDirectorCantidad = array();
       foreach ($varListaDirectores as $key => $value) {
-        array_push($arrayListaDirector, $value['NombreDirector']);
-        array_push($arrayListaDirectorCantidad, $value['ConteoDirector']);
+        $varCedulaDirector = $value['ccdirector'];
+
+        $varNombresDirector = (new \yii\db\Query())
+                        ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
+                        ->from(['tbl_proceso_cliente_centrocosto'])
+                        ->where(['=','tbl_proceso_cliente_centrocosto.documento_director',$varCedulaDirector])
+                        ->limit(1)
+                        ->scalar(); 
+
+        $varConteoDirector = (new \yii\db\Query())
+                        ->select(['tbl_hojavida_datadirector.ccdirector'])
+                        ->from(['tbl_hojavida_datapersonal'])
+
+                        ->join('INNER JOIN', 'tbl_hojavida_dataacademica', 
+                                  'tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datadirector', 
+                                  'tbl_hojavida_datadirector.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                        ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                        ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                        ->andwhere(['=','tbl_hojavida_datadirector.ccdirector',$varCedulaDirector])
+                        ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                        ->count();
+
+        array_push($arrayListaDirector, $varNombresDirector);
+        array_push($arrayListaDirectorCantidad, $varConteoDirector);
       }
 
       $varListaClientes = (new \yii\db\Query())
-                        ->select(['if(tbl_hojavida_datapcrc.id_dp_cliente="","Sin Definir",tbl_hojavida_datapcrc.id_dp_cliente) AS IdClientes','(SELECT p.cliente FROM tbl_proceso_cliente_centrocosto p WHERE p.id_dp_clientes = tbl_hojavida_datapcrc.id_dp_cliente LIMIT 1) AS NombreCliente','COUNT(tbl_hojavida_datapcrc.id_dp_cliente) AS ConteoClientes'])
-                        ->from(['tbl_hojavida_datapcrc'])
-                        ->where(['!=','tbl_hojavida_datapcrc.id_dp_cliente',''])
-                        ->andwhere(['!=','tbl_hojavida_datapcrc.id_dp_cliente',1])
+                        ->select(['tbl_hojavida_datapcrc.id_dp_cliente'])
+                        ->from(['tbl_hojavida_datapersonal'])
+
+                        ->join('INNER JOIN', 'tbl_hojavida_dataacademica', 
+                                  'tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datapcrc', 
+                                  'tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                        ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                        ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                        ->andwhere(['!=','tbl_hojavida_datapcrc.id_dp_cliente',''])
                         ->groupby(['tbl_hojavida_datapcrc.id_dp_cliente'])
-                        ->all();   
+                        ->all();
 
       $arrayListaCliente = array();
       $arrayListaClienteCantidad = array();
       foreach ($varListaClientes as $key => $value) {
-        array_push($arrayListaCliente, $value['NombreCliente']);
-        array_push($arrayListaClienteCantidad, $value['ConteoClientes']);
+        $varCliente_Id = $value['id_dp_cliente'];
+
+        $varNombreClientes = (new \yii\db\Query())
+                        ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                        ->from(['tbl_proceso_cliente_centrocosto'])
+                        ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varCliente_Id])
+                        ->limit(1)
+                        ->scalar(); 
+
+        $varConteoClientes = (new \yii\db\Query())
+                        ->select(['tbl_hojavida_datapcrc.id_dp_cliente'])
+                        ->from(['tbl_hojavida_datapersonal'])
+
+                        ->join('INNER JOIN', 'tbl_hojavida_dataacademica', 
+                                  'tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                        ->join('INNER JOIN', 'tbl_hojavida_datapcrc', 
+                                  'tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
+
+                        ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                        ->andwhere(['=','tbl_hojavida_dataacademica.activo',1])
+                        ->andwhere(['=','tbl_hojavida_datapcrc.id_dp_cliente',$varCliente_Id])
+                        ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
+                        ->count();
+
+        array_push($arrayListaCliente, $varNombreClientes);
+        array_push($arrayListaClienteCantidad, $varConteoClientes);
       }
 
       // Procesos para generar el listado de los calculos
@@ -360,10 +390,7 @@ use Exception;
       return $this->render('index',[
         'dataProviderhv' => $dataProviderhv,
         'modelos' =>  $modelos,
-        'varListaClientesResumen' => $varListaClientesResumen,
-        'varListaDecisores' => $varListaDecisores,
-        'varListaDecisorEstrategico' => $varListaDecisorEstrategico,
-        'varListaDecisorOperativo' => $varListaDecisorOperativo,
+        'varListarClientes' => $varListarClientes,
         'arrayListaDirector' => $arrayListaDirector,
         'arrayListaDirectorCantidad' => $arrayListaDirectorCantidad,
         'arrayListaCliente' => $arrayListaCliente,
