@@ -3275,7 +3275,8 @@ use Exception;
       tbl_hojavida_datagerente.ccgerente AS documentogerente,
       tbl_proceso_cliente_centrocosto.cliente AS cliente,
       if(tbl_hojavida_dataacademica.activo=1,'Activo','No Activo') AS estados,
-      if(tbl_hojavida_datapersonal.suceptible=1,'No','Si') AS suceptible  
+      if(tbl_hojavida_datapersonal.suceptible=1,'No','Si') AS suceptible,
+      tbl_hojavida_sociedad.sociedad   
   
     FROM tbl_hojavida_datapersonal
 
@@ -3342,6 +3343,9 @@ use Exception;
     LEFT JOIN tbl_hojavida_dataacademica ON 
       tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
         AND tbl_hojavida_dataacademica.anulado = 0
+
+    LEFT JOIN tbl_hojavida_sociedad ON 
+      tbl_hojavida_sociedad.id_sociedad = tbl_hojavida_datapersonal.id_sociedad
         
     
     WHERE 
@@ -3640,6 +3644,12 @@ use Exception;
       $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleColor);
       $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AJ2','SOCIEDAD');
+      $phpExc->getActiveSheet()->getStyle('AJ2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleArraySubTitle2);
   
     
    
@@ -3707,7 +3717,9 @@ use Exception;
 
       $phpExc->getActiveSheet()->setCellValue('AH'.$numCell, $value['estados']);
 
-      $phpExc->getActiveSheet()->setCellValue('AI'.$numCell, $value['suceptible']);
+      $phpExc->getActiveSheet()->setCellValue('AI'.$numCell, $value['suceptible']);      
+
+      $phpExc->getActiveSheet()->setCellValue('AJ'.$numCell, $value['sociedad']);
 
     }
     $numCell = $numCell;
@@ -3816,7 +3828,8 @@ use Exception;
                         'tbl_hojavida_datagerente.ccgerente AS documentogerente',
                         'tbl_proceso_cliente_centrocosto.cliente AS cliente',
                         'if(tbl_hojavida_dataacademica.activo=1,"Activo","No Activo") AS estados',
-                        'if(tbl_hojavida_datapersonal.suceptible=1,"No","Si") AS suceptible'
+                        'if(tbl_hojavida_datapersonal.suceptible=1,"No","Si") AS suceptible',
+                        'tbl_hojavida_sociedad.sociedad'
                       ])
 
                       ->from(['tbl_hojavida_datapersonal']) 
@@ -3884,6 +3897,9 @@ use Exception;
                           'tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
                             AND tbl_hojavida_dataacademica.anulado = 0') 
 
+                      ->join('LEFT OUTER JOIN', 'tbl_hojavida_sociedad',
+                          'tbl_hojavida_sociedad.id_sociedad = tbl_hojavida_datapersonal.id_sociedad') 
+
                       ->where(['=','tbl_hojavida_datapersonal.anulado',0])
                       ->andwhere(['in','tbl_hojavida_datapcrc.id_dp_cliente',$varDataPermisos])
                       ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
@@ -3945,197 +3961,251 @@ use Exception;
         $phpExc->getDefaultStyle()->applyFromArray($styleArrayBody);
 
         $phpExc->getActiveSheet()->SetCellValue('A1','KONECTA - CX MANAGEMENT');
-        $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
-        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
-        $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AJ1');
+      $phpExc->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
+      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('A1')->applyFromArray($styleArrayTitle);
+      $phpExc->setActiveSheetIndex(0)->mergeCells('A1:AJ1');
+  
+      $phpExc->getActiveSheet()->SetCellValue('A2','NOMBRE');
+      $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('B2','IDENTIFICACION');
+      $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('C2','DIRECCION OFICINA');
+      $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('D2','DIRECCION CASA');
+      $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('E2','CORREO');
+      $phpExc->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('F2','CELULAR');
+      $phpExc->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);
+  
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('G2','CONTACTO OFICINA');
+      $phpExc->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);
+  
     
-        $phpExc->getActiveSheet()->SetCellValue('A2','NOMBRE');
-        $phpExc->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('A2')->applyFromArray($styleArraySubTitle2);
-    
-        $phpExc->getActiveSheet()->SetCellValue('B2','IDENTIFICACION');
-        $phpExc->getActiveSheet()->getStyle('B2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('B2')->applyFromArray($styleArraySubTitle2);
-    
-        $phpExc->getActiveSheet()->SetCellValue('C2','DIRECCION OFICINA');
-        $phpExc->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('C2')->applyFromArray($styleArraySubTitle2);
-    
-        $phpExc->getActiveSheet()->SetCellValue('D2','DIRECCION CASA');
-        $phpExc->getActiveSheet()->getStyle('D2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('D2')->applyFromArray($styleArraySubTitle2);
-    
-        $phpExc->getActiveSheet()->SetCellValue('E2','CORREO');
-        $phpExc->getActiveSheet()->getStyle('E2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('E2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('F2','CELULAR');
-        $phpExc->getActiveSheet()->getStyle('F2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('F2')->applyFromArray($styleArraySubTitle2);
-    
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('G2','CONTACTO OFICINA');
-        $phpExc->getActiveSheet()->getStyle('G2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('G2')->applyFromArray($styleArraySubTitle2);
-    
-      
-        $phpExc->getActiveSheet()->SetCellValue('H2','PAIS');
-        $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArraySubTitle2);
-    
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('I2','CIUDAD');
-        $phpExc->getActiveSheet()->getStyle('I2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArraySubTitle2);
-    
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('J2','MODALIDAD DE TRABAJO');
-        $phpExc->getActiveSheet()->getStyle('J2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('K2','SATU');
-        $phpExc->getActiveSheet()->getStyle('K2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleArraySubTitle2);
-    
-        $phpExc->getActiveSheet()->SetCellValue('L2','FECHA DE CREACION');
-        $phpExc->getActiveSheet()->getStyle('L2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleArraySubTitle2);
-    
-        $phpExc->getActiveSheet()->SetCellValue('M2','AFINIDAD');
-        $phpExc->getActiveSheet()->getStyle('M2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('N2','TIPO');
-        $phpExc->getActiveSheet()->getStyle('N2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('O2','NIVEL DE AFINIDAD');
-        $phpExc->getActiveSheet()->getStyle('O2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('P2','CANTIDAD DE HIJOS');
-        $phpExc->getActiveSheet()->getStyle('P2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('Q2','ESTADO CIVIL');
-        $phpExc->getActiveSheet()->getStyle('Q2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('R2','NOMBRE DE HIJOS');
-        $phpExc->getActiveSheet()->getStyle('R2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('S2','HOBBIES');
-        $phpExc->getActiveSheet()->getStyle('S2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('T2','GUSTOS');
-        $phpExc->getActiveSheet()->getStyle('T2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('U2','CIUDAD DE CLASIFICACION');
-        $phpExc->getActiveSheet()->getStyle('U2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('V2','ANTIGUEDAD');
-        $phpExc->getActiveSheet()->getStyle('V2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('W2','NOMBRE JEFE');
-        $phpExc->getActiveSheet()->getStyle('W2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleArraySubTitle2);
-    
-        $phpExc->getActiveSheet()->SetCellValue('X2','CARGO JEFE');
-        $phpExc->getActiveSheet()->getStyle('X2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleArraySubTitle2);
-    
-        $phpExc->getActiveSheet()->SetCellValue('Y2','TRABAJO ANTERIOR');
-        $phpExc->getActiveSheet()->getStyle('Y2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('Z2','FECHA INICIO CONTACTO');
-        $phpExc->getActiveSheet()->getStyle('Z2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleArraySubTitle2);
-    
-    
-        $phpExc->getActiveSheet()->SetCellValue('AA2','ESTILO SOCIAL');
-        $phpExc->getActiveSheet()->getStyle('AA2')->getFont()->setBold(true);
-        $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArray);            
-        $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleColor);
-        $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArraySubTitle2);
+      $phpExc->getActiveSheet()->SetCellValue('H2','PAIS');
+      $phpExc->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('H2')->applyFromArray($styleArraySubTitle2);
+  
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('I2','CIUDAD');
+      $phpExc->getActiveSheet()->getStyle('I2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('I2')->applyFromArray($styleArraySubTitle2);
+  
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('J2','MODALIDAD DE TRABAJO');
+      $phpExc->getActiveSheet()->getStyle('J2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('J2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('K2','SATU');
+      $phpExc->getActiveSheet()->getStyle('K2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('K2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('L2','FECHA DE CREACION');
+      $phpExc->getActiveSheet()->getStyle('L2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('L2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('M2','AFINIDAD');
+      $phpExc->getActiveSheet()->getStyle('M2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('M2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('N2','TIPO');
+      $phpExc->getActiveSheet()->getStyle('N2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('N2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('O2','NIVEL DE AFINIDAD');
+      $phpExc->getActiveSheet()->getStyle('O2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('O2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('P2','CANTIDAD DE HIJOS');
+      $phpExc->getActiveSheet()->getStyle('P2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('P2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('Q2','ESTADO CIVIL');
+      $phpExc->getActiveSheet()->getStyle('Q2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('Q2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('R2','NOMBRE DE HIJOS');
+      $phpExc->getActiveSheet()->getStyle('R2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('R2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('S2','HOBBIES');
+      $phpExc->getActiveSheet()->getStyle('S2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('S2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('T2','GUSTOS');
+      $phpExc->getActiveSheet()->getStyle('T2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('T2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('U2','CIUDAD DE CLASIFICACION');
+      $phpExc->getActiveSheet()->getStyle('U2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('V2','ANTIGUEDAD');
+      $phpExc->getActiveSheet()->getStyle('V2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('V2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('W2','NOMBRE JEFE');
+      $phpExc->getActiveSheet()->getStyle('W2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('W2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('X2','CARGO CONTACTO');
+      $phpExc->getActiveSheet()->getStyle('X2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('X2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('Y2','TRABAJO ANTERIOR');
+      $phpExc->getActiveSheet()->getStyle('Y2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('Y2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('Z2','FECHA INICIO CONTACTO');
+      $phpExc->getActiveSheet()->getStyle('Z2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('Z2')->applyFromArray($styleArraySubTitle2);
+  
+  
+      $phpExc->getActiveSheet()->SetCellValue('AA2','ESTILO SOCIAL');
+      $phpExc->getActiveSheet()->getStyle('AA2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AA2')->applyFromArray($styleArraySubTitle2);
 
+      $phpExc->getActiveSheet()->SetCellValue('AB2','AUTORIZA TRATAMIENTO DE DATOS');
+      $phpExc->getActiveSheet()->getStyle('AB2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AB2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AB2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AB2')->applyFromArray($styleArraySubTitle2);
+  
+      $phpExc->getActiveSheet()->SetCellValue('AC2','DIRECTOR');
+      $phpExc->getActiveSheet()->getStyle('AC2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AC2')->applyFromArray($styleArraySubTitle2);
 
+      $phpExc->getActiveSheet()->SetCellValue('AD2','DOCUMENTO DIRECTOR');
+      $phpExc->getActiveSheet()->getStyle('AD2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AD2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AD2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AD2')->applyFromArray($styleArraySubTitle2);
 
+      $phpExc->getActiveSheet()->SetCellValue('AE2','GERENTE');
+      $phpExc->getActiveSheet()->getStyle('AE2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AE2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AE2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AE2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AF2','DOCUMENTO GERENTE');
+      $phpExc->getActiveSheet()->getStyle('AF2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AF2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AF2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AF2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AG2','CLIENTE');
+      $phpExc->getActiveSheet()->getStyle('AG2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AG2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AH2','ESTADO CONTACTO');
+      $phpExc->getActiveSheet()->getStyle('AH2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AH2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AI2','SUCEPTBILE ENCUESTAR');
+      $phpExc->getActiveSheet()->getStyle('AI2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AI2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AJ2','SOCIEDAD');
+      $phpExc->getActiveSheet()->getStyle('AJ2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleArraySubTitle2);
+  
+    
+   
     $numCell = 3;
     foreach ($varlistusuarios as $key => $value) {
       $numCell++;
@@ -4172,11 +4242,37 @@ use Exception;
       $phpExc->getActiveSheet()->setCellValue('U'.$numCell, $value['ciudadclasificacion']); 
       $phpExc->getActiveSheet()->setCellValue('V'.$numCell, $value['antiguedad']); 
       $phpExc->getActiveSheet()->setCellValue('W'.$numCell, $value['nombre_jefe']); 
-      $phpExc->getActiveSheet()->setCellValue('X'.$numCell, $value['cargo_jefe']); 
+      $phpExc->getActiveSheet()->setCellValue('X'.$numCell, $value['rol']); 
       $phpExc->getActiveSheet()->setCellValue('Y'.$numCell, $value['trabajo_anterior']); 
       $phpExc->getActiveSheet()->setCellValue('Z'.$numCell, $value['fecha_inicio_contacto']); 
       $phpExc->getActiveSheet()->setCellValue('AA'.$numCell, $value['estilosocial']);
+      $phpExc->getActiveSheet()->setCellValue('AB'.$numCell, $value['tratamiento']);
+      
+      $varNombreDirector = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])            
+                          ->where(['=','tbl_proceso_cliente_centrocosto.documento_director',$value['documentodirector']])
+                          ->limit(1)
+                          ->Scalar(); 
 
+      $phpExc->getActiveSheet()->setCellValue('AC'.$numCell, $varNombreDirector);      
+      $phpExc->getActiveSheet()->setCellValue('AD'.$numCell, $value['documentodirector']);
+
+      $varNombreGerente = (new \yii\db\Query())
+                          ->select(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
+                          ->from(['tbl_proceso_cliente_centrocosto'])            
+                          ->where(['=','tbl_proceso_cliente_centrocosto.documento_gerente',$value['documentogerente']])
+                          ->limit(1)
+                          ->Scalar(); 
+      $phpExc->getActiveSheet()->setCellValue('AE'.$numCell, $varNombreGerente);
+      $phpExc->getActiveSheet()->setCellValue('AF'.$numCell, $value['documentogerente']);
+      $phpExc->getActiveSheet()->setCellValue('AG'.$numCell, $value['cliente']);
+
+      $phpExc->getActiveSheet()->setCellValue('AH'.$numCell, $value['estados']);
+
+      $phpExc->getActiveSheet()->setCellValue('AI'.$numCell, $value['suceptible']);      
+
+      $phpExc->getActiveSheet()->setCellValue('AJ'.$numCell, $value['sociedad']);
 
     }
     $numCell = $numCell;
