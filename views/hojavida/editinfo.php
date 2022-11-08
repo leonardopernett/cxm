@@ -1254,7 +1254,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
               });
             }else{
-              $.ajax({
+              if (varidestado != "") {
+                $.ajax({
                   method: "get",
                   url: "actualizaacademicos",
                   data: {
@@ -1265,7 +1266,9 @@ $this->params['breadcrumbs'][] = $this->title;
                   success : function(response){
                     numRta =   JSON.parse(response);
                   }
-              });
+                });
+              }
+              
             }
 
              // Esta accion permite guardar el tercer bloque...
