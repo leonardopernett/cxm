@@ -2599,6 +2599,18 @@ use Exception;
       $txtvarfechacumple = Yii::$app->request->get("txtvarfechacumple");
       $txtvarsociedad = Yii::$app->request->get("txtvarsociedad");
 
+      $varCumple = null;
+      if ($txtvarfechacumple != "") {
+        $varCumple = $txtvarfechacumple;
+      }else{
+        $varCumple = (new \yii\db\Query())
+                                  ->select(['tbl_hojavida_datapersonal.fechacumple'])
+                                  ->from(['tbl_hojavida_datapersonal'])            
+                                  ->where(['=','tbl_hojavida_datapersonal.hv_idpersonal',$txtvarautoincrement])  
+                                  ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])                              
+                                  ->scalar();
+      }
+
       $txtrta = 0;
       
 
@@ -2617,7 +2629,7 @@ use Exception;
                     'suceptible' => $txtvaridsusceptible,
                     'indicador_satu' => $txtvaridsatu,
                     'clasificacion' => $txtvarclasificacion,
-                    'fechacumple' => $txtvarfechacumple,   
+                    'fechacumple' => $varCumple,   
                     'id_sociedad' => $txtvarsociedad,                                                   
                 ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
 
