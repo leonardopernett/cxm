@@ -233,8 +233,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
 
             <div class="row">
-              <div class="col-md-6">
-                <label style="font-size: 15px;"> Fecha de Cumpleaños</label>                 
+              <label style="font-size: 15px;"> Fecha de Cumpleaños</label>   
+              <div class="col-md-6">                              
                 <?= $form->field($model, "fechacumple", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varMesFecha, ['prompt' => 'Seleccionar...', 'id'=>"idMesFecha"]) ?>
               </div>
               <div class="col-md-6">
