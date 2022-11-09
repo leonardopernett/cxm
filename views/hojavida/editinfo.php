@@ -395,22 +395,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php
                   
                   $varListaAfinidades = (new \yii\db\Query())
-                                        ->select(['tbl_hojavida_dataafinidad.afinidad', 'tbl_hojavida_datanivelafinidad.nivelafinidad', 'tbl_hojavida_datatipoafinidad.tipoafinidad'])
-                                        ->from(['tbl_hojavida_datalaboral'])
+                                        ->select(['tbl_hojavida_dataafinidad.afinidad', 'tbl_hojavida_datatipoafinidad.tipoafinidad', 'tbl_hojavida_datanivelafinidad.nivelafinidad'])
+                                        ->from(['tbl_hojavida_datapersonal'])
 
-                                        ->join('LEFT OUTER JOIN', 'tbl_hojavida_dataafinidad',
-                                            'tbl_hojavida_datalaboral.afinidad = tbl_hojavida_dataafinidad.hv_idafinidad') 
+                                        ->join('LEFT OUTER JOIN', 'tbl_hojavida_datalaboral',
+                                            'tbl_hojavida_datalaboral.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal') 
 
 
-                                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_datanivelafinidad',
-                                              'tbl_hojavida_datalaboral.nivel_afinidad = tbl_hojavida_datanivelafinidad.hv_idinvelafinidad') 
+                                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_dataafinidad',
+                                              'tbl_hojavida_dataafinidad.hv_idafinidad = tbl_hojavida_datalaboral.afinidad') 
 
 
                                           ->join('LEFT OUTER JOIN', 'tbl_hojavida_datatipoafinidad',
-                                            'tbl_hojavida_datalaboral.tipo_afinidad = tbl_hojavida_datatipoafinidad.hv_idtipoafinidad')                                         
+                                            'tbl_hojavida_datatipoafinidad.hv_idtipoafinidad = tbl_hojavida_datalaboral.tipo_afinidad')                                         
 
-                                        ->where(['=','tbl_hojavida_datalaboral.anulado',0])
-                                        ->andwhere(['=','tbl_hojavida_datalaboral.hv_idlaboral',$idinfo])
+                                          ->join('LEFT OUTER JOIN', 'tbl_hojavida_datanivelafinidad',
+                                            'tbl_hojavida_datanivelafinidad.hv_idinvelafinidad = tbl_hojavida_datalaboral.nivel_afinidad')                                         
+
+
+                                        ->where(['=','tbl_hojavida_datapersonal.anulado',0])
+                                        ->andwhere(['=','tbl_hojavida_datapersonal.hv_idpersonal',$idinfo])
+                                        ->groupby(['tbl_hojavida_datapersonal.hv_idpersonal'])
                                         ->All();
 
                   foreach ($varListaAfinidades as $key => $value) {
