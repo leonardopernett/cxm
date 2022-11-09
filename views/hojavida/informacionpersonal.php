@@ -225,7 +225,7 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
 
           <div class="col-md-4">
-            
+          <label style="font-size: 15px;"> Fecha de Cumpleaños</label> 
             <?php 
               $varMesFecha = ['Enero'=>'Enero','Febrero'=>'Febrero','Marzo'=>'Marzo','Abril'=>'Abril','Mayo'=>'Mayo','Junio'=>'Junio','Julio'=>'Julio','Agosto'=>'Agosto','Septiembre'=>'Septiembre','Octubre'=>'Octubre','Noviembre'=>'Noviembre','Diciembre'=>'Diciembre']; 
 
@@ -233,7 +233,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
 
             <div class="row">
-              <label style="font-size: 15px;"> Fecha de Cumpleaños</label>   
+                
               <div class="col-md-6">                              
                 <?= $form->field($model, "fechacumple", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varMesFecha, ['prompt' => 'Seleccionar...', 'id'=>"idMesFecha"]) ?>
               </div>
