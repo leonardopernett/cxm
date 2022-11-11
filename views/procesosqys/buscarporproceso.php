@@ -152,32 +152,40 @@ use app\models\ProcesosClienteCentrocosto;
               ]]);
             ?>
           </div>
-        </div>
+        </div>        
 
         <div class="row"> 
           <div class="col-md-6">
             <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Seleccionar Programa/Pcrc') ?></label>
-            <?=
-                    $form->field($model, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->checkboxList(
-                        [],
-                        [
-                            "id" =>"requester",
-                            'item'=>function ($index, $label, $name, $checked, $value)
-                            {
-                                return '<div class="col-md-12">
-                                            <input type="checkbox"/>'.$label.'
-                                        </div>';
-                            }
-
-                      ])->label('');
+            
+            <?= $form->field($model,'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
+                                        [],
+                                        [
+                                            'prompt' => 'Seleccionar...',
+                                            'id' => 'requester',
+                                            'multiple' => true,
+                                        ]
+                                    )->label('');
             ?>
-            <?= $form->field($model, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 350, 'class' => 'hidden',  'id'=>'txtIdCod_pcrc'])?>
+            
           </div>
 
           <div class="col-md-6">
             <label style="font-size: 15px;"><em class="fas fa-hand-pointer" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Seleccionar Dimensión') ?></label>
             <?= $form->field($model, 'anulado', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($varextensiones, ['prompt' => 'Seleccionar...', 'id'=>'iddashboard','onclick'=>'verProcesos();']) ?>            
           </div>          
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel panel-default" style="background-color: #e9f9e8;">
+              <div class="panel-body">
+                <label style="font-size: 14px;"><?= Yii::t('app', ' Importante: Tener presente que para seleccionar mas de un dato en el centro de costos, se debe hacer con la tecla Ctrl sostenida y dando clic a los items deseados.') ?></label>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -221,7 +229,7 @@ use app\models\ProcesosClienteCentrocosto;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">                
-                <table align="center">
+                <table>
                   <thead>
                     <tr>
                       <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
@@ -236,46 +244,5 @@ use app\models\ProcesosClienteCentrocosto;
 </div>
 
 <script type="text/javascript">
-  function verifica(){
-    var cant = document.getElementById("requester").querySelectorAll(".listach");
-       
-    var varpcrc = "";
-    for (var x = 0; x < cant.length; x++) {
-      if(document.getElementById("lista_"+(x+1)).checked){
-        varpcrc = varpcrc + "'" + document.getElementById("lista_"+(x+1)).value + "'" + ",";
-      }
-    }
-    varpcrc = varpcrc.substring(0,varpcrc.length - 2);
-    varpcrc = varpcrc.substring(1);
 
-    document.getElementById("txtIdCod_pcrc").value = varpcrc;
-
-    var varcapaOne = document.getElementById("capaIdProceso");
-    var varcapaTwo = document.getElementById("capaIdMensaje");
-
-    var varidDocDirector = document.getElementById("txtidclientes").value;
-    var varidDimension = document.getElementById("iddashboard").value;
-    var varFechas = document.getElementById("speechparametrizar-fechacreacion").value;
-
-    if (varidDocDirector == "") {
-      event.preventDefault();
-      swal.fire("!!! Advertencia !!!","Se debe de seleccionar un Director","warning");
-      return;
-    }else{
-      if (varidDimension == "") {
-        event.preventDefault();
-        swal.fire("!!! Advertencia !!!","Se debe de seleccionar una dimensión","warning");
-        return;
-      }else{
-        if (varFechas == "") {
-          event.preventDefault();
-          swal.fire("!!! Advertencia !!!","Se debe de seleccionar un rango de fecha","warning");
-          return;
-        }else{
-          varcapaOne.style.display = 'none';
-          varcapaTwo.style.display = 'inline';
-        }
-      }
-    }
-  }
 </script>

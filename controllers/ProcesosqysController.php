@@ -284,45 +284,38 @@ use app\models\SpeechParametrizar;
     }
 
     public function actionListarpcrcs(){
-        $txtanulado = 0;
-        $txtidcliente = Yii::$app->request->get('id');
+      $txtanulado = 0;
+      $txtidcliente = Yii::$app->request->get('id');
 
 
-          if ($txtidcliente) {
-            $txtControl = \app\models\SpeechCategorias::find()->distinct()
-              ->select(['tbl_speech_categorias.cod_pcrc'])
-              ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
-                                  'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
-              ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
-              ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
-              ->count();
+        if ($txtidcliente) {
+          $txtControl = \app\models\SpeechCategorias::find()->distinct()
+            ->select(['tbl_speech_categorias.cod_pcrc'])
+            ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+            ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
+            ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
+            ->count();
 
-            if ($txtControl > 0) {
-              $varListaLideresx = \app\models\SpeechCategorias::find()->distinct()
-                  ->select(['tbl_speech_categorias.cod_pcrc','tbl_speech_categorias.pcrc'])
-                  ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
-                                      'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
-                  ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
-                  ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
-                  ->groupby(['tbl_speech_categorias.cod_pcrc'])                  
-                  ->all(); 
+          if ($txtControl > 0) {
+            $varListaLideresx = \app\models\SpeechCategorias::find()->distinct()
+                ->select(['tbl_speech_categorias.cod_pcrc','tbl_speech_categorias.pcrc'])
+                ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                    'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+                ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
+                ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
+                ->groupby(['tbl_speech_categorias.cod_pcrc'])                  
+                ->all(); 
 
-              
-              $valor = 0;
-              foreach ($varListaLideresx as $key => $value) {
-                $valor = $valor + 1; 
-                $nombre = "lista_";
-                $clase = "listach";
-                $nombre = $nombre.$valor;
-                echo "<input type='checkbox' id= '".$nombre."' value='".$value->cod_pcrc."' class='".$clase."'>";
-                echo "<label style='font-size: 12px;' for = '".$value->cod_pcrc."'>&nbsp;&nbsp; ".$value->cod_pcrc." - ".$value->pcrc . "</label> <br>";                    
-              }
-            }else{
-              echo "<option>--</option>";
+            foreach ($varListaLideresx as $key => $value) {
+              echo "<option value='" . $value->cod_pcrc. "'>" . $value->cod_pcrc." - ".$value->pcrc. "</option>";
             }
           }else{
-            echo "<option>Seleccionar...</option>";
-          }          
+            echo "<option>--</option>";
+          }
+        }else{
+          echo "<option>Seleccionar...</option>";
+        }         
     }
 
     public function actionBuscarporproceso(){
@@ -352,6 +345,17 @@ use app\models\SpeechParametrizar;
     public function actionIndexporproceso($varIdDpCliente,$varIdExtension,$varCentroCostos,$varFechainicial,$varFechaFinal){
       $varTextoDimensionp = null;
       $varIdExtensionc = $varIdExtension;
+      $varDimensionesId = null;
+      if ($varIdExtensionc == "0") {
+        $varDimensionesId = [1,2,7,10,11];
+      }
+      if ($varIdExtensionc == "1") {
+        $varDimensionesId = [3];
+      }
+      if ($varIdExtensionc == "2") {
+        $varDimensionesId = [4];
+      }
+
       $varNombreServicio = (new \yii\db\Query())
                             ->select(['nameArbol'])
                             ->from(['tbl_speech_servicios'])            
@@ -373,7 +377,7 @@ use app\models\SpeechParametrizar;
                             ->where(['=','anulado',0])
                             ->andwhere(['in','cod_pcrc',$varListaCC])
                             ->groupby(['cod_pcrc'])
-                            ->All();       
+                            ->All(); 
 
       $varNombreSpeech = (new \yii\db\Query())
                             ->select(['programacategoria'])
@@ -560,6 +564,7 @@ use app\models\SpeechParametrizar;
                           ->All();
       }
 
+
       $varListasClienteIdealP = (new \yii\db\Query())
                                 ->select(['cod_pcrc'])
                                 ->from(['tbl_ideal_llamadas'])
@@ -576,6 +581,7 @@ use app\models\SpeechParametrizar;
                                 ->where(['=','anulado',0])
                                 ->andwhere(['in','id_dp_cliente',$varIdDpCliente])
                                 ->andwhere(['in','cod_pcrc',$varListaCC])
+                                ->andwhere(['=','extension',$varIdExtensionc])
                                 ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
                                 ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
                                 ->all();  
@@ -606,6 +612,7 @@ use app\models\SpeechParametrizar;
         'varExtensionesM' => $varExtensionesM,
         'varNombreSpeech' => $varNombreSpeech,
         'varListarEquipos' => $varListarEquipos,
+        'varDimensionesId' => $varDimensionesId,
       ]);
     }
     
