@@ -36,7 +36,7 @@ use app\models\ProcesosClienteCentrocosto;
   $varBueno = '#00968F';
   $varEstable = '#FFC72C';
 
-  $varSinData = '-';
+  $varSinData = '--';
 
   // Procesos Manuales
   $varManualPEC = 0;
@@ -80,9 +80,18 @@ use app\models\ProcesosClienteCentrocosto;
   $varArrayConteoNoGestionada = 0;
   $varArrayConteoEstadoOk = 0;
   $varArrayConteoEstadoKo = 0;
+  $varArrayConteoEstadoFail = 0;
+  $varArrayConteoAceptado = 0;
   $varCantidadSegundo = 0;
 
   $titulos = array();
+
+  $varArrayNombreMejora = array();
+  $varArrayConteoMejora = array();
+
+  
+
+  $varConteoMejoraFeedback = 0;
 
 $js = <<< 'SCRIPT'
 /* To initialize BS3 popovers set this below */
@@ -516,9 +525,135 @@ $this->registerJs($js);
   <br>
 
   <div class="row">
+    <?php
+      $varArrayRtaAutoGeneral = array();
+      $varArrayRtaAgenteGeneral = array();
+      $varArrayRtaCanalGeneral = array();
+      $varArrayRtaMarcaGeneral = array();
+      $varCantidadCodPcrcGeneral = 0;
+
+      foreach ($varListasClienteIdealP as $key => $value) {
+        $varCodPcrcGeneral = $value['cod_pcrc'];
+        $varCantidadCodPcrcGeneral += 1;
+
+        $varAgenteGeneral =  (new \yii\db\Query())
+                            ->select(['ROUND(AVG(tbl_ideal_responsabilidad.agente),1) AS varMarca'])
+                            ->from(['tbl_ideal_responsabilidad']) 
+                            ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpCliente])
+                            ->andwhere(['=','tbl_ideal_responsabilidad.cod_pcrc',$varCodPcrcGeneral])
+                            ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                            ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                            ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                            ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                            ->andwhere(['!=','tbl_ideal_responsabilidad.agente',0])
+                            ->scalar();                
+
+        array_push($varArrayRtaAgenteGeneral, $varAgenteGeneral);
+
+        $varMarcaGeneral = (new \yii\db\Query())
+                          ->select(['ROUND(AVG(tbl_ideal_responsabilidad.marca),1) AS varMarca'])
+                          ->from(['tbl_ideal_responsabilidad']) 
+                          ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpCliente])
+                          ->andwhere(['=','tbl_ideal_responsabilidad.cod_pcrc',$varCodPcrcGeneral])
+                          ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                          ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                          ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                          ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                          ->andwhere(['!=','tbl_ideal_responsabilidad.marca',0])
+                          ->scalar();
+
+        array_push($varArrayRtaMarcaGeneral, $varMarcaGeneral);
+
+        $varCanalMixtos = (new \yii\db\Query())
+                          ->select(['ROUND(AVG(tbl_ideal_responsabilidad.canal),1) AS varMarca'])
+                          ->from(['tbl_ideal_responsabilidad']) 
+                          ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpCliente])
+                          ->andwhere(['=','tbl_ideal_responsabilidad.cod_pcrc',$varCodPcrcGeneral])
+                          ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                          ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                          ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                          ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                          ->andwhere(['!=','tbl_ideal_responsabilidad.canal',0])
+                          ->scalar();
+
+
+        array_push($varArrayRtaCanalGeneral, $varCanalMixtos);
+
+      }
+
+      $varArrayRtaScoreGeneral = (new \yii\db\Query())
+                          ->select(['ROUND(AVG(tbl_ejecucionformularios.score)*100,2) AS varScore'])
+                          ->from(['tbl_ejecucionformularios']) 
+
+                          ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                  'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                          ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                  'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')
+
+                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesM])
+                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                          ->scalar();
+
+      if ($varArrayRtaScoreGeneral == "") {
+        $varArrayRtaScoreGeneral = 0;
+      }
+
+      $varArrayRestanteScoreGeneral = round( 100-$varArrayRtaScoreGeneral,2);
+
+      if ($varArrayRestanteScoreGeneral < '80') {
+        $varTColorMixtoP = $varMalo;
+      }else{
+        if ($varArrayRestanteScoreGeneral >= '90') {
+          $varTColorMixtoP = $varBueno;
+        }else{
+          $varTColorMixtoP = $varEstable;
+        }
+      }
+
+      $varArrayAgenteP = round( array_sum($varArrayRtaAgenteGeneral) / $varCantidadCodPcrcGeneral,2);
+      $varArrayMarcaP = round( array_sum($varArrayRtaMarcaGeneral) / $varCantidadCodPcrcGeneral,2);
+      $varArrayCanalP = round( array_sum($varArrayRtaCanalGeneral) / $varCantidadCodPcrcGeneral,2);
+
+      $varArrayPromedioAutoGeneral = round( ($varArrayAgenteP + $varArrayCanalP) / 2,2);
+      $varArrayRestanteAutoGeneral = round( 100 - $varArrayPromedioAutoGeneral,2);
+
+      if ($varArrayPromedioAutoGeneral < '80') {
+        $varTColorAutoP = $varMalo;
+      }else{
+        if ($varArrayPromedioAutoGeneral >= '90') {
+          $varTColorAutoP = $varBueno;
+        }else{
+          $varTColorAutoP = $varEstable;
+        }
+      }
+
+      if ($varArrayRtaScoreGeneral != 0) {
+        $varArrayKonectaGeneral = round( ($varArrayRtaScoreGeneral+$varArrayPromedioAutoGeneral)/2,2);
+        $varArrayRestanteKGeneral = round(100-$varArrayKonectaGeneral,2);
+      }else{
+        $varArrayKonectaGeneral = 0;
+        $varArrayRestanteKGeneral = 100;
+      }
+      
+      if ($varArrayKonectaGeneral < '80') {
+        $varTColorGeneralP = $varMalo;
+      }else{
+        if ($varArrayKonectaGeneral >= '90') {
+          $varTColorGeneralP = $varBueno;
+        }else{
+          $varTColorGeneralP = $varEstable;
+        }
+      }
+    ?>
+
     <div class="col-md-6">
       <div class="card3 mb">
-        <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Detalle de Procesmiento Mixto') ?></label>
+        <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Detalle de Procesamiento Mixto') ?></label>
+
         <table style="width:100%">
           <caption><?= Yii::t('app', ' .') ?></caption>
           <tr>
@@ -533,128 +668,12 @@ $this->registerJs($js);
             </td>
           </tr>
           <tr>
-            <?php
-              $varArraySumeAutomaticoP = array();
-              $varArraySumaMixtoP = array();
-
-
-              foreach ($varListasClienteIdealP as $key => $value) {
-                $varCentrosCostos = $value['cod_pcrc'];
-
-                $varResponsableAutomaticoIdealP = (new \yii\db\Query())
-                                            ->select(['round(AVG(agente),2) AS ProAgente','round(AVG(marca),2) AS ProMarca','round(AVG(canal),2) AS ProCanal'])
-                                            ->from(['tbl_ideal_responsabilidad'])            
-                                            ->where(['=','anulado',0])
-                                            ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
-                                            ->andwhere(['=','cod_pcrc',$varCentrosCostos])
-                                            ->andwhere(['=','extension',$varIdExtensionc])
-                                            ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
-                                            ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
-                                            ->all(); 
-
-                $varArrayAutomaticoIdealP = 0;
-                foreach ($varResponsableAutomaticoIdealP as $key => $value) {
-                  $varArrayAutomaticoIdealP = round(($value['ProAgente'] + $value['ProCanal']) / 2,2);
-                }
-
-                array_push($varArraySumeAutomaticoP, $varArrayAutomaticoIdealP);
-
-                $vaListarFormulariosGIdealP = (new \yii\db\Query())
-                                              ->select(['formulario_id'])
-                                              ->from(['tbl_ideal_novedades'])            
-                                              ->where(['=','anulado',0])
-                                              ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
-                                              ->andwhere(['=','cod_pcrc',$varCentrosCostos])
-                                              ->andwhere(['=','extension',$varIdExtensionc])
-                                              ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
-                                              ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
-                                              ->groupby(['formulario_id'])
-                                              ->All();
-
-                $varArrayCallidProcesoIdealP =  array();
-                foreach ($vaListarFormulariosGIdealP as $key => $value) {
-                  $varFormularioGIdIdealP = $value['formulario_id'];
-
-                  $varScoreGIdealP = (new \yii\db\Query())
-                                    ->select(['score'])
-                                    ->from(['tbl_ejecucionformularios'])         
-                                    ->where(['=','id',$varFormularioGIdIdealP])
-                                    ->andwhere(['between','created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
-                                    ->scalar();
-
-                  if ($varScoreGIdealP) {
-                    array_push($varArrayCallidProcesoIdealP, $varScoreGIdealP);
-                  }else{
-                    array_push($varArrayCallidProcesoIdealP, 0);
-                  }                 
-
-                }
-
-                if (count($varArrayCallidProcesoIdealP) != 0) {
-                  $varListarMixtasIdealP = round(array_sum($varArrayCallidProcesoIdealP) / count($varArrayCallidProcesoIdealP),2);
-                }else{
-                  $varListarMixtasIdealP = 0;
-                }
-
-                array_push($varArraySumaMixtoP, $varListarMixtasIdealP);
-            
-              }
-
-              if (count($varListasClienteIdealP) != 0) {
-                $varPormedioResponsableP = round((array_sum($varArraySumeAutomaticoP) / count($varListasClienteIdealP)),2);
-              }else{
-                $varPormedioResponsableP = 0;
-              }
-              
-
-              if (count($varListasClienteIdealP) != 0) {
-                $varListasMixtasP = round((array_sum($varArraySumaMixtoP) / count($varListasClienteIdealP)),2);
-              }else{
-                $varListasMixtasP = 0;
-              }
-              
-
-
-              $varListarGeneralResponsabilidadP = round(($varPormedioResponsableP + $varListasMixtasP) / 2,2);              
-
-              $varRestanteGeneralP = round(100 - $varListarGeneralResponsabilidadP,2);
-              if ($varListarGeneralResponsabilidadP < '80') {
-                $varTColorGeneralP = $varMalo;
-              }else{
-                if ($varListarGeneralResponsabilidadP >= '90') {
-                  $varTColorGeneralP = $varBueno;
-                }else{
-                  $varTColorGeneralP = $varEstable;
-                }
-              }
-
-              $varRestanteMixtoP = round(100 - $varListasMixtasP,2);
-              if ($varListasMixtasP < '80') {
-                $varTColorMixtoP = $varMalo;
-              }else{
-                if ($varListasMixtasP >= '90') {
-                  $varTColorMixtoP = $varBueno;
-                }else{
-                  $varTColorMixtoP = $varEstable;
-                }
-              }
-
-              $varRestanteAutosP = round(100 - $varPormedioResponsableP,2);
-              if ($varPormedioResponsableP < '80') {
-                $varTColorAutoP = $varMalo;
-              }else{
-                if ($varListasMixtasP >= '90') {
-                  $varTColorAutoP = $varBueno;
-                }else{
-                  $varTColorAutoP = $varEstable;
-                }
-              }
-            ?>
-            <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerGP"></canvas></div><span style="font-size: 15px;"><?php echo $varListarGeneralResponsabilidadP.' %'; ?></span></td> 
-            <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerMP"></canvas></div><span style="font-size: 15px;"><?php echo $varListasMixtasP.' %'; ?></span></td> 
-            <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerAP"></canvas></div><span style="font-size: 15px;"><?php echo $varPormedioResponsableP.' %'; ?></span></td>
+            <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerGP"></canvas></div><span style="font-size: 15px;"><?php echo $varArrayKonectaGeneral.' %'; ?></span></td> 
+            <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerMP"></canvas></div><span style="font-size: 15px;"><?php echo $varArrayRtaScoreGeneral.' %'; ?></span></td> 
+            <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerAP"></canvas></div><span style="font-size: 15px;"><?php echo $varArrayPromedioAutoGeneral.' %'; ?></span></td>
           </tr>
         </table>
+
       </div>
     </div>
 
@@ -664,6 +683,7 @@ $this->registerJs($js);
         <div id="chartContainerResposnabilidadesP" class="highcharts-container" style="height: 200px;"></div>
       </div>
     </div>
+
   </div>
 
 </div>
@@ -722,444 +742,804 @@ $this->registerJs($js);
             <!-- Proceso Mixto -->
             <div id="Mixto" class="w3-container city" style="display:inline;">
 
+              <br>
+
               <?php
+              $varConteoProcesoMixto = 0;
               foreach ($varListasClienteIdealP as $key => $value) {
-                $varCentrosCostosMixtos = $value['cod_pcrc'];
+                $varConteoProcesoMixto += 1;
 
-                $varNombreCentroCostos = (new \yii\db\Query())
-                                        ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
-                                        ->from(['tbl_speech_categorias'])            
-                                        ->where(['=','anulado',0])
-                                        ->andwhere(['in','cod_pcrc',$varCentrosCostosMixtos])
-                                        ->groupby(['cod_pcrc'])
-                                        ->Scalar(); 
+                $varCodPcrcMixtos = $value['cod_pcrc'];
 
-                $varCantidadLlamadasIdealP = (new \yii\db\Query())
-                                ->select(['sum(cantidad)'])
-                                ->from(['tbl_ideal_llamadas'])            
-                                ->where(['=','anulado',0])
-                                ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
-                                ->andwhere(['=','cod_pcrc',$varCentrosCostosMixtos])
-                                ->andwhere(['=','tipoextension',$varIdExtensionc])
-                                ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
-                                ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
-                                ->Scalar(); 
-
-                $varResponsableAutomaticoP = (new \yii\db\Query())
-                                            ->select(['round(AVG(agente),2) AS ProAgente','round(AVG(marca),2) AS ProMarca','round(AVG(canal),2) AS ProCanal'])
-                                            ->from(['tbl_ideal_responsabilidad'])            
-                                            ->where(['=','anulado',0])
-                                            ->andwhere(['=','id_dp_cliente',$varIdDpCliente])
-                                            ->andwhere(['=','cod_pcrc',$varCentrosCostosMixtos])
-                                            ->andwhere(['=','extension',$varIdExtensionc])
-                                            ->andwhere(['>=','fechainicio',$varFechainicial.' 05:00:00'])
-                                            ->andwhere(['<=','fechafin',$varFechaFinal.' 05:00:00'])
-                                            ->all(); 
-
-                $varArrayAutomaticoP = 0;
-                $varAgentePersonaP = null;
-                $varMarcaPersonaP = null;
-                $varCanalPersonaP = null;
-                foreach ($varResponsableAutomaticoP as $key => $value) {
-                  $varArrayAutomaticoP = round(($value['ProAgente'] + $value['ProCanal']) / 2,2);
-                  $varAgentePersonaP = $value['ProAgente'];      
-                  $varMarcaPersonaP = $value['ProMarca'];      
-                  $varCanalPersonaP = $value['ProCanal'];      
+                if ($varIdExtensionc > '1') {
+                  $varRnIdealM =  (new \yii\db\Query())
+                                ->select(['rn'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcMixtos])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','rn',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['rn'])
+                                ->all();
+                }else{
+                  $varRnIdealM =  (new \yii\db\Query())
+                                ->select(['rn'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcMixtos])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','rn',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['rn'])
+                                ->all();
                 }
 
-                if ($varArrayAutomaticoP < '80') {
+                if (count($varRnIdealM) != 0) {
+                  $varArrayRnM = array();
+                  foreach ($varRnIdealM as $key => $value) {
+                    array_push($varArrayRnM, $value['rn']);
+                  }
+
+                  $varExtensionesArraysM = implode("', '", $varArrayRnM);
+                  $arrayExtensiones_downM = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysM);
+                  $varExtensionesMixtas = explode(",", $arrayExtensiones_downM);
+                }else{
+
+                  if ($varIdExtensionc > '1') {
+                    $varExtM =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcMixtos])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','ext',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['ext'])
+                                ->all();
+                  }else{
+                    $varExtM =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcMixtos])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','ext',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['ext'])
+                                ->all();
+                  }
+
+                  if (count($varExtM) != 0) {
+                    $varArrayExtM = array();
+                    foreach ($varExtM as $key => $value) {
+                      array_push($varArrayExtM, $value['ext']);
+                    }
+
+                    $varExtensionesArraysM = implode("', '", $varArrayExtM);
+                    $arrayExtensiones_downM = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysM);
+                    $varExtensionesMixtas = explode(",", $arrayExtensiones_downM);
+                  }else{
+
+                    if ($varIdExtensionc > '1') {
+                      $varUsuaM =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcMixtos])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','usuared',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['usuared'])
+                                ->all();
+                    }else{
+                      $varUsuaM =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcMixtos])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','usuared',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['usuared'])
+                                ->all();
+                    }
+
+
+                    if (count($varUsuaM) != 0) {
+                      $varArrayUsuaM = array();
+                      foreach ($varUsuaM as $key => $value) {
+                        array_push($varArrayUsuaM, $value['usuared']);
+                      }
+
+                      $varExtensionesArraysM = implode("', '", $varArrayUsuaM);
+                      $arrayExtensiones_downM = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysM);
+                      $varExtensionesMixtas = explode(",", $arrayExtensiones_downM);
+                    }else{
+                      $varExtensionesMixtas = "N0A";
+                    }
+                  }
+                }
+
+                $varNombreCodPcrcMixtos = (new \yii\db\Query())
+                                          ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
+                                          ->from(['tbl_speech_categorias'])            
+                                          ->where(['=','anulado',0])
+                                          ->andwhere(['in','cod_pcrc',$varCodPcrcMixtos])
+                                          ->groupby(['cod_pcrc'])
+                                          ->Scalar(); 
+
+                $varAgenteMixtos = (new \yii\db\Query())
+                                          ->select(['ROUND(AVG(tbl_ideal_responsabilidad.agente),1) AS varMarca'])
+                                          ->from(['tbl_ideal_responsabilidad']) 
+                                          ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.cod_pcrc',$varCodPcrcMixtos])
+                                          ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                          ->andwhere(['!=','tbl_ideal_responsabilidad.agente',0])
+                                          ->scalar();       
+
+                if ($varAgenteMixtos < '80') {
+                  $varTColorAgenteIdealP = $varMalo;
+                }else{
+                  if ($varAgenteMixtos >= '90') {
+                    $varTColorAgenteIdealP = $varBueno;
+                  }else{
+                    $varTColorAgenteIdealP = $varEstable;
+                  }
+                }                        
+
+                $varMarcaMixtos = (new \yii\db\Query())
+                                          ->select(['ROUND(AVG(tbl_ideal_responsabilidad.marca),1) AS varMarca'])
+                                          ->from(['tbl_ideal_responsabilidad']) 
+                                          ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.cod_pcrc',$varCodPcrcMixtos])
+                                          ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                          ->andwhere(['!=','tbl_ideal_responsabilidad.marca',0])
+                                          ->scalar();
+
+                if ($varMarcaMixtos < '80') {
+                  $varTColorMarcaIdealP = $varMalo;
+                }else{
+                  if ($varMarcaMixtos >= '90') {
+                    $varTColorMarcaIdealP = $varBueno;
+                  }else{
+                    $varTColorMarcaIdealP = $varEstable;
+                  }
+                }
+
+                $varCanalMixtos = (new \yii\db\Query())
+                                          ->select(['ROUND(AVG(tbl_ideal_responsabilidad.canal),1) AS varMarca'])
+                                          ->from(['tbl_ideal_responsabilidad']) 
+                                          ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.cod_pcrc',$varCodPcrcMixtos])
+                                          ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                          ->andwhere(['!=','tbl_ideal_responsabilidad.canal',0])
+                                          ->scalar();
+
+                if ($varCanalMixtos < '80') {
+                  $varTColorCanalIdealP = $varMalo;
+                }else{
+                  if ($varCanalMixtos >= '90') {
+                    $varTColorCanalIdealP = $varBueno;
+                  }else{
+                    $varTColorCanalIdealP = $varEstable;
+                  }
+                }
+                
+                $varArrayRtaAutoMixta = round( ($varAgenteMixtos+$varCanalMixtos)/2,2);
+
+                if ($varArrayRtaAutoMixta < '80') {
                   $varTColorAutoIdealP = $varMalo;
                 }else{
-                  if ($varArrayAutomaticoP >= '90') {
+                  if ($varArrayRtaAutoMixta >= '90') {
                     $varTColorAutoIdealP = $varBueno;
                   }else{
                     $varTColorAutoIdealP = $varEstable;
                   }
                 }
 
-                if ($varAgentePersonaP < '80') {
-                  $varTColorAgenteIdealP = $varMalo;
-                }else{
-                  if ($varAgentePersonaP >= '90') {
-                    $varTColorAgenteIdealP = $varBueno;
-                  }else{
-                    $varTColorAgenteIdealP = $varEstable;
-                  }
-                }
-                if ($varMarcaPersonaP < '80') {
-                  $varTColorMarcaIdealP = $varMalo;
-                }else{
-                  if ($varMarcaPersonaP >= '90') {
-                    $varTColorMarcaIdealP = $varBueno;
-                  }else{
-                    $varTColorMarcaIdealP = $varEstable;
-                  }
-                }
-                if ($varCanalPersonaP < '80') {
-                  $varTColorCanalIdealP = $varMalo;
-                }else{
-                  if ($varCanalPersonaP >= '90') {
-                    $varTColorCanalIdealP = $varBueno;
-                  }else{
-                    $varTColorCanalIdealP = $varEstable;
-                  }
+
+                $varArrayRtaScoreMixta = (new \yii\db\Query())
+                                          ->select(['ROUND(AVG(tbl_ejecucionformularios.score)*100,2) AS varScore'])
+                                          ->from(['tbl_ejecucionformularios']) 
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                  'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                                  'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')
+
+                                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesMixtas])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                                          ->scalar();
+
+
+                if ($varArrayRtaScoreMixta == "") {
+                  $varArrayRtaScoreMixta = 0;
                 }
 
-                $vaListarFormulariosIdealP =  (new \yii\db\Query())
-                                              ->select(['formulario_id'])
-                                              ->from(['tbl_ideal_novedades'])            
-                                              ->where(['=','tbl_ideal_novedades.id_dp_cliente',$varIdDpCliente])
-                                              ->andwhere(['=','tbl_ideal_novedades.cod_pcrc',$varCentrosCostosMixtos])
-                                              ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechainicial.' 05:00:00'])
-                                              ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
-                                              ->andwhere(['=','tbl_ideal_novedades.anulado',0])
-                                              ->andwhere(['=','tbl_ideal_novedades.extension',$varIdExtensionc])
-                                              ->groupby(['formulario_id'])
-                                              ->All();
+                if ($varArrayRtaScoreMixta < '80') {
+                  $varTColorMixtaAIdealP = $varMalo;
+                }else{
+                  if ($varArrayRtaScoreMixta >= '90') {
+                    $varTColorMixtaAIdealP = $varBueno;
+                  }else{
+                    $varTColorMixtaAIdealP = $varEstable;
+                  }
+                }
+
+                
+                $varArrayKonectaMixta = round( ($varArrayRtaScoreMixta+$varArrayRtaAutoMixta)/2,2);
+                
+
+                if ($varArrayKonectaMixta < '80') {
+                  $varTColorGeneralIdealP = $varMalo;
+                }else{
+                  if ($varArrayKonectaMixta >= '90') {
+                    $varTColorGeneralIdealP = $varBueno;
+                  }else{
+                    $varTColorGeneralIdealP = $varEstable;
+                  }
+                }
+
+                $varArrayCantidadSpeechMixta = (new \yii\db\Query())
+                                          ->select(['tbl_dashboardspeechcalls.callid'])
+                                          ->from(['tbl_dashboardspeechcalls']) 
+                                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesMixtas])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                                          ->count();
+
+                $varListaDataArbolsMixtos = (new \yii\db\Query())
+                                                ->select(['*'])
+                                                ->from(['tbl_speech_pcrcformularios'])            
+                                                ->where(['=','anulado',0])
+                                                ->andwhere(['=','cod_pcrc',$varCodPcrcMixtos])
+                                                ->andwhere(['=','id_dp_clientes',$varIdDpCliente])
+                                                ->all();
+
+                $varArrayArbolsMixtos = array();
+                foreach ($varListaDataArbolsMixtos as $key => $value) {
+                  array_push($varArrayArbolsMixtos, $value['arbol_id']);
+                }
+                $varArray_ArbolMixtos = implode(", ", $varArrayArbolsMixtos);
+                $arrayArboles_downM = str_replace(array("#", "'", ";", " "), '', $varArray_ArbolMixtos);
+                $varArbolesMixtas = explode(",", $arrayArboles_downM);
 
 
-                $varArrayValoracionesP = array();
-                $varArrayCallidsIdealP = array();
-                $varArrayFeedbacksP = array();
-                $varArrayPECP = array();
-                $varArrayPENCP = array();
-                $varArraySFCP = array();
-                $varArrayProcesoP = array();
-                $varArrayExperienciaP = array();
-                $varArrayPromesaP = array();
-                foreach ($vaListarFormulariosIdealP as $key => $value) {
-                  $varFormularioIdIdealP = $value['formulario_id'];
-                  array_push($varArrayValoracionesP, 1);
+                $varListaDataCalibracionesMixto = (new \yii\db\Query())
+                                                ->select(['*'])
+                                                ->from(['tbl_arbols'])            
+                                                ->where(['=','tbl_arbols.activo',0])
+                                                ->andwhere(['in','tbl_arbols.id',$varArray_ArbolMixtos])
+                                                ->all();
 
-                  $varScoreIdealP = (new \yii\db\Query())
-                                  ->select(['score'])
-                                  ->from(['tbl_ejecucionformularios'])         
-                                  ->where(['=','id',$varFormularioIdIdealP])
-                                  ->scalar();
-                  array_push($varArrayCallidsIdealP, $varScoreIdealP);
+                $varArrayArbolsCalibracionesMixto = array();
+                foreach ($varListaDataCalibracionesMixto as $key => $value) {
+                  array_push($varArrayArbolsCalibracionesMixto, $value['arbol_id']);
+                }
+                $varArray_ArbolCaliMixto = implode(", ", $varArrayArbolsCalibracionesMixto);
 
-                  $varCantidadFeedbacksIdealP = (new \yii\db\Query())
-                                                ->select(['id'])
-                                                ->from(['tbl_ejecucionfeedbacks'])         
-                                                ->where(['=','ejecucionformulario_id',$varFormularioIdIdealP])
+                $varTotalFeedbacksP = (new \yii\db\Query())
+                                                ->select(['tbl_ejecucionfeedbacks.snaviso_revisado'])
+                                                ->from(['tbl_ejecucionfeedbacks'])  
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_ejecucionfeedbacks.ejecucionformulario_id = tbl_ejecucionformularios.id') 
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                                    'tbl_ejecucionformularios.arbol_id = tbl_arbols.id') 
+
+                                                ->where(['in','tbl_arbols.id',$varArray_ArbolMixtos])
+                                                ->andwhere(['=','tbl_arbols.activo',0])
+                                                ->andwhere(['between','tbl_ejecucionfeedbacks.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                                ->andwhere(['in','tbl_ejecucionfeedbacks.snaviso_revisado',[0,1]])
+                                                ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
                                                 ->count();
-                  array_push($varArrayFeedbacksP, $varCantidadFeedbacksIdealP);
 
-                  $varPecIdealP = (new \yii\db\Query())
-                                  ->select(['i1_nmcalculo'])
-                                  ->from(['tbl_ejecucionformularios'])         
-                                  ->where(['=','id',$varFormularioIdIdealP])
-                                  ->scalar();
-                  array_push($varArrayPECP, $varPecIdealP);
-
-                  $varPencIdealP = (new \yii\db\Query())
-                                  ->select(['i2_nmcalculo'])
-                                  ->from(['tbl_ejecucionformularios'])         
-                                  ->where(['=','id',$varFormularioIdIdealP])
-                                  ->scalar();
-                  array_push($varArrayPENCP, $varPencIdealP);
-
-                  $varSfcIdealP = (new \yii\db\Query())
-                                  ->select(['i3_nmcalculo'])
-                                  ->from(['tbl_ejecucionformularios'])         
-                                  ->where(['=','id',$varFormularioIdIdealP])
-                                  ->scalar();
-                  array_push($varArraySFCP, $varSfcIdealP);
-
-                  $varProcesoIdealP = (new \yii\db\Query())
-                                  ->select(['i5_nmcalculo'])
-                                  ->from(['tbl_ejecucionformularios'])         
-                                  ->where(['=','id',$varFormularioIdIdealP])
-                                  ->scalar();
-                  array_push($varArrayProcesoP, $varProcesoIdealP);
-
-                  $varExpIdealP = (new \yii\db\Query())
-                                  ->select(['i6_nmcalculo'])
-                                  ->from(['tbl_ejecucionformularios'])         
-                                  ->where(['=','id',$varFormularioIdIdealP])
-                                  ->scalar();
-                  array_push($varArrayExperienciaP, $varExpIdealP);
-
-                  $varPromIdealP = (new \yii\db\Query())
-                                  ->select(['i7_nmcalculo'])
-                                  ->from(['tbl_ejecucionformularios'])         
-                                  ->where(['=','id',$varFormularioIdIdealP])
-                                  ->scalar();
-                  array_push($varArrayPromesaP, $varPromIdealP);
+                if ($varTotalFeedbacksP < '80') {
+                  $varTColorFeebackMixta = $varMalo;
+                }else{
+                  if ($varTotalFeedbacksP >= '90') {
+                    $varTColorFeebackMixta = $varBueno;
+                  }else{
+                    $varTColorFeebackMixta = $varEstable;
+                  }
                 }
 
+                $varConteoAlertasMixtas = (new \yii\db\Query())
+                                      ->select(['tbl_alertascx.id'])
+                                      ->from(['tbl_alertascx'])  
+                                      
+                                      ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                          'tbl_alertascx.pcrc = tbl_arbols.id')
+                                      
+                                      ->where(['in','tbl_arbols.id',$varArray_ArbolMixtos])
+                                      ->andwhere(['=','tbl_arbols.activo',0])
+                                      ->andwhere(['between','tbl_alertascx.fecha',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                      ->count();
 
-                $varTotalValoracionesP = array_sum($varArrayValoracionesP);
-                $varTotalFeedbacksP = array_sum($varArrayFeedbacksP);
+                if ($varConteoAlertasMixtas < '80') {
+                  $varTColorAlertasMixta = $varMalo;
+                }else{
+                  if ($varConteoAlertasMixtas >= '90') {
+                    $varTColorAlertasMixta = $varBueno;
+                  }else{
+                    $varTColorAlertasMixta = $varEstable;
+                  }
+                }
 
-                  if (array_sum($varArrayPECP) != 0 && $varTotalValoracionesP != 0) {
-                    $varTotalPecP = round((array_sum($varArrayPECP) / $varTotalValoracionesP),2);
-                  }else{
-                    $varTotalPecP = 0;
-                  }
-                  if (array_sum($varArrayPENCP) != 0 && $varTotalValoracionesP != 0) {
-                    $varTotalPencP = round((array_sum($varArrayPENCP) / $varTotalValoracionesP),2);
-                  }else{
-                    $varTotalPencP = 0;
-                  }
-                  if (array_sum($varArraySFCP) != 0 && $varTotalValoracionesP != 0) {
-                    $varTotalSfcP = round((array_sum($varArraySFCP) / $varTotalValoracionesP),2);
-                  }else{
-                    $varTotalSfcP = 0;
-                  }
-                  if (array_sum($varArrayProcesoP) != 0 && $varTotalValoracionesP != 0) {
-                    $varTotalProcesoP = round((array_sum($varArrayProcesoP) / $varTotalValoracionesP),2);
-                  }else{
-                    $varTotalProcesoP = 0;
-                  }
-                  if (array_sum($varArrayExperienciaP) != 0 && $varTotalValoracionesP != 0) {
-                    $varTotalExperienciaP = round((array_sum($varArrayExperienciaP) / $varTotalValoracionesP),2);
-                  }else{
-                    $varTotalExperienciaP = 0;
-                  }
-                  if (array_sum($varArrayPromesaP) != 0 && $varTotalValoracionesP != 0) {
-                    $varTotalPromesaP = round((array_sum($varArrayPromesaP) / $varTotalValoracionesP),2);
-                  }else{
-                    $varTotalPromesaP = 0;
-                  }
+                $varConteoCalibracionesMixtas = (new \yii\db\Query())
+                                      ->select(['tbl_ejecucionformularios.id'])
+                                      ->from(['tbl_ejecucionformularios'])
 
-                  if ($varTotalFeedbacksP < '80') {
-                    $varTColorFeebackP = $varMalo;
-                  }else{
-                    if ($varTotalFeedbacksP >= '90') {
-                      $varTColorFeebackP = $varBueno;
-                    }else{
-                      $varTColorFeebackP = $varEstable;
-                    }
-                  }
+                                      ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                          'tbl_ejecucionformularios.arbol_id = tbl_arbols.id')
 
-                  if (count($varArrayCallidsIdealP) != 0) {
-                    $varListarMixtasIdealP = round(array_sum($varArrayCallidsIdealP) / count($varArrayCallidsIdealP),2);
-                  }else{
-                    $varListarMixtasIdealP = 0;
-                  }
+                                      ->where(['in','tbl_arbols.arbol_id',$varArray_ArbolCaliMixto])
+                                      ->andwhere(['like','tbl_arbols.name','alibra'])
+                                      ->andwhere(['=','tbl_arbols.activo',0])
+                                      ->andwhere(['between','tbl_ejecucionformularios.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                      ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                      ->count();
 
-                  if ($varListarMixtasIdealP < '80') {
-                    $varTColorMixtaAIdealP = $varMalo;
+                if ($varConteoCalibracionesMixtas < '80') {
+                  $varTColorCaliMixta = $varMalo;
+                }else{
+                  if ($varConteoCalibracionesMixtas >= '90') {
+                    $varTColorCaliMixta = $varBueno;
                   }else{
-                    if ($varListarMixtasIdealP >= '90') {
-                      $varTColorMixtaAIdealP = $varBueno;
-                    }else{
-                      $varTColorMixtaAIdealP = $varEstable;
-                    }
+                    $varTColorCaliMixta = $varEstable;
                   }
-
-                  $varGeneralConsistenciaIdealP = round((($varArrayAutomaticoP + $varListarMixtasIdealP) / 2),2);
-
-                  if ($varGeneralConsistenciaIdealP < '80') {
-                    $varTColorGeneralIdealP = $varMalo;
-                  }else{
-                    if ($varGeneralConsistenciaIdealP >= '90') {
-                      $varTColorGeneralIdealP = $varBueno;
-                    }else{
-                      $varTColorGeneralIdealP = $varEstable;
-                    }
-                  }
+                }
 
               ?>
-                <br>
+
                 <div class="row">
                   <div class="col-md-12">
-                    
-                    <div class="card1 mb">
-                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', $varNombreCentroCostos) ?></label>
+                    <div class="card1 mb" style="font-size: 15px;">
 
-                      <div class="row">
-                        <div class="col-md-4">
-                          <div class="card4 mb">
-                            <table id="myTableInformacion" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Resultados Procesamientos') ?></label></caption>
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad - General Konecta') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad & Consistencia') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesamiento Automático') ?></label></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorGeneralIdealP ?>"><?php echo  $varGeneralConsistenciaIdealP.' %'; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorMixtaAIdealP ?>"><?php echo  $varListarMixtasIdealP.' %'; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAutoIdealP ?>"><?php echo  $varArrayAutomaticoP.' %'; ?></label></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-
-                        <div class="col-md-4">
-                          <div class="card4 mb">
-                            <table id="myTableAuto" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Procesamiento Automático') ?></label></caption>
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Interacciones') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Marca') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varCantidadLlamadasIdealP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAgenteIdealP; ?>"><?php echo  $varAgentePersonaP.' %'; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorMarcaIdealP; ?>"><?php echo  $varMarcaPersonaP.' %'; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorCanalIdealP; ?>"><?php echo  $varCanalPersonaP.' %'; ?></label></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-
-                        <div class="col-md-4">
-                          <div class="card4 mb">
-                            <table id="myTableGestion" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Gestión de la Mejora') ?></label></caption>
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedbacks') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Alertas') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calibraciones') ?></label></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorFeebackP; ?>"><?php echo  $varTotalFeedbacksP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorFeebackP; ?>"><?php echo  '0'; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorFeebackP; ?>"><?php echo  '0'; ?></label></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
+                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', $varNombreCodPcrcMixtos) ?></label>
 
                       <br>
 
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="card4 mb">
-                            <table id="myTableCalidad" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Calidad y Consistencia - Manual') ?></label></caption>
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PEC') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PENC') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'SPC/SFR') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Proceso') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Experiencia') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Promesa Marca') ?></label></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalValoracionesP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalPecP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalPencP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalSfcP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalProcesoP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalExperienciaP; ?></label></td>
-                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalPromesaP; ?></label></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>                          
-                        </div>
-                      </div>
-
-                      <br>
-
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="card1 mb">
-                          <table id="myTableEquipos" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Listado de Equipos') ?></label></caption>
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lider') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Asesor') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Interacciones') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <?php                                  
-
-                                  foreach ($varListarEquipos as $key => $value) {
-                                    $varValorSpeech = $value['varAsesorSpeech'];
-
-                                    $varListaIdFormularios = (new \yii\db\Query())
-                                                  ->select(['tbl_speech_mixta.formulario_id'])
-
-                                                  ->from(['tbl_speech_mixta']) 
-
-                                                  ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
-                                                    'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')    
-
-                                                  ->where(['=','tbl_dashboardspeechcalls.anulado',0])
-                                                  ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
-                                                  ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
-                                                  ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesM])
-                                                  ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
-                                                  ->andwhere(['=','tbl_dashboardspeechcalls.login_id',$varValorSpeech])
-                                                  ->groupby(['tbl_speech_mixta.formulario_id'])
-                                                  ->All();
-                                ?>
+                        <div class="row">
+                          
+                          <div class="col-md-4">
+                            <div class="card4 mb">
+                               <table id="myTableInformacion" class="table table-hover table-bordered" style="margin-top:10px" >
+                                <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Resultados Procesamientos') ?></label></caption>
+                                <thead>
                                   <tr>
-                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $value['varLider']; ?></label></td>
-                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $varValorSpeech; ?></label></td>
-                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $value['varCantidad']; ?></label></td>
-                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  count($varListaIdFormularios); ?></label></td>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad - General Konecta') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad & Consistencia') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesamiento Automático') ?></label></th>
                                   </tr>
-                                <?php
-                                  }
-                                ?>
-                              </tbody>
-                            </table>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorGeneralIdealP ?>"><?php echo  $varArrayKonectaMixta.' %'; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorMixtaAIdealP ?>"><?php echo  $varArrayRtaScoreMixta.' %'; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAutoIdealP ?>"><?php echo  $varArrayRtaAutoMixta.' %'; ?></label></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="card4 mb">
+                              <table id="myTableAuto" class="table table-hover table-bordered" style="margin-top:10px" >
+                                <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Procesamiento Automático') ?></label></caption>
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Interacciones') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Marca') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $varArrayCantidadSpeechMixta; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAgenteIdealP; ?>"><?php echo  $varAgenteMixtos.' %'; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorMarcaIdealP; ?>"><?php echo  $varMarcaMixtos.' %'; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorCanalIdealP; ?>"><?php echo  $varCanalMixtos.' %'; ?></label></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="card4 mb">
+                              <table id="myTableGestion" class="table table-hover table-bordered" style="margin-top:10px" >
+                                <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Gestión de la Mejora') ?></label></caption>
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedbacks') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Alertas') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calibraciones') ?></label></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorFeebackMixta; ?>"><?php echo  $varTotalFeedbacksP; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorAlertasMixta; ?>"><?php echo  $varConteoAlertasMixtas; ?></label></td>
+                                    <td class="text-center"><label style="font-size: 12px; color: <?php echo $varTColorCaliMixta; ?>"><?php echo  $varConteoCalibracionesMixtas; ?></label></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <hr>
+                        
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="card1 mb">
+                              <table id="myTableCalidad" class="table table-hover table-bordered" style="margin-top:10px" >
+                                <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Calidad y Consistencia - Manual') ?></label></caption>
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Score General') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PEC') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PENC') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'SPC/SFR') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Proceso') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Experiencia') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Promesa Marca') ?></label></th>
+
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php
+                                    $varListRtaFormulariosMixtos = (new \yii\db\Query())
+                                          ->select([
+                                            'COUNT(tbl_ejecucionformularios.id) AS varConteo',
+                                            'ROUND(AVG(tbl_ejecucionformularios.score)*100,2) AS varScore',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo)*100,2) AS varPec',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo)*100,2) AS varPenc',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo)*100,2) AS varSfc',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo)*100,2) AS varIndiceProceso',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo)*100,2) AS varIndiceExperienca',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i7_nmcalculo)*100,2) AS varIndicePromesa'
+                                            ])
+                                          ->from(['tbl_ejecucionformularios']) 
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                  'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                                  'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')
+
+                                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesMixtas])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                                          ->all();
+
+                                    foreach ($varListRtaFormulariosMixtos as $key => $value) {
+                                      
+                                      if ($value['varConteo'] != "") {
+                                        $varConteoFormMixto = $value['varConteo'];
+                                      }else{
+                                        $varConteoFormMixto = $varSinData;
+                                      }
+
+                                      if ($value['varScore'] != "") {
+                                        $varScoreFormMixto = $value['varScore'].' %';
+                                      }else{
+                                        $varScoreFormMixto = $varSinData;
+                                      }
+
+                                      if ($value['varPec'] != "") {
+                                        $varPecFormMixto = $value['varPec'].' %';
+                                      }else{
+                                        $varPecFormMixto = $varSinData;
+                                      }
+
+                                      if ($value['varPenc'] != "") {
+                                        $varPencFormMixto = $value['varPec'].' %';
+                                      }else{
+                                        $varPencFormMixto = $varSinData;
+                                      }
+
+                                      if ($value['varSfc'] != "") {
+                                        $varSfcFormMixto = $value['varSfc'].' %';
+                                      }else{
+                                        $varSfcFormMixto = $varSinData;
+                                      }
+
+                                      if ($value['varIndiceProceso'] != "") {
+                                        $varProcesoFormMixto = $value['varIndiceProceso'].' %';
+                                      }else{
+                                        $varProcesoFormMixto = $varSinData;
+                                      }
+
+                                      if ($value['varIndiceExperienca'] != "") {
+                                        $varExperienciaFormMixta = $value['varIndiceExperienca'].' %';
+                                      }else{
+                                        $varExperienciaFormMixta = $varSinData;
+                                      }
+
+                                      if ($value['varIndicePromesa'] != "") {
+                                        $varPromesa = $value['varIndicePromesa'].' %';
+                                      }else{
+                                        $varPromesa = $varSinData;
+                                      }
+                                  ?>
+                                    <tr>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varConteoFormMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varScoreFormMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPecFormMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPencFormMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varSfcFormMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varProcesoFormMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varExperienciaFormMixta; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPromesa; ?></label></td>
+                                    </tr>
+                                  <?php
+                                    }
+                                  ?>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>  
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                          <div class="col-md-12">
+                            
+
+                              <?php
+                                $varNombreTablaEquipo = "myTableEquipos_".$varConteoProcesoMixto;
+                              ?>
+
+                              <table id="<?php echo $varNombreTablaEquipo; ?>"  class="table table-hover table-bordered" style="margin-top:10px; font-size: 15px;" >
+                                <caption><label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Listado de Equipos') ?></label></caption>
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lider') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Asesor') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas Procesadas') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Score') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PEC') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PENC') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'SPC/SFR') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice Proceso') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice Experiencia') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice P. Marca') ?></label></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php
+                                    $vaListaRtaEquipos = (new \yii\db\Query())
+                                          ->select([
+                                            'tbl_usuarios.usua_nombre AS varLider',
+                                            'tbl_evaluados.name AS varAsesor',
+                                            'tbl_dashboardspeechcalls.login_id AS varLogin',
+                                            'COUNT(tbl_dashboardspeechcalls.callId) AS varTotalLlamadas',
+                                            'COUNT(tbl_ejecucionformularios.id) AS varTotalValoraciones', 
+                                            'ROUND(AVG(tbl_ejecucionformularios.score)*100,2) AS varScore',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo)*100,2) AS varPec',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo)*100,2) AS varPenc',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo)*100,2) AS varSfc',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo)*100,2) AS varIndiceProceso',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo)*100,2) AS varIndiceExperienca',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i7_nmcalculo)*100,2) AS varIndicePromesa'
+                                            ])
+                                          ->from(['tbl_dashboardspeechcalls']) 
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                                  'tbl_evaluados.dsusuario_red = tbl_dashboardspeechcalls.login_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                                  'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                                  'tbl_equipos.id = tbl_equipos_evaluados.equipo_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                                  'tbl_usuarios.usua_id = tbl_equipos.usua_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                  'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                  'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesMixtas])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                                          ->groupby(['tbl_dashboardspeechcalls.login_id'])
+                                          ->orderby(['tbl_usuarios.usua_nombre'=>SORT_DESC])
+                                          ->all();
+
+                                    foreach ($vaListaRtaEquipos as $key => $value) {
+                                      $varLoginFormsMixto = $value['varLogin'];
+                                      
+                                      if ($value['varLider'] != "") {
+                                        $varLiderFormsMixto = $value['varLider'];
+                                      }else{
+                                        $varLiderFormsMixto = 'Sin Información';
+                                      }
+
+                                      if ($value['varAsesor'] != "") {
+                                        $varAsesorFormsMixto = $value['varAsesor'];
+                                      }else{
+                                        $varAsesorFormsMixto = $varSinData;
+                                      }
+
+                                      if ($value['varTotalLlamadas'] != "") {
+                                        $varTotalLlamadasFormsMixto = $value['varTotalLlamadas'];
+                                      }else{
+                                        $varTotalLlamadasFormsMixto = $varSinData;
+                                      }
+
+                                      if ($value['varTotalValoraciones'] != "") {
+                                        $varTotalValoracionesFormsMixto = $value['varTotalValoraciones'];
+                                      }else{
+                                        $varTotalValoracionesFormsMixto = $varSinData;
+                                      }
+
+                                      if ($value['varScore'] != "") {
+                                        $varScoreFormsMixtos = $value['varScore'];
+                                      }else{
+                                        $varScoreFormsMixtos = $varSinData;
+                                      }
+
+                                      if ($value['varPec'] != "") {
+                                        $varPecFormsMixto = $value['varPec'].' %';
+                                      }else{
+                                        $varPecFormsMixto = $varSinData;
+                                      }
+
+                                      if ($value['varPenc'] != "") {
+                                        $varPencFormsMixto = $value['varPenc'].' %';
+                                      }else{
+                                        $varPencFormsMixto = $varSinData;
+                                      }
+
+                                      if ($value['varSfc'] != "") {
+                                        $varSFCFormsMixto = $value['varSfc'].' %';
+                                      }else{
+                                        $varSFCFormsMixto = $varSinData;
+                                      }
+
+                                      if ($value['varIndiceProceso'] != "") {
+                                        $varIndiceProcesoFormsMixto = $value['varIndiceProceso'].' %';
+                                      }else{
+                                        $varIndiceProcesoFormsMixto = $varSinData;
+                                      }
+
+                                      if ($value['varIndiceExperienca'] != "") {
+                                        $varIndiceExpeFormsMixto = $value['varIndiceExperienca'].' %';
+                                      }else{
+                                        $varIndiceExpeFormsMixto = $varSinData;
+                                      }
+
+                                      if ($value['varIndicePromesa'] != "") {
+                                        $varIndicePromesaFormsMixta = $value['varIndicePromesa'].' %';
+                                      }else{
+                                        $varIndicePromesaFormsMixta = $varSinData;
+                                      }
+
+                                  ?>
+                                    <tr>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varLiderFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varAsesorFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalLlamadasFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalValoracionesFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varScoreFormsMixtos; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPecFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPencFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varSFCFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varIndiceProcesoFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varIndiceExpeFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varIndicePromesaFormsMixta; ?></label></td>
+                                    </tr>
+                                  <?php
+                                    }
+                                  ?>
+                                </tbody>
+                              </table>
+
+                              <script type="text/javascript">
+                                
+                                  $('#'+"<?php echo $varNombreTablaEquipo; ?>").DataTable({
+                                    responsive: true,
+                                    fixedColumns: true,
+
+                                    select: true,
+                                    "language": {
+                                      "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
+                                      "zeroRecords": "No se encontraron datos ",
+                                      "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+                                      "infoEmpty": "No hay datos aun",
+                                      "infoFiltered": "(Filtrado un _MAX_ total)",
+                                      "search": "Buscar:",
+                                      "paginate": {
+                                        "first":      "Primero",
+                                        "last":       "Ultimo",
+                                        "next":       "Siguiente",
+                                        "previous":   "Anterior"
+                                      }
+                                    } 
+                                  });
+
+                                
+                              </script>
+                            
                           </div>
                         </div>
-                      </div>
-
+                      
                     </div>
                   </div>
                 </div>
 
+                <hr>
+
               <?php
-            }
+
+              }
+
               ?>
 
             </div>
 
-            <!-- Proceso Auto -->
+            <!-- Proceso Automatico -->
             <div id="Automatico" class="w3-container city" style="display:none;">
 
-              <?php
-              $varNumeroContainerA = 0;
-              foreach ($varListasClienteIdealP as $key => $value) {
-                $varCentrosCostosAutos = $value['cod_pcrc'];
+              <br>
 
-                $varNombreCentroCostosA = (new \yii\db\Query())
-                                              ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
-                                              ->from(['tbl_speech_categorias'])            
-                                              ->where(['=','anulado',0])
-                                              ->andwhere(['in','cod_pcrc',$varCentrosCostosAutos])
-                                              ->groupby(['cod_pcrc'])
-                                              ->Scalar(); 
+              <?php
+              $varNumeroContainer = 0;
+              foreach ($varListasClienteIdealP as $key => $value) {
+                
+                $varCodPcrcAuto = $value['cod_pcrc'];
+
+                $varNombreCodPcrcAuto = (new \yii\db\Query())
+                                          ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
+                                          ->from(['tbl_speech_categorias'])            
+                                          ->where(['=','anulado',0])
+                                          ->andwhere(['in','cod_pcrc',$varCodPcrcAuto])
+                                          ->groupby(['cod_pcrc'])
+                                          ->Scalar(); 
 
 
                 $varListaResponsabilidadesAuto = (new \yii\db\Query())
                                               ->select(['tbl_ideal_indicadores.indicador', 'tbl_ideal_indicadores.cantidad_indicador', 'tbl_ideal_responsabilidad.agente', 'tbl_ideal_responsabilidad.marca', 'tbl_ideal_responsabilidad.canal'])
                                               ->from(['tbl_ideal_responsabilidad'])  
+
                                               ->join('LEFT OUTER JOIN', 'tbl_ideal_indicadores',
-                                                'tbl_ideal_responsabilidad.cod_pcrc = tbl_ideal_indicadores.cod_pcrc AND tbl_ideal_responsabilidad.id_categoriai = tbl_ideal_indicadores.id_categoriai AND tbl_ideal_responsabilidad.anulado = tbl_ideal_indicadores.anulado AND tbl_ideal_responsabilidad.fechainicio = tbl_ideal_indicadores.fechainicio AND tbl_ideal_responsabilidad.fechafin = tbl_ideal_indicadores.fechafin')            
+                                                'tbl_ideal_responsabilidad.cod_pcrc = tbl_ideal_indicadores.cod_pcrc AND tbl_ideal_responsabilidad.id_categoriai = tbl_ideal_indicadores.id_categoriai AND tbl_ideal_responsabilidad.anulado = tbl_ideal_indicadores.anulado AND tbl_ideal_responsabilidad.fechainicio = tbl_ideal_indicadores.fechainicio AND tbl_ideal_responsabilidad.fechafin = tbl_ideal_indicadores.fechafin')        
+
                                               ->where(['=','tbl_ideal_indicadores.id_dp_cliente',$varIdDpCliente])
-                                              ->andwhere(['=','tbl_ideal_indicadores.cod_pcrc',$varCentrosCostosAutos])
+                                              ->andwhere(['=','tbl_ideal_indicadores.cod_pcrc',$varCodPcrcAuto])
                                               ->andwhere(['>=','tbl_ideal_indicadores.fechainicio',$varFechainicial.' 05:00:00'])
                                               ->andwhere(['<=','tbl_ideal_indicadores.fechafin',$varFechaFinal.' 05:00:00'])
                                               ->andwhere(['=','tbl_ideal_indicadores.anulado',0])
@@ -1170,10 +1550,12 @@ $this->registerJs($js);
                 $varListaIndicadoresAuto = (new \yii\db\Query())
                                               ->select(['tbl_ideal_indicadores.id_categoriai','tbl_ideal_indicadores.indicador', 'tbl_ideal_indicadores.cantidad_indicador'])
                                               ->from(['tbl_ideal_responsabilidad'])  
+
                                               ->join('LEFT OUTER JOIN', 'tbl_ideal_indicadores',
-                                                'tbl_ideal_responsabilidad.cod_pcrc = tbl_ideal_indicadores.cod_pcrc AND tbl_ideal_responsabilidad.id_categoriai = tbl_ideal_indicadores.id_categoriai AND tbl_ideal_responsabilidad.anulado = tbl_ideal_indicadores.anulado AND tbl_ideal_responsabilidad.fechainicio = tbl_ideal_indicadores.fechainicio AND tbl_ideal_responsabilidad.fechafin = tbl_ideal_indicadores.fechafin')            
+                                                'tbl_ideal_responsabilidad.cod_pcrc = tbl_ideal_indicadores.cod_pcrc AND tbl_ideal_responsabilidad.id_categoriai = tbl_ideal_indicadores.id_categoriai AND tbl_ideal_responsabilidad.anulado = tbl_ideal_indicadores.anulado AND tbl_ideal_responsabilidad.fechainicio = tbl_ideal_indicadores.fechainicio AND tbl_ideal_responsabilidad.fechafin = tbl_ideal_indicadores.fechafin')       
+
                                               ->where(['=','tbl_ideal_indicadores.id_dp_cliente',$varIdDpCliente])
-                                              ->andwhere(['=','tbl_ideal_indicadores.cod_pcrc',$varCentrosCostosAutos])
+                                              ->andwhere(['=','tbl_ideal_indicadores.cod_pcrc',$varCodPcrcAuto])
                                               ->andwhere(['>=','tbl_ideal_indicadores.fechainicio',$varFechainicial.' 05:00:00'])
                                               ->andwhere(['<=','tbl_ideal_indicadores.fechafin',$varFechaFinal.' 05:00:00'])
                                               ->andwhere(['=','tbl_ideal_indicadores.anulado',0])
@@ -1181,173 +1563,154 @@ $this->registerJs($js);
                                               ->groupby(['tbl_ideal_indicadores.id_indicadores'])
                                               ->All();
 
-                
-                $varNumeroContainerA += 1;
               ?>
 
-                <br>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card1 mb" style="font-size: 15px;">
+                  
+                    <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', $varNombreCodPcrcAuto) ?></label>
 
-                <div class="row">
-                  <div class="col-md-12">
+                    <br>
 
-                    <div class="card1 mb">
-                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', $varNombreCentroCostosA) ?></label>
-
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="card1 mb">                            
-
-                            <table id="myTableResponAuto" class="table table-hover table-bordered" style="margin-top:10px" >
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="card1 mb">
+                          
+                          <table id="myTableResponAuto" class="table table-hover table-bordered" style="margin-top:10px" >
                                 <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Resultados Responsabilidades') ?></label></caption>
-                                <thead>
-                                  <tr>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indicador') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Total') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Marca') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
+                            <thead>
+                              <tr>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indicador') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Totales') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Marca') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
+                              </tr>
+                            </thead>
+                            <tbody>
                               <?php
-                              foreach ($varListaResponsabilidadesAuto as $key => $value) {
-                                $varNombreIndicador = $value['indicador'];
-                                $varTotalesIndicador = $value['cantidad_indicador'];
-                                $varAgenteIndicador = $value['agente'];
-                                $varMarcaIndicador = $value['marca'];
-                                $varCanalIndicador = $value['canal'];
+                                $varNumeroContainer += 1;
+                                $prueba = 'doughnut-chart'.$varCodPcrcAuto.'_'.$varNumeroContainer;
 
-                                if ($varAgenteIndicador < '80') {
-                                  $varTColorAgenteIndicador = $varMalo;
-                                }else{
-                                  if ($varAgenteIndicador >= '90') {
-                                    $varTColorAgenteIndicador = $varBueno;
+                                $varArrayNombreIndicador = array();
+                                $varArrayPorcentajes = array();
+                                foreach ($varListaResponsabilidadesAuto as $key => $value) {
+                                  $varNombreIndicador = $value['indicador'];
+                                  $varTotalesIndicador = $value['cantidad_indicador'];
+                                  $varAgenteIndicador = $value['agente'];
+                                  $varMarcaIndicador = $value['marca'];
+                                  $varCanalIndicador = $value['canal'];
+
+                                  if ($varAgenteIndicador < '80') {
+                                    $varTColorAgenteIndicador = $varMalo;
                                   }else{
-                                    $varTColorAgenteIndicador = $varEstable;
-                                  }
-                                }
-
-                                if ($varMarcaIndicador < '80') {
-                                  $varTColorMarcaIndicador = $varMalo;
-                                }else{
-                                  if ($varMarcaIndicador >= '90') {
-                                    $varTColorMarcaIndicador = $varBueno;
-                                  }else{
-                                    $varTColorMarcaIndicador = $varEstable;
-                                  }
-                                }
-
-                                if ($varCanalIndicador < '80') {
-                                  $varTColorCanalIndicador = $varMalo;
-                                }else{
-                                  if ($varCanalIndicador >= '90') {
-                                    $varTColorCanalIndicador = $varBueno;
-                                  }else{
-                                    $varTColorCanalIndicador = $varEstable;
-                                  }
-                                }
-
-                                
-                              ?>
-                              
-                                  <tr>
-                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $varNombreIndicador; ?></label></td>
-                                    <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalesIndicador.' %'; ?></label></td>
-                                    <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorAgenteIndicador ?>"><?php echo  $varAgenteIndicador.' %'; ?></label></td>
-                                    <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorMarcaIndicador ?>"><?php echo  $varMarcaIndicador.' %'; ?></label></td>
-                                    <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorCanalIndicador ?>"><?php echo  $varCanalIndicador.' %'; ?></label></td>                                    
-                                
-                            <?php
-                            }
-                            ?>
-                              </tbody>
-                            </table>
-
-                          </div>
-                        </div>
-
-                        <div class="col-md-6">
-                          <div class="card1 mb">
-                            
-                            <table id="myTableResponsIndicador" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Resultados Indicadores') ?></label></caption>
-                              <thead>
-                                <tr>
-                                <?php
-                                  $titulos = array();
-                                  $porcentajes = array();
-                                  foreach ($varListaResponsabilidadesAuto as $key => $value) {
-                                    array_push($porcentajes, $value['indicador']);
-                                    array_push($titulos, $value['cantidad_indicador']);
-                                ?>
-                                  
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $value['indicador']) ?></label></th>
-                                  
-                                <?php
-                                  }
-                                ?>
-                                </tr>                                
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <?php
-                                    $varNumeroContainer = 0;
-
-                                    foreach ($varListaResponsabilidadesAuto as $key => $value) {
-                                      $varIndicador = $value['indicador'];
-                                      $varTotalesIndicador = $value['cantidad_indicador'];
-
-                                      $varResultados = round((100 - $varTotalesIndicador),2);
-                                      $arrayNumeros = [$varTotalesIndicador, $varResultados];
-                                      
-                                      $varNumeroContainer += 1;
-                                      $prueba = 'doughnut-chart'.$varCentrosCostosAutos.'_'.$varNumeroContainer;
-                                  ?>
-                                    <td class="text-center" ><div style="width: 80px; height: 80px;  display:block; margin:auto;"><canvas id="<?php echo $prueba; ?>"></canvas></div><label style="font-size: 12px;"><?php echo round($varTotalesIndicador,2).' %'; ?></label></td>
-
-                                    <script type="text/javascript">
-                                      
-                                      var yValues = [<?= implode(",", $arrayNumeros); ?>];
-                                      var barColors = [
-                                        "#559FFF",
-                                        "#C6C6C6"
-                                      ];
-
-                                      new Chart("<?php echo $prueba; ?>", {
-                                        type: "doughnut",
-                                        data: {
-                                          
-                                          datasets: [{
-                                            backgroundColor: barColors,
-                                            data: yValues
-                                          }]
-                                        },
-                                        options: {
-                                          title: {
-                                            display: false,
-                                            text: "_"
-                                          }
-                                        }
-                                      });
-                                    </script>
-                                  <?php
+                                    if ($varAgenteIndicador >= '90') {
+                                      $varTColorAgenteIndicador = $varBueno;
+                                    }else{
+                                      $varTColorAgenteIndicador = $varEstable;
                                     }
-                                  ?>
-                                </tr>
-                              </tbody>
-                            </table>
+                                  }
 
-                          </div>
+                                  if ($varMarcaIndicador < '80') {
+                                    $varTColorMarcaIndicador = $varMalo;
+                                  }else{
+                                    if ($varMarcaIndicador >= '90') {
+                                      $varTColorMarcaIndicador = $varBueno;
+                                    }else{
+                                      $varTColorMarcaIndicador = $varEstable;
+                                    }
+                                  }
+
+                                  if ($varCanalIndicador < '80') {
+                                    $varTColorCanalIndicador = $varMalo;
+                                  }else{
+                                    if ($varCanalIndicador >= '90') {
+                                      $varTColorCanalIndicador = $varBueno;
+                                    }else{
+                                      $varTColorCanalIndicador = $varEstable;
+                                    }
+                                  }
+
+                                  $varIndicador = $value['indicador'];
+                                  $varTotalesIndicadorGrafica = $value['cantidad_indicador'];
+
+                                  $varResultados = round((100 - $varTotalesIndicadorGrafica),2);
+                                  $arrayNumeros = [$varTotalesIndicadorGrafica, $varResultados];
+                                        
+                                  array_push($varArrayNombreIndicador, $varNombreIndicador);
+                                  array_push($varArrayPorcentajes, $varTotalesIndicadorGrafica);
+                              ?>
+                                <tr>
+                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varNombreIndicador; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalesIndicadorGrafica. '%'; ?></label></td> 
+                                  <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorAgenteIndicador ?>"><?php echo  $varAgenteIndicador.' %'; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorMarcaIndicador ?>"><?php echo  $varMarcaIndicador.' %'; ?></label></td>
+                                  <td class="text-center"><label style="font-size: 12px;  color: <?php echo $varTColorCanalIndicador ?>"><?php echo  $varCanalIndicador.' %'; ?></label></td> 
+                                </tr>
+                              <?php
+                                }
+                              ?>
+                            </tbody>
+                          </table>
+
                         </div>
                       </div>
 
-                      <br>
+                      <div class="col-md-6">
+                        <div class="card1 mb">
 
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="card1 mb">
+                          <div id="<?php echo $prueba; ?>" class="highcharts-container" style="height: 400px; width: 550px;"></div>
+                          <script type="text/javascript">
 
-                            <?php
+                              var varvalues = "<?php echo implode($varArrayNombreIndicador, ","); ?>";
+                              varvalues = varvalues.split(",");
+                                      
+                              $('#'+"<?php echo $prueba; ?>").highcharts({
+
+                                chart: {
+                                  borderColor: '#DAD9D9',
+                                  borderRadius: 7,
+                                  borderWidth: 1,
+                                  type: 'bar'
+                                }, 
+
+                                title: {
+                                  text: 'Resumen General',
+                                  style: {
+                                    color: '#3C74AA'
+                                  }
+                                },
+
+                                xAxis: {
+                                  categories: varvalues,
+                                  title: {
+                                    text: null
+                                  },
+                                  crosshair: true
+                                },
+
+                                series: [
+                                  {
+                                    name: 'Porcentaje',
+                                    data: [<?= join($varArrayPorcentajes, ',') ?>],
+                                    color: '#C148D0'
+                                  }
+                                ]
+
+                              });
+                          </script>
+                          
+                        </div>
+                      </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card1 mb">
+                          <?php
                             foreach ($varListaIndicadoresAuto as $key => $value) {
                               $varIdIndicadorAuto = $value['id_categoriai'];
                               $varTextoIndicadorAuto = $value['indicador'];
@@ -1358,355 +1721,575 @@ $this->registerJs($js);
                                               ->join('LEFT OUTER JOIN', 'tbl_ideal_variables',
                                                 'tbl_speech_categorias.cod_pcrc = tbl_ideal_variables.cod_pcrc AND tbl_speech_categorias.idcategoria = tbl_ideal_variables.id_categoria_variable')            
                                               ->where(['=','tbl_ideal_variables.id_dp_cliente',$varIdDpCliente])
-                                              ->andwhere(['=','tbl_ideal_variables.cod_pcrc',$varCentrosCostosAutos])
+                                              ->andwhere(['=','tbl_ideal_variables.cod_pcrc',$varCodPcrcAuto])
                                               ->andwhere(['>=','tbl_ideal_variables.fechainicio',$varFechainicial.' 05:00:00'])
                                               ->andwhere(['<=','tbl_ideal_variables.fechafin',$varFechaFinal.' 05:00:00'])
                                               ->andwhere(['=','tbl_ideal_variables.id_categoria_indicador',$varIdIndicadorAuto])
                                               ->andwhere(['=','tbl_ideal_variables.anulado',0])
                                               ->andwhere(['=','tbl_ideal_variables.extension',$varIdExtensionc])
                                               ->All();
+                          ?>
 
-
-                            ?>  
-                              <table id="myTableIndicaAuto" class="table table-hover table-bordered" style="margin-top:10px" >
-                                <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', $varTextoIndicadorAuto) ?></label></caption>
-                                <thead>
-                                  <tr>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Responsable') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Variable') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Interacciones') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '% de Participación') ?></label></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <?php
+                            <table id="myTableIndicaAuto" class="table table-hover table-bordered" style="margin-top:10px" >
+                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', $varTextoIndicadorAuto) ?></label></caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Responsable') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Variable') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Interacciones') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '% de Participación') ?></label></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php
                                   foreach ($varListaVariableAuto as $key => $value) {
                                     $varResponsabilidadAutos = $value['responsabilidadvar'];
                                     $varNombreVariable = $value['variable'];
                                     $varCatindadVariable = $value['cantidad_variable'];
                                     $varPorcientoVariable = $value['porcentaje_variable'];
 
-                                  ?>
-                                    <tr>
-                                      <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varResponsabilidadAutos; ?></label></td>
-                                      <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varNombreVariable; ?></label></td>
-                                      <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varCatindadVariable; ?></label></td>
-                                      <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varPorcientoVariable.' %'; ?></label></td>
-                                    </tr>
-                                  <?php
+                                ?>
+                                  <tr>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varResponsabilidadAutos; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varNombreVariable; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varCatindadVariable; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varPorcientoVariable.' %'; ?></label></td>
+                                  </tr>
+                                <?php
                                   }
-                                  ?>
-                                </tbody>
-                              </table>
-                            <?php
+                                ?>
+                              </tbody>
+                            </table>
+
+                          <?php
                             }
-                            ?>
-                            
-                          </div>
+                          ?>
                         </div>
                       </div>
+                    </div>
 
-                      <!-- Aqui va lo del tema equipo lider y asesor auto -->
 
-                    </div>                   
-                    
                   </div>
-                </div>
+                </div>                
+              </div>
+
+              <br>
 
               <?php
+
               }
+
               ?>
 
             </div>
 
             <!-- Proceso Manual -->
             <div id="Manual" class="w3-container city" style="display:none;">
-
+              
               <?php
-
+              $varNumeroContainerManual = 0;
               foreach ($varListasClienteIdealP as $key => $value) {
-                $varCentrosCostosManual = $value['cod_pcrc'];
-                
-                $varNombreCentroCostosM = (new \yii\db\Query())
-                                              ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
-                                              ->from(['tbl_speech_categorias'])            
-                                              ->where(['=','anulado',0])
-                                              ->andwhere(['in','cod_pcrc',$varCentrosCostosManual])
-                                              ->groupby(['cod_pcrc'])
-                                              ->Scalar();
+                $varCodPcrcManual = $value['cod_pcrc'];
 
-                $varNombreServicioSpeech = (new \yii\db\Query())
-                                              ->select(['programacategoria'])
-                                              ->from(['tbl_speech_categorias'])            
-                                              ->where(['=','anulado',0])
-                                              ->andwhere(['in','cod_pcrc',$varCentrosCostosManual])
-                                              ->groupby(['programacategoria'])
-                                              ->Scalar();
+                $varNumeroContainerManual += 1;
+                $pruebaManual = 'doughnut-chartManual'.$varCodPcrcManual.'_'.$varNumeroContainerManual;
 
+                $varNombreCodPcrcManual = (new \yii\db\Query())
+                                          ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
+                                          ->from(['tbl_speech_categorias'])            
+                                          ->where(['=','anulado',0])
+                                          ->andwhere(['in','cod_pcrc',$varCodPcrcManual])
+                                          ->groupby(['cod_pcrc'])
+                                          ->Scalar(); 
 
-                $varListaIdFormularios = (new \yii\db\Query())
-                                              ->select(['formulario_id'])
-                                              ->from(['tbl_ideal_novedades'])            
-                                              ->where(['=','tbl_ideal_novedades.id_dp_cliente',$varIdDpCliente])
-                                              ->andwhere(['=','tbl_ideal_novedades.cod_pcrc',$varCentrosCostosManual])
-                                              ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechainicial.' 05:00:00'])
-                                              ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
-                                              ->andwhere(['=','tbl_ideal_novedades.anulado',0])
-                                              ->andwhere(['=','tbl_ideal_novedades.extension',$varIdExtensionc])
-                                              ->groupby(['formulario_id'])
-                                              ->All();
-
-                // $varListaIdFormularios = (new \yii\db\Query())
-                //                                   ->select(['tbl_speech_mixta.formulario_id'])
-
-                //                                   ->from(['tbl_speech_mixta']) 
-
-                //                                   ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
-                //                                     'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')    
-
-                //                                   ->where(['=','tbl_dashboardspeechcalls.nulado',0])
-                //                                   ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreServicioSpeech])
-                //                                   ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
-                //                                   ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varIdExtensionc])
-                //                                   ->groupby(['tbl_speech_mixta.formulario_id'])
-                //                                   ->All();
-
-
-
-                if (count($varListaIdFormularios) != 0) {
-                  $arralistforms = array();
-                  foreach ($varListaIdFormularios as $key => $value) {
-                    array_push($arralistforms, intval($value['formulario_id']));
-                  }
-                  $listaformsarray = implode(", ", $arralistforms);                  
-
-                  $arrayIdFormularios= intval($listaformsarray);
-                  $varDataFormularios = explode(",", str_replace(array("#", "'", ";", " "), '', $listaformsarray));
-
-                  $varListaGeneralFormularios = (new \yii\db\Query())
-                                                  ->select(['tbl_usuarios.usua_nombre', 'COUNT(tbl_ejecucionformularios.id) AS cantidad', 
-                                                    'ROUND(AVG(tbl_ejecucionformularios.score),2) AS score',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo),2) AS pec',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo),2) AS penc',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo),2) AS sfc_frc',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo),2) AS indiceproceso',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo),2) AS indiceexperiencia',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo),2) AS indicepromesa'])
-
-                                                  ->from(['tbl_usuarios']) 
-
-                                                  ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
-                                                    'tbl_usuarios.usua_id = tbl_ejecucionformularios.usua_id_lider')    
-
-                                                  ->where(['IN','tbl_ejecucionformularios.id',$varDataFormularios])
-                                                  ->groupby(['tbl_usuarios.usua_id'])
-                                                  ->All();
-
-                  $varScoreConteo = 0;
-                  $varPecConteo = 0;
-                  $varPencConteo = 0;
-                  $varSfcConteo = 0;
-                  $varIndiceProcesoConteo = 0;
-                  $varExperienciaConteo = 0;
-                  $varPromesaConteo = 0;
-                  foreach ($varListaGeneralFormularios as $key => $value) {
-                    if ($value['score'] != '') {
-                      array_push($varManualScorearray, $value['score']);
-                      $varScoreConteo += 1;
-                    }
-
-                    if ($value['pec'] != '') {
-                      array_push($varManualPECarray, $value['pec']);
-                      $varPecConteo += 1;
-                    }
-                    
-                    if ($value['penc'] != '') {
-                      array_push($varManualPENCarray, $value['penc']);
-                      $varPencConteo += 1;
-                    }
-                    
-                    if ($value['sfc_frc'] != '') {
-                      array_push($varManualSFCarray, $value['sfc_frc']);
-                      $varSfcConteo += 1;
-                    }
-                    
-                    if ($value['indiceproceso'] != '') {
-                      array_push($varManualProcesoarray, $value['indiceproceso']);
-                      $varIndiceProcesoConteo += 1;
-                    }
-                    
-                    if ($value['indiceexperiencia'] != '') {
-                      array_push($varManualExparray, $value['indiceexperiencia']);
-                      $varExperienciaConteo += 1;
-                    }
-                    
-                    if ($value['indicepromesa'] != '') {
-                      array_push($varManualPromarray, $value['indicepromesa']);
-                      $varPromesaConteo += 1;
-                    }
-                    
-                  }
-
-                  if ($varPecConteo != 0) {
-                    $varManualPEC = round((array_sum($varManualPECarray) / $varPecConteo),2);
-                  }else{
-                    $varManualPEC = 0;
-                  }
-
-                  if ($varPencConteo != 0) {
-                    $varManualPENC = round((array_sum($varManualPENCarray) / $varPencConteo),2);
-                  }else{
-                    $varManualPENC = 0;
-                  }
-                  
-                  if ($varSfcConteo != 0) {
-                    $varManualSFC = round((array_sum($varManualSFCarray) / $varSfcConteo),2);
-                  }else{
-                    $varManualSFC = 0;
-                  }
-                  
-                  if ($varIndiceProcesoConteo != 0) {
-                    $varManualProceso = round((array_sum($varManualProcesoarray) / $varIndiceProcesoConteo),2);
-                  }else{
-                    $varManualProceso = 0;
-                  }
-                  
-                  if ($varExperienciaConteo != 0) {
-                    $varManualExp = round((array_sum($varManualExparray) / $varExperienciaConteo),2);
-                  }else{
-                    $varManualExp = 0;
-                  }
-                  
-                  if ($varPromesaConteo != 0) {
-                    $varManualProm = round((array_sum($varManualPromarray) / $varPromesaConteo),2);
-                  }else{
-                    $varManualProm = 0;
-                  }
-                  
-                  $varManualScore = round((array_sum($varManualScorearray) / $varScoreConteo),2);
-
-
+                if ($varIdExtensionc > '1') {
+                  $varRnIdealManual =  (new \yii\db\Query())
+                                ->select(['rn'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcManual])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','rn',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['rn'])
+                                ->all();
                 }else{
-                  $varManualPEC = 0;
-                  $varManualPENC = 0;
-                  $varManualSFC = 0;
-                  $varManualProceso = 0;
-                  $varManualExp = 0;
-                  $varManualProm = 0;
-                  $varManualScore = 0;
+                  $varRnIdealManual =  (new \yii\db\Query())
+                                ->select(['rn'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcManual])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','rn',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['rn'])
+                                ->all();
                 }
 
-                
+                if (count($varRnIdealManual) != 0) {
+                  $varArrayRnManual = array();
+                  foreach ($varRnIdealManual as $key => $value) {
+                    array_push($varArrayRnManual, $value['rn']);
+                  }
+
+                  $varExtensionesArraysManual = implode("', '", $varArrayRnManual);
+                  $arrayExtensiones_downManual = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysManual);
+                  $varExtensionesManual = explode(",", $arrayExtensiones_downManual);
+                }else{
+
+                  if ($varIdExtensionc > '1') {
+                    $varExtManual =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcManual])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','ext',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['ext'])
+                                ->all();
+                  }else{
+                    $varExtManual =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcManual])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','ext',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['ext'])
+                                ->all();
+                  }
+
+                  if (count($varExtManual) != 0) {
+                    $varArrayExtManual = array();
+                    foreach ($varExtManual as $key => $value) {
+                      array_push($varArrayExtManual, $value['ext']);
+                    }
+
+                    $varExtensionesArraysManual = implode("', '", $varArrayExtManual);
+                    $arrayExtensiones_downManual = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysManual);
+                    $varExtensionesManual = explode(",", $arrayExtensiones_downManual);
+                  }else{
+
+                    if ($varIdExtensionc > '1') {
+                      $varUsuaManual =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcManual])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','usuared',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['usuared'])
+                                ->all();
+                    }else{
+                      $varUsuaManual =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcManual])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','usuared',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['usuared'])
+                                ->all();
+                    }
+
+
+                    if (count($varUsuaManual) != 0) {
+                      $varArrayUsuaManual = array();
+                      foreach ($varUsuaManual as $key => $value) {
+                        array_push($varArrayUsuaManual, $value['usuared']);
+                      }
+
+                      $varExtensionesArraysManual = implode("', '", $varArrayUsuaManual);
+                      $arrayExtensiones_downManual = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysManual);
+                      $varExtensionesManual = explode(",", $arrayExtensiones_downManual);
+                    }else{
+                      $varExtensionesManual = "N0A";
+                    }
+                  }
+                }
               ?>
-                <br>
 
-                <div class="row">
-                  <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12">
 
-                    <div class="card1 mb">
-                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', $varNombreCentroCostosM) ?></label>
+                  <br>
+                  
+                  <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', $varNombreCodPcrcManual) ?></label>
 
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div >
-                            <?php if (count($varListaIdFormularios) != 0) {  ?>
-                              <div id="varContainerGeneralManual" class="highcharts-container" style="height: 300px; width: auto;"></div>
-                            <?php }else{ ?>
-                              <div id="varContainerGeneralManualNo" style="height: auto; width: auto;">
+                    <br>
 
-                                <div class="panel panel-default">
-                                  <div class="panel-body" style="background-color: #f0f8ff;">
-                                    
-                                    <div class="row">
-                                      <div class="col-md-12">
-                                        <label  style="font-size: 15px;" ><em class="fas fa-info-circle" style="font-size: 25px; color: #D01E53;"></em><?= Yii::t('app', ' Actualmente no hay resultados para la gráfica.') ?></label>
-                                      </div>
-                                    </div>
-                                    
-                                  </div>
-                                </div>
+                    <?php
+                      $varListGraficaFormManual = (new \yii\db\Query())
+                                          ->select([
+                                            'COUNT(tbl_ejecucionformularios.id) AS varConteo',
+                                            'ROUND(AVG(tbl_ejecucionformularios.score)*100,2) AS varScore',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo)*100,2) AS varPec',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo)*100,2) AS varPenc',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo)*100,2) AS varSfc',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo)*100,2) AS varIndiceProceso',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo)*100,2) AS varIndiceExperienca',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i7_nmcalculo)*100,2) AS varIndicePromesa'
+                                            ])
+                                          ->from(['tbl_ejecucionformularios']) 
 
-                              </div>
-                            <?php } ?>
-                          </div>
+                                          ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                  'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                                  'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')
+
+                                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesManual])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                                          ->all();
+
+
+                        $varArrayScoreFormsManual = array();
+                        $varArrayPecFormsManual = array();
+                        $varArrayPencFormsManual = array();
+                        $varArraySFCFormsManual = array();
+                        $varArrayIProcesoFormsManual = array();
+                        $varArrayIExperienciaFormsManual = array();
+                        $varArrayIPromesaFormsManual = array();
+                        $varCantidadValoracionesManual = 0;
+                        foreach ($varListGraficaFormManual as $key => $value) {
+                          $varCantidadValoracionesManual = $value['varConteo'];
+
+                          array_push($varArrayScoreFormsManual, $value['varScore']);
+                          array_push($varArrayPecFormsManual, $value['varPec']);
+                          array_push($varArrayPencFormsManual, $value['varPenc']);
+                          array_push($varArraySFCFormsManual, $value['varSfc']);
+                          array_push($varArrayIProcesoFormsManual, $value['varIndiceProceso']);
+                          array_push($varArrayIExperienciaFormsManual, $value['varIndiceExperienca']);
+                          array_push($varArrayIPromesaFormsManual, $value['varIndicePromesa']);
+                        }
+                    ?>
+
+
+                    <div class="row">
+                      <div class="col-md-8">
+                        <div class="card1 mb">
+                          <div id="<?php echo $pruebaManual; ?>" class="highcharts-container" style="height: 250px; width: auto;"></div>
+                          <script type="text/javascript">
+                            $('#'+"<?php echo $pruebaManual; ?>").highcharts({
+
+                                    chart: {
+                                      borderColor: '#DAD9D9',
+                                      borderRadius: 7,
+                                      borderWidth: 1,
+                                      type: 'column'
+                                    }, 
+
+                                    title: {
+                                      text: 'Resumen General Valoraciones',
+                                      style: {
+                                        color: '#3C74AA'
+                                      }
+                                    },
+
+                                    xAxis: {
+                                      categories: '-',
+                                      title: {
+                                        text: null
+                                      },
+                                      crosshair: true
+                                    },
+
+                                    series: [
+                                      {
+                                        name: 'Score',
+                                        data: [<?= join($varArrayScoreFormsManual, ',') ?>],
+                                        color: '#827DF9'
+                                      },{
+                                        name: 'Pec',
+                                        data: [<?= join($varArrayPecFormsManual, ',') ?>],
+                                        color: '#FBCE52'
+                                      },{
+                                        name: 'Penc',
+                                        data: [<?= join($varArrayPencFormsManual, ',') ?>],
+                                        color: '#4298B5'
+                                      },{
+                                        name: 'Sfc',
+                                        data: [<?= join($varArraySFCFormsManual, ',') ?>],
+                                        color: '#C148D0'
+                                      },{
+                                        name: 'Indice Proceso',
+                                        data: [<?= join($varArrayIProcesoFormsManual, ',') ?>],
+                                        color: '#C6C6C6'
+                                      },{
+                                        name: 'Indice Experiencia',
+                                        data: [<?= join($varArrayIExperienciaFormsManual, ',') ?>],
+                                        color: '#559FFF'
+                                      },{
+                                        name: 'Promesa Marca',
+                                        data: [<?= join($varArrayIPromesaFormsManual, ',') ?>],
+                                        color: '#4298b5'
+                                      }
+                                    ]
+
+                            });
+                          </script>
                         </div>
-                        
                       </div>
 
-                      <br>
+                      <div class="col-md-4">
+                        <table id="myTableCantidadesValoracionManual" class="table table-hover table-bordered" style="margin-top:10px" >
+                          <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Cantidades Valoraciones') ?></label></caption>
+                          <thead>
+                            <tr>
+                              <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad valoraciones') ?></label></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="text-center" colspan="1"><label style="font-size: 20px;"><?php echo  $varCantidadValoracionesManual; ?></label></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
 
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="card1 mb">
-                            <table id="myTableIndicaAuto" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Resultados Equipos') ?></label></caption>
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lider de Equipo') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Score') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Pec') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Penc') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sfc/Frc') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Proceso') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Experiencia') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice Promesa de Marca') ?></label></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <?php 
+                    <br>
 
-                                  $varResultadosLideresMixto = (new \yii\db\Query())
-                                                  ->select(['tbl_usuarios.usua_id', 'tbl_usuarios.usua_nombre', 'COUNT(tbl_ejecucionformularios.id) AS cantidad', 
-                                                    'ROUND(AVG(tbl_ejecucionformularios.score),2) AS score',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo),2) AS pec',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo),2) AS penc',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo),2) AS sfc_frc',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo),2) AS indiceproceso',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo),2) AS indiceexperiencia',
-                                                    'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo),2) AS indicepromesa'])
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card1 mb"  style="font-size: 15px;">
 
-                                                  ->from(['tbl_usuarios']) 
+                          <?php
+                            $varNombreTablaEquipoManul = "myTableEquiposManual_".$varCodPcrcManual;
+                          ?>
 
-                                                  ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
-                                                    'tbl_usuarios.usua_id = tbl_ejecucionformularios.usua_id_lider')    
+                          <table id="<?php echo $varNombreTablaEquipoManul; ?>" class="table table-hover table-bordered" style="margin-top:10px" >
+                            <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Resultados Equipos') ?></label></caption>
+                            <thead>
+                              <tr>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lider de Equipo') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Score') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Pec') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Penc') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sfc/Frc') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Proceso') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Experiencia') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice Promesa de Marca') ?></label></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php
+                                  $varListaDataArbolsManual = (new \yii\db\Query())
+                                                ->select(['*'])
+                                                ->from(['tbl_speech_pcrcformularios'])            
+                                                ->where(['=','anulado',0])
+                                                ->andwhere(['=','cod_pcrc',$varCodPcrcManual])
+                                                ->andwhere(['=','id_dp_clientes',$varIdDpCliente])
+                                                ->all();
 
-                                                  ->where(['IN','tbl_ejecucionformularios.id',$varDataFormularios])
-                                                  ->groupby(['tbl_usuarios.usua_id'])
-                                                  ->All();
-
-
-                                  foreach ($varResultadosLideresMixto as $key => $value) {
-
-
-                                ?>
-
-                                  <tr>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['usua_nombre']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['cantidad']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['score']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['pec']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['penc']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['sfc_frc']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['indiceproceso']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['indiceexperiencia']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['indicepromesa']; ?></label></td>
-                                  </tr>
-
-                                <?php
+                                  $varArrayArbolsManual = array();
+                                  foreach ($varListaDataArbolsManual as $key => $value) {
+                                    array_push($varArrayArbolsManual, $value['arbol_id']);
                                   }
-                                ?>
-                              </tbody>
-                            </table>
-                          </div>
+                                  $varArray_ArbolManual = implode(", ", $varArrayArbolsManual);
+                                  $arrayArboles_downManual = str_replace(array("#", "'", ";", " "), '', $varArray_ArbolManual);
+                                  $varArbolesManuales = explode(",", $arrayArboles_downManual);
+
+                                  
+
+                                  $varListadoLideresManual = (new \yii\db\Query())
+                                                ->select([
+                                                  'tbl_usuarios.usua_id AS varLiderId',
+                                                  'tbl_usuarios.usua_nombre AS varLider'
+                                                ])
+                                                ->from(['tbl_usuarios'])  
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_distribucion_asesores',
+                                                  'tbl_usuarios.usua_identificacion = tbl_distribucion_asesores.cedulalider')
+
+                                                ->where(['=','tbl_distribucion_asesores.id_dp_clientes',$varIdDpCliente])
+                                                ->groupby(['tbl_distribucion_asesores.cedulalider'])
+                                                ->all();
+
+
+                                  foreach ($varListadoLideresManual as $key => $value) {
+                                    $vaNombreLiderManual = $value['varLider'];
+                                    $varLider_id = $value['varLiderId'];
+
+                                    $varListadoValoracionLiderManual = (new \yii\db\Query())
+                                          ->select([
+                                            'COUNT(tbl_ejecucionformularios.id) AS varConteoMA',
+                                            'ROUND(AVG(tbl_ejecucionformularios.score)*100,2) AS varScoreMA',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo)*100,2) AS varPecMA',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo)*100,2) AS varPencMA',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo)*100,2) AS varSfcMA',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo)*100,2) AS varIndiceProcesoMA',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo)*100,2) AS varIndiceExperiencaMA',
+                                            'ROUND(AVG(tbl_ejecucionformularios.i7_nmcalculo)*100,2) AS varIndicePromesaMA'
+                                            ])
+                                          ->from(['tbl_ejecucionformularios']) 
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                  'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                                  'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')
+
+                                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesManual])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])                                          
+                                          ->andwhere(['=','tbl_ejecucionformularios.usua_id_lider',$value['varLiderId']])
+                                          ->andwhere(['in','tbl_ejecucionformularios.arbol_id',$varArbolesManuales])
+                                          ->all();
+
+                                    foreach ($varListadoValoracionLiderManual as $key => $value) {
+
+                                      if ($value['varConteoMA'] != "") {
+                                        $varConteoFormsManualV = $value['varConteoMA'];
+                                      }else{
+                                        $varConteoFormsManualV = $varSinData;
+                                      }
+
+                                      if ($value['varScoreMA'] != "") {
+                                        $varScoreFormManualValo = $value['varScoreMA'];
+                                      }else{
+                                        $varScoreFormManualValo = $varSinData;
+                                      }
+
+                                      if ($value['varPecMA'] != "") {
+                                        $varPecFormsManualV = $value['varPecMA'].' %';
+                                      }else{
+                                        $varPecFormsManualV = $varSinData;
+                                      }
+
+                                      if ($value['varPencMA'] != "") {
+                                        $varPencFormsManualV = $value['varPencMA'].' %';
+                                      }else{
+                                        $varPencFormsManualV = $varSinData;
+                                      }
+
+                                      if ($value['varSfcMA'] != "") {
+                                        $varSFCFormsManualV = $value['varSfcMA'].' %';
+                                      }else{
+                                        $varSFCFormsManualV = $varSinData;
+                                      }
+
+                                      if ($value['varIndiceProcesoMA'] != "") {
+                                        $varIndiceProcesoFormsManualV = $value['varIndiceProcesoMA'].' %';
+                                      }else{
+                                        $varIndiceProcesoFormsManualV = $varSinData;
+                                      }
+
+                                      if ($value['varIndiceExperiencaMA'] != "") {
+                                        $varIndiceExpeFormsManualV = $value['varIndiceExperiencaMA'].' %';
+                                      }else{
+                                        $varIndiceExpeFormsManualV = $varSinData;
+                                      }
+
+                                      if ($value['varIndicePromesaMA'] != "") {
+                                        $varIndicePromesaFormsManualV = $value['varIndicePromesaMA'].' %';
+                                      }else{
+                                        $varIndicePromesaFormsManualV = $varSinData;
+                                      }
+                                                                        
+                              ?>
+                                <tr>
+
+                                  <td class="text-center" colspan="1">
+
+                                    <?php
+                                      if ($varConteoFormsManualV != 0) {
+                                    ?>
+                                      
+                                      <?= 
+                                        Html::a(Yii::t('app', '<em id="idimage" class="fas fa-paper-plane" style="font-size: 15px; color: #FFC72C;"></em>'),
+                                                                'javascript:void(0)',
+                                                                [
+                                                                    'title' => Yii::t('app', 'Verificar Resultado Formularios'),
+                                                                    'onclick' => "   
+                                                                        $.ajax({
+                                                                            type     :'get',
+                                                                            cache    : false,
+                                                                            url  : '" . Url::to(['viewrtas','verformulariomanual', 'liderid'=>$varLider_id, 'clienteid'=>$varIdDpCliente, 'codpcrcid'=>$varCodPcrcManual, 'arbolsid'=>$varArray_ArbolManual, 'extensionid'=>$varExtensionesManual, 'llamadaid'=>$varLlamada, 'nombrespeechid'=>$varNombreSpeech, 'fechainicioid'=>$varFechainicial.' 05:00:00', 'fechafinid'=>$varFechaFinal.' 05:00:00']) . "',
+                                                                            success  : function(response) {
+                                                                                $('#ajax_result').html(response);
+                                                                            }
+                                                                        });
+                                                                    return false;",
+                                                                ]);
+                                      ?>
+                                    <?php
+                                      }else{
+                                    ?>
+
+                                      <label style="font-size: 12px;"><?= Yii::t('app', '--') ?></label>
+
+                                    <?php
+                                      }
+                                    ?>
+                                   
+
+                                  </td>
+
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $vaNombreLiderManual; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varConteoFormsManualV; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varScoreFormManualValo; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varPecFormsManualV; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varPencFormsManualV; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varSFCFormsManualV; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varIndiceProcesoFormsManualV; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varIndiceExpeFormsManualV; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varIndicePromesaFormsManualV; ?></label></td>
+
+                                </tr>
+                              <?php
+                                    }
+                                  }
+                              ?>                              
+                            </tbody>
+                          </table>
+
+                          <script type="text/javascript">
+                            $('#'+"<?php echo $varNombreTablaEquipoManul; ?>").DataTable({
+                                    responsive: true,
+                                    fixedColumns: true,
+
+                                    select: true,
+                                    "language": {
+                                      "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
+                                      "zeroRecords": "No se encontraron datos ",
+                                      "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+                                      "infoEmpty": "No hay datos aun",
+                                      "infoFiltered": "(Filtrado un _MAX_ total)",
+                                      "search": "Buscar:",
+                                      "paginate": {
+                                        "first":      "Primero",
+                                        "last":       "Ultimo",
+                                        "next":       "Siguiente",
+                                        "previous":   "Anterior"
+                                      }
+                                    } 
+                            });
+                          </script>
+                          
                         </div>
                       </div>
-
-                    </div>                    
+                    </div>
+                    
 
                   </div>
 
                 </div>
+              </div>
+
+              <br>
 
               <?php
               }
@@ -1717,272 +2300,323 @@ $this->registerJs($js);
             <!-- Proceso Calidad -->
             <div id="Calidad" class="w3-container city" style="display:none;">
 
-              <?php
-              $varNumeroContainer = 0;
-              foreach ($varListasClienteIdealP as $key => $value) {
-                $varCentrosCostosCalidad = $value['cod_pcrc'];
-                
-                $varNombreCentroCostosC = (new \yii\db\Query())
-                                              ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
-                                              ->from(['tbl_speech_categorias'])            
-                                              ->where(['=','anulado',0])
-                                              ->andwhere(['in','cod_pcrc',$varCentrosCostosCalidad])
-                                              ->groupby(['cod_pcrc'])
-                                              ->Scalar();
-              ?>
-
               <br>
 
-                <div class="row">
-                  <div class="col-md-12">
-
-                    <div class="card1 mb">
-                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', $varNombreCentroCostosC) ?></label>
-
-                      <?php
-                        $varNumeroContainer += 1;
-                        $prueba = 'myChart'.$varCentrosCostosAutos.'_'.$varNumeroContainer;
-                        $varFechaInicioResta = date('Y-m-d',strtotime($varFechainicial."- 2 month"));
-
-                        $varListasProcesamientos = (new \yii\db\Query())
-                                                      ->select(['ELT(MONTH(tbl_ideal_llamadas.fechainicio), "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre") AS Mes','sum(tbl_ideal_llamadas.cantidad) as cantidad'])
-                                                      ->from(['tbl_ideal_llamadas'])            
-                                                      ->where(['=','tbl_ideal_llamadas.id_dp_cliente',$varIdDpCliente])
-                                                      ->andwhere(['=','tbl_ideal_llamadas.cod_pcrc',$varCentrosCostosCalidad])
-                                                      ->andwhere(['>=','tbl_ideal_llamadas.fechainicio',$varFechaInicioResta.' 05:00:00'])
-                                                      ->andwhere(['<=','tbl_ideal_llamadas.fechafin',$varFechaFinal.' 05:00:00'])
-                                                      ->andwhere(['=','tbl_ideal_llamadas.anulado',0])
-                                                      ->andwhere(['=','tbl_ideal_llamadas.extension',$varIdExtensionc])
-                                                      ->groupby(['Mes'])
-                                                      ->orderby(['Mes'=>SORT_DESC])
-                                                      ->All();
-                        
-                        $varListasCantidadForms = (new \yii\db\Query())
-                                                      ->select(['ELT(MONTH(tbl_ideal_novedades.fechainicio), "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre") AS Mes','count(tbl_ideal_novedades.formulario_id) as cantidad'])
-                                                      ->from(['tbl_ideal_novedades'])            
-                                                      ->where(['=','tbl_ideal_novedades.id_dp_cliente',$varIdDpCliente])
-                                                      ->andwhere(['=','tbl_ideal_novedades.cod_pcrc',$varCentrosCostosCalidad])
-                                                      ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechaInicioResta.' 05:00:00'])
-                                                      ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
-                                                      ->andwhere(['=','tbl_ideal_novedades.anulado',0])
-                                                      ->andwhere(['=','tbl_ideal_novedades.extension',$varIdExtensionc])
-                                                      ->groupby(['Mes'])
-                                                      ->orderby(['Mes'=>SORT_DESC])
-                                                      ->All();
-                        
-                      ?>             
-
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="card1 mb">
-
-                            <table id="myTableIndicaAuto" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Resultados Cantidades Procesamiento Automático') ?></label></caption>
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Mes') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Interacciones') ?></label></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <?php
-                                  foreach ($varListasProcesamientos as $key => $value) {
-                                ?>
-                                  <tr>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['Mes']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['cantidad']; ?></label></td>
-                                  </tr>
-                                      
-                                <?php
-                                  }
-                                ?>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-
-                        <div class="col-md-6">
-                          <div class="card1 mb">
-                            <table id="myTableIndicaAuto" class="table table-hover table-bordered" style="margin-top:10px" >
-                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Resultados Cantidades Procesamiento Manual') ?></label></caption>
-                              <thead>
-                                <tr>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Mes') ?></label></th>
-                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <?php
-                                  foreach ($varListasCantidadForms as $key => $value) {
-                                ?>
-                                  <tr>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['Mes']; ?></label></td>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $value['cantidad']; ?></label></td>
-                                  </tr>
-                                      
-                                <?php
-                                  }
-                                ?>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div> 
-
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card1 mb">
+                    <div class="panel panel-default" style="background-color: #e9f9e8;">
+                      <div class="panel-body">
+                        <label style="font-size: 14px;"><?= Yii::t('app', ' Actualmente el proceso esta en construccion, Importante tener un historico del proceso de la BD ideal.') ?></label>
+                      </div>
                     </div>
-
                   </div>
                 </div>
-
-              <?php
-              }
-              ?>
-              
+              </div>
 
             </div>
 
             <!-- Proceso Mejora -->
             <div id="Mejora" class="w3-container city" style="display:none;">
 
+              <br>
+
               <?php
-                foreach ($varListasClienteIdealP as $key => $value) {
-                  $varCentrosCostosMejora = $value['cod_pcrc'];
-                  
-                  $varNombreCentroCostosMejora = (new \yii\db\Query())
-                                                ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
-                                                ->from(['tbl_speech_categorias'])            
+              $varNumeroContainerMejora = 0;
+              foreach ($varListasClienteIdealP as $key => $value) {
+                $varCodPcrcMejora = $value['cod_pcrc'];
+
+                $varNumeroContainerMejora += 1;
+                $pruebaMejora = 'doughnut-chartManual'.$varCodPcrcMejora.'_'.$varNumeroContainerMejora;
+
+                $varNombreCodPcrcMejora = (new \yii\db\Query())
+                                          ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
+                                          ->from(['tbl_speech_categorias'])            
+                                          ->where(['=','anulado',0])
+                                          ->andwhere(['in','cod_pcrc',$varCodPcrcMejora])
+                                          ->groupby(['cod_pcrc'])
+                                          ->Scalar(); 
+
+                $varListaDataArbolsMejora = (new \yii\db\Query())
+                                                ->select(['*'])
+                                                ->from(['tbl_speech_pcrcformularios'])            
                                                 ->where(['=','anulado',0])
-                                                ->andwhere(['in','cod_pcrc',$varCentrosCostosMejora])
-                                                ->groupby(['cod_pcrc'])
-                                                ->Scalar();
+                                                ->andwhere(['=','cod_pcrc',$varCodPcrcMejora])
+                                                ->andwhere(['=','id_dp_clientes',$varIdDpCliente])
+                                                ->all();
+
+                $varArrayArbolsMejora = array();
+                foreach ($varListaDataArbolsMejora as $key => $value) {
+                  array_push($varArrayArbolsMejora, $value['arbol_id']);
+                }
+                $varArray_ArbolMejora = implode(", ", $varArrayArbolsMejora);
+                $arrayArboles_downMejora = str_replace(array("#", "'", ";", " "), '', $varArray_ArbolMejora);
+                $varArbolesMejora = explode(",", $arrayArboles_downMejora);
+
+                $varListaDataCalibraciones = (new \yii\db\Query())
+                                                ->select(['*'])
+                                                ->from(['tbl_arbols'])            
+                                                ->where(['=','tbl_arbols.activo',0])
+                                                ->andwhere(['in','tbl_arbols.id',$varArbolesMejora])
+                                                ->all();
+
+                $varArrayArbolsCalibraciones = array();
+                foreach ($varListaDataCalibraciones as $key => $value) {
+                  array_push($varArrayArbolsCalibraciones, $value['arbol_id']);
+                }
+                $varArray_ArbolCaliMejora = implode(", ", $varArrayArbolsCalibraciones);
+                $arrayArboles_downCaliMejora = str_replace(array("#", "'", ";", " "), '', $varArray_ArbolCaliMejora);
+                $varArray_ArbolCali = explode(",", $arrayArboles_downCaliMejora);
+
+                $varGraficaFeedbackMejoraMejora = (new \yii\db\Query())
+                                                ->select(['tbl_tipofeedbacks.id'])
+                                                ->from(['tbl_tipofeedbacks'])  
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_ejecucionfeedbacks',
+                                                    'tbl_tipofeedbacks.id = tbl_ejecucionfeedbacks.tipofeedback_id') 
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_ejecucionfeedbacks.ejecucionformulario_id = tbl_ejecucionformularios.id') 
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                                    'tbl_ejecucionformularios.arbol_id = tbl_arbols.id') 
+
+                                                ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                                ->andwhere(['=','tbl_arbols.activo',0])
+                                                ->andwhere(['between','tbl_ejecucionfeedbacks.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                                ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                                ->andwhere(['in','tbl_ejecucionfeedbacks.snaviso_revisado',[0,1]])
+                                                ->andwhere(['like','tbl_tipofeedbacks.name','ejora'])
+                                                ->count();
+
+                $varGraficaFeedbackFelicitacionMejora = (new \yii\db\Query())
+                                                ->select(['tbl_tipofeedbacks.id'])
+                                                ->from(['tbl_tipofeedbacks'])  
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_ejecucionfeedbacks',
+                                                    'tbl_tipofeedbacks.id = tbl_ejecucionfeedbacks.tipofeedback_id') 
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_ejecucionfeedbacks.ejecucionformulario_id = tbl_ejecucionformularios.id') 
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                                    'tbl_ejecucionformularios.arbol_id = tbl_arbols.id') 
+
+                                                ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                                ->andwhere(['=','tbl_arbols.activo',0])
+                                                ->andwhere(['between','tbl_ejecucionfeedbacks.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                                ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                                ->andwhere(['in','tbl_ejecucionfeedbacks.snaviso_revisado',[0,1]])
+                                                ->andwhere(['like','tbl_tipofeedbacks.name','elicitac'])
+                                                ->count();
+
+                $varGraficaFeedbackOtrosMejora = (new \yii\db\Query())
+                                                ->select(['tbl_tipofeedbacks.id'])
+                                                ->from(['tbl_tipofeedbacks'])  
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_ejecucionfeedbacks',
+                                                    'tbl_tipofeedbacks.id = tbl_ejecucionfeedbacks.tipofeedback_id') 
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_ejecucionfeedbacks.ejecucionformulario_id = tbl_ejecucionformularios.id') 
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                                    'tbl_ejecucionformularios.arbol_id = tbl_arbols.id') 
+
+                                                ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                                ->andwhere(['=','tbl_arbols.activo',0])
+                                                ->andwhere(['between','tbl_ejecucionfeedbacks.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                                ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                                ->andwhere(['in','tbl_ejecucionfeedbacks.snaviso_revisado',[0,1]])
+                                                ->andwhere(['not like','tbl_tipofeedbacks.name','elicitac'])
+                                                ->andwhere(['not like','tbl_tipofeedbacks.name','ejora'])
+                                                ->count();
 
 
-                  $varListaFormulariosMejora = (new \yii\db\Query())
-                                                ->select(['formulario_id'])
-                                                ->from(['tbl_ideal_novedades'])            
-                                                ->where(['=','tbl_ideal_novedades.id_dp_cliente',$varIdDpCliente])
-                                                ->andwhere(['=','tbl_ideal_novedades.cod_pcrc',$varCentrosCostosMejora])
-                                                ->andwhere(['>=','tbl_ideal_novedades.fechainicio',$varFechainicial.' 05:00:00'])
-                                                ->andwhere(['<=','tbl_ideal_novedades.fechafin',$varFechaFinal.' 05:00:00'])
-                                                ->andwhere(['=','tbl_ideal_novedades.anulado',0])
-                                                ->andwhere(['=','tbl_ideal_novedades.extension',$varIdExtensionc])
-                                                ->groupby(['formulario_id'])
-                                                ->All();  
-                                              
-                  if (count($varListaFormulariosMejora) != 0) {
-                    $varArrayForms = array();
-                    foreach ($varListaFormulariosMejora as $key => $value) {
-                      array_push($varArrayForms, $value['formulario_id']);
+                $varListaFeedbacksRevisado = (new \yii\db\Query())
+                                                ->select(['tbl_ejecucionfeedbacks.snaviso_revisado'])
+                                                ->from(['tbl_ejecucionfeedbacks'])  
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                    'tbl_ejecucionfeedbacks.ejecucionformulario_id = tbl_ejecucionformularios.id') 
+
+                                                ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                                    'tbl_ejecucionformularios.arbol_id = tbl_arbols.id') 
+
+                                                ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                                ->andwhere(['=','tbl_arbols.activo',0])
+                                                ->andwhere(['between','tbl_ejecucionfeedbacks.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                                ->andwhere(['in','tbl_ejecucionfeedbacks.snaviso_revisado',[0,1]])
+                                                ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                                ->All();
+
+                if (count($varListaFeedbacksRevisado) != 0) {
+                  $varCantidadFeedbacks = count($varListaFeedbacksRevisado);
+
+                  $varArrayConteoGestionada = 0;
+                  $varArrayConteoNoGestionada = 0;
+                  $varArrayConteoEstadoOk = 0;
+                  $varArrayConteoEstadoKo = 0;
+                  foreach ($varListaFeedbacksRevisado as $key => $value) {
+                    if ($value['snaviso_revisado'] == 1) {
+                      $varArrayConteoGestionada += 1;
                     }
 
-                    $varArrayListarForms = implode(", ", $varArrayForms);
-
-                    $varDataFormulariosMejoras = explode(",", str_replace(array("#", "'", ";", " "), '', $varArrayListarForms));
-
-
-                    $varListaGeneralFormulariosMejora = (new \yii\db\Query())
-                                                  ->select(['tbl_ejecucionfeedbacks.snaviso_revisado'])
-
-                                                  ->from(['tbl_ejecucionfeedbacks']) 
-
-                                                  ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
-                                                    'tbl_ejecucionfeedbacks.ejecucionformulario_id = tbl_ejecucionformularios.id')    
-
-                                                  ->where(['IN','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
-                                                  ->All();
-
-                    $varCantidadFeedbacks = count($varListaGeneralFormulariosMejora);
-
-                    $varArrayConteoGestionada = 0;
-                    $varArrayConteoNoGestionada = 0;
-                    $varArrayConteoEstadoOk = 0;
-                    $varArrayConteoEstadoKo = 0;
-                    foreach ($varListaGeneralFormulariosMejora as $key => $value) {
-                      if ($value['snaviso_revisado'] == 1) {
-                        $varArrayConteoGestionada += 1;
-                      }
-
-                      if ($value['snaviso_revisado'] == 0) {
-                        $varArrayConteoNoGestionada += 1;
-                      }
+                    if ($value['snaviso_revisado'] == 0) {
+                      $varArrayConteoNoGestionada += 1;
                     }
+                  }
 
-                    $varListaSegundoclificadorMejora = (new \yii\db\Query())
+                  $varListaSegundoclificadorMejora = (new \yii\db\Query())
                                                   ->select(['tbl_segundo_calificador.estado_sc'])
 
                                                   ->from(['tbl_segundo_calificador']) 
 
                                                   ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
-                                                    'tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios.id')    
+                                                    'tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios.id')  
 
-                                                  ->where(['IN','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
-                                                  ->All();
+                                                  ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                                    'tbl_ejecucionformularios.arbol_id = tbl_arbols.id')     
+                                                ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                                ->andwhere(['=','tbl_arbols.activo',0])
+                                                ->andwhere(['between','tbl_ejecucionformularios.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                                ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                                ->All(); 
 
-                    $varCantidadSegundo = count($varListaSegundoclificadorMejora);
+                  $varCantidadSegundo = count($varListaSegundoclificadorMejora);
 
-                    foreach ($varListaSegundoclificadorMejora as $key => $value) {
-                      if ($value['estado_sc'] == 'Abierto') {
-                        $varArrayConteoEstadoOk += 1;
-                      }
-                      if ($value['estado_sc'] == 'Aceptado') {
-                        $varArrayConteoEstadoKo += 1;
-                      }
+                  foreach ($varListaSegundoclificadorMejora as $key => $value) {
+                    if ($value['estado_sc'] == 'Abierto') {
+                      $varArrayConteoEstadoOk += 1;
                     }
-
-                    if ($varCantidadFeedbacks != 0) {
-                      $varProcentajeGestionFeedback = round(($varArrayConteoGestionada/$varCantidadFeedbacks) * 100, 2);
-                    }else{
-                      $varProcentajeGestionFeedback = 0;
+                    if ($value['estado_sc'] == 'Aceptado') {
+                      $varArrayConteoEstadoKo += 1;
                     }
-
-                    if ($varCantidadFeedbacks != 0) {
-                      $varProcentajeGestionSegundo = round(($varArrayConteoEstadoKo/$varCantidadFeedbacks) * 100, 2);
-                    }else{
-                      $varProcentajeGestionSegundo = 0;
+                    if ($value['estado_sc'] == 'Rechazado') {
+                      $varArrayConteoEstadoFail += 1;
                     }
-                    
+                    if ($value['estado_sc'] == "Escalado") {
+                      $varArrayConteoAceptado += 1;
+                    }
+                  }
 
-                    
+                  if ($varCantidadFeedbacks != 0) {
+                    $varProcentajeGestionFeedback = round(($varArrayConteoGestionada/$varCantidadFeedbacks) * 100, 2);
+                  }else{
+                    $varProcentajeGestionFeedback = 0;
+                  }
 
-                    $varConteoAlertas = (new \yii\db\Query())
+                  if ($varCantidadFeedbacks != 0) {
+                    $varProcentajeGestionSegundo = round(($varArrayConteoEstadoKo/$varCantidadFeedbacks) * 100, 2);
+                  }else{
+                    $varProcentajeGestionSegundo = 0;
+                  }
+
+                  $varConteoAlertas = (new \yii\db\Query())
                                       ->select(['tbl_alertascx.id'])
                                       ->from(['tbl_alertascx'])  
-                                      ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
-                                          'tbl_alertascx.pcrc = tbl_ejecucionformularios.arbol_id')
-                                      ->where(['in','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
+                                      
+                                      ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                          'tbl_alertascx.pcrc = tbl_arbols.id')
+                                      
+                                      ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                      ->andwhere(['=','tbl_arbols.activo',0])
+                                      ->andwhere(['between','tbl_alertascx.fecha',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
                                       ->count();
 
-                    $varConteoAlCalibraciones = (new \yii\db\Query())
-                                      ->select(['tbl_arbols.id'])
-                                      ->from(['tbl_arbols'])  
-                                      ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
-                                          'tbl_arbols.id = tbl_ejecucionformularios.arbol_id')
-                                      ->where(['in','tbl_ejecucionformularios.id',$varDataFormulariosMejoras])
-                                      ->andwhere(['like','tbl_arbols.name','alibracion'])
+                  $varConteoMejoraMejora = (new \yii\db\Query())
+                                      ->select(['tbl_alertascx.id'])
+                                      ->from(['tbl_alertascx'])  
+                                      
+                                      ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                          'tbl_alertascx.pcrc = tbl_arbols.id')
+                                      
+                                      ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                      ->andwhere(['=','tbl_arbols.activo',0])
+                                      ->andwhere(['between','tbl_alertascx.fecha',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                      ->andwhere(['like','tbl_alertascx.tipo_alerta','ejora'])
                                       ->count();
 
-                  }else{
-                    $varCantidadFeedbacks = $varSinData;
-                    $varCantidadSegundo = $varSinData;
-                    $varArrayConteoGestionada = $varSinData;
-                    $varArrayConteoNoGestionada = $varSinData;
-                    $varArrayConteoEstadoOk = $varSinData;
-                    $varArrayConteoEstadoKo = $varSinData;
-                    $varProcentajeGestionFeedback = $varSinData;
-                    $varProcentajeGestionSegundo = $varSinData;
-                    $varConteoAlertas = $varSinData;
-                    $varConteoAlCalibraciones = $varSinData;
-                  }                            
+                  $varConteoFelicitacionMejora = (new \yii\db\Query())
+                                      ->select(['tbl_alertascx.id'])
+                                      ->from(['tbl_alertascx'])  
+                                      
+                                      ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                          'tbl_alertascx.pcrc = tbl_arbols.id')
+                                      
+                                      ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                      ->andwhere(['=','tbl_arbols.activo',0])
+                                      ->andwhere(['between','tbl_alertascx.fecha',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                      ->andwhere(['like','tbl_alertascx.tipo_alerta','elicitac'])
+                                      ->count();
+
+                  $varConteoSeguimientoMejora = (new \yii\db\Query())
+                                      ->select(['tbl_alertascx.id'])
+                                      ->from(['tbl_alertascx'])  
+                                      
+                                      ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                          'tbl_alertascx.pcrc = tbl_arbols.id')
+                                      
+                                      ->where(['in','tbl_arbols.id',$varArbolesMejora])
+                                      ->andwhere(['=','tbl_arbols.activo',0])
+                                      ->andwhere(['between','tbl_alertascx.fecha',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                      ->andwhere(['like','tbl_alertascx.tipo_alerta','eguimiento'])
+                                      ->count();
+
+
+                  $varConteoAlCalibraciones = (new \yii\db\Query())
+                                      ->select(['tbl_ejecucionformularios.id'])
+                                      ->from(['tbl_ejecucionformularios'])
+
+                                      ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                          'tbl_ejecucionformularios.arbol_id = tbl_arbols.id')
+
+                                      ->where(['in','tbl_arbols.arbol_id',$varArray_ArbolCali])
+                                      ->andwhere(['like','tbl_arbols.name','alibra'])
+                                      ->andwhere(['=','tbl_arbols.activo',0])
+                                      ->andwhere(['between','tbl_ejecucionformularios.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                      ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                      ->count();
+
+                }else{
+                  $varCantidadFeedbacks = $varSinData;
+                  $varCantidadSegundo = $varSinData;
+                  $varArrayConteoGestionada = $varSinData;
+                  $varArrayConteoNoGestionada = $varSinData;
+                  $varArrayConteoEstadoOk = $varSinData;
+                  $varArrayConteoEstadoKo = $varSinData;
+                  $varProcentajeGestionFeedback = $varSinData;
+                  $varProcentajeGestionSegundo = $varSinData;
+                  $varConteoAlertas = $varSinData;
+                  $varConteoAlCalibraciones = $varSinData;
+                  $varGraficaFeedbackMejoraMejora = 0;
+                  $varGraficaFeedbackOtrosMejora = 0;
+                  $varGraficaFeedbackFelicitacionMejora = 0;
+                  $varConteoMejoraMejora = 0;
+                  $varConteoFelicitacionMejora = 0;
+                  $varConteoSeguimientoMejora = 0;
+                }
+
+                $varConteoMejoraFeedback += 1;
+                $varJavaScript = 'chartContainerFeedbackMejora_'.$varCodPcrcMejora.'_'.$varConteoMejoraFeedback;             
+                $varJavaScriptSegundo = 'chartContainerSegundoMejora_'.$varCodPcrcMejora.'_'.$varConteoMejoraFeedback;     
+                $varJavaScriptAlerta = 'chartContainerAlertaMejora_'.$varCodPcrcMejora.'_'.$varConteoMejoraFeedback;  
+
               ?>
-
-                <br>
 
                 <div class="row">
                   <div class="col-md-12">
+                    
+                    <br>
+
                     <div class="card1 mb">
-                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 15px; color: #559FFF;"></em> <?= Yii::t('app', $varNombreCentroCostosMejora) ?></label>
+
+                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', $varNombreCodPcrcMejora) ?></label>
+
+                      <br>
 
                       <div class="row">
+                        
                         <div class="col-md-3">
                           <div class="card1 mb">
                             <table id="myTableMejoraFeedback" class="table table-hover table-bordered" style="margin-top:10px" >
@@ -2050,7 +2684,7 @@ $this->registerJs($js);
                               </thead>
                               <tbody>
                                   <tr>
-                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varCantidadSegundo; ?></label></td>
+                                    <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varConteoAlertas; ?></label></td>
                                   </tr>
                               </tbody>
                             </table>
@@ -2074,20 +2708,185 @@ $this->registerJs($js);
                             </table>
                           </div>
                         </div>
+
+
                       </div>
 
+                      <br>
+
+                      <div class="row">
+
+                        <div class="col-md-3">
+                          <div class="card1 mb">
+                            <div id="<?php echo $varJavaScript; ?>" class="highcharts-container" style="height: 300px;"></div>
+                            <script type="text/javascript">
+
+                              $('#'+"<?php echo $varJavaScript; ?>").highcharts({
+
+                                  chart: {
+                                    borderColor: '#DAD9D9',
+                                    borderRadius: 7,
+                                    borderWidth: 1,
+                                    type: 'column'
+                                  }, 
+
+                                  title: {
+                                    text: 'Resumen General',
+                                    style: {
+                                      color: '#3C74AA'
+                                    }
+                                  },
+
+                                  xAxis: {
+                                    categories: '_',
+                                    title: {
+                                      text: null
+                                    },
+                                    crosshair: true
+                                  },
+
+                                  series: [
+                                    {
+                                      name: 'Resultados Por Mejora',
+                                      data: [<?= $varGraficaFeedbackMejoraMejora ?>],
+                                      color: '#FBCE52'
+                                    },{
+                                      name: 'Resultados Por Felicitacion',
+                                      data: [<?= $varGraficaFeedbackFelicitacionMejora ?>],
+                                      color: '#4298B5'
+                                    },{
+                                      name: 'Resultados Por Otros',
+                                      data: [<?= $varGraficaFeedbackOtrosMejora ?>],
+                                      color: '#C6C6C6'
+                                    }
+                                  ]
+
+                                });
+                            </script>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="card1 mb">
+                            <div id="<?php echo $varJavaScriptSegundo; ?>" class="highcharts-container" style="height: 300px;"></div>
+                            <script type="text/javascript">
+
+                              $('#'+"<?php echo $varJavaScriptSegundo; ?>").highcharts({
+
+                                  chart: {
+                                    borderColor: '#DAD9D9',
+                                    borderRadius: 7,
+                                    borderWidth: 1,
+                                    type: 'column'
+                                  }, 
+
+                                  title: {
+                                    text: 'Resumen General',
+                                    style: {
+                                      color: '#3C74AA'
+                                    }
+                                  },
+
+                                  xAxis: {
+                                    categories: '_',
+                                    title: {
+                                      text: null
+                                    },
+                                    crosshair: true
+                                  },
+
+                                  series: [
+                                    {
+                                      name: 'Abiertos',
+                                      data: [<?= $varArrayConteoEstadoOk ?>],
+                                      color: '#FBCE52'
+                                    },{
+                                      name: 'Aceptado',
+                                      data: [<?= $varArrayConteoEstadoKo ?>],
+                                      color: '#4298B5'
+                                    },{
+                                      name: 'Rechazados',
+                                      data: [<?= $varArrayConteoEstadoFail ?>],
+                                      color: '#C6C6C6'
+                                    },{
+                                      name: 'Ecalado',
+                                      data: [<?= $varArrayConteoAceptado ?>],
+                                      color: '#4298C3'
+                                    }
+                                  ]
+
+                                });
+                            </script>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="card1 mb">
+                            <div id="<?php echo $varJavaScriptAlerta; ?>" class="highcharts-container" style="height: 300px;"></div>
+                            <script type="text/javascript">
+
+                              $('#'+"<?php echo $varJavaScriptAlerta; ?>").highcharts({
+
+                                  chart: {
+                                    borderColor: '#DAD9D9',
+                                    borderRadius: 7,
+                                    borderWidth: 1,
+                                    type: 'column'
+                                  }, 
+
+                                  title: {
+                                    text: 'Resumen General',
+                                    style: {
+                                      color: '#3C74AA'
+                                    }
+                                  },
+
+                                  xAxis: {
+                                    categories: '_',
+                                    title: {
+                                      text: null
+                                    },
+                                    crosshair: true
+                                  },
+
+                                  series: [
+                                    {
+                                      name: 'Mejora',
+                                      data: [<?= $varConteoMejoraMejora ?>],
+                                      color: '#FBCE52'
+                                    },{
+                                      name: 'Felicitación',
+                                      data: [<?= $varConteoFelicitacionMejora ?>],
+                                      color: '#4298B5'
+                                    },{
+                                      name: 'Seguimiento',
+                                      data: [<?= $varConteoSeguimientoMejora ?>],
+                                      color: '#C6C6C6'
+                                    }
+                                  ]
+
+                                });
+                            </script>
+                          </div>
+                        </div>
+
+                      </div>
+                      
                     </div>
+
+                    <br>
+
                   </div>
                 </div>
 
               <?php
-                }
+              }
               ?>
 
             </div>
 
+
         </div>
-        
       </div>
     </div>
   </div>
@@ -2096,49 +2895,9 @@ $this->registerJs($js);
 
 <hr>
 
-<!-- Capa Botones -->
-<div id="CapaIdBtn" class="capaBtn" style="display: inline;">
-  
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Buscar Por Proceso') ?></label>
-        <?= Html::button('Buscar', ['value' => url::to(['buscarporproceso']), 'class' => 'btn btn-success', 'id'=>'modalButton2',
-          'data-toggle' => 'tooltip',
-          'style' => 'background-color: #827DF9', 
-          'title' => 'Buscar Por Proceso']) ?> 
-
-        <?php
-            Modal::begin([
-              'header' => '<h4>Filtros - Búsqueda Por Proceso CXM</h4>',
-              'id' => 'modal2',
-              'size' => 'modal-lg',
-            ]);
-
-            echo "<div id='modalContent2'></div>";
-                                                              
-            Modal::end(); 
-        ?>
-      </div>
-    </div>
-
-    
-
-    <div class="col-md-4">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Cancelar y Regresar') ?></label>
-        <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
-                                            'style' => 'background-color: #707372',
-                                            'data-toggle' => 'tooltip',
-                                            'title' => 'Regresar']) 
-        ?>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<hr>
+<?php
+    echo Html::tag('div', '', ['id' => 'ajax_result']);
+?>
 
 <script type="text/javascript">
   function opennovedad(){
@@ -2175,6 +2934,10 @@ $this->registerJs($js);
     evt.currentTarget.firstElementChild.className += " w3-border-red";
   };
 
+
+
+  
+
   var chartContainerGP = document.getElementById("chartContainerGP");
   var chartContainerMP = document.getElementById("chartContainerMP");
   var chartContainerAP = document.getElementById("chartContainerAP");
@@ -2182,7 +2945,7 @@ $this->registerJs($js);
   var oilDataGP = {
     datasets: [
       {
-        data: ["<?php echo $varListarGeneralResponsabilidadP; ?>","<?php echo $varRestanteGeneralP; ?>"],
+        data: ["<?php echo $varArrayKonectaGeneral; ?>","<?php echo $varArrayRestanteKGeneral; ?>"],
         backgroundColor: [
           "<?php echo $varTColorGeneralP; ?>",
                     "#D7CFC7"
@@ -2198,7 +2961,7 @@ $this->registerJs($js);
   var oilDataMP = {
     datasets: [
       {
-        data: ["<?php echo $varListasMixtasP; ?>","<?php echo $varRestanteMixtoP; ?>"],
+        data: ["<?php echo $varArrayRtaScoreGeneral; ?>","<?php echo $varArrayRestanteScoreGeneral; ?>"],
         backgroundColor: [
           "<?php echo $varTColorMixtoP; ?>",
           "#D7CFC7"
@@ -2211,10 +2974,11 @@ $this->registerJs($js);
     data: oilDataMP
   });
 
+
   var oilDataAP = {
     datasets: [
       {
-        data: ["<?php echo $varPormedioResponsableP; ?>","<?php echo $varRestanteAutosP; ?>"],
+        data: ["<?php echo $varArrayPromedioAutoGeneral; ?>","<?php echo $varArrayRestanteAutoGeneral; ?>"],
         backgroundColor: [
           "<?php echo $varTColorAutoP; ?>",
           "#D7CFC7"
@@ -2227,14 +2991,14 @@ $this->registerJs($js);
     data: oilDataAP
   });
 
-$(function() {
-  
+  $(function() {
+
     Highcharts.setOptions({
       lang: {
         numericSymbols: null,
         thousandsSep: ','
       }
-    });
+    }); 
 
     $('#chartContainerResposnabilidadesP').highcharts({
 
@@ -2279,66 +3043,6 @@ $(function() {
 
     });
 
-    $('#varContainerGeneralManual').highcharts({
-
-      chart: {
-        borderColor: '#DAD9D9',
-        borderRadius: 7,
-        borderWidth: 1,
-        type: 'column'
-      }, 
-
-      title: {
-        text: 'Resultados General - Calidad & Consistencia',
-        style: {
-          color: '#3C74AA'
-        }
-      },
-
-      xAxis: {
-        categories: '_',
-        title: {
-          text: null
-        },
-        crosshair: true
-      },
-
-      series: [
-        {
-          name: 'Score',
-          data: [<?= $varManualScore ?>],
-          color: '#827DF9'
-        },{
-          name: 'Pec',
-          data: [<?= $varManualPEC ?>],
-          color: '#FBCE52'
-        },{
-          name: 'Penc',
-          data: [<?= $varManualPENC ?>],
-          color: '#4298B5'
-        },{
-          name: 'Sfc',
-          data: [<?= $varManualSFC ?>],
-          color: '#C148D0'
-        },{
-          name: 'Indice Proceso',
-          data: [<?= $varManualProceso ?>],
-          color: '#C6C6C6'
-        },{
-          name: 'Indice Experiencia',
-          data: [<?= $varManualExp ?>],
-          color: '#559FFF'
-        },{
-          name: 'Promesa Marca',
-          data: [<?= $varManualProm ?>],
-          color: '#4298b5'
-        }
-      ]
-
-    });    
-
-
   });
-
 
 </script>
