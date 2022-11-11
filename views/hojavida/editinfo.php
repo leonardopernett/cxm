@@ -296,7 +296,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <?php
                     }
                   ?>
-                  <td><label style="font-size: 12px;"><?php echo  $model->fechacumple; ?></label></td>
+                  <td><label style="font-size: 12px;"><?php echo  $model->diacumple.'; '.$model->mescumple; ?></label></td>
                 </tbody>
             </table>
           </div>
@@ -1059,8 +1059,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     var varFechaMes = document.getElementById("idMesFecha").value;
     var varFechaDia = document.getElementById("IdDiaFecha").value;
-
-    var varfechacumple = varFechaMes+'; '+varFechaDia;
     
     var varsociedad = document.getElementById("hojavidadatapersonal-id_sociedad").value;
 
@@ -1190,8 +1188,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 txtvaridsusceptible : varidsusceptible,
                 txtvaridsatu : varidsatu,
                 txtvarclasificacion : varclasificacion,
-                txtvarfechacumple : varfechacumple,
                 txtvarsociedad : varsociedad,
+                txtvarFechaMes : varFechaMes,
+                txtvarFechaDia : varFechaDia,
               },
               success : function(response){
                 numRta =   JSON.parse(response);

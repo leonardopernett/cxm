@@ -1703,8 +1703,10 @@ use Exception;
       $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");      
       $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
-      $txtvarfechacumple = Yii::$app->request->get("txtvarfechacumple");
       $txtvaridsociedad = Yii::$app->request->get("txtvaridsociedad");
+      $txtvarFechaMes = Yii::$app->request->get("txtvarFechaMes");
+      $txtvarFechaDia = Yii::$app->request->get("txtvarFechaDia");
+
 
       $txtrta = 0;
       Yii::$app->db->createCommand()->insert('tbl_hojavida_datapersonal',[
@@ -1725,8 +1727,10 @@ use Exception;
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,  
-                    'fechacumple' => $txtvarfechacumple,   
-                    'id_sociedad' => $txtvaridsociedad,                                             
+                    'fechacumple' => null,   
+                    'id_sociedad' => $txtvaridsociedad,     
+                    'diacumple' => $txtvarFechaMes,
+                    'mescumple' => $txtvarFechaDia,    
                 ])->execute();
 
 
@@ -1949,7 +1953,9 @@ use Exception;
                         'tbl_hojavida_datapcrc.id_dp_cliente AS IdCliente',
                         'tbl_hojavida_datapersonal.fechacumple',
                         'tbl_hojavida_datalaboral.areatrabajo',
-                        'tbl_hojavida_sociedad.sociedad'
+                        'tbl_hojavida_sociedad.sociedad',
+                        'tbl_hojavida_datapersonal.diacumple',
+                        'tbl_hojavida_datapersonal.mescumple'
                       ])
 
                       ->from(['tbl_hojavida_datapersonal']) 
@@ -2596,18 +2602,24 @@ use Exception;
       $txtvaridsusceptible = Yii::$app->request->get("txtvaridsusceptible");
       $txtvaridsatu = Yii::$app->request->get("txtvaridsatu");
       $txtvarclasificacion = Yii::$app->request->get("txtvarclasificacion");
-      $txtvarfechacumple = Yii::$app->request->get("txtvarfechacumple");
       $txtvarsociedad = Yii::$app->request->get("txtvarsociedad");
+      $txtvarFechaMes = Yii::$app->request->get("txtvarFechaMes");
+      $txtvarFechaDia = Yii::$app->request->get("txtvarFechaDia");
 
-      $varCumple = null;
-      if ($txtvarfechacumple != "") {
-        $varCumple = $txtvarfechacumple;
-      }else{
-        $varCumple = (new \yii\db\Query())
-                                  ->select(['tbl_hojavida_datapersonal.fechacumple'])
+      if ($txtvarFechaMes == "" && $txtvarFechaDia == "") {
+        
+        $txtvarFechaMes = (new \yii\db\Query())
+                                  ->select(['tbl_hojavida_datapersonal.mescumple'])
                                   ->from(['tbl_hojavida_datapersonal'])            
                                   ->where(['=','tbl_hojavida_datapersonal.hv_idpersonal',$txtvarautoincrement])  
-                                  ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])                              
+                                  ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
+                                  ->scalar();
+
+        $txtvarFechaDia = (new \yii\db\Query())
+                                  ->select(['tbl_hojavida_datapersonal.diacumple'])
+                                  ->from(['tbl_hojavida_datapersonal'])            
+                                  ->where(['=','tbl_hojavida_datapersonal.hv_idpersonal',$txtvarautoincrement])  
+                                  ->andwhere(['=','tbl_hojavida_datapersonal.anulado',0])
                                   ->scalar();
       }
 
@@ -2629,8 +2641,9 @@ use Exception;
                     'suceptible' => $txtvaridsusceptible,
                     'indicador_satu' => $txtvaridsatu,
                     'clasificacion' => $txtvarclasificacion,
-                    'fechacumple' => $varCumple,   
-                    'id_sociedad' => $txtvarsociedad,                                                   
+                    'id_sociedad' => $txtvarsociedad,              
+                    'diacumple' => $txtvarFechaDia,
+                    'mescumple' => $txtvarFechaMes,                                            
                 ],'hv_idpersonal ='.$txtvarautoincrement.'')->execute();
 
       
