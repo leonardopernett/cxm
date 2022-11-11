@@ -644,13 +644,11 @@ $this->params['breadcrumbs'][] = $this->title;
     var varidsusceptible = document.getElementById("idsusceptible").value;
     var varidsatu = document.getElementById("idsatu").value;
     var varautoincrement = "<?php echo $variddatapersonal; ?>";
-    var varclasificacion = document.getElementById("hojavidadatapersonal-clasificacion").value;
-    
+    var varclasificacion = document.getElementById("hojavidadatapersonal-clasificacion").value;    
 
     var varFechaMes = document.getElementById("idMesFecha").value;
     var varFechaDia = document.getElementById("IdDiaFecha").value;
-
-    var varfechacumple = varFechaMes+'; '+varFechaDia;
+    
     var varidsociedad = document.getElementById("hojavidadatapersonal-id_sociedad").value;
 
     if (varididentificacion == "") {
@@ -826,8 +824,9 @@ $this->params['breadcrumbs'][] = $this->title;
                   txtvaridsusceptible : varidsusceptible,
                   txtvaridsatu : varidsatu,
                   txtvarclasificacion : varclasificacion,
-                  txtvarfechacumple : varfechacumple,
                   txtvaridsociedad : varidsociedad,
+                  txtvarFechaMes : varFechaMes,
+                  txtvarFechaDia : varFechaMes,
                 },
                 success : function(response){
                   numRta =   JSON.parse(response);
