@@ -3301,7 +3301,9 @@ use Exception;
       tbl_proceso_cliente_centrocosto.cliente AS cliente,
       if(tbl_hojavida_dataacademica.activo=1,'Activo','No Activo') AS estados,
       if(tbl_hojavida_datapersonal.suceptible=1,'No','Si') AS suceptible,
-      tbl_hojavida_sociedad.sociedad   
+      tbl_hojavida_sociedad.sociedad,
+      tbl_hojavida_datapersonal.diacumple,
+      tbl_hojavida_datapersonal.mescumple  
   
     FROM tbl_hojavida_datapersonal
 
@@ -3675,6 +3677,18 @@ use Exception;
       $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleArray);            
       $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleColor);
       $phpExc->getActiveSheet()->getStyle('AJ2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AK2','DIA CUMPLEAÑOS CONTACTO');
+      $phpExc->getActiveSheet()->getStyle('AK2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AK2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AK2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AK2')->applyFromArray($styleArraySubTitle2);
+
+      $phpExc->getActiveSheet()->SetCellValue('AL2','MES CUMPLEAÑOS CONTACTO');
+      $phpExc->getActiveSheet()->getStyle('AL2')->getFont()->setBold(true);
+      $phpExc->getActiveSheet()->getStyle('AL2')->applyFromArray($styleArray);            
+      $phpExc->getActiveSheet()->getStyle('AL2')->applyFromArray($styleColor);
+      $phpExc->getActiveSheet()->getStyle('AL2')->applyFromArray($styleArraySubTitle2);
   
     
    
@@ -3745,6 +3759,9 @@ use Exception;
       $phpExc->getActiveSheet()->setCellValue('AI'.$numCell, $value['suceptible']);      
 
       $phpExc->getActiveSheet()->setCellValue('AJ'.$numCell, $value['sociedad']);
+
+      $phpExc->getActiveSheet()->setCellValue('AK'.$numCell, $value['diacumple']);
+      $phpExc->getActiveSheet()->setCellValue('AL'.$numCell, $value['mescumple']);
 
     }
     $numCell = $numCell;
