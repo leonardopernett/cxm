@@ -650,8 +650,9 @@ $this->params['breadcrumbs'][] = $this->title;
     var varFechaDia = document.getElementById("IdDiaFecha").value;
     
     var varidsociedad = document.getElementById("hojavidadatapersonal-id_sociedad").value;
+    var varidentidades = "1";
 
-    if (varididentificacion == "") {
+    if (varidentidades != "1") {
 
       event.preventDefault();
       swal.fire("!!! Advertencia !!!","Debe de ingresar documento de identidad","warning");
