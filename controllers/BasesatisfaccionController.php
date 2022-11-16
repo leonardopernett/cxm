@@ -550,7 +550,7 @@ class BasesatisfaccionController extends Controller {
                                         $varTipologia = 'NEUTRO';
                                     }
                                     if($varPregunta1 > 8) {
-                                        $varTipologia = 'FELICITACION';
+                                        $varTipologia = 'FELICITACIÓN';
                                     }
                                     $varEstado = 'Abierto';
                                     $varUsado = 'NO';
