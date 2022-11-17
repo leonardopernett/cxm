@@ -33,33 +33,7 @@ $this->title = 'Análisis Focalizados - Escuchar +';
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
-    $paramsBuscarLider = [':varCodPcrcs' => $paramsvarcodigopcrc, ':varRoles' => 273, ':varNombres' => '%No usar%'];
-
-    $txtListLideres = Yii::$app->db->createCommand("
-        SELECT DISTINCT u.usua_id, u.usua_nombre, e.id FROM tbl_roles r
-            INNER JOIN rel_usuarios_roles ur ON
-                r.role_id = ur.rel_role_id
-            INNER JOIN tbl_usuarios u ON
-                ur.rel_usua_id = u.usua_id
-            INNER JOIN tbl_equipos e ON
-                u.usua_id = e.usua_id
-            INNER JOIN tbl_arbols_equipos ae ON
-                e.id = ae.equipo_id
-            INNER JOIN tbl_arbols a ON
-                ae.arbol_id = a.id
-            INNER JOIN tbl_speech_servicios ss ON
-                a.arbol_id = ss.arbol_id
-            INNER JOIN tbl_speech_parametrizar sp ON
-                ss.id_dp_clientes = sp.id_dp_clientes
-            WHERE
-                sp.cod_pcrc IN (:varCodPcrcs)
-                    AND r.role_id = :varRoles
-                        AND e.name NOT LIKE :varNombres
-                ORDER BY u.usua_nombre ASC
-
-        ")->bindValues($paramsBuscarLider)->queryAll();
-
-    $listDatalideres = ArrayHelper::map($txtListLideres, 'id', 'usua_nombre');
+    
 
     $paramsBuscarTipologia = [':varFechaInicios' => $varfechainireal.' 00:00:00', ':varFechaFins' => $varfechafinreal.' 23:59:59'];
     $txttipologias = Yii::$app->db->createCommand("
@@ -79,6 +53,24 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                         ->andwhere(['=','anulado',0])
                         ->groupby(['id_dp_clientes'])
                         ->scalar();   
+
+    $txtListLideres = (new \yii\db\Query())
+                        ->select(['tbl_usuarios.usua_id', 'tbl_usuarios.usua_nombre', 'tbl_equipos.id'])
+                        ->from(['tbl_distribucion_asesores'])   
+    
+                        ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                'tbl_usuarios.usua_identificacion = tbl_distribucion_asesores.cedulalider') 
+    
+                        ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                'tbl_equipos.usua_id = tbl_usuarios.usua_id') 
+    
+                        ->where(['=','tbl_distribucion_asesores.id_dp_clientes',$varIdClientes])
+                        ->andwhere(['not like','tbl_equipos.name','o usar'])
+                        ->groupby(['tbl_distribucion_asesores.cedulalider'])
+                        ->orderBy(['tbl_usuarios.usua_nombre' => SORT_ASC])
+                        ->all(); 
+    
+    $listDatalideres = ArrayHelper::map($txtListLideres, 'id', 'usua_nombre');
     
     $varFechaActualInicio = date('Y-m-d');
 
