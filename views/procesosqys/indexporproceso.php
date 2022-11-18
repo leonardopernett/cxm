@@ -493,7 +493,7 @@ $this->registerJs($js);
     <div class="row">
       <div class="col-md-12">
         <div class="card1 mb">
-          <label ><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Lista Gerentes:') ?></label>   
+          <label ><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Lista Programa/Pcrc:') ?></label>   
           <?php
             foreach ($varNombreCC as $key => $value) {
           ?>
@@ -1323,6 +1323,9 @@ $this->registerJs($js);
                                     <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lider') ?></label></th>
                                     <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Asesor') ?></label></th>
                                     <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas Procesadas') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Total Automatico') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
                                     <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
                                     <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Score') ?></label></th>
                                     <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PEC') ?></label></th>
@@ -1381,6 +1384,62 @@ $this->registerJs($js);
 
                                     foreach ($vaListaRtaEquipos as $key => $value) {
                                       $varLoginFormsMixto = $value['varLogin'];
+
+                                      $txtTotalAgentesMixto = (new \yii\db\Query())
+                                          ->select(['tbl_ideal_loginresponsabilidad.agente'])
+                                          ->from(['tbl_ideal_loginresponsabilidad']) 
+                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcMixtos])
+                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsMixto])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
+                                          ->scalar();
+
+                                      
+                                      $varTotalAgentesMixto = $txtTotalAgentesMixto.' %';
+                                      
+
+                                      $txtTotalMarcaMixto = (new \yii\db\Query())
+                                          ->select(['tbl_ideal_loginresponsabilidad.marca'])
+                                          ->from(['tbl_ideal_loginresponsabilidad']) 
+                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcMixtos])
+                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsMixto])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
+                                          ->scalar();
+
+                                      
+                                      $varTotalMarcaMixto = $txtTotalMarcaMixto.' %';
+                                      
+
+                                      $txtTotalCanalMixto = (new \yii\db\Query())
+                                          ->select(['tbl_ideal_loginresponsabilidad.canal'])
+                                          ->from(['tbl_ideal_loginresponsabilidad']) 
+                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcMixtos])
+                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsMixto])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
+                                          ->scalar();
+
+                                      
+                                      $varTotalCanalMixto = $txtTotalCanalMixto.' %';
+                                      
+
+                                      if ($varTotalAgentesMixto != "0" || $varTotalCanalMixto != "0") {
+                                        $varTotalAutoMixto = round( (intval($varTotalAgentesMixto)+intval($varTotalCanalMixto))/2,2).' %';
+                                      }else{
+                                        $varTotalAutoMixto = 0;
+                                      }
+                                      
+
                                       
                                       if ($value['varLider'] != "") {
                                         $varLiderFormsMixto = $value['varLider'];
@@ -1453,6 +1512,9 @@ $this->registerJs($js);
                                       <td class="text-center"><label style="font-size: 12px;"><?php echo  $varLiderFormsMixto; ?></label></td>
                                       <td class="text-center"><label style="font-size: 12px;"><?php echo  $varAsesorFormsMixto; ?></label></td>
                                       <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalLlamadasFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalAutoMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalAgentesMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalCanalMixto; ?></label></td>
                                       <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalValoracionesFormsMixto; ?></label></td>
                                       <td class="text-center"><label style="font-size: 12px;"><?php echo  $varScoreFormsMixtos; ?></label></td>
                                       <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPecFormsMixto; ?></label></td>
@@ -1521,6 +1583,116 @@ $this->registerJs($js);
               foreach ($varListasClienteIdealP as $key => $value) {
                 
                 $varCodPcrcAuto = $value['cod_pcrc'];
+                $varNombreTablaEquipoAuto = "myTableEquipos_".$varCodPcrcAuto;;
+
+                if ($varIdExtensionc > '1') {
+                  $varRnIdealA =  (new \yii\db\Query())
+                                ->select(['rn'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcAuto])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','rn',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['rn'])
+                                ->all();
+                }else{
+                  $varRnIdealA =  (new \yii\db\Query())
+                                ->select(['rn'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcAuto])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','rn',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['rn'])
+                                ->all();
+                }
+
+                if (count($varRnIdealA) != 0) {
+                  $varArrayRnA = array();
+                  foreach ($varRnIdealA as $key => $value) {
+                    array_push($varArrayRnA, $value['rn']);
+                  }
+
+                  $varExtensionesArraysA = implode("', '", $varArrayRnA);
+                  $arrayExtensiones_downA = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysA);
+                  $varExtensionesAuto = explode(",", $arrayExtensiones_downA);
+                }else{
+
+                  if ($varIdExtensionc > '1') {
+                    $varExtA =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcAuto])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','ext',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['ext'])
+                                ->all();
+                  }else{
+                    $varExtA =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcAuto])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','ext',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['ext'])
+                                ->all();
+                  }
+
+                  if (count($varExtA) != 0) {
+                    $varArrayExtA = array();
+                    foreach ($varExtA as $key => $value) {
+                      array_push($varArrayExtA, $value['ext']);
+                    }
+
+                    $varExtensionesArraysA = implode("', '", $varArrayExtA);
+                    $arrayExtensiones_downA= str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysA);
+                    $varExtensionesAuto = explode(",", $arrayExtensiones_downA);
+                  }else{
+
+                    if ($varIdExtensionc > '1') {
+                      $varUsuaA =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcAuto])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','usuared',''])
+                                ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                ->groupby(['usuared'])
+                                ->all();
+                    }else{
+                      $varUsuaA =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodPcrcAuto])
+                                ->andwhere(['=','anulado',0])
+                                ->andwhere(['=','usabilidad',1])
+                                ->andwhere(['!=','usuared',''])
+                                ->andwhere(['is','tipoparametro',null])
+                                ->groupby(['usuared'])
+                                ->all();
+                    }
+
+
+                    if (count($varUsuaA) != 0) {
+                      $varArrayUsuaA = array();
+                      foreach ($varUsuaA as $key => $value) {
+                        array_push($varArrayUsuaA, $value['usuared']);
+                      }
+                      $varExtensionesArraysA = implode("', '", $varArrayUsuaA);
+                      $arrayExtensiones_downA = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysA);
+                      $varExtensionesAuto = explode(",", $arrayExtensiones_downA);
+                    }else{
+                      $varExtensionesAuto = "N0A";
+                    }
+                  }
+                }
 
                 $varNombreCodPcrcAuto = (new \yii\db\Query())
                                           ->select(['concat(cod_pcrc," - ",pcrc) as NamePcrc'])
@@ -1764,6 +1936,175 @@ $this->registerJs($js);
                           <?php
                             }
                           ?>
+                        </div>
+                      </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card1 mb" style="font-size: 15px;">
+
+                          <table id="<?php echo $varNombreTablaEquipoAuto; ?>"  class="table table-hover table-bordered" style="margin-top:10px; font-size: 15px;" >
+                            <caption><label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Listado de Equipos') ?></label></caption>
+                            <thead>
+                              <tr>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lider') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Asesor') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas Procesadas') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Total Automatico') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Marca') ?></label></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <?php
+                                $vaListaRtaEquiposAuto = (new \yii\db\Query())
+                                          ->select([
+                                            'tbl_usuarios.usua_nombre AS varLiderAuto',
+                                            'tbl_evaluados.name AS varAsesorAuto',
+                                            'tbl_dashboardspeechcalls.login_id AS varLoginAuto',
+                                            'COUNT(tbl_dashboardspeechcalls.callId) AS varTotalLlamadasAuto'
+                                            ])
+                                          ->from(['tbl_dashboardspeechcalls']) 
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                                  'tbl_evaluados.dsusuario_red = tbl_dashboardspeechcalls.login_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                                  'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                                  'tbl_equipos.id = tbl_equipos_evaluados.equipo_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                                  'tbl_usuarios.usua_id = tbl_equipos.usua_id')
+
+                                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varNombreSpeech])
+                                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesAuto])
+                                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varLlamada])
+                                          ->groupby(['tbl_dashboardspeechcalls.login_id'])
+                                          ->orderby(['tbl_usuarios.usua_nombre'=>SORT_DESC])
+                                          ->all();
+
+                                foreach ($vaListaRtaEquiposAuto as $key => $value) {
+                                  $varLoginFormsAuto = $value['varLoginAuto'];
+
+                                  if ($value['varLiderAuto'] != "") {
+                                    $varLiderFormsAuto = $value['varLiderAuto'];
+                                  }else{
+                                    $varLiderFormsAuto = 'Sin Información';
+                                  }
+
+                                  if ($value['varAsesorAuto'] != "") {
+                                    $varAsesorFormsAuto = $value['varAsesorAuto'];
+                                  }else{
+                                    $varAsesorFormsAuto = $varSinData;
+                                  }
+
+                                  if ($value['varTotalLlamadasAuto'] != "") {
+                                    $varTotalLlamadasFormsAuto = $value['varTotalLlamadasAuto'];
+                                  }else{
+                                    $varTotalLlamadasFormsAuto = $varSinData;
+                                  }
+
+                                  $txtTotalAgentesAutos = (new \yii\db\Query())
+                                          ->select(['tbl_ideal_loginresponsabilidad.agente'])
+                                          ->from(['tbl_ideal_loginresponsabilidad']) 
+                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcAuto])
+                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsAuto])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
+                                          ->scalar();
+
+                                      
+                                  $varTotalAgentesAutos = $txtTotalAgentesAutos.' %';
+
+                                  $txtTotalMarcaAutos = (new \yii\db\Query())
+                                          ->select(['tbl_ideal_loginresponsabilidad.marca'])
+                                          ->from(['tbl_ideal_loginresponsabilidad']) 
+                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcAuto])
+                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsAuto])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
+                                          ->scalar();
+
+                                      
+                                  $varTotalMarcaAutos = $txtTotalMarcaAutos.' %';
+
+                                  $txtTotalCanalAutos = (new \yii\db\Query())
+                                          ->select(['tbl_ideal_loginresponsabilidad.canal'])
+                                          ->from(['tbl_ideal_loginresponsabilidad']) 
+                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcAuto])
+                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsAuto])
+                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
+                                          ->scalar();
+
+                                      
+                                  $varTotalCanalAutos = $txtTotalCanalAutos.' %';
+                                      
+
+                                  if ($varTotalAgentesAutos != "0" || $varTotalCanalAutos != "0") {
+                                    $varTotalAutoAutos = round( (intval($varTotalAgentesAutos)+intval($varTotalCanalAutos))/2,2).' %';
+                                  }else{
+                                    $varTotalAutoAutos = 0;
+                                  }
+                                  
+                              ?>
+                                <tr>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varLiderFormsAuto; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varAsesorFormsAuto; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varTotalLlamadasFormsAuto; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varTotalAutoAutos; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varTotalAgentesAutos; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varTotalCanalAutos; ?></label></td>
+                                  <td class="text-center" colspan="1"><label style="font-size: 12px;"><?php echo  $varTotalMarcaAutos; ?></label></td>
+                                </tr>
+                              <?php
+                                }
+                              ?>
+                            </tbody>
+                          </table>
+
+                          <script type="text/javascript">
+                                
+                                  $('#'+"<?php echo $varNombreTablaEquipoAuto; ?>").DataTable({
+                                    responsive: true,
+                                    fixedColumns: true,
+
+                                    select: true,
+                                    "language": {
+                                      "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
+                                      "zeroRecords": "No se encontraron datos ",
+                                      "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+                                      "infoEmpty": "No hay datos aun",
+                                      "infoFiltered": "(Filtrado un _MAX_ total)",
+                                      "search": "Buscar:",
+                                      "paginate": {
+                                        "first":      "Primero",
+                                        "last":       "Ultimo",
+                                        "next":       "Siguiente",
+                                        "previous":   "Anterior"
+                                      }
+                                    } 
+                                  });
+                                
+                          </script>
+
                         </div>
                       </div>
                     </div>
@@ -2040,19 +2381,21 @@ $this->registerJs($js);
                       </div>
 
                       <div class="col-md-4">
-                        <table id="myTableCantidadesValoracionManual" class="table table-hover table-bordered" style="margin-top:10px" >
-                          <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Cantidades Valoraciones') ?></label></caption>
-                          <thead>
-                            <tr>
-                              <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad valoraciones') ?></label></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="text-center" colspan="1"><label style="font-size: 20px;"><?php echo  $varCantidadValoracionesManual; ?></label></td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <div class="card1 mb">
+                          <table id="myTableCantidadesValoracionManual" class="table table-hover table-bordered" style="margin-top:10px" >
+                            <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Cantidades Valoraciones') ?></label></caption>
+                            <thead>
+                              <tr>
+                                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad valoraciones') ?></label></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td class="text-center" colspan="1"><label style="font-size: 20px;"><?php echo  $varCantidadValoracionesManual; ?></label></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>                        
                       </div>
                     </div>
 
@@ -2217,7 +2560,7 @@ $this->registerJs($js);
                                                                         $.ajax({
                                                                             type     :'get',
                                                                             cache    : false,
-                                                                            url  : '" . Url::to(['viewrtas','verformulariomanual', 'liderid'=>$varLider_id, 'clienteid'=>$varIdDpCliente, 'codpcrcid'=>$varCodPcrcManual, 'arbolsid'=>$varArray_ArbolManual, 'extensionid'=>$varExtensionesManual, 'llamadaid'=>$varLlamada, 'nombrespeechid'=>$varNombreSpeech, 'fechainicioid'=>$varFechainicial.' 05:00:00', 'fechafinid'=>$varFechaFinal.' 05:00:00']) . "',
+                                                                            url  : '" . Url::to(['verformulariomanual', 'liderid'=>$varLider_id, 'clienteid'=>$varIdDpCliente, 'codpcrcid'=>$varCodPcrcManual, 'arbolsid'=>$varArray_ArbolManual, 'extensionid'=>$varIdExtensionc, 'llamadaid'=>$varLlamada, 'nombrespeechid'=>$varNombreSpeech, 'fechainicioid'=>$varFechainicial, 'fechafinid'=>$varFechaFinal]) . "',
                                                                             success  : function(response) {
                                                                                 $('#ajax_result').html(response);
                                                                             }
@@ -2583,8 +2926,8 @@ $this->registerJs($js);
                   $varCantidadSegundo = $varSinData;
                   $varArrayConteoGestionada = $varSinData;
                   $varArrayConteoNoGestionada = $varSinData;
-                  $varArrayConteoEstadoOk = $varSinData;
-                  $varArrayConteoEstadoKo = $varSinData;
+                  $varArrayConteoEstadoOk = 0;
+                  $varArrayConteoEstadoKo = 0;
                   $varProcentajeGestionFeedback = $varSinData;
                   $varProcentajeGestionSegundo = $varSinData;
                   $varConteoAlertas = $varSinData;
@@ -2731,7 +3074,7 @@ $this->registerJs($js);
                                   }, 
 
                                   title: {
-                                    text: 'Resumen General',
+                                    text: 'Resultados Por Feedbacks',
                                     style: {
                                       color: '#3C74AA'
                                     }
@@ -2781,7 +3124,7 @@ $this->registerJs($js);
                                   }, 
 
                                   title: {
-                                    text: 'Resumen General',
+                                    text: 'Resultados Por Segundo Calificador',
                                     style: {
                                       color: '#3C74AA'
                                     }
@@ -2835,7 +3178,7 @@ $this->registerJs($js);
                                   }, 
 
                                   title: {
-                                    text: 'Resumen General',
+                                    text: 'Resultados Por Alertas',
                                     style: {
                                       color: '#3C74AA'
                                     }
