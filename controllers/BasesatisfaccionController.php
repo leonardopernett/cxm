@@ -2376,7 +2376,7 @@ class BasesatisfaccionController extends Controller {
                 $varConnids = $modelBase->connid;
                 $vartexto = null;
                 $varvalencia = null;
-                $varcontenido = 0;
+                $varcontenido = null;
                 
                     ob_start();
                     $curl = curl_init();
