@@ -22,7 +22,7 @@ $sesiones = Yii::$app->user->identity->id;
         <div class="col-md-12">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Cantidad Actual de Dedicación') ?></label>
-                <?= $form->field($model, "Dedic_valora")->textInput(['id'=>'idDedicaActualizado', 'readonly' => 'readonly', 'value'=>$varDedicadion])->label('') ?> 
+                <?= $form->field($model, "Dedic_valora")->textInput(['id'=>'idDedicaActual', 'readonly' => 'readonly', 'value'=>$varDedicadion])->label('') ?> 
                 <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Cantidad Nueva de Dedicación') ?></label>
                 <?= $form->field($model, "cant_valor")->textInput(['maxlength' => 3, 'id'=>'idDedicaActualNew', 'onkeypress' => 'return valida(event)', 'placeholder'=>'Ingresar Nueva Cantidad'])->label('') ?>
                 <label style="font-size: 15px;"><em class="fas fa-comments" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Motivo del Cambio') ?></label>
@@ -64,12 +64,6 @@ $sesiones = Yii::$app->user->identity->id;
         if (varidDedicaActualNew == "") {
             event.preventDefault();
             swal.fire("!!! Advertencia !!!","Debe ingresar una cantidad de dedicacion diferentes a la actual.","warning");
-            return;
-        }
-
-        if (varidDedicaActualNew > "100") {
-            event.preventDefault();
-            swal.fire("!!! Advertencia !!!","La dedicacion no debe sobrepasar el 100%.","warning");
             return;
         }
 
