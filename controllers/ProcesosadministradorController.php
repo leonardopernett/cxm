@@ -1338,7 +1338,7 @@ use app\models\Encuestaspersonalsatu;
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";
-                $message .= "<img src='@web/images/Alertas_Satu.jpg'>";
+                $message .= "<img src="'https://qa.grupokonecta.local/qa_managementv2/web/images/Alertas_Satu.jpg'" border="'1'">";
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
@@ -1381,7 +1381,7 @@ use app\models\Encuestaspersonalsatu;
 
             $message = "<html><body>";
             $message .= "<h3>CX-MANAGEMENT</h3>";
-            $message .= "<img src='@web/images/Alertas_Satu.jpg'>";
+            $message .= "<img src="'https://qa.grupokonecta.local/qa_managementv2/web/images/Alertas_Satu.jpg'" border="'1'">";
             $message .= "</body></html>";
 
             Yii::$app->mailer->compose()
