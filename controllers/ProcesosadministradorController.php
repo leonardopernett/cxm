@@ -1338,14 +1338,13 @@ use app\models\Encuestaspersonalsatu;
                 $tmpFile = "images/Alertas_Satu.jpg";
                 
                 $message = "<html><body>";
-                $message .= "<h3>CX-MANAGEMENT</h3>";
-                $message .= "<img src="'https://qa.grupokonecta.local/qa_managementv2/web/images/Alertas_Satu.jpg'" border="'1'">";
+                $message .= "<h3>CX-MANAGEMENT</h3>";                
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
                     ->setTo($varObtenerCorreo)
                     ->setFrom(Yii::$app->params['email_satu_from'])
-                    ->setSubject("Informe Encuestas de Satisfacción - CX-MANAGEMENT")
+                    ->setSubject("Informe Encuestas de Satisfacción - CX-MANAGEMENT")                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
