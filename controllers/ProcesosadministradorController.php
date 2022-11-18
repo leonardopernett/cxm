@@ -1338,7 +1338,7 @@ use app\models\Encuestaspersonalsatu;
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";
-                $message .= "<img src=" Url::to("@web/images/Alertas_Satu.jpg"); ">";
+                $message .= "<img src='@web/images/Alertas_Satu.jpg'>";
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
