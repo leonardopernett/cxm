@@ -1335,7 +1335,7 @@ use app\models\Encuestaspersonalsatu;
                     'usua_id' => Yii::$app->user->identity->id,                      
                 ])->execute();
 
-                $tmpFile = "images/Alertas_Satu.jpg";
+                
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";
@@ -1346,7 +1346,6 @@ use app\models\Encuestaspersonalsatu;
                     ->setTo($varObtenerCorreo)
                     ->setFrom(Yii::$app->params['email_satu_from'])
                     ->setSubject("Informe Encuestas de Satisfacción - CX-MANAGEMENT")
-                    ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
 
@@ -1381,17 +1380,15 @@ use app\models\Encuestaspersonalsatu;
                     'usua_id' => Yii::$app->user->identity->id,                      
             ])->execute();
 
-            $tmpFile = "images/Alertas_Satu.jpg";
-
             $message = "<html><body>";
             $message .= "<h3>CX-MANAGEMENT</h3>";
+            $message .= "<img src="'https://qa.grupokonecta.local/qa_managementv2/web/images/Alertas_Satu.jpg'" border="'1'">";
             $message .= "</body></html>";
 
             Yii::$app->mailer->compose()
                     ->setTo($varObtenerCorreoMasivo)
                     ->setFrom(Yii::$app->params['email_satu_from'])
                     ->setSubject("Informe Encuestas de Satisfacción - CX-MANAGEMENT")
-                    ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
 
