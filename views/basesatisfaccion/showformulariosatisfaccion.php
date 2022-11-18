@@ -8,12 +8,9 @@ use yii\web\JsExpression;
 
 $varPcrc = $data->tmp_formulario->arbol_id;
 $varBase = $data->tmp_formulario->basesatisfaccion_id;
-if($varcontenido != null) {
-    $varcontenidoKaliope = $varcontenido;
-}else{
-    $varcontenido = 0;
-    $varcontenidoKaliope = $varcontenido;
-}
+
+$varcontenidoKaliope = $varcontenido;
+
 
 ?>
 
