@@ -107,8 +107,7 @@ use app\models\ControlProcesosEquipos;
 
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
     $listWorkspaces = $model->filter_user_permits('workspace',$listWorkspaces, $sessiones);
-
-
+    
             return $this->render('reporte', [
                 'listaworkspaces' => $listWorkspaces,               
                 ]);
@@ -303,7 +302,7 @@ use app\models\ControlProcesosEquipos;
 
     // Obtener reportes
     $reports = $model->get_reports_by_workspace($accessToken, $workspace_id);
-    
+   
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
     $reports = $model->filter_user_permits('report',$reports,$sessiones); 
     
@@ -348,8 +347,8 @@ use app\models\ControlProcesosEquipos;
     // Se guarda log de uso de reportes
     Yii::$app->db->createCommand()->insert('tbl_logs_pbi', [
       'usua_id' =>Yii::$app->user->identity->id,
-      'area' => $areaname,
-      'reporte' => $reportname,
+      'area' => $workspace_id,
+      'reporte' => $report_id,
       'fecha_creacion' => date('Y-m-d h:i:s')
     ])->execute();
 
@@ -365,7 +364,6 @@ use app\models\ControlProcesosEquipos;
   $model = new ControlProcesosEquipos();
   $varnombrereporte = Yii::$app->request->post("report_name");
   $varnombrearea = Yii::$app->request->post("area_name");
-  $varusua_id = '3205';
 
   Yii::$app->db->createCommand()->insert('tbl_logs_pbi', [
     'usua_id' =>Yii::$app->user->identity->id,

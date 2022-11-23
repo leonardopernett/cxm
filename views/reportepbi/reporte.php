@@ -313,7 +313,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     
     function listarep(){
       var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
-     
+     alert(varareatrabajoid);
      if (varareatrabajoid == "") {
 			event.preventDefault();
 				swal.fire("!!! Advertencia !!!","Debe seleccionar un area de trabajo.","warning");
