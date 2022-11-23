@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     $sessiones = Yii::$app->user->identity->id;
     $fechaactual = date("Y-m-d");
-
+	$varid = $_GET['id'];
 ?>
 <br>
 <div class="formularios-form" style="display: inline">
@@ -31,6 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
 		]); ?>
          
         <strong>Area de trabajo </strong><?= Html::input('text','text','', $options=['class'=>'form-control', 'maxlength'=>100, 'id'=>'nombrearea']) ?>
+		
+         <label for="txtmedio" style="font-size: 14px;">Medio</label>
+         <select id="txtmedio" class ='form-control'>
+                <option value="" disabled selected>seleccione...</option>
+                <option value="1">Voc</option>
+                <option value="2">Voe</option>
+                <option value="3">Voux</option>
+         </select>
+      
 			
 	<br>
     <br>			
@@ -45,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script type="text/javascript">
 	function crearws(){
 		var varname = document.getElementById("nombrearea").value;
+		var varId = document.getElementById("txtmedio").value;
 		alert(varname);
 		if (varname == "") {
 			event.preventDefault();
@@ -56,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			        url: "create_workspace",
 			        data : {
                         workspace_name: varname,
+						var_Id: varId,
 			        },
 			        success : function(response){ 
 			                    var numRta =   JSON.parse(response);    
