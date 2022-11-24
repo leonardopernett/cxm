@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     $sessiones = Yii::$app->user->identity->id;
     $fechaactual = date("Y-m-d");
-	$varid = $_GET['id'];
+	//$varid = $_GET['id'];
 ?>
 <br>
 <div class="formularios-form" style="display: inline">
