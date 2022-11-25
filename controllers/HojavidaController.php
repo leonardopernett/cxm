@@ -3349,7 +3349,7 @@ use Exception;
     LEFT JOIN tbl_hv_estilosocial ON 
       tbl_hv_estilosocial.idestilosocial = tbl_hojavida_datacomplementos.idestilosocial
       
-    INNER JOIN tbl_hojavida_datadirector ON 
+    LEFT JOIN tbl_hojavida_datadirector ON 
       tbl_hojavida_datadirector.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
         AND tbl_hojavida_datadirector.anulado = 0
           AND tbl_hojavida_datadirector.ccdirector != ''
@@ -3359,15 +3359,15 @@ use Exception;
         AND tbl_hojavida_datagerente.anulado = 0
           AND tbl_hojavida_datagerente.ccgerente != ''
           
-    LEFT JOIN tbl_hojavida_datapcrc ON 
+    LEFT JOIN tbl_hojavida_datapcrc ON  
       tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
         AND tbl_hojavida_datapcrc.anulado = 0
         
-    INNER JOIN tbl_proceso_cliente_centrocosto ON 
+    LEFT JOIN tbl_proceso_cliente_centrocosto ON 
       tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_hojavida_datapcrc.id_dp_cliente
       
           
-    LEFT JOIN tbl_hojavida_dataacademica ON 
+    INNER JOIN tbl_hojavida_dataacademica ON 
       tbl_hojavida_dataacademica.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
         AND tbl_hojavida_dataacademica.anulado = 0
 

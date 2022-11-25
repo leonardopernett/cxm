@@ -1468,7 +1468,7 @@ $this->title = 'Dashboard Escuchar +';
       <div class="card1 mb">
       
         <div id="capaIndiVarAsesorBuscarId" class="capaIndiVarAsesorBuscar" style="display: none;">
-          <table align="center">
+          <table class="text-center">
             <thead>
               <tr>
                 <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
