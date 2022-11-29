@@ -277,7 +277,7 @@ $this->params['breadcrumbs'][] = $this->title;
           }, 
 
           title: {
-            text: 'Cantidades Por Ciudad',
+            text: 'Cantidades Por Estados',
             style: {
               color: '#3C74AA'
             }
