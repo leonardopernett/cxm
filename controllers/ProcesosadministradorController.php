@@ -34,6 +34,7 @@ use \yii\base\Exception;
 use app\models\IdealServicios;
 use app\models\SpeechServicios;
 use app\models\Encuestaspersonalsatu;
+use app\models\Procesoclientecentroscosto;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
@@ -42,7 +43,7 @@ use app\models\Encuestaspersonalsatu;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad','adminmensajes','listarnombres'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad','adminmensajes','listarnombres','adminpcrc','actualizapcrc','procesopcrc'],
             'rules' => [
               [
                 'allow' => true,
@@ -1548,6 +1549,211 @@ use app\models\Encuestaspersonalsatu;
             'model' => $model,
             'varDataListNoReport' => $varDataListNoReport,
         ]);
+    }
+
+    public function actionAdminpcrc(){
+        $model = new Procesoclientecentroscosto();
+
+        $varFechaActualizada = (new \yii\db\Query())
+                                ->select(['MAX(tbl_proceso_cliente_centrocosto.fechacreacion)'])
+                                ->from(['tbl_proceso_cliente_centrocosto'])   
+                                ->Scalar();
+
+        $varDataPcrc = (new \yii\db\Query())
+                        ->select([
+                            'if(tbl_proceso_cliente_centrocosto.estado=1,"Activo","No Activo") AS estado',
+                            'count(tbl_proceso_cliente_centrocosto.estado) AS cantidad'
+                        ])
+                        ->from(['tbl_proceso_cliente_centrocosto'])  
+                        ->groupby(['tbl_proceso_cliente_centrocosto.estado']) 
+                        ->All();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varIdCliente = $model->cliente;
+
+            return $this->redirect(array('procesopcrc','iddpclientes'=>$varIdCliente));
+        }
+
+        return $this->render('adminpcrc',[
+            'model' => $model,
+            'varFechaActualizada' => $varFechaActualizada,
+            'varDataPcrc' => $varDataPcrc,
+        ]);
+    }
+
+    public function actionProcesopcrc($iddpclientes){
+        $model = new Procesoclientecentroscosto();
+
+        $varNombreCliente = (new \yii\db\Query())
+                                ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                                ->from(['tbl_proceso_cliente_centrocosto'])            
+                                ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$iddpclientes])
+                                ->groupby(['tbl_proceso_cliente_centrocosto.cliente'])
+                                ->Scalar();
+
+        $varListaPcrc = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_proceso_cliente_centrocosto.idvolumendirector',
+                                    'tbl_proceso_cliente_centrocosto.pcrc', 
+                                    'tbl_proceso_cliente_centrocosto.cod_pcrc',
+                                    'if(tbl_proceso_cliente_centrocosto.estado=1,"Activo","No activo") AS estado'])
+                                ->from(['tbl_proceso_cliente_centrocosto'])            
+                                ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$iddpclientes])
+                                ->All();
+
+        return $this->render('procesopcrc',[
+            'model' => $model,
+            'iddpclientes' => $iddpclientes,
+            'varNombreCliente' => $varNombreCliente,
+            'varListaPcrc' => $varListaPcrc,
+        ]);
+    }
+
+    public function actionAnularpcrc($id,$iddpclientes){
+
+        Yii::$app->db->createCommand('
+                            UPDATE tbl_proceso_cliente_centrocosto 
+                                SET estado = :varEstado
+                                    WHERE 
+                                        idvolumendirector = :VarId')
+                            ->bindValue(':VarId', $id)
+                            ->bindValue(':varEstado', 0)
+                            ->execute();
+
+        return $this->redirect(array('procesopcrc','iddpclientes'=>$iddpclientes));
+    }
+
+    public function actionActivarpcrc($id,$iddpclientes){
+
+        Yii::$app->db->createCommand('
+                            UPDATE tbl_proceso_cliente_centrocosto 
+                                SET estado = :varEstado
+                                    WHERE 
+                                        idvolumendirector = :VarId')
+                            ->bindValue(':VarId', $id)
+                            ->bindValue(':varEstado', 1)
+                            ->execute();
+
+        return $this->redirect(array('procesopcrc','iddpclientes'=>$iddpclientes));
+    }
+
+    public function actionActualizapcrccliente($idpcrc){
+        $sessiones = Yii::$app->user->identity->id;
+        $txtanulado = 0;
+        $txtfechacreacion = date('Y-m-d');
+
+        // Se borra procesos de la tabla del servicioen especifico
+        Yii::$app->db->createCommand('DELETE FROM tbl_proceso_cliente_centrocosto WHERE id_dp_clientes=:id')->bindParam(':id',$idpcrc)->execute();
+
+        // Procesos para buscar e ingresar procesos del servicio nuevo
+        $paramsBuscarCliente = [':varAnulado'=>0,':varDocDirOne'=>'111111111',':varDocDirTwo'=>'111111112',':varCliente'=>$idpcrc];
+
+        $varQuery =  Yii::$app->dbjarvis->createCommand('
+                SELECT
+                    dp_centros_costos.ciudad, 
+                    dp_centros_costos.director_programa, dp_centros_costos.documento_director,
+                    dp_centros_costos.gerente_cuenta, dp_centros_costos.documento_gerente, 
+                    dp_clientes.id_dp_clientes, dp_clientes.cliente, 
+                    dp_centros_costos.id_dp_centros_costos, 
+                    dp_centros_costos.centros_costos, dp_centros_costos.estado, dp_pcrc.cod_pcrc, 
+                    dp_pcrc.pcrc 
+                FROM dp_centros_costos
+
+                    INNER JOIN dp_clientes ON
+                        dp_centros_costos.id_dp_clientes = dp_clientes.id_dp_clientes
+                    INNER JOIN dp_pcrc ON
+                        dp_centros_costos.id_dp_centros_costos = dp_pcrc.id_dp_centros_costos
+                WHERE 
+                    dp_centros_costos.documento_director NOT LIKE :varAnulado
+                        AND dp_centros_costos.documento_director NOT LIKE :varDocDirOne
+                            AND dp_centros_costos.documento_director NOT LIKE :varDocDirTwo 
+                                AND dp_clientes.id_dp_clientes = :varCliente')->bindValues($paramsBuscarCliente)->queryAll();
+
+        foreach ($varQuery as $key => $value) {
+            Yii::$app->db->createCommand()->insert('tbl_proceso_cliente_centrocosto',[
+                        'ciudad' => $value['ciudad'],
+                        'director_programa' => $value['director_programa'],
+                        'documento_director' => $value['documento_director'],
+                        'gerente_cuenta' => $value['gerente_cuenta'],
+                        'documento_gerente' => $value['documento_gerente'],
+                        'id_dp_clientes' => $value['id_dp_clientes'],
+                        'cliente' => $value['cliente'],
+                        'id_dp_centros_costos' => $value['id_dp_centros_costos'],
+                        'centros_costos' => $value['centros_costos'],
+                        'cod_pcrc' => $value['cod_pcrc'],
+                        'pcrc' => $value['pcrc'],
+                        'estado' => $value['estado'],
+                        'anulado' => $txtanulado,
+                        'fechacreacion' => $txtfechacreacion,
+                        'feachamodificacion' => null,
+                        'usua_id' => $sessiones,
+            ])->execute();
+
+        }
+
+
+        return $this->redirect(array('procesopcrc','iddpclientes'=>$idpcrc));
+    }
+
+    public function actionActualizapcrc(){
+        $model = new Procesoclientecentroscosto();
+
+        $sessiones = Yii::$app->user->identity->id;
+        $txtanulado = 0;
+        $txtfechacreacion = e('Y-m-d');
+
+        // Se ejecuta primero un delete sobre la tabla de procesos centros de costos
+        Yii::$app->db->createCommand()->truncateTable('tbl_proceso_cliente_centrocosto')->execute();
+
+        // Se ejecuta en segundo plano la actualizacion de la data de Jarvis
+
+        $paramsBuscar = [':varAnulado'=>0,':varDocDirOne'=>'111111111',':varDocDirTwo'=>'111111112'];
+
+        $varQuery = Yii::$app->dbjarvis->createCommand('
+                SELECT
+                    dp_centros_costos.ciudad, 
+                    dp_centros_costos.director_programa, dp_centros_costos.documento_director,
+                    dp_centros_costos.gerente_cuenta, dp_centros_costos.documento_gerente, 
+                    dp_clientes.id_dp_clientes, dp_clientes.cliente, 
+                    dp_centros_costos.id_dp_centros_costos, 
+                    dp_centros_costos.centros_costos, dp_centros_costos.estado, dp_pcrc.cod_pcrc, 
+                    dp_pcrc.pcrc 
+                FROM dp_centros_costos
+
+                    INNER JOIN dp_clientes ON
+                        dp_centros_costos.id_dp_clientes = dp_clientes.id_dp_clientes
+                    INNER JOIN dp_pcrc ON
+                        dp_centros_costos.id_dp_centros_costos = dp_pcrc.id_dp_centros_costos
+                WHERE 
+                    dp_centros_costos.documento_director NOT LIKE :varAnulado
+                        AND dp_centros_costos.documento_director NOT LIKE :varDocDirOne
+                            AND dp_centros_costos.documento_director NOT LIKE :varDocDirTwo ')->bindValues($paramsBuscar)->queryAll();
+
+        foreach ($varQuery as $key => $value) {
+            Yii::$app->db->createCommand()->insert('tbl_proceso_cliente_centrocosto',[
+                        'ciudad' => $value['ciudad'],
+                        'director_programa' => $value['director_programa'],
+                        'documento_director' => $value['documento_director'],
+                        'gerente_cuenta' => $value['gerente_cuenta'],
+                        'documento_gerente' => $value['documento_gerente'],
+                        'id_dp_clientes' => $value['id_dp_clientes'],
+                        'cliente' => $value['cliente'],
+                        'id_dp_centros_costos' => $value['id_dp_centros_costos'],
+                        'centros_costos' => $value['centros_costos'],
+                        'cod_pcrc' => $value['cod_pcrc'],
+                        'pcrc' => $value['pcrc'],
+                        'estado' => $value['estado'],
+                        'anulado' => $txtanulado,
+                        'fechacreacion' => $txtfechacreacion,
+                        'feachamodificacion' => null,
+                        'usua_id' => $sessiones,
+            ])->execute();
+
+        }
+
+        return $this->redirect('index',['model'=>$model]);
+
     }
 
 
