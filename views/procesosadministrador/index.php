@@ -270,6 +270,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-cog" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Actualizar Centros de Costos') ?></label>
+                        <?= Html::a('Aceptar',  ['adminpcrc'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Actualizar Centros de Costos']) 
+                        ?>
+                    </div>
+                </div>
+                
             </div>
 
         </div>
