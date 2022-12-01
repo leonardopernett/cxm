@@ -166,7 +166,7 @@ AppAsset::register($this);
                 if ($varFechas == '12') {
                     NavBar::begin([
                         'brandLabel' => Html::img(Url::to("@web/images/banner-superiorchristmas.png"),
-                                ["alt" => "home QA","style" => "width: 200px; margin-top: 10px"]),
+                                ["alt" => "home QA","style" => "width: 143px; margin-top: 10px"]),
                         'brandUrl' => Yii::$app->homeUrl,
                         'options' => [
                             'class' => 'navbar navbar-inverse navbar-static-top',
