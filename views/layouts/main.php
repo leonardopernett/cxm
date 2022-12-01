@@ -10,6 +10,8 @@ use yii\helpers\Url;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+$varFechas = date('m');
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -141,6 +143,16 @@ AppAsset::register($this);
                 padding-top: 20px;
             }
 
+            .luces {
+                background-image: url(https://lh6.googleusercontent.com/-FObwsgxVKrY/TuuwaGBmzOI/AAAAAAAAB-4/C_n2bIXZdnI/s204/luces%25252036.gif);
+                background-repeat:repeat-x;
+                background-size: 90px;
+                height:30px;
+                width:100%;
+                top:0;
+                left:0;
+            }
+
         </style>
         
     </head>
@@ -150,15 +162,28 @@ AppAsset::register($this);
         <nav id='cssmenu'>
         
             <?php
-                NavBar::begin([
-                    'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
-                            ["alt" => "home CXM","style" => "width: 160px;margin-top: 20px;margin-left: -30px;"]),
-                    'brandUrl' => Yii::$app->homeUrl,
-                    'options' => [
-                        'class' => 'navbar navbar-inverse navbar-static-top',
-                        'style' => 'background-color: #fff; box-shadow: 2px 2px 3px #b8b8b8;',
-                    ],
-                ]);
+
+                if ($varFechas == '12') {
+                    NavBar::begin([
+                        'brandLabel' => Html::img(Url::to("@web/images/banner-superiorchristmas.png"),
+                                ["alt" => "home QA","style" => "width: 200px; margin-top: 10px"]),
+                        'brandUrl' => Yii::$app->homeUrl,
+                        'options' => [
+                            'class' => 'navbar navbar-inverse navbar-static-top',
+                            'style' => 'background-color: #fff; box-shadow: 2px 2px 3px #b8b8b8;',
+                        ],
+                    ]);
+                }else{
+                    NavBar::begin([
+                        'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
+                                ["alt" => "home QA","style" => "width: 200px; margin-top: 10px"]),
+                        'brandUrl' => Yii::$app->homeUrl,
+                        'options' => [
+                            'class' => 'navbar navbar-inverse navbar-static-top',
+                            'style' => 'background-color: #fff; box-shadow: 2px 2px 3px #b8b8b8;',
+                        ],
+                    ]);
+                }
 
                 if (!\Yii::$app->user->isGuest) {
                     
@@ -665,13 +690,23 @@ AppAsset::register($this);
                 background-repeat: no-repeat;"><br>
                     <div class="row">
                         <div class="col-md-2">                
-                            <img src="<?= Url::to("@web/images/link1.png"); ?>" alt="Card image cap">
+                            <?php
+                                if ($varFechas == '12') {
+                            ?>
+                                <img src="<?= Url::to("@web/images/CXMNavidad.png"); ?>" alt="Card image cap" style="height: 110px;">
+                            <?php
+                                }else{
+                            ?>  
+                                <img src="<?= Url::to("@web/images/link1.png"); ?>" alt="Card image cap">
+                            <?php
+                                }
+                            ?>
                         </div>
                         <div class="col-md-4">                
                             
                         </div>
                         <div class="col-md-2">                
-                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/nik_update.png"); ?>" style="height: 100px;width: 150px;margin: 10px;" alt="Card image cap"></a>
+                            <a class="direccionar" href="https://nik.grupokonecta.co:7070/#/app" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/nik_update.png"); ?>" style="height: 90px;width: 150px;margin: 16px;" alt="Card image cap"></a>
                         </div>
                         <div class="col-md-2">                
                             <a class="direccionar" href="https://galeria.allus.com.co/galeriaexperiencias/index.php/component/users/?view=login" target="_blank" rel="noopener noreferrer"><img src="<?= Url::to("@web/images/link2.png"); ?>" alt="Card image cap"></a>
