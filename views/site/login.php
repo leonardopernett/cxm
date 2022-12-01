@@ -186,7 +186,18 @@ $this->title = 'CX-Management';
     <div class="row">
       <div class="col-md-4 login-sec input-lg">
           <div >
-                  <img src="../../images/cx.png" class="brand_logo_login" alt="logo_login">
+          
+            <?php
+              if ($varFechas == '12') {
+            ?>              
+              <img src="../../images/CXMLoginNavidad.png" class="brand_logo_login" alt="logo_login" style="height: 165px; width: 200px;">
+            <?php
+              }else{
+            ?>  
+              <img src="../../images/cx.png" class="brand_logo_login" alt="brand_logo_login">
+            <?php
+              }
+            ?> 
 		  
           </div>
           
