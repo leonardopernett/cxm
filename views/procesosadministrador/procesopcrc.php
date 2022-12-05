@@ -137,6 +137,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <br>
 
         <div class="card1 mb">
+          <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Descargar Información') ?></label>
+          <a id="dlink" style="display:none;"></a>           
+          <button  class="btn btn-download" style="background-color: #4298B4;color: #fff;" id="btn"><?= Yii::t('app', ' Descargar') ?></button>
+        </div>
+
+        <br>
+
+        <div class="card1 mb">
           <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Cancelar y Regresar') ?></label>
           <?= Html::a('Regresar',  ['adminpcrc'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
@@ -189,3 +197,94 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <hr>
+
+<div id="capaListadoCompletoId" class="capaListadoCompleto" style="display: none;">
+  <div class="row">
+    <div class="col-md-12">
+      <table id="myTableListado" class="table table-hover table-bordered" style="margin-top:10px" >
+        <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Listado Centros de Costos - '.$varNombreCliente) ?></label></caption>
+        <thead>
+          <tr>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Pcrc') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Centro Costos') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado Jarvis') ?></label></th>               
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            foreach ($varListaPcrc as $key => $value) {                    
+          ?>
+            <tr>
+              <td><label style="font-size: 12px;"><?php echo  $value['pcrc']; ?></label></td>
+              <td><label style="font-size: 12px;"><?php echo  $value['cod_pcrc']; ?></label></td>
+              <td><label style="font-size: 12px;"><?php echo  $value['estado']; ?></label></td>
+            </tr>
+          <?php
+            }
+          ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var tableToExcel = (function () {
+    var uri = 'data:application/vnd.ms-excel;base64,',
+    template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+    base64 = function (s) {
+      return window.btoa(unescape(encodeURIComponent(s)))
+    }, 
+    format = function (s, c) {
+      return s.replace(/{(\w+)}/g, function (m, p) {
+        return c[p];
+      })
+    }
+    
+    return function (table, name) {
+      if (!table.nodeType) table = document.getElementById(table)
+        var ctx = {
+          worksheet: name || 'Worksheet',
+          table: table.innerHTML
+        }
+      console.log(uri + base64(format(template, ctx)));
+      document.getElementById("dlink").href = uri + base64(format(template, ctx));
+      document.getElementById("dlink").download = "Seguimiento Centros de Costos Jarvis";
+      document.getElementById("dlink").traget = "_blank";
+      document.getElementById("dlink").click();
+
+    }
+  })();
+  
+  function download(){
+    $(document).find('tfoot').remove();
+    var name = document.getElementById("name");
+    tableToExcel('myTableListado', 'Archivo Seguimiento', name+'.xls')
+    
+  }
+  
+  var btn = document.getElementById("btn");
+  btn.addEventListener("click",download);
+
+  $(document).ready( function () {
+    $('#myTableInformacion').DataTable({
+      responsive: true,
+      fixedColumns: true,
+      select: true,
+      "language": {
+        "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
+        "zeroRecords": "No se encontraron datos ",
+        "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+        "infoEmpty": "No hay datos aun",
+        "infoFiltered": "(Filtrado un _MAX_ total)",
+        "search": "Buscar:",
+        "paginate": {
+          "first":      "Primero",
+          "last":       "Ultimo",
+          "next":       "Siguiente",
+          "previous":   "Anterior"
+        }
+      } 
+    });
+  });
+</script>
