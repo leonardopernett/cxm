@@ -81,76 +81,13 @@ use app\models\ProcesosClienteCentrocosto;
 </header>
 <br><br>
 
-<!-- Capa Procesos -->
-<div id="idCapaProceso" class="capaProcesos" style="display: inline;">
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card1 mb" style="background: #6b97b1; ">
-        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Procesos de Búsqueda') ?></label>
-      </div>
-    </div>
-  </div>
-
-  <br>
-  
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Búsqueda Por Persona') ?></label>
-        <?= Html::button('Buscar', ['value' => url::to(['buscarporpersona']), 'class' => 'btn btn-success', 'id'=>'modalButton1',
-          'data-toggle' => 'tooltip',
-          'style' => 'background-color: #559FFF', 
-          'title' => 'Buscar Por Persona']) ?> 
-
-        <?php
-            Modal::begin([
-              'header' => '<h4>Filtros - Búsqueda Por Persona CXM</h4>',
-              'id' => 'modal1',
-              'size' => 'modal-lg',
-            ]);
-
-            echo "<div id='modalContent1'></div>";
-                                                              
-            Modal::end(); 
-        ?>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Búsqueda Por Proceso') ?></label>
-        <?= Html::button('Buscar', ['value' => url::to(['buscarporproceso']), 'class' => 'btn btn-success', 'id'=>'modalButton2',
-          'data-toggle' => 'tooltip',
-          'style' => 'background-color: #827DF9', 
-          'title' => 'Buscar Por Proceso']) ?> 
-
-        <?php
-            Modal::begin([
-              'header' => '<h4>Filtros - Búsqueda Por Proceso CXM</h4>',
-              'id' => 'modal2',
-              'size' => 'modal-lg',
-            ]);
-
-            echo "<div id='modalContent2'></div>";
-                                                              
-            Modal::end(); 
-        ?>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<hr>
-
 <!-- Capa Informativa -->
 <div id="idCapaInfo" class="capaInformacion" style="display: inline;">
 
    <div class="row">
     <div class="col-md-6">
       <div class="card1 mb" style="background: #6b97b1; ">
-        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Notificaciones') ?></label>
+        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Notificación') ?></label>
       </div>
     </div>
   </div>
@@ -159,8 +96,14 @@ use app\models\ProcesosClienteCentrocosto;
   
   <div class="row">
     <div class="col-md-12">
-      <div class="card1 mb" style="background-color: #e9f9e8;">
-        <label style="font-size: 14px;"><em class="fas fa-info-circle" style="font-size: 30px; color: #ff453c;"></em> <?= Yii::t('app', 'Importante: Para seguir con el informe es necesario realizar la búsqueda con alguno de los filtros existentes (Por Persona o Por Proceso), ingresando los datos necesarios para mostrar la información.') ?></label>
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 30px; color: #827DF9;"></em> <?= Yii::t('app', ' Actualmente no se encontraron datos para la búsqueda seleccionada, por favor vuelva a realizar una nueva consulta.') ?></label>
+        <br>
+        <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                        'style' => 'background-color: #707372',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Regresar']) 
+        ?>
       </div>
     </div>
   </div>

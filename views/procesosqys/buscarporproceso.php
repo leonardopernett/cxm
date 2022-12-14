@@ -205,7 +205,7 @@ use app\models\ProcesosClienteCentrocosto;
                                           'title' => 'Buscar Datos',
                                           'style' => 'display: inline;margin: 3px;height: 34px;',
                                           'id'=>'modalButton1',
-                                          'onclick' => 'verifica();']) 
+                                          'onclick' => 'varVerifica();']) 
         ?>
       </div>
     </div>  
@@ -229,7 +229,7 @@ use app\models\ProcesosClienteCentrocosto;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">                
-                <table>
+                <table align="center">
                   <thead>
                     <tr>
                       <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
@@ -244,5 +244,41 @@ use app\models\ProcesosClienteCentrocosto;
 </div>
 
 <script type="text/javascript">
+  function varVerifica(){
+    var varcapaIdProceso = document.getElementById("capaIdProceso");
+    var varcapaIdMensaje = document.getElementById("capaIdMensaje");
 
+    var vartxtidclientes = document.getElementById("txtidclientes").value;
+    var varFechas = document.getElementById("speechparametrizar-fechacreacion").value;
+    var variddashboard = document.getElementById("iddashboard").value;
+    var varrequester = document.getElementById("requester").value;
+
+    if (vartxtidclientes == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Debe de seleccionar un cliente.","warning");
+      return;
+    }else{
+      if (varFechas == "") {
+        event.preventDefault();
+        swal.fire("!!! Advertencia !!!","Debe de seleccionar un rango de fecha.","warning");
+        return;
+      }else{
+        if (variddashboard == "") {
+          event.preventDefault();
+          swal.fire("!!! Advertencia !!!","Debe de seleccionar almenos un pcrc.","warning");
+          return;
+        }else{
+          if (varrequester == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Debe de seleccionar una dimension.","warning");
+            return;
+          }else{
+            varcapaIdProceso.style.display = 'none';
+            varcapaIdMensaje.style.display = 'inline';
+          }
+        }
+      }
+    }
+
+  }
 </script>

@@ -32,8 +32,8 @@ Modal::begin([
     <?=
     $this->render('verformulariomanualtwo',[
         'varListaIdForms' => $varListaIdForms,
-        'varNombreCodPcrcIdeal' => $varNombreCodPcrcIdeal,
-        'varUsua_id' => $varUsua_id,
+        'varclienteid' => $varclienteid,
+        'varIdExtensionIdeal' => $varIdExtensionIdeal,
       ])
     ?>
 

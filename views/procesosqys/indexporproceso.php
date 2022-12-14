@@ -1320,20 +1320,21 @@ $this->registerJs($js);
                                 <caption><label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Listado de Equipos') ?></label></caption>
                                 <thead>
                                   <tr>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lider') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Asesor') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Llamadas Procesadas') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Total Automatico') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Score') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PEC') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PENC') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'SPC/SFR') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice Proceso') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice Experiencia') ?></label></th>
-                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice P. Marca') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Lider') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Asesor') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Llamadas Procesadas') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Total Mixtas') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Total Automatico') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Agente') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Canal') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Score') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'PEC') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'PENC') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'SPC/SFR') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Indice Proceso') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Indice Experiencia') ?></label></th>
+                                    <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 10px;"><?= Yii::t('app', 'Indice P. Marca') ?></label></th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -1382,75 +1383,75 @@ $this->registerJs($js);
                                           ->orderby(['tbl_usuarios.usua_nombre'=>SORT_DESC])
                                           ->all();
 
+                                     
+
                                     foreach ($vaListaRtaEquipos as $key => $value) {
                                       $varLoginFormsMixto = $value['varLogin'];
+                                      $varLiderMixtos = $value['varLider'];
 
-                                      $txtTotalAgentesMixto = (new \yii\db\Query())
-                                          ->select(['tbl_ideal_loginresponsabilidad.agente'])
-                                          ->from(['tbl_ideal_loginresponsabilidad']) 
-                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcMixtos])
-                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
-                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsMixto])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
-                                          ->scalar();
-
-                                      
-                                      $varTotalAgentesMixto = $txtTotalAgentesMixto.' %';
-                                      
-
-                                      $txtTotalMarcaMixto = (new \yii\db\Query())
-                                          ->select(['tbl_ideal_loginresponsabilidad.marca'])
-                                          ->from(['tbl_ideal_loginresponsabilidad']) 
-                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcMixtos])
-                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
-                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsMixto])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
-                                          ->scalar();
-
-                                      
-                                      $varTotalMarcaMixto = $txtTotalMarcaMixto.' %';
-                                      
-
-                                      $txtTotalCanalMixto = (new \yii\db\Query())
-                                          ->select(['tbl_ideal_loginresponsabilidad.canal'])
-                                          ->from(['tbl_ideal_loginresponsabilidad']) 
-                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcMixtos])
-                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
-                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsMixto])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
-                                          ->scalar();
-
-                                      
-                                      $varTotalCanalMixto = $txtTotalCanalMixto.' %';
-                                      
-
-                                      if ($varTotalAgentesMixto != "0" || $varTotalCanalMixto != "0") {
-                                        $varTotalAutoMixto = round( (intval($varTotalAgentesMixto)+intval($varTotalCanalMixto))/2,2).' %';
+                                      if ($varLiderMixtos != "") {
+                                        $varLiderFormsMixto = $varLiderMixtos;
                                       }else{
-                                        $varTotalAutoMixto = 0;
-                                      }
-                                      
 
-                                      
-                                      if ($value['varLider'] != "") {
-                                        $varLiderFormsMixto = $value['varLider'];
-                                      }else{
-                                        $varLiderFormsMixto = 'Sin Información';
+                                        $varGenerarLider = (new \yii\db\Query())
+                                          ->select(['tbl_usuarios.usua_nombre AS varLideres'])
+                                          ->from(['tbl_usuarios']) 
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                                  'tbl_usuarios.usua_id = tbl_equipos.usua_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                                  'tbl_equipos.id = tbl_equipos_evaluados.equipo_id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                                  'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_ideal_tmpasesores',
+                                                  'tbl_evaluados.id = tbl_ideal_tmpasesores.evaluado_id')
+
+                                          ->where(['=','tbl_ideal_tmpasesores.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_tmpasesores.cod_pcrc',$varCodPcrcMixtos])
+                                          ->andwhere(['>=','tbl_ideal_tmpasesores.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_tmpasesores.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_tmpasesores.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_tmpasesores.anulado',0])
+                                          ->andwhere(['=','tbl_ideal_tmpasesores.login_id',$varLoginFormsMixto])
+                                          ->scalar();
+
+                                        if ($varGenerarLider != "") {
+                                          $varLiderFormsMixto = $varGenerarLider;
+                                        }else{
+                                          $varLiderFormsMixto = 'Sin Información';
+                                        }
+                                        
                                       }
 
                                       if ($value['varAsesor'] != "") {
                                         $varAsesorFormsMixto = $value['varAsesor'];
                                       }else{
-                                        $varAsesorFormsMixto = $varSinData;
+
+                                        $varGenerarAsesor = (new \yii\db\Query())
+                                          ->select(['tbl_evaluados.name AS varAsesor'])
+                                          ->from(['tbl_evaluados']) 
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_ideal_tmpasesores',
+                                                  'tbl_evaluados.id = tbl_ideal_tmpasesores.evaluado_id')
+
+                                          ->where(['=','tbl_ideal_tmpasesores.id_dp_cliente',$varIdDpCliente])
+                                          ->andwhere(['=','tbl_ideal_tmpasesores.cod_pcrc',$varCodPcrcMixtos])
+                                          ->andwhere(['>=','tbl_ideal_tmpasesores.fechainicio',$varFechainicial.' 05:00:00'])
+                                          ->andwhere(['<=','tbl_ideal_tmpasesores.fechafin',$varFechaFinal.' 05:00:00'])
+                                          ->andwhere(['=','tbl_ideal_tmpasesores.extension',$varIdExtensionc])
+                                          ->andwhere(['=','tbl_ideal_tmpasesores.anulado',0])
+                                          ->andwhere(['=','tbl_ideal_tmpasesores.login_id',$varLoginFormsMixto])
+                                          ->scalar();
+
+                                        if ($varGenerarAsesor != "") {
+                                          $varAsesorFormsMixto = $varGenerarAsesor;
+                                        }else{
+                                          $varAsesorFormsMixto = $varLoginFormsMixto;
+                                        }
+                                        
                                       }
 
                                       if ($value['varTotalLlamadas'] != "") {
@@ -1507,22 +1508,90 @@ $this->registerJs($js);
                                         $varIndicePromesaFormsMixta = $varSinData;
                                       }
 
+                                      
+
+                                      $txtCantidadAgenteMixto = (new \yii\db\Query())
+                                                ->select(['tbl_ideal_tmpasesores.porcentajeagente'])
+                                                ->from(['tbl_ideal_tmpasesores'])            
+                                                ->where(['=','tbl_ideal_tmpasesores.id_dp_cliente',$varIdDpCliente])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.cod_pcrc',$varCodPcrcMixtos])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.extension',$varIdExtensionc])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.login_id',$varLoginFormsMixto])
+                                                ->andwhere(['>=','tbl_ideal_tmpasesores.fechainicio',$varFechainicial.' 05:00:00'])
+                                                ->andwhere(['<=','tbl_ideal_tmpasesores.fechafin',$varFechaFinal.' 05:00:00'])
+                                                ->Scalar();
+
+                                      if ($txtCantidadAgenteMixto != 0 && $varArrayCantidadSpeechMixta != 0) {
+                                        $varTotalAgentesMixto = round((100 - (($txtCantidadAgenteMixto / $varArrayCantidadSpeechMixta) * 100)),2).' %';
+                                      }else{
+                                        $varTotalAgentesMixto = 0;
+                                      }
+                                      
+                                      $txtCantidadMarcaMixto = (new \yii\db\Query())
+                                                ->select(['tbl_ideal_tmpasesores.porcentajemarca'])
+                                                ->from(['tbl_ideal_tmpasesores'])            
+                                                ->where(['=','tbl_ideal_tmpasesores.id_dp_cliente',$varIdDpCliente])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.cod_pcrc',$varCodPcrcMixtos])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.extension',$varIdExtensionc])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.login_id',$varLoginFormsMixto])
+                                                ->andwhere(['>=','tbl_ideal_tmpasesores.fechainicio',$varFechainicial.' 05:00:00'])
+                                                ->andwhere(['<=','tbl_ideal_tmpasesores.fechafin',$varFechaFinal.' 05:00:00'])
+                                                ->Scalar();;
+
+                                      if ($txtCantidadMarcaMixto != 0 && $varArrayCantidadSpeechMixta != 0) {
+                                        $varTotalMarcaMixto = round((100 - (($txtCantidadMarcaMixto / $varArrayCantidadSpeechMixta) * 100)),2).' %';
+                                      }else{
+                                        $varTotalMarcaMixto = 0;
+                                      }
+
+                                      $txtCantidadCanalMixto = (new \yii\db\Query())
+                                                ->select(['tbl_ideal_tmpasesores.porcentajecanal'])
+                                                ->from(['tbl_ideal_tmpasesores'])            
+                                                ->where(['=','tbl_ideal_tmpasesores.id_dp_cliente',$varIdDpCliente])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.cod_pcrc',$varCodPcrcMixtos])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.extension',$varIdExtensionc])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.login_id',$varLoginFormsMixto])
+                                                ->andwhere(['>=','tbl_ideal_tmpasesores.fechainicio',$varFechainicial.' 05:00:00'])
+                                                ->andwhere(['<=','tbl_ideal_tmpasesores.fechafin',$varFechaFinal.' 05:00:00'])
+                                                ->Scalar();;
+                                      
+                                      if ($txtCantidadCanalMixto != 0 && $varArrayCantidadSpeechMixta != 0) {
+                                        $varTotalCanalMixto = round((100 - (($txtCantidadCanalMixto / $varArrayCantidadSpeechMixta) * 100)),2).' %';
+                                      }else{
+                                        $varTotalCanalMixto = 0;
+                                      }
+                                      
+
+                                      if ($varTotalAgentesMixto != "0" || $varTotalCanalMixto != "0") {
+                                        $varTotalAutoMixto = round( (intval($varTotalAgentesMixto)+intval($varTotalCanalMixto))/2,2).' %';
+                                      }else{
+                                        $varTotalAutoMixto = 0;
+                                      }
+                                      
+
+
+                                      $varRtaMixtos = round((intval($varTotalLlamadasFormsMixto) + intval($varScoreFormsMixtos))/2,2);
+                                      
+                                      
+
                                   ?>
                                     <tr>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varLiderFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varAsesorFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalLlamadasFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalAutoMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalAgentesMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalCanalMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varTotalValoracionesFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varScoreFormsMixtos; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPecFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPencFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varSFCFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varIndiceProcesoFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varIndiceExpeFormsMixto; ?></label></td>
-                                      <td class="text-center"><label style="font-size: 12px;"><?php echo  $varIndicePromesaFormsMixta; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varLiderFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varAsesorFormsMixto; ?></label></td>
+                                      
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varTotalLlamadasFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varRtaMixtos.' %'; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varTotalAutoMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varTotalAgentesMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varTotalCanalMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varTotalValoracionesFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varScoreFormsMixtos; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varPecFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varPencFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varSFCFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varIndiceProcesoFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varIndiceExpeFormsMixto; ?></label></td>
+                                      <td class="text-center"><label style="font-size: 9px;"><?php echo  $varIndicePromesaFormsMixta; ?></label></td>
                                     </tr>
                                   <?php
                                     }
@@ -2013,46 +2082,43 @@ $this->registerJs($js);
                                   }
 
                                   $txtTotalAgentesAutos = (new \yii\db\Query())
-                                          ->select(['tbl_ideal_loginresponsabilidad.agente'])
-                                          ->from(['tbl_ideal_loginresponsabilidad']) 
-                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcAuto])
-                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
-                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsAuto])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
-                                          ->scalar();
+                                                ->select(['tbl_ideal_tmpasesores.porcentajeagente'])
+                                                ->from(['tbl_ideal_tmpasesores'])            
+                                                ->where(['=','tbl_ideal_tmpasesores.id_dp_cliente',$varIdDpCliente])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.cod_pcrc',$varCodPcrcAuto])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.extension',$varIdExtensionc])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.login_id',$varLoginFormsAuto])
+                                                ->andwhere(['>=','tbl_ideal_tmpasesores.fechainicio',$varFechainicial.' 05:00:00'])
+                                                ->andwhere(['<=','tbl_ideal_tmpasesores.fechafin',$varFechaFinal.' 05:00:00'])
+                                                ->Scalar();
 
                                       
                                   $varTotalAgentesAutos = $txtTotalAgentesAutos.' %';
 
                                   $txtTotalMarcaAutos = (new \yii\db\Query())
-                                          ->select(['tbl_ideal_loginresponsabilidad.marca'])
-                                          ->from(['tbl_ideal_loginresponsabilidad']) 
-                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcAuto])
-                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
-                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsAuto])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
-                                          ->scalar();
+                                                ->select(['tbl_ideal_tmpasesores.porcentajemarca'])
+                                                ->from(['tbl_ideal_tmpasesores'])            
+                                                ->where(['=','tbl_ideal_tmpasesores.id_dp_cliente',$varIdDpCliente])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.cod_pcrc',$varCodPcrcAuto])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.extension',$varIdExtensionc])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.login_id',$varLoginFormsAuto])
+                                                ->andwhere(['>=','tbl_ideal_tmpasesores.fechainicio',$varFechainicial.' 05:00:00'])
+                                                ->andwhere(['<=','tbl_ideal_tmpasesores.fechafin',$varFechaFinal.' 05:00:00'])
+                                                ->Scalar();
 
                                       
                                   $varTotalMarcaAutos = $txtTotalMarcaAutos.' %';
 
                                   $txtTotalCanalAutos = (new \yii\db\Query())
-                                          ->select(['tbl_ideal_loginresponsabilidad.canal'])
-                                          ->from(['tbl_ideal_loginresponsabilidad']) 
-                                          ->where(['=','tbl_ideal_loginresponsabilidad.id_dp_cliente',$varIdDpCliente])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.cod_pcrc',$varCodPcrcAuto])
-                                          ->andwhere(['>=','tbl_ideal_loginresponsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
-                                          ->andwhere(['<=','tbl_ideal_loginresponsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.extension',$varIdExtensionc])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.login_id',$varLoginFormsAuto])
-                                          ->andwhere(['=','tbl_ideal_loginresponsabilidad.anulado',0])
-                                          ->scalar();
+                                                ->select(['tbl_ideal_tmpasesores.porcentajecanal'])
+                                                ->from(['tbl_ideal_tmpasesores'])            
+                                                ->where(['=','tbl_ideal_tmpasesores.id_dp_cliente',$varIdDpCliente])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.cod_pcrc',$varCodPcrcAuto])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.extension',$varIdExtensionc])
+                                                ->andwhere(['=','tbl_ideal_tmpasesores.login_id',$varLoginFormsAuto])
+                                                ->andwhere(['>=','tbl_ideal_tmpasesores.fechainicio',$varFechainicial.' 05:00:00'])
+                                                ->andwhere(['<=','tbl_ideal_tmpasesores.fechafin',$varFechaFinal.' 05:00:00'])
+                                                ->Scalar();
 
                                       
                                   $varTotalCanalAutos = $txtTotalCanalAutos.' %';
@@ -2396,6 +2462,250 @@ $this->registerJs($js);
                             </tbody>
                           </table>
                         </div>                        
+                      </div>
+                    </div>
+
+                    <br>
+
+                    <!-- Aqui vamos con el promedio de los porcentajes por item de pregunta -->
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card1 mb" style="font-size:  15px;">
+                          
+                          <?php
+                            $varNombreTablaManualPorcentajes = "myTablePorcentajesManual_".$varCodPcrcManual;                           
+
+
+                            $varListaValoraForms = (new \yii\db\Query())
+                                                    ->select([
+                                                        'tbl_ejecucionformularios.formulario_id',
+                                                        'tbl_formularios.name'
+                                                      ])
+                                                    ->from(['tbl_ideal_tmploginreportes']) 
+
+                                                    ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                        'tbl_ejecucionformularios.id = tbl_ideal_tmploginreportes.id_formulario')
+
+                                                    ->join('LEFT OUTER JOIN', 'tbl_formularios',
+                                                        'tbl_formularios.id = tbl_ejecucionformularios.formulario_id')
+
+                                                    ->where(['=','tbl_ideal_tmploginreportes.id_dp_cliente',$varIdDpCliente])
+                                                    ->andwhere(['=','tbl_ideal_tmploginreportes.usua_id',$sessiones])
+                                                    ->andwhere(['=','tbl_ideal_tmploginreportes.pcrc',$varCodPcrcManual])
+                                                    ->andwhere(['=','tbl_ideal_tmploginreportes.id_dimension',$varIdExtensionc])
+                                                    ->groupby(['tbl_ejecucionformularios.formulario_id'])
+                                                    ->all();
+
+                            if (count($varListaValoraForms) == 0) {
+                              
+                          ?>
+
+                            <div class="panel panel-default" style="background-color: #e9f9e8;">
+                              <div class="panel-body">
+                                <em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em>
+                                <label style="font-size: 14px;"><?= Yii::t('app', ' Actualmente el centro de costos ('.$varNombreCodPcrcManual.'), no tiene asociado ningún proceso de valoración') ?></label>
+                              </div>
+                            </div>  
+
+                          <?php
+
+                            }else{
+
+                            foreach ($varListaValoraForms as $key => $value) {
+                              $varNombreValoraForm = $value['name'];
+                              $varIdValoraForm = $value['formulario_id'];
+
+                              $varListaFormsValora = (new \yii\db\Query())
+                                                  ->select([
+                                                      'tbl_ideal_tmploginreportes.id_formulario'
+                                                    ])
+                                                  ->from(['tbl_ideal_tmploginreportes']) 
+
+                                                  ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                      'tbl_ejecucionformularios.id = tbl_ideal_tmploginreportes.id_formulario')
+
+                                                  ->join('LEFT OUTER JOIN', 'tbl_formularios',
+                                                      'tbl_formularios.id = tbl_ejecucionformularios.formulario_id')
+
+                                                  ->where(['=','tbl_ideal_tmploginreportes.id_dp_cliente',$varIdDpCliente])
+                                                  ->andwhere(['=','tbl_ideal_tmploginreportes.usua_id',$sessiones])
+                                                  ->andwhere(['=','tbl_formularios.id',$varIdValoraForm])
+                                                  ->andwhere(['=','tbl_ideal_tmploginreportes.id_dimension',$varIdExtensionc])
+                                                  ->all();
+
+                              $varArrayValoraFormsid = array();
+                              foreach ($varListaFormsValora as $key => $value) {
+                                array_push($varArrayValoraFormsid, $value['id_formulario']);
+                              }
+                              $varValoraFormsIdArraysM = implode("', '", $varArrayValoraFormsid);
+                              $arrayValoraForms_downM = str_replace(array("#", "'", ";", " "), '', $varValoraFormsIdArraysM);
+                              $varValoraFormsM = explode(",", $arrayValoraForms_downM);
+                                                              
+                          ?>
+
+                            <table id="<?php echo $varNombreTablaManualPorcentajes; ?>" class="table table-hover table-bordered" style="margin-top:10px" >
+                              <caption><label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', 'Resultados Procesos Calidad y Consistencia') ?></label></caption>
+                              <thead>
+                                <tr>
+                                  <th scope="col" colspan="11" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', $varNombreValoraForm) ?></label></th>
+                                </tr>
+                                <tr>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesos') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PEC') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PENC') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'SPC/FRC') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'CARIÑO/WOW') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Proceso') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Experiencia') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento Promesa de Marca') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Desempeno del Canal') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Desempeno del Agente') ?></label></th>
+                                  <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Habilidad Comercial') ?></label></th>
+                                </tr>
+                              </thead>
+                              <?php
+
+                                $varListadoProcesosValoraForms = (new \yii\db\Query())
+                                                              ->select([
+                                                                'tbl_ideal_tmpreportes.id_proceso',
+                                                                'tbl_ideal_tmpreportes.id_acciones',
+                                                                'tbl_ideal_tmpreportes.col1'
+                                                                ])->distinct()
+                                                              ->from(['tbl_ideal_tmpreportes'])
+
+                                                              ->where(['in','tbl_ideal_tmpreportes.id_formulario',$varValoraFormsM])
+                                                              ->andwhere(['!=','tbl_ideal_tmpreportes.id_proceso',0])
+                                                              ->andwhere(['=','tbl_ideal_tmpreportes.usua_id',$sessiones])
+                                                              ->andwhere(['=','tbl_ideal_tmpreportes.id_dimension',$varIdExtensionc])
+                                                              ->all();                                
+
+                                foreach ($varListadoProcesosValoraForms as $key => $value) {
+                                  $varIdAccionesValoraForm = $value['id_acciones'];
+                                  $varAccionValoraForm = $value['col1'];
+                                  $varValoraValoraForm = $value['id_proceso'];
+
+                                  $varColorValora = null;
+                                  if ($varValoraValoraForm == 1) {
+                                    $varColorValora = '#C6C6C6';
+                                  }
+                                  if ($varValoraValoraForm == 2) {
+                                    $varColorValora = '#a79ff9';
+                                  }
+                                  if ($varValoraValoraForm == 3) {
+                                    $varColorValora = '#9fc9f9';
+                                  }
+
+                                  $varListarPorcentajesValora = (new \yii\db\Query())
+                                                              ->select([
+                                                                'ROUND(AVG(col3),2) AS PEC',
+                                                                'ROUND(AVG(col4),2) AS PENC',
+                                                                'ROUND(AVG(col5),2) AS SPC_FRC',
+                                                                'ROUND(AVG(col6),2) AS CARINO_WOW',
+                                                                'ROUND(AVG(col7),2) AS Indice_de_Proceso',
+                                                                'ROUND(AVG(col8),2) AS Indice_de_Experiencia',
+                                                                'ROUND(AVG(col9),2) AS Cumplimiento_Promesa_de_Marca',
+                                                                'ROUND(AVG(col10),2) AS Desempeno_del_Canal',
+                                                                'ROUND(AVG(col11),2) AS Desempeno_del_Agente', 
+                                                                'ROUND(AVG(col12),2) AS Habilidad_Comercial'
+                                                                ])
+                                                              ->from(['tbl_ideal_tmpreportes'])
+
+                                                              ->where(['=','tbl_ideal_tmpreportes.id_acciones',$varIdAccionesValoraForm])
+                                                              ->andwhere(['in','tbl_ideal_tmpreportes.id_formulario',$varValoraFormsM])
+                                                              ->andwhere(['=','tbl_ideal_tmpreportes.id_dimension',$varIdExtensionc])
+                                                              ->all();
+
+
+                                  foreach ($varListarPorcentajesValora as $key => $value) {
+                                    
+                                    if ($value['PEC'] != null) {
+                                      $varPecValora = $value['PEC'].' %';
+                                    }else{
+                                      $varPecValora = $varSinData;
+                                    }
+
+                                    if ($value['PENC'] != null) {
+                                      $varPencValora = $value['PENC'].' %';
+                                    }else{
+                                      $varPencValora = $varSinData;
+                                    }
+
+                                    if ($value['SPC_FRC'] != null) {
+                                      $varSpcValora = $value['SPC_FRC'].' %';
+                                    }else{
+                                      $varSpcValora = $varSinData;
+                                    }
+
+                                    if ($value['CARINO_WOW'] != null) {
+                                      $varWowValora = $value['CARINO_WOW'].' %';
+                                    }else{
+                                      $varWowValora = $varSinData;
+                                    }
+
+                                    if ($value['Indice_de_Proceso'] != null) {
+                                      $varIProcesoValora = $value['Indice_de_Proceso'].' %';
+                                    }else{
+                                      $varIProcesoValora = $varSinData;
+                                    }
+
+                                    if ($value['Indice_de_Experiencia'] != null) {
+                                      $varIExperienciaValora = $value['Indice_de_Experiencia'].' %';
+                                    }else{
+                                      $varIExperienciaValora = $varSinData;
+                                    }
+
+                                    if ($value['Cumplimiento_Promesa_de_Marca'] != null) {
+                                      $varIMarcaValora = $value['Cumplimiento_Promesa_de_Marca'].' %';
+                                    }else{
+                                      $varIMarcaValora = $varSinData;
+                                    }
+
+                                    if ($value['Desempeno_del_Canal'] != null) {
+                                      $varICanalValora = $value['Desempeno_del_Canal'].' %';
+                                    }else{
+                                      $varICanalValora = $varSinData;
+                                    }
+
+                                    if ($value['Desempeno_del_Agente'] != null) {
+                                      $varDAgenteValora = $value['Desempeno_del_Agente'].' %';
+                                    }else{
+                                      $varDAgenteValora = $varSinData;
+                                    }
+
+                                    if ($value['Habilidad_Comercial'] != null) {
+                                      $varHabilidadValora = $value['Habilidad_Comercial'].' %';
+                                    }else{
+                                      $varHabilidadValora = $varSinData;
+                                    }
+
+                              ?>
+                                    <tr>
+                                      <td  style="font-size: 12px; background-color: <?php echo $varColorValora; ?>"><label style="font-size: 12px; "><?= Yii::t('app', $varAccionValoraForm) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varPecValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varPencValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varSpcValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varWowValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varIProcesoValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varIExperienciaValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varIMarcaValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varICanalValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varDAgenteValora) ?></label></td>
+                                      <td class="text-center"><label style="font-size: 12px;"><?= Yii::t('app', $varHabilidadValora) ?></label></td>
+                                    </tr>
+                              <?php
+                                  }
+                                }
+                              ?>
+                            </table>
+
+                          <?php
+                              
+                            }
+
+                          }
+                          ?>
+
+                        </div>
                       </div>
                     </div>
 
@@ -3237,6 +3547,52 @@ $this->registerJs($js);
 </div>
 
 <hr>
+
+<!-- Capa Botones -->
+<div id="CapaIdBtn" class="capaBtn" style="display: inline;">
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', ' Búsqueda Por Proceso') ?></label>
+        <?= Html::button('Buscar', ['value' => url::to(['buscarporproceso']), 'class' => 'btn btn-success', 'id'=>'modalButton2',
+          'data-toggle' => 'tooltip',
+          'style' => 'background-color: #827DF9', 
+          'title' => 'Buscar Por Proceso']) ?> 
+
+        <?php
+            Modal::begin([
+              'header' => '<h4>Filtros - Búsqueda Por Proceso CXM</h4>',
+              'id' => 'modal2',
+              'size' => 'modal-lg',
+            ]);
+
+            echo "<div id='modalContent2'></div>";
+                                                              
+            Modal::end(); 
+        ?>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', ' Descargar Información') ?></label>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', ' Cancelar y Regresar') ?></label>
+        <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                        'style' => 'background-color: #707372',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Regresar']) 
+        ?>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <?php
     echo Html::tag('div', '', ['id' => 'ajax_result']);
