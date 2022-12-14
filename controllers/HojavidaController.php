@@ -3949,6 +3949,16 @@ use Exception;
         and tbl_hojavida_datapcrc.id_dp_cliente IN ($varListarPermisos)
     GROUP BY tbl_hojavida_datapersonal.hv_idpersonal")->queryAll();
 
+    $phpExc = new \PHPExcel();
+    $phpExc->getProperties()
+            ->setCreator("Konecta")
+            ->setLastModifiedBy("Konecta")
+            ->setTitle("Lista de procesos - Gestor de Clientes")
+            ->setSubject("Gestor de Clientes")
+            ->setDescription("Este archivo contiene el listado de los usuarios registrados para maestro cliente")
+            ->setKeywords("Lista de Procesos");
+    $phpExc->setActiveSheetIndex(0);
+
     $phpExc->getActiveSheet()->setShowGridlines(False);
 
     $styleArray = array(
@@ -4348,7 +4358,7 @@ use Exception;
                     ->setHtmlBody($message)
                     ->send();
 
-     Yii::$app->session->setFlash('file','Correo Enviado Exitosamente');
+     Yii::$app->session->setFlash('file','Correo Enviado Exitosamente el Listado');
     return $this->redirect(['index']);
 
    }
