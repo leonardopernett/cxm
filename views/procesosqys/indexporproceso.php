@@ -1113,7 +1113,13 @@ $this->registerJs($js);
                   <div class="col-md-12">
                     <div class="card1 mb" style="font-size: 15px;">
 
-                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', $varNombreCodPcrcMixtos) ?></label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card1 mb" style="background: #6b97b1; text-align: center;" >
+                            <label style="font-size: 18px; color: #FFFFFF;"> <?= Yii::t('app', $varNombreCodPcrcMixtos) ?></label>
+                          </div>
+                        </div>
+                      </div>
 
                       <br>
 
@@ -1810,7 +1816,13 @@ $this->registerJs($js);
                 <div class="col-md-12">
                   <div class="card1 mb" style="font-size: 15px;">
                   
-                    <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', $varNombreCodPcrcAuto) ?></label>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card1 mb" style="background: #6b97b1; text-align: center;" >
+                          <label style="font-size: 18px; color: #FFFFFF;"> <?= Yii::t('app', $varNombreCodPcrcAuto) ?></label>
+                        </div>
+                      </div>
+                    </div>
 
                     <br>
 
@@ -2326,7 +2338,14 @@ $this->registerJs($js);
                   <br>
                   
                   <div class="card1 mb">
-                    <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em> <?= Yii::t('app', $varNombreCodPcrcManual) ?></label>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="card1 mb" style="background: #6b97b1; text-align: center;" >
+                          <label style="font-size: 18px; color: #FFFFFF;"> <?= Yii::t('app', $varNombreCodPcrcManual) ?></label>
+                        </div>
+                      </div>
+                    </div>
 
                     <br>
 
@@ -3264,7 +3283,13 @@ $this->registerJs($js);
 
                     <div class="card1 mb">
 
-                      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', $varNombreCodPcrcMejora) ?></label>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card1 mb" style="background: #6b97b1; text-align: center;" >
+                            <label style="font-size: 18px; color: #FFFFFF;"> <?= Yii::t('app', $varNombreCodPcrcMejora) ?></label>
+                          </div>
+                        </div>
+                      </div>
 
                       <br>
 
