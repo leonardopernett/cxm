@@ -185,7 +185,7 @@ use app\models\ProcesosClienteCentrocosto;
 
     <div class="col-md-3">
       <div class="card2 mb">
-        <label ><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Servicios:') ?></label>  
+        <label ><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Servicios:') ?></label>  
 
         <div class="col-md-12 text-center">          
           <div onclick="opennovedads();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbn1" >
@@ -201,7 +201,7 @@ use app\models\ProcesosClienteCentrocosto;
 
     <div class="col-md-3">
       <div class="card2 mb">
-        <label ><em class="fas fa-users" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Listado Personal:') ?></label>  
+        <label ><em class="fas fa-users" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Listado Personal:') ?></label>  
 
         <div class="col-md-12 text-center">          
           <div onclick="opennovedadp();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbn3" >
@@ -217,14 +217,14 @@ use app\models\ProcesosClienteCentrocosto;
 
     <div class="col-md-3">
       <div class="card2 mb">
-        <label ><em class="fas fa-list" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Dimensión:') ?></label>  
+        <label ><em class="fas fa-list" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Dimensión:') ?></label>  
         <label style="text-align: center;"><?= Yii::t('app', $varTextoDimensionp) ?></label>       
       </div> 
     </div>
 
     <div class="col-md-3">
       <div class="card2 mb">
-        <label ><em class="fas fa-calendar" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Rango de Fechas:') ?></label>  
+        <label ><em class="fas fa-calendar" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Rango de Fechas:') ?></label>  
         <label style="text-align: center;"><?= Yii::t('app', $varFechainicial.' - '.$varFechaFinal) ?></label>       
       </div> 
     </div>
@@ -416,7 +416,7 @@ use app\models\ProcesosClienteCentrocosto;
 
     <div class="col-md-6">
       <div class="card3 mb">
-        <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Detalle de Procesamiento Mixto') ?></label>
+        <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Detalle de Procesamiento Mixto') ?></label>
 
         <table style="width:100%">
           <caption><?= Yii::t('app', ' .') ?></caption>
@@ -443,7 +443,7 @@ use app\models\ProcesosClienteCentrocosto;
 
     <div class="col-md-6">
       <div class="card3 mb">
-        <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Detalle Procesamiento Automatico') ?></label>
+        <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Detalle Procesamiento Automatico') ?></label>
         <div id="chartContainerResposnabilidadesP" class="highcharts-container" style="height: 200px;"></div>
       </div>
     </div>
@@ -461,7 +461,7 @@ use app\models\ProcesosClienteCentrocosto;
   <div class="row">
     <div class="col-md-6">
       <div class="card1 mb" style="background: #6b97b1; ">
-        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Resultado del Proceso') ?></label>
+        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Resultado del Proceso - Lista de Servicios') ?></label>
       </div>
     </div>
   </div>
@@ -852,7 +852,14 @@ use app\models\ProcesosClienteCentrocosto;
 
         <div class="card1 mb" style="font-size: 15px;">
 
-          <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', $varNombreClienteMixtos) ?></label>
+          
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card1 mb" style="background: #6b97b1; text-align: center;" >
+                <label style="font-size: 18px; color: #FFFFFF;"> <?= Yii::t('app', $varNombreClienteMixtos) ?></label>
+              </div>
+            </div>
+          </div>
 
           <br>
 
@@ -861,7 +868,7 @@ use app\models\ProcesosClienteCentrocosto;
             <div class="col-md-4">
               <div class="card4 mb">
                 <table id="myTableInformacion" class="table table-hover table-bordered" style="margin-top:10px" >
-                  <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Resultados Procesamientos') ?></label></caption>
+                  <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Resultados Procesamientos') ?></label></caption>
                   <thead>
                     <tr>
                       <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad - General Konecta') ?></label></th>
@@ -883,7 +890,7 @@ use app\models\ProcesosClienteCentrocosto;
             <div class="col-md-4">
               <div class="card4 mb">
                 <table id="myTableAuto" class="table table-hover table-bordered" style="margin-top:10px" >
-                  <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Procesamiento Automático') ?></label></caption>
+                  <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Detalle Procesamiento Automático') ?></label></caption>
                   <thead>
                     <tr>
                       <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Interacciones') ?></label></th>
@@ -907,7 +914,7 @@ use app\models\ProcesosClienteCentrocosto;
             <div class="col-md-4">
               <div class="card4 mb">
                 <table id="myTableGestion" class="table table-hover table-bordered" style="margin-top:10px" >
-                  <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Gestión de la Mejora') ?></label></caption>
+                  <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Detalle Gestión de la Mejora') ?></label></caption>
                   <thead>
                     <tr>
                       <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedbacks') ?></label></th>
@@ -935,7 +942,7 @@ use app\models\ProcesosClienteCentrocosto;
             <div class="col-md-12">
               <div class="card1 mb">
                 <table id="myTableCalidad" class="table table-hover table-bordered" style="margin-top:10px" >
-                  <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Detalle Calidad y Consistencia - Manual') ?></label></caption>
+                  <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Detalle Calidad y Consistencia - Manual') ?></label></caption>
                   <thead>
                     <tr>
                       <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
@@ -1049,7 +1056,7 @@ use app\models\ProcesosClienteCentrocosto;
 
         </div>
 
-        <br>
+        <hr>
 
       <?php
 
@@ -1062,7 +1069,6 @@ use app\models\ProcesosClienteCentrocosto;
 
 </div>
 
-<hr>
 
 <!-- Capa Botones -->
 <div id="CapaIdBtn" class="capaBtn" style="display: inline;">
@@ -1070,10 +1076,10 @@ use app\models\ProcesosClienteCentrocosto;
   <div class="row">
     <div class="col-md-4">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', ' Búsqueda Por Persona') ?></label>
+        <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', ' Búsqueda Por Persona') ?></label>
         <?= Html::button('Buscar', ['value' => url::to(['buscarporpersona']), 'class' => 'btn btn-success', 'id'=>'modalButton1',
           'data-toggle' => 'tooltip',
-          'style' => 'background-color: #827DF9', 
+          'style' => 'background-color: #559FFF', 
           'title' => 'Buscar Por Persona']) ?> 
 
         <?php
@@ -1092,13 +1098,15 @@ use app\models\ProcesosClienteCentrocosto;
 
     <div class="col-md-4">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', ' Descargar Información') ?></label>
+        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', ' Descargar Información') ?></label>
+        <a id="dlink" style="display:none;"></a>
+        <button  class="btn btn-info" style="background-color: #4298B4" id="btn"><?= Yii::t('app', ' Descargar') ?></button>
       </div>
     </div>
 
     <div class="col-md-4">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', ' Cancelar y Regresar') ?></label>
+        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', ' Cancelar y Regresar') ?></label>
         <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
@@ -1111,6 +1119,515 @@ use app\models\ProcesosClienteCentrocosto;
 </div>
 
 <hr>
+
+<!-- Capa Informativa Tabla -->
+<div id="idCapaInfotabla" class="capaInformaciontabla" style="display: none;">
+
+  <div class="row">
+    <div class="col-md-12">
+      <table id="myTableInforPorPersona" class="table table-hover table-bordered" style="margin-top:10px" >
+        <caption><label style="font-size: 15px;"> <?= Yii::t('app', 'KONECTA - CX MANAGEMENT') ?></label></caption>
+        <thead>
+          <tr>
+            <th scope="col" class="text-center" colspan="10" style="background-color: #7e99c3;"><label style="font-size: 13px; color: #FFFFFF;"><?= Yii::t('app', 'Resultados Informe Q&S - Por Persona') ?></label></th>
+          </tr>
+          <tr>
+            <th scope="col" class="text-center" colspan="10"><label style="font-size: 13px;"><?= Yii::t('app', 'Ficha Técnica') ?></label></th>
+          </tr>
+          <tr>
+            <th scope="col" class="text-center" colspan="2" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lista de Servicios') ?></label></th>
+            <th scope="col" class="text-center" colspan="2" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Lista Del Personal') ?></label></th>
+            <th scope="col" class="text-center" colspan="2" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Dimensión') ?></label></th>
+            <th scope="col" class="text-center" colspan="2" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Rango de Fechas') ?></label></th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <?php
+
+            $varArrayListaServiciosTabla = array();
+            foreach ($varListaServicios as $key => $value) {
+              array_push($varArrayListaServiciosTabla, $value['cliente']);
+            }
+            $ArrayListaServiciosTabla = implode(", ", $varArrayListaServiciosTabla);
+
+            $varArrayListaNombreGerentesTabla = array();
+            foreach ($varListaNombresGerentes as $key => $value) {
+              array_push($varArrayListaNombreGerentesTabla, $value['gerente_cuenta']);
+            }
+            $ArrayListaNombreGerentesTabla = implode(", ", $varArrayListaNombreGerentesTabla);
+
+
+          ?>
+
+          <tr>
+            <td class="text-center" colspan="2"><label style="font-size: 12px;"><?php echo  $ArrayListaServiciosTabla; ?></label></td>
+            <td class="text-center" colspan="2"><label style="font-size: 12px;"><?php echo  $ArrayListaNombreGerentesTabla; ?></label></td>
+            <td class="text-center" colspan="2"><label style="font-size: 12px;"><?php echo  $varTextoDimensionp; ?></label></td>
+            <td class="text-center" colspan="2"><label style="font-size: 12px;"><?php echo  $varFechainicial.' - '.$varFechaFinal; ?></label></td>
+          </tr>    
+          <tr>
+            <th scope="col" class="text-center" colspan="10"><label style="font-size: 13px;"><?= Yii::t('app', 'Resultados Por Procesamiento') ?></label></th>
+          </tr> 
+          <tr>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad: General Konecta') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad y Consistencia') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesamiento Automático') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '--') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '--') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Marca') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
+          </tr>    
+          <tr>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayKonectaGeneral.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayRtaScoreGeneral.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayPromedioAutoGeneral.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  '--'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  '--'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayAgenteP.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayMarcaP.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayCanalP.' %'; ?></label></td>
+          </tr>  
+          <tr>
+            <th scope="col" class="text-center" colspan="10"><label style="font-size: 13px;"><?= Yii::t('app', 'Resultado del Proceso - Lista de Servicios') ?></label></th>     
+          </tr> 
+          <?php
+
+            $varConteoProcesoMixtoTabla = 0;
+            foreach ($varListaServicios as $key => $value) {
+              $varIdDpClienteTabla = $value['id_dp_clientes'];
+
+              $varConteoProcesoMixtoTabla += 1;
+
+              if ($varIdExtensionc > '1') {
+                $varRnIdealMTabla =  (new \yii\db\Query())
+                                    ->select(['rn'])
+                                    ->from(['tbl_speech_parametrizar'])            
+                                    ->where(['=','id_dp_clientes',$varIdDpClienteTabla])
+                                    ->andwhere(['=','anulado',0])
+                                    ->andwhere(['=','usabilidad',1])
+                                    ->andwhere(['!=','rn',''])
+                                    ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                    ->groupby(['rn'])
+                                    ->all();
+              }else{
+                $varRnIdealMTabla =  (new \yii\db\Query())
+                                    ->select(['rn'])
+                                    ->from(['tbl_speech_parametrizar'])            
+                                    ->where(['=','id_dp_clientes',$varIdDpClienteTabla])
+                                    ->andwhere(['=','anulado',0])
+                                    ->andwhere(['=','usabilidad',1])
+                                    ->andwhere(['!=','rn',''])
+                                    ->andwhere(['is','tipoparametro',null])
+                                    ->groupby(['rn'])
+                                    ->all();
+              }
+
+              if (count($varRnIdealMTabla) != 0) {
+                $varArrayRnMTabla = array();
+                foreach ($varRnIdealMTabla as $key => $value) {
+                  array_push($varArrayRnMTabla, $value['rn']);
+                }
+
+                $varExtensionesArraysMTabla = implode("', '", $varArrayRnMTabla);
+                $arrayExtensiones_downMTabla = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysMTabla);
+                $varExtensionesMixtasTabla = explode(",", $arrayExtensiones_downMTabla);
+              }else{
+
+                if ($varIdExtensionc > '1') {
+                  $varExtMTabla =  (new \yii\db\Query())
+                                    ->select(['ext'])
+                                    ->from(['tbl_speech_parametrizar'])            
+                                    ->where(['=','id_dp_clientes',$varIdDpClienteTabla])
+                                    ->andwhere(['=','anulado',0])
+                                    ->andwhere(['=','usabilidad',1])
+                                    ->andwhere(['!=','ext',''])
+                                    ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                    ->groupby(['ext'])
+                                    ->all();
+                }else{
+                  $varExtMTabla =  (new \yii\db\Query())
+                                    ->select(['ext'])
+                                    ->from(['tbl_speech_parametrizar'])            
+                                    ->where(['=','id_dp_clientes',$varIdDpClienteTabla])
+                                    ->andwhere(['=','anulado',0])
+                                    ->andwhere(['=','usabilidad',1])
+                                    ->andwhere(['!=','ext',''])
+                                    ->andwhere(['is','tipoparametro',null])
+                                    ->groupby(['ext'])
+                                    ->all();
+                }
+
+                if (count($varExtMTabla) != 0) {
+                  $varArrayExtMTabla = array();
+                  foreach ($varExtMTabla as $key => $value) {
+                    array_push($varArrayExtMTabla, $value['ext']);
+                  }
+
+                  $varExtensionesArraysMTabla = implode("', '", $varArrayExtMTabla);
+                  $arrayExtensiones_downMTabla = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysMTabla);
+                  $varExtensionesMixtasTabla = explode(",", $arrayExtensiones_downMTabla);
+                }else{
+
+                  if ($varIdExtensionc > '1') {
+                    $varUsuaMTabla =  (new \yii\db\Query())
+                                    ->select(['usuared'])
+                                    ->from(['tbl_speech_parametrizar'])            
+                                    ->where(['=','id_dp_clientes',$varIdDpClienteTabla])
+                                    ->andwhere(['=','anulado',0])
+                                    ->andwhere(['=','usabilidad',1])
+                                    ->andwhere(['!=','usuared',''])
+                                    ->andwhere(['=','tipoparametro',$varIdExtensionc])
+                                    ->groupby(['usuared'])
+                                    ->all();
+                  }else{
+                    $varUsuaMTabla =  (new \yii\db\Query())
+                                    ->select(['usuared'])
+                                    ->from(['tbl_speech_parametrizar'])            
+                                    ->where(['=','id_dp_clientes',$varIdDpClienteTabla])
+                                    ->andwhere(['=','anulado',0])
+                                    ->andwhere(['=','usabilidad',1])
+                                    ->andwhere(['!=','usuared',''])
+                                    ->andwhere(['is','tipoparametro',null])
+                                    ->groupby(['usuared'])
+                                    ->all();
+                  }
+
+
+                  if (count($varUsuaMTabla) != 0) {
+                    $varArrayUsuaMTabla = array();
+                    foreach ($varUsuaMTabla as $key => $value) {
+                      array_push($varArrayUsuaMTabla, $value['usuared']);
+                    }
+
+                    $varExtensionesArraysMTabla = implode("', '", $varArrayUsuaMTabla);
+                    $arrayExtensiones_downMTabla = str_replace(array("#", "'", ";", " "), '', $varExtensionesArraysMTabla);
+                    $varExtensionesMixtasTabla = explode(",", $arrayExtensiones_downMTabla);
+                  }else{
+                    $varExtensionesMixtasTabla = "N0A";
+                  }
+                }
+              }
+
+              $varNombreClienteMixtosTabla = (new \yii\db\Query())
+                                              ->select(['cliente'])
+                                              ->from(['tbl_proceso_cliente_centrocosto'])            
+                                              ->where(['=','anulado',0])
+                                              ->andwhere(['=','id_dp_clientes',$varIdDpClienteTabla])
+                                              ->groupby(['id_dp_clientes'])
+                                              ->Scalar();
+
+              $varAgenteMixtosTabla = (new \yii\db\Query())
+                                              ->select(['ROUND(AVG(tbl_ideal_responsabilidad.agente),1) AS varMarca'])
+                                              ->from(['tbl_ideal_responsabilidad']) 
+                                              ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpClienteTabla])
+                                              ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                              ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                              ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                                              ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                              ->andwhere(['!=','tbl_ideal_responsabilidad.agente',0])
+                                              ->scalar();     
+              
+
+              $varMarcaMixtosTabla = (new \yii\db\Query())
+                                              ->select(['ROUND(AVG(tbl_ideal_responsabilidad.marca),1) AS varMarca'])
+                                              ->from(['tbl_ideal_responsabilidad']) 
+                                              ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpClienteTabla])
+                                              ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                              ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                              ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                                              ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                              ->andwhere(['!=','tbl_ideal_responsabilidad.marca',0])
+                                              ->scalar();
+
+              
+              $varCanalMixtosTabla = (new \yii\db\Query())
+                                              ->select(['ROUND(AVG(tbl_ideal_responsabilidad.canal),1) AS varMarca'])
+                                              ->from(['tbl_ideal_responsabilidad']) 
+                                              ->where(['=','tbl_ideal_responsabilidad.id_dp_cliente',$varIdDpClienteTabla])
+                                              ->andwhere(['>=','tbl_ideal_responsabilidad.fechainicio',$varFechainicial.' 05:00:00'])
+                                              ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
+                                              ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
+                                              ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                              ->andwhere(['!=','tbl_ideal_responsabilidad.canal',0])
+                                              ->scalar();
+
+              
+
+              $varArrayRtaAutoMixtaTabla = round( ($varAgenteMixtosTabla+$varCanalMixtosTabla)/2,2);
+
+
+              $varBolsitaClienteTabla = (new \yii\db\Query())
+                                    ->select(['tbl_speech_categorias.programacategoria'])
+                                    ->from(['tbl_speech_categorias'])       
+
+                                    ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                      'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+
+                                    ->where(['=','tbl_speech_parametrizar.id_dp_clientes',$varIdDpClienteTabla])
+                                    ->andwhere(['is','tbl_speech_parametrizar.tipoparametro',null])
+                                    ->andwhere(['=','tbl_speech_parametrizar.anulado',0])
+                                    ->groupby(['tbl_speech_categorias.programacategoria'])
+                                    ->Scalar();
+
+              $varIdLlamadaGeneralTabla = (new \yii\db\Query())
+                                    ->select(['tbl_speech_servicios.idllamada'])
+                                    ->from(['tbl_speech_servicios'])       
+                                    ->where(['=','tbl_speech_servicios.id_dp_clientes',$varIdDpClienteTabla])
+                                    ->andwhere(['!=','tbl_speech_servicios.arbol_id',1])
+                                    ->andwhere(['=','tbl_speech_servicios.anulado',0])
+                                    ->groupby(['tbl_speech_servicios.id_dp_clientes'])
+                                    ->Scalar();
+
+              $varArrayRtaScoreMixtaTabla = (new \yii\db\Query())
+                                              ->select(['ROUND(AVG(tbl_ejecucionformularios.score)*100,2) AS varScore'])
+                                              ->from(['tbl_ejecucionformularios']) 
+
+                                              ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                                      'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                                              ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                                      'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')
+
+                                              ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                              ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varBolsitaClienteTabla])
+                                              ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                              ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesMixtasTabla])
+                                              ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varIdLlamadaGeneralTabla])
+                                              ->scalar();
+
+              if ($varArrayRtaScoreMixtaTabla == "") {
+                $varArrayRtaScoreMixtaTabla = 0;
+              }
+
+              $varArrayKonectaMixtaTabla = round( ($varArrayRtaScoreMixtaTabla+$varArrayRtaAutoMixtaTabla)/2,2);
+
+              $varArrayCantidadSpeechMixtaTabla = (new \yii\db\Query())
+                                              ->select(['tbl_dashboardspeechcalls.callid'])
+                                              ->from(['tbl_dashboardspeechcalls']) 
+                                              ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                                              ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varBolsitaClienteTabla])
+                                              ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                                              ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesMixtasTabla])
+                                              ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varIdLlamadaGeneralTabla])
+                                              ->count();
+
+              $varListaDataArbolsMixtosTabla = (new \yii\db\Query())
+                                                    ->select(['*'])
+                                                    ->from(['tbl_speech_pcrcformularios'])            
+                                                    ->where(['=','anulado',0])
+                                                    ->andwhere(['=','id_dp_clientes',$varIdDpClienteTabla])
+                                                    ->all();
+
+              $varArrayArbolsMixtosTabla = array();
+              foreach ($varListaDataArbolsMixtosTabla as $key => $value) {
+                array_push($varArrayArbolsMixtosTabla, $value['arbol_id']);
+              }
+              $varArray_ArbolMixtosTabla = implode(", ", $varArrayArbolsMixtosTabla);
+              $arrayArboles_downMTabla = str_replace(array("#", "'", ";", " "), '', $varArray_ArbolMixtosTabla);
+              $varArbolesMixtasTabla = explode(",", $arrayArboles_downMTabla);
+
+              $varListaDataCalibracionesMixtoTabla = (new \yii\db\Query())
+                                                    ->select(['*'])
+                                                    ->from(['tbl_arbols'])            
+                                                    ->where(['=','tbl_arbols.activo',0])
+                                                    ->andwhere(['in','tbl_arbols.id',$varArray_ArbolMixtosTabla])
+                                                    ->all();
+
+              $varArrayArbolsCalibracionesMixtoTabla = array();
+              foreach ($varListaDataCalibracionesMixtoTabla as $key => $value) {
+                array_push($varArrayArbolsCalibracionesMixtoTabla, $value['arbol_id']);
+              }
+              $varArray_ArbolCaliMixtoTabla = implode(", ", $varArrayArbolsCalibracionesMixtoTabla);
+
+              $varTotalFeedbacksPTabla = (new \yii\db\Query())
+                                                    ->select(['tbl_ejecucionfeedbacks.snaviso_revisado'])
+                                                    ->from(['tbl_ejecucionfeedbacks'])  
+
+                                                    ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                                        'tbl_ejecucionfeedbacks.ejecucionformulario_id = tbl_ejecucionformularios.id') 
+
+                                                    ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                                        'tbl_ejecucionformularios.arbol_id = tbl_arbols.id') 
+
+                                                    ->where(['in','tbl_arbols.id',$varArray_ArbolMixtosTabla])
+                                                    ->andwhere(['=','tbl_arbols.activo',0])
+                                                    ->andwhere(['between','tbl_ejecucionfeedbacks.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                                    ->andwhere(['in','tbl_ejecucionfeedbacks.snaviso_revisado',[0,1]])
+                                                    ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                                    ->count();
+
+
+              $varConteoAlertasMixtasTabla = (new \yii\db\Query())
+                                          ->select(['tbl_alertascx.id'])
+                                          ->from(['tbl_alertascx'])  
+                                          
+                                          ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                              'tbl_alertascx.pcrc = tbl_arbols.id')
+                                          
+                                          ->where(['in','tbl_arbols.id',$varArray_ArbolMixtosTabla])
+                                          ->andwhere(['=','tbl_arbols.activo',0])
+                                          ->andwhere(['between','tbl_alertascx.fecha',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                          ->count();
+
+
+              $varConteoCalibracionesMixtasTabla = (new \yii\db\Query())
+                                          ->select(['tbl_ejecucionformularios.id'])
+                                          ->from(['tbl_ejecucionformularios'])
+
+                                          ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                              'tbl_ejecucionformularios.arbol_id = tbl_arbols.id')
+
+                                          ->where(['in','tbl_arbols.arbol_id',$varArray_ArbolCaliMixtoTabla])
+                                          ->andwhere(['like','tbl_arbols.name','alibra'])
+                                          ->andwhere(['=','tbl_arbols.activo',0])
+                                          ->andwhere(['between','tbl_ejecucionformularios.created',$varFechainicial.' 00:00:00',$varFechaFinal.' 00:00:00'])
+                                          ->andwhere(['in','tbl_ejecucionformularios.dimension_id',$varDimensionesId])
+                                          ->count();
+
+
+
+          ?>
+
+          <tr>
+            <th scope="col" class="text-center" colspan="10" style="background-color: #7e99c3;"><label style="font-size: 13px;"><?= Yii::t('app', $varNombreClienteMixtosTabla) ?></label></th>     
+          </tr>
+          <tr>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad - General Konecta') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calidad & Consistencia') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesamiento Automático') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Interacciones') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Agente') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Marca') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Canal') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedbacks') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Alertas') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Calibraciones') ?></label></th>
+          </tr>
+          <tr>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayKonectaMixtaTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayRtaScoreMixtaTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayRtaAutoMixtaTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varArrayCantidadSpeechMixtaTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varAgenteMixtosTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varMarcaMixtosTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varCanalMixtosTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varTotalFeedbacksPTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varConteoAlertasMixtasTabla.' %'; ?></label></td>
+            <td class="text-center" ><label style="font-size: 12px;"><?php echo  $varConteoCalibracionesMixtasTabla.' %'; ?></label></td>
+          </tr>
+          <tr>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cantidad Valoraciones') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Score General') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PEC') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'PENC') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'SPC/SFR') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Proceso') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Experiencia') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Indice de Promesa Marca') ?></label></th>
+          </tr>
+         <?php
+                      $varListRtaFormulariosMixtosTabla = (new \yii\db\Query())
+                          ->select([
+                            'COUNT(tbl_ejecucionformularios.id) AS varConteo',
+                            'ROUND(AVG(tbl_ejecucionformularios.score)*100,2) AS varScore',
+                            'ROUND(AVG(tbl_ejecucionformularios.i1_nmcalculo)*100,2) AS varPec',
+                            'ROUND(AVG(tbl_ejecucionformularios.i2_nmcalculo)*100,2) AS varPenc',
+                            'ROUND(AVG(tbl_ejecucionformularios.i3_nmcalculo)*100,2) AS varSfc',
+                            'ROUND(AVG(tbl_ejecucionformularios.i5_nmcalculo)*100,2) AS varIndiceProceso',
+                            'ROUND(AVG(tbl_ejecucionformularios.i6_nmcalculo)*100,2) AS varIndiceExperienca',
+                            'ROUND(AVG(tbl_ejecucionformularios.i7_nmcalculo)*100,2) AS varIndicePromesa'
+                            ])
+                          ->from(['tbl_ejecucionformularios']) 
+
+                          ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
+                                  'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
+
+                          ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                  'tbl_speech_mixta.callid = tbl_dashboardspeechcalls.callId')
+
+                          ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                          ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$varBolsitaClienteTabla])
+                          ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varFechainicial.' 05:00:00',$varFechaFinal.' 05:00:00'])
+                          ->andwhere(['in','tbl_dashboardspeechcalls.extension',$varExtensionesMixtasTabla])
+                          ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$varIdLlamadaGeneralTabla])
+                          ->all();
+
+                      foreach ($varListRtaFormulariosMixtosTabla as $key => $value) {
+                                      
+                        if ($value['varConteo'] != "") {
+                          $varConteoFormMixtoTabla = $value['varConteo'];
+                        }else{
+                          $varConteoFormMixtoTabla = $varSinData;
+                        }
+
+                        if ($value['varScore'] != "") {
+                          $varScoreFormMixtoTabla = $value['varScore'].' %';
+                        }else{
+                          $varScoreFormMixtoTabla = $varSinData;
+                        }
+
+                        if ($value['varPec'] != "") {
+                          $varPecFormMixtoTabla = $value['varPec'].' %';
+                        }else{
+                          $varPecFormMixtoTabla = $varSinData;
+                        }
+
+                        if ($value['varPenc'] != "") {
+                          $varPencFormMixtoTabla = $value['varPec'].' %';
+                        }else{
+                          $varPencFormMixtoTabla = $varSinData;
+                        }
+
+                        if ($value['varSfc'] != "") {
+                          $varSfcFormMixtoTabla = $value['varSfc'].' %';
+                        }else{
+                          $varSfcFormMixtoTabla = $varSinData;
+                        }
+
+                        if ($value['varIndiceProceso'] != "") {
+                          $varProcesoFormMixtoTabla = $value['varIndiceProceso'].' %';
+                        }else{
+                          $varProcesoFormMixtoTabla = $varSinData;
+                        }
+
+                        if ($value['varIndiceExperienca'] != "") {
+                          $varExperienciaFormMixtaTabla = $value['varIndiceExperienca'].' %';
+                        }else{
+                          $varExperienciaFormMixtaTabla = $varSinData;
+                        }
+
+                        if ($value['varIndicePromesa'] != "") {
+                          $varPromesaTabla = $value['varIndicePromesa'].' %';
+                        }else{
+                          $varPromesaTabla = $varSinData;
+                        }
+                    ?>
+                      
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo  $varConteoFormMixtoTabla; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo  $varScoreFormMixtoTabla; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPecFormMixtoTabla; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPencFormMixtoTabla; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo  $varSfcFormMixtoTabla; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo  $varProcesoFormMixtoTabla; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo  $varExperienciaFormMixtaTabla; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo  $varPromesaTabla; ?></label></td>
+                      
+                    <?php
+                      }
+                    ?>
+
+          <?php
+            }
+          ?>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
 
 <script type="text/javascript">
   function opennovedads(){
@@ -1259,4 +1776,38 @@ use app\models\ProcesosClienteCentrocosto;
     });
 
   });
+
+  var tableToExcel = (function () {
+    var uri = 'data:application/vnd.ms-excel;base64,',
+            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+            base64 = function (s) {
+                return window.btoa(unescape(encodeURIComponent(s)))
+            }, format = function (s, c) {
+                return s.replace(/{(\w+)}/g, function (m, p) {
+                    return c[p];
+                })
+            }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = {
+                worksheet: name || 'Worksheet',
+                table: table.innerHTML
+            }
+            console.log(uri + base64(format(template, ctx)));
+            document.getElementById("dlink").href = uri + base64(format(template, ctx));
+            document.getElementById("dlink").download = "Informe Q&S - Por Persona";
+            document.getElementById("dlink").traget = "_blank";
+            document.getElementById("dlink").click();
+
+    }
+  })();
+  function download(){
+        $(document).find('tfoot').remove();
+        var name = document.getElementById("name");
+        tableToExcel('myTableInforPorPersona', 'Archivo Informe Q&S - Por Persona', name+'.xls')
+
+  }
+  var btn = document.getElementById("btn");
+  btn.addEventListener("click",download);
+
 </script>
