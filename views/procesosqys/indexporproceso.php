@@ -631,12 +631,12 @@ $this->registerJs($js);
         }
       }
 
-      if ($varArrayRtaScoreGeneral != 0) {
+      if ($varArrayRtaScoreGeneral == 0 && $varArrayPromedioAutoGeneral == 0) {        
+        $varArrayKonectaGeneral = 0;
+        $varArrayRestanteKGeneral = 100;        
+      }else{
         $varArrayKonectaGeneral = round( ($varArrayRtaScoreGeneral+$varArrayPromedioAutoGeneral)/2,2);
         $varArrayRestanteKGeneral = round(100-$varArrayKonectaGeneral,2);
-      }else{
-        $varArrayKonectaGeneral = 0;
-        $varArrayRestanteKGeneral = 100;
       }
       
       if ($varArrayKonectaGeneral < '80') {
