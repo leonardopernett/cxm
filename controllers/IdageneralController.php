@@ -952,7 +952,7 @@ use app\models\IdaGeneral;
         if ($varDimensionagent == "2") {
           $varStrDimensionagent = "OJT";
         }else{
-          $varStrDimensionagent = "";
+          $varStrDimensionagent = "Calidad de Entrenamiento & Ojt";
         }
       }
 
