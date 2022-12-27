@@ -46,7 +46,7 @@ use app\models\IdaGeneral;
             
             'rules' => [
               [
-                'actions' => ['index','enviararchivo','procesarentto','procesarvalores'],
+                'actions' => ['index','enviararchivo','procesarentto','procesarvalores','procesarasesor'],
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
@@ -54,7 +54,7 @@ use app\models\IdaGeneral;
                         },
               ],
               [
-                'actions' => ['procesarvalores'],
+                'actions' => ['procesarvalores','procesarasesor'],
                 'allow' => true,
 
               ],
@@ -893,6 +893,261 @@ use app\models\IdaGeneral;
 
       die( json_encode( array("status"=>"1","data"=>$arraydata) ) );
       
+    }
+
+    public function actionProcesarasesor(){
+
+      $datapostasesor = file_get_contents('php://input');
+      $data_post_agent = json_decode($datapostasesor,true);
+
+      if (
+           !isset($data_post_agent["pcrc"]) 
+        || !isset($data_post_agent["dimension"]) 
+        || !isset($data_post_agent["fechaInicio"]) 
+        || !isset($data_post_agent["fechaFin"]) 
+        || !isset($data_post_agent["documentos"])
+        || !isset($data_post_agent["usuarios"])
+        || empty($data_post_agent["pcrc"]) 
+        || empty($data_post_agent["dimension"]) 
+        || empty($data_post_agent["fechaInicio"]) 
+        || empty($data_post_agent["fechaFin"]) 
+        || empty($data_post_agent["documentos"])
+        || empty($data_post_agent["usuarios"])
+      ) {
+        die(json_encode(array("status"=>"0","data"=>"Algunos de los campos obligatorios no se enviaron correctamente")));
+      }
+
+      $varCodPcrcagent = $data_post_agent["pcrc"];
+
+      $varExistCodPcrcagent = (new \yii\db\Query())
+                        ->select([
+                            'cod_pcrc'
+                        ])
+                        ->from(['tbl_speech_categorias'])  
+                        ->where(['=','cod_pcrc',$varCodPcrcagent])
+                        ->andwhere(['=','anulado',0]) 
+                        ->count();
+
+      if ($varExistCodPcrcagent == 0) {
+        die(json_encode(array("status"=>"0","data"=>"Pcrc ingresado no esta parametrizado en CXM")));
+      }
+
+      $varDimensionagent = $data_post_agent["dimension"];
+      $varFechaInicioagent = $data_post_agent["fechaInicio"];
+      $varFechaFinagent = $data_post_agent["fechaFin"];
+      $varDocumentosagent = $data_post_agent["documentos"];
+      $varUsuariosagent = $data_post_agent["usuarios"];
+
+      $listdimensionesagent = array();
+      $array_dimensionesagent = count($varDimensionagent);
+      for ($i = 0; $i < $array_dimensionesagent; ++$i){
+          array_push($listdimensionesagent, $varDimensionagent[$i]);          
+      }
+
+      $varparametrosagent = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $listdimensionesagent)));
+      $varStrDimensionagent = null;
+      if ($varDimensionagent == "1") {
+        $varStrDimensionagent = "Calidad de Entrenamiento";
+      }else{
+        if ($varDimensionagent == "2") {
+          $varStrDimensionagent = "OJT";
+        }else{
+          $varStrDimensionagent = "";
+        }
+      }
+
+      $varextensionesagent = (new \yii\db\Query())
+                        ->select([
+                            'concat(tbl_speech_parametrizar.rn,tbl_speech_parametrizar.ext,tbl_speech_parametrizar.usuared) AS extensiones'
+                        ])
+                        ->from(['tbl_speech_parametrizar'])  
+                        ->where(['=','tbl_speech_parametrizar.cod_pcrc',$varCodPcrcagent])
+                        ->andwhere(['in','tbl_speech_parametrizar.tipoparametro',$varparametrosagent]) 
+                        ->all();
+
+      $listextensionesagent = array();
+      foreach ($varextensionesagent as $key => $value) {
+        array_push($listextensionesagent, $value['extensiones']);
+      }
+      $txtParametrosagent = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $listextensionesagent)));
+
+      $txtIdCatagoriaagent = (new \yii\db\Query())
+                        ->select([
+                            'tbl_speech_servicios.idllamada'
+                        ])
+                        ->from(['tbl_speech_servicios'])  
+                        ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                              'tbl_speech_servicios.id_dp_clientes = tbl_speech_parametrizar.id_dp_clientes')
+                        ->where(['=','tbl_speech_parametrizar.cod_pcrc',$varCodPcrcagent])
+                        ->groupby(['tbl_speech_servicios.arbol_id'])
+                        ->Scalar();
+
+      $txtServicioagent = (new \yii\db\Query())
+                        ->select([
+                            'tbl_speech_categorias.programacategoria'
+                        ])
+                        ->from(['tbl_speech_categorias'])  
+                        ->where(['=','tbl_speech_categorias.cod_pcrc',$varCodPcrcagent])
+                        ->andwhere(['=','tbl_speech_categorias.anulado',0])
+                        ->groupby(['tbl_speech_categorias.programacategoria']) 
+                        ->Scalar();
+
+      $listdocumentosagent = array();
+      $array_documentosagent = count($varDocumentosagent);
+
+      for ($i = 0; $i < $array_documentosagent; ++$i){
+          array_push($listdocumentosagent, $varDocumentosagent[$i]);
+      }
+      $varlogindocumentoagent = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $listdocumentosagent)));
+
+
+      $listusuariosagent = array();
+      $array_usuariosagent = count($varUsuariosagent);
+      for ($i = 0; $i < $array_usuariosagent; ++$i){
+          array_push($listusuariosagent, $varUsuariosagent[$i]);
+      }
+      $varloginusuariosagent = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $listusuariosagent)));
+
+      $varInicioFagent = $varFechaInicioagent.' 05:00:00';
+      $varFinFagent = date('Y-m-d',strtotime($varFechaFinagent."+ 1 day")).' 05:00:00';
+
+      $varverificarusuariosagent = (new \yii\db\Query())
+                        ->select([
+                            'callId'
+                        ])
+                        ->from(['tbl_dashboardspeechcalls'])  
+                        ->where(['=','anulado',0])
+                        ->andwhere(['=','servicio',$txtServicioagent])
+                        ->andwhere(['between','fechallamada',$varInicioFagent,$varFinFagent])
+                        ->andwhere(['in','extension',$txtParametrosagent])
+                        ->andwhere(['in','login_id',$varloginusuariosagent])
+                        ->count();
+
+      if ($varverificarusuariosagent != 0) {
+        $varlogin_idagent = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $varloginusuariosagent)));
+      }else{
+        $varlogin_idagent = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $varlogindocumentoagent)));
+      }
+
+
+      $arraydataagent = array();
+      $arra_login_idagent = count($varlogin_idagent);
+
+      for ($i=0; $i < $arra_login_idagent; $i++) { 
+        $varusuariologinagent = $varlogin_idagent[$i];
+
+        $varpromedioagent = (new \yii\db\Query())
+                        ->select([
+                            'tbl_dashboardspeechcalls.callId'
+                        ])
+                        ->from(['tbl_dashboardspeechcalls'])  
+                        ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                        ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$txtServicioagent])
+                        ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varInicioFagent,$varFinFagent])
+                        ->andwhere(['in','tbl_dashboardspeechcalls.extension',$txtParametrosagent])
+                        ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$txtIdCatagoriaagent])
+                        ->andwhere(['=','tbl_dashboardspeechcalls.login_id',$varusuariologinagent])
+                        ->count();
+
+        $varcountarCallidagent = (new \yii\db\Query())
+                        ->select([
+                            'tbl_dashboardspeechcalls.callId',
+                            'tbl_dashboardspeechcalls.fechallamada'
+                        ])
+                        ->from(['tbl_dashboardspeechcalls'])  
+                        ->where(['=','tbl_dashboardspeechcalls.anulado',0])
+                        ->andwhere(['=','tbl_dashboardspeechcalls.servicio',$txtServicioagent])
+                        ->andwhere(['between','tbl_dashboardspeechcalls.fechallamada',$varInicioFagent,$varFinFagent])
+                        ->andwhere(['in','tbl_dashboardspeechcalls.extension',$txtParametrosagent])
+                        ->andwhere(['=','tbl_dashboardspeechcalls.idcategoria',$txtIdCatagoriaagent])
+                        ->andwhere(['=','tbl_dashboardspeechcalls.login_id',$varusuariologinagent])
+                        ->groupby(['tbl_dashboardspeechcalls.callId'])
+                        ->All();
+
+        $varconteocallidagent = 0;
+        foreach ($varcountarCallidagent as $key => $value) {
+          $varcallidsagent = $value['callId'];
+          $varfechaagent = $value['fechallamada'];
+          $varconteocallidagent = $varconteocallidagent + 1;
+
+          $varlistvariablesagent = (new \yii\db\Query())
+                        ->select([
+                            'idcategoria','orientacionsmart','programacategoria'
+                        ])
+                        ->from(['tbl_speech_categorias'])  
+                        ->where(['=','anulado',0])
+                        ->andwhere(['=','cod_pcrc',$varCodPcrcagent])
+                        ->andwhere(['=','idcategorias',2])
+                        ->andwhere(['=','responsable',1])
+                        ->All();
+
+          $varlistanegativoagent = array();
+          $varlistapositivoagent = array();
+          $varconteonegativasagent = 0;
+          $varconteopositivasagent = 0;
+          $varconteogeneralagent = 0;
+          foreach ($varlistvariablesagent as $key => $value) {
+            $varorientacionsmartagent = $value['orientacionsmart'];
+            $varcategoriaidspeechagent = $value['idcategoria'];
+            $varconteogeneralagent = $varconteogeneralagent + 1;
+
+            if ($varorientacionsmartagent == "2") {
+              array_push($varlistanegativoagent, $varcategoriaidspeechagent);
+              $varconteonegativasagent = $varconteonegativasagent + 1;
+            }else{
+              if ($varorientacionsmartagent == "1") {
+                array_push($varlistapositivoagent, $varcategoriaidspeechagent);
+                $varconteopositivasagent = $varconteopositivasagent + 1;
+              }
+            }
+          }
+          $varvariablesnegativasagent = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $varlistanegativoagent)));
+          $varvariablespositivasagent = explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ", $varlistapositivoagent)));
+
+          if (count($varvariablesnegativasagent) > 0) {
+            $varcontarvarnegativasagent = (new \yii\db\Query())
+                        ->select([
+                            'SUM(tbl_speech_general.cantproceso)'
+                        ])
+                        ->from(['tbl_speech_general'])  
+                        ->where(['=','tbl_speech_general.anulado',0])
+                        ->andwhere(['=','tbl_speech_general.programacliente',$txtServicioagent])
+                        ->andwhere(['between','tbl_speech_general.fechallamada',$varInicioFagent,$varFinFagent])
+                        ->andwhere(['in','tbl_speech_general.extension',$txtParametrosagent])
+                        ->andwhere(['=','tbl_speech_general.callId',$varcallidsagent])
+                        ->andwhere(['in','tbl_speech_general.idvariable',$varvariablesnegativasagent])
+                        ->scalar();
+          }else{
+            $varcontarvarnegativasagent = 0;
+          }
+
+          if (count($varvariablespositivasagent) > 0) {
+            $varcontarvarpositivasagent = (new \yii\db\Query())
+                        ->select([
+                            'SUM(tbl_speech_general.cantproceso)'
+                        ])
+                        ->from(['tbl_speech_general'])  
+                        ->where(['=','tbl_speech_general.anulado',0])
+                        ->andwhere(['=','tbl_speech_general.programacliente',$txtServicioagent])
+                        ->andwhere(['between','tbl_speech_general.fechallamada',$varInicioFagent,$varFinFagent])
+                        ->andwhere(['in','tbl_speech_general.extension',$txtParametrosagent])
+                        ->andwhere(['=','tbl_speech_general.callId',$varcallidsagent])
+                        ->andwhere(['in','tbl_speech_general.idvariable',$varvariablespositivasagent])
+                        ->scalar();
+          }else{
+            $varcontarvarpositivasagent = 0;
+          }
+
+          $varResultadoagent = (($varconteonegativasagent - $varcontarvarnegativasagent) + $varcontarvarpositivasagent) / $varconteogeneralagent;
+
+          array_push($arraydataagent, array("usuarios"=>$varusuariologinagent,"cantidadllamadas"=>$varpromedioagent,"score"=>$varResultadoagent,"dimension"=>$varStrDimensionagent,"llamada"=>$varcallidsagent,"fechainteraccion"=>$varfechaagent));
+        }
+
+      }
+
+
+      die( json_encode( array("status"=>"1","data"=>$arraydataagent) ) );
+
     }
 
 
