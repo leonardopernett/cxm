@@ -176,7 +176,7 @@ AppAsset::register($this);
                 }else{
                     NavBar::begin([
                         'brandLabel' => Html::img(Url::to("@web/images/banner-superior.png"),
-                                ["alt" => "home QA","style" => "width: 170px; margin-top: 20px; margin-left: -30px"]),
+                                ["alt" => "home QA","style" => "width: 170px; margin-top: 17px; margin-left: -30px"]),
                         'brandUrl' => Yii::$app->homeUrl,
                         'options' => [
                             'class' => 'navbar navbar-inverse navbar-static-top',
