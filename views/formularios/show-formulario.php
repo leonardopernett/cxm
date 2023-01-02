@@ -892,6 +892,13 @@ $contadorSecciones = 0;
 
 
                                     <?php if (isset($data->calificaciones[$detalle->calificacion_id])): ?>
+
+                                        <?php
+                                            if ($varPcrc == 3707) {
+                                                array_multisort(array_column($data->calificaciones[$detalle->calificacion_id], 'name'), SORT_ASC, $data->calificaciones[$detalle->calificacion_id]);
+                                            }
+                                        ?>
+
                                         <?php foreach ($data->calificaciones[$detalle->calificacion_id] as $id => $c): ?>
                                             <?php $selected = ($detalle->calificaciondetalle_id == $id) ? 'selected="selected"' : '' ?>
                                             <option value="<?php echo $id ?>" <?php echo $selected ?>><?php echo $c["name"] ?></option>
