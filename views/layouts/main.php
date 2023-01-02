@@ -665,7 +665,15 @@ AppAsset::register($this);
 
                 NavBar::end();
             ?>
-            <div class='luces'></div>
+
+            <?php
+                if ($varFechas == '12') {
+            ?>
+                    <div class='luces'></div>
+            <?php
+                }
+            ?>
+            
         </nav>
 
             <script defer src="https://qa.grupokonecta.local/qa_managementv2/web/font_awesome_local/js.js"></script>
