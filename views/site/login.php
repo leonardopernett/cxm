@@ -357,5 +357,9 @@ $this->title = 'CX-Management';
     },millisec);
   };
 
-  snow();
+  var varMes = "<?php echo $varFechas; ?>";
+
+  if (varMes == "12") {
+    snow();
+  }
 </script>
