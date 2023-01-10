@@ -16,14 +16,7 @@ return [
     // ODESSA -TELMARK
     'LDAP_SERVERO' => LDAP_SERVERO,
     'LDAP_accsufixo' => '@telemark-spain.com',
-
-    // COMDATA ONE
-    'LDAP_SERVERONECO' =>  LDAP_SERVERONECO,
-    'LDAP_accsufixoneco' = 'co.grupodigitex.com',
-
-    // COMDATA TWO
-    'LDAP_SERVERTWOCO' =>  LDAP_SERVERTWOCO,
-    'LDAP_accsufixtwoco' = 'fscomdata.loc',
+    
 
     /* VALORACIONES POR MES */
     'valoracionesMes' => 5,
