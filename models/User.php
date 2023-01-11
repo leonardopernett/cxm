@@ -512,20 +512,20 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                 if (!$ldapbindo) {
 
                     /* CONEXION LDAP COMDATA ONE */
-                    // $ldapconnonecom = ldap_connect(\Yii::$app->params["LDAP_SERVERONECOM"]);
+                    $ldapconnonecom = ldap_connect(\Yii::$app->params["LDAP_SERVERONECOM"]);
 
                     /* BUSQUEDA DE USUARIO COMDATA ONE */
-                    // $ldapbindonecom = @ldap_bind($ldapconnonecom, $this->username . \Yii::$app->params["LDAP_accsufixoone"], utf8_decode($password));
+                    $ldapbindonecom = @ldap_bind($ldapconnonecom, $this->username . \Yii::$app->params["LDAP_accsufixoone"], utf8_decode($password));
 
-                    // if (!$ldapbindonecom) {
+                    if (!$ldapbindonecom) {
 
                         /* COENXION LDAP COMDATA TWO */
-                        // $ldapconntwocom = ldap_connect(\Yii::$app->params["LDAP_SERVERTWOCOM"]);
+                        $ldapconntwocom = ldap_connect(\Yii::$app->params["LDAP_SERVERTWOCOM"]);
 
                         /* BUSQUEDA DE USUARIO COMDATA TWO */
-                        // $ldapbindtwocom = @ldap_bind($ldapconntwocom, $this->username . \Yii::$app->params["LDAP_accsufixotwo"], utf8_decode($password));
+                        $ldapbindtwocom = @ldap_bind($ldapconntwocom, $this->username . \Yii::$app->params["LDAP_accsufixotwo"], utf8_decode($password));
 
-                        // if (!$ldapbindtwocom) {
+                        if (!$ldapbindtwocom) {
                             
                             $ErrNUM = ldap_errno($ldapconno);
 
@@ -542,14 +542,14 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
 
                                 default:
                                     $error->hasError = true;
-                                    $error->msgError = \Yii::t("app", "Error en LDAP") . ldap_error($ldapbindo);
+                                    $error->msgError = \Yii::t("app", "Error en LDAP") . ldap_error($ldapbindtwocom);
                                     break;
                             }
                             return $error;
 
-                        // }
+                        }
 
-                    // }
+                    }
 
                 }
 
