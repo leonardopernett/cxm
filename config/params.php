@@ -16,7 +16,10 @@ return [
     // ODESSA -TELMARK
     'LDAP_SERVERO' => LDAP_SERVERO,
     'LDAP_accsufixo' => '@telemark-spain.com',
-    
+
+    // COMDATA ONE
+    'LDAP_SERVERONECOM' => LDAP_SERVERONECOM,
+    'LDAP_accsufixoone' => 'co.grupodigitex.com',
 
     /* VALORACIONES POR MES */
     'valoracionesMes' => 5,
