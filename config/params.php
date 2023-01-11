@@ -21,6 +21,10 @@ return [
     'LDAP_SERVERONECOM' => LDAP_SERVERONECOM,
     'LDAP_accsufixoone' => 'co.grupodigitex.com',
 
+    // COMDATA TWO
+    'LDAP_SERVERTWOCOM' => LDAP_SERVERTWOCOM,
+    'LDAP_accsufixotwo' => 'fscomdata.loc',
+
     /* VALORACIONES POR MES */
     'valoracionesMes' => 5,
     /* URL WS REDBOX MEDELLIN */
