@@ -510,26 +510,35 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                 $ldapbindo = @ldap_bind($ldapconno, $this->username . \Yii::$app->params["LDAP_accsufixo"], utf8_decode($password));
 
                 if (!$ldapbindo) {
-                    
-                    $ErrNUM = ldap_errno($ldapconno);
 
-                    switch ($ErrNUM) {
+                    /* CONEXION LDAP COMDATA ONE */
+                    $ldapconnonecom = ldap_connect(\Yii::$app->params["LDAP_SERVERONECOM"]);
 
-                        case 81:
-                            $error->hasError = true;
-                            $error->msgError = \Yii::t("app", "No se puede conectar al servidor LDAP");
-                            break;
-                        case 49:
-                            $error->hasError = true;
-                            $error->msgError = \Yii::t("app", "Usuario o contraseña no valida");
-                            break;
+                    /* BUSQUEDA DE USUARIO COMDATA ONE */
+                    $ldapbindonecom = @ldap_bind($ldapconnonecom, $this->username . \Yii::$app->params["LDAP_accsufixoone"], utf8_decode($password));
 
-                        default:
-                            $error->hasError = true;
-                            $error->msgError = \Yii::t("app", "Error en LDAP") . ldap_error($ldapbindo);
-                            break;
+                    if (!$ldapbindonecom) {
+                        
+                        $ErrNUM = ldap_errno($ldapconno);
+
+                        switch ($ErrNUM) {
+
+                            case 81:
+                                $error->hasError = true;
+                                $error->msgError = \Yii::t("app", "No se puede conectar al servidor LDAP");
+                                break;
+                            case 49:
+                                $error->hasError = true;
+                                $error->msgError = \Yii::t("app", "Usuario o contraseña no valida");
+                                break;
+
+                            default:
+                                $error->hasError = true;
+                                $error->msgError = \Yii::t("app", "Error en LDAP") . ldap_error($ldapbindonecom);
+                                break;
+                        }
+                        return $error;
                     }
-                    return $error;
 
                 }
 
