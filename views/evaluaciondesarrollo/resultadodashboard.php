@@ -241,7 +241,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 <?php
-if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465" || $sessiones == "6080" || $sessiones == "57" || $sessiones == "69"){ ?>
+if($sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2953" || $sessiones == "852" || $sessiones == "1483"|| $sessiones == "4201"|| $sessiones == "258"|| $sessiones == "4465" || $sessiones == "6080" || $sessiones == "57" || $sessiones == "69" || $sessiones == "1290" || $sessiones == "7756" || $sessiones == "6845"){ ?>
 <div class="CapaDos" style="display: inline;">
     <div class="row">
         <div class="col-md-12">
