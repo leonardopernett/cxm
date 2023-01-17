@@ -1701,7 +1701,7 @@ use app\models\Procesoclientecentroscosto;
 
         $sessiones = Yii::$app->user->identity->id;
         $txtanulado = 0;
-        $txtfechacreacion = e('Y-m-d');
+        $txtfechacreacion = date('Y-m-d');
 
         // Se ejecuta primero un delete sobre la tabla de procesos centros de costos
         Yii::$app->db->createCommand()->truncateTable('tbl_proceso_cliente_centrocosto')->execute();
