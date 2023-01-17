@@ -320,12 +320,12 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Asignar Plan de Valoraci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/controlprocesos/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isHacerMonitoreo(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Seguimiento Plan de Valoraci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/seguimientoplan/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isHacerMonitoreo(),
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Escuchar</li>',
