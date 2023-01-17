@@ -136,7 +136,7 @@ class ControlProcesosPlan extends \yii\db\ActiveRecord
                         ->andwhere(['responsable' => Yii::$app->user->identity->id]);  
                 }
             }else{
-                if ($roles == "272" || $roles == "273") {
+                if ($roles == "272" || $roles == "273" || $roles == "298") {
                     $query = ControlProcesos::find()->distinct()                   
                             ->joinWith('ejecucionformularios')
                             ->joinWith('usuarios')
