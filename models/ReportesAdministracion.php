@@ -326,7 +326,7 @@ class ReportesAdministracion extends Model
     // SI TIENE PERMISO ADMINISTRADOR, SE MOSTRARAN TODOS LOS WORKSPACES / REPORTES
     if($admin_permit->num_rows() > 0 ){*/
       //if($id_user == 3205 || $id_user == 2953 || $id_user == 7 || $id_user == 69 || $id_user == 2915 || $id_user == 8 || $id_user == 3468){
-      if($id_user == 3205 || $id_user == 2953 || $id_user == 3468 || $id_user == 69 || $id_user == 8 || $id_user == 57 || $id_user == 3229 || $id_user == 1515 || $id_user == 2991 || $id_user == 6636 || $id_user == 4457 || $id_user == 2511 || $id_user == 6639 || $id_user == 637 || $id_user == 1083){ 
+      if($id_user == 3205 || $id_user == 2953 || $id_user == 3468 || $id_user == 69 || $id_user == 8 || $id_user == 57 || $id_user == 3229 || $id_user == 1515 || $id_user == 2991 || $id_user == 6636 || $id_user == 4457 || $id_user == 2511 || $id_user == 6639 || $id_user == 637 || $id_user == 1083 || $id_user == 7952){ 
       return $data;
     }
     else{
