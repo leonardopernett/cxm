@@ -6456,16 +6456,61 @@ public function actionCantidadentto(){
         
         // Condicional para buscar las categorizadas y las que no estan categorizadas
         if ($dataContenedor == "2") {
+          $varConteoContiene = (new \yii\db\Query())
+            ->select(['tbl_dashboardspeechcalls.callId'])
+            ->from(['tbl_speech_general'])
+            ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                  'tbl_speech_general.callid = tbl_dashboardspeechcalls.callid')
+            ->where(['=','tbl_dashboardspeechcalls.servicio',$databolsita])
+            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])            
+            ->andwhere(['=','tbl_dashboardspeechcalls.anulado',$varAnulados])
+            ->andwhere('tbl_dashboardspeechcalls.idcategoria != :varGeneralCategoria',[':varGeneralCategoria'=>$dataidgeneral])
+            ->andwhere(['IN','tbl_dashboardspeechcalls.extension',$arrayExtTwo])
+            ->andfilterwhere(['IN','tbl_dashboardspeechcalls.login_id',$dataAsesores])
+            ->andfilterwhere(['IN','tbl_speech_general.idvariable',$dataCategorias])
+            ->andfilterwhere(['IN','tbl_speech_general.callId',$dataIdInteraccion])
+            ->andwhere(['=','tbl_speech_general.programacliente',$databolsita])
+            ->andwhere(['IN','tbl_speech_general.extension',$arrayExtTwo])            
+            ->groupBy(['tbl_dashboardspeechcalls.callId'])
+            ->count();
+
+          $varLimitesBusqueda = $varcantllamadas - $varConteoContiene;
+
+          $varNoVariables = (new \yii\db\Query())
+            ->select(['tbl_speech_categorias.idcategoria'])
+            ->from(['tbl_speech_categorias'])
+            ->where(['=','tbl_speech_categorias.cod_pcrc',$paramsvarcodigopcrc])
+            ->andwhere(['=','tbl_speech_categorias.programacategoria',$databolsita])            
+            ->andwhere(['=','tbl_speech_categorias.anulado',0])
+            ->andfilterwhere(['NOT IN','tbl_speech_categorias.idcategoria',$dataCategorias])
+            ->andwhere(['=','tbl_speech_categorias.idcategorias',2])
+            ->groupBy(['tbl_speech_categorias.idcategoria'])
+            ->All();
+
+          $varArrayNoVariables = array();
+          foreach ($varNoVariables as $key => $value) {
+            array_push($varArrayNoVariables, $value['idcategoria']);
+          }
+          $listacallaidarraynovar = implode(", ", $varArrayNoVariables);
+          $dataNoVariables = explode(",", str_replace(array("#", "'", ";", " "), '', $listacallaidarraynovar));
+
           $dataProvider = (new \yii\db\Query())
-            ->select(['*'])
-            ->from(['tbl_dashboardspeechcalls'])
-            ->where(['=','servicio',$databolsita])
-            ->andwhere(['BETWEEN','fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])
-            ->andfilterwhere(['IN','idcategoria',$dataCategorias])
-            ->andwhere(['=','anulado',$varAnulados])
-            ->andwhere(['IN','extension',$arrayExtTwo])
-            ->andfilterwhere(['IN','login_id',$dataAsesores])
-            ->andfilterwhere(['IN','callId',$dataIdInteraccion])
+            ->select(['tbl_dashboardspeechcalls.callId','tbl_dashboardspeechcalls.idcategoria','tbl_dashboardspeechcalls.nombreCategoria','tbl_dashboardspeechcalls.extension','tbl_dashboardspeechcalls.login_id','tbl_dashboardspeechcalls.fechallamada','tbl_dashboardspeechcalls.callduracion','tbl_dashboardspeechcalls.servicio','tbl_dashboardspeechcalls.fechareal','tbl_dashboardspeechcalls.idredbox','tbl_dashboardspeechcalls.idgrabadora','tbl_dashboardspeechcalls.connid','tbl_dashboardspeechcalls.extensiones'])
+            ->from(['tbl_speech_general'])
+            ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
+                                  'tbl_speech_general.callid = tbl_dashboardspeechcalls.callid')
+            ->where(['=','tbl_dashboardspeechcalls.servicio',$databolsita])
+            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])            
+            ->andwhere(['=','tbl_dashboardspeechcalls.anulado',$varAnulados])
+            ->andwhere('tbl_dashboardspeechcalls.idcategoria != :varGeneralCategoria',[':varGeneralCategoria'=>$dataidgeneral])
+            ->andwhere(['IN','tbl_dashboardspeechcalls.extension',$arrayExtTwo])
+            ->andfilterwhere(['IN','tbl_dashboardspeechcalls.login_id',$dataAsesores])
+            ->andfilterwhere(['IN','tbl_speech_general.idvariable',$dataNoVariables])
+            ->andfilterwhere(['IN','tbl_speech_general.callId',$dataIdInteraccion])
+            ->andwhere(['=','tbl_speech_general.programacliente',$databolsita])
+            ->andwhere(['IN','tbl_speech_general.extension',$arrayExtTwo])            
+            ->groupBy(['tbl_dashboardspeechcalls.callId'])
+            ->limit($varLimitesBusqueda)
             ->All();
 
         }else{
