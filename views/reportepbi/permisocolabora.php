@@ -67,6 +67,7 @@ $datacolab = (array)json_decode($dataper);
 		</tr>
 		<?php
 				//foreach ($datacolab as $key => $value) {
+                    $correo = null;
                     for ($i = 1; $i < count($datacolab); $i++) {
                         foreach ($datacolab[$i] as $key => $value) {
                             if($key == 'emailAddress'){
