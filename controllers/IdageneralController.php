@@ -1041,12 +1041,20 @@ use app\models\IdaGeneral;
         $varNombreAsesor = Yii::$app->dbjarvis->createCommand('
           SELECT dp_usuarios_red.nombre FROM dp_usuarios_red
             WHERE 
-              dp_usuarios_red.usuario_red = :varLoginSpeech ')->bindValues($varParamsLogin)->queryScalar();
+              dp_usuarios_red.usuario_red = :varLoginSpeech 
+                AND dp_usuarios_red.fecha_creacion_usuario = (
+                  SELECT MAX(fecha_creacion_usuario) FROM dp_usuarios_red
+                    WHERE 
+                      dp_usuarios_red.usuario_red = :varLoginSpeech) ')->bindValues($varParamsLogin)->queryScalar();
 
         $varCedulaAsesor = Yii::$app->dbjarvis->createCommand('
           SELECT dp_usuarios_red.documento FROM dp_usuarios_red
             WHERE 
-              dp_usuarios_red.usuario_red = :varLoginSpeech ')->bindValues($varParamsLogin)->queryScalar();
+              dp_usuarios_red.usuario_red = :varLoginSpeech 
+                AND dp_usuarios_red.fecha_creacion_usuario = (
+                  SELECT MAX(fecha_creacion_usuario) FROM dp_usuarios_red
+                    WHERE 
+                      dp_usuarios_red.usuario_red = :varLoginSpeech) ')->bindValues($varParamsLogin)->queryScalar();
 
         $varpromedioagent = (new \yii\db\Query())
                         ->select([
