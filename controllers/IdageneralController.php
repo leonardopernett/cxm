@@ -1036,6 +1036,18 @@ use app\models\IdaGeneral;
       for ($i=0; $i < $arra_login_idagent; $i++) { 
         $varusuariologinagent = $varlogin_idagent[$i];
 
+        // Aqui busca el asesor en Jarvis
+        $varParamsLogin = [':varLoginSpeech'=>$varusuariologinagent];
+        $varNombreAsesor = Yii::$app->dbjarvis->createCommand('
+          SELECT dp_usuarios_red.nombre FROM dp_usuarios_red
+            WHERE 
+              dp_usuarios_red.usuario_red = :varLoginSpeech ')->bindValues($varParamsLogin)->queryScalar();
+
+        $varCedulaAsesor = Yii::$app->dbjarvis->createCommand('
+          SELECT dp_usuarios_red.documento FROM dp_usuarios_red
+            WHERE 
+              dp_usuarios_red.usuario_red = :varLoginSpeech ')->bindValues($varParamsLogin)->queryScalar();
+
         $varpromedioagent = (new \yii\db\Query())
                         ->select([
                             'tbl_dashboardspeechcalls.callId'
@@ -1140,7 +1152,7 @@ use app\models\IdaGeneral;
 
           $varResultadoagent = (($varconteonegativasagent - $varcontarvarnegativasagent) + $varcontarvarpositivasagent) / $varconteogeneralagent;
 
-          array_push($arraydataagent, array("usuarios"=>$varusuariologinagent,"cantidadllamadas"=>$varpromedioagent,"score"=>$varResultadoagent,"dimension"=>$varStrDimensionagent,"llamada"=>$varcallidsagent,"fechainteraccion"=>$varfechaagent));
+          array_push($arraydataagent, array("Usuario_CC"=>$varCedulaAsesor,"Usuario_Nombre"=>$varNombreAsesor,"usuarios"=>$varusuariologinagent,"cantidadllamadas"=>$varpromedioagent,"score"=>$varResultadoagent,"dimension"=>$varStrDimensionagent,"llamada"=>$varcallidsagent,"fechainteraccion"=>$varfechaagent));
         }
 
       }
