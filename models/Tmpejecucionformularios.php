@@ -57,6 +57,8 @@ use yii\helpers\Html;
  * @property double $i9_nmfactor
  * @property double $i10_nmfactor
  * @property integer $basesatisfaccion_id
+ * @property string $urlgenesys
+ * @property string $genesysconnid
  * 
  * @property TblTmpejecucionbloquedetalles[] $tblTmpejecucionbloquedetalles
  * @property TblTmpejecucionbloques[] $tblTmpejecucionbloques
@@ -104,6 +106,7 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
             [['score', 'i1_nmcalculo', 'i2_nmcalculo', 'i3_nmcalculo', 'i4_nmcalculo', 'i5_nmcalculo', 'i6_nmcalculo', 'i7_nmcalculo', 'i8_nmcalculo', 'i9_nmcalculo', 'i10_nmcalculo', 'i1_nmfactor', 'i2_nmfactor', 'i3_nmfactor', 'i4_nmfactor', 'i5_nmfactor', 'i6_nmfactor', 'i7_nmfactor', 'i8_nmfactor', 'i9_nmfactor', 'i10_nmfactor', 'basesatisfaccion_id'], 'number'],
             [['dsfuente_encuesta'], 'string', 'max' => 500],
             [['dsruta_arbol'], 'string', 'max' => 300],
+            [['urlgenesys','genesysconnid'], 'string', 'max' => 150],
             [['fecha', 'descripcion', 'valorador_inicial_id', 'valorador_id'], 'required', 'on' => 'tmpejecucionescalado'],
         ];
     }
@@ -160,6 +163,8 @@ class Tmpejecucionformularios extends \yii\db\ActiveRecord {
             'i9_nmfactor' => Yii::t('app', 'I9 Nmfactor'),
             'i10_nmfactor' => Yii::t('app', 'I10 Nmfactor'),
             'basesatisfaccion_id' => Yii::t('app', 'ID Gestion Satisfaccion'),
+            'urlgenesys' => Yii::t('app', ''),
+            'genesysconnid' => Yii::t('app', '')
         ];
     }
 

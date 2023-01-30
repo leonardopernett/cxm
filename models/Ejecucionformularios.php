@@ -63,6 +63,8 @@ use yii\base\Exception;
  * @property double $pec_rack
  * @property double $scor
  * @property integer $basesatisfaccion_id
+ * @property string $urlgenesys
+ * @property string $genesysconnid
  * 
  * @property TblEjecucionfeedbacks[] $tblEjecucionfeedbacks
  * @property TblArbols $arbol
@@ -109,7 +111,8 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
             'pec_rack', 'score'], 'number'],
             [['dsfuente_encuesta'], 'string', 'max' => 500],
             [['dsruta_arbol'], 'string', 'max' => 300],
-            [['subi_calculo'], 'string', 'max' => 50],
+            [['subi_calculo'], 'string', 'max' => 50],            
+            [['urlgenesys','genesysconnid'], 'string', 'max' => 150],
             [['i1_cdtipo_eval', 'i2_cdtipo_eval', 'i3_cdtipo_eval', 'i4_cdtipo_eval',
             'i5_cdtipo_eval', 'i6_cdtipo_eval', 'i7_cdtipo_eval', 'i8_cdtipo_eval',
             'i9_cdtipo_eval', 'i10_cdtipo_eval'], 'string', 'max' => 3],
@@ -177,6 +180,8 @@ class Ejecucionformularios extends \yii\db\ActiveRecord {
             'pec_rack' => Yii::t('app', 'Pec Rack'),
             'score' => Yii::t('app', 'Score'),
             'basesatisfaccion_id' => Yii::t('app', 'ID Gestion Satisfaccion'),
+            'urlgenesys' => Yii::t('app', ''),
+            'genesysconnid' => Yii::t('app', ''),
         ];
     }
 
