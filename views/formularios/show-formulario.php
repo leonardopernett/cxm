@@ -576,6 +576,23 @@ $contadorSecciones = 0;
 
                             <?php endif; ?>  
 
+                            <?php
+                            if ($data->tmp_formulario->urlgenesys):
+                                ?>
+                                <tr>
+                                    <th><?php echo Yii::t("app", "Url llamada - Genesys"); ?></th>
+                                    <td>
+                                        <label style="font-size: 12px;"><a href="<?php echo  $data->tmp_formulario->urlgenesys; ?>" target="_blank"> <?= Yii::t('app', 'Abrir Enlace de Interacción -> '.$data->tmp_formulario->genesysconnid) ?> </a></label>
+                                        
+                                        <?php $form = ActiveForm::begin(['layout' => 'horizontal']);?>
+                                            <?= $form->field($model, 'urlgenesys')->textInput(['class' => 'hidden', 'id' => 'requesterurlgenesys', 'value'=>$data->tmp_formulario->urlgenesys])->label('') ?>
+                                            <?= $form->field($model, 'genesysconnid')->textInput(['class' => 'hidden', 'id' => 'requestergenesysconnid', 'value'=>$data->tmp_formulario->genesysconnid])->label('') ?>
+                                        <?php ActiveForm::end();?>
+                                        
+                                    </td>
+                                </tr>                        
+                            <?php endif; ?>
+
 
                         </tbody>
                     </table>
