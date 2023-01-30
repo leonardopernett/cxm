@@ -57,7 +57,7 @@ class FormulariosController extends Controller {
                                     'guardaryenviarformulario', 'interaccionmanual',
                                     'showformulario', 'showsubtipif',
                                     'getarbolesbyroles', 'getarbolesbypermisos', 'getarboles', 'indexescalados', 'indexescaladosenviados', 'consultarcalificacionsubi', 'metricalistmultipleform',
-                                    'adicionarform', 'escalarform', 'evaluadosbyform', 'getarbolesbyform', 'borrarformulariodiligenciadoescalado', 'evaluadoresbyarbolseleccescalado'],
+                                    'adicionarform', 'escalarform', 'evaluadosbyform', 'getarbolesbyform', 'borrarformulariodiligenciadoescalado', 'evaluadoresbyarbolseleccescalado','listarllamadasgenesys','listarllamadasgenesysauto'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -65,7 +65,7 @@ class FormulariosController extends Controller {
                         },
                             ],
                             [
-                                'actions' => ['guardarpaso3', 'showformulariobyarbol'],
+                                'actions' => ['guardarpaso3', 'showformulariobyarbol','listarllamadasgenesys','listarllamadasgenesysauto'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -82,7 +82,7 @@ class FormulariosController extends Controller {
                                     'getarbolesbyroles',
                                     'getarboles',
                                     'getarbolesbypermisos',
-                                    'getarbolesbyrolesreportes', 'metricalistmultipleform', 'listarpcrc'],
+                                    'getarbolesbyrolesreportes', 'metricalistmultipleform', 'listarpcrc','listarllamadasgenesys','listarllamadasgenesysauto'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
