@@ -43,7 +43,12 @@ use app\models\Procesoclientecentroscosto;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos','viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls','parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores','parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad','adminmensajes','listarnombres','adminpcrc','actualizapcrc','procesopcrc'],
+            'only' => ['index','viewresponsability','categoriascxm','viewescucharmas','deletepermisos',
+            'viewusuariosencuestas','importarusuarios','deletesip','buscarurls','calcularurls',
+            'parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores',
+            'parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad',
+            'adminmensajes','listarnombres','adminpcrc','actualizapcrc','procesopcrc',
+            'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio'],
             'rules' => [
               [
                 'allow' => true,

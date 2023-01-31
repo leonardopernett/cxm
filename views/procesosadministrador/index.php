@@ -280,6 +280,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-paperclip" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Verificar Acciones Genesys Banco') ?></label>
+                        <?= Html::a('Aceptar',  ['admingenesys'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Verificar Acciones Genesys']) 
+                        ?>
+                    </div>
+                </div>
                 
             </div>
 
