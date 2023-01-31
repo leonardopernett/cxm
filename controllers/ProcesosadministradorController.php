@@ -2237,6 +2237,8 @@ use app\models\Procesoclientecentroscosto;
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
             $varArbolid = $model->arbol_id;
+            $varNombreCola = $model->pcrc;
+            $varIdCola = $model->comentarios;
 
             $varVerifica = (new \yii\db\Query())
                                 ->select(['*'])
@@ -2248,6 +2250,8 @@ use app\models\Procesoclientecentroscosto;
             if ($varVerifica == 0) {
                 Yii::$app->db->createCommand()->insert('tbl_genesys_formularios',[
                     'arbol_id' => $varArbolid,
+                    'cola_genesys' => $varNombreCola,
+                    'id_cola_genesys' => $varIdCola,
                     'usua_id' => Yii::$app->user->identity->id,
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,                         
