@@ -1756,6 +1756,526 @@ use app\models\Procesoclientecentroscosto;
 
     }
 
+    public function actionAdmingenesys(){
+        $varCantidadAsesores = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_genesys_parametroasesor'])
+                                ->where(['=','tbl_genesys_parametroasesor.anulado',0])
+                                ->count();
+
+        $varCantidadArbol = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_genesys_formularios'])
+                                ->where(['=','tbl_genesys_formularios.anulado',0])
+                                ->count();
+
+        return $this->render('admingenesys',[
+            'varCantidadAsesores' => $varCantidadAsesores,
+            'varCantidadArbol' => $varCantidadArbol,
+        ]);
+    }
+
+    public function actionActualizaasesor(){
+
+        ob_start();
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_SSL_VERIFYPEER=> false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_URL => 'https://login.mypurecloud.com/oauth/token',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => 'grant_type=client_credentials',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Basic YWI0ODEyMGYtMWMyYi00NDAxLTkzMzktYjFhM2JlMmYxY2UyOkNtX2loUDF5VE9oWTI3Sjl4ZmhReHJua2F0djQtUnB6bHpQLW1DdVQ5eEk=',
+                'Content-Type: application/x-www-form-urlencoded'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+            
+        ob_clean();
+
+        if (!$response) {
+            die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+        }
+
+        // $response = json_decode(iconv( "Windows-1252", "UTF-8", $response ),true);
+
+        if (count($response) == 0) {
+            die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+        }
+
+        $varProcesosTokenUno = explode(",", $response);
+      
+        $varProcesosTokenDos = explode(":",$varProcesosTokenUno[0]);
+        $varrespuesta = str_replace('"', '', $varProcesosTokenDos[1]);        
+
+        if ($varrespuesta != "") {
+
+            $this->Obtenerasesoresgenesys($varrespuesta);
+          
+        }        
+        
+        return $this->render('admingenesys');
+    }
+
+    public function Obtenerasesoresgenesys($varrespuesta){
+        $usua_id = Yii::$app->user->identity->id; 
+
+        ob_start();
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_SSL_VERIFYPEER=> false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_URL => 'https://api.mypurecloud.com/api/v2/users?pageSize=100&pageNumber=1',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer '.$varrespuesta.''
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+            
+        ob_clean();
+
+        if (!$response) {
+            die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+        }
+
+        $response = json_decode(iconv( "Windows-1252", "UTF-8//IGNORE", $response ),true);
+
+        if (count($response) == 0) {
+            die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+        }
+
+        foreach ($response['entities'] as $key => $value) {
+            
+            if (strlen(strstr($value['name'], 'Agente')) == 0) {
+                    
+                if ($value['division']['name'] == 'Konecta') {
+                    
+                    $varGenesysCcAsesorHojaUno = $value['title'];
+
+                    if (is_numeric($varGenesysCcAsesorHojaUno)) {
+
+                        $varComprobacionGenesysHojaUno = (new \yii\db\Query())
+                                ->select(['tbl_genesys_parametroasesor.id_genesys'])
+                                ->from(['tbl_genesys_parametroasesor'])
+                                ->where(['=','tbl_genesys_parametroasesor.anulado',0])
+                                ->andwhere(['=','tbl_genesys_parametroasesor.documento_asesor',$varGenesysCcAsesorHojaUno])
+                                ->count();
+
+                        if ($varComprobacionGenesysHojaUno == 0) {
+                            Yii::$app->db->createCommand()->insert('tbl_genesys_parametroasesor',[
+                                      'id_genesys' => $value['id'],
+                                      'nombre_asesor' => $value['name'],
+                                      'documento_asesor' => $value['title'],
+                                      'username_asesor' => $value['username'],
+                                      'selfUri' => $value['selfUri'], 
+                                      'usua_id' => $usua_id,
+                                      'fechacreacion' => date('Y-m-d'),
+                                      'anulado' => 0,                         
+                            ])->execute();
+                        }
+                    }                    
+                
+                }
+
+            }
+
+        }
+
+        for ($i=2; $i <= $response['pageCount']; $i++) { 
+            
+            ob_start();
+
+            $curltwo = curl_init();
+
+            curl_setopt_array($curltwo, array(
+                CURLOPT_SSL_VERIFYPEER=> false,
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_URL => 'https://api.mypurecloud.com/api/v2/users?pageSize=100&pageNumber='.$i.'',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json',
+                    'Authorization: Bearer '.$varrespuesta.''
+                ),
+            ));
+
+            $responsetwo = curl_exec($curltwo);
+
+            curl_close($curltwo);
+                
+            ob_clean();
+
+            if (!$responsetwo) {
+                die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+            }
+
+            $responsetwo = json_decode(iconv( "Windows-1252", "UTF-8//IGNORE", $responsetwo ),true);
+
+            if (count($responsetwo) == 0) {
+                die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+            }
+
+            foreach ($responsetwo['entities'] as $key => $value) {
+                                
+                if (strlen(strstr($value['name'], 'Agente')) == 0) {
+                    
+                    if ($value['division']['name'] == 'Konecta') {
+
+                        if ($value['id'] != 'f0c5579d-e761-48d3-8ae9-37e7b7237217') {
+
+                            if ($value['id'] != '383ad4d5-c66d-4bc8-a9cc-41802fe064ca') {
+                                
+                                $usua_id = Yii::$app->user->identity->id;  
+                                
+
+                                $varGenesysCcAsesor = $value['title'];
+
+                                if (is_numeric($varGenesysCcAsesor)) {
+
+                                    $varComprobacionGenesys = (new \yii\db\Query())
+                                        ->select(['tbl_genesys_parametroasesor.id_genesys'])
+                                        ->from(['tbl_genesys_parametroasesor'])
+                                        ->where(['=','tbl_genesys_parametroasesor.anulado',0])
+                                        ->andwhere(['=','tbl_genesys_parametroasesor.documento_asesor',$varGenesysCcAsesor])
+                                        ->count();
+
+                                    if ($varComprobacionGenesys == 0) {
+                                        Yii::$app->db->createCommand()->insert('tbl_genesys_parametroasesor',[
+                                              'id_genesys' => $value['id'],
+                                              'nombre_asesor' => $value['name'],
+                                              'documento_asesor' => $value['title'],
+                                              'username_asesor' => $value['username'],
+                                              'selfUri' => $value['selfUri'], 
+                                              'usua_id' => $usua_id,
+                                              'fechacreacion' => date('Y-m-d'),
+                                              'anulado' => 0,                         
+                                        ])->execute();
+                                    }
+                                    
+                                } 
+                            }
+                              
+                        }                    
+
+                    }
+
+                }
+                
+            }
+
+            die(json_encode("Aqui vamos"));
+
+        }
+
+    }
+
+    public function actionGbuscarporasesor(){
+        $model = new Evaluados();
+        $usua_id = Yii::$app->user->identity->id; 
+        $varDataList = null;
+        $varMensaje = 0;
+        $varTmpEvaluadoId = null;
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varDocumentoAsesor = $model->identificacion;
+            $varFechas = explode(" ", $model->fechacreacion);
+
+            $varFechasInicio = $varFechas[0];
+            $varFechasFin = date('Y-m-d',strtotime($varFechas[2]."+ 1 days")); 
+
+            $varContarDias = (strtotime($varFechasInicio)-strtotime($varFechasFin))/86400;
+            $varContarDias = abs($varContarDias); $varContarDias = floor($varContarDias);
+            
+            if ($varContarDias <= 7) {
+
+                $varFechasFin = date('Y-m-d',strtotime($varFechas[2]));
+                $varFechasAsesor = $varFechasInicio."T00:00:00.000Z/".$varFechasFin."T00:00:00.000Z";
+
+
+                $varValidaAsesor = (new \yii\db\Query())
+                                ->select(['tbl_genesys_parametroasesor.id_genesys'])
+                                ->from(['tbl_genesys_parametroasesor'])
+                                ->where(['=','tbl_genesys_parametroasesor.anulado',0])
+                                ->andwhere(['=','tbl_genesys_parametroasesor.documento_asesor',$varDocumentoAsesor])
+                                ->scalar();
+
+                if (count($varValidaAsesor) != 0) {
+                    
+                    ob_start();
+                    $curl = curl_init();
+
+                    curl_setopt_array($curl, array(
+                        CURLOPT_SSL_VERIFYPEER=> false,
+                        CURLOPT_SSL_VERIFYHOST => false,
+                        CURLOPT_URL => 'https://login.mypurecloud.com/oauth/token',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                        CURLOPT_POSTFIELDS => 'grant_type=client_credentials',
+                        CURLOPT_HTTPHEADER => array(
+                            'Authorization: Basic YWI0ODEyMGYtMWMyYi00NDAxLTkzMzktYjFhM2JlMmYxY2UyOkNtX2loUDF5VE9oWTI3Sjl4ZmhReHJua2F0djQtUnB6bHpQLW1DdVQ5eEk=',
+                            'Content-Type: application/x-www-form-urlencoded'
+                        ),
+                    ));
+
+                    $response = curl_exec($curl);
+
+                    curl_close($curl);
+                        
+                    ob_clean();
+
+                    if (!$response) {
+                        die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+                    }
+
+                    if (count($response) == 0) {
+                        die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+                    }
+
+                    $varProcesosTokenUno = explode(",", $response);
+                  
+                    $varProcesosTokenDos = explode(":",$varProcesosTokenUno[0]);
+                    $varrespuesta = str_replace('"', '', $varProcesosTokenDos[1]);
+
+                    if ($varrespuesta != "") {
+                        
+                        ob_start();
+                        $curlAsesor = curl_init();
+
+                        curl_setopt_array($curlAsesor, array(
+                            CURLOPT_SSL_VERIFYPEER=> false,
+                            CURLOPT_SSL_VERIFYHOST => false,
+                            CURLOPT_URL => 'https://api.mypurecloud.com/api/v2/analytics/conversations/details/query',
+                            CURLOPT_RETURNTRANSFER => true,
+                            CURLOPT_ENCODING => '',
+                            CURLOPT_MAXREDIRS => 10,
+                            CURLOPT_TIMEOUT => 0,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => 'POST',
+                            CURLOPT_POSTFIELDS =>'{
+                                "interval": "'.$varFechasAsesor.'",
+                                "order": "asc",
+                                "orderBy": "conversationStart",
+                                "paging": {
+                                "pageSize": "100",
+                                "pageNumber": "1"
+                            },
+                            "segmentFilters": [
+                                {
+                                    "type": "and",
+                                    "predicates": [
+                                        {
+                                            "type": "dimension",
+                                            "dimension": "userId",
+                                            "operator": "matches",
+                                            "value": "'.$varValidaAsesor.'"
+                                        }
+                                    ]
+                                }
+                            ]
+                            }',
+                            CURLOPT_HTTPHEADER => array(
+                                'Authorization: Bearer '.$varrespuesta.'',
+                                'Content-Type: application/json'
+                            ),
+                        ));
+
+                        $responseAsesor = curl_exec($curlAsesor);
+
+                        curl_close($curlAsesor);
+
+                        ob_clean();
+
+                        if (!$responseAsesor) {
+                            die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+                        }
+
+                        $responseAsesor = json_decode(iconv( "Windows-1252", "UTF-8//IGNORE", $responseAsesor ),true);
+
+                        if (count($responseAsesor) == 0) {
+                            die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+                        }
+
+                        if (count($responseAsesor) != 0) {
+
+                            $varTmpEvaluadoId = (new \yii\db\Query())
+                                ->select(['tbl_evaluados.id'])
+                                ->from(['tbl_evaluados'])
+                                ->where(['=','tbl_evaluados.identificacion',$varDocumentoAsesor])
+                                ->scalar();
+
+                            $varConteoUrl = (new \yii\db\Query())
+                                ->select(['tbl_genesys_tmpinteracciones.urlgenesys'])
+                                ->from(['tbl_genesys_tmpinteracciones'])
+                                ->where(['=','tbl_genesys_tmpinteracciones.anulado',0])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.documento_asesor',$varDocumentoAsesor])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.evaluado_id',$varTmpEvaluadoId])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.fechainicio',$varFechasInicio])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.fechafin',$varFechasFin])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.usua_id',$usua_id])
+                                ->count();
+
+                            if ($varConteoUrl == 0) {
+
+                                if ($responseAsesor['totalHits'] != 0) {
+                                    foreach ($responseAsesor['conversations'] as $key => $value) {
+                                
+                                        Yii::$app->db->createCommand()->insert('tbl_genesys_tmpinteracciones',[
+                                              'documento_asesor' => $varDocumentoAsesor,
+                                              'evaluado_id' => $varTmpEvaluadoId,
+                                              'fechainicio' => $varFechasInicio,
+                                              'fechafin' => $varFechasFin,
+                                              'connid' => $value['conversationId'], 
+                                              'urlgenesys' => 'https://apps.mypurecloud.com/directory/#/engage/admin/interactions/'.$value['conversationId'], 
+                                              'usua_id' => $usua_id,
+                                              'fechacreacion' => date('Y-m-d'),
+                                              'anulado' => 0,                         
+                                        ])->execute();
+
+                                    }
+                                }else{
+                                    $varMensaje = 2;
+                                }
+                                
+                            }                            
+
+                            $varDataList = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_genesys_tmpinteracciones'])
+                                ->where(['=','tbl_genesys_tmpinteracciones.documento_asesor',$varDocumentoAsesor])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.evaluado_id',$varTmpEvaluadoId])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.fechainicio',$varFechasInicio])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.fechafin',$varFechasFin])
+                                ->andwhere(['=','tbl_genesys_tmpinteracciones.usua_id',$usua_id])
+                                ->all();
+
+                        }
+
+                    }
+
+                }else{
+                    $varMensaje = 2;
+                }
+
+            }else{
+                $varMensaje = 1;
+            }
+        }
+
+        return $this->render('gbuscarporasesor',[
+            'model' => $model,
+            'varDataList' => $varDataList,
+            'varMensaje' => $varMensaje,
+            'varTmpEvaluadoId' => $varTmpEvaluadoId,
+        ]);
+    }
+
+    public function actionGbuscarporconnid(){
+        $model = new Evaluados();
+        $varTmpEvaluadoId = null;
+        $varDataList = null;
+        $varMensaje = 0;
+
+
+        return $this->render('gbuscarporconnid',[
+            'model' => $model,
+            'varDataList' => $varDataList,
+            'varMensaje' => $varMensaje,
+            'varTmpEvaluadoId' => $varTmpEvaluadoId, 
+        ]);
+    }
+
+
+    public function actionActualizaservicio(){
+        $model = new SpeechServicios();
+
+        $varLisArbolid = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_genesys_formularios'])
+                                ->All();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varArbolid = $model->arbol_id;
+            $varNombreCola = $model->pcrc;
+            $varIdCola = $model->comentarios;
+
+            $varVerifica = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_genesys_formularios'])
+                                ->where(['=','tbl_genesys_formularios.anulado',0])
+                                ->andwhere(['=','tbl_genesys_formularios.arbol_id',$varArbolid])
+                                ->count();
+
+            if ($varVerifica == 0) {
+                Yii::$app->db->createCommand()->insert('tbl_genesys_formularios',[
+                    'arbol_id' => $varArbolid,
+                    'cola_genesys' => $varNombreCola,
+                    'id_cola_genesys' => $varIdCola,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,                         
+                ])->execute();
+            }
+
+            return $this->redirect(['actualizaservicio']);
+            
+        }
+
+        return $this->render('actualizaservicio',[
+            'model' => $model,
+            'varLisArbolid' => $varLisArbolid,
+        ]);
+    }
+
+    public function actionDeletegenesysarbol($id){
+        $paramsEliminar = [':IdControl'=>$id];          
+
+        Yii::$app->db->createCommand('
+              DELETE FROM tbl_genesys_formularios 
+                WHERE 
+                  id_genesysformularios = :IdControl')
+            ->bindValues($paramsEliminar)
+            ->execute();
+
+        return $this->redirect(['actualizaservicio']);
+    }
+
 
 
     
