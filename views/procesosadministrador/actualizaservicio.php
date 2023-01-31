@@ -240,7 +240,7 @@ $this->params['breadcrumbs'][] = $this->title;
   function varVerificar(){
     var varServicio = document.getElementById("idselectarbol").value;
     var vartextogenesys = document.getElementById("id_TextColaGenesys").value;
-    var varidgenesys = document.getElementById("id_TextColaGenesys").value;
+    var varidgenesys = document.getElementById("id_ColaGenesys").value;
 
     if (varServicio == "") {
       event.preventDefault();
