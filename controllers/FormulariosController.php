@@ -1075,18 +1075,20 @@ class FormulariosController extends Controller {
                                 ->count();
 
                 if ($varConteoFormGenesys == 0) {
-                    Yii::$app->db->createCommand()->insert('tbl_genesys_valoraciones',[
-                        'urlgenesys' => $varModelUrlGenesys,
-                        'connidgenesys' => $varModelConnidGenesys,
-                        'dimension_id' => $_POST['dimension_id'],
-                        'arbol_id' => $data->arbol_id,
-                        'valorador_id' => $data->usua_id,
-                        'evaluado_id' => $data->evaluado_id,
-                        'hora_inicial' => $data->hora_inicial,
-                        'usua_id' => Yii::$app->user->identity->id,
-                        'fechacreacion' => date('Y-m-d'),
-                        'anulado' => 0,                         
-                    ])->execute(); 
+                    if ($varModelConnidGenesys) {
+                        Yii::$app->db->createCommand()->insert('tbl_genesys_valoraciones',[
+                            'urlgenesys' => $varModelUrlGenesys,
+                            'connidgenesys' => $varModelConnidGenesys,
+                            'dimension_id' => $_POST['dimension_id'],
+                            'arbol_id' => $data->arbol_id,
+                            'valorador_id' => $data->usua_id,
+                            'evaluado_id' => $data->evaluado_id,
+                            'hora_inicial' => $data->hora_inicial,
+                            'usua_id' => Yii::$app->user->identity->id,
+                            'fechacreacion' => date('Y-m-d'),
+                            'anulado' => 0,                         
+                        ])->execute();
+                    }                     
                 }
                 
                 Yii::$app->db->createCommand()->update('tbl_ejecucionformularios',[
