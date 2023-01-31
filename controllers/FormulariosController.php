@@ -2598,6 +2598,14 @@ class FormulariosController extends Controller {
                 $txtvarAsesor = Yii::$app->request->get("txtvarAsesor");
                 $txtvarFechaInicios = Yii::$app->request->get("txtvarFechaInicios");
                 $txtvarFechaFines = Yii::$app->request->get("txtvarFechaFines");
+                $txtvarArbolId = Yii::$app->request->get("txtvarArbol");
+
+                $varIdColaGenesys = (new \yii\db\Query())
+                                ->select(['tbl_genesys_formularios.id_cola_genesys'])
+                                ->from(['tbl_genesys_formularios'])
+                                ->where(['=','tbl_genesys_formularios.anulado',0])
+                                ->andwhere(['=','tbl_genesys_formularios.arbol_id',$txtvarArbolId])
+                                ->scalar();
 
                 $varFechasAsesor = $txtvarFechaInicios."T00:00:00.000Z/".$txtvarFechaFines."T00:00:00.000Z";
 
@@ -2686,6 +2694,12 @@ class FormulariosController extends Controller {
                                             "dimension": "userId",
                                             "operator": "matches",
                                             "value": "'.$varValidaAsesor.'"
+                                        },
+                                        {
+                                         "type": "dimension",
+                                         "dimension": "queueId",
+                                         "operator": "matches",
+                                         "value": "'.$varIdColaGenesys.'"
                                         }
                                     ]
                                 }
@@ -2730,6 +2744,14 @@ class FormulariosController extends Controller {
                 $txtvarAsesorAuto = Yii::$app->request->get("txtvarAsesorAuto");
                 $txtvarFechaIniciosAuto = Yii::$app->request->get("txtvarFechaIniciosAuto");
                 $txtvarFechaFinesAuto = Yii::$app->request->get("txtvarFechaFinesAuto");
+                $txtvarArbolIdAuto = Yii::$app->request->get("txtvarArbol");
+
+                $varIdColaGenesysAuto = (new \yii\db\Query())
+                                ->select(['tbl_genesys_formularios.id_cola_genesys'])
+                                ->from(['tbl_genesys_formularios'])
+                                ->where(['=','tbl_genesys_formularios.anulado',0])
+                                ->andwhere(['=','tbl_genesys_formularios.arbol_id',$txtvarArbolIdAuto])
+                                ->scalar();
 
                 $varFechasAsesorAuto = $txtvarFechaIniciosAuto."T00:00:00.000Z/".$txtvarFechaFinesAuto."T00:00:00.000Z";
 
@@ -2817,6 +2839,12 @@ class FormulariosController extends Controller {
                                             "dimension": "userId",
                                             "operator": "matches",
                                             "value": "'.$varValidaAsesorAuto.'"
+                                        },
+                                        {
+                                         "type": "dimension",
+                                         "dimension": "queueId",
+                                         "operator": "matches",
+                                         "value": "'.$varIdColaGenesysAuto.'"
                                         }
                                     ]
                                 }

@@ -303,6 +303,7 @@ $varFechaFin = date('Y-m-d',strtotime($varFechaPrincipal."- 1 days"));
         var varAsesor = document.getElementById("varIdAsesor").value;
         var varFechaInicios = "<?php echo $varFechaInicio; ?>";
         var varFechaFines = "<?php echo $varFechaFin; ?>";
+        var varArbol = "<?php echo $arbol_id; ?>";
 
         var varVerificaciones = "<?php echo $varConteoVerificar; ?>";
 
@@ -327,7 +328,8 @@ $varFechaFin = date('Y-m-d',strtotime($varFechaPrincipal."- 1 days"));
                                 data : {
                                     txtvarAsesorAuto : varAsesor,     
                                     txtvarFechaIniciosAuto : varFechaInicios,
-                                    txtvarFechaFinesAuto : varFechaFines,          
+                                    txtvarFechaFinesAuto : varFechaFines,   
+                                    txtvarArbol : varArbol,                 
                                 },
                                 success : function(response){
                                     var Rta =  $.parseJSON(response);
@@ -354,6 +356,7 @@ $varFechaFin = date('Y-m-d',strtotime($varFechaPrincipal."- 1 days"));
         var varAsesor = document.getElementById("varIdAsesor").value;
         var varFechaInicios = "<?php echo $varFechaInicio; ?>";
         var varFechaFines = "<?php echo $varFechaFin; ?>";
+        var varArbol = "<?php echo $arbol_id; ?>";
 
         var varSecundaria = document.getElementById("idcapaSecundaria");
         var varidbtnBuscar = document.getElementById("idbtnBuscar");
@@ -374,7 +377,8 @@ $varFechaFin = date('Y-m-d',strtotime($varFechaPrincipal."- 1 days"));
                 data : {
                     txtvarAsesor : varAsesor,     
                     txtvarFechaInicios : varFechaInicios,
-                    txtvarFechaFines : varFechaFines,          
+                    txtvarFechaFines : varFechaFines,   
+                    txtvarArbol : varArbol,                
                 },
                 success : function(response){ 
                     var Rta =  $.parseJSON(response);
