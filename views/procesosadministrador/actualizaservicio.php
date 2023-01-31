@@ -152,6 +152,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
             )->label('');
         ?> 
+
+        <br>
+
+        <label style="font-size: 15px;"><em class="fas fa-cog" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Ingresar Cola Genesys') ?></label>
+        <?= $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_TextColaGenesys','placeholder'=>'Ingresar Nombre Cola Genesys']) ?> 
+
+        <br>
+
+        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Ingresar Id Cola Genesys') ?></label>
+        <?= $form->field($model, 'comentarios', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_ColaGenesys','placeholder'=>'Ingresar Id Cola Genesys']) ?>       
         
 
         <br>
@@ -188,7 +198,8 @@ $this->params['breadcrumbs'][] = $this->title;
           <caption><label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Lista de Programas/Pcrc ') ?></label></caption>
           <thead>
             <tr>
-              <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Programa/Pcrc') ?></label></th>
+              <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Programa/Pcrc - CXM') ?></label></th>
+              <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Nombre Cola - Genesys') ?></label></th>
               <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
             </tr>
           </thead>
@@ -204,6 +215,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
                   <tr>
                     <td><label style="font-size: 12px;"> <?= Yii::t('app', $varNombrepcrc) ?> </label></td>
+                    <td><label style="font-size: 12px;"> <?= Yii::t('app', $value['cola_genesys']) ?> </label></td>
                     <td class="text-center">
                       <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletegenesysarbol','id'=> $value['id_genesysformularios']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                     </td>
