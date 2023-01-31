@@ -174,7 +174,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     </div>
   </div>
   <br>
-<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "7952") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "7952" || $sessiones == "69") {?>
   
   <br>
   <h3>&nbsp;</h3>
@@ -261,7 +261,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               </div>
           </div>
  <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952") {?>
+<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952" || $sessiones == "69") {?>
 
           <div class="col-md-2">
               <div class="card mb">            
@@ -274,7 +274,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               </div>
           </div>
 <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952" || $sessiones == "69") {?>
 
           <div class="col-md-2">
               <div class="card mb">           
