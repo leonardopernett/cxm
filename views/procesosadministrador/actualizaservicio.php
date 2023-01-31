@@ -239,10 +239,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
   function varVerificar(){
     var varServicio = document.getElementById("idselectarbol").value;
+    var vartextogenesys = document.getElemtById("id_TextColaGenesys").value;
+    var varidgenesys = document.getElementById("id_TextColaGenesys").value;
 
     if (varServicio == "") {
       event.preventDefault();
       swal.fire("!!! Advertencia !!!","Se debe de seleccionar un programa/pcrc.","warning");
+      return;
+    }
+    if (vartextogenesys == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Se debe de ingresar el nombre de la cola del servicio de genesys.","warning");
+      return;
+    }
+    if (varidgenesys == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Se debe de id de genesys sobre la cola del servicio","warning");
       return;
     }
 
