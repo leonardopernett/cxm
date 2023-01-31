@@ -35,6 +35,7 @@ use app\models\IdealServicios;
 use app\models\SpeechServicios;
 use app\models\Encuestaspersonalsatu;
 use app\models\Procesoclientecentroscosto;
+use app\models\Evaluados;
 
 
   class ProcesosadministradorController extends \yii\web\Controller {
