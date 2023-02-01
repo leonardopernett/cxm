@@ -60,7 +60,11 @@ class ReportesAdministracion extends Model
     // Obtener un access token de AD Azure
   public function getAzureAccessToken(){
 
-    $txtRta = Yii::$app->db->createCommand("select azure_content from tbl_config_powerbi")->queryAll();
+    //$txtRta = Yii::$app->db->createCommand("select azure_content from tbl_config_powerbi")->queryAll();
+    $txtRta = (new \yii\db\Query())
+		->select(['azure_content'])
+		->from(['tbl_config_powerbi'])
+		->All();
 
     $arrayazure = array();
     foreach ($txtRta as $key => $value) {
@@ -166,6 +170,8 @@ class ReportesAdministracion extends Model
       ]);
       
       // Retornar el access token de la respuesta
+
+      //Se crea proceso de 
       return TRUE;
     }
     catch(Exception $e){
@@ -220,7 +226,11 @@ class ReportesAdministracion extends Model
       return 'Reporte no valido';
     }
 
-    $txtRta = Yii::$app->db->createCommand("select azure_content from tbl_config_powerbi")->queryAll();
+    //$txtRta = Yii::$app->db->createCommand("select azure_content from tbl_config_powerbi")->queryAll();
+    $txtRta = (new \yii\db\Query())
+		->select(['azure_content'])
+		->from(['tbl_config_powerbi'])
+		->All();
 
     $arrayazure = array();
     foreach ($txtRta as $key => $value) {
@@ -265,7 +275,7 @@ class ReportesAdministracion extends Model
   public function search_user_permits ($reporte){
     
   $id_reporte = $reporte['id'];
-   $get_users = Yii::$app->db->createCommand("select 
+   /*$get_users = Yii::$app->db->createCommand("select 
         a.usua_id,
         UPPER(a.usua_nombre) AS nombre,
         a.usua_identificacion,
@@ -280,7 +290,17 @@ class ReportesAdministracion extends Model
 
         WHERE a.usua_activo = 'S'
 
-        GROUP BY a.usua_id")->queryAll();
+        GROUP BY a.usua_id")->queryAll();*/
+   $get_users = (new \yii\db\Query()) 
+      ->select(['tbl_usuarios.usua_id', 'UPPER(tbl_usuarios.usua_nombre) AS nombre','tbl_usuarios.usua_identificacion','tbl_usuarios.usua_usuario','tbl_permisos_reportes_powerbi.id_reporte','SUM(IF(tbl_permisos_reportes_powerbi.id_reporte = $id_reporte,1,0)) AS tiene_permiso'])
+      ->from(['tbl_usuarios'])
+      ->join('LEFT JOIN', 'tbl_permisos_reportes_powerbi',
+      'tbl_usuarios.usua_id = tbl_permisos_reportes_powerbi.id_usuario')
+      ->where(['=','tbl_speech_parametrizar.id_dp_clientes',$txtvllamadas])
+      ->andWhere(['=','tbl_usuarios.usua_activo','S'])
+      ->groupBy('tbl_usuarios.usua_id')
+      ->All();
+
    
     return $get_users;
   }
@@ -310,13 +330,14 @@ class ReportesAdministracion extends Model
   // FUNCTION SAVE REPORT PERMITS BY USER END
 
   // FUNCTION FILTER USER PERMITS
-  public function filter_user_permits ($type,$data, $sessiones){
+  public function filter_user_permits ($type,$data, $sessiones, $id){
     //TYPE permitidos:
     // WORKSPACE
     // REPORT
 
     
     $id_user = $sessiones;
+    $id_accion = $id;
     /*$admin_permit = Yii::$app->db->createCommand("select azure_content from tbl_config_powerbi")->queryAll();
     $admin_permit = $this->db->get_where('permisos_usuarios', array('permiso' => 88,"id_usuario"=>$id_user));
     if(!$admin_permit){
@@ -326,7 +347,7 @@ class ReportesAdministracion extends Model
     // SI TIENE PERMISO ADMINISTRADOR, SE MOSTRARAN TODOS LOS WORKSPACES / REPORTES
     if($admin_permit->num_rows() > 0 ){*/
       //if($id_user == 3205 || $id_user == 2953 || $id_user == 7 || $id_user == 69 || $id_user == 2915 || $id_user == 8 || $id_user == 3468){
-      if($id_user == 3205 || $id_user == 2953 || $id_user == 3468 || $id_user == 69 || $id_user == 8 || $id_user == 57 || $id_user == 3229 || $id_user == 1515 || $id_user == 2991 || $id_user == 6636 || $id_user == 4457 || $id_user == 2511 || $id_user == 6639 || $id_user == 637 || $id_user == 1083 || $id_user == 7952){ 
+      if($id_user == 3205 || $id_user == 2953 || $id_user == 3468 || $id_user == 69 || $id_user == 8 || $id_user == 57 || $id_user == 3229 || $id_user == 1515 || $id_user == 2991 || $id_user == 6636 || $id_user == 4457 || $id_user == 2511 || $id_user == 6639 || $id_user == 637 || $id_user == 1083){ 
       return $data;
     }
     else{
@@ -337,7 +358,20 @@ class ReportesAdministracion extends Model
 
       // BUSCAR LOS WORKSPACE Y REPORTES QUE EL USUARIO TIENE PERMISO ACTUALMENTE
       
-      $reports_permits = Yii::$app->db->createCommand("select id_usuario,id_reporte,id_workspace from tbl_permisos_reportes_powerbi where id_usuario = $id_user")->queryAll();
+      //$reports_permits = Yii::$app->db->createCommand("select id_usuario,id_reporte,id_workspace from tbl_permisos_reportes_powerbi where id_usuario = $id_user")->queryAll();
+      $reports_permits = (new \yii\db\Query())
+        ->select(['tbl_permisos_reportes_powerbi.id_usuario','tbl_permisos_reportes_powerbi.id_reporte','tbl_permisos_reportes_powerbi.id_workspace'])
+        ->from(['tbl_permisos_reportes_powerbi'])
+        ->join('INNER JOIN', 'tbl_workspace_powerbi',
+        'tbl_permisos_reportes_powerbi.id_workspace = tbl_workspace_powerbi.id_workspace')
+        ->where(['=','tbl_permisos_reportes_powerbi.id_usuario',$id_user])
+        ->andwhere(['=','tbl_workspace_powerbi.accion',$id_accion])
+        ->All();
+        /*$reports_permits = (new \yii\db\Query())
+        ->select(['tbl_permisos_reportes_powerbi.id_usuario','tbl_permisos_reportes_powerbi.id_reporte','tbl_permisos_reportes_powerbi.id_workspace'])
+        ->from(['tbl_permisos_reportes_powerbi'])        
+        ->where(['=','tbl_permisos_reportes_powerbi.id_usuario',$id_user])
+        ->All();*/
       if(!$reports_permits){
         die( json_encode( array("status"=>"0","data"=>"Error al buscar los permisos del usuario ".$id_user) ) );
       }

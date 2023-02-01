@@ -19,10 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
 $idreportepbi = "'".$idreporte."'";
 $areatrabajopbi = "'".$areatrabajo."'";
 $datacolab = (array)json_decode($dataper);
+$varid = $_GET['id'];
 
 ?>
 <br>
-<?= Html::a('Regresar',  ['reporte'], ['class' => 'btn btn-success',
+<?= Html::a('Regresar',  ['reporte','varid'=>$varid], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
                         'data-toggle' => 'tooltip',
                         'title' => 'Regresar']) 

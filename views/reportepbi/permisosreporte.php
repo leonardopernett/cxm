@@ -13,6 +13,7 @@ use yii\bootstrap\modal;
 
 $this->title = 'Permisos para reportes Power BI'; 
 $this->params['breadcrumbs'][] = $this->title;
+$varid = $_GET['id'];
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';
@@ -20,7 +21,7 @@ $idreportepbi = "'".$idreporte."'";
 $areatrabajopbi = "'".$areatrabajo."'";
 ?>
 <br>
-<?= Html::a('Regresar',  ['reporte'], ['class' => 'btn btn-success',
+<?= Html::a('Regresar',  ['reporte','varid'=>$varid], ['class' => 'btn btn-success',
                         'style' => 'background-color: #707372',
                         'data-toggle' => 'tooltip',
                         'title' => 'Regresar']) 

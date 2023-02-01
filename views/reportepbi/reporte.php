@@ -26,7 +26,56 @@ $txtareatrabajo = "";
 $txtreporte= "";
 $areatrab="prueba";
 $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
+
+$varid = $_GET['varid'];
+
 ?>
+<script type="text/javascript">
+  function nombreareatrab1(){       
+        var varareatrab = document.getElementById("txtAreatrabajos2").value;
+        const el = document.getElementById('botones22');
+        el.click();
+      }
+
+  function listarep1(){
+      var varareatrabajoid = document.getElementById("txtAreatrabajos2").value;
+      var varId = "<?php echo $varid; ?>";
+     if (varareatrabajoid == "") {
+			event.preventDefault();
+				swal.fire("!!! Advertencia !!!","Debe seleccionar un area de trabajo.","warning");
+			return;
+		  }else{
+        $.ajax({
+              method: "get",
+              url: "get_reports_by_workspace1",
+              data : {
+                workspace_id : varareatrabajoid,
+                varid : varId,               
+              },
+              success : function(response){ 
+                          var Rta =   JSON.parse(response); 
+                         // alert(Rta);                                
+                          document.getElementById("txtReportes").innerHTML = "";
+                          var node = document.createElement("OPTION");
+                          node.setAttribute("value", "");
+                          var textnode = document.createTextNode("Seleccionar...");
+                          node.appendChild(textnode);
+                          document.getElementById("txtReportes").appendChild(node);
+                          for (var i = 0; i < Rta.data.length; i++) {
+                              var node = document.createElement("OPTION");
+                              node.setAttribute("value", Rta.data[i].id);
+                              var textnode = document.createTextNode(Rta.data[i].name);
+                              node.appendChild(textnode);
+                              document.getElementById("txtReportes").appendChild(node);
+                          }
+                          document.getElementById("txtReportes").options[0].disabled = true;
+			                    var x=document.getElementById("txtReportes");
+                          x.disabled=false;
+                      }
+          }); 
+        }
+    }
+</script>
  <style>
     #container_report{
       min-height:90vh;
@@ -126,15 +175,38 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
 <br>
 <br>
 <div class="Principal">
+    
+<div  class="btn btn-primary" method='post' style="visibility: hidden;" id="botones22"  onclick="listarep1();">
+                        Buscar Reporte
+                    </div>    
+                     
   <div id="capaUno" style="display: inline">    
     <div id="dtbloque0" class="form-group col-sm-12" style="display: inline;">
       <div class="primeralinea">
         <div class="row">
           <div class="col-md-6">
-              <div class="card mb">         
+              <div class="card mb">
+                 
                 <label><em class="far fa-edit" style="font-size: 20px; color: #559FFF;"></em> &Aacuterea de trabajo:</label>
                 <br>
                 <label>Seleccione Nombre:</label>
+                <?php 
+                $canti_fila = count($listaworkspaces);
+                if(count($listaworkspaces) == 1){
+                                    
+                  ?>
+                  <select class ='form-control' id="txtAreatrabajos2" data-toggle="tooltip" title="Area de trabajo" onchange="nombreareatrab();">                              
+                               <?php                          
+                                    foreach ($listaworkspaces as $key => $value) {
+                                       echo "<option value = '".$value['id']."'>".$value['name']."</option>";
+                                    }
+                                ?>
+                </select>
+                
+                <?php
+                echo '<script>', 'nombreareatrab1();', '</script>';
+                } else {
+                ?>
                 <select class ='form-control' id="txtAreatrabajos" data-toggle="tooltip" title="Area de trabajo" onchange="nombreareatrab();">
                               <option value="" disabled selected>Seleccionar...</option>  
                                <?php                          
@@ -143,10 +215,13 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
                                     }
                                 ?>
                 </select>
+                <?php
+                } 
+                ?>
                 <br>
                         
                 <div class="row" style="text-align:center;">      
-                    <div  class="btn btn-primary"  method='post' id="botones2"  onclick="listarep();">
+                    <div  class="btn btn-primary" method='post' id="botones2" style="visibility: hidden;" onclick="listarep();">
                         Buscar Reporte
                     </div>    
                 </div>
@@ -158,7 +233,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
                 <label><em class="far fa-chart-bar" style="font-size: 20px; color: #ed346f;"></em> &Aacuterea de reportes:</label>
                 <br>
                 <label>Seleccione reporte:</label>
-                <select class ='form-control' id="txtReportes" data-toggle="tooltip" title="Reportes" align="center" disabled>
+                <select class ='form-control' id="txtReportes" data-toggle="tooltip" title="Reportes"  disabled>
                                <option value="" disabled selected>Seleccionar...</option>                                         
                 </select>
                 <br>    
@@ -174,7 +249,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     </div>
   </div>
   <br>
-<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "7952") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636") {?>
   
   <br>
   <h3>&nbsp;</h3>
@@ -261,7 +336,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               </div>
           </div>
  <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952") {?>
+<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475") {?>
 
           <div class="col-md-2">
               <div class="card mb">            
@@ -274,7 +349,7 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               </div>
           </div>
 <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475") {?>
 
           <div class="col-md-2">
               <div class="card mb">           
@@ -294,7 +369,6 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
 <br>
 
 <script type="text/javascript">
-
   $(document).ready(function () {
         $("#graficar0").click(function () {
             $("#dtbloque0").toggle("slow");
@@ -313,6 +387,8 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
     
     function listarep(){
       var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
+      var varId = "<?php echo $varid; ?>";
+      
      if (varareatrabajoid == "") {
 			event.preventDefault();
 				swal.fire("!!! Advertencia !!!","Debe seleccionar un area de trabajo.","warning");
@@ -322,10 +398,11 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               method: "post",
               url: "get_reports_by_workspace",
               data : {
-                workspace_id : varareatrabajoid,                
+                workspace_id : varareatrabajoid,
+                varid : varId,               
               },
               success : function(response){ 
-                          var Rta =   JSON.parse(response);             
+                          var Rta =   JSON.parse(response);
                           document.getElementById("txtReportes").innerHTML = "";
                           var node = document.createElement("OPTION");
                           node.setAttribute("value", "");
@@ -405,9 +482,14 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
 
     function nombreareatrab(){
       var varareatrab = document.getElementById("txtAreatrabajos").value;
+      var x=document.getElementById("txtReportes");
+       x.disabled=true;
+      const el = document.getElementById('botones2');
+        el.click();
     }
 
     function Permisorep(){
+      var varId = "<?php echo $varid; ?>";
       var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
       var varreporteid = document.getElementById("txtReportes").value;
       var lista = document.getElementById("txtReportes");
@@ -422,18 +504,20 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               url: "permisoreporteusua",
               data : {
                 workspace : varareatrabajoid,
-                reporte : varreporteid,                
+                reporte : varreporteid,
+                varId : varId,                
               },
               success : function(response){ 
                           var Rta =   JSON.parse(response);    
                           console.log(Rta);
-                          window.location.href='permisosreporte?model='+Rta+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep;
+                          window.location.href='permisosreporte?model='+Rta+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep+'&id='+varId;
               }
         }); 
       }
     }
 
     function Permisocolab(){
+      var varId = "<?php echo $varid; ?>";
       var varareatrabajoid = document.getElementById("txtAreatrabajos").value;      
       var varreporteid = document.getElementById("txtReportes").value;
       var lista = document.getElementById("txtReportes");
@@ -447,28 +531,39 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
               method: "post",
               url: "search_workspace_contributors",
               data : {
-                workspace : varareatrabajoid,        
+                workspace : varareatrabajoid,
               },
               success : function(response){ 
                           var Rta =   JSON.parse(response);
                           var rta2 = 1    
                           console.log(Rta);
 
-                          window.location.href='permisocolabora?dataper='+JSON.stringify(Rta)+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep;
+                          window.location.href='permisocolabora?dataper='+JSON.stringify(Rta)+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep+'&id='+varId;
               }
         }); 
       }
     }
     
     function generarepor(){
-      var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
-      var listaarea = document.getElementById("txtAreatrabajos");
+      var varcanti_fila = "<?php echo $canti_fila; ?>";
+      
+      if (varcanti_fila == 1) {
+        var varareatrabajoid = document.getElementById("txtAreatrabajos2").value;
+        var listaarea = document.getElementById("txtAreatrabajos2");
       var indice = listaarea.selectedIndex;
+      } else {
+        var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
+        var listaarea = document.getElementById("txtAreatrabajos");
+      var indice = listaarea.selectedIndex;
+      }
+      //var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
+     
       var opcionSeleccionada = listaarea.options[indice];
       var varnombrearea = opcionSeleccionada.text;
       var varreporteid = document.getElementById("txtReportes").value;
       var lista = document.getElementById("txtReportes");
-      var varnombrerep = lista.options[lista.selectedIndex].text;      
+      var varnombrerep = lista.options[lista.selectedIndex].text;     
+      alert(varreporteid);
       
      if (varareatrabajoid == "" || varreporteid == "") {
 			event.preventDefault();
@@ -504,7 +599,33 @@ $listaworkspaces = json_decode(json_encode($listaworkspaces), true);
       }  
     }
 
-    
+    function guardalog(){
+
+      var varareatrabajoid = document.getElementById("txtAreatrabajos").value;
+      var listaarea = document.getElementById("txtAreatrabajos");
+      var indice = listaarea.selectedIndex;
+      var opcionSeleccionada = listaarea.options[indice];
+      var varnombrearea = opcionSeleccionada.text;
+          
+      var varreporteid = document.getElementById("txtReportes").value;
+      var lista = document.getElementById("txtReportes");
+      var varnombrerep = lista.options[lista.selectedIndex].text;
+      //alert(varnombrearea);
+      
+      $.ajax({
+                  method: "post",
+                  url: "crearlogpbi",
+                  data : {
+                    report_name : varnombrerep,
+                    area_name : varnombrearea,
+                },
+                success : function(response){
+                    var numRtaEv =   JSON.parse(response);
+                    location.reload();
+                }
+            }); 
+      
+  };
    
 </script>
 <!-- Modal -->
