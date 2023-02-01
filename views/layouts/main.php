@@ -192,24 +192,7 @@ AppAsset::register($this);
                         'activateParents' => true,
                         'encodeLabels' => false,
                         'options' => ['class' => 'navbar-nav navbar-right'],
-                        'items' => [ 
-                            [                              
-                                'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/BI.png" width="40" height="25">'.Yii::t('app', '&nbsp;RESULTADOS&nbsp;&nbsp;&nbsp;&nbsp;'), 
-                                'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo(),                                
-                                'items' => [
-                                    '<div class="row">',
-                                        
-                                        '<div class="col-md-12">',
-                                            '<li class="dropdown-headercx2">&nbsp;Dashboard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>',  
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte BI&nbsp;&nbsp;'),
-                                                    'url' => ['/reportepbi/reporte'],
-                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo(),
-                                                ],
-                                        '</div>',
-                                    '</div>',
-                                ],
-                            ],                     
+                        'items' => [                                                 
                             [
 
                                 'class' => 'ico1',
@@ -236,7 +219,14 @@ AppAsset::register($this);
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gestor del Cliente&nbsp;&nbsp;'),
                                                     'url' => ['/hojavida/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
-                                                ],                                              
+                                                ],                                                  
+                                                '<br>',
+                                            '<li class="dropdown-headercx2">&nbsp;Resultados&nbsp;</li>',    
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Voc BI&nbsp;&nbsp;'),
+                                                    'url' => ['/reportepbi/reporte?varid=1'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],                                               
                                             
                                         '</div>',  
 
@@ -296,7 +286,13 @@ AppAsset::register($this);
                                                     'url' => ['/evaluaciondesarrollo/gestionnovedades'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
-                                            '<br>',
+                                            '<br>',                                           
+                                            '<li class="dropdown-headercx2">&nbsp;Resultados&nbsp;</li>',    
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Voe BI&nbsp;&nbsp;'),
+                                                    'url' => ['/reportepbi/reporte?varid=2'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
                                         '</div>',
 
                                     '</div>',
@@ -483,6 +479,14 @@ AppAsset::register($this);
                                                     'url' => ['/historicomixto/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
+                                                '<br>',
+                                            '<li class="dropdown-headercx2">&nbsp;Resultados&nbsp;</li>',    
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Voux BI&nbsp;&nbsp;'),
+                                                    'url' => ['/reportepbi/reporte?varid=3'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                '<br>',
                                         '</div>',
                                             
                                     '</div>',

@@ -80,9 +80,10 @@ use app\models\ControlProcesosEquipos;
           }
       }
         
-    public function actionReporte(){
-             
+    public function actionReporte($varid){
+           
     $model = new ReportesAdministracion();
+    $var_id = $varid;
     $sessiones = Yii::$app->user->identity->id;
     // Obtener un access token de azure AD para consumir API
     $accessToken = $model->getAzureAccessToken();
@@ -94,7 +95,9 @@ use app\models\ControlProcesosEquipos;
     }
     
     // CONSEGUIR LISTA DE TODOS LOS WORKSPACES
-    $listWorkspaces = $model->get_list_workspaces($accessToken);
+    $listWorkspaces = $model->get_list_workspaces($accessToken);   
+
+  
     
     if(!is_array($listWorkspaces)){
       if(is_string($listWorkspaces)){
@@ -106,8 +109,9 @@ use app\models\ControlProcesosEquipos;
     }
 
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
-    $listWorkspaces = $model->filter_user_permits('workspace',$listWorkspaces, $sessiones);
-    
+    $listWorkspaces = $model->filter_user_permits('workspace',$listWorkspaces, $sessiones, $var_id);
+
+
             return $this->render('reporte', [
                 'listaworkspaces' => $listWorkspaces,               
                 ]);
@@ -237,9 +241,10 @@ use app\models\ControlProcesosEquipos;
     }else{
       #code
     }
-
+    $id_s = 0;
     // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
-    $listWorkspaces = $model->filter_user_permits('workspace',$listWorkspaces,$sessiones);
+    //var_dump('Pase 3');
+    $listWorkspaces = $model->filter_user_permits('workspace',$listWorkspaces,$sessiones,$id_s);
 
     die( json_encode( array("status"=>"1","data"=>$listWorkspaces) ) );
   }
@@ -250,6 +255,7 @@ use app\models\ControlProcesosEquipos;
   public function actionCreate_workspace(){
     $model = new ReportesAdministracion();
     $workspace_name = Yii::$app->request->post("workspace_name");
+    $var_Id = Yii::$app->request->post("var_Id");
 
     
     // Obtener un access token de azure AD para consumir API
@@ -268,7 +274,27 @@ use app\models\ControlProcesosEquipos;
     }else{
       #code
     }
-    
+    // Se procede a guardar el workspace_name en tabla de CXM
+    // CONSEGUIR LISTA DE TODOS LOS WORKSPACES
+    $listWorkspaces = $model->get_list_workspaces($accessToken);
+    $listaworkspaces1 = json_decode(json_encode($listWorkspaces), true);
+    foreach ($listaworkspaces1 as $key => $value) {
+      $valor = $value['id'];
+      $name = $value['name'];
+        $res_area = (new \yii\db\Query())
+        ->select(['tbl_workspace_powerbi.id_workspacepbi'])
+        ->from(['tbl_workspace_powerbi'])
+        ->where(['=','tbl_workspace_powerbi.id_workspace',$valor])
+        ->Scalar();
+        if(!$res_area){
+          Yii::$app->db->createCommand()->insert('tbl_workspace_powerbi', [
+            'id_workspace' =>$valor,
+            'nombre_workspace' => $name,
+            'accion' => $var_Id
+          ])->execute();
+      }
+    }               
+
     $res=1;
     die( json_encode( $res));
   }
@@ -281,6 +307,8 @@ use app\models\ControlProcesosEquipos;
     $sessiones = Yii::$app->user->identity->id;
     // Obtener el ID del workspace para consumir sus reportes
     $workspace_id = Yii::$app->request->post("workspace_id");
+    $var_id = Yii::$app->request->post("varid");
+
     // Inicializar access token
     $accessToken = "";
 
@@ -299,19 +327,54 @@ use app\models\ControlProcesosEquipos;
     }else{
       #code
     }
-
+    
     // Obtener reportes
     $reports = $model->get_reports_by_workspace($accessToken, $workspace_id);
-   
-    // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
-    $reports = $model->filter_user_permits('report',$reports,$sessiones); 
     
+    // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
+    $reports = $model->filter_user_permits('report',$reports,$sessiones, $var_id); 
 
     die(json_encode( array("status"=>"1","data"=>$reports) ));
 
   }
   // FUNCTION GET REPORTS BY WORKSPACE END
 
+  public function actionGet_reports_by_workspace1(){
+    $model = new ReportesAdministracion();
+    $sessiones = Yii::$app->user->identity->id;
+    // Obtener el ID del workspace para consumir sus reportes
+    $workspace_id = Yii::$app->request->get("workspace_id");
+    $var_id = Yii::$app->request->get("varid");
+
+    // Inicializar access token
+    $accessToken = "";
+
+    // Validar ID del workspace indicado por el cliente
+    if(!isset($workspace_id) || empty($workspace_id)){
+      json_encode( array("status"=>"0","data"=>"Workspace no especificado") );
+    }else{
+      #code
+    }
+
+    // Obtener un access token de azure AD para consumir API
+    $accessToken = $model->getAzureAccessToken();
+
+    if(!isset($accessToken) || !is_string($accessToken) || empty($accessToken)){
+      json_encode( array("status"=>"0","data"=>"No se ha logrado autenticar con Azure AD. Contacte un administrado") );
+    }else{
+      #code
+    }
+    
+    // Obtener reportes
+    $reports = $model->get_reports_by_workspace($accessToken, $workspace_id);
+    
+    // FILTRAR REPORTES A LOS QUE EL USUARIO TIENE PERMISO
+    $reports = $model->filter_user_permits('report',$reports,$sessiones, $var_id); 
+
+    die(json_encode( array("status"=>"1","data"=>$reports) ));
+
+  }
+  // FUNCTION GET REPORTS BY WORKSPACE END
 
   // FUNCTION SEARCH AND SHOW A REPORT
   public function actionSearch_report(){
@@ -321,7 +384,9 @@ use app\models\ControlProcesosEquipos;
     $workspace_id = Yii::$app->request->post("workspace_id");
     $reportname = Yii::$app->request->post("reportname");
     $areaname = Yii::$app->request->post("areaname");
-
+    //$usua_id = '3205';
+    
+    
     // Validar ID del workspace indicado por el cliente
     if(!isset($workspace_id) || empty($workspace_id)){
       die( json_encode( array("status"=>"0","data"=>"No se especifico un ID de workspace") ) );
@@ -343,7 +408,6 @@ use app\models\ControlProcesosEquipos;
     }else{
       #code
     }
-    
     // Se guarda log de uso de reportes
     Yii::$app->db->createCommand()->insert('tbl_logs_pbi', [
       'usua_id' =>Yii::$app->user->identity->id,
@@ -352,28 +416,30 @@ use app\models\ControlProcesosEquipos;
       'fecha_creacion' => date('Y-m-d h:i:s')
     ])->execute();
 
+
     // Obtener embed token
     $result = $model->search_report($accessToken, $workspace_id, $report_id);
     die( json_encode( array("status"=>"1","data"=>$result) ) );
 
   }
  // FUNCTION SEARCH AND SHOW A REPORTEND
-
- // crear Log para seleccion de reportes
+// crear Log
  public function actionCrearlogpbi(){
-  $model = new ControlProcesosEquipos();
-  $varnombrereporte = Yii::$app->request->post("report_name");
-  $varnombrearea = Yii::$app->request->post("area_name");
+    $model = new ControlProcesosEquipos();
+    $varnombrereporte = Yii::$app->request->post("report_name");
+    $varnombrearea = Yii::$app->request->post("area_name");
+   
 
-  Yii::$app->db->createCommand()->insert('tbl_logs_pbi', [
-    'usua_id' =>Yii::$app->user->identity->id,
-    'area' => $varnombrearea,
-    'reporte' => $varnombrereporte,
-    'fecha_creacion' => date('Y-m-d h:i:s')
-  ])->execute();
+    Yii::$app->db->createCommand()->insert('tbl_logs_pbi', [
+      'usua_id' =>Yii::$app->user->identity->id,
+      'area' => $varnombrearea,
+      'reporte' => $varnombrereporte,
+      'fecha_creacion' => date('Y-m-d h:i:s')
+    ])->execute();
 
-die(json_encode($model));
+  die(json_encode($model));
 }
+
   //  FUNCTION SEARCH USER PERMITS
   public function search_user_permits (){
     $model = new ReportesAdministracion();
@@ -495,6 +561,7 @@ die(json_encode($model));
   public function actionSearch_workspace_contributors (){
     $model = new ReportesAdministracion();
     $workspace = Yii::$app->request->post("workspace");
+    $varid = Yii::$app->request->post("varid");
     $accessToken = $model->getAzureAccessToken();
 
    $search_workspace_contributors = $model->search_workspace_contributors($workspace,$accessToken);
