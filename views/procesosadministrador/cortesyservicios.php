@@ -195,7 +195,7 @@ $roles = $command->queryScalar();
           ?>
 
             <tr><!--Filas de la tabla -->
-            <td class="text-center"><label style="font-size: 12px;"><?php echo $value['tipocortetc']; ?></label></td>
+            <td class="text-center"><label style="font-size: 12px;"><?php echo $value['nomgrupocorte']; ?></label></td>
             <td class="text-center"><label style="font-size: 12px;"><?php echo $value['cliente']; ?></label></td>
             <td class="text-center"><!--boton eliminar que esta dentro de esa fila-->
               <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deleteserviciocorte','id'=> $value['id_corteservicios']], 
