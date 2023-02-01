@@ -2286,10 +2286,10 @@ use app\models\Corteservicios;
         $model = new Corteservicios();  //a la variable model le asignamos todo lo que haya en el model
 
         $varData = (new \yii\db\Query())
-        ->select(['tbl_tipocortes.tipocortetc','tbl_proceso_cliente_centrocosto.cliente','tbl_cortes_servicios.id_corteservicios'])
+        ->select(['tbl_grupo_cortes.nomgrupocorte','tbl_proceso_cliente_centrocosto.cliente','tbl_cortes_servicios.id_corteservicios'])
         ->from(['tbl_cortes_servicios'])
-        ->join('LEFT OUTER JOIN', 'tbl_tipocortes',
-                                  'tbl_tipocortes.idtc = tbl_cortes_servicios.id_corte')
+        ->join('LEFT OUTER JOIN', 'tbl_grupo_cortes',
+                                  'tbl_grupo_cortes.idgrupocorte = tbl_cortes_servicios.id_corte')
         ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
                                   'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_cortes_servicios.id_servicio')   
         ->where(['=','tbl_cortes_servicios.anulado',0])                                                
