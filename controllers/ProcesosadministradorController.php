@@ -36,7 +36,7 @@ use app\models\SpeechServicios;
 use app\models\Encuestaspersonalsatu;
 use app\models\Procesoclientecentroscosto;
 use app\models\Evaluados;
-
+use app\models\Corteservicios;
 
   class ProcesosadministradorController extends \yii\web\Controller {
 
@@ -49,7 +49,7 @@ use app\models\Evaluados;
             'parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores',
             'parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad',
             'adminmensajes','listarnombres','adminpcrc','actualizapcrc','procesopcrc',
-            'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio'],
+            'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio','deleteserviciocorte','cortesyservicios'],
             'rules' => [
               [
                 'allow' => true,
@@ -2281,7 +2281,68 @@ use app\models\Evaluados;
 
         return $this->redirect(['actualizaservicio']);
     }
+     
+    public function actionCortesyservicios(){
+        $model = new Corteservicios();  //a la variable model le asignamos todo lo que haya en el model
 
+        $varData = (new \yii\db\Query())
+        ->select(['tbl_tipocortes.tipocortetc','tbl_proceso_cliente_centrocosto.cliente','tbl_cortes_servicios.id_corteservicios'])
+        ->from(['tbl_cortes_servicios'])
+        ->join('LEFT OUTER JOIN', 'tbl_tipocortes',
+                                  'tbl_tipocortes.idtc = tbl_cortes_servicios.id_corte')
+        ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
+                                  'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_cortes_servicios.id_servicio')   
+        ->where(['=','tbl_cortes_servicios.anulado',0])                                                
+        ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes']) 
+        ->all();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {     
+            $varIdCorte = $model->id_corte;
+            $varIdServicio = $model->id_servicio;
+
+            $varConteo = (new \yii\db\Query())
+            ->select(['*'])
+            ->from(['tbl_cortes_servicios'])
+            ->where(['=','id_servicio',$varIdServicio])
+            ->andwhere(['=','id_corte',$varIdCorte]) 
+            ->andwhere(['=','anulado',0])
+            ->count();
+
+            if ($varConteo == 0 ) {
+                Yii::$app->db->createCommand()->insert('tbl_cortes_servicios',[
+                    'id_corte' => $varIdCorte,
+                    'id_servicio' => $varIdServicio,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,                         
+                ])->execute();
+    
+            } 
+            
+            return $this->redirect(['cortesyservicios']);                   
+        }
+
+        return $this->render('cortesyservicios',[//retornar  la vista 
+            'model' => $model, 
+            'varData' => $varData, //retornar variables del controlador en la vista 
+        ]);
+    }
+
+    public function actionDeleteserviciocorte($id){
+        $varparametros = [
+            ':varid'=> $id
+        ];
+        Yii::$app->db->createCommand('
+              UPDATE tbl_cortes_servicios SET anulado = 1
+                WHERE 
+                  id_corteservicios = :varid')
+            ->bindValues($varparametros)
+            ->execute();
+
+        return $this->redirect(['cortesyservicios']);//retornar  la vista 
+
+    }
 
 
     
