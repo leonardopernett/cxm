@@ -1184,7 +1184,7 @@ use app\models\IdaGeneral;
             $varcontarvarpositivasagent = 0;
           }
 
-          $varResultadoagent = (($varconteonegativasagent - $varcontarvarnegativasagent) + $varcontarvarpositivasagent) / $varconteogeneralagent;
+          $varResultadoagent = round( ( (($varconteonegativasagent - $varcontarvarnegativasagent) + $varcontarvarpositivasagent) / $varconteogeneralagent ) *100, 2);
 
           array_push($arraydataagent, array("Usuario_CC"=>$varCedulaAsesor,"Usuario_Nombre"=>$varNombreAsesor,"usuarios"=>$varusuariologinagent,"cantidadllamadas"=>$varpromedioagent,"score"=>$varResultadoagent,"dimension"=>$varStrDimensionagent,"llamada"=>$varcallidsagent,"fechainteraccion"=>$varfechaagent));
         }
