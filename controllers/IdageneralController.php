@@ -1047,6 +1047,19 @@ use app\models\IdaGeneral;
                     WHERE 
                       dp_usuarios_red.usuario_red = :varLoginSpeech) ')->bindValues($varParamsLogin)->queryScalar();
 
+        if (!$varNombreAsesor) {
+          $varNombreAsesor = Yii::$app->dbjarvis->createCommand('
+            SELECT dp_datos_generales.nombre_completo FROM dp_datos_generales
+              INNER JOIN dp_usuarios_actualizacion ON 
+                dp_datos_generales.documento = dp_usuarios_actualizacion.documento
+              WHERE 
+                dp_usuarios_actualizacion.usuario = :varLoginSpeech 
+                  AND dp_usuarios_actualizacion.fecha_modificacion = (
+                    SELECT MAX(fecha_modificacion) FROM dp_usuarios_actualizacion
+                      WHERE 
+                        dp_usuarios_actualizacion.usuario = :varLoginSpeech)')->bindValues($varParamsLogin)->queryScalar();
+        }
+
         $varCedulaAsesor = Yii::$app->dbjarvis->createCommand('
           SELECT dp_usuarios_red.documento FROM dp_usuarios_red
             WHERE 
@@ -1055,6 +1068,19 @@ use app\models\IdaGeneral;
                   SELECT MAX(fecha_creacion_usuario) FROM dp_usuarios_red
                     WHERE 
                       dp_usuarios_red.usuario_red = :varLoginSpeech) ')->bindValues($varParamsLogin)->queryScalar();
+
+        if (!$varCedulaAsesor) {
+          $varCedulaAsesor = Yii::$app->dbjarvis->createCommand('
+          SELECT dp_datos_generales.documento FROM dp_datos_generales
+          INNER JOIN dp_usuarios_actualizacion ON 
+            dp_datos_generales.documento = dp_usuarios_actualizacion.documento
+                    WHERE 
+                      dp_usuarios_actualizacion.usuario = :varLoginSpeech 
+                          AND dp_usuarios_actualizacion.fecha_modificacion = (
+                            SELECT MAX(fecha_modificacion) FROM dp_usuarios_actualizacion
+                              WHERE 
+                                dp_usuarios_actualizacion.usuario = :varLoginSpeech)')->bindValues($varParamsLogin)->queryScalar();
+        }
 
         $varpromedioagent = (new \yii\db\Query())
                         ->select([
