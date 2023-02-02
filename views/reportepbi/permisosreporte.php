@@ -13,7 +13,7 @@ use yii\bootstrap\modal;
 
 $this->title = 'Permisos para reportes Power BI'; 
 $this->params['breadcrumbs'][] = $this->title;
-$varid = $_GET['id'];
+$varid = $_GET['varid'];
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';

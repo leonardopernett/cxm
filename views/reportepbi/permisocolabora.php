@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $idreportepbi = "'".$idreporte."'";
 $areatrabajopbi = "'".$areatrabajo."'";
 $datacolab = (array)json_decode($dataper);
-$varid = $_GET['id'];
+$varid = $_GET['varid'];
 
 ?>
 <br>
