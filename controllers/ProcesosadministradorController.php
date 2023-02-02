@@ -2241,14 +2241,7 @@ use app\models\Corteservicios;
             $varNombreCola = $model->pcrc;
             $varIdCola = $model->comentarios;
 
-            $varVerifica = (new \yii\db\Query())
-                                ->select(['*'])
-                                ->from(['tbl_genesys_formularios'])
-                                ->where(['=','tbl_genesys_formularios.anulado',0])
-                                ->andwhere(['=','tbl_genesys_formularios.arbol_id',$varArbolid])
-                                ->count();
-
-            if ($varVerifica == 0) {
+            
                 Yii::$app->db->createCommand()->insert('tbl_genesys_formularios',[
                     'arbol_id' => $varArbolid,
                     'cola_genesys' => $varNombreCola,
@@ -2257,7 +2250,7 @@ use app\models\Corteservicios;
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,                         
                 ])->execute();
-            }
+            
 
             return $this->redirect(['actualizaservicio']);
             
