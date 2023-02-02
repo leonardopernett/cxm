@@ -193,9 +193,10 @@ use app\models\ControlProcesosEquipos;
 
       public function actionEliminarpermi(){
         $model = new ControlProcesosEquipos();
-        $varusua = Yii::$app->request->post("var_Idusuario");
-        $varIdrepor = Yii::$app->request->post("var_Idrepor");
-        $varAreatrab = Yii::$app->request->post("var_Areatrab");
+        $varusua = Yii::$app->request->get("var_Idusuario");
+        $varIdrepor = Yii::$app->request->get("var_Idrepor");
+        $varAreatrab = Yii::$app->request->get("var_Areatrab");
+
         
         Yii::$app->db->createCommand("delete from tbl_permisos_reportes_powerbi where id_usuario = ':varusua' and id_reporte = ':varIdrepor' and id_workspace = ':varAreatrab'")
         ->bindValue(':varusua', $varusua)

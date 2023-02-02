@@ -152,7 +152,7 @@ function permisousa(){
                           var Rta =   JSON.parse(response);    
                           console.log(Rta);
                           if (Rta != "") {
-                                        window.location.href='permisosreporte?model='+Rta+'&workspace='+vararearab+'&reporte='+varidrepor+'&nombrerepor='+varnombrerep; 
+                                        window.location.href='permisosreporte?model='+Rta+'&workspace='+vararearab+'&reporte='+varidrepor+'&nombrerepor='+varnombrerep+'&varid='+"<?php echo $varid; ?>"; 
                       }
               }
         }); 
@@ -166,29 +166,26 @@ function permisousa(){
         var vararearab = "<?php echo $areatrabajo; ?>";
 		var varnombrerep = "<?php echo $nombrerepor; ?>";
 
+        
+
 	    var opcion = confirm("Confirmar la eliminación del item de la lista...");
 
 	    if (opcion == true){
-		 $.ajax({
-	                method: "post",
-			url: "eliminarpermi",
-	                data : {
-	                    var_Idusuario: varidusurio,
-	                    var_Idrepor: varidrepor,
-	                    var_Areatrab: vararearab,
-	                },
-	                success : function(response){ 
-				console.log(response);
-				var respuesta = JSON.parse(response);
-				console.log(respuesta);
-				if(respuesta != ""){
-                    window.location.href='permisosreporte?model='+respuesta+'&workspace='+vararearab+'&reporte='+varidrepor+'&nombrerepor='+varnombrerep;
-
-				}else{
-					alert("Error al intentar eliminar la alerta");
-				}
-	                }
-	            });
+            $.ajax({
+                method: "get",
+                url: "eliminarpermi",
+                data : {
+                    var_Idusuario: varidusurio,
+                    var_Idrepor: varidrepor,
+                    var_Areatrab: vararearab,
+                },
+                success : function(response){ 
+                    console.log(response);
+                    var respuesta = JSON.parse(response);
+                    console.log(respuesta);
+                    
+                }
+	        });
 	    }		
 	};
     
