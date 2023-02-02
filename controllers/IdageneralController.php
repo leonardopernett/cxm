@@ -1047,7 +1047,7 @@ use app\models\IdaGeneral;
                     WHERE 
                       dp_usuarios_red.usuario_red = :varLoginSpeech) ')->bindValues($varParamsLogin)->queryScalar();
 
-        if (!$varNombreAsesor) {
+        if (count($varNombreAsesor) == 0) {
           $varNombreAsesor = Yii::$app->dbjarvis->createCommand('
             SELECT dp_datos_generales.nombre_completo FROM dp_datos_generales
               INNER JOIN dp_usuarios_actualizacion ON 
@@ -1069,7 +1069,7 @@ use app\models\IdaGeneral;
                     WHERE 
                       dp_usuarios_red.usuario_red = :varLoginSpeech) ')->bindValues($varParamsLogin)->queryScalar();
 
-        if (!$varCedulaAsesor) {
+        if (count($varCedulaAsesor) == 0) {
           $varCedulaAsesor = Yii::$app->dbjarvis->createCommand('
           SELECT dp_datos_generales.documento FROM dp_datos_generales
           INNER JOIN dp_usuarios_actualizacion ON 
@@ -1186,7 +1186,7 @@ use app\models\IdaGeneral;
 
           $varResultadoagent = round( ( (($varconteonegativasagent - $varcontarvarnegativasagent) + $varcontarvarpositivasagent) / $varconteogeneralagent ) *100, 2);
 
-          array_push($arraydataagent, array("Usuario_CC"=>$varCedulaAsesor,"Usuario_Nombre"=>$varNombreAsesor,"usuarios"=>$varusuariologinagent,"cantidadllamadas"=>$varpromedioagent,"score"=>$varResultadoagent,"dimension"=>$varStrDimensionagent,"llamada"=>$varcallidsagent,"fechainteraccion"=>$varfechaagent));
+          array_push($arraydataagent, array("Usuario_CC"=>$varCedulaAsesor,"Usuario_Nombre"=>$varNombreAsesor,"usuarios"=>$varusuariologinagent,"cantidadllamadas"=>$varpromedioagent,"score"=>$varResultadoagent.' %',"dimension"=>$varStrDimensionagent,"llamada"=>$varcallidsagent,"fechainteraccion"=>$varfechaagent));
         }
 
       }
