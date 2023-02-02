@@ -510,7 +510,7 @@ $varid = $_GET['varid'];
               success : function(response){ 
                           var Rta =   JSON.parse(response);    
                           console.log(Rta);
-                          window.location.href='permisosreporte?model='+Rta+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep+'&id='+varId;
+                          window.location.href='permisosreporte?model='+Rta+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep+'&varid='+varId;
               }
         }); 
       }
@@ -538,7 +538,7 @@ $varid = $_GET['varid'];
                           var rta2 = 1    
                           console.log(Rta);
 
-                          window.location.href='permisocolabora?dataper='+JSON.stringify(Rta)+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep+'&id='+varId;
+                          window.location.href='permisocolabora?dataper='+JSON.stringify(Rta)+'&workspace='+varareatrabajoid+'&reporte='+varreporteid+'&nombrerepor='+varnombrerep+'&varid='+varId;
               }
         }); 
       }
