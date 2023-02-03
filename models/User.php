@@ -504,12 +504,12 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
             if (!$ldapbindh) {
                 
                 /* CONEXION LDAP ODESSA - TLMARK */
-                $ldapconno = ldap_connect(\Yii::$app->params["LDAP_SERVERO"]);
+                // $ldapconno = ldap_connect(\Yii::$app->params["LDAP_SERVERO"]);
 
                 /* BUSQUEDA DE USUARIO ODESSA - TLMARK*/
-                $ldapbindo = @ldap_bind($ldapconno, $this->username . \Yii::$app->params["LDAP_accsufixo"], utf8_decode($password));
+                // $ldapbindo = @ldap_bind($ldapconno, $this->username . \Yii::$app->params["LDAP_accsufixo"], utf8_decode($password));
 
-                if (!$ldapbindo) {
+                // if (!$ldapbindo) {
 
                     /* CONEXION LDAP COMDATA ONE */
                     $ldapconnonecom = ldap_connect(\Yii::$app->params["LDAP_SERVERONECOM"]);
@@ -551,7 +551,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
 
                     }
 
-                }
+                // }
 
             }
             
