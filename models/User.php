@@ -527,7 +527,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
 
                         if (!$ldapbindtwocom) {
                             
-                            $ErrNUM = ldap_errno($ldapconno);
+                            $ErrNUM = ldap_errno($ldapconn);
 
                             switch ($ErrNUM) {
 
