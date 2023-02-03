@@ -28,7 +28,7 @@ use app\models\DistribucionAsesores;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','procesadistribucion','procesaasesores','procesalideres','procesaequipos','procesaequiposauto'],
+              'only' => ['index','procesadistribucion','procesaasesores','procesalideres','procesaequipos','procesaequiposauto','procesadistribucionauto'],
               'rules' => [
                 [
                   'allow' => true,
@@ -304,6 +304,56 @@ use app\models\DistribucionAsesores;
         'model' => $model,
       ]);
     }
+
+    public function actionProcesadistribucionauto(){
+
+      ini_set("max_execution_time", "900");
+      ini_set("memory_limit", "1024M");
+      ini_set( 'post_max_size', '1024M' );
+
+      ignore_user_abort(true);
+      set_time_limit(900);
+
+      $form = Yii::$app->request->post();
+
+        $varListSecciones = Yii::$app->dbjarvis->createCommand("
+        SELECT dp.documento AS CedulaAsesor, dp.documento_jefe AS CedulaLider, pc.id_dp_clientes AS id_dp_clientes, 
+        dp.cod_pcrc AS CodPcrc, dp.fecha_actual AS FechaJarvis FROM dp_pcrc pc
+          INNER JOIN dp_distribucion_personal dp ON 
+            pc.cod_pcrc = dp.cod_pcrc
+          INNER JOIN dp_cargos dc ON 
+            dp.id_dp_cargos = dc.id_dp_cargos
+          INNER JOIN dp_estados de ON 
+            dp.id_dp_estados = de.id_dp_estados
+          WHERE 
+            dc.id_dp_posicion IN (39,18,40)
+              AND dc.id_dp_funciones IN (322,783,190,909,915,323,324)
+                AND dp.fecha_actual >= DATE_FORMAT(NOW() ,'%Y-%m-01')
+                  AND de.tipo IN ('ACTIVO','GESTION')
+                    AND pc.id_dp_clientes != 1
+          GROUP BY dp.documento
+        ")->queryAll();
+
+        Yii::$app->db->createCommand()->truncateTable('tbl_distribucion_asesores')->execute();
+
+        foreach ($varListSecciones as $key => $value) {
+          Yii::$app->db->createCommand()->insert('tbl_distribucion_asesores',[
+                      'cedulaasesor' => $value['CedulaAsesor'],
+                      'cedulalider' => $value['CedulaLider'],
+                      'fechaactualjarvis' => $value['FechaJarvis'],  
+                      'id_dp_clientes' => $value['id_dp_clientes'],
+                      'cod_pcrc' => $value['CodPcrc'],
+                      'fechamodificacxm' => date('Y-m-d'),
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,                                       
+                  ])->execute();
+        }
+
+        $this->Guardarcantidades();
+
+    }
+
     public function actionProcesaequiposauto(){
       $varHora = date('h:i:s');
       $varIdCorte = null;
