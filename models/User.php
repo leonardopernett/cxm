@@ -496,12 +496,12 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
         if (!$ldapbind) {
 
             /* CONEXION LDAP HORAE - AST */
-            $ldapconnh = ldap_connect(\Yii::$app->params["LDAP_SERVERH"]);
+            // $ldapconnh = ldap_connect(\Yii::$app->params["LDAP_SERVERH"]);
 
             /* BUSQUEDA DE USUARIO - AST */
-            $ldapbindh = @ldap_bind($ldapconnh, $this->username . \Yii::$app->params["LDAP_accsufixh"], utf8_decode($password));
+            // $ldapbindh = @ldap_bind($ldapconnh, $this->username . \Yii::$app->params["LDAP_accsufixh"], utf8_decode($password));
 
-            if (!$ldapbindh) {
+            // if (!$ldapbindh) {
                 
                 /* CONEXION LDAP ODESSA - TLMARK */
                 $ldapconno = ldap_connect(\Yii::$app->params["LDAP_SERVERO"]);
@@ -553,7 +553,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
 
                 }
 
-            }
+            // }
             
         }
 
