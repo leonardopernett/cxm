@@ -43,7 +43,7 @@ use GuzzleHttp;
             
             'rules' => [
               [
-                'actions' => ['index','apisesiones','apibloques','apiformularios','apipreguntas','apitipificaciones','apitipificacionescontiene'],
+                'actions' => ['index','apisesiones','apibloques','apiformularios','apipreguntas','apitipificaciones','apitipificacionescontiene','apigeneral'],
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
@@ -51,7 +51,7 @@ use GuzzleHttp;
                         },
               ],
               [
-                'actions' => ['apisesiones','apibloques','apiformularios','apipreguntas','apitipificaciones','apitipificacionescontiene'],
+                'actions' => ['apisesiones','apibloques','apiformularios','apipreguntas','apitipificaciones','apitipificacionescontiene','apigeneral'],
                 'allow' => true,
 
               ],
@@ -462,6 +462,86 @@ use GuzzleHttp;
       die(json_encode(array("status"=>"1","data"=>$arraydatapi)));
 
     }  
+
+    public function actionApigeneral(){
+
+      $datapostG = file_get_contents('php://input');
+      $data_postG = json_decode($datapostG,true);
+  
+      if (
+           !isset($data_postG["idarbol"]) 
+        || !isset($data_postG["fechaInicio"]) 
+        || !isset($data_postG["fechaFin"]) 
+        || empty($data_postG["idarbol"]) 
+        || empty($data_postG["fechaInicio"]) 
+        || empty($data_postG["fechaFin"]) 
+      ) {
+        die(json_encode(array("status"=>"0","data"=>"Algunos de los campos obligatorios no se enviaron correctamente")));
+      }
+
+      $varIdArbolG = $data_postG["idarbol"];   
+      $varFechaInicioG = $data_postG["fechaInicio"];
+      $varFechaFinG = $data_postG["fechaFin"];
+
+      $arraydatafG = array();
+      for ($i=0; $i < count($varIdArbolG); $i++) { 
+        $varArboles = $varIdArbolG[$i];
+
+        $paramsFormulariosG = [':Arbol_idG' => $varArboles, ':Fecha_inicioG' => $varFechaInicioG.' 00:00:00', ':Fecha_FinG' => $varFechaFinG.' 23:59:59'];
+
+        $varListFormulariosG = Yii::$app->db->createCommand('
+         SELECT 
+          f.id, f.basesatisfaccion_id AS ID_Encuesta, f.created AS FechaYHora, f.hora_inicial AS HoraInicialValoracion, 
+          f.hora_final AS HoraFinalValoracion, f.cant_modificaciones AS CantModificaciones, f.tiempo_modificaciones AS TiempoModificaciones, d.name AS Dimension, aa.name AS ArbolPadre, a.id AS IDArbol, a.name AS Arbol, ff.name AS Formulario, uq.usua_nombre AS Lider, e.name AS Asesor, e.identificacion AS CedulaEvaluado, e.name AS NombreEvaluado, (select ux.usua_nombre from tbl_usuarios ux where ux.usua_id = f.usua_id_lider) AS Rsponsable,   uu.usua_nombre AS Evaluador, r.role_nombre AS rol, f.dsfuente_encuesta AS Fuente, t.name AS Transacciones, eq.name AS Equipo, f.dscomentario AS Comentarios, f.score AS Score,  
+            ROUND( f.i1_nmcalculo*100,2 ) AS PEC, 
+            ROUND( f.i2_nmcalculo*100,2 ) AS PENC, 
+            ROUND( f.i3_nmcalculo*100,2 ) AS SPC_FRC, 
+            ROUND( f.i4_nmcalculo*100,2 ) AS CARINO_WOW, 
+            ROUND( f.i5_nmcalculo*100,2 ) AS Indice_de_Proceso, 
+            ROUND( f.i6_nmcalculo*100,2 ) AS Indice_de_Experiencia, 
+            ROUND( f.i7_nmcalculo*100,2 ) AS Cumplimiento_Promesa_de_Marca, 
+            ROUND( f.i8_nmcalculo*100,2 ) AS Desempeño_del_Canal, 
+            ROUND( f.i9_nmcalculo*100,2 ) AS Desempeño_del_Agente, 
+            ROUND( f.i10_nmcalculo*100,2 ) AS Habilidad_Comercial 
+
+          FROM tbl_ejecucionformularios f
+            INNER JOIN tbl_dimensions d ON 
+              f.dimension_id = d.id
+            INNER JOIN tbl_arbols a ON 
+              f.arbol_id = a.id
+            INNER JOIN tbl_arbols aa ON 
+              a.arbol_id = aa.id
+            INNER JOIN tbl_formularios ff ON 
+              f.formulario_id = ff.id
+            INNER JOIN tbl_evaluados e ON 
+              f.evaluado_id = e.id
+            INNER JOIN tbl_usuarios u ON 
+              f.usua_id = u.usua_id
+            INNER JOIN tbl_usuarios uu ON 
+              u.usua_id = uu.usua_id
+            INNER JOIN rel_usuarios_roles ur ON 
+              uu.usua_id = ur.rel_usua_id
+            INNER JOIN tbl_roles r ON 
+              ur.rel_role_id = r.role_id
+            INNER JOIN tbl_transacions t ON 
+              f.transacion_id = t.id
+            INNER JOIN tbl_equipos eq ON 
+              f.equipo_id = eq.id
+            INNER JOIN tbl_usuarios uq ON 
+              uq.usua_id = eq.usua_id
+
+            WHERE
+              a.id IN (:Arbol_idG)
+              AND f.created BETWEEN :Fecha_inicioG AND :Fecha_FinG')->bindValues($paramsFormulariosG)->queryAll();
+
+        foreach ($varListFormulariosG as $key => $value) {
+          array_push($arraydatafG, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC'],"PENC "=>$value['PENC'],"SPC_FRC "=>$value['SPC_FRC'],"CARINO_WOW "=>$value['CARINO_WOW'],"Indice_de_Proceso "=>$value['Indice_de_Proceso'],"Indice_de_Experiencia "=>$value['Indice_de_Experiencia'],"Cumplimiento_Promesa_de_Marca "=>$value['Cumplimiento_Promesa_de_Marca'],"Desempeño_del_Canal "=>$value['Desempeño_del_Canal'],"Desempeño_del_Agente "=>$value['Desempeño_del_Agente'],"Habilidad_Comercia l"=>$value['Habilidad_Comercial']));
+        }
+      }
+
+      die(json_encode(array("status"=>"1","data"=>$arraydatafG)));
+
+    }
        
     
 
