@@ -502,7 +502,8 @@ use GuzzleHttp;
             ROUND( f.i7_nmcalculo*100,2 ) AS Cumplimiento_Promesa_de_Marca, 
             ROUND( f.i8_nmcalculo*100,2 ) AS Desempeño_del_Canal, 
             ROUND( f.i9_nmcalculo*100,2 ) AS Desempeño_del_Agente, 
-            ROUND( f.i10_nmcalculo*100,2 ) AS Habilidad_Comercial 
+            ROUND( f.i10_nmcalculo*100,2 ) AS Habilidad_Comercial,
+            pc.tipo_corte 
 
           FROM tbl_ejecucionformularios f
             INNER JOIN tbl_dimensions d ON 
@@ -529,6 +530,14 @@ use GuzzleHttp;
               f.equipo_id = eq.id
             INNER JOIN tbl_usuarios uq ON 
               uq.usua_id = eq.usua_id
+
+            LEFT JOIN tbl_control_params cp ON 
+              uq.usua_id = cp.evaluados_id
+                AND a.id = cp.arbol_id
+                  AND cp.fechacreacion BETWEEN :Fecha_inicioG AND :Fecha_FinG
+            LEFT JOIN tbl_control_procesos pc ON 
+              pc.evaluados_id = cp.evaluados_id
+                AND pc.fechacreacion = pc.fechacreacion
 
             WHERE
               a.id IN (:Arbol_idG)
