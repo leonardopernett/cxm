@@ -37,6 +37,7 @@ use app\models\Encuestaspersonalsatu;
 use app\models\Procesoclientecentroscosto;
 use app\models\Evaluados;
 use app\models\Corteservicios;
+use app\models\Declinaciones;
 
   class ProcesosadministradorController extends \yii\web\Controller {
 
@@ -49,7 +50,7 @@ use app\models\Corteservicios;
             'parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores',
             'parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad',
             'adminmensajes','listarnombres','adminpcrc','actualizapcrc','procesopcrc',
-            'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio','deleteserviciocorte','cortesyservicios'],
+            'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio','deleteserviciocorte','cortesyservicios','viewmotivosdeclinacion'],
             'rules' => [
               [
                 'allow' => true,
@@ -2337,7 +2338,50 @@ use app\models\Corteservicios;
 
     }
 
+    public function actionViewmotivosdeclinacion(){
+        $model = new Declinaciones();
 
+        $varListMotivos= (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_declinacion_motivo'])
+                                    ->orderBy(['nombre' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre;
+
+            Yii::$app->db->createCommand()->insert('tbl_declinacion_motivo',[
+                    'nombre' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewmotivosdeclinacion']);
+        }
+
+        return $this->render('viewmotivosdeclinacion',[
+            'model' => $model,
+            'varListEquipos' => $varListMotivos,
+        ]);
+    }
+    
+    public function actionDeletemotivos($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE tbl_declinacion_motivo 
+                SET anulado = :varAnulado
+                WHERE 
+                id_declina_motivo = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewmotivosdeclinacion']);
+    }
     
 
   }

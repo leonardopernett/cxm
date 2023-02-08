@@ -35,6 +35,7 @@ use app\models\Reglanegocio;
 use app\models\Equipos;
 use app\models\UploadForm2;
 use \yii\base\Exception;
+use app\models\Declinaciones;
 
 /**
  * BaseSatisfaccionController implements the CRUD actions for BaseSatisfaccion model.
@@ -78,7 +79,7 @@ class BasesatisfaccionController extends Controller {
                                     'guardarencuesta', 'index', 'reglanegocio',
                                     'showencuestatelefonica', 'update', 'guardarformulario', 'showsubtipif', 'cancelarformulario', 'declinarformulario',
                                     'reabrirformulariogestionsatisfaccion', 'clientebasesatisfaccion', 'limpiarfiltro', 'buscarllamadas', 'showformulariogestion',
-                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos'],
+                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -2027,7 +2028,7 @@ class BasesatisfaccionController extends Controller {
              * @version Release: $Id$
              */
             public function actionShowformulariogestion($basesatisfaccion_id, $preview, $aleatorio = null, $fill_values, $view = "index",$banderaescalado = false, $idtmp = null) {
-
+                $model1 = new Declinaciones();
                 $txtbasefuente = null;
                 if ($preview == 5) {
                     $txtpreview = $basesatisfaccion_id;
@@ -2451,6 +2452,7 @@ class BasesatisfaccionController extends Controller {
                             'preview' => $preview,
                             'varConnids' => $varConnids,
                             'varcontenido' => $varcontenido,
+                            'model1' => $model1,
                 ]);
             }
 
@@ -5435,7 +5437,21 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 
                 die(json_encode($response));
             }
+            public function actionEnviarmotivos(){
+               
+                $varid = Yii::$app->request->post("txtvaridtranscripcion");
+                $varmotivo = Yii::$app->request->post("txtvarmotivo");
 
+                //se guarda motivo de la declinación
+                Yii::$app->db->createCommand()->insert('tbl_declinacion_satisfaccion',[
+                    'id_formulario' => $varid,
+                    'id_declina_motivo' => $varmotivo,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,                            
+                ])->execute();
+
+            }
 
         }
         
