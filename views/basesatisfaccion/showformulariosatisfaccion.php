@@ -282,9 +282,9 @@ $listData2 = ArrayHelper::map($datanew, 'id_declina_motivo', 'nombre');
                         <?= Html::a('Desplegar', "javascript:void(0)", ['id' => 'prueba', 'class' => 'btn btn-info soloAbrir'])
                         ?>
                         <?= Html::a(Yii::t('app', 'Cancel'), ['cancelarformulario', 'id' => $data->basesatisfaccion->id], ['class' => 'btn btn-default soloCancelar']) ?>
-                        <?php if ($data->aleatorio == true) : ?>
-                            <?= Html::a(Yii::t('app', 'Declinar'), ['declinarformulario', 'id' => $data->basesatisfaccion->id], ['class' => 'btn btn-default soloDeclinar']) ?>
-                        <?php endif; ?>
+                        <?= Html::a('Declinar', "javascript:void(0)", ['id' => 'prueba11', 'class' => 'btn  btn-primary soloMostrar', 'style' => 'display: inline' ])?>  
+                        <?= Html::a('Declinar', "javascript:void(0)", ['id' => 'prueba12', 'class' => 'btn  btn-primary soloMostrar1', 'style' => 'display: none'])?>                                                                        
+                       
                     </div>
                 </div>
                 </div>
@@ -3936,7 +3936,7 @@ $listData2 = ArrayHelper::map($datanew, 'id_declina_motivo', 'nombre');
                 });
             }
         };
-        
+
    function planaccion(){
     var varPartT = document.getElementById("tablesi");    
       varPartT.style.display = 'inline';
