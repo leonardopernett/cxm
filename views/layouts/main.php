@@ -309,12 +309,12 @@ AppAsset::register($this);
                                             '<li class="dropdown-headercx2">&nbsp;Planear</li>',
                                                 '<li class="dropdown-headercx ico1">&nbsp;Asignar Plan de Valoraci&oacute;n&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Crear Dimensionamiento&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Dimensionamiento de T&eacute;cnicos&nbsp;&nbsp;'),
                                                     'url' => ['/controldimensionamiento/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Asignar Plan de Valoraci&oacute;n&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Asignaci&oacute;n de Planes de Valoraci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/controlprocesos/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isHacerMonitoreo(),
                                                 ],
@@ -327,12 +327,12 @@ AppAsset::register($this);
                                             '<li class="dropdown-headercx2">&nbsp;Escuchar</li>',
                                                 '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n del Valorador&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuestas Tigo&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Carga Masiva de Encuestas&nbsp;&nbsp;'),
                                                     'url' => ['/basechat/index'],
-                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                    'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Encuestas de Procesos&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Restablecimiento de Encuestas&nbsp;&nbsp;'),
                                                     'url' => ['/basesatisfaccion/inboxaleatorio'],
                                                     'visible' => Yii::$app->user->identity->isVerInboxAleatorio()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
@@ -347,7 +347,7 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isHacerMonitoreo()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Escucha Focalizada&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Valoraci&oacute;n Focalizada&nbsp;&nbsp;'),
                                                     'url' => ['/formulariovoc/index'],
                                                     'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
@@ -355,6 +355,11 @@ AppAsset::register($this);
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Valoraci&oacute;n Manual&nbsp;&nbsp;'),
                                                     'url' => ['/formularios/interaccionmanual'],
                                                     'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Valoraci&oacute;n Semi-Autom&aacute;tica&nbsp;&nbsp;'),
+                                                    'url' => ['/dashboardspeechdos/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
                                                 ],
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Proteger y Mejorar</li>',
@@ -365,7 +370,7 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Notificaci&oacute;n de Alertas&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gesti&oacute;n de Alertas&nbsp;&nbsp;'),
                                                     'url' => ['/site/dashboardalertas'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
@@ -375,11 +380,16 @@ AppAsset::register($this);
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Crear Feedback Express&nbsp;&nbsp;'),
                                                     'url' => ['/feedback/create'],
                                                     'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                ],                   
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gesti&oacute;n de Feedback&nbsp;&nbsp;'),
+                                                    'url' => ['/reportes/feedbackexpress'],
+                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 '<br>',
-                                                '<li class="dropdown-headercx ico1">&nbsp;Gesti&oacute;n de Alinear +&nbsp;&nbsp;</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Calibraci&oacute;n&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Crear Alinear +&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Crear Calibraci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/controlalinearvoc/index'],
                                                     'visible' => Yii::$app->user->identity->isHacerMonitoreo()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
@@ -387,7 +397,7 @@ AppAsset::register($this);
                                         '<div class="col-md-6">',                                                
                                                 '<li class="dropdown-headercx ico1">&nbsp;Segundo Calificador&nbsp;&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Notificaciones&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gesti&oacute;n Segundo Calificador&nbsp;&nbsp;'),
                                                     'url' => ['/site/segundocalificador'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
@@ -398,14 +408,9 @@ AppAsset::register($this);
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Ejecutivo&nbsp;&nbsp;'),
                                                     'url' => ['/dashboardvoz/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Dashboard Escuchar +&nbsp;&nbsp;'),
-                                                    'url' => ['/dashboardspeechdos/index'],
-                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
                                                 ],                                                
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Informe Q&S&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Informe Valoraci&oacute;n Semi-Autom&aacute;tica&nbsp;&nbsp;'),
                                                     'url' => ['/procesosqys/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
                                                 ],
@@ -423,13 +428,8 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isVerInboxAleatorio()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Resultados KPIs Satisfacci&oacute;n&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Resultados de Calidad Percibida&nbsp;&nbsp;'),
                                                     'url' => ['/reportes/satisfaccion'],
-                                                    'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Tipologia Encuestas&nbsp;&nbsp;'),
-                                                    'url' => ['/reportes/historicosatisfaccion'],
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 '<br>',  
@@ -445,14 +445,9 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],                                                
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Alinear +&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Calibraci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/controlalinearvoc/reportealinearvoc'],
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
-                                                ],                   
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Feedback&nbsp;&nbsp;'),
-                                                    'url' => ['/reportes/feedbackexpress'],
-                                                    'visible' => Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Formularios&nbsp;&nbsp;'),
