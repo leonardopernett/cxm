@@ -305,6 +305,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Motivos de Declinaciones Encuestas') ?></label>
+                        <?= Html::a('Aceptar',  ['viewmotivosdeclinacion'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Motivos de Declinaciones Encuestas']) 
+                        ?>
+                    </div>
+                </div>
             </div>
 
         </div>
