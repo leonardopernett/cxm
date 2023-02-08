@@ -606,12 +606,6 @@ AppAsset::register($this);
                                                     'url' => ['/peticionequipos/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
-                                               
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesamiento Entto'),
-                                                    'url' => ['/idageneral/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminSistema(),
-                                                ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Procesos Administrador'),
                                                     'url' => ['/procesosadministrador/index'],
