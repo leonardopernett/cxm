@@ -1184,7 +1184,7 @@ use app\models\SpeechParametrizar;
 
       if ($varListarCallid == null) {
         $varListarCallid = (new \yii\db\Query())
-                              ->select(['tbl_dashboardspeechcalls.fechallamada', 'tbl_dashboardspeechcalls.callId','tbl_dashboardspeechcalls.extension', 'tbl_dashboardspeechcalls.callduracion', 'tbl_dashboardspeechcalls.login_id',,'tbl_dashboardspeechcalls.anulado as identificacion','tbl_dashboardspeechcalls.anulado as dsusuario_red'])
+                              ->select(['tbl_dashboardspeechcalls.fechallamada', 'tbl_dashboardspeechcalls.callId','tbl_dashboardspeechcalls.extension', 'tbl_dashboardspeechcalls.callduracion', 'tbl_dashboardspeechcalls.login_id','tbl_dashboardspeechcalls.anulado as identificacion','tbl_dashboardspeechcalls.anulado as dsusuario_red'])
                               ->from(['tbl_dashboardspeechcalls'])            
                               ->where(['=','anulado',0])
                               ->andwhere(['=','servicio',$servicio])
