@@ -2759,7 +2759,7 @@ class FormulariosController extends Controller {
             }
 
             public function actionListarllamadasgenesysauto(){
-                $varArrayUrlAuto = null;
+                $varArrayUrlAuto = 0;
                 $txtvarAsesorAuto = Yii::$app->request->get("txtvarAsesorAuto");
                 $txtvarFechaIniciosAuto = Yii::$app->request->get("txtvarFechaIniciosAuto");
                 $txtvarFechaFinesAuto = Yii::$app->request->get("txtvarFechaFinesAuto");
