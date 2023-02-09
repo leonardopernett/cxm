@@ -192,8 +192,10 @@ if ($varVerificaServicio != 0) {
 
                                 if (is_numeric($varEtiquetado)) {
                                     $varAsesor = $value['dsusuario_red'];
+                                    
                                 }else{
                                     $varAsesor = $value['identificacion'];
+                                    
                                 }
 
                                 if ($varAsesor != 'NA') {
@@ -509,12 +511,39 @@ if ($varVerificaServicio != 0) {
 
                                 if (is_numeric($varEtiquetado)) {
                                     $varAsesor = $value['dsusuario_red'];
+                                    if ($varAsesor == '0') {
+                                        $paramsAsesorUser = [':varAsesorUser' => $varEtiquetado];
+                                        $varAsesor = Yii::$app->dbjarvis->createCommand('
+                                            SELECT dp_usuarios_red.usuario_red FROM dp_usuarios_red
+                                                INNER JOIN  dp_usuarios_actualizacion ON 
+                                                    dp_usuarios_red.documento = dp_usuarios_actualizacion.documento
+                                                WHERE 
+                                                    dp_usuarios_actualizacion.usuario = :varAsesorUser
+                                                    AND dp_usuarios_actualizacion.fecha_modificacion = (
+                                                        SELECT MAX(fecha_modificacion) FROM dp_usuarios_actualizacion
+                                                        WHERE 
+                                                        dp_usuarios_actualizacion.usuario = :varAsesorUser
+                                        )')->bindValues($paramsAsesorUser)->queryScalar();
+                                    }
                                 }else{
                                     $varAsesor = $value['identificacion'];
+                                    if ($varAsesor == '0') {
+                                        $paramsAsesorCC = [':varAsesorCC' => $varEtiquetado];
+                                        $varAsesor = Yii::$app->dbjarvis->createCommand('
+                                            SELECT dp_usuarios_actualizacion.documento FROM dp_usuarios_actualizacion
+                                                WHERE 
+                                                    dp_usuarios_actualizacion.usuario = :varAsesorCC
+                                                    AND dp_usuarios_actualizacion.fecha_modificacion = (
+                                                        SELECT MAX(fecha_modificacion) FROM dp_usuarios_actualizacion
+                                                            WHERE 
+                                                                dp_usuarios_actualizacion.usuario = :varAsesorCC
+                                        )')->bindValues($paramsAsesorCC)->queryScalar();
+                                    }
                                 }
 
                                 if ($varAsesor != 'NA') {
-                                    $varLider = (new \yii\db\Query())
+                                    if (is_numeric($varEtiquetado)) {
+                                        $varLider = (new \yii\db\Query())
                                                     ->select(['tbl_usuarios.usua_nombre'])
                                                     ->from(['tbl_usuarios']) 
 
@@ -527,8 +556,25 @@ if ($varVerificaServicio != 0) {
                                                     ->join('LEFT OUTER JOIN', 'tbl_evaluados',
                                                       'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')
 
-                                                    ->where(['=','tbl_evaluados.identificacion',$value['identificacion']])
+                                                    ->where(['=','tbl_evaluados.dsusuario_red',$varAsesor])
                                                     ->Scalar();
+                                    }else{
+                                        $varLider = (new \yii\db\Query())
+                                                    ->select(['tbl_usuarios.usua_nombre'])
+                                                    ->from(['tbl_usuarios']) 
+
+                                                    ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                                      'tbl_usuarios.usua_id = tbl_equipos.usua_id ')
+
+                                                    ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                                      'tbl_equipos.id = tbl_equipos_evaluados.equipo_id')
+
+                                                    ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                                      'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')
+
+                                                    ->where(['=','tbl_evaluados.identificacion',$varAsesor])
+                                                    ->Scalar();
+                                    }
                                 }else{
                                     $varLider = 'NA';
                                 }
