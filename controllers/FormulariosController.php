@@ -2623,7 +2623,7 @@ class FormulariosController extends Controller {
                                 ->scalar();
 
                 if (count($varValidaAsesor) != 0) {
-                    
+
                     ob_start();
                     $curl = curl_init();
 
@@ -2661,8 +2661,9 @@ class FormulariosController extends Controller {
                     $varProcesosTokenUno = explode(",", $response);                  
                     $varProcesosTokenDos = explode(":",$varProcesosTokenUno[0]);
                     $varrespuesta = str_replace('"', '', $varProcesosTokenDos[1]);
-                    
+
                     if ($varrespuesta != "") {
+
                         ob_start();
                         $curlAsesor = curl_init();
 
@@ -2714,18 +2715,22 @@ class FormulariosController extends Controller {
                         $responseAsesor = curl_exec($curlAsesor);
                         curl_close($curlAsesor);
                         ob_clean();
-                        
+
                         if (!$responseAsesor) {
                             die(json_encode("Error al buscar la interacción."));
                         }
 
                         $responseAsesor = json_decode(iconv( "Windows-1252", "UTF-8//IGNORE", $responseAsesor ),true);
 
-                        if (empty($responseAsesor)) {
+                        if (count($responseAsesor) == 0) {
                             die(json_encode("Interacción no encontrada. Vuelva a realizar la búsqueda."));
                         }
-                        
-                        if (!empty($responseAsesor)) {
+
+                        if (count($responseAsesor) != 0) {
+                            $varRta = "Aqui vamos";
+                        }
+
+                        if (count($responseAsesor) != 0) {
                             if ($responseAsesor['totalHits'] != 0) {
                                 
                                 foreach ($responseAsesor['conversations'] as $key => $value) {
@@ -2737,15 +2742,19 @@ class FormulariosController extends Controller {
                                                     ->count();
 
                                     if ($varValidaConnid == 0) {
-                                        array_push($varArrayUrl, $value['conversationId']); 
+                                        array_push($varArrayUrl, $value['conversationId']);
                                     }
-                                                                       
+
                                 }
 
                             }
                         }
                     }
+
+                    
                 }
+                
+
                 die(json_encode($varArrayUrl));
             }
 
@@ -2755,6 +2764,7 @@ class FormulariosController extends Controller {
                 $txtvarFechaIniciosAuto = Yii::$app->request->get("txtvarFechaIniciosAuto");
                 $txtvarFechaFinesAuto = Yii::$app->request->get("txtvarFechaFinesAuto");
                 $txtvarArbolIdAuto = Yii::$app->request->get("txtvarArbolAuto");
+
 
                 $varIdColaGenesysAuto = (new \yii\db\Query())
                                 ->select(['tbl_genesys_formularios.id_cola_genesys'])
@@ -2816,7 +2826,7 @@ class FormulariosController extends Controller {
                     $varProcesosTokenUnoAuto = explode(",", $responseAuto);                  
                     $varProcesosTokenDosAuto = explode(":",$varProcesosTokenUnoAuto[0]);
                     $varrespuestaAuto = str_replace('"', '', $varProcesosTokenDosAuto[1]);
-                    
+
                     if ($varrespuestaAuto != "") {
                         ob_start();
                         $curlAsesorAuto = curl_init();
@@ -2876,11 +2886,14 @@ class FormulariosController extends Controller {
 
                         $responseAsesorAuto = json_decode(iconv( "Windows-1252", "UTF-8//IGNORE", $responseAsesorAuto ),true);
 
-                        if (empty($responseAsesorAuto)) {
+                        if (count($responseAsesorAuto) == 0) {
+                            
                             die(json_encode("Interacción no encontrada. Vuelva a realizar la búsqueda."));
                         }
 
-                        if (!empty($responseAsesorAuto)) {
+                
+                        if (count($responseAsesorAuto) != 0) {
+                            
                             if ($responseAsesorAuto['totalHits'] != 0) {
 
                                 $varAleatorioAuto = array_rand($responseAsesorAuto['conversations'],1);
