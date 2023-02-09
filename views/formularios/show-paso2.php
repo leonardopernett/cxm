@@ -453,8 +453,20 @@ $varTexto = " La búsqueda de las llamadas a Genesys en CXM, actualmente esta su
                                             if (Rta.length != 0) {
 
                                                 if (Rta != "Interacción no encontrada. Vuelva a realizar la búsqueda.") {
-                                                    document.getElementById("idcapaulrconnid").value = 'https://apps.mypurecloud.com/directory/#/engage/admin/interactions/'+Rta;
-                                                    document.getElementById('requestergeneral').value = Rta;
+
+                                                    if (Rta != 0) {                                                        
+                                                        document.getElementById("idcapaulrconnid").value = 'https://apps.mypurecloud.com/directory/#/engage/admin/interactions/'+Rta;
+                                                        document.getElementById('requestergeneral').value = Rta;
+                                                    }else{
+                                                        
+                                                        varidcapaTercera.style.display = 'none';
+
+                                                        event.preventDefault();
+                                                        swal.fire("!!! Advertencia !!!","No se encontraron interacciones para el asesor en cuestion dentro de los ultimos 7 dias. Vuelva a seleccionar Interacción automática.","warning");
+                                                        return; 
+
+
+                                                    }
                                                 }else{
                                                     document.getElementById("idcapaulrconnid").value = Rta;
                                                 }
@@ -538,30 +550,41 @@ $varTexto = " La búsqueda de las llamadas a Genesys en CXM, actualmente esta su
 
                             if (Rta.length != 0) {
 
-                                varSecundaria.style.display = 'inline';
+                                if (Rta != "Interacción no encontrada. Vuelva a realizar la búsqueda.") {
 
-                                varidbtnBuscar.style.display = 'inline';
-                                varidbtnBuscando.style.display = 'none';
+                                    varSecundaria.style.display = 'inline';
 
-                                document.getElementById("requester").innerHTML = "";
-                                var node = document.createElement("OPTION");
-                                node.setAttribute("value", "");
-                                      
-                                var textnode = document.createTextNode("Seleccionar Llamadas...");
-                                node.appendChild(textnode);
-                                document.getElementById("requester").appendChild(node);
-                                      
-                                for (var i = 0; i < Rta.length; i++) {
+                                    varidbtnBuscar.style.display = 'inline';
+                                    varidbtnBuscando.style.display = 'none';
+
+                                    document.getElementById("requester").innerHTML = "";
                                     var node = document.createElement("OPTION");
-                                    node.setAttribute("value", Rta[i]);
-                                    var textnode = document.createTextNode("* Llamada con connid ==> "+Rta[i]);
+                                    node.setAttribute("value", "");
+                                          
+                                    var textnode = document.createTextNode("Seleccionar Llamadas...");
                                     node.appendChild(textnode);
                                     document.getElementById("requester").appendChild(node);
+                                          
+                                    for (var i = 0; i < Rta.length; i++) {
+                                        var node = document.createElement("OPTION");
+                                        node.setAttribute("value", Rta[i]);
+                                        var textnode = document.createTextNode("* Llamada con connid ==> "+Rta[i]);
+                                        node.appendChild(textnode);
+                                        document.getElementById("requester").appendChild(node);
+                                    }
+                                          
+                                    document.getElementById("requester").options[0].disabled = true;
+                                    var x=document.getElementById("requester");
+                                    x.disabled=false;
+
+                                }else{
+                                    varidbtnBuscar.style.display = 'inline';
+                                    varidbtnBuscando.style.display = 'none';
+
+                                    event.preventDefault();
+                                    swal.fire("!!! Advertencia !!!","No se encontraron llamadas para el asesor en cuestion dentro del rango de fecha seleccionado.","warning");
+                                    return;
                                 }
-                                      
-                                document.getElementById("requester").options[0].disabled = true;
-                                var x=document.getElementById("requester");
-                                x.disabled=false;
 
                             }else{
                                 varidbtnBuscar.style.display = 'inline';
@@ -602,7 +625,7 @@ $varTexto = " La búsqueda de las llamadas a Genesys en CXM, actualmente esta su
     });
 
     function varVarCambiar(){
-        var varRequestGeneral = document.getElementById('idcapaulrconnid').value;
+        var varRequestGeneral = document.getElementById('requester').value;
 
         document.getElementById('requestergeneral').value = varRequestGeneral;
     };
