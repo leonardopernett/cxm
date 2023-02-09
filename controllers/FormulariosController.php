@@ -2716,20 +2716,30 @@ class FormulariosController extends Controller {
                         ob_clean();
                         
                         if (!$responseAsesor) {
-                            die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+                            die(json_encode("Error al buscar la interacción."));
                         }
 
                         $responseAsesor = json_decode(iconv( "Windows-1252", "UTF-8//IGNORE", $responseAsesor ),true);
 
                         if (empty($responseAsesor)) {
-                            die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+                            die(json_encode("Interacción no encontrada. Vuelva a realizar la búsqueda."));
                         }
                         
                         if (!empty($responseAsesor)) {
                             if ($responseAsesor['totalHits'] != 0) {
                                 
                                 foreach ($responseAsesor['conversations'] as $key => $value) {
-                                    array_push($varArrayUrl, $value['conversationId']);                                    
+
+                                    $varValidaConnid = (new \yii\db\Query())
+                                                    ->select(['*'])
+                                                    ->from(['tbl_ejecucionformularios'])
+                                                    ->where(['=','tbl_ejecucionformularios.genesysconnid',$value['conversationId']])
+                                                    ->count();
+
+                                    if ($varValidaConnid == 0) {
+                                        array_push($varArrayUrl, $value['conversationId']); 
+                                    }
+                                                                       
                                 }
 
                             }
@@ -2744,7 +2754,7 @@ class FormulariosController extends Controller {
                 $txtvarAsesorAuto = Yii::$app->request->get("txtvarAsesorAuto");
                 $txtvarFechaIniciosAuto = Yii::$app->request->get("txtvarFechaIniciosAuto");
                 $txtvarFechaFinesAuto = Yii::$app->request->get("txtvarFechaFinesAuto");
-                $txtvarArbolIdAuto = Yii::$app->request->get("txtvarArbol");
+                $txtvarArbolIdAuto = Yii::$app->request->get("txtvarArbolAuto");
 
                 $varIdColaGenesysAuto = (new \yii\db\Query())
                                 ->select(['tbl_genesys_formularios.id_cola_genesys'])
@@ -2806,7 +2816,7 @@ class FormulariosController extends Controller {
                     $varProcesosTokenUnoAuto = explode(",", $responseAuto);                  
                     $varProcesosTokenDosAuto = explode(":",$varProcesosTokenUnoAuto[0]);
                     $varrespuestaAuto = str_replace('"', '', $varProcesosTokenDosAuto[1]);
-
+                    
                     if ($varrespuestaAuto != "") {
                         ob_start();
                         $curlAsesorAuto = curl_init();
@@ -2861,13 +2871,13 @@ class FormulariosController extends Controller {
                         ob_clean();
 
                         if (!$responseAsesorAuto) {
-                            die(json_encode(array('status' => '0','data'=>'Error al buscar la transcripcion')));
+                            die(json_encode("Error al buscar la interacción"));
                         }
 
                         $responseAsesorAuto = json_decode(iconv( "Windows-1252", "UTF-8//IGNORE", $responseAsesorAuto ),true);
 
                         if (empty($responseAsesorAuto)) {
-                            die(json_encode(array('status' => '0','data'=>'Transcripcion no encontrada'))); 
+                            die(json_encode("Interacción no encontrada. Vuelva a realizar la búsqueda."));
                         }
 
                         if (!empty($responseAsesorAuto)) {
@@ -2875,7 +2885,20 @@ class FormulariosController extends Controller {
 
                                 $varAleatorioAuto = array_rand($responseAsesorAuto['conversations'],1);
                                 
-                                $varArrayUrlAuto = $responseAsesorAuto['conversations'][$varAleatorioAuto]['conversationId'];
+                                $varUrlAutoGenesys = $responseAsesorAuto['conversations'][$varAleatorioAuto]['conversationId'];
+
+                                $varVerificarUrlAuto = (new \yii\db\Query())
+                                        ->select(['*'])
+                                        ->from(['tbl_genesys_valoraciones'])
+                                        ->where(['=','tbl_genesys_valoraciones.anulado',0])
+                                        ->andwhere(['=','tbl_genesys_valoraciones.connidgenesys',$varUrlAutoGenesys])
+                                        ->count();
+
+                                if ($varVerificarUrlAuto == 0) {
+                                    $varArrayUrlAuto = $varUrlAutoGenesys;
+                                }else{
+                                    $varArrayUrlAuto = 0;
+                                }
                             }
                         }
                     }
