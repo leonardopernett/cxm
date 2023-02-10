@@ -314,9 +314,8 @@ use app\models\DistribucionAsesores;
       ignore_user_abort(true);
       set_time_limit(900);
 
-      $form = Yii::$app->request->post();
-
-        $varListSecciones = Yii::$app->dbjarvis->createCommand("
+      
+      $varListSecciones = Yii::$app->dbjarvis->createCommand("
         SELECT dp.documento AS CedulaAsesor, dp.documento_jefe AS CedulaLider, pc.id_dp_clientes AS id_dp_clientes, 
         dp.cod_pcrc AS CodPcrc, dp.fecha_actual AS FechaJarvis FROM dp_pcrc pc
           INNER JOIN dp_distribucion_personal dp ON 
@@ -334,10 +333,10 @@ use app\models\DistribucionAsesores;
           GROUP BY dp.documento
         ")->queryAll();
 
-        Yii::$app->db->createCommand()->truncateTable('tbl_distribucion_asesores')->execute();
+      Yii::$app->db->createCommand()->truncateTable('tbl_distribucion_asesores')->execute();
 
-        foreach ($varListSecciones as $key => $value) {
-          Yii::$app->db->createCommand()->insert('tbl_distribucion_asesores',[
+      foreach ($varListSecciones as $key => $value) {
+        Yii::$app->db->createCommand()->insert('tbl_distribucion_asesores',[
                       'cedulaasesor' => $value['CedulaAsesor'],
                       'cedulalider' => $value['CedulaLider'],
                       'fechaactualjarvis' => $value['FechaJarvis'],  
@@ -348,9 +347,9 @@ use app\models\DistribucionAsesores;
                       'anulado' => 0,
                       'usua_id' => Yii::$app->user->identity->id,                                       
                   ])->execute();
-        }
+      }
 
-        $this->Guardarcantidades();
+      $this->Guardarcantidades();
 
     }
 
