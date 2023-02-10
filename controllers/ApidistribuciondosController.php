@@ -120,10 +120,40 @@ use GuzzleHttp;
                       'usua_id' => 7952,                                       
                   ])->execute();
         }
+
+        $this->Guardarcantidadesapi();
       
         die(json_encode(array("status"=>"1","data"=>$arraydatas)));
       
     }     
+
+    public function Guardarcantidadesapi(){
+        $paramsCeros = [':Anulado'=> 0];
+        $varConteoAsesores = Yii::$app->db->createCommand('
+          SELECT COUNT(ds.cedulaasesor) AS ConteoAsesos FROM tbl_distribucion_asesores ds
+            WHERE 
+              ds.anulado = :Anulado
+          ')->bindValues($paramsCeros)->queryScalar();
+  
+        $varConteolideres = Yii::$app->db->createCommand('
+          SELECT COUNT(1) AS ConteosLideres FROM tbl_distribucion_asesores ds
+            WHERE 
+              ds.anulado = :Anulado
+            GROUP BY ds.cedulalider
+              HAVING COUNT(1) > 1
+          ')->bindValues($paramsCeros)->queryAll();
+  
+  
+        Yii::$app->db->createCommand()->insert('tbl_distribucion_cantidades',[
+                      'cantidadasesor' => $varConteoAsesores,
+                      'cantidadlider' => count($varConteolideres),
+                      'fecharegistro' => date('Y-m-d h:m:s'),
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => 7952,                                       
+                  ])->execute();
+  
+      }
 
     
        
