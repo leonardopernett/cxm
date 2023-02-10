@@ -43,7 +43,7 @@ use GuzzleHttp;
             
             'rules' => [
               [
-                'actions' => ['index','apirocesadistribucionauto'],
+                'actions' => ['index','apiprocesadistribucionauto'],
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
@@ -51,7 +51,7 @@ use GuzzleHttp;
                         },
               ],
               [
-                'actions' => ['apirocesadistribucionauto'],
+                'actions' => ['apiprocesadistribucionauto'],
                 'allow' => true,
 
               ],
@@ -75,7 +75,7 @@ use GuzzleHttp;
       return $this->render('index');
     }
 
-    public function actionApirocesadistribucionauto(){
+    public function actionApiprocesadistribucionauto(){
 
         $arraydatas = "Proceso realizado";
 
