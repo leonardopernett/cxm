@@ -117,7 +117,7 @@ use GuzzleHttp;
                       'fechamodificacxm' => date('Y-m-d'),
                       'fechacreacion' => date('Y-m-d'),
                       'anulado' => 0,
-                      'usua_id' => Yii::$app->user->identity->id,                                       
+                      'usua_id' => 7952,                                       
                   ])->execute();
         }
       
