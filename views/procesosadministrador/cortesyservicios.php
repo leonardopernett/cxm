@@ -150,7 +150,7 @@ $roles = $command->queryScalar();
         <label><em class="fas fa-check" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Seleccionar Servicio') ?></label> <!-- label  del titulo de lo que vamos a mostrar ------>
         <?=  $form->field($model, 'id_servicio', 
         ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
-        ->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+        ->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                         [
                                             'prompt'=>'Seleccione Servicio...',//placeholder de lo que se va a mostrar
                                         ]
