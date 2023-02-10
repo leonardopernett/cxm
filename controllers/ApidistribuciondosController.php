@@ -121,8 +121,9 @@ use GuzzleHttp;
                   ])->execute();
         }
 
+        // Es necesario generar esta funcion para permitir el uso de guardar cantidades despues de verificar el ingreso de los datos de Jarvis
         $this->Guardarcantidadesapi();
-      
+        
         die(json_encode(array("status"=>"1","data"=>$arraydatas)));
       
     }     
