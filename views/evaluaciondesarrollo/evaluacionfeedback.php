@@ -188,11 +188,7 @@ $txtNotasFinal = 0;
 <script src="../../js_extensions/highcharts/exporting.js"></script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <!-- Full Page Image Header with Vertically Centered Content -->
-<script>
-    $(document).ready(function(){
-        $.fn.snow();
-    });
-</script>
+
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
