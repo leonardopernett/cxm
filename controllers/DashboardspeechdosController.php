@@ -29,6 +29,8 @@ use app\models\SpeechParametrizar;
 use app\models\Dashboardspeechcalls;
 use app\models\Formularios;
 use \yii\base\Exception;
+use\app\models\Speechglosario;
+use app\models\FormUploadtigo;
 
   class DashboardspeechdosController extends \yii\web\Controller {
 
