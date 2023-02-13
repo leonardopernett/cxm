@@ -94,7 +94,7 @@ $this->title = 'Parametrización de Categorias -- CXM & Speech --';
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7'],
-                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec} {btnsubirglosario',
+                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec} {btnsubirglosario}',
                         'buttons' => 
                         [ 
                             'view' => function ($url, $model) {
