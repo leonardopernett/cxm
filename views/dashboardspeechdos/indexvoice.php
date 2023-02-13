@@ -1640,6 +1640,17 @@ $this->title = 'Dashboard Escuchar +';
         </div>
     </div>
 
+    <div class="col-md-2">
+        <div class="card1 mb">
+            <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 15px; color: #FFC72C;"></em> <?= Yii::t('app', 'Glosario') ?> </label>
+            <?= Html::a('Ver',  ['verglosario',  'txtCodPcrcs'=>$txtCodPcrcs], ['class' => 'btn btn-success',
+                          'style' => 'background-color: #337ab7', 'target' => "_blank",
+                          'data-toggle' => 'tooltip',
+                          'title' => 'Glosario']) 
+            ?>    
+        </div>
+       </div>
+
 
   </div>
 

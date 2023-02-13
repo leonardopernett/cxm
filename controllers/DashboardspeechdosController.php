@@ -36,7 +36,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','llamadafocalizada'],
+            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','llamadafocalizada','verglosario'],
             'rules' => [
               [
                 'allow' => true,
@@ -6606,6 +6606,63 @@ public function actionCantidadentto(){
       }                    
     }
 
+    public function actionVerglosario($txtCodPcrcs){
+      $varidcliente = (new \yii\db\Query())
+                                  ->select(['id_dp_clientes'])
+                                  ->from(['tbl_proceso_cliente_centrocosto'])
+                                  ->where(['=','cod_pcrc',$txtCodPcrcs])
+                                  ->andwhere(['=','anulado',0])
+                                  ->scalar();
+                            
+      $varcodigopcrc = $txtCodPcrcs;
+      $paramsBuscarCategoriaGeneral = [':varPcrc' => $txtCodPcrcs];
+
+      $varData =  (new \yii\db\Query())
+                                  ->select(['*'])
+                                  ->from(['tbl_speech_glosario'])
+                                  ->where(['=','cod_pcrc',$txtCodPcrcs])
+                                  ->andwhere(['=','anulado',0])
+                                  ->all();
+                          
+      $varfechaMax = (new \yii\db\Query())
+                                  ->select(['MAX(fechacreacion)'])
+                                  ->from(['tbl_speech_glosario'])
+                                  ->where(['=','cod_pcrc',$txtCodPcrcs])
+                                  ->andwhere(['=','anulado',0])
+                                  ->scalar();
+
+      $varNombreCliente = Yii::$app->db->createCommand('
+                                  SELECT ss.nameArbol FROM tbl_speech_servicios ss
+                                    INNER JOIN tbl_speech_parametrizar sp ON 
+                                      ss.id_dp_clientes = sp.id_dp_clientes
+                                    WHERE 
+                                      sp.cod_pcrc IN (:varPcrc)
+                                    GROUP BY sp.cod_pcrc')->bindValues($paramsBuscarCategoriaGeneral)->queryScalar();
+
+      $varNombrePcrc =  (new \yii\db\Query())
+                                  ->select(['CONCAT(tbl_speech_categorias.cod_pcrc," - ",tbl_speech_categorias.pcrc)'])
+                                  ->from(['tbl_speech_categorias'])
+                                  ->where(['=','cod_pcrc',$txtCodPcrcs])
+                                  ->andwhere(['=','anulado',0])
+                                  ->groupBy(['tbl_speech_categorias.cod_pcrc'])
+                                  ->scalar();
+      
+                                 
+    
+
+
+      $model = new FormUploadtigo();        
+
+      return $this->render('verglosario',[
+        'model' => $model,
+        'varidcliente'=>$varidcliente,
+        'varData' => $varData,
+        'varcodigopcrc' => $varcodigopcrc,
+        'varfechaMax' => $varfechaMax,
+        'varNombreCliente' =>$varNombreCliente,
+        'varNombrePcrc' => $varNombrePcrc,
+    ]);
+    }
 
 
   }

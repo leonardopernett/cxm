@@ -31,6 +31,7 @@ use app\models\Formularios;
 use app\models\SpeechAleatoridad;
 use app\models\Speechpecservicios;
 use \yii\base\Exception;
+use\app\models\Speechglosario;
 
 
   class DashboardspeechController extends \yii\web\Controller {
@@ -39,7 +40,7 @@ use \yii\base\Exception;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','paramsaleatorio','paramspecservicio'],
+            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','paramsaleatorio','paramspecservicio','subirglosario','deleteitemglosario'],
             'rules' => [
               [
                 'allow' => true,
@@ -5861,6 +5862,122 @@ public function actionCantidadentto(){
                 }
                 echo \yii\helpers\Json::encode($out);
     }
+
+    public function actionSubirglosario($txtServicioCategorias){
+      $varidcliente = (new \yii\db\Query())
+                                  ->select(['id_dp_clientes'])
+                                  ->from(['tbl_proceso_cliente_centrocosto'])
+                                  ->where(['=','cod_pcrc',$txtServicioCategorias])
+                                  ->andwhere(['=','anulado',0])
+                                  ->scalar();
+
+      $varcodigopcrc = $txtServicioCategorias;
+
+      $varData =  (new \yii\db\Query())
+                                  ->select(['*'])
+                                  ->from(['tbl_speech_glosario'])
+                                  ->where(['=','cod_pcrc',$txtServicioCategorias])
+                                  ->andwhere(['=','anulado',0])
+                                  ->all();
+
+      $varfechaMax = (new \yii\db\Query())
+                                  ->select(['MAX(fechacreacion)'])
+                                  ->from(['tbl_speech_glosario'])
+                                  ->where(['=','cod_pcrc',$txtServicioCategorias])
+                                  ->andwhere(['=','anulado',0])
+                                  ->scalar();
+
+      $model = new FormUploadtigo();        
+
+      if ($model->load(Yii::$app->request->post())) {
+                
+        $model->file = UploadedFile::getInstances($model, 'file');
+
+        if ($model->file && $model->validate()) {
+                
+            foreach ($model->file as $file) {
+                $fecha = date('Y-m-d-h-i-s');
+                $user = Yii::$app->user->identity->username;
+                $name = $fecha . '-' . $user;
+                $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                $this->Importarglosario($name,$varcodigopcrc);
+
+                return $this->redirect(array('subirglosario','txtServicioCategorias'=>$varcodigopcrc));
+            }
+        }
+      }
+
+      return $this->render('subirglosario',[
+        'model' => $model,
+        'varidcliente'=>$varidcliente,
+        'varData' => $varData,
+        'varcodigopcrc' => $varcodigopcrc,
+        'varfechaMax' => $varfechaMax,
+    ]);
+    }
+
+    public function Importarglosario($name,$varcodigopcrc){
+    
+      $inputFile = 'categorias/' . $name . '.xlsx';
+
+      try {
+
+          $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+          $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+          $objPHPExcel = $objReader->load($inputFile);
+
+      } catch (Exception $e) {
+          die('Error');
+      }
+
+      $sheet = $objPHPExcel->getSheet(0);
+      $highestRow = $sheet->getHighestRow();
+
+      
+      
+        for ($i=10; $i <= $highestRow; $i++) { 
+
+          $contar = (new \yii\db\Query())
+                            ->select(['*'])
+                            ->from(['tbl_speech_glosario'])
+                            ->where(['=','tipocategoria',$sheet->getCell("A".$i)->getValue()])
+                            ->andwhere(['=','marca_canal_agente',$sheet->getCell("B".$i)->getValue()])
+                            ->andwhere(['=','nombrecategoria',$sheet->getCell("C".$i)->getValue()])
+                            ->andwhere(['=','descripcioncategoria',$sheet->getCell("D".$i)->getValue()])
+                            ->andwhere(['=','variablesejemplos',$sheet->getCell("E".$i)->getValue()])
+                            ->andwhere(['=','anulado',0])
+                            ->count();
+
+          if ($contar == 0) {
+            Yii::$app->db->createCommand()->insert('tbl_speech_glosario',[
+              'tipocategoria' => $sheet->getCell("A".$i)->getValue(),
+              'marca_canal_agente' => $sheet->getCell("B".$i)->getValue(),
+              'nombrecategoria' => $sheet->getCell("C".$i)->getValue(),
+              'descripcioncategoria' => $sheet->getCell("D".$i)->getValue(),
+              'variablesejemplos' => $sheet->getCell("E".$i)->getValue(),
+              'fechacreacion' => date("Y-m-d"),
+              'usua_id' => Yii::$app->user->identity->id,                    
+              'cod_pcrc' => $varcodigopcrc,
+              'anulado'=> 0,
+          ])->execute(); 
+          }  
+        }        
+    }
+
+    public function actionDeleteitemglosario($id,$txtServicioCategorias){
+      $varparametros = [
+          ':varid'=> $id
+      ];
+      Yii::$app->db->createCommand('
+            UPDATE tbl_speech_glosario SET anulado = 1
+              WHERE 
+              id_glosario = :varid')
+          ->bindValues($varparametros)
+          ->execute();
+
+      return $this->redirect(array('subirglosario','txtServicioCategorias'=>$txtServicioCategorias));//retornar  la vista 
+
+  }
 
 
   }
