@@ -32,6 +32,7 @@ use app\models\SpeechAleatoridad;
 use app\models\Speechpecservicios;
 use \yii\base\Exception;
 use\app\models\Speechglosario;
+use app\models\FormUploadtigo;
 
 
   class DashboardspeechController extends \yii\web\Controller {
