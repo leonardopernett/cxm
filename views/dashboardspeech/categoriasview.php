@@ -15,7 +15,7 @@ use app\models\Dashboardcategorias;
 $this->title = 'Dashboard -- VOC --';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->title = 'Parametrización de Categorias -- QA & Speech --';
+$this->title = 'Parametrización de Categorias -- CXM & Speech --';
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';
@@ -59,7 +59,11 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
     echo "<div id='modalContent1'></div>";
                                   
     Modal::end(); 
-  ?> 
+  ?>
+   &nbsp;
+  <a style=" background-color: #337ab7" class="btn btn-success" rel="stylesheet" type="text/css" href="..\..\downloadfiles\Plantilla_Glosario.xlsx" title="Descagar Plantilla del Glosario" target="_blank">
+  <em class="fas fa-download" style="font-size: 15px; color: #E6E6E6;"></em>  Descargar Plantilla</a>     
+  &nbsp; 
 <br>
     <div class="page-header" >
         <h3 class="text-center"><?= Html::encode($this->title) ?></h3>
@@ -90,7 +94,7 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7'],
-                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec}',
+                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec} {btnsubirglosario',
                         'buttons' => 
                         [ 
                             'view' => function ($url, $model) {
@@ -148,6 +152,16 @@ $this->title = 'Parametrización de Categorias -- QA & Speech --';
                                         'class' => '',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Programar PEC',
+                                        'data' => [
+                                            'method' => 'post',
+                                        ],
+                                ]);          
+                            },
+                            'btnsubirglosario'=> function($url, $model) {
+                                return Html::a('<em class="fas fa-upload" style="font-size: 18px;"></em>',['subirglosario', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                        'class' => '',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Subir Glosario',
                                         'data' => [
                                             'method' => 'post',
                                         ],
