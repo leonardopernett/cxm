@@ -359,74 +359,75 @@ use GuzzleHttp;
                                       ->andwhere(['=','idgrupocorte',5])
                                       ->scalar();
           }
+
+          if ($varIdCorte != null) {
+            ini_set("max_execution_time", "900");
+            ini_set("memory_limit", "1024M");
+            ini_set( 'post_max_size', '1024M' );
   
-          ini_set("max_execution_time", "900");
-          ini_set("memory_limit", "1024M");
-          ini_set( 'post_max_size', '1024M' );
+            ignore_user_abort(true);
+            set_time_limit(900);
   
-          ignore_user_abort(true);
-          set_time_limit(900);
-  
-          $varGrupoCorte = (new \yii\db\Query())
+            $varGrupoCorte = (new \yii\db\Query())
                                       ->select(['idgrupocorte'])
                                       ->from(['tbl_tipocortes'])
                                       ->where(['=','idtc',$varIdCorte])
                                       ->scalar();
   
-          if ($varGrupoCorte == "1") {
-            $varIdClientes = (new \yii\db\Query())
-                                      ->select(['id_servicio'])
-                                      ->from(['tbl_cortes_servicios'])
-                                      ->where(['=','anulado',0])
-                                      ->andwhere(['=','id_corte',1])
-                                      ->all();         
-          }
-  
-          if ($varGrupoCorte == "2") {
-            $varIdClientes = (new \yii\db\Query())
-                                      ->select(['id_servicio'])
-                                      ->from(['tbl_cortes_servicios'])
-                                      ->where(['=','anulado',0])
-                                      ->andwhere(['=','id_corte',2])
-                                      ->all();           
-          }
-  
-          if ($varGrupoCorte == "3") {
-            $varIdClientes = (new \yii\db\Query())
-                                      ->select(['id_servicio'])
-                                      ->from(['tbl_cortes_servicios'])
-                                      ->where(['=','anulado',0])
-                                      ->andwhere(['=','id_corte',3])
-                                      ->all();
-          }
-  
-          if ($varGrupoCorte == "4") {
-            $varIdClientes = (new \yii\db\Query())
-                                      ->select(['id_servicio'])
-                                      ->from(['tbl_cortes_servicios'])
-                                      ->where(['=','anulado',0])
-                                      ->andwhere(['=','id_corte',4])
-                                      ->all();           
-          }
-  
-          if ($varGrupoCorte == "5") {
-            $varIdClientes = (new \yii\db\Query())
-                                      ->select(['id_servicio'])
-                                      ->from(['tbl_cortes_servicios'])
-                                      ->where(['=','anulado',0])
-                                      ->andwhere(['=','id_corte',5])
-                                      ->all();           
-          }
-  
-          $varArrayClientes = array();
-          foreach ($varIdClientes as $key => $value) {
-            array_push($varArrayClientes,$value['id_servicio']);
-  
-          }
-  
-          $varClienteLista = implode(",",$varArrayClientes);
-  
-          $varListAsesoresEliminar = (new \yii\db\Query())
+            if ($varGrupoCorte == "1") {
+              $varIdClientes = (new \yii\db\Query())
+                                        ->select(['id_servicio'])
+                                        ->from(['tbl_cortes_servicios'])
+                                        ->where(['=','anulado',0])
+                                        ->andwhere(['=','id_corte',1])
+                                        ->all();         
+            }
+    
+            if ($varGrupoCorte == "2") {
+              $varIdClientes = (new \yii\db\Query())
+                                        ->select(['id_servicio'])
+                                        ->from(['tbl_cortes_servicios'])
+                                        ->where(['=','anulado',0])
+                                        ->andwhere(['=','id_corte',2])
+                                        ->all();           
+            }
+    
+            if ($varGrupoCorte == "3") {
+              $varIdClientes = (new \yii\db\Query())
+                                        ->select(['id_servicio'])
+                                        ->from(['tbl_cortes_servicios'])
+                                        ->where(['=','anulado',0])
+                                        ->andwhere(['=','id_corte',3])
+                                        ->all();
+            }
+    
+            if ($varGrupoCorte == "4") {
+              $varIdClientes = (new \yii\db\Query())
+                                        ->select(['id_servicio'])
+                                        ->from(['tbl_cortes_servicios'])
+                                        ->where(['=','anulado',0])
+                                        ->andwhere(['=','id_corte',4])
+                                        ->all();           
+            }
+    
+            if ($varGrupoCorte == "5") {
+              $varIdClientes = (new \yii\db\Query())
+                                        ->select(['id_servicio'])
+                                        ->from(['tbl_cortes_servicios'])
+                                        ->where(['=','anulado',0])
+                                        ->andwhere(['=','id_corte',5])
+                                        ->all();           
+            }
+    
+            $varArrayClientes = array();
+            foreach ($varIdClientes as $key => $value) {
+              array_push($varArrayClientes,$value['id_servicio']);
+    
+            }
+    
+            $varClienteLista = implode(",",$varArrayClientes);
+    
+            $varListAsesoresEliminar = (new \yii\db\Query())
                                     ->select(['tbl_evaluados.id','tbl_distribucion_asesores.cedulaasesor'])
                                     ->from(['tbl_evaluados'])
                                     ->join('INNER JOIN', 'tbl_distribucion_asesores', 
@@ -438,7 +439,7 @@ use GuzzleHttp;
                                       $varAsesorId = $value['id'];          
                                       $paramsEliminarEquipos = [':varIdEvaluado'=>$varAsesorId]; 
                             
-          $varValdiaParams = (new \yii\db\Query())
+            $varValdiaParams = (new \yii\db\Query())
                                                         ->select(['tbl_equipo_parametros.idequipo_parametros'])
                                                         ->from(['tbl_equipo_parametros'])
                                                         ->join('INNER JOIN', 'tbl_equipos_evaluados', 
@@ -596,9 +597,16 @@ use GuzzleHttp;
                                                   'usua_id' => 1,   
                                                   'fechacreacion' => date('Y-m-d'),                
                                               ])->execute();
+
+            die(json_encode("Finaliza correctamente la accion"));
+          }else{
+            die(json_encode("Finaliza incorrectamente la accion"));
+          }
+  
+          
   
   
-        die(json_encode("Finaliza correctamente la accion"));
+        
                                       
       }
 
