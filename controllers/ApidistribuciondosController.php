@@ -43,7 +43,7 @@ use GuzzleHttp;
             
             'rules' => [
               [
-                'actions' => ['index','apiprocesadistribucionauto'],
+                'actions' => ['index','apiprocesadistribucionauto','apiprocesaequiposauto'],
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
@@ -51,7 +51,7 @@ use GuzzleHttp;
                         },
               ],
               [
-                'actions' => ['apiprocesadistribucionauto'],
+                'actions' => ['apiprocesadistribucionauto','apiprocesaequiposauto'],
                 'allow' => true,
 
               ],
