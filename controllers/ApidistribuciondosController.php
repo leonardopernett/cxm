@@ -117,7 +117,7 @@ use GuzzleHttp;
                       'fechamodificacxm' => date('Y-m-d'),
                       'fechacreacion' => date('Y-m-d'),
                       'anulado' => 0,
-                      'usua_id' => 7952,                                       
+                      'usua_id' => 1,                                       
                   ])->execute();
         }
 
@@ -593,7 +593,7 @@ use GuzzleHttp;
                                                   'idtc' => $varIdCorte, 
                                                   'ultimafecha' => date('Y-m-d h:i:s'),
                                                   'anulado' => 0,
-                                                  'usua_id' =>  Yii::$app->user->identity->id,   
+                                                  'usua_id' => 1,   
                                                   'fechacreacion' => date('Y-m-d'),                
                                               ])->execute();
   
