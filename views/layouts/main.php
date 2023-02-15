@@ -268,6 +268,14 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                             '<br>',
+                                            '<li class="dropdown-headercx ico1">&nbsp;GPTW&nbsp;&nbsp;</li>',
+                                                [
+
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Plan de Acci&oacute;n&nbsp;&nbsp;'),
+                                                    'url' => ['/planacciongptw/index'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                            '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Analizar y Decidir</li>',
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Resultados Evaluaci&oacute;n Desarrollo&nbsp;&nbsp;'),
