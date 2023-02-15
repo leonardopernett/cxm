@@ -180,6 +180,16 @@ $roles = $command->queryScalar();
                 <br>
 
                 <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-eyes" style="font-size: 15px; color: #ffc034;"></em> Verificar Transcripcion</label>
+                    <?= Html::a('Verificar',  ['buzoneskaliope/index'], ['class' => 'btn btn-success',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Verificar']) 
+                    ?>
+                </div>
+
+                <br>
+
+                <div class="card1 mb">
                     <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #ffc034;"></em> Cancelar y Regresar...</label>
                     <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
