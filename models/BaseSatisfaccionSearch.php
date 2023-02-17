@@ -308,7 +308,7 @@ WHERE pe.programa = " . $this->pcrc;
                             . ",(SELECT COUNT(base.id) FROM tbl_base_satisfaccion base LEFT JOIN tbl_respuesta_base_satisfaccion re ON re.id_basesatisfaccion =  base.id LEFT JOIN tbl_respuesta_basesatisfaccion_tipificacion te ON re.id = te.id_respuesta
                             LEFT JOIN tbl_respuesta_basesatisfaccion_subtipificacion se ON te.id = se.tipificacion_id WHERE base.pcrc = b.pcrc AND  re.respuesta <> 'on' AND b.id=base.id GROUP BY base.id) AS conteo
                             ")
-                    ->from("tbl_base_satisfaccion b")
+                    ->from("tbl_base_satisfaccion1 b")
                     ->join("LEFT JOIN", "tbl_respuesta_base_satisfaccion r", "r.id_basesatisfaccion = b.id")
                     ->join("LEFT JOIN", "tbl_respuesta_basesatisfaccion_tipificacion t", "t.id_respuesta = r.id")
                     ->join("LEFT JOIN", "tbl_respuesta_basesatisfaccion_subtipificacion s", "t.id = s.tipificacion_id")
@@ -607,7 +607,8 @@ WHERE pe.programa = " . $this->pcrc;
         $titulos[68] = ['header' => 'Valencia', 'value' => '68'];
         
 
-        $titulos[39] = ['header' => 'Tipo Inbox', 'value' => '39'];
+        $titulos[39] = ['header' => 'Tipo Inbox', 'value' => '39'];                
+        $titulos[73] = ['header' => 'Motivo Declinación', 'value' => '73'];
         $titulos[40] = ['header' => 'Responsabilidad', 'value' => '40'];
         $titulos[41] = ['header' => 'Canal', 'value' => '41'];
         $titulos[42] = ['header' => 'Marca', 'value' => '42'];
@@ -774,7 +775,7 @@ WHERE pe.programa = " . $this->pcrc;
                         $cdpregunta = -1;
                         $cdtipificacion = -1;
                         $newRow++;
-                        $iData = 73;
+                        $iData = 74;
                         unset($data[$i]['id_lider_equipo']);
                         unset($data[$i]['coordinador']);
                         unset($data[$i]['jefe_operaciones']);
@@ -832,6 +833,17 @@ WHERE pe.programa = " . $this->pcrc;
                         } else { 
                             $dataProvider[$newRow][39] = $this->vData($data[$i]['tipo_inbox']);
                         }
+
+                        $varmotivo = (new \yii\db\Query())
+                        ->select(['tbl_declinacion_motivo.nombre'])
+                        ->from(['tbl_declinacion_satisfaccion'])
+                        ->join('LEFT JOIN', 'tbl_declinacion_motivo',
+                          'tbl_declinacion_satisfaccion.id_declina_motivo = tbl_declinacion_motivo.id_declina_motivo')
+                        ->where(['=','tbl_declinacion_satisfaccion.id_formulario',$varIdBaseSatu])
+                        ->andwhere(['=','tbl_declinacion_satisfaccion.anulado',0])
+                        ->scalar(); 
+
+                        $dataProvider[$newRow][73] = $varmotivo;
                         
                         $dataProvider[$newRow][40] = $this->vData($data[$i]['responsabilidad']);
                         $dataProvider[$newRow][41] = $this->vData($data[$i]['canal']);
@@ -1115,6 +1127,16 @@ WHERE pe.programa = " . $this->pcrc;
                     } else { 
                         $dataProvider[$newRow][39] = $this->vData($satu['tipo_inbox']);
                     }
+                    $varmotivo = (new \yii\db\Query())
+                            ->select(['tbl_declinacion_motivo.nombre'])
+                            ->from(['tbl_declinacion_satisfaccion'])
+                            ->join('LEFT JOIN', 'tbl_declinacion_motivo',
+                            'tbl_declinacion_satisfaccion.id_declina_motivo = tbl_declinacion_motivo.id_declina_motivo')
+                            ->where(['=','tbl_declinacion_satisfaccion.id_formulario',$varIdBaseSatu])
+                            ->andwhere(['=','tbl_declinacion_satisfaccion.anulado',0])
+                            ->scalar(); 
+                                               
+                        $dataProvider[$newRow][73] = $varmotivo;
                     
                     $tmpCont = implode("|", $dataProvider[$newRow]);
                     $filecontent = str_replace(array("\r\n"), ' ', $tmpCont);

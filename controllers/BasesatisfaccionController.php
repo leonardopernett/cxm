@@ -37,6 +37,7 @@ use app\models\UploadForm2;
 use \yii\base\Exception;
 use app\models\Declinaciones;
 
+
 /**
  * BaseSatisfaccionController implements the CRUD actions for BaseSatisfaccion model.
  */

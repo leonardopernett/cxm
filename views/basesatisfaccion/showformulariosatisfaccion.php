@@ -12,7 +12,10 @@ $varPcrc = $data->tmp_formulario->arbol_id;
 $varBase = $data->tmp_formulario->basesatisfaccion_id;
 
 $varcontenidoKaliope = $varcontenido;
-
+$varmotivos=null;
+if(!isset($_GET['motivo'])){
+    $motivo = null;
+}
 
 ?>
 
@@ -50,7 +53,13 @@ $detalles_ids = array();
 $detallesseccion_id = array();
 $contadorSecciones = 0;
 $banderaSaltoComentario = true;
+$valor = "";
 
+$datanew = (new \yii\db\Query())
+->select(['tbl_declinacion_motivo.id_declina_motivo', 'tbl_declinacion_motivo.nombre'])
+->from(['tbl_declinacion_motivo'])
+->where(['=','anulado',0])
+->All();
 
 ?>
 
@@ -274,15 +283,32 @@ $banderaSaltoComentario = true;
                         ?>
                         <?= Html::a(Yii::t('app', 'Cancel'), ['cancelarformulario', 'id' => $data->basesatisfaccion->id], ['class' => 'btn btn-default soloCancelar']) ?>
                         <?php if ($data->aleatorio == true) : ?>
-                            <?= Html::a(Yii::t('app', 'Declinar'), ['declinarformulario', 'id' => $data->basesatisfaccion->id], ['class' => 'btn btn-default soloDeclinar']) ?>
-                        <?php endif; ?>
-
-                       
+                            <?= Html::a('Declinar', "javascript:void(0)", ['id' => 'prueba11', 'class' => 'btn  btn-primary soloMostrar', 'style' => 'display: inline' ])?>  
+                            <?= Html::a('Declinar', "javascript:void(0)", ['id' => 'prueba12', 'class' => 'btn  btn-primary soloMostrar1', 'style' => 'display: none'])?>                                                                                                 
+                        <?php endif; ?> 
+                    
                     </div>
+                </div>               
+                <div class="col-sm-12 well" id="tablesi" style="display: none">
+                  <div class="row"> 
+                        <div class="col-md-4">
+                        <select name="txtmotivo" id="txtmotivo" style="font-size: 15px">
+                            <option value="">Seleccione...</option>
+                            <?php  foreach ($datanew as $r) : ?>
+                                <option value = '<?php echo $r['id_declina_motivo']; ?>'><?php echo $r['nombre']; ?></option>
+                            <?php endforeach; ?>
+                        </select>                            
+                        </div>
+                        <div class="col-md-4 pull-left">
+                         <?= Html::a(Yii::t('app', 'Declinar'), ['declinarformulario', 'id' => $data->basesatisfaccion->id, 'motivo' => $varmotivos], ['class' => 'btn  btn-primary  soloDeclinar']) ?>
+                        </div>                 
+                    
+                  </div>
+                  
                 </div>
-                
+                <br>  
             <?php endif; ?>
-            
+            <br> 
             <?= Html::input("hidden", "tmp_formulario_id", $data->formulario_id, ["id" => "tmp_formulario_id"]); ?>
             <?= Html::input("hidden", "basesatisfaccion_id", $data->basesatisfaccion->id); ?>
 
@@ -3433,7 +3459,8 @@ $banderaSaltoComentario = true;
                 });
                 $(".soloDeclinar").on("click", function() {
                     var tmp_form = $("#tmp_formulario_id").val();
-
+                    var varEncuesta = "<?php echo $varBase; ?>";
+                    var varMotivo = document.getElementById("txtmotivo").value;
                     var banderaescalado = '<?php
                                             $banderaescalado = Yii::$app->request->get("banderaescalado");
                                             if (isset($banderaescalado)) {
@@ -3451,10 +3478,40 @@ $banderaSaltoComentario = true;
                             }
                         });
                     }
-                    
+                    if(varMotivo != ""){
+                            $.ajax({
+                            method: "post",
+                            url: "enviarmotivos",
+                            data: {
+                                txtvaridtranscripcion : varEncuesta,
+                                txtvarmotivo : varMotivo,
+                            },
+                            success : function(response){
+                                numRta =   JSON.parse(response);
+                                console.log(numRta);
+                                location.reload();
+                            },
+                        });
+                    }
                 });
 
-                
+                $(".soloMostrar").on("click", function() {
+                    var varidtbn1 = document.getElementById("prueba11");
+                    var varidtbn2 = document.getElementById("prueba12");
+                    var varPartT = document.getElementById("tablesi"); 
+                    varidtbn1.style.display = 'none';
+                    varidtbn2.style.display = 'inline';   
+                    varPartT.style.display = 'inline';
+
+                });
+                $(".soloMostrar1").on("click", function() {
+                    var varidtbn1 = document.getElementById("prueba11");
+                    var varidtbn2 = document.getElementById("prueba12");
+                    var varPartT = document.getElementById("tablesi"); 
+                    varidtbn1.style.display = 'inline';
+                    varidtbn2.style.display = 'none';   
+                    varPartT.style.display = 'none';
+                });
             });
 
             function validarFormulario() {
