@@ -308,7 +308,7 @@ WHERE pe.programa = " . $this->pcrc;
                             . ",(SELECT COUNT(base.id) FROM tbl_base_satisfaccion base LEFT JOIN tbl_respuesta_base_satisfaccion re ON re.id_basesatisfaccion =  base.id LEFT JOIN tbl_respuesta_basesatisfaccion_tipificacion te ON re.id = te.id_respuesta
                             LEFT JOIN tbl_respuesta_basesatisfaccion_subtipificacion se ON te.id = se.tipificacion_id WHERE base.pcrc = b.pcrc AND  re.respuesta <> 'on' AND b.id=base.id GROUP BY base.id) AS conteo
                             ")
-                    ->from("tbl_base_satisfaccion1 b")
+                    ->from("tbl_base_satisfaccion b")
                     ->join("LEFT JOIN", "tbl_respuesta_base_satisfaccion r", "r.id_basesatisfaccion = b.id")
                     ->join("LEFT JOIN", "tbl_respuesta_basesatisfaccion_tipificacion t", "t.id_respuesta = r.id")
                     ->join("LEFT JOIN", "tbl_respuesta_basesatisfaccion_subtipificacion s", "t.id = s.tipificacion_id")
