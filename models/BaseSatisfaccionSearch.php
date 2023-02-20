@@ -833,7 +833,7 @@ WHERE pe.programa = " . $this->pcrc;
                         } else { 
                             $dataProvider[$newRow][39] = $this->vData($data[$i]['tipo_inbox']);
                         }
-
+                        $varIdBaseSatu = $this->vData($data[$i]['id']);
                         $varmotivo = (new \yii\db\Query())
                         ->select(['tbl_declinacion_motivo.nombre'])
                         ->from(['tbl_declinacion_satisfaccion'])
@@ -850,7 +850,7 @@ WHERE pe.programa = " . $this->pcrc;
                         $dataProvider[$newRow][42] = $this->vData($data[$i]['marca']);
                         $dataProvider[$newRow][43] = $this->vData($data[$i]['equivocacion']);
 
-                        $varIdBaseSatu = $this->vData($data[$i]['id']);
+                        
                         $dataProvider[$newRow][69] = (new \yii\db\Query())
                                                       ->select(['responsabilidad'])
                                                       ->from(['tbl_responsabilidad_satisfaccion'])
