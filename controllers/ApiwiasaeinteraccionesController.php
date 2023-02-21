@@ -73,9 +73,6 @@ use GuzzleHttp;
 
     public function actionApidatageneral(){
 
-      $datapost = file_get_contents('php://input');
-      $data_post = json_decode($datapost,true);
-
       ob_start();
 
       $curl = curl_init();
