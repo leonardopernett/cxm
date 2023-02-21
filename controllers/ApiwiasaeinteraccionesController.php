@@ -51,7 +51,7 @@ use GuzzleHttp;
                         },
               ],
               [
-                'actions' => [,'apidatageneral'],
+                'actions' => ['apidatageneral'],
                 'allow' => true,
 
               ],
