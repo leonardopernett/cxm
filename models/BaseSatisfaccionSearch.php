@@ -1127,6 +1127,7 @@ WHERE pe.programa = " . $this->pcrc;
                     } else { 
                         $dataProvider[$newRow][39] = $this->vData($satu['tipo_inbox']);
                     }
+                    $varIdBaseSatu  = $this->vData($satu['id']);
                     $varmotivo = (new \yii\db\Query())
                             ->select(['tbl_declinacion_motivo.nombre'])
                             ->from(['tbl_declinacion_satisfaccion'])
