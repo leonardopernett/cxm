@@ -892,7 +892,7 @@ $contadorSecciones = 0;
                                                 $varidscalificacion = $value['id'];
                                                 $varnamecalificacion = $value['name'];
                                                 
-                                                if ($varnamecalificacion == 'NA' || $varnamecalificacion == 'No Aplica' || $varnamecalificacion == 'NO APLICA') {
+                                                if ($varnamecalificacion == 'NA' ||  $varnamecalificacion == 'NA   ' || $varnamecalificacion == 'No Aplica' || $varnamecalificacion == 'NO APLICA') {
                                                 
                                         ?>
                                                 <option value="<?php echo $varidscalificacion ?>" ><?php echo $varnamecalificacion; ?></option>
