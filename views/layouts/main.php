@@ -219,7 +219,12 @@ AppAsset::register($this);
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gestor del Cliente&nbsp;&nbsp;'),
                                                     'url' => ['/hojavida/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
-                                                ],                                                  
+                                                ], 
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Satisfacci&oacute;n Cliente&nbsp;&nbsp;'),
+                                                    'url' => ['/satisfaccioncliente/index?varidban=0'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],  
                                                 '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Resultados&nbsp;</li>',    
                                                 [

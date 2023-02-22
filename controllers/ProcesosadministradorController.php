@@ -50,7 +50,9 @@ use app\models\Declinaciones;
             'parametrizarplan','deletecontrol','parametrizarequipos','deleteteamparams','parametrizarasesores',
             'parametrizarpcrc','parametrizarfuncionapcrc','parametrizarresponsabilidad','viewresponsabilidad',
             'adminmensajes','listarnombres','adminpcrc','actualizapcrc','procesopcrc',
-            'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio','deleteserviciocorte','cortesyservicios','viewmotivosdeclinacion'],
+            'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio',
+            'deleteserviciocorte','cortesyservicios','viewmotivosdeclinacion','viewmotivosdeclinacion','deletepilares',
+            'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores'],
             'rules' => [
               [
                 'allow' => true,
@@ -240,6 +242,42 @@ use app\models\Declinaciones;
 
         return $this->render('viewescucharmas',[
             'model' => $model,
+        ]);
+    }
+    public function actionViewdetallepilaresgptw(){
+        $model = new DetallesPilaresGptw();
+        $model2 = new Pilaresgptw();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+
+            $varidpilar = $model->id_pilares;
+            $varnombre = $model->nombre;
+           /* $varNombreservicio = (new \yii\db\Query())
+                    ->select(['cliente'])
+                    ->from(['tbl_procesos_volumendirector'])
+                    ->where(['=','id_dp_clientes',$variddas])
+                    ->andwhere(['=','anulado',0])
+                    ->groupBy(['id_dp_clientes'])
+                    ->Scalar();*/
+
+            Yii::$app->db->createCommand()->insert('tbl_detalle_pilaresgptw',[
+                                             'id_pilares' => $varidpilar,
+                                             'nombre' => $varnombre,
+                                             'fechacreacion' => date("Y-m-d"),
+                                             'anulado' => 0,
+                                             'usua_id' => Yii::$app->user->identity->id,
+                                         ])->execute(); 
+
+            return $this->redirect('viewdetallepilaresgptw',[
+                'model' => $model,
+                'model2' => $model2,
+            ]);
+        }
+
+        return $this->render('viewdetallepilaresgptw',[
+            'model' => $model,
+            'model2' => $model2,
         ]);
     }
 
@@ -737,6 +775,130 @@ use app\models\Declinaciones;
         return $this->render('parametrizarequipos',[
             'model' => $model,
             'varListEquipos' => $varListEquipos,
+        ]);
+    }
+
+    public function actionViewareaapoyogptw(){
+        $model = new Areaapoyogptw();
+
+        $varListAreaapoyo= (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_areasapoyo_gptw'])
+                                    ->orderBy(['nombre' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre;
+
+            Yii::$app->db->createCommand()->insert('tbl_areasapoyo_gptw',[
+                    'nombre' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewareaapoyogptw']);
+        }
+
+        return $this->render('viewareaapoyogptw',[
+            'model' => $model,
+            'varListAreaapoyo' => $varListAreaapoyo,
+        ]);
+    }
+
+    public function actionViewpilaresgptw(){
+        $model = new Pilaresgptw();
+
+        $varListMotivos= (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_pilares_gptw'])
+                                    ->orderBy(['nombre_pilar' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre_pilar;
+
+            Yii::$app->db->createCommand()->insert('tbl_pilares_gptw',[
+                    'nombre_pilar' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewpilaresgptw']);
+        }
+
+        return $this->render('viewpilaresgptw',[
+            'model' => $model,
+            'varListEquipos' => $varListMotivos,
+        ]);
+    }
+
+    public function actionViewprocesossatisfaccion(){
+        $model = new ProcesosSatisfaccion();
+
+        $varListarprocesos= (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_procesos_satisfaccion_cliente'])
+                                    ->orderBy(['nombre' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre;
+
+            Yii::$app->db->createCommand()->insert('tbl_procesos_satisfaccion_cliente',[
+                    'nombre' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewprocesossatisfaccion']);
+        }
+
+        return $this->render('viewprocesossatisfaccion',[
+            'model' => $model,
+            'varListarprocesos' => $varListarprocesos,
+        ]);
+    }
+
+    public function actionViewindicadores(){
+        $model = new IndicadorSatisfaccion();
+
+        $varListarindicador= (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_indicadores_satisfaccion_cliente'])
+                                    ->orderBy(['nombre' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre;
+
+            Yii::$app->db->createCommand()->insert('tbl_indicadores_satisfaccion_cliente',[
+                    'nombre' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewindicadores']);
+        }
+
+        return $this->render('viewindicadores',[
+            'model' => $model,
+            'varListarindicador' => $varListarindicador,
         ]);
     }
 
@@ -2383,7 +2545,47 @@ use app\models\Declinaciones;
             return $this->redirect(['viewmotivosdeclinacion']);
     }
     
+    public function actionDeleteareaapoyo($id){
+        $paramsEliminar = $id;
 
+        Yii::$app->db->createCommand('
+            UPDATE tbl_areasapoyo_gptw 
+                SET anulado = :varAnulado
+                WHERE 
+                id_areaapoyo = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewareaapoyogptw']);
+    }
+
+    public function actionDeletepilares($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE tbl_pilares_gptw 
+                SET anulado = :varAnulado
+                WHERE 
+                id_pilares = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewpilaresgptw']);
+    }
+
+    public function actionDeleteprocesosatisfac($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE tbl_procesos_satisfaccion_cliente 
+                SET anulado = :varAnulado
+                WHERE 
+                id_proceso_satis = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewprocesossatisfaccion']);
+    } 
   }
 
 ?>
