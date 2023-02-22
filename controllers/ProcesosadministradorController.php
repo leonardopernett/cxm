@@ -2591,6 +2591,20 @@ use app\models\IndicadorSatisfaccion;
             ->execute();        
             return $this->redirect(['viewprocesossatisfaccion']);
     } 
+
+    public function actionDeleteprocesoindicador($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE tbl_indicadores_satisfaccion_cliente 
+                SET anulado = :varAnulado
+                WHERE 
+                id_indicador = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewindicadores']);
+    }
   }
 
 ?>
