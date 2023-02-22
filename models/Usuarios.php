@@ -19,6 +19,7 @@ use yii\base\Exception;
  * @property string $usua_estado
  * @property string $usua_fechhoratimeout
  * @property string $fechacreacion
+ * @property string $id_sociedad
  *
  * @property TblArbolsEvaluadores[] $tblArbolsEvaluadores
  * @property TblArbolsUsuarios[] $tblArbolsUsuarios
@@ -53,6 +54,7 @@ class Usuarios extends \yii\db\ActiveRecord {
             [['usua_email'], 'match', 'pattern' => '/[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/'],
             [['grupo'],'integer'],
             [['fechacreacion'], 'safe'],
+            [['id_sociedad'], 'integer'],
             ['usua_nombre','filter', 'filter' => function($value){
                return filter_var($value,FILTER_SANITIZE_STRING) ;
             } ],
@@ -82,7 +84,8 @@ class Usuarios extends \yii\db\ActiveRecord {
             'usua_activo' => Yii::t('app', 'Usua Activo'),
             'usua_estado' => Yii::t('app', 'Usua Estado'),
             'usua_fechhoratimeout' => Yii::t('app', 'Usua Fechhoratimeout'),
-	    'fechacreacion' => Yii::t('app', ''),
+	        'fechacreacion' => Yii::t('app', ''),
+            'id_sociedad' => Yii::t('app', ''),
         ];
     }
 

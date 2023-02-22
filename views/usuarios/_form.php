@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\widgets\Pjax;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
@@ -36,6 +37,15 @@ use yii\widgets\Pjax;
         <?= $form->field($model, 'rol')->dropDownList($model->getRolesList(), ['prompt' => Yii::t('app', 'Select ...')]); ?>
 
         <?= Html::hiddenInput('grupo', $grupo_id) ?>
+
+        <?=  
+            $form->field($model, 'id_sociedad')->dropDownList(ArrayHelper::map(\app\models\Hojavidasociedad::find()->distinct()->where("anulado = 0")->orderBy(['sociedad'=> SORT_ASC])->all(), 'id_sociedad', 'sociedad'),
+                [
+                    'id' => 'varIdSociedad',
+                    'prompt'=>'Seleccione ...',
+                ]
+            )->label('Sociedad'); 
+        ?>
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -83,7 +93,16 @@ use yii\widgets\Pjax;
         <?= $form->field($model, 'rol')->dropDownList($model->getRolesList(), ['prompt' => Yii::t('app', 'Select ...')]); ?>
         <?= $form->field($model, 'grupo')->dropDownList($model->getGruposusuariosList(), ['prompt' => Yii::t('app', 'Select ...')]); ?>
 
-	<?= $form->field($model, 'fechacreacion')->textInput(['maxlength' => 150, 'value'=>$fechaactual, 'class'=>'hidden']) ?>
+	    <?= $form->field($model, 'fechacreacion')->textInput(['maxlength' => 150, 'value'=>$fechaactual, 'class'=>'hidden']) ?>
+
+        <?=  
+            $form->field($model, 'id_sociedad')->dropDownList(ArrayHelper::map(\app\models\Hojavidasociedad::find()->distinct()->where("anulado = 0")->orderBy(['sociedad'=> SORT_ASC])->all(), 'id_sociedad', 'sociedad'),
+                [
+                    'id' => 'varIdSociedad',
+                    'prompt'=>'Seleccione ...',
+                ]
+            )->label('Sociedad'); 
+        ?>
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
