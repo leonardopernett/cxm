@@ -64,7 +64,7 @@ class Bloquedetalles extends \yii\db\ActiveRecord {
             'i5_nmfactor', 'i6_nmfactor', 'i7_nmfactor', 'i8_nmfactor',
             'i9_nmfactor', 'i10_nmfactor', 'c_pits', 'id_seccion_pits'],
                 'number'],
-            [['name'], 'string', 'max' => 150],
+            [['name'], 'string', 'max' => 300],
             [['descripcion'], 'safe']
         ];
     }
