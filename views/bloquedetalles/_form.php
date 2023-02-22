@@ -125,10 +125,10 @@ function validacion(){
     return;
     }
 
-    if (varidname.length>150) {
+    if (varidname.length>300) {
 
       event.preventDefault();
-      swal.fire("Advertencia Nombre solo puede contener 0 - 100 caracteres") ;
+      swal.fire("Advertencia Nombre solo puede contener 0 - 300 caracteres") ;
       return;
     }
 
