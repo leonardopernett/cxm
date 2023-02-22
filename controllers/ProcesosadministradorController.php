@@ -38,6 +38,11 @@ use app\models\Procesoclientecentroscosto;
 use app\models\Evaluados;
 use app\models\Corteservicios;
 use app\models\Declinaciones;
+use app\models\Pilaresgptw;
+use app\models\Areaapoyogptw;
+use app\models\ProcesosSatisfaccion;
+use app\models\DetallesPilaresGptw;
+use app\models\IndicadorSatisfaccion;
 
   class ProcesosadministradorController extends \yii\web\Controller {
 
