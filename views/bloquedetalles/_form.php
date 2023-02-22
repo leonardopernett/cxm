@@ -30,7 +30,7 @@ use yii\bootstrap\ActiveForm;
     }
     ?>
 
-    <?= $form->field($model, 'name')->textInput(['id'=>'idname','maxlength'=>150]) ?>
+    <?= $form->field($model, 'name')->textInput(['id'=>'idname','maxlength'=>300]) ?>
 
     <?php if ($isAjax): ?>
         <?php if ($model->isNewRecord): ?>            
