@@ -314,8 +314,56 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Pilares GPTW') ?></label>
+                        <?= Html::a('Aceptar',  ['viewpilaresgptw'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Pilares GPTW']) 
+                        ?>
+                    </div>
+                </div>
             </div>
-
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Áreas de Apoyo GPTW') ?></label>
+                        <?= Html::a('Aceptar',  ['viewareaapoyogptw'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Áreas de Apoyo GPTW']) 
+                        ?>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Procesos Satisfacción Clientes') ?></label>
+                        <?= Html::a('Aceptar',  ['viewprocesossatisfaccion'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Procesos Satisfacción Clientes']) 
+                        ?>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Detalle de Pilares de GPTW') ?></label>
+                        <?= Html::a('Aceptar',  ['viewdetallepilaresgptw'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Detalle de Pilares de GPTW']) 
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Indicadores de Satisfacción de Clientes') ?></label>
+                        <?= Html::a('Aceptar',  ['viewindicadores'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Indicadores de Satisfacción de Clientes']) 
+                        ?>
+                    </div>
+                </div>
+            </div>  
         </div>
     </div>
 </div>
