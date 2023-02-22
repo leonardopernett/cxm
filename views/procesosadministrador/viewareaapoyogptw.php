@@ -137,7 +137,7 @@ $roles = $command->queryScalar();
     <div class="col-md-4">
       
       <div class="card1 mb">
-                <?= $form->field($model, 'nombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'idTexto', 'placeholder'=>'Ingresar Área apoyo GPTW'])->label('') ?>
+                <?= $form->field($model, 'nombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250, 'id' => 'idTexto', 'placeholder'=>'Ingresar Área apoyo GPTW'])->label('') ?>
 
         <br>
 

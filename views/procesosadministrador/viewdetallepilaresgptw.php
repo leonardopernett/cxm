@@ -135,7 +135,7 @@ $roles = $command->queryScalar();
                         ?>
                         <br>
                         <label style="font-size: 15px;">* Ingresar detalle...</label>
-                        <?= $form->field($model, 'nombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'idTexto', 'placeholder'=>'Ingresar nombre del detalle para el Pilar'])->label('') ?>
+                        <?= $form->field($model, 'nombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250, 'id' => 'idTexto', 'placeholder'=>'Ingresar nombre del detalle para el Pilar'])->label('') ?>
 
                         <br>
 
