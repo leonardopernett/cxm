@@ -365,6 +365,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Agregar Usuarios Administrativos - Masivos') ?></label>
+                        <?= Html::a('Aceptar',  ['adminusuarios'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Agregar Usuarios Administrativos']) 
+                        ?>
+                    </div>
+                </div>
             </div>  
         </div>
     </div>

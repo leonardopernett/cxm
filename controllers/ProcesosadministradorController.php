@@ -57,7 +57,8 @@ use app\models\IndicadorSatisfaccion;
             'adminmensajes','listarnombres','adminpcrc','actualizapcrc','procesopcrc',
             'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio',
             'deleteserviciocorte','cortesyservicios','viewmotivosdeclinacion','viewmotivosdeclinacion','deletepilares',
-            'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores'],
+            'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores',
+            'adminusuarios'],
             'rules' => [
               [
                 'allow' => true,
@@ -258,13 +259,6 @@ use app\models\IndicadorSatisfaccion;
 
             $varidpilar = $model->id_pilares;
             $varnombre = $model->nombre;
-           /* $varNombreservicio = (new \yii\db\Query())
-                    ->select(['cliente'])
-                    ->from(['tbl_procesos_volumendirector'])
-                    ->where(['=','id_dp_clientes',$variddas])
-                    ->andwhere(['=','anulado',0])
-                    ->groupBy(['id_dp_clientes'])
-                    ->Scalar();*/
 
             Yii::$app->db->createCommand()->insert('tbl_detalle_pilaresgptw',[
                                              'id_pilares' => $varidpilar,
@@ -2517,7 +2511,7 @@ use app\models\IndicadorSatisfaccion;
 
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
-           // $txtidEquipo = $model->usua_id;
+           
             $txtnombre = $model->nombre;
 
             Yii::$app->db->createCommand()->insert('tbl_declinacion_motivo',[
@@ -2605,6 +2599,130 @@ use app\models\IndicadorSatisfaccion;
             ->execute();        
             return $this->redirect(['viewindicadores']);
     }
+
+    public function actionAdminusuarios(){
+        $model = new FormUploadtigo();  
+
+        $varListaSociedades = (new \yii\db\Query())
+                                ->select(['tbl_hojavida_sociedad.sociedad', 'COUNT(tbl_usuarios.usua_id) AS varConteo'])
+                                ->from(['tbl_hojavida_sociedad'])
+                                ->join('INNER JOIN', 'tbl_usuarios', 
+                                  'tbl_hojavida_sociedad.id_sociedad = tbl_usuarios.id_sociedad')
+                                ->groupby(['tbl_usuarios.id_sociedad'])
+                                ->all();
+
+        $varListarSociedadCXM = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_hojavida_sociedad'])
+                                ->all();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+
+            $model->file = UploadedFile::getInstances($model, 'file');
+
+            if ($model->file && $model->validate()) {
+                    
+                foreach ($model->file as $file) {
+                    $fecha = date('Y-m-d-h-i-s');
+                    $user = Yii::$app->user->identity->username;
+                    $name = $fecha . '-' . $user;
+                    $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                    $this->Importarusuariosadmin($name);
+
+                    return $this->redirect(['adminusuarios']);
+                }
+            }
+
+        }
+
+
+        return $this->render('adminusuarios',[
+            'model' => $model,
+            'varListaSociedades' => $varListaSociedades,
+            'varListarSociedadCXM' => $varListarSociedadCXM,
+        ]);
+    }
+
+    public function Importarusuariosadmin($name){
+        $inputFile = 'categorias/' . $name . '.xlsx';
+
+        try {
+            $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($inputFile);
+        } catch (Exception $e) {
+            die('Error');
+        }
+
+        $sheet = $objPHPExcel->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+
+        for ($i=3; $i <= $highestRow; $i++) { 
+            $varExisteUsuario = (new \yii\db\Query())
+                            ->select(['*'])
+                            ->from(['tbl_usuarios'])
+                            ->where(['=','usua_identificacion',$sheet->getCell("C".$i)->getValue()])
+                            ->andwhere(['=','usua_usuario',$sheet->getCell("B".$i)->getValue()])
+                            ->count();
+
+            if ($varExisteUsuario == 0) {
+
+                $varIdSociedad = (new \yii\db\Query())
+                            ->select(['id_sociedad'])
+                            ->from(['tbl_hojavida_sociedad'])
+                            ->where(['=','sociedad',$sheet->getCell("G".$i)->getValue()])
+                            ->scalar();
+
+                if ($varIdSociedad == "") {
+                    $varIdSociedad = 4;
+                }
+                
+                Yii::$app->db->createCommand()->insert('tbl_usuarios',[
+                  'usua_usuario' => $sheet->getCell("B".$i)->getValue(),
+                  'usua_nombre' => $sheet->getCell("A".$i)->getValue(),
+                  'usua_email' => $sheet->getCell("D".$i)->getValue(),
+                  'usua_identificacion' => $sheet->getCell("C".$i)->getValue(),
+                  'usua_activo' => 'S',
+                  'usua_estado' => 'D',
+                  'fechacreacion' => date("Y-m-d"),                    
+                  'id_sociedad' => $varIdSociedad,
+                ])->execute(); 
+
+                $varIdUsuario = (new \yii\db\Query())
+                            ->select(['usua_id'])
+                            ->from(['tbl_usuarios'])
+                            ->where(['=','usua_identificacion',$sheet->getCell("C".$i)->getValue()])
+                            ->andwhere(['=','usua_usuario',$sheet->getCell("B".$i)->getValue()])
+                            ->scalar();
+
+                $varIdRol = (new \yii\db\Query())
+                            ->select(['role_id'])
+                            ->from(['tbl_roles'])
+                            ->where(['=','role_descripcion',$sheet->getCell("E".$i)->getValue()])
+                            ->scalar();
+
+                Yii::$app->db->createCommand()->insert('rel_usuarios_roles',[
+                  'rel_usua_id' => $varIdUsuario,
+                  'rel_role_id' => $varIdRol,
+                ])->execute(); 
+
+                $varIdGrupo = (new \yii\db\Query())
+                            ->select(['grupos_id'])
+                            ->from(['tbl_grupos_usuarios'])
+                            ->where(['=','grupo_descripcion',$sheet->getCell("F".$i)->getValue()])
+                            ->scalar();
+
+                Yii::$app->db->createCommand()->insert('rel_grupos_usuarios',[
+                  'usuario_id' => $varIdUsuario,
+                  'grupo_id' => $varIdGrupo,
+                ])->execute(); 
+
+
+            }
+        }
+    }
+
   }
 
 ?>
