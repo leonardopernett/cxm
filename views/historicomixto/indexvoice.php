@@ -146,7 +146,7 @@ use yii\db\Query;
 
         <div class="col-md-3">
             <div class="card1 mb">
-                <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Rengo de Fechas') ?></label>
+                <label><em class="fas fa-calendar-alt" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Rango de Fechas') ?></label>
                 <label style="text-align: center;"><?php echo $rangofecha; ?></label>
             </div>
         </div>
