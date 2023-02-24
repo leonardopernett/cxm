@@ -278,7 +278,7 @@ AppAsset::register($this);
 
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Plan de Acci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/planacciongptw/index'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerDesempeno(),
                                                 ],
                                             '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Analizar y Decidir</li>',
