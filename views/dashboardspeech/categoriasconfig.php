@@ -137,7 +137,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
             <div class="card1 mb">
                 <label><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #FFC72C;"></em> Regresar: </label> 
                             <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
@@ -147,7 +147,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                             ?>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #FFC72C;"></em> Registrar Categorias: </label>
                             <?= Html::a('Registrar',  ['registrarcategorias'], ['class' => 'btn btn-success',
@@ -157,7 +157,7 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                             ?> 
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 15px; color: #FFC72C;"></em> Parametrizar Categorias: </label>
                             <?= Html::button('Parametrizar', ['value' => url::to(['parametrizarcategorias']), 'class' => 'btn btn-success', 'id'=>'modalButton5',
@@ -174,6 +174,13 @@ $this->title = 'Configuración de Categorias -- CXM & Speech --';
                                                               
                                 Modal::end(); 
                             ?>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card1 mb">
+                            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #FFC72C;"></em> <?= Yii::t('app', 'Descargar Archivo Base') ?> </label>                            
+                            <a style=" background-color: #337ab7" class="btn btn-success" rel="stylesheet" type="text/css" href="..\..\downloadfiles\CXM_Archivo_Base_Parametrizar_Categorias.xlsx" title="Descagar Plantilla del Glosario" target="_blank">
+                            <?= Yii::t('app', 'Descargar') ?></a> 
                         </div>
                     </div>
                 </div>
