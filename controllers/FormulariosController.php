@@ -1157,7 +1157,7 @@ class FormulariosController extends Controller {
                 }else{
 
                //insertar Cliente y centro de costo
-		    $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios")->queryScalar(); 
+		    $txtidejec_formu = Yii::$app->db->createCommand("select MAX(id) from tbl_ejecucionformularios where usua_id = $tmp_ejecucion->usua_id")->queryScalar(); 
                     Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
                         'ejec_form_id' => $txtidejec_formu,
                         'id_dp_clientes' => $varid_clientes,
