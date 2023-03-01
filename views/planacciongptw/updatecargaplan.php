@@ -50,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
       ->select(['id_areaapoyo', 'nombre'])
       ->from(['tbl_areasapoyo_gptw'])
       ->where(['=','anulado',0])
+      ->orderBY ('nombre')
       ->All();
 
     $listData4 = ArrayHelper::map($datanew2, 'id_areaapoyo', 'nombre');
