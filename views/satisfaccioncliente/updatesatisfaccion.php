@@ -21,14 +21,22 @@ $this->params['breadcrumbs'][] = $this->title;
     $sessiones = Yii::$app->user->identity->id;
     $valor = null;
    
-    $data2 = (new \yii\db\Query())
+   /* $data2 = (new \yii\db\Query())
         ->select(['usua_id', 'usua_nombre'])
         ->from(['tbl_usuarios'])
         ->where(['=','usua_activo','S'])
         ->orderby('usua_nombre')
         ->All();
    
-    $listData2 = ArrayHelper::map($data2, 'usua_id', 'usua_nombre');
+    $listData2 = ArrayHelper::map($data2, 'usua_id', 'usua_nombre');*/
+    $data2 = (new \yii\db\Query())
+          ->select(['tbl_usuarios_jarvis_cliente.idusuarioevalua', "UPPER(trim(replace(tbl_usuarios_jarvis_cliente.nombre_completo,'\n',''))) AS nombre"])
+          ->from(['tbl_usuarios_jarvis_cliente'])
+          ->where(['not in','tbl_usuarios_jarvis_cliente.id_dp_funciones',[364, 312, 206, 981]])
+          ->orderBY ('nombre')
+          ->All();
+   
+    $listData2 = ArrayHelper::map($data2, 'idusuarioevalua', 'nombre');
     
     $data = (new \yii\db\Query())
       ->select(['tbl_usuarios_evalua.idusuarioevalua', 'tbl_usuarios_evalua.clientearea'])
@@ -61,6 +69,14 @@ $this->params['breadcrumbs'][] = $this->title;
       ->All();
 
     $listData5 = ArrayHelper::map($datanew5, 'id_indicador', 'nombre');
+
+    $datanew1 = (new \yii\db\Query())
+      ->select(['id_proceso_satis', 'nombre'])
+      ->from(['tbl_procesos_satisfaccion_cliente'])
+      ->where(['=','anulado',0])
+      ->All();
+
+    $listData1 = ArrayHelper::map($datanew1, 'id_proceso_satis', 'nombre');
 
     foreach ($varListasatisfaccion as $key => $value) {
         $varId = $value['id_satisfaccion'];
@@ -151,8 +167,7 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </header>
 <br><br>
-<?php
-if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "2915" || $sessiones == "2953" || $sessiones == "57" || $sessiones == "4043" || $sessiones == "611" || $sessiones == "4040" || $sessiones == "4090" || $sessiones == "4045" || $sessiones == "4039" || $sessiones == "4041" || $sessiones == "4443" || $sessiones == "4458" || $sessiones == "6544" || $sessiones == "6706" || $sessiones == "69" || $sessiones == "1083" || $sessiones == "8"){ ?>
+
 <div class="capaCinco">
     <?php $form = ActiveForm::begin([
       'layout' => 'horizontal',
@@ -233,13 +248,13 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                     <div class="col-md-6">
                         <label for="txtproceso" style="font-size: 14px;">Proceso</label>
                         <div id="proceso" >  
-                          <?= $form->field($model6, 'id_proceso_satis',['labelOptions' => [], 'template' => $template])->dropDownList($listData3, ['prompt' => 'Seleccione...', 'id'=>'txtproceso', ])?>                       
+                          <?= $form->field($model6, 'id_proceso_satis',['labelOptions' => [], 'template' => $template])->dropDownList($listData1, ['prompt' => 'Seleccione...', 'id'=>'txtproceso', ])?>                       
                         </div>                                                     
                     </div>
                     <div class="col-md-6">
                     <label for="txtarea" style="font-size: 14px;">Área / Operación</label>
-                       <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="color" value="area" id = "requiereno" onclick="lista1()" <?php if($varIdarea) {?> checked <?php }?>> Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                       <label><input type="radio" name="color" value="opera" id = "requieresi" onclick="lista2()" <?php if(!$varIdarea) {?> checked <?php }?>> Operación </label>                          
+                       <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="color" value="area" id = "requiereno"  <?php if($varIdarea) {?> checked <?php }?> onclick="lista1()"> Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                       <label><input type="radio" name="color" value="opera" id = "requieresi"  <?php if(!$varIdarea) {?> checked onclick="lista2()"<?php }?> > Operación </label>                          
                         <br>
                       <div id="area" style="display:inline" > 
                      
@@ -285,10 +300,22 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                     <div class="col-md-6">
                       <label for="txtaccion" style="font-size: 14px;">Acción </label>
                       <select id="txtaccion" class ='form-control'>
-                          <option value="" disabled selected>seleccione...</option>
-                          <option value="Correctiva">Correctiva</option>
-                          <option value="Mejora">Mejora</option>
-                          <option value="Preventiva">Preventiva</option>
+                          <option value="" disabled selected>seleccione...</option>$varaccion
+                          <?php if ($varaccion == "Correctiva") {?>
+                           <option value="Correctiva" disabled selected>Correctiva</option>
+                           <?php } else {?>
+                            <option value="Correctiva" >Correctiva</option>
+                            <?php }?>
+                            <?php if ($varaccion == "Mejora") {?>
+                          <option value="Mejora" disabled selected>Mejora</option>
+                          <?php } else {?>
+                            <option value="Mejora" >Mejora</option>
+                            <?php }?>
+                            <?php if ($varaccion == "Preventiva") {?>
+                          <option value="Preventiva" disabled selected>Preventiva</option>
+                          <?php } else {?>
+                            <option value="Preventiva">Preventiva</option>
+                          <?php }?>
                       </select>
                     </div>                    
                 </div>                
@@ -296,6 +323,7 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                 <div class="row">                    
                     <div class="col-md-6">
                       <label for="txtindicador" style="font-size: 14px;">Indicador </label>
+                      
                       <?= $form->field($model7, 'id_indicador',['labelOptions' => [], 'template' => $template])->dropDownList($listData5, ['prompt' => 'Seleccione...', 'id'=>'txtindicador', ])?>                       
                     </div>
                     <div class="col-md-6">
@@ -319,7 +347,7 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                 <div class="row">                    
                     <div class="col-md-6">
                       <label for="txtResponsable" style="font-size: 14px;">Rol Responsable </label>
-                      <?= $form->field($model5, 'usua_id',['labelOptions' => [], 'template' => $template])->dropDownList($listData2, ['prompt' => 'Seleccione...', 'id'=>'txtResponsable', ])?> 
+                      <?= $form->field($model5, 'idusuarioevalua',['labelOptions' => [], 'template' => $template])->dropDownList($listData2, ['prompt' => 'Seleccione...', 'id'=>'txtResponsable', ])?> 
                     </div>
                     <div class="col-md-6">
                       <label for="txtRol" style="font-size: 14px;">Rol</label>
@@ -343,8 +371,16 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                       <label for="txtestado" style="font-size: 14px;">Estado Seguimiento </label>
                       <select id="txtestado" class ='form-control'>
                           <option value="" disabled selected>seleccione...</option>
-                          <option value="Abierto">Abierto</option>
-                          <option value="Cerrado">Cerrado</option>
+                          <?php if ($varestado == "Abierto") {?>
+                          <option value="Abierto" disabled selected>Abierto</option>
+                          <?php } else {?>
+                            <option value="Abierto">Abierto</option>
+                            <?php }?>
+                            <?php if ($varestado == "Cerrado") {?>
+                          <option value="Cerrado" disabled selected>Cerrado</option>
+                          <?php } else {?>
+                            <option value="Cerrado">Cerrado</option>
+                            <?php }?>
                       </select>
                     </div>
                     <div class="col-md-6">
@@ -450,20 +486,7 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
   </div>
  <hr>
  <?php } ?>
-<?php } else { ?>
-  <div class="Seis">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card1 mb">
-              <label><em class="fas fa-info-circle" style="font-size: 20px; color: #1e8da7;"></em> Información:</label>
-              <label style="font-size: 14px;">No tiene los permisos para ingresar a esta opción... Debe diregirse al administrador de la aplicación</label>
-                </div><br>
-            </div>
-        </div>  
-    </div>
-  </div><br>
 
-  <?php } ?>
 <script type="text/javascript">
     function varVerificar(){
         var varcliente = document.getElementById("speechcategorias-programacategoria").value;
