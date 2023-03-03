@@ -21,6 +21,7 @@ use app\models\Pilaresgptw;
 use app\models\ProcesosSatisfaccion;
 use app\models\UploadForm2;
 use app\models\IndicadorSatisfaccion;
+use app\models\UsuariosJarviscliente;
 
     class SatisfaccionclienteController extends \yii\web\Controller {
 
@@ -34,7 +35,7 @@ use app\models\IndicadorSatisfaccion;
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerdirectivo();
+                            return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerdirectivo()  || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerDesempeno();
                         },
                             ],
                         ]
@@ -242,15 +243,15 @@ use app\models\IndicadorSatisfaccion;
                                                     ->orderBy(['id_satisfaccion' => SORT_DESC])
                                                     ->where(['=','anulado',0])          
                                                     ->all();
-                                                    
-                                                                      
+
+                                                                                             
                         $varListasatisdetalle= (new \yii\db\Query())
-                                                    ->select(['tbl_satisfaccion_cliente.id_satisfaccion', 'tbl_areasapoyo_gptw.nombre', 'tbl_usuarios_evalua.clientearea', 'tbl_satisfaccion_cliente.concepto_mejora', 'tbl_satisfaccion_cliente.analisis_causa', 'tbl_satisfaccion_cliente.accion_seguir', 'tbl_satisfaccion_cliente.accion', 'tbl_satisfaccion_cliente.id_indicador', 'tbl_satisfaccion_cliente.puntaje_meta', 'tbl_satisfaccion_cliente.puntaje_actual', 'tbl_satisfaccion_cliente.puntaje_final', 'tbl_usuarios.usua_nombre', 'tbl_satisfaccion_cliente.fecha_definicion', 'tbl_satisfaccion_cliente.fecha_implementacion', 'tbl_satisfaccion_cliente.estado','tbl_detalle_satisfacion.eficacia','tbl_detalle_satisfacion.fecha_avance', 'tbl_procesos_satisfaccion_cliente.nombre nombre2','tbl_satisfaccion_archivos.anexo anexo1'])
+                                                    ->select(['tbl_satisfaccion_cliente.id_satisfaccion', 'tbl_areasapoyo_gptw.nombre', 'tbl_usuarios_evalua.clientearea', 'tbl_satisfaccion_cliente.concepto_mejora', 'tbl_satisfaccion_cliente.analisis_causa', 'tbl_satisfaccion_cliente.accion_seguir', 'tbl_satisfaccion_cliente.accion', 'tbl_satisfaccion_cliente.id_indicador', 'tbl_satisfaccion_cliente.puntaje_meta', 'tbl_satisfaccion_cliente.puntaje_actual', 'tbl_satisfaccion_cliente.puntaje_final', 'tbl_usuarios_jarvis_cliente.nombre_completo', 'tbl_usuarios_jarvis_cliente.idusuarioevalua', 'tbl_satisfaccion_cliente.fecha_definicion', 'tbl_satisfaccion_cliente.fecha_implementacion', 'tbl_satisfaccion_cliente.estado','tbl_detalle_satisfacion.eficacia','tbl_detalle_satisfacion.fecha_avance', 'tbl_procesos_satisfaccion_cliente.nombre nombre2','tbl_satisfaccion_archivos.anexo anexo1'])
                                                     ->from(['tbl_satisfaccion_cliente'])
                                                     ->join('LEFT JOIN', 'tbl_areasapoyo_gptw',
                                                     'tbl_satisfaccion_cliente.id_area_apoyo = tbl_areasapoyo_gptw.id_areaapoyo')
-                                                    ->join('LEFT JOIN', 'tbl_usuarios',
-                                                    'tbl_satisfaccion_cliente.responsable_area = tbl_usuarios.usua_id')
+                                                    ->join('LEFT JOIN', 'tbl_usuarios_jarvis_cliente',
+                                                    'tbl_satisfaccion_cliente.responsable_area = tbl_usuarios_jarvis_cliente.idusuarioevalua')
                                                     ->join('LEFT JOIN', 'tbl_detalle_satisfacion',
                                                     'tbl_satisfaccion_cliente.id_satisfaccion = tbl_detalle_satisfacion.id_satisfaccion')
                                                     ->join('LEFT JOIN', 'tbl_usuarios_evalua',
@@ -328,20 +329,40 @@ use app\models\IndicadorSatisfaccion;
                              $model4 = areaGptw::findOne($varidarea);
                         }
                      
+                        $varindicador= (new \yii\db\Query())
+                                    ->select(['id_indicador'])
+                                    ->from(['tbl_satisfaccion_cliente'])
+                                    ->where(['=','id_satisfaccion',$id_satisfaccion])   
+                                    ->andwhere(['=','anulado',0])       
+                                    ->Scalar(); 
+                        if($varindicador){       
+                             $model7 = IndicadorSatisfaccion::findOne($varindicador); 
+                        }
+
+                        $varproceso= (new \yii\db\Query())
+                                    ->select(['id_proceso_satis'])
+                                    ->from(['tbl_satisfaccion_cliente'])
+                                    ->where(['=','id_satisfaccion',$id_satisfaccion])   
+                                    ->andwhere(['=','anulado',0])       
+                                    ->Scalar(); 
+                        if($varproceso){       
+                             $model6 = ProcesosSatisfaccion::findOne($varproceso); 
+                        }
+
                         $varresponsable_area= (new \yii\db\Query())
                                     ->select(['responsable_area'])
                                     ->from(['tbl_satisfaccion_cliente'])
-                                    ->andwhere(['=','id_satisfaccion',$id_satisfaccion])   
-                                    ->where(['=','anulado',0])       
+                                    ->where(['=','id_satisfaccion',$id_satisfaccion])   
+                                    ->andwhere(['=','anulado',0])       
                                     ->Scalar();        
-                        $model5 = usuarios::findOne($varresponsable_area); 
+                        $model5 = UsuariosJarviscliente::findOne($varresponsable_area);
                         //$model5 = pilaresgptw::findOne($listData2);
                         //die(json_encode($model5));
                         $varListasatisfaccion = (new \yii\db\Query())
                                                     ->select(['*'])
                                                     ->from(['tbl_satisfaccion_cliente'])
-                                                    ->andwhere(['=','id_satisfaccion',$id_satisfaccion])   
-                                                    ->where(['=','anulado',0])       
+                                                    ->where(['=','id_satisfaccion',$id_satisfaccion])   
+                                                    ->andwhere(['=','anulado',0])       
                                                     ->all();                       
 
                         return $this->render('updatesatisfaccion', [

@@ -286,18 +286,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-md-6">
                     <label for="txtNombre" style="font-size: 14px;">Puntaje Meta %</label>
-                      <input type="number" min="1" max="100"  type="number" maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="txtPuntajemeta" data-toggle="tooltip" title="Puntaje Meta">   
+                      <input type="number" min="1" max="100"  type="number" maxlength="6" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="txtPuntajemeta" data-toggle="tooltip" title="Puntaje Meta">   
                     </div>
                 </div>                
                 <br> 
                 <div class="row">
                     <div class="col-md-6">
                       <label for="txtCedula" style="font-size: 14px;">Puntaje Actual %</label>
-                      <input type="number" min="1" max="100" maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="txtPuntajeactual" data-toggle="tooltip" title="Puntaje Actual">   
+                      <input type="number" min="1" max="100" maxlength="6" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="txtPuntajeactual" data-toggle="tooltip" title="Puntaje Actual">   
                      </div>
                     <div class="col-md-6">
                       <label for="txtNombre" style="font-size: 14px;">Puntaje Final %</label>
-                      <input type="number" min="1" max="100"  type="number" maxlength="3" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="txtPuntajefinal" data-toggle="tooltip" title="Puntaje Meta">   
+                      <input type="number" min="1" max="100"  type="number" maxlength="6" oninput="if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="txtPuntajefinal" data-toggle="tooltip" title="Puntaje Meta">   
                     </div>
                 </div>
                 <br>

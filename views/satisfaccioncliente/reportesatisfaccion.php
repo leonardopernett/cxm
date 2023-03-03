@@ -203,7 +203,7 @@ $template = '<div class="col-md-12">'
                         $varfechacreacion = $value['fechacreacion'];
                         $varresponsable_area = $value['responsable_area'];
                         $varEstado = $value['estado'];
-                        
+                        $varresponsable_area1 = $varresponsable_area;
                         if($varEstado == 0){
                             $varEstado = 'Activo';
                         }else{
@@ -229,18 +229,18 @@ $template = '<div class="col-md-12">'
                         }  
                          
                         // busca usuario responsable                           
-                            $data4 = (new \yii\db\Query())
-                            ->select(['usua_nombre'])
-                            ->from(['tbl_usuarios'])
-                            ->where(['=','usua_id',$varresponsable_area])
-                            ->Scalar();
-                            $varresponsable_area = $data4;
+                        $data4 = (new \yii\db\Query())
+                        ->select(['nombre_completo'])
+                        ->from(['tbl_usuarios_jarvis_cliente'])
+                        ->where(['=','idusuarioevalua',$varresponsable_area])
+                        ->Scalar();
+                        $varresponsable_area = $data4;
                             
                         // Busca Rol
                         $txtRta = (new \yii\db\Query())
                         ->select(['tbl_usuarios_jarvis_cliente.posicion'])
                         ->from(['tbl_usuarios_jarvis_cliente'])
-                        ->where(['=','tbl_usuarios_jarvis_cliente.idusuarioevalua',$varid_satis])
+                        ->where(['=','tbl_usuarios_jarvis_cliente.idusuarioevalua',$varresponsable_area1])
                         ->Scalar();
                          // Busca indicador
                          $txtindicador = (new \yii\db\Query())
@@ -364,7 +364,8 @@ $template = '<div class="col-md-12">'
                         $varpuntaje_meta = $value['puntaje_meta'];
                         $varpuntaje_actual = $value['puntaje_actual'];
                         $varpuntaje_final = $value['puntaje_final'];
-                        $varusua_nombre = $value['usua_nombre'];
+                        $varusua_nombre = $value['nombre_completo'];
+                        $varidusuarioevalua = $value['idusuarioevalua'];
                         $varfecha_definicion = $value['fecha_definicion'];
                         $varfecha_implementacion = $value['fecha_implementacion'];
                         $varEstado = $value['estado'];
@@ -390,7 +391,7 @@ $template = '<div class="col-md-12">'
                         $txtRta = (new \yii\db\Query())
                         ->select(['tbl_usuarios_jarvis_cliente.posicion'])
                         ->from(['tbl_usuarios_jarvis_cliente'])
-                        ->where(['=','tbl_usuarios_jarvis_cliente.idusuarioevalua',$varid_satisfaccion])
+                        ->where(['=','tbl_usuarios_jarvis_cliente.idusuarioevalua',$varidusuarioevalua])
                         ->Scalar();
                         
                         // Busca indicador
