@@ -545,6 +545,7 @@ $this->registerJs($js);
                             ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
                             ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
                             ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                            ->andwhere(['!=','tbl_ideal_responsabilidad.agente',0])
                             ->scalar();                
 
         array_push($varArrayRtaAgenteGeneral, $varAgenteGeneral);
@@ -558,6 +559,7 @@ $this->registerJs($js);
                           ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
                           ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
                           ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                          ->andwhere(['!=','tbl_ideal_responsabilidad.marca',0])
                           ->scalar();
 
         array_push($varArrayRtaMarcaGeneral, $varMarcaGeneral);
@@ -571,6 +573,7 @@ $this->registerJs($js);
                           ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
                           ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
                           ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                          ->andwhere(['!=','tbl_ideal_responsabilidad.canal',0])
                           ->scalar();
 
 
@@ -875,6 +878,7 @@ $this->registerJs($js);
                                           ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
                                           ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
                                           ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                          ->andwhere(['!=','tbl_ideal_responsabilidad.agente',0])
                                           ->scalar();       
 
                 if ($varAgenteMixtos < '80') {
@@ -896,6 +900,7 @@ $this->registerJs($js);
                                           ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
                                           ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
                                           ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                          ->andwhere(['!=','tbl_ideal_responsabilidad.marca',0])
                                           ->scalar();
 
                 if ($varMarcaMixtos < '80') {
@@ -917,6 +922,7 @@ $this->registerJs($js);
                                           ->andwhere(['<=','tbl_ideal_responsabilidad.fechafin',$varFechaFinal.' 05:00:00'])
                                           ->andwhere(['=','tbl_ideal_responsabilidad.extension',$varIdExtensionc])
                                           ->andwhere(['=','tbl_ideal_responsabilidad.anulado',0])
+                                          ->andwhere(['!=','tbl_ideal_responsabilidad.canal',0])
                                           ->scalar();
 
                 if ($varCanalMixtos < '80') {
