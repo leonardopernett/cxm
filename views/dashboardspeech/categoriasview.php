@@ -94,7 +94,7 @@ $this->title = 'Parametrización de Categorias -- CXM & Speech --';
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7'],
-                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec} {btnsubirglosario}',
+                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec} {btnsubirglosario}  {btnformularios}',
                         'buttons' => 
                         [ 
                             'view' => function ($url, $model) {
@@ -162,6 +162,16 @@ $this->title = 'Parametrización de Categorias -- CXM & Speech --';
                                         'class' => '',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Subir Glosario',
+                                        'data' => [
+                                            'method' => 'post',
+                                        ],
+                                ]);          
+                            },
+                            'btnformularios' => function($url, $model) {
+                                return Html::a('<em class="fas fa-paper-plane"" style="font-size: 18px;"></em>',['paramsformularios', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                        'class' => '',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Programar Formularios Valoraciones',
                                         'data' => [
                                             'method' => 'post',
                                         ],

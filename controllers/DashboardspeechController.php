@@ -41,7 +41,7 @@ use app\models\FormUploadtigo;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','paramsaleatorio','paramspecservicio','subirglosario','deleteitemglosario'],
+            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','paramsaleatorio','paramspecservicio','subirglosario','deleteitemglosario',,'paramsformularios'],
             'rules' => [
               [
                 'allow' => true,
@@ -5978,6 +5978,57 @@ public function actionCantidadentto(){
 
       return $this->redirect(array('subirglosario','txtServicioCategorias'=>$txtServicioCategorias));//retornar  la vista 
 
+  }
+
+  public function actionParamsformularios($txtServicioCategorias){
+    $model = new Speechpcrcformularios();
+    $txtIdClienteSpeech = (new \yii\db\Query())
+                            ->select(['id_dp_clientes'])
+                            ->from(['tbl_speech_parametrizar'])            
+                            ->where(['=','cod_pcrc',$txtServicioCategorias])
+                            ->andwhere(['=','anulado',0])
+                            ->groupby(['id_dp_clientes'])
+                            ->Scalar();
+
+    $varDataListProcesos = (new \yii\db\Query())
+                            ->select(['*'])
+                            ->from(['tbl_speech_pcrcformularios'])            
+                            ->where(['=','id_dp_clientes',$txtIdClienteSpeech])
+                            ->andwhere(['=','anulado',0])
+                            ->andwhere(['=','cod_pcrc',$txtServicioCategorias])
+                            ->all();
+
+    $data = Yii::$app->request->post();     
+    if ($model->load($data)) {
+
+      $varArbolIdFormulario = $model->arbol_id;
+      $varComentariosFormulario = $model->comentarios;
+
+
+      Yii::$app->db->createCommand()->insert('tbl_speech_pcrcformularios',[
+                    'id_dp_clientes' => $txtIdClienteSpeech,
+                    'cod_pcrc' => $txtServicioCategorias,
+                    'arbol_id' => $varArbolIdFormulario,
+                    'comentarios' => $varComentariosFormulario,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,                        
+          ])->execute(); 
+
+      return $this->redirect(array('paramsformularios','txtServicioCategorias'=>$txtServicioCategorias));
+    }
+
+    return $this->render('paramsformularios',[
+      'model' => $model,
+      'txtIdClienteSpeech' => $txtIdClienteSpeech,
+      'varDataListProcesos' => $varDataListProcesos,
+    ]);
+  }
+
+  public function actionDeleteparamsformularios($id,$codpcrc){
+      Speechpcrcformularios::findOne($id)->delete();
+
+      return $this->redirect(array('paramsformularios','txtServicioCategorias'=>$codpcrc));
   }
 
 
