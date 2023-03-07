@@ -33,6 +33,7 @@ use app\models\Speechpecservicios;
 use \yii\base\Exception;
 use\app\models\Speechglosario;
 use app\models\FormUploadtigo;
+use app\models\Speechpcrcformularios;
 
 
   class DashboardspeechController extends \yii\web\Controller {
