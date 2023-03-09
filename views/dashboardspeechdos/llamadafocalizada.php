@@ -685,48 +685,72 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                             $txtidgrabadora = "002";
                                         }
                                         
-                                       if ($txtidredbox != null && $txtidredbox != "NA" && $txtidgrabadora != null && $txtidgrabadora != "NA") {
+                                        if ($txtidredbox == 'WIA_SAE' && $txtidgrabadora == '<NA>') {
                                             
+                                            $varLinkUrl = (new \yii\db\Query())
+                                                ->select(['idredbox'])
+                                                ->from(['tbl_comdata_llamadaurl'])
+                                                ->where(['=','tbl_comdata_llamadaurl.anulado',0])
+                                                ->andwhere(['=','tbl_comdata_llamadaurl.callid',$txtcallid])
+                                                ->groupby(['tbl_comdata_llamadaurl.callid'])
+                                                ->Scalar();
+                                                                                  
                                     ?>
-                                        <?= 
-                                            Html::a(Yii::t('app', '<i id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #E61313; display: inline;"></i>'),
-                                                    'javascript:void(0)',
-                                                    [
-                                                        'title' => Yii::t('app', 'Escuchar + VOC'),
-                                                        'onclick' => "
-                                                            generarcarga2();                        
-                                                            $.ajax({
-                                                                type     :'get',
-                                                                cache    : false,
-                                                                url  : '" . Url::to(['viewcalls',
-                                                                'idlogin' => $txtloginid, 'idredbox' => $txtidredbox, 'idgrabadora' => $txtidgrabadora, 'idconnid' => $txtconnids, 'idcallids' => $txtcallid, 'varfechareal' => $txtfechasreal,'varcategolias' => $txtidcategoria]) . "',
-                                                                success  : function(response) {
-                                                                    $('#ajax_result').html(response);
-                                                                }
-                                                            });
-                                                        return false;",
-                                                    ]);
-                                        ?>
-
+                                    
+                                        <a title="Interacciones" href="<?php echo $varLinkUrl; ?>" target="_blank"><em id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #4CB0EC; display: inline;"></em></a>
+                                    
                                     <?php
                                         }else{
                                     ?>
-                                        <?= 
-                                            Html::a(Yii::t('app', '<i id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #C7C7C7; display: inline;"></i>'),
-                                                    'javascript:void(0)',
-                                                    [
-                                                        'title' => Yii::t('app', 'Escucha VOC'),
-                                                        'onclick' => "                       
-                                                            $.ajax({
-                                                                type     :'get',
-                                                                cache    : false,
-                                                                url  : '" . Url::to(['viewna']) . "',
-                                                                success  : function(response) {
-                                                                    $('#ajax_result').html(response);
-                                                                }
-                                                            });
-                                                        return false;",
-                                                    ]);
+
+                                        <?php
+                                            if ($txtidredbox != null && $txtidredbox != "NA" && $txtidgrabadora != null && $txtidgrabadora != "NA") {
+                                        
+                                        ?>
+                                            <?= 
+                                                Html::a(Yii::t('app', '<i id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #E61313; display: inline;"></i>'),
+                                                        'javascript:void(0)',
+                                                        [
+                                                            'title' => Yii::t('app', 'Escuchar + VOC'),
+                                                            'onclick' => "
+                                                                generarcarga2();                        
+                                                                $.ajax({
+                                                                    type     :'get',
+                                                                    cache    : false,
+                                                                    url  : '" . Url::to(['viewcalls',
+                                                                    'idlogin' => $txtloginid, 'idredbox' => $txtidredbox, 'idgrabadora' => $txtidgrabadora, 'idconnid' => $txtconnids, 'idcallids' => $txtcallid, 'varfechareal' => $txtfechasreal,'varcategolias' => $txtidcategoria]) . "',
+                                                                    success  : function(response) {
+                                                                        $('#ajax_result').html(response);
+                                                                    }
+                                                                });
+                                                            return false;",
+                                                        ]);
+                                            ?>
+                                        
+                                        <?php
+                                            }else{
+                                        ?>
+                                            
+                                            <?= 
+                                                Html::a(Yii::t('app', '<i id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #C7C7C7; display: inline;"></i>'),
+                                                        'javascript:void(0)',
+                                                        [
+                                                            'title' => Yii::t('app', 'Escucha VOC'),
+                                                            'onclick' => "                       
+                                                                $.ajax({
+                                                                    type     :'get',
+                                                                    cache    : false,
+                                                                    url  : '" . Url::to(['viewna']) . "',
+                                                                    success  : function(response) {
+                                                                        $('#ajax_result').html(response);
+                                                                    }
+                                                                });
+                                                            return false;",
+                                                        ]);
+                                            ?>
+
+                                        <?php
+                                            }
                                         ?>
                                     <?php
                                         }
