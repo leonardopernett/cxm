@@ -43,6 +43,7 @@ use app\models\Areaapoyogptw;
 use app\models\ProcesosSatisfaccion;
 use app\models\DetallesPilaresGptw;
 use app\models\IndicadorSatisfaccion;
+use app\models\Comdataparametrizarapi;
 
   class ProcesosadministradorController extends \yii\web\Controller {
 
@@ -58,7 +59,7 @@ use app\models\IndicadorSatisfaccion;
             'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio',
             'deleteserviciocorte','cortesyservicios','viewmotivosdeclinacion','viewmotivosdeclinacion','deletepilares',
             'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores',
-            'adminusuarios'],
+            'adminusuarios','adminapiwiasae'],
             'rules' => [
               [
                 'allow' => true,
@@ -2721,6 +2722,78 @@ use app\models\IndicadorSatisfaccion;
 
             }
         }
+    }
+
+    public function actionAdminapiwiasae(){
+
+        $varListaData = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_comdata_parametrizarapi.id_parametrizarapi',
+                                    'tbl_proceso_cliente_centrocosto.cliente', 
+                                    'tbl_comdata_parametrizarapi.proyecto_id',
+                                    'tbl_comdata_parametrizarapi.sociedadprovieniente'
+                                ])
+                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                ->join('LEFT OUTER JOIN', 'tbl_comdata_parametrizarapi',
+                                  'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_comdata_parametrizarapi.id_dp_clientes')
+                                ->where(['=','tbl_comdata_parametrizarapi.anulado',0])
+                                ->groupby(['tbl_comdata_parametrizarapi.id_parametrizarapi'])
+                                ->all();
+
+        return $this->render('adminapiwiasae',[
+            'varListaData' => $varListaData,
+        ]);
+    }
+
+    public function actionAgregarnuevodatoapi(){
+        $model = new Comdataparametrizarapi();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+
+            $varMaximo = (new \yii\db\Query())
+                                ->select([
+                                    'max(orden)'
+                                ])
+                                ->from(['tbl_comdata_parametrizarapi'])
+                                ->where(['=','tbl_comdata_parametrizarapi.anulado',0])
+                                ->scalar();
+            
+            Yii::$app->db->createCommand()->insert('tbl_comdata_parametrizarapi',[
+                'id_dp_clientes' => $model->id_dp_clientes,
+                'sociedadprovieniente' => $model->sociedadprovieniente,
+                'proyecto_id' => $model->proyecto_id,
+                'dataset_id' => $model->dataset_id,
+                'table_id' => $model->table_id,
+                'limit' => $model->limit,
+                'offset' => $model->offset,
+                'fechacreacion' => date("Y-m-d"),                    
+                'anulado' => 0,
+                'usua_id' => Yii::$app->user->identity->id,
+                'orden' =>$varMaximo + 1,
+            ])->execute();
+
+            return $this->redirect('adminapiwiasae');
+
+        }
+
+        return $this->renderAjax('agregarnuevodatoapi',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionDeteleapiwiasae($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE tbl_comdata_parametrizarapi 
+                SET anulado = :varAnulado
+                WHERE 
+                id_parametrizarapi = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['adminapiwiasae']);
     }
 
   }

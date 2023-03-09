@@ -375,6 +375,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-users" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar API - Interacciones') ?></label>
+                        <?= Html::a('Aceptar',  ['adminapiwiasae'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Adminitrar configuración API']) 
+                        ?>
+                    </div>
+                </div>
             </div>  
         </div>
     </div>
