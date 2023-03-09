@@ -631,7 +631,7 @@ use app\models\DistribucionAsesores;
         }
 
         if ($varGrupoCorte == "5") {
-          $varIdClientes = [330, 341];          
+          $varIdClientes = [330, 341, 366];          
         }
 
         // Hago proceso de borrado sobre el lider o equipo que cada asesor tenga.
