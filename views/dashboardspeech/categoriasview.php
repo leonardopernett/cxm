@@ -94,7 +94,7 @@ $this->title = 'Parametrización de Categorias -- CXM & Speech --';
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'color:#337ab7'],
-                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec} {btnsubirglosario}  {btnformularios}',
+                        'template' => '{view} {btnida} {btnhalla} {btndefin} {btnaleatorio} {btnpec} {btnsubirglosario} {btnformularios} {btnsociedad}',
                         'buttons' => 
                         [ 
                             'view' => function ($url, $model) {
@@ -172,6 +172,16 @@ $this->title = 'Parametrización de Categorias -- CXM & Speech --';
                                         'class' => '',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Programar Formularios Valoraciones',
+                                        'data' => [
+                                            'method' => 'post',
+                                        ],
+                                ]);          
+                            },
+                            'btnsociedad' => function($url, $model) {
+                                return Html::a('<em class="fas fa-hand-point-up"" style="font-size: 18px;"></em>',['paramspcrcsociedad', 'txtServicioCategorias' => $model->cod_pcrc], [
+                                        'class' => '',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Programa Sociedad A Codigos Pcrc',
                                         'data' => [
                                             'method' => 'post',
                                         ],
