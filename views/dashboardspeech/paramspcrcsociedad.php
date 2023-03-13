@@ -155,15 +155,23 @@ $roles = $command->queryScalar();
                     <thead>
                         <tr>
                             <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cod_Pcrc') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Sociedad') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                             foreach ($varListPCrcSociedad as $key => $value) {
+                                $varSociedad = (new \yii\db\Query())
+                                  ->select(['sociedad'])
+                                  ->from(['tbl_hojavida_sociedad'])            
+                                  ->where(['=','id_sociedad',$value['id_sociedad']])
+                                  ->andwhere(['=','anulado',0])
+                                  ->Scalar();
                                 
                         ?>
                         <tr>
-                            <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $value['cod_pcrc']) ?></label></td>
+                            <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $value['cod_pcrc']) ?></label></td>                            
+                            <td  class="text-center"><label style="font-size: 13px;"><?= Yii::t('app', $varSociedad) ?></label></td>
                         </tr>
                         <?php
                             }
