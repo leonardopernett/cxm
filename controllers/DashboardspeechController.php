@@ -34,6 +34,7 @@ use \yii\base\Exception;
 use\app\models\Speechglosario;
 use app\models\FormUploadtigo;
 use app\models\Speechpcrcformularios;
+use app\models\Speechpcrcsociedades;
 
 
   class DashboardspeechController extends \yii\web\Controller {
@@ -42,7 +43,7 @@ use app\models\Speechpcrcformularios;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','paramsaleatorio','paramspecservicio','subirglosario','deleteitemglosario','paramsformularios'],
+            'only' => ['prueba', 'importarexcel', 'indexvoice', 'mportarexcel2','categoriasvoice','listashijo','categoriasgeneral','asignararbol','categoriasconfig','categoriasoption','categoriasview','categoriasupdate','categoriasdelete','export','categoriaspermisos','export2','seleccionservicio','registrarcategorias','listacategorias','exportarcategorias','parametrizarcategorias','listaracciones','categoriasverificar', 'elegirprograma','generarformula','listashijos','listashijoss','categoriasida','ingresardashboard','categoriashalla','ingresarhallazgo','categoriasdefinicion','ingresardefinicion','marcacionpcrc','categoriasentto','importarentto','cantidadentto','automaticspeecha','searchllamadas','viewcalls','totalagente', 'totalizaragentes','paramsaleatorio','paramspecservicio','subirglosario','deleteitemglosario','paramsformularios','paramspcrcsociedad'],
             'rules' => [
               [
                 'allow' => true,
@@ -6030,6 +6031,48 @@ public function actionCantidadentto(){
       Speechpcrcformularios::findOne($id)->delete();
 
       return $this->redirect(array('paramsformularios','txtServicioCategorias'=>$codpcrc));
+  }
+
+  public function actionParamspcrcsociedad($txtServicioCategorias){
+    $model = new Speechpcrcsociedades();
+    $txtIdClienteSpeech = (new \yii\db\Query())
+                            ->select(['id_dp_clientes'])
+                            ->from(['tbl_speech_parametrizar'])            
+                            ->where(['=','cod_pcrc',$txtServicioCategorias])
+                            ->andwhere(['=','anulado',0])
+                            ->groupby(['id_dp_clientes'])
+                            ->Scalar();
+
+    $varListPCrcSociedad = (new \yii\db\Query())
+                            ->select(['*'])
+                            ->from(['tbl_speech_pcrcsociedades'])            
+                            ->where(['=','cod_pcrc',$txtServicioCategorias])
+                            ->andwhere(['=','anulado',0])
+                            ->All();
+
+    $data = Yii::$app->request->post();     
+    if ($model->load($data)) {
+      $varSociedad = $model->id_sociedad;
+      $varCodPcrc = $model->cod_pcrc;
+
+      Yii::$app->db->createCommand()->insert('tbl_speech_pcrcsociedades',[
+                    'id_sociedad' => $varSociedad,
+                    'id_dp_clientes' => $txtIdClienteSpeech,
+                    'cod_pcrc' => $varCodPcrc,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,                        
+          ])->execute(); 
+
+      return $this->redirect(array('paramspcrcsociedad','txtServicioCategorias'=>$txtServicioCategorias));
+    }
+
+    return $this->render('paramspcrcsociedad',[
+      'model' => $model,
+      'txtServicioCategorias' => $txtServicioCategorias,
+      'txtIdClienteSpeech' => $txtIdClienteSpeech,
+      'varListPCrcSociedad' => $varListPCrcSociedad,
+    ]);
   }
 
 
