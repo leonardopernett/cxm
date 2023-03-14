@@ -79,6 +79,25 @@ use app\models\FormUploadtigo;
         $varFechaInicioTres = $varFechaIdeal[0];
         $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]."+ 1 days"));
 
+        // Agregar Procesos de socieadd identificacion - Hora inicial y final
+        $varSociedadHoraInicio = (new \yii\db\Query())
+                              ->select([
+                                'if(tbl_speech_pcrcsociedades.id_sociedad=5," 00:00:00"," 05:00:00") AS varTiempoInicio'
+                              ])
+                              ->from(['tbl_speech_pcrcsociedades'])            
+                              ->where(['in','cod_pcrc',$varListaCodPcrc])
+                              ->andwhere(['=','anulado',0])
+                              ->Scalar();
+
+        $varSociedadHoraFinal = (new \yii\db\Query())
+                              ->select([
+                                'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
+                              ])
+                              ->from(['tbl_speech_pcrcsociedades'])            
+                              ->where(['in','cod_pcrc',$varListaCodPcrc])
+                              ->andwhere(['=','anulado',0])
+                              ->Scalar();
+
         $varGeneralLlamada = (new \yii\db\Query())
                               ->select(['idllamada'])
                               ->from(['tbl_speech_servicios'])            
@@ -100,7 +119,7 @@ use app\models\FormUploadtigo;
                                 ->from(['tbl_dashboardspeechcalls'])
                                 ->where(['=','anulado',0])
                                 ->andwhere(['=','servicio',$varServicios])
-                                ->andwhere(['between','fechallamada',$varFechaInicioTres.' 05:00:00',$varFechaFinTres .' 05:00:00'])
+                                ->andwhere(['between','fechallamada',$varFechaInicioTres.$varSociedadHoraInicio,$varFechaFinTres .$varSociedadHoraFinal])
                                 ->andwhere(['=','idcategoria',$varGeneralLlamada])
                                 ->andwhere(['in','extension',$varListaExtensiones])
                                 ->count();        
@@ -236,6 +255,25 @@ use app\models\FormUploadtigo;
 
       $varListaCodPcrcVoice = explode(",", str_replace(array("#", "'", ";", " "), '', $txtCodPcrcs));
 
+      // Agregar Procesos de socieadd identificacion - Hora inicial y final Parte 2
+      $varSociedadHoraInicio_iv = (new \yii\db\Query())
+            ->select([
+              'if(tbl_speech_pcrcsociedades.id_sociedad=5," 00:00:00"," 05:00:00") AS varTiempoInicio'
+            ])
+            ->from(['tbl_speech_pcrcsociedades'])            
+            ->where(['in','cod_pcrc',$varListaCodPcrcVoice])
+            ->andwhere(['=','anulado',0])
+            ->Scalar();
+
+      $varSociedadHoraFinal_iv = (new \yii\db\Query())
+            ->select([
+              'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
+            ])
+            ->from(['tbl_speech_pcrcsociedades'])            
+            ->where(['in','cod_pcrc',$varListaCodPcrcVoice])
+            ->andwhere(['=','anulado',0])
+            ->Scalar();
+
       $varNombrePcrcVoice =   (new \yii\db\Query())
                               ->select(['CONCAT(cod_pcrc," - ",pcrc) as NombrePcrc'])
                               ->from(['tbl_speech_categorias'])            
@@ -259,7 +297,7 @@ use app\models\FormUploadtigo;
                                 ->where(['=','anulado',0])
                                 ->andwhere(['=','programacliente',$txtServicio])
                                 ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                 ->groupby(['callid'])
                                 ->all();
 
@@ -331,7 +369,7 @@ use app\models\FormUploadtigo;
                                 ->where(['=','anulado',0])
                                 ->andwhere(['=','servicio',$txtServicio])
                                 ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                 ->andwhere(['in','idcategoria',$varMotivosVoice])
                                 ->groupby(['callid'])                                
                                 ->count();
@@ -363,7 +401,7 @@ use app\models\FormUploadtigo;
                                     ->where(['=','anulado',0])
                                     ->andwhere(['=','servicio',$txtServicio])
                                     ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                    ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                    ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                     ->andwhere(['=','idcategoria',$varMotivoIdVoice])
                                     ->groupby(['callid'])
                                     ->count();
@@ -374,7 +412,7 @@ use app\models\FormUploadtigo;
                                     ->where(['=','anulado',0])
                                     ->andwhere(['=','servicio',$txtServicio])
                                     ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                    ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                    ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                     ->andwhere(['=','idcategoria',$varMotivoIdVoice])
                                     ->groupby(['callid'])
                                     ->scalar();
@@ -450,7 +488,7 @@ use app\models\FormUploadtigo;
                                     ->where(['=','anulado',0])
                                     ->andwhere(['=','servicio',$txtServicio])
                                     ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                    ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                    ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                     ->andwhere(['=','idcategoria',$varVariableAsesor])
                                     ->groupby(['login_id'])
                                     ->all();

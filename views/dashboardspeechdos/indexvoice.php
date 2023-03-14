@@ -34,6 +34,25 @@ $this->title = 'Dashboard Escuchar +';
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
+    // Agregar Procesos de socieadd identificacion - Hora inicial y final Parte 2 de la visual indice voice
+    $varSociedadHoraInicio_iv = (new \yii\db\Query())
+        ->select([
+          'if(tbl_speech_pcrcsociedades.id_sociedad=5," 00:00:00"," 05:00:00") AS varTiempoInicio'
+        ])
+        ->from(['tbl_speech_pcrcsociedades'])            
+        ->where(['in','cod_pcrc',$varListaCodPcrcVoice])
+        ->andwhere(['=','anulado',0])
+        ->Scalar();
+
+    $varSociedadHoraFinal_iv = (new \yii\db\Query())
+      ->select([
+        'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
+      ])
+      ->from(['tbl_speech_pcrcsociedades'])            
+      ->where(['in','cod_pcrc',$varListaCodPcrcVoice])
+      ->andwhere(['=','anulado',0])
+      ->Scalar();
+
     $varFechasFocalizado = explode(" ", $txtFechas);
 
     $varFechaInicioFocalizado = $varFechasFocalizado[0];
@@ -662,7 +681,7 @@ $this->title = 'Dashboard Escuchar +';
                                           ->where(['=','anulado',0])
                                           ->andwhere(['=','programacliente',$txtServicio])
                                           ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                          ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                          ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                           ->andwhere(['in','callid',$varCallidsIndicadoresVoice])
                                           ->andwhere(['in','idindicador',$arrayVariable])
                                           ->andwhere(['in','idvariable',$arrayVariable])
@@ -680,7 +699,7 @@ $this->title = 'Dashboard Escuchar +';
                                           ->where(['=','anulado',0])
                                           ->andwhere(['=','programacliente',$txtServicio])
                                           ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                          ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                          ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                           ->andwhere(['in','callid',$varCallidsIndicadoresVoice])
                                           ->andwhere(['in','idindicador',$arrayVariableMenos])
                                           ->andwhere(['in','idvariable',$arrayVariableMenos])
@@ -702,7 +721,7 @@ $this->title = 'Dashboard Escuchar +';
                                           ->where(['=','anulado',0])
                                           ->andwhere(['=','programacliente',$txtServicio])
                                           ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                          ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                          ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                           ->andwhere(['in','callid',$varCallidsIndicadoresVoice])
                                           ->andwhere(['in','idindicador',$arrayVariableMas])
                                           ->andwhere(['in','idvariable',$arrayVariableMas])
@@ -719,7 +738,7 @@ $this->title = 'Dashboard Escuchar +';
                                           ->where(['=','anulado',0])
                                           ->andwhere(['=','programacliente',$txtServicio])
                                           ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                          ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                          ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                           ->andwhere(['in','callid',$varCallidsIndicadoresVoice])
                                           ->andwhere(['in','idindicador',$arrayVariableMas])
                                           ->andwhere(['in','idvariable',$arrayVariableMas])
@@ -755,7 +774,7 @@ $this->title = 'Dashboard Escuchar +';
                                   ->where(['=','anulado',0])
                                   ->andwhere(['=','programacliente',$txtServicio])
                                   ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                  ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                  ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                   ->andwhere(['in','callid',$varCallidsIndicadoresVoice])
                                   ->andwhere(['in','idindicador',$arrayAgente])
                                   ->andwhere(['in','idvariable',$arrayAgente])
@@ -800,7 +819,7 @@ $this->title = 'Dashboard Escuchar +';
                                   ->where(['=','anulado',0])
                                   ->andwhere(['=','programacliente',$txtServicio])
                                   ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                  ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                  ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                   ->andwhere(['in','callid',$varCallidsIndicadoresVoice])
                                   ->andwhere(['in','idindicador',$arrayMarca])
                                   ->andwhere(['in','idvariable',$arrayMarca])
@@ -845,7 +864,7 @@ $this->title = 'Dashboard Escuchar +';
                                   ->where(['=','anulado',0])
                                   ->andwhere(['=','programacliente',$txtServicio])
                                   ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                  ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                  ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                   ->andwhere(['in','callid',$varCallidsIndicadoresVoice])
                                   ->andwhere(['in','idindicador',$arrayCanal])
                                   ->andwhere(['in','idvariable',$arrayCanal])
@@ -1167,7 +1186,7 @@ $this->title = 'Dashboard Escuchar +';
                                             ->where(['=','anulado',0])
                                             ->andwhere(['=','programacliente',$txtServicio])
                                             ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                             ->andwhere(['in','callid',$varCallidsIndicadoresVoice])
                                             ->andwhere(['in','idindicador',$varVariables])
                                             ->andwhere(['in','idvariable',$varVariables])
@@ -1197,7 +1216,7 @@ $this->title = 'Dashboard Escuchar +';
                                             ->where(['=','anulado',0])
                                             ->andwhere(['=','servicio',$txtServicio])
                                             ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                             ->andwhere(['in','idcategoria',$varVariables])
                                             ->groupby(['callid'])
                                             ->count();
@@ -1378,7 +1397,7 @@ $this->title = 'Dashboard Escuchar +';
                                             ->where(['=','anulado',0])
                                             ->andwhere(['=','servicio',$txtServicio])
                                             ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                             ->andwhere(['in','idcategoria',$varArregloCategoria])
                                             ->groupby(['callid'])
                                             ->having(['>','COUNT(1)',1])
@@ -1390,7 +1409,7 @@ $this->title = 'Dashboard Escuchar +';
                                             ->where(['=','anulado',0])
                                             ->andwhere(['=','servicio',$txtServicio])
                                             ->andwhere(['in','extension',$varListaExtensionesVoice])
-                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.' 05:00:00',$varFechaFinTresVoice.' 05:00:00'])
+                                            ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
                                             ->andwhere(['=','idcategoria',$varMotivoVoice])
                                             ->groupby(['callid'])
                                             ->count();
