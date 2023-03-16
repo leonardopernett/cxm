@@ -329,7 +329,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                 },
                         'update' => function ($url, $model) {
                     $fecha = date('Y-m-d H:i:s');
-                    $nuevafecha = strtotime('-4 month', strtotime($fecha));
+                    $nuevafecha = strtotime('-3 month', strtotime($fecha));
                     $nuevafecha = date('Y-m-d H:i:s', $nuevafecha);
                     $ejecucion = \app\models\Ejecucionformularios::findOne(["id" => $model["fid"]]);
                     if (isset($ejecucion->basesatisfaccion_id)) {
