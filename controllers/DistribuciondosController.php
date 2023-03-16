@@ -167,6 +167,10 @@ use app\models\DistribucionAsesores;
                                     ->all(); 
 
         foreach ($varListaAsesores as $key => $value) {
+          $varExisteAsesor = "";
+          $varNombreAsesor = "";
+          $varUsuaredAsesor = "";
+
           $varDocumentoAsesor = $value['cedulaasesor'];
 
           $varExisteAsesor = (new \yii\db\Query())
@@ -193,7 +197,16 @@ use app\models\DistribucionAsesores;
 
             if ($varNombreAsesor != "" && $varUsuaredAsesor != "") {
 
-              Yii::$app->db->createCommand()->insert('tbl_evaluados',[
+              $varExisteUsuaRed = (new \yii\db\Query())
+                                    ->select(['id'])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','dsusuario_red',$varUsuaredAsesor])
+                                    ->count(); 
+
+              if ( $varExisteUsuaRed == '0') {
+
+
+                Yii::$app->db->createCommand()->insert('tbl_evaluados',[
                       'name' => $varNombreAsesor,
                       'telefono' => null,
                       'dsusuario_red' => $varUsuaredAsesor,
@@ -204,7 +217,7 @@ use app\models\DistribucionAsesores;
                       'usua_id' => Yii::$app->user->identity->id,
                       'fechacreacion' => date('Y-m-d'),                                  
                   ])->execute();
-
+              }  
             }            
           }
         }
