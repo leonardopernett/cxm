@@ -502,8 +502,7 @@ use GuzzleHttp;
             ROUND( f.i7_nmcalculo*100,2 ) AS Cumplimiento_Promesa_de_Marca, 
             ROUND( f.i8_nmcalculo*100,2 ) AS Desempeño_del_Canal, 
             ROUND( f.i9_nmcalculo*100,2 ) AS Desempeño_del_Agente, 
-            ROUND( f.i10_nmcalculo*100,2 ) AS Habilidad_Comercial,
-            pc.tipo_corte 
+            ROUND( f.i10_nmcalculo*100,2 ) AS Habilidad_Comercial
 
           FROM tbl_ejecucionformularios f
             INNER JOIN tbl_dimensions d ON 
@@ -531,20 +530,13 @@ use GuzzleHttp;
             INNER JOIN tbl_usuarios uq ON 
               uq.usua_id = eq.usua_id
 
-            LEFT JOIN tbl_control_params cp ON 
-              uq.usua_id = cp.evaluados_id
-                AND a.id = cp.arbol_id
-                  AND cp.fechacreacion BETWEEN :Fecha_inicioG AND :Fecha_FinG
-            LEFT JOIN tbl_control_procesos pc ON 
-              pc.evaluados_id = cp.evaluados_id
-                AND pc.fechacreacion = pc.fechacreacion
 
             WHERE
               a.id IN (:Arbol_idG)
               AND f.created BETWEEN :Fecha_inicioG AND :Fecha_FinG')->bindValues($paramsFormulariosG)->queryAll();
 
         foreach ($varListFormulariosG as $key => $value) {
-          array_push($arraydatafG, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC'],"PENC "=>$value['PENC'],"SPC_FRC "=>$value['SPC_FRC'],"CARINO_WOW "=>$value['CARINO_WOW'],"Indice_de_Proceso "=>$value['Indice_de_Proceso'],"Indice_de_Experiencia "=>$value['Indice_de_Experiencia'],"Cumplimiento_Promesa_de_Marca "=>$value['Cumplimiento_Promesa_de_Marca'],"Desempeño_del_Canal "=>$value['Desempeño_del_Canal'],"Desempeño_del_Agente "=>$value['Desempeño_del_Agente'],"Habilidad_Comercia l"=>$value['Habilidad_Comercial'],"Corte"=>$value['tipo_corte']));
+          array_push($arraydatafG, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC'],"PENC "=>$value['PENC'],"SPC_FRC "=>$value['SPC_FRC'],"CARINO_WOW "=>$value['CARINO_WOW'],"Indice_de_Proceso "=>$value['Indice_de_Proceso'],"Indice_de_Experiencia "=>$value['Indice_de_Experiencia'],"Cumplimiento_Promesa_de_Marca "=>$value['Cumplimiento_Promesa_de_Marca'],"Desempeño_del_Canal "=>$value['Desempeño_del_Canal'],"Desempeño_del_Agente "=>$value['Desempeño_del_Agente'],"Habilidad_Comercia l"=>$value['Habilidad_Comercial']));
         }
       }
 
