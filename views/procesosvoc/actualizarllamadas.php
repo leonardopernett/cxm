@@ -252,6 +252,40 @@ $this->title = 'Procesos Voc - Actualizar Llamadas Speech';
 
     </div>
 
+    <?php
+      if ($sessiones == 2953) {
+    ?>
+
+    <div class="col-md-4">
+      <div class="card1 mb" style="background: #e6edff;">
+        <label><em class="fas fa-upload" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Actualizar Llamadas (WIA & SAE) - CXM') ?></label>
+        <?= Html::button('Actualizar llamadas (WIA & SAE)', ['value' => url::to(['actualizacomdata']), 'class' => 'btn btn-success', 'id'=>'modalButton3',
+                                'data-toggle' => 'tooltip',
+                                'style' => 'background: #707372;',
+                                'title' => 'Actualizar Especiales (WIA & SAE)']) ?> 
+
+        <?php
+            Modal::begin([
+              'header' => '<h4>Actualizar llamadas (WIA & SAE) a CXM</h4>',
+              'id' => 'modal3',
+              //'size' => 'moda2-lg',
+            ]);
+
+            echo "<div id='modalContent3'></div>";
+                                                              
+            Modal::end(); 
+        ?>
+
+        <hr>
+
+        <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #ff453c;"></em> <?= Yii::t('app', 'Importante: Esta opción permite actualizar el proceso de las categorias de un servicio con su fecha en especifico. Es recomendado generar el proceso por mes actual y mes pasado, pero no otros diferentes para no generar conflictos en los valores de los porcentajes. Este proceso pertenece a WIA & SAE. Debe estar parametrizado.') ?></label>
+      </div>
+    </div>
+
+    <?php
+      }
+    ?>
+
   </div>
 
   <br>
