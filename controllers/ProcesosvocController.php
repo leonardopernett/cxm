@@ -34,7 +34,7 @@ use app\models\SpeechParametrizar;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','configcategorias','registarcategorias','configconsultas','botconfigurar','actualizarllamadas','bdideal','bdideal_paso2','actualizaspeech','actualizaspeechespecial','actualizabaseideal'],
+            'only' => ['index','configcategorias','registarcategorias','configconsultas','botconfigurar','actualizarllamadas','bdideal','bdideal_paso2','actualizaspeech','actualizaspeechespecial','actualizabaseideal','actualizacomdata'],
             'rules' => [
               [
                 'allow' => true,
@@ -5766,6 +5766,343 @@ use app\models\SpeechParametrizar;
       }
 
 
+    }
+
+    public function actionActualizacomdata(){
+      $model = new SpeechCategorias();
+
+      $form = Yii::$app->request->post();
+      if ($model->load($form)) {
+        $varFechaEspecial_BD = explode(" ", $model->fechacreacion);
+
+        $varFechaInicioEspecial_BD = $varFechaEspecial_BD[0];
+        $varFechaFinEspecial_BD = date('Y-m-d',strtotime($varFechaEspecial_BD[2]));
+
+        $varClienteEspecial_BD = $model->tipoparametro;
+        $varListaPcrcEspecial_BD = $model->cod_pcrc;
+
+        $varConcatenarLlamadasEspecial_BD = $varClienteEspecial_BD.'; '.$varListaPcrcEspecial_BD.'; '.$varFechaInicioEspecial_BD.'; '.$varFechaFinEspecial_BD;
+
+        $this->Actualizallamadasspeechespecial_comdata($varConcatenarLlamadasEspecial_BD);
+        
+        return $this->redirect('actualizarllamadas');
+      }
+
+      return $this->renderAjax('actualizacomdata',[
+        'model' => $model,
+      ]);
+    }
+
+    public function Actualizallamadasspeechespecial_comdata($varConcatenarLlamadasEspecial_BD){
+      ini_set("max_execution_time", "900");
+      ini_set("memory_limit", "1024M");
+      ini_set( 'post_max_size', '1024M' );
+
+      ignore_user_abort(true);
+      set_time_limit(900);
+
+      $varIdClienteLlamadaEspecial_BD = null;
+      $varListaPcrcLlamadaEspecial_BD = null;
+      $varFechaInicioLlamadaEspecial_BD = null;
+      $varFechaFinLlamadaEspecial_BD = null;
+
+      $varListaItemsLlamadaEspecial_BD = explode("; ", $varConcatenarLlamadasEspecial_BD);
+      for ($i=0; $i < count($varListaItemsLlamadaEspecial_BD); $i++) { 
+        $varIdClienteLlamadaEspecial_BD = $varListaItemsLlamadaEspecial_BD[0];
+        $varListaPcrcLlamadaEspecial_BD = $varListaItemsLlamadaEspecial_BD[1];
+
+        $varFechaInicioLlamadaEspecial_BD = $varListaItemsLlamadaEspecial_BD[2];
+        $varFechaFinLlamadaEspecial_BD = $varListaItemsLlamadaEspecial_BD[3];
+        
+      }
+
+      $arrayListPcrcLlamadaEspeciales = explode(",", str_replace(array("#", "'", ";", " "), '', $varListaPcrcLlamadaEspecial_BD));
+
+      $varListaProyecto_BD = (new \yii\db\Query())
+                                ->select([
+                                    '*'
+                                ])
+                                ->from(['tbl_comdata_parametrizarapi'])
+                                ->where(['=','tbl_comdata_parametrizarapi.anulado',0])
+                                ->andwhere(['=','tbl_comdata_parametrizarapi.id_dp_clientes',$varIdClienteLlamadaEspecial_BD])
+                                ->andwhere(['in','tbl_comdata_parametrizarapi.cod_pcrc',$arrayListPcrcLlamadaEspeciales])
+                                ->all();
+
+      $varIdProyecto_BD = null;
+      $varDataSetId_BD = null;
+      $varTableId_BD = null;
+      $varLimitId_BD = null;
+      $varOffsetId_BD = null; 
+      foreach ($varListaProyecto_BD as $key => $value) {
+        $varIdProyecto_BD = $value['proyecto_id'];
+        $varDataSetId_BD = $value['dataset_id'];
+        $varTableId_BD = $value['table_id'];
+        $varLimitId_BD = $value['limit'];
+        $varOffsetId_BD = $value['offset'];
+
+        $varCodpcrc = $value['cod_pcrc'];
+
+        $varHoraInicio = (new \yii\db\Query())
+                          ->select([
+                            'if(tbl_speech_pcrcsociedades.id_sociedad=5," 00:00:00"," 05:00:00") AS varTiempoInicio'
+                          ])
+                          ->from(['tbl_speech_pcrcsociedades'])            
+                          ->where(['in','cod_pcrc',$varCodpcrc])
+                          ->andwhere(['=','anulado',0])
+                          ->Scalar();
+
+        $varHoraFinal = (new \yii\db\Query())
+                          ->select([
+                            'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
+                          ])
+                          ->from(['tbl_speech_pcrcsociedades'])            
+                          ->where(['in','cod_pcrc',$varCodpcrc])
+                          ->andwhere(['=','anulado',0])
+                          ->Scalar();
+
+        ob_start();
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_SSL_VERIFYPEER=> false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_URL =>'https://wia-web-api-gw-5j8fyx1b.uc.gateway.dev/conectionDateCXM?key=AIzaSyClC9KoixrqyM3CcO24a29OI3u4e3Vzv4c',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS => 'proyectID='.$varIdProyecto_BD.'&datasetId='.$varDataSetId_BD.'&tableId='.$varTableId_BD.'&limit='.$varLimitId_BD.'&offset='.$varOffsetId_BD.'&fecha_inicial='.$varFechaInicioLlamadaEspecial_BD.'&fecha_final='.$varFechaFinLlamadaEspecial_BD.'',
+          CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/x-www-form-urlencoded'
+          ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+              
+        ob_clean();
+        
+        $objet_json = json_decode($response,true);
+
+
+        foreach ($objet_json as $key => $value) {
+           $varCambiaFechas = $value['fechallamada']['value'];
+          $varFechas = date('Y-m-d h:i:s:000',strtotime($varCambiaFechas));
+
+          if (is_numeric($value['idredbox'])) {
+            $varIdRedBox = $value['idredbox'];
+          }else{
+            $varIdRedBox = 'WIA_SAE';
+          }
+
+          $varGrabadora = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_speech_urlgrabadoras.id_grabadora'
+                                ])
+                                ->from(['tbl_speech_urlgrabadoras'])
+                                ->where(['=','tbl_speech_urlgrabadoras.anulado',0])
+                                ->andwhere(['=','tbl_speech_urlgrabadoras.ipgrabadora',$value['idgrabadora']])
+                                ->scalar();
+          if ($varGrabadora == "") {
+            $varGrabadora = $value['idgrabadora'];
+          }
+          
+          Yii::$app->db->createCommand()->insert('tbl_dashboardspeechcalls',[
+                'callId' => $value['callid'],
+                'idcategoria' => $value['idcategoria'],
+                'nombreCategoria' => $value['nombrecategoria'],
+                'extension' => $value['extension'],
+                'login_id' => $value['login_id'],
+                'fechallamada' => $varFechas,
+                'callduracion' => $value['callduracion'],
+                'servicio' => $value['servicio'],
+                'fechareal' => $varFechas,
+                'idredbox' => $varIdRedBox,
+                'idgrabadora' => $varGrabadora,
+                'connid' => $value['connid'],
+                'extensiones' => 'NA',
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+          ])->execute();
+
+        }
+
+        foreach ($objet_json as $key => $value) {
+          $varGrabadora_count = (new \yii\db\Query())
+                                  ->select([
+                                      'tbl_speech_urlgrabadoras.id_grabadora'
+                                  ])
+                                  ->from(['tbl_speech_urlgrabadoras'])
+                                  ->where(['=','tbl_speech_urlgrabadoras.anulado',0])
+                                  ->andwhere(['=','tbl_speech_urlgrabadoras.ipgrabadora',$value['idgrabadora']])
+                                  ->scalar();
+          if ($varGrabadora_count == "") {
+            Yii::$app->db->createCommand()->insert('tbl_comdata_llamadaurl',[
+                    'callid' => $value['callid'],
+                    'id_dp_clientes' => $varIdClienteLlamadaEspecial_BD,
+                    'idredbox' => $value['idredbox'],
+                    'servicio' => $value['servicio'],
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+          }
+            
+        }
+
+        $varBolsitaCX_String = (new \yii\db\Query())
+                              ->select(['tbl_speech_categorias.programacategoria'])
+                              ->from(['tbl_speech_categorias'])
+                              ->where(['=','tbl_speech_categorias.anulado',0])
+                              ->andwhere(['in','tbl_speech_categorias.cod_pcrc',$arrayListPcrcLlamadaEspeciales])
+                              ->groupby(['tbl_speech_categorias.programacategoria'])
+                              ->scalar();
+
+        $varListaInteracciones_Dash = (new \yii\db\Query())
+                                ->select(['*'])
+                                ->from(['tbl_dashboardspeechcalls'])            
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','servicio',$varBolsitaCX_String])
+                                ->andwhere(['between','fechallamada',$varFechaInicioLlamadaEspecial_BD.$varHoraInicio,$varFechaFinLlamadaEspecial_BD.$varHoraFinal])
+                                ->groupby(['callid'])
+                                ->all();
+
+        foreach ($varListaInteracciones_Dash as $key => $value) {
+          Yii::$app->db->createCommand()->insert('tbl_dashboardspeechcalls',[
+                'callId' => $value['callId'],
+                'idcategoria' => 1114,
+                'nombreCategoria' => 'CATEGORÍAS GENERALES',
+                'extension' => $value['extension'],
+                'login_id' => $value['login_id'],
+                'fechallamada' => $value['fechallamada'],
+                'callduracion' => $value['callduracion'],
+                'servicio' => $value['servicio'],
+                'fechareal' => $value['fechareal'],
+                'idredbox' => $value['idredbox'],
+                'idgrabadora' => $value['idgrabadora'],
+                'connid' => $value['connid'],
+                'extensiones' => 'NA',
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+          ])->execute();
+        }
+
+        $varReglaNegocioLlamadas =  (new \yii\db\Query())
+                                  ->select(['rn'])
+                                  ->from(['tbl_speech_parametrizar'])            
+                                  ->where(['=','cod_pcrc',$varCodpcrc])
+                                  ->andwhere(['=','anulado',0])
+                                  ->groupby(['rn'])
+                                  ->all();
+
+        if (count($varReglaNegocioLlamadas) != 0) {
+
+          $varArrayRnLlamada = array();
+          foreach ($varReglaNegocioLlamadas as $key => $value) {
+            array_push($varArrayRnLlamada, $value['rn']);
+          }
+
+          $varExtensionesLlamadas = implode("', '", $varArrayRnLlamada); 
+          $varExtensionSpeech = explode(",", str_replace(array("#", "'", ";", " "), '', $varExtensionesLlamadas));             
+
+        }else{
+
+          $varExtLlamadas =  (new \yii\db\Query())
+                                ->select(['ext'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodpcrc])
+                                ->andwhere(['=','anulado',0])
+                                ->groupby(['ext'])
+                                ->all();
+
+          if (count($varExtLlamadas) != 0) {
+            
+            $varArrayExtLlamadas = array();
+            foreach ($varExtLlamadas as $key => $value) {
+              array_push($varArrayExtLlamadas, $value['ext']);
+            }
+                
+            $varExtensionesLlamadas = implode("', '", $varArrayExtLlamadas);
+            $varExtensionSpeech = explode(",", str_replace(array("#", "'", ";", " "), '', $varExtensionesLlamadas));           
+
+          }else{
+
+            $varUsuaLlamadas =  (new \yii\db\Query())
+                                ->select(['usuared'])
+                                ->from(['tbl_speech_parametrizar'])            
+                                ->where(['=','cod_pcrc',$varCodpcrc])
+                                ->andwhere(['=','anulado',0])
+                                ->groupby(['usuared'])
+                                ->all();
+
+            if (count($varUsuaLlamadas) != 0) {
+              
+              $varArrayUsuaLlamadas = array();
+              foreach ($varUsuaLlamadas as $key => $value) {
+                array_push($varArrayUsuaLlamadas, $value['usuared']);
+              }
+
+              $varExtensionesLlamadas = implode("', '", $varArrayUsuaLlamadas);
+              $varExtensionSpeech = explode(",", str_replace(array("#", "'", ";", " "), '', $varExtensionesLlamadas));
+              
+            }else{
+              $varExtensionesLlamadas = "NA";
+            }
+
+          }
+
+        }
+
+        $varFechaInicio_General = $varFechaInicioLlamadaEspecial_BD.$varHoraInicio;
+        $varFechaFin_General = $varFechaFinLlamadaEspecial_BD.$varHoraFinal;
+
+        $varListaCategorizacion = Yii::$app->db->createCommand("
+            SELECT * FROM 
+              (
+                SELECT llama.callid, llama.extension, llama.fechallamada, llama.servicio, llama.idcategoria AS llamacategoria, cate.idcategoria AS catecategoria, if(llama.idcategoria = cate.idcategoria, 1, 0) AS encuentra, llama.nombreCategoria 
+                FROM tbl_dashboardspeechcalls llama 
+                  LEFT JOIN 
+                    (
+                      SELECT idcategoria, tipoindicador, programacategoria, cod_pcrc 
+                        FROM tbl_speech_categorias 
+                          WHERE anulado = 0 AND idcategorias = 2 
+                            AND programacategoria IN ('$varBolsitaCX_String') 
+                        ORDER BY cod_pcrc, tipoindicador
+                    ) cate ON llama.servicio = cate.programacategoria 
+                WHERE llama.servicio IN ('$varBolsitaCX_String') 
+                  AND llama.extension IN ('$varExtensionesLlamadas') 
+                    AND llama.fechallamada BETWEEN '$varFechaInicio_General' AND '$varFechaFin_General' 
+                GROUP BY llama.callid, llama.extension, llama.idcategoria, cate.idcategoria  
+                  ORDER BY encuentra DESC
+              ) datos 
+            WHERE llamacategoria = catecategoria")->queryAll();
+
+
+        if (count($varListaCategorizacion) != 0) {
+          foreach ($varListaCategorizacion as $key => $value) {
+            Yii::$app->db->createCommand()->insert('tbl_speech_general',[
+                                                           'programacliente' => $value['servicio'],
+                                                           'fechainicio' => date('Y-m-01'),
+                                                           'fechafin' => NULL,
+                                                           'callid' => $value['callid'],
+                                                           'fechallamada' => $value['fechallamada'],
+                                                           'extension' => $value['extension'],
+                                                           'idindicador' => $value['llamacategoria'],
+                                                           'idvariable' => $value['catecategoria'],
+                                                           'cantproceso' => $value['encuentra'],
+                                                           'fechacreacion' => date('Y-m-d'),
+                                                           'anulado' => 0,
+                                                           'usua_id' => Yii::$app->user->identity->id,
+                                                           'arbol_id' => $varIdClienteLlamadaEspecial_BD,
+                                                        ])->execute();
+          }
+        } 
+      }
     }
 
   }
