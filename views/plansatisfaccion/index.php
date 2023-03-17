@@ -195,7 +195,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
 
         <?php
-
+            if($sessiones == "0") {
         ?>
 
         <div class="col-md-4">
@@ -205,7 +205,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <?php
-
+            }
         ?>
 
     </div>
