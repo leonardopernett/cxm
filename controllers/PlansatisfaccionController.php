@@ -38,7 +38,7 @@ use Exception;
                   'allow' => true,
                   'roles' => ['@'],
                   'matchCallback' => function() {
-                              return Yii::$app->user->identity->isAdminSistema() ||  Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
+                    Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
                           },
                 ],
               ]
@@ -66,14 +66,27 @@ use Exception;
    
     public function actionIndex(){      
 
-      $varListPlanes = (new \yii\db\Query())
+      $varRol = (new \yii\db\Query())
+                        ->select([
+                        'tbl_roles.role_id'
+                        ])
+                        ->from(['tbl_roles'])
+                        ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                              'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+                        ->where(['=','rel_usuarios_roles.rel_usua_id',Yii::$app->user->identity->id])
+                        ->Scalar();   
+
+       
+      if ($varRol == 270) {
+        $varListPlanes = (new \yii\db\Query())
                         ->select([
                         'tbl_plan_generalsatu.id_generalsatu',
                         'tbl_plan_procesos.proceso',
                         'if(tbl_plan_generalsatu.id_actividad=1,"Área","Operación") AS varActividad',
                         'tbl_plan_generalsatu.id_dp_clientes', 'tbl_plan_generalsatu.id_dp_area',
                         'tbl_usuarios_evalua.nombre_completo',
-                        'if(tbl_plan_generalsatu.estado=1,"Abierto","Cerrado") AS varEstado'
+                        'if(tbl_plan_generalsatu.estado=1,"Abierto","Cerrado") AS varEstado',
+                        'tbl_plan_generalsatu.estado'
                         ])
                         ->from(['tbl_plan_generalsatu'])
                         ->join('LEFT OUTER JOIN', 'tbl_plan_procesos',
@@ -81,10 +94,30 @@ use Exception;
                         ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
                               'tbl_usuarios_evalua.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                         ->where(['=','tbl_plan_generalsatu.anulado',0])
-                        ->all(); 
+                        ->all();
+      }else{
+        $varListPlanes = (new \yii\db\Query())
+                        ->select([
+                        'tbl_plan_generalsatu.id_generalsatu',
+                        'tbl_plan_procesos.proceso',
+                        'if(tbl_plan_generalsatu.id_actividad=1,"Área","Operación") AS varActividad',
+                        'tbl_plan_generalsatu.id_dp_clientes', 'tbl_plan_generalsatu.id_dp_area',
+                        'tbl_usuarios_evalua.nombre_completo',
+                        'if(tbl_plan_generalsatu.estado=1,"Abierto","Cerrado") AS varEstado',
+                        'tbl_plan_generalsatu.estado'
+                        ])
+                        ->from(['tbl_plan_generalsatu'])
+                        ->join('LEFT OUTER JOIN', 'tbl_plan_procesos',
+                              'tbl_plan_procesos.id_procesos = tbl_plan_generalsatu.id_proceso')
+                        ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
+                              'tbl_usuarios_evalua.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
+                        ->where(['=','tbl_plan_generalsatu.anulado',0])
+                        ->andwhere(['=','tbl_plan_generalsatu.usua_id',Yii::$app->user->identity->id])
+                        ->all();
+      } 
 
 
-        $varCantidadProcesos = (new \yii\db\Query())
+      $varCantidadProcesos = (new \yii\db\Query())
                                 ->select([
                                   'tbl_plan_procesos.id_procesos',
                                   'tbl_plan_procesos.proceso',
@@ -97,7 +130,7 @@ use Exception;
                                 ->groupBy(['tbl_plan_procesos.id_procesos'])
                                 ->all();
 
-        $varCantidadActividad = (new \yii\db\Query())
+      $varCantidadActividad = (new \yii\db\Query())
                                 ->select([
                                   'tbl_plan_generalsatu.id_actividad',
                                   'if(tbl_plan_generalsatu.id_actividad = 1, "Área","Operación") AS varActivdad',
@@ -487,6 +520,24 @@ use Exception;
     public function actionAgregarsatisfaccion($id_plan){
       $model = new Planeficacia();   
 
+      $varAccion = (new \yii\db\Query())
+                            ->select([
+                              'tbl_plan_secundariosatu.acciones'
+                            ])
+                            ->from(['tbl_plan_secundariosatu'])
+                            ->where(['=','anulado',0])
+                            ->andwhere(['=','id_generalsatu',$id_plan])
+                            ->scalar();  
+
+      $varListaAccion = (new \yii\db\Query())
+                            ->select([
+                              'CONCAT(" - ",tbl_plan_acciones.acciones," - ")'
+                            ])
+                            ->from(['tbl_plan_acciones'])
+                            ->where(['=','anulado',0])
+                            ->andwhere(['=','id_generalsatu',$id_plan])
+                            ->scalar(); 
+
       $varListasatisfac = (new \yii\db\Query())
                             ->select([
                               '*'
@@ -517,6 +568,8 @@ use Exception;
         'model' => $model,
         'id_plan' => $id_plan,
         'varListasatisfac' => $varListasatisfac,
+        'varAccion' => $varAccion,
+        'varListaAccion' => $varListaAccion,
       ]);
     }
 
@@ -833,7 +886,18 @@ use Exception;
 
     public function actionDescargarplanes(){
 
-      $varListaPlanesSatu = (new \yii\db\Query())
+      $varRolDescargar = (new \yii\db\Query())
+                        ->select([
+                        'tbl_roles.role_id'
+                        ])
+                        ->from(['tbl_roles'])
+                        ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                              'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+                        ->where(['=','rel_usuarios_roles.rel_usua_id',Yii::$app->user->identity->id])
+                        ->Scalar(); 
+
+      if ($varRolDescargar == 270) {
+        $varListaPlanesSatu = (new \yii\db\Query())
                                 ->select([
                                   'tbl_plan_generalsatu.id_generalsatu',
                                   'tbl_plan_generalsatu.id_proceso', 
@@ -856,10 +920,46 @@ use Exception;
                                   'tbl_plan_secundariosatu.id_generalsatu = tbl_plan_generalsatu.id_generalsatu')
                                 ->where(['=','tbl_plan_generalsatu.anulado',0])
                                 ->all();  
+      }else{
+        $varListaPlanesSatu = (new \yii\db\Query())
+                                ->select([
+                                  'tbl_plan_generalsatu.id_generalsatu',
+                                  'tbl_plan_generalsatu.id_proceso', 
+                                  'tbl_plan_generalsatu.id_actividad', 
+                                  'tbl_plan_generalsatu.id_dp_clientes',
+                                  'tbl_plan_generalsatu.id_dp_area', 
+                                  'tbl_plan_generalsatu.cc_responsable', 
+                                  'tbl_plan_generalsatu.estado',
+                                  'tbl_plan_secundariosatu.fecha_implementacion',
+                                  'tbl_plan_secundariosatu.fecha_definicion', 
+                                  'tbl_plan_secundariosatu.fecha_cierre', 
+                                  'tbl_plan_secundariosatu.indicador', 
+                                  'tbl_plan_secundariosatu.acciones',
+                                  'tbl_plan_secundariosatu.puntaje_meta', 
+                                  'tbl_plan_secundariosatu.puntaje_actual', 
+                                  'tbl_plan_secundariosatu.puntaje_final'
+                                ])
+                                ->from(['tbl_plan_generalsatu'])
+                                ->join('LEFT OUTER JOIN', 'tbl_plan_secundariosatu',
+                                  'tbl_plan_secundariosatu.id_generalsatu = tbl_plan_generalsatu.id_generalsatu')
+                                ->where(['=','tbl_plan_generalsatu.anulado',0])
+                                ->andwhere(['=','tbl_plan_generalsatu.usua_id',Yii::$app->user->identity->id])
+                                ->all();  
+      } 
 
       return $this->renderAjax('descargarplanes',[
         'varListaPlanesSatu' => $varListaPlanesSatu,
       ]);
+    }    
+
+    public function actionCerrarplan($id_plan){
+
+      Yii::$app->db->createCommand()->update('tbl_plan_generalsatu',[
+                      'estado' => 2,                                     
+      ],' id_generalsatu = '.$id_plan.'')->execute();
+
+      return $this->redirect(['index']);
+
     }
 
 }
