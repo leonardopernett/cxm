@@ -422,7 +422,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div id="capaIdBtn" class="capaBtn" style="display: inline;">
   
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Registro Información Complementaria') ?></label>
         <?= Html::submitButton(Yii::t('app', 'Aceptar'),
@@ -434,7 +434,16 @@ $this->params['breadcrumbs'][] = $this->title;
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
+      <div class="card1 mb" style="background: #ffe6e6;">
+        <label style="font-size: 15px;"><em class="fas fa-times" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Estado del Plan') ?></label>
+                <?= Html::a('Cerrar',  ['cerrarplan','id_plan'=>$id_plan], ['class' => 'btn btn-danger',                             'data-toggle' => 'tooltip',
+                                                'title' => 'Cerrar Plan']) 
+                ?>
+      </div>
+    </div>
+
+    <div class="col-md-4">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Cancelar y Regresar') ?></label>
                 <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',

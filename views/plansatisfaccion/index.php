@@ -342,15 +342,29 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php } ?>
                         </td>
                         <td class="text-center">
-                            <?= Html::a('<em class="fas fa-plus-square" style="font-size: 12px; color: #d95416;"></em>',  ['agregarsatisfaccion','id_plan'=> $value['id_generalsatu']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Agregar Eficacia']) 
-                            ?>                        
+                            <?php
+                                if ($value['estado'] == 1) {                                
+                            ?>
+                                    <?= Html::a('<em class="fas fa-plus-square" style="font-size: 12px; color: #d95416;"></em>',  ['agregarsatisfaccion','id_plan'=> $value['id_generalsatu']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Agregar Eficacia']) ?>   
+                            <?php
+                                }else{
+                            ?>    
+                                    <label style="font-size: 12px;"><?= Yii::t('app', ' -- ') ?></label>
+                            <?php
+                                }
+                            ?>                      
                         </td>
                         <td class="text-center">
                             <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #B833FF;"></em>',  ['verplan','id_plan'=> $value['id_generalsatu']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Ver Plan']) 
                             ?> 
 
-                            <?= Html::a('<em class="fas fa-edit" style="font-size: 12px; color: #4298B4;"></em>',  ['modificarplan','id_plan'=> $value['id_generalsatu']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Editar Plan']) 
-                            ?> 
+                            <?php
+                              if ($value['estado'] == 1) {                                
+                            ?>
+                                <?= Html::a('<em class="fas fa-edit" style="font-size: 12px; color: #4298B4;"></em>',  ['modificarplan','id_plan'=> $value['id_generalsatu']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Editar Plan']) ?> 
+                            <?php
+                              }
+                            ?>
                         </td>
                       </tr>
                     <?php

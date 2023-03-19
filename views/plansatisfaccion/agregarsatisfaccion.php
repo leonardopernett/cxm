@@ -132,6 +132,26 @@ $roles = $command->queryScalar();
 
   <br>
 
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card1">
+        <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Acción Seleccionado') ?></label>
+
+        <label style="font-size: 15px;"> <?= Yii::t('app', $varAccion) ?> </label>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card1">
+        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Lista de Acciones a Seguir') ?></label>
+
+        <label style="font-size: 15px;"> <?= Yii::t('app', $varListaAccion) ?> </label>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
   <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
   <div class="row">
     
