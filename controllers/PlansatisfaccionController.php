@@ -380,7 +380,7 @@ use Exception;
       ]);
     }
 
-    public function actionAgregarconceptos($id){
+    public function actionAgregarconceptos($id,$id_valores){
       $model = new Planconceptos();
 
       $form = Yii::$app->request->post();
@@ -395,7 +395,12 @@ use Exception;
                       'fechacreacion' => date('Y-m-d'),                
         ])->execute();
 
-        return $this->redirect(array('registrarplan','id_plan'=>$id));
+        if ($id_valores == 0) {
+          return $this->redirect(array('registrarplan','id_plan'=>$id));
+        }else{
+          return $this->redirect(array('modificarplan','id_plan'=>$id));
+        }
+        
       }
 
       return $this->renderAjax('agregarconceptos',[
@@ -404,14 +409,19 @@ use Exception;
       ]);
     }
 
-    public function actionEliminarconceptos($id_conceptos,$id_plan){
+    public function actionEliminarconceptos($id_conceptos,$id_plan,$id_valor){
 
       Yii::$app->db->createCommand('DELETE FROM tbl_plan_conceptos WHERE id_conceptos=:id')->bindParam(':id',$id_conceptos)->execute();
 
-      return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      if ($id_valor == 0) {
+        return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      }else{
+        return $this->redirect(array('modificarplan','id_plan'=>$id_plan));
+      }
+      
     }
 
-    public function actionAgregarcausas($id){
+    public function actionAgregarcausas($id,$id_valores){
       $model = new Planmejoras();
 
       $form = Yii::$app->request->post();
@@ -426,7 +436,12 @@ use Exception;
                       'fechacreacion' => date('Y-m-d'),                
         ])->execute();
 
-        return $this->redirect(array('registrarplan','id_plan'=>$id));
+        if ($id_valores == 0) {
+          return $this->redirect(array('registrarplan','id_plan'=>$id));
+        }else{
+          return $this->redirect(array('modificarplan','id_plan'=>$id));
+        }
+        
       }
 
       return $this->renderAjax('agregarcausas',[
@@ -435,14 +450,19 @@ use Exception;
       ]);
     }
 
-    public function actionEliminarmejoras($id_mejoras,$id_plan){
+    public function actionEliminarmejoras($id_mejoras,$id_plan,$id_valor){
 
       Yii::$app->db->createCommand('DELETE FROM tbl_plan_mejoras WHERE id_mejoras=:id')->bindParam(':id',$id_mejoras)->execute();
 
-      return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      if ($id_valor == 0) {
+        return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      }else{
+        return $this->redirect(array('modificarplan','id_plan'=>$id_plan));
+      }
+      
     }
 
-    public function actionAgregaracciones($id){
+    public function actionAgregaracciones($id,$id_valores){
       $model = new Planacciones();
 
       $form = Yii::$app->request->post();
@@ -457,7 +477,12 @@ use Exception;
                       'fechacreacion' => date('Y-m-d'),                
         ])->execute();
 
-        return $this->redirect(array('registrarplan','id_plan'=>$id));
+        if ($id_valores == 0) {
+          return $this->redirect(array('registrarplan','id_plan'=>$id));
+        }else{
+          return $this->redirect(array('modificarplan','id_plan'=>$id));
+        }
+        
       }
 
       return $this->renderAjax('agregaracciones',[
@@ -466,14 +491,19 @@ use Exception;
       ]);
     }
 
-    public function actionEliminaracciones($id_acciones,$id_plan){
+    public function actionEliminaracciones($id_acciones,$id_plan,$id_valor){
 
       Yii::$app->db->createCommand('DELETE FROM tbl_plan_acciones WHERE id_acciones=:id')->bindParam(':id',$id_acciones)->execute();
 
-      return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      if ($id_valor == 0) {
+        return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      }else{
+        return $this->redirect(array('modificarplan','id_plan'=>$id_plan));
+      }
+      
     }
 
-    public function actionSubirarchivos($id){
+    public function actionSubirarchivos($id,$id_valores){
       $model = new UploadForm2();
       $ruta = null;
 
@@ -501,7 +531,12 @@ use Exception;
           ])->execute();
         }
 
-        return $this->redirect(array('registrarplan','id_plan'=>$id));
+        if ($id_valores == 0) {
+          return $this->redirect(array('registrarplan','id_plan'=>$id));
+        }else{
+          return $this->redirect(array('modificarplan','id_plan'=>$id));
+        }
+        
       }
 
       return $this->renderAjax('subirarchivos',[
@@ -510,11 +545,16 @@ use Exception;
       ]);
     }
 
-    public function actionEliminararchivos($id_subirarchivos,$id_plan){
+    public function actionEliminararchivos($id_subirarchivos,$id_plan,$id_valor){
 
       Yii::$app->db->createCommand('DELETE FROM tbl_plan_subirarchivos WHERE id_subirarchivos=:id')->bindParam(':id',$id_subirarchivos)->execute();
 
-      return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      if ($id_valor == 0) {
+        return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      }else{
+        return $this->redirect(array('modificarplan','id_plan'=>$id_plan));
+      }
+      
     }
 
     public function actionAgregarsatisfaccion($id_plan){

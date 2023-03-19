@@ -230,7 +230,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-6">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Conceptos a Mejorar') ?></label>
-        <?= Html::button('Agregar Datos', ['value' => url::to(['agregarconceptos','id'=>$id_plan]), 
+        <?= Html::button('Agregar Datos', ['value' => url::to(['agregarconceptos','id'=>$id_plan,'id_valores'=>1]), 
             'class' => 'btn btn-success', 'id'=>'modalButton',
             'data-toggle' => 'tooltip',
             'title' => 'Agregar Conceptos a Mejorar']) 
@@ -261,7 +261,7 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <td><label style="font-size: 12px;"><?php echo  $value['concepto']; ?></label></td>
                 <td class="text-center">
-                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarconceptos','id_conceptos'=> $value['id_conceptos'],'id_plan'=>$id_plan], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarconceptos','id_conceptos'=> $value['id_conceptos'],'id_plan'=>$id_plan,'id_valor'=>1], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                 </td>
               </tr>
             <?php
@@ -275,7 +275,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-6">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Análisis de Causas') ?></label>
-        <?= Html::button('Agregar Datos', ['value' => url::to(['agregarcausas','id'=>$id_plan]), 
+        <?= Html::button('Agregar Datos', ['value' => url::to(['agregarcausas','id'=>$id_plan,'id_valores'=>1]), 
             'class' => 'btn btn-success', 'id'=>'modalButton1',
             'data-toggle' => 'tooltip',
             'title' => 'Agregar Análisis de Causas']) 
@@ -306,7 +306,7 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <td><label style="font-size: 12px;"><?php echo  $value['mejoras']; ?></label></td>
                 <td class="text-center">
-                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarmejoras','id_mejoras'=> $value['id_mejoras'],'id_plan'=>$id_plan], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarmejoras','id_mejoras'=> $value['id_mejoras'],'id_plan'=>$id_plan,'id_valor'=>1], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                 </td>
               </tr>
             <?php
@@ -325,7 +325,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-6">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Acciones a Seguir') ?></label>
-        <?= Html::button('Agregar Datos', ['value' => url::to(['agregaracciones','id'=>$id_plan]), 
+        <?= Html::button('Agregar Datos', ['value' => url::to(['agregaracciones','id'=>$id_plan,'id_valores'=>1]), 
             'class' => 'btn btn-success', 'id'=>'modalButton3',
             'data-toggle' => 'tooltip',
             'title' => 'Agregar Acciones a Seguir']) 
@@ -356,7 +356,7 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <td><label style="font-size: 12px;"><?php echo  $value['acciones']; ?></label></td>
                 <td class="text-center">
-                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminaracciones','id_acciones'=> $value['id_acciones'],'id_plan'=>$id_plan], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminaracciones','id_acciones'=> $value['id_acciones'],'id_plan'=>$id_plan,'id_valor'=>1], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                 </td>
               </tr>
             <?php
@@ -370,7 +370,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-6">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Subir Archivos') ?></label>
-        <?= Html::button('Subir Archivos', ['value' => url::to(['subirarchivos','id'=>$id_plan]), 
+        <?= Html::button('Subir Archivos', ['value' => url::to(['subirarchivos','id'=>$id_plan,'id_valores'=>1]), 
             'class' => 'btn btn-success', 'id'=>'modalButton5',
             'data-toggle' => 'tooltip',
             'title' => 'Subir Archivos']) 
@@ -402,7 +402,7 @@ $this->params['breadcrumbs'][] = $this->title;
               <tr>
                 <td><label style="font-size: 12px;"><?php echo  $value['nombre_archivo']; ?></label></td>
                 <td class="text-center">
-                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminararchivos','id_subirarchivos'=> $value['id_subirarchivos'],'id_plan'=>$id_plan], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminararchivos','id_subirarchivos'=> $value['id_subirarchivos'],'id_plan'=>$id_plan,'id_valor'=>1], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                 </td>
               </tr>
             <?php
