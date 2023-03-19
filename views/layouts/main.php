@@ -222,7 +222,7 @@ AppAsset::register($this);
                                                 ], 
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Plan de Satisfacci&oacute;n Cliente&nbsp;&nbsp;'),
-                                                    'url' => ['/plansatisfaccion/index?varidban=0'],
+                                                    'url' => ['/plansatisfaccion/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],  
                                                 '<br>',
