@@ -145,7 +145,14 @@ $roles = $command->queryScalar();
       <div class="card1">
         <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Lista de Acciones a Seguir') ?></label>
 
-        <label style="font-size: 15px;"> <?= Yii::t('app', $varListaAccion) ?> </label>
+        <?php
+          foreach ($varListaAccion as $key => $value) {              
+        ?>
+          <label style="font-size: 15px;"> <?= Yii::t('app', $value['varAccion']) ?> </label>
+        <?php
+          }
+        ?>
+        
       </div>
     </div>
   </div>

@@ -571,12 +571,12 @@ use Exception;
 
       $varListaAccion = (new \yii\db\Query())
                             ->select([
-                              'CONCAT(" - ",tbl_plan_acciones.acciones," - ")'
+                              'CONCAT(" - ",tbl_plan_acciones.acciones," - ") as varAccion'
                             ])
                             ->from(['tbl_plan_acciones'])
                             ->where(['=','anulado',0])
                             ->andwhere(['=','id_generalsatu',$id_plan])
-                            ->scalar(); 
+                            ->all(); 
 
       $varListasatisfac = (new \yii\db\Query())
                             ->select([
