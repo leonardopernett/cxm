@@ -673,14 +673,14 @@ public function actionVeranexometri($id){
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
-                    ->setTo('diego.montoya@grupokonecta.com','anmorenoa@grupokonecta.com')
+                    ->setTo('anmorenoa@grupokonecta.com')
                     ->setFrom(Yii::$app->params['email_satu_from'])
                     ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
 
-      return $this->render('index');
+      return $this->redirect(['index']);
     }
 
   }
