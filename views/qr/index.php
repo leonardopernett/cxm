@@ -17,6 +17,18 @@ $this->params['breadcrumbs'][] = $this->title;
 $template = '<div class="col-md-12">'
 . ' {input}{error}{hint}</div>';
 
+$sessiones = Yii::$app->user->identity->id;
+
+  $rol =  new Query;
+  $rol    ->select(['tbl_roles.role_id'])
+          ->from('tbl_roles')
+          ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                	'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+          ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                  'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
+          ->where(['=','tbl_usuarios.usua_id',$sessiones]);                      
+  $command = $rol->createCommand();
+  $roles = $command->queryScalar();
 ?>
 
 <style>
@@ -43,7 +55,7 @@ $template = '<div class="col-md-12">'
     .masthead {
         height: 25vh;
         min-height: 100px;
-        background-image: url('../../images/ADMINISTRADOR-GENERAL.png');
+        background-image: url('../../images/qyr.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -111,6 +123,12 @@ $template = '<div class="col-md-12">'
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
 
 <!-- Extensiones -->
+<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
+
+<script src="../../js_extensions/chart.min.js"></script>
+
 <script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
 <script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
 <script src="../../js_extensions/cloudflare/jszip.min.js"></script>
@@ -130,26 +148,91 @@ $template = '<div class="col-md-12">'
 </header>
 <br>
 <br>
+<div class="capaTres">
+    <?php $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ]
+        ]); ?>
+    <div class="row">
+        <div class="col-md-12">
+                <div class="card1 mb">
+                    <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Acciones:</label>
+                    <div class="row">                    
+                        <div class="col-md-6">
+                            <label style="font-size: 15px;"></label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card1 mb">
+                                    <?= Html::a('Crear QyR',  ['crearqyr'], ['class' => 'btn btn-success',
+                                        'style' => 'background-color: #337ab7',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Crear QyR'])
+                                    ?>                                                                    
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card1 mb">
+                                            <a id="dlink" style="display:none;"></a>
+                                            <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Exportar Archivo</button>
+                                    </div>
+                                </div>
+                                                        
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+        </div>        
+    </div>
+    <hr>
+    <?php ActiveForm::end(); ?>
+</div>
+<!-- Capa Grafica -->
+<div id="capaIdGrafica" class="capaGrafica" style="display: inline;">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Cantidades de Tipos de Estado') ?></label>
+                <div id="containerA" class="highcharts-container" style="height: 150px;"></div> 
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-chart-line" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Eficiencia') ?></label>
+                <div id="containerB" class="highcharts-container" style="height: 150px;"></div> 
+            </div>
+        </div>
+    </div>
+
+</div>
+<hr>
 <div class="capaInformacion" id="capaIdInfo" style="display: inline;">
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><em class="fas fa-list" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Listado Quejas y Reclamos') ?></label>
-
                 <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
-                    <caption>.</caption>
+                <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Reporte Quejas y Reclamos') ?></label></caption>
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Identificación del Caso ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Dato ') ?></label></th>                            
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Nombre Usuario ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Documento Usuario ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Correo Electrónico ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Estado ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Creación ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Caso ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Dato ') ?></label></th>                            
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Nombre Usuario ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Documento Usuario ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Correo Electrónico ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Área ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipología ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Estado Proceso') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Solicitudes ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Ver ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Gestionar ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Eliminar ') ?></label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -163,9 +246,13 @@ $template = '<div class="col-md-12">'
                                 $varUsuario = $value['nombre'];
                                 $varDocUsuario = $value['documento'];
                                 $varEmail = $value['correo'];
+                                $varArea = $value['area'];
+                                $varTipologia = $value['tipologia'];
                                 $varEstado = $value['estado'];
                                 $varIdEstado = $value['idestado'];
                                 $varFechaCreacion = $value['fecha_creacion'];
+                                $varEstadoproceso = $value['id_estado'];                                
+                                $varnombreestado = $value['estado1'];
 
                         ?>
                             <tr>
@@ -175,37 +262,45 @@ $template = '<div class="col-md-12">'
                                 <td><label style="font-size: 12px;"><?php echo  $varCliente; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varUsuario; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varDocUsuario; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varEmail; ?></label></td>
-
-                                <?php
-                                    if ($varIdEstado == '1') {
-                                ?>
-                                        <td><label style="font-size: 12px; color: #559FFF"><?php echo  $varEstado; ?></label></td>
-                                <?php
-                                    }
-                                ?>
-
-                                <?php
-                                    if ($varIdEstado == '3') {
-                                ?>
-                                        <td><label style="font-size: 12px; color: #00968F"><?php echo  $varEstado; ?></label></td>
-                                <?php
-                                    }
-                                ?>
-
-                                <?php
-                                    if ($varIdEstado == '2') {
-                                ?>
-                                        <td><label style="font-size: 12px; color: #D01E53"><?php echo  $varEstado; ?></label></td>
-                                <?php
-                                    }
-                                ?>
-
+                                <td><label style="font-size: 12px;"><?php echo  $varEmail; ?></label></td>                                
+                                <td><label style="font-size: 12px;"><?php echo  $varArea; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varTipologia; ?></label></td>      
 
 
                                 
+                                
                                 <td><label style="font-size: 12px;"><?php echo  $varComentarios; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varnombreestado; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  Yii::$app->formatter->asDate($varFechaCreacion); ?></label></td>
+                                <td class="text-center">
+                                    <?= Html::a('<em class="fas fa-search" style="font-size: 12px; color: #3e95b8;"></em>',  ['verqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Buscar']) ?>
+                                </td>
+                                <td class="text-center">
+                                <?php
+                                    if ($varEstadoproceso == 9) {
+                                ?>                                    
+                                        <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['viewqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+                                <?php
+                                    } elseif ($varEstadoproceso == 4) {
+                                ?>                                                                  
+                                        <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['gestionqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+                                <?php
+                                    } elseif ($varEstadoproceso == 8) {
+                                ?>
+                                        <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['revisionqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+                                <?php
+                                    } elseif (($varEstadoproceso == 5) && ($roles == 293 || $roles == 299 || $roles == 270) ) {
+                                ?>
+                                   <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['revisiongerenteqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
+                                <?php
+                                    }else{ ?>                                    
+                                        <label><em class="fas fa-times" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', '') ?></label>
+                                <?php } ?>
+                                
+                                </td>
+                                <td class="text-center">
+                                    <?= Html::a('<em class="fas fa-trash-alt" style="font-size: 12px; color: #d95416;"></em>',  ['deleteqr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                                </td>
                             </tr>
                         <?php 
                             }
@@ -216,9 +311,9 @@ $template = '<div class="col-md-12">'
         </div>
     </div>
 </div>
-
+<hr>
 <script type="text/javascript">
-    $(document).ready( function () {
+    /*$(document).ready( function () {
         $('#myTable').DataTable({
             responsive: true,
             fixedColumns: true,
@@ -248,5 +343,209 @@ $template = '<div class="col-md-12">'
                 }
             } 
         });
+    });*/
+
+    $(document).ready( function () {
+    $('#myTable').DataTable({
+      responsive: true,
+      fixedColumns: true,
+      select: false,
+      "language": {
+        "lengthMenu": "Cantidad de Datos a Mostrar _MENU_ ",
+        "zeroRecords": "No se encontraron datos ",
+        "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+        "infoEmpty": "No hay datos aun",
+        "infoFiltered": "(Filtrado un _MAX_ total)",
+        "search": "Buscar:",
+        "paginate": {
+          "first":      "Primero",
+          "last":       "Ultimo",
+          "next":       "Siguiente",
+          "previous":   "Anterior"
+        }
+      }
+    });
+  });
+   var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,',
+            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+            base64 = function (s) {
+                return window.btoa(unescape(encodeURIComponent(s)))
+            }, format = function (s, c) {
+                return s.replace(/{(\w+)}/g, function (m, p) {
+                    return c[p];
+                })
+            }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = {
+                worksheet: name || 'Worksheet',
+                table: table.innerHTML
+            }
+            console.log(uri + base64(format(template, ctx)));
+            document.getElementById("dlink").href = uri + base64(format(template, ctx));
+            document.getElementById("dlink").download = "Reporte Quejas y Reclamos";
+            document.getElementById("dlink").traget = "_blank";
+            document.getElementById("dlink").click();
+
+        }
+    })();
+    function download(){
+        $(document).find('tfoot').remove();
+        var name = document.getElementById("name");
+        tableToExcel('myTable', 'Archivo Plan', name+'.xls')
+        //setTimeout("window.location.reload()",0.0000001);
+
+    }
+    var btn = document.getElementById("btn");
+    btn.addEventListener("click",download);
+
+    Highcharts.chart('containerA', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '<label style="font-size: 20px;"><?php echo ''; ?></label>',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 60
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '110%'],
+                size: '220%',
+                width: '200%'
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '',
+            innerSize: '50%',
+            data: [
+                <?php           
+                    foreach ($varCantidadestados as $key => $value) {
+                        $varColor = null;
+
+                        if ($value['id_estado'] == 2) {
+                            $varColor = '#C148D0';
+                        }
+                        if ($value['id_estado'] == 4) {
+                            $varColor = '#49de70';
+                        }
+                        if ($value['id_estado'] == 5) {
+                            $varColor = '#FBCE52';
+                        }
+                        if ($value['id_estado'] == 7) {
+                            $varColor = '#8B70FA';
+                        }                        
+                        if ($value['id_estado'] == 9) {
+                            $varColor = '#22D7CF';
+                        }
+                ?>
+                    {
+                        name: "<?php echo $value['nombre'];?>",
+                        y: parseFloat("<?php echo $value['Cantidad'];?>"),
+                        color: "<?php echo $varColor; ?>",
+                        dataLabels: {
+                            enabled: false
+                        }
+                    },
+                <?php 
+                    }
+                ?>
+                        
+            ]
+        }]
+    });
+
+    Highcharts.chart('containerB', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '<label style="font-size: 20px;"><?php echo ''; ?></label>',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 60
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '110%'],
+                size: '220%',
+                width: '200%'
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '',
+            innerSize: '50%',
+            data: [
+                <?php 
+                $varvalor = '';          
+                    foreach ($varCantidadtranscurre as $key => $value) {
+                        $varColor = null;
+
+                        if ($value['num'] == 1) {
+                            $varColor = '#49de70';
+                            $varvalor = '<= 5 días';
+                        }
+                        if ($value['num'] == 2) {
+                            $varColor = '#F9BD4C';
+                            $varvalor = '>5 y <8 días';
+                        }
+                        if ($value['num'] == 3) {
+                            $varColor = '#f5500f';
+                            $varvalor = '> 8 días';
+                        }
+                        
+                ?>
+                    {
+                        name: "<?php echo $varvalor;?>",
+                        y: parseFloat("<?php echo $value['canti'];?>"),
+                        color: "<?php echo $varColor; ?>",
+                        dataLabels: {
+                            enabled: false
+                        }
+                    },
+                <?php 
+                    }
+                ?>
+                        
+            ]
+        }]
     });
 </script>
