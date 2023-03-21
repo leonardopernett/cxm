@@ -663,8 +663,17 @@ public function actionVeranexometri($id){
 }
 
     public function actionPruebasenvio(){
-
-      $tmpFile = 'images/uploads/qyr_1679417953_Carta respuesta Q&R procesada.pdf';  
+      $id_caso = 28;
+      $txtQuery4 =  new Query;
+      $txtQuery4  ->select(['tbl_qr_casos.archivo2'])
+                  ->from('tbl_qr_casos')       
+                  ->Where('tbl_qr_casos.id = :id_caso')
+                  ->addParams([':id_caso'=>$id_caso]);
+    
+      $command = $txtQuery4->createCommand();
+      $dataanexo = $command->queryScalar();
+      
+      $tmpFile = $dataanexo;  
 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
@@ -673,7 +682,7 @@ public function actionVeranexometri($id){
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
-                    ->setTo('anmorenoa@grupokonecta.com')
+                    ->setTo('diego.montoya@grupokonecta.com')
                     ->setFrom(Yii::$app->params['email_satu_from'])
                     ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
                     ->attach($tmpFile)
