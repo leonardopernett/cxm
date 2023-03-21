@@ -178,23 +178,6 @@ $sessiones = Yii::$app->user->identity->id;
                                             <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Exportar Archivo</button>
                                     </div>
                                 </div>
-                                <?php
-                                    if ($sessiones == '2953' || $sessiones == '3205') {
-                                        
-                                ?>
-                                <div class="col-md-6">
-                                    <div class="card1 mb">
-                                    <?= Html::a('Pruebas envio',  ['pruebasenvio'], ['class' => 'btn btn-success',
-                                        'style' => 'background-color: #337ab7',
-                                        'data-toggle' => 'tooltip',
-                                        'title' => 'Crear QyR'])
-                                    ?>                                                                    
-                                    </div>
-                                </div>
-
-                                <?php
-                                    }
-                                ?>
                                                         
                             </div>
                         </div>
