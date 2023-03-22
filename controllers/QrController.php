@@ -675,7 +675,7 @@ public function actionPruebacorreo(){
   $message .= "</body></html>";
 
   Yii::$app->mailer->compose()
-      ->setTo('diego.montoya@grupokonecta.com,anmorenoa@grupokonecta.com')
+      ->setTo('diego.montoya@grupokonecta.com')
       ->setFrom(Yii::$app->params['email_satu_from'])
       ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
       ->attach($tmpFile)
