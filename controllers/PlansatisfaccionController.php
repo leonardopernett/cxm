@@ -84,15 +84,15 @@ use Exception;
                         'tbl_plan_procesos.proceso',
                         'if(tbl_plan_generalsatu.id_actividad=1,"Área","Operación") AS varActividad',
                         'tbl_plan_generalsatu.id_dp_clientes', 'tbl_plan_generalsatu.id_dp_area',
-                        'tbl_usuarios_evalua.nombre_completo',
+                        'tbl_usuarios_jarvis_cliente.nombre_completo',
                         'if(tbl_plan_generalsatu.estado=1,"Abierto","Cerrado") AS varEstado',
                         'tbl_plan_generalsatu.estado'
                         ])
                         ->from(['tbl_plan_generalsatu'])
                         ->join('LEFT OUTER JOIN', 'tbl_plan_procesos',
                               'tbl_plan_procesos.id_procesos = tbl_plan_generalsatu.id_proceso')
-                        ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
-                              'tbl_usuarios_evalua.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
+                        ->join('LEFT OUTER JOIN', 'tbl_usuarios_jarvis_cliente',
+                              'tbl_usuarios_jarvis_cliente.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                         ->where(['=','tbl_plan_generalsatu.anulado',0])
                         ->all();
       }else{
@@ -102,15 +102,15 @@ use Exception;
                         'tbl_plan_procesos.proceso',
                         'if(tbl_plan_generalsatu.id_actividad=1,"Área","Operación") AS varActividad',
                         'tbl_plan_generalsatu.id_dp_clientes', 'tbl_plan_generalsatu.id_dp_area',
-                        'tbl_usuarios_evalua.nombre_completo',
+                        'tbl_usuarios_jarvis_cliente.nombre_completo',
                         'if(tbl_plan_generalsatu.estado=1,"Abierto","Cerrado") AS varEstado',
                         'tbl_plan_generalsatu.estado'
                         ])
                         ->from(['tbl_plan_generalsatu'])
                         ->join('LEFT OUTER JOIN', 'tbl_plan_procesos',
                               'tbl_plan_procesos.id_procesos = tbl_plan_generalsatu.id_proceso')
-                        ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
-                              'tbl_usuarios_evalua.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
+                        ->join('LEFT OUTER JOIN', 'tbl_usuarios_jarvis_cliente',
+                              'tbl_usuarios_jarvis_cliente.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                         ->where(['=','tbl_plan_generalsatu.anulado',0])
                         ->andwhere(['=','tbl_plan_generalsatu.usua_id',Yii::$app->user->identity->id])
                         ->all();
@@ -246,11 +246,11 @@ use Exception;
 
       $vaResponsable = (new \yii\db\Query())
                                 ->select([
-                                  'tbl_usuarios_evalua.nombre_completo'
+                                  'tbl_usuarios_jarvis_cliente.nombre_completo'
                                 ])
                                 ->from(['tbl_plan_generalsatu'])
-                                ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
-                                  'tbl_usuarios_evalua.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
+                                ->join('LEFT OUTER JOIN', 'tbl_usuarios_jarvis_cliente',
+                                  'tbl_usuarios_jarvis_cliente.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                                 ->where(['=','tbl_plan_generalsatu.anulado',0])
                                 ->andwhere(['=','tbl_plan_generalsatu.id_generalsatu',$id_plan])
                                 ->scalar(); 
@@ -645,11 +645,11 @@ use Exception;
 
       $varPlanResponsable = (new \yii\db\Query())
                                 ->select([
-                                  'tbl_usuarios_evalua.nombre_completo'
+                                  'tbl_usuarios_jarvis_cliente.nombre_completo'
                                 ])
                                 ->from(['tbl_plan_generalsatu'])
-                                ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
-                                  'tbl_usuarios_evalua.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
+                                ->join('LEFT OUTER JOIN', 'tbl_usuatbl_usuarios_jarvis_clienterios_evalua',
+                                  'tbl_usuarios_jarvis_cliente.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                                 ->where(['=','tbl_plan_generalsatu.anulado',0])
                                 ->andwhere(['=','tbl_plan_generalsatu.id_generalsatu',$id_plan])
                                 ->scalar(); 
@@ -794,11 +794,11 @@ use Exception;
 
       $varPlanResponsable_Modificar = (new \yii\db\Query())
                                 ->select([
-                                  'tbl_usuarios_evalua.nombre_completo'
+                                  'tbl_usuarios_jarvis_cliente.nombre_completo'
                                 ])
                                 ->from(['tbl_plan_generalsatu'])
-                                ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
-                                  'tbl_usuarios_evalua.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
+                                ->join('LEFT OUTER JOIN', 'tbl_usuarios_jarvis_cliente',
+                                  'tbl_usuarios_jarvis_cliente.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                                 ->where(['=','tbl_plan_generalsatu.anulado',0])
                                 ->andwhere(['=','tbl_plan_generalsatu.id_generalsatu',$id_plan])
                                 ->scalar(); 

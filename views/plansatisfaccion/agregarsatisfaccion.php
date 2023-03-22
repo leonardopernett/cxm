@@ -165,7 +165,7 @@ $roles = $command->queryScalar();
     <div class="col-md-4">
       
       <div class="card1 mb">
-            <label style="font-size: 15px;"> <?= Yii::t('app', 'Ingresar Eficacia') ?></label>
+            <label style="font-size: 15px;"> <?= Yii::t('app', 'Ingresar Seguimiento') ?></label>
                 <?= $form->field($model, 'eficacia', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id' => 'idTexto', 'placeholder'=>'Documentar las actividades realizadas junto con las fechas de elaboración'])->label('') ?>
             
         <br>
@@ -196,9 +196,9 @@ $roles = $command->queryScalar();
       
       <div class="card1 mb">
         <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
-          <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Listado de Eficacia') ?></label></caption>
+          <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Listado de Seguimiento') ?></label></caption>
           <thead>
-            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Eficacia') ?></label></th>
+            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Seguimiento') ?></label></th>
             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Elaboración') ?></label></th>
             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Eliminar') ?></label></th>
           </thead>
