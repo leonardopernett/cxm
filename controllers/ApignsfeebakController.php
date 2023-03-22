@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -14,100 +15,83 @@ use yii\db\mssql\PDO;
 use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\helpers\Url;
+use app\models\BaseSatisfaccion; 
 use PHPExcel;
 use PHPExcel_IOFactory;
-use app\models\UploadForm2;
 use GuzzleHttp;
-use app\models\BaseSatisfaccion; 
-use Exception;
 
-  class GnssatisfaccionController extends Controller {
+
+  class ApignsfeebakController extends \yii\web\Controller {
 
     public function behaviors(){
-        return[
-          'access' => [
-              'class' => AccessControl::classname(),
-              'only' => ['index'],
-              'rules' => [
-                [
-                  'allow' => true,
-                  'roles' => ['@'],
-                  'matchCallback' => function() {
-                              return Yii::$app->user->identity->isAdminSistema() ||  Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
-                          },
-                ],
-              ]
-            ],
-          'verbs' => [          
-            'class' => VerbFilter::className(),
-            'actions' => [
-              'delete' => ['get'],
-            ],
+      return[
+        'verbs' => [          
+          'class' => VerbFilter::className(),
+          'actions' => [
+            'delete' => ['post'],
           ],
-
-          'corsFilter' => [
-            'class' => \yii\filters\Cors::class,
         ],
-        ];
-    } 
 
-    public function actions() {
-      return [
-          'error' => [
-            'class' => 'yii\web\ErrorAction',
-          ]
+        'access' => [
+            'class' => AccessControl::classname(),
+            'denyCallback' => function ($rule, $action) {
+                    $msg = \Yii::t('app', 'The requested Item could not be found.');
+                    Yii::$app->session->setFlash('danger', $msg);
+                    $url = \yii\helpers\Url::to(['site/index']);
+                    return $action->controller->redirect($url);
+            },
+
+            
+            'rules' => [
+              [
+                'actions' => ['apignsencuestas'],
+                'allow' => true,
+                'roles' => ['@'],
+                'matchCallback' => function() {
+                            return Yii::$app->user->identity->isAdminSistema();
+                        },
+              ],
+              [
+                'actions' => ['apignsencuestas'],
+                'allow' => true,
+
+              ],
+            ],
+
+        ],
+        
       ];
     }
-   
-    public function actionIndex(){  
-      $model = new BaseSatisfaccion();
-
-      $form = Yii::$app->request->post();
-      if ($model->load($form)) {
-        $varFechasGeneral = explode(" ", $model->fecha_gestion);
-        $varHoraSeleccionada = $model->comentario;        
-
-        $varHoraInicio = null;
-        $varHoraFin = null;
-        if ($varHoraSeleccionada == "all") {
-          $varHoraInicio = "00:00:00";
-          $varHoaFin = "23:59:59";
-        }else{
-          $varHoraInicio = $varHoraSeleccionada;
-
-          if (substr($varHoraSeleccionada,0,-7) == '0') {
-            $varHoraInicial = '0'.strval(intval(substr($varHoraSeleccionada,0,-6)) + 1);
-          }else{
-            $varHoraInicial = strval(intval(substr($varHoraSeleccionada,0,-6)) + 1);
-          }
-          
-          $varHoraFin = $varHoraInicial.":00:00";
-        }
-
-        $varFechaInicioEspecial_BD = $varFechasGeneral[0].' '.$varHoraInicio;
-        $varFechaFinEspecial_BD = date('Y-m-d',strtotime($varFechasGeneral[2])).' '.$varHoraFin;
-
-        $this->Actualizaencuestas_genesys($varFechaInicioEspecial_BD,$varFechaFinEspecial_BD);
-
-        $this->Generarrecalculartipologia();
-
-        
-        return $this->redirect('index');
-
-      }
-      
-      return $this->render('index',[
-        'model' => $model,
-      ]);
+  
+    public function init(){
+      $this->enableCsrfValidation = false;
     }
 
-    public function Actualizaencuestas_genesys($varFechaInicioEspecial_BD,$varFechaFinEspecial_BD){
+    public function actionApignsencuestas(){
+      $datapost = file_get_contents('php://input');
+      $data_post = json_decode($datapost,true);
+
       ini_set("max_execution_time", "900");
       ini_set("memory_limit", "1024M");
       ini_set( 'post_max_size', '1024M' );
 
       ignore_user_abort(true);
       set_time_limit(900);
+
+      $varHora = date("H");
+
+      $varHoraInicio = strval(intval($varHora) - 1).':00:00';
+      $varHoraFin = strval(intval($varHora) - 1).':59:59';
+
+      if ($varHoraFin == '23:59:59') {
+        $varDias = strval(intval(date("d") -1));
+        $varFecha = date("Y-m-").$varDias;
+      }else{
+        $varFecha = date("Y-m-d");
+      }
+
+      $varFechaInicioEspecial_BD = $varFecha.'T'.$varHoraInicio;
+      $varFechaFinEspecial_BD = $varFecha.'T'.$varHoraFin;
 
       $curl = curl_init();
 
@@ -142,9 +126,8 @@ use Exception;
       $objet_json = json_decode($response,true);
 
       if (count($objet_json['Data']) != 0) {
-      
+        
         foreach ($objet_json['Data'] as $key => $value) {
-
           if (count($value['Answers']) != 0 && $value['QueueName'] != "") {
             
             $varIdentificacion = $value['CustomerId'];
@@ -373,14 +356,14 @@ use Exception;
             }
 
           }
-
-          
         }
-        
+
       }
 
-      // var_dump($objet_json['Data']);
-      
+      $this->Generarrecalculartipologia();
+
+      die(json_encode("Proceso Realizado"));
+
     }
 
     public function Generarrecalculartipologia(){
@@ -574,9 +557,6 @@ use Exception;
 
     }
 
-
   }
 
 ?>
-
-
