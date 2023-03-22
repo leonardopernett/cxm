@@ -168,31 +168,39 @@ $datanew = (new \yii\db\Query())
                                         }
                                     }
                                 } else {
-                                    $varGenesysCloud = $data->basesatisfaccion->tipo_encuesta;
+                                    if ($data->basesatisfaccion->aliados == "GNB") {
 
-                                    if (strlen($varGenesysCloud) > 1) {
-                                        $varGC = substr($varGenesysCloud, 1);
+                                        echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                                        . Yii::t("app", "GrabaciÃ³n Llamada - Genesys"), 'https://apps.mypurecloud.com/directory/#/engage/admin/interactions/'.$data->basesatisfaccion->connid, ['target' => "_blank"]);
 
-                                        $varGeneral = $data->basesatisfaccion->connid;
-                                        $varParte1 = substr($varGeneral, -32, -24);
-                                        $varParte2 = substr($varGeneral, -24, -20);
-                                        $varParte3 = substr($varGeneral, -20, -16);
-                                        $varParte4 = substr($varGeneral, -16, -12);
-                                        $varParte5 = substr($varGeneral, -12);
+                                    }else{
 
-                                        $varConnidGenesysCloud = $varParte1 . "-" . $varParte2 . "-" . $varParte3 . "-" . $varParte4 . "-" . $varParte5;
-                                        $varUrlGenesysCloud = "https://apps.usw2.pure.cloud/directory/#/engage/admin/interactions/";
+                                        $varGenesysCloud = $data->basesatisfaccion->tipo_encuesta;
 
-                                        if ($varGC = "G") {
-                                            echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                                . Yii::t("app", "Grabación Llamada"), $varUrlGenesysCloud . $varConnidGenesysCloud, ['target' => "_blank"]);
+                                        if (strlen($varGenesysCloud) > 1) {
+                                            $varGC = substr($varGenesysCloud, 1);
+
+                                            $varGeneral = $data->basesatisfaccion->connid;
+                                            $varParte1 = substr($varGeneral, -32, -24);
+                                            $varParte2 = substr($varGeneral, -24, -20);
+                                            $varParte3 = substr($varGeneral, -20, -16);
+                                            $varParte4 = substr($varGeneral, -16, -12);
+                                            $varParte5 = substr($varGeneral, -12);
+
+                                            $varConnidGenesysCloud = $varParte1 . "-" . $varParte2 . "-" . $varParte3 . "-" . $varParte4 . "-" . $varParte5;
+                                            $varUrlGenesysCloud = "https://apps.usw2.pure.cloud/directory/#/engage/admin/interactions/";
+
+                                            if ($varGC = "G") {
+                                                echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                                    . Yii::t("app", "Grabación Llamada"), $varUrlGenesysCloud . $varConnidGenesysCloud, ['target' => "_blank"]);
+                                            } else {
+                                                echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
+                                                    . Yii::t("app", "No se encontró llamada"), $data->basesatisfaccion->llamada);
+                                            }
                                         } else {
                                             echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
                                                 . Yii::t("app", "No se encontró llamada"), $data->basesatisfaccion->llamada);
                                         }
-                                    } else {
-                                        echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                            . Yii::t("app", "No se encontró llamada"), $data->basesatisfaccion->llamada);
                                     }
                                 }
                                 ?>
