@@ -663,10 +663,11 @@ public function actionVeranexometri($id){
 }
 
 public function actionPruebacorreo(){ 
+
   $datanumcaso = "C-4";
   $tmpFile = 'images/uploads/qyr_1679417953_Carta respuesta Q&R procesada.pdf';   
   $message = "<html><body>";
-  $message .= "<h3>CX-MANAGEMENT</h3>";   
+  $message .= "<h3>CX-Management</h3>";   
   $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
   $message .= $datanumcaso;
   $message .= "<br><br>Gracias por tu espera, tenemos respuesta a tu caso. Esperamos tu revisión y aceptación de la misma.";             
@@ -674,14 +675,21 @@ public function actionPruebacorreo(){
   $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
   $message .= "</body></html>";
 
-  Yii::$app->mailer->compose()
-      ->setTo('diego.montoya@grupokonecta.com')
-      ->setFrom(Yii::$app->params['email_satu_from'])
-      ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
-      ->attach($tmpFile)
-      ->setHtmlBody($message)
-      ->send();
-
+  $varListacorreo = (new \yii\db\Query())
+                  ->select(['email'])
+                  ->from(['tbl_qr_correos'])
+                  ->where(['in','id',[9,10]])
+                  ->All(); 
+  foreach ($varListacorreo as $key => $value) {
+                   
+      Yii::$app->mailer->compose()
+          ->setTo($value['email'])
+          ->setFrom(Yii::$app->params['email_satu_from'])
+          ->setSubject("Actualización de tu caso QyR - CX-Management")                    
+          ->attach($tmpFile)
+          ->setHtmlBody($message)
+          ->send();
+  }
  return $this->redirect('index');
 
 }
