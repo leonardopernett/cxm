@@ -648,7 +648,7 @@ use Exception;
                                   'tbl_usuarios_jarvis_cliente.nombre_completo'
                                 ])
                                 ->from(['tbl_plan_generalsatu'])
-                                ->join('LEFT OUTER JOIN', 'tbl_usuatbl_usuarios_jarvis_clienterios_evalua',
+                                ->join('LEFT OUTER JOIN', 'tbl_usuarios_jarvis_cliente',
                                   'tbl_usuarios_jarvis_cliente.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                                 ->where(['=','tbl_plan_generalsatu.anulado',0])
                                 ->andwhere(['=','tbl_plan_generalsatu.id_generalsatu',$id_plan])
