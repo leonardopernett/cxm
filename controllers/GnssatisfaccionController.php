@@ -157,7 +157,7 @@ use Exception;
             $varDataJarvis_CC = (new \yii\db\Query())
                         ->select(['tbl_evaluados.identificacion'])
                         ->from(['tbl_evaluados']) 
-                        ->where(['like','tbl_evaluados.name',$varNombreCola])
+                        ->where(['like','tbl_evaluados.name',$varNombreAgente])
                         ->scalar();
 
             $varDataJarvis_User = (new \yii\db\Query())
