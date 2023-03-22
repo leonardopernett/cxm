@@ -183,6 +183,18 @@ $sessiones = Yii::$app->user->identity->id;
                         </div>
                     </div>
                     <br>
+                    <?php if($sessiones == "2953" || $sessiones == "3205" ){ ?>
+                    <div class="col-md-6">
+                                    <div class="card1 mb">
+                                    <?= Html::a('prueba correo',  ['pruebacorreo'], ['class' => 'btn btn-success',
+                                        'style' => 'background-color: #337ab7',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'prueba correo'])
+                                    ?>                                                                    
+                                    </div>
+                    </div>
+                    <?php }?>
+                    <br>
                 </div>
         </div>        
     </div>

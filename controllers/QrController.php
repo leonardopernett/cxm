@@ -662,7 +662,26 @@ public function actionVeranexometri($id){
   ]);
 }
 
-   
+public function actionPruebacorreo(){ 
+  $datanumcaso = "C-4";
+  $tmpFile = 'images/uploads/qyr_1679417953_Carta respuesta Q&R procesada.pdf';   
+  $message = "<html><body>";
+  $message .= "<h3>CX-MANAGEMENT</h3>";   
+  $message .= "Hola, Te enviamos la respuesta de tu caso No.  <?php echo  $datanumcaso; ?>";
+  $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Esperamos tu revisión y aceptación de la misma.";             
+  $message .= "</body></html>";
+
+  Yii::$app->mailer->compose()
+      ->setTo('diego.montoya@grupokonecta.com')
+      ->setFrom(Yii::$app->params['email_satu_from'])
+      ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
+      ->attach($tmpFile)
+      ->setHtmlBody($message)
+      ->send();
+
+ return $this->redirect('index');
+
+}
 
   }
 
