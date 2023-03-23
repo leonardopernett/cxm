@@ -2731,7 +2731,8 @@ use app\models\Comdataparametrizarapi;
                                     'tbl_comdata_parametrizarapi.id_parametrizarapi',
                                     'tbl_proceso_cliente_centrocosto.cliente', 
                                     'tbl_comdata_parametrizarapi.proyecto_id',
-                                    'tbl_comdata_parametrizarapi.sociedadprovieniente'
+                                    'tbl_comdata_parametrizarapi.sociedadprovieniente',
+                                    'tbl_comdata_parametrizarapi.table_id'
                                 ])
                                 ->from(['tbl_proceso_cliente_centrocosto'])
                                 ->join('LEFT OUTER JOIN', 'tbl_comdata_parametrizarapi',
@@ -2767,6 +2768,8 @@ use app\models\Comdataparametrizarapi;
                 'table_id' => $model->table_id,
                 'limit' => $model->limit,
                 'offset' => $model->offset,
+                'cod_pcrc' => $model->cod_pcrc,
+                'extension' => $model->extension,
                 'fechacreacion' => date("Y-m-d"),                    
                 'anulado' => 0,
                 'usua_id' => Yii::$app->user->identity->id,
