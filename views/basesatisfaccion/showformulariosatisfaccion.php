@@ -171,7 +171,7 @@ $datanew = (new \yii\db\Query())
                                     if ($data->basesatisfaccion->aliados == "GNB") {
 
                                         echo Html::a(Html::img(Url::to("@web/images/inicio.png"), ["width" => "30px"]) . ' '
-                                                        . Yii::t("app", "GrabaciÃ³n Llamada - Genesys"), 'https://apps.mypurecloud.com/directory/#/engage/admin/interactions/'.$data->basesatisfaccion->connid, ['target' => "_blank"]);
+                                                        . Yii::t("app", "Grabación Llamada - Genesys"), 'https://apps.mypurecloud.com/directory/#/engage/admin/interactions/'.$data->basesatisfaccion->connid, ['target' => "_blank"]);
 
                                     }else{
 
