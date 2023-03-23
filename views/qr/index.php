@@ -156,47 +156,32 @@ $sessiones = Yii::$app->user->identity->id;
         ]
         ]); ?>
     <div class="row">
-        <div class="col-md-12">
-                <div class="card1 mb">
-                    <label><em class="fas fa-cogs" style="font-size: 20px; color: #1e8da7;"></em> Acciones:</label>
-                    <div class="row">                    
-                        <div class="col-md-6">
-                            <label style="font-size: 15px;"></label>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card1 mb">
-                                    <?= Html::a('Crear QyR',  ['crearqyr'], ['class' => 'btn btn-success',
-                                        'style' => 'background-color: #337ab7',
-                                        'data-toggle' => 'tooltip',
-                                        'title' => 'Crear QyR'])
-                                    ?>                                                                    
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card1 mb">
-                                            <a id="dlink" style="display:none;"></a>
-                                            <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Exportar Archivo</button>
-                                    </div>
-                                </div>
-                                                        
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <?php if($sessiones == "2953" || $sessiones == "3205" ){ ?>
-                    <div class="col-md-6">
-                                    <div class="card1 mb">
-                                    <?= Html::a('prueba correo',  ['pruebacorreo'], ['class' => 'btn btn-success',
-                                        'style' => 'background-color: #337ab7',
-                                        'data-toggle' => 'tooltip',
-                                        'title' => 'prueba correo'])
-                                    ?>                                                                    
-                                    </div>
-                    </div>
-                    <?php }?>
-                    <br>
-                </div>
-        </div>        
+        <div class="col-md-6">
+            <div class="card1 mb" style="background: #6b97b1; ">
+                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Acciones & Gráficas') ?></label>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card1 mb">                    
+            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Crear QyR') ?></label>                
+                <?= Html::a('Aceptar',  ['crearqyr'], ['class' => 'btn btn-success',
+                        'style' => 'background-color: #337ab7',
+                        'data-toggle' => 'tooltip',
+                        'title' => 'Crear QyR'])
+                ?>                                                                    
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card1 mb">
+            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Descargar QyR') ?></label>
+                <a id="dlink" style="display:none;"></a>
+                    <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Aceptar</button>
+            </div>
+        </div>
+       <br>                                                 
     </div>
     <hr>
     <?php ActiveForm::end(); ?>

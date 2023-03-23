@@ -264,7 +264,31 @@ use app\models\UsuariosEvalua;
                   'id_estado' => $estado_new,
                   'estatus' => 0,
                   'usua_id' => Yii::$app->user->identity->id,                                       
-              ])->execute(); 
+              ])->execute();
+
+              $varNumcaso = (new \yii\db\Query())
+                              ->select(['max(numero_caso)'])
+                              ->from(['tbl_qr_casos'])
+                              ->where(['=','usua_id',Yii::$app->user->identity->id])
+                              ->Scalar();
+
+//se envia correo al solicitante
+                $message = "<html><body>";
+                $message .= "<h3>CX-Management</h3>";   
+                $message .= "Hola, Tu solicitud fue recibida, referenciada con el caso No.: ";
+                $message .= $varNumcaso;
+                $message .= "<br><br> Tu (PQRS) está en progreso y se está gestionando por parte de nuestro equipo de producto. Hemos priorizado tu petición y garantizamos que se resolverá durante esta semana. ¡Gracias por tu paciencia!";             
+                $message .= "<br><br>Que tengas un buen día";
+                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "</body></html>";
+
+                Yii::$app->mailer->compose()
+                    ->setTo($modelcaso->correo)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Respuesta de tu caso QyR - CX-Management")  
+                    ->setHtmlBody($message)
+                    ->send();
+      
 
       return $this->redirect('crearqyr');
     }
@@ -375,6 +399,24 @@ public function actionGestionqyr($idcaso){
   $command = $txtQuery3->createCommand();
   $datacorreo = $command->queryScalar();
 
+  $txtQuery4 =  new Query;
+  $txtQuery4  ->select(['tbl_qr_casos.archivo2'])
+              ->from('tbl_qr_casos')       
+              ->Where('tbl_qr_casos.id = :id_caso')
+              ->addParams([':id_caso'=>$id_caso]);
+ 
+  $command = $txtQuery4->createCommand();
+  $dataanexo = $command->queryScalar();
+
+  $txtQuery5 =  new Query;
+  $txtQuery5  ->select(['tbl_qr_casos.numero_caso'])
+              ->from('tbl_qr_casos')       
+              ->Where('tbl_qr_casos.id = :id_caso')
+              ->addParams([':id_caso'=>$id_caso]);
+ 
+  $command = $txtQuery5->createCommand();
+  $datanumcaso = $command->queryScalar();
+
   $paramsinfo = [':varInfo' => $datacorreo];  
   $dataProviderInfo = Yii::$app->db->createCommand('
           SELECT tbl_hojavida_datapersonal.hv_idpersonal,
@@ -428,7 +470,28 @@ public function actionGestionqyr($idcaso){
       'id_estado' => $valestado,
       'archivo2' => $ruta,
                 
-    ],"id = '$id_caso'")->execute();                
+    ],"id = '$id_caso'")->execute();
+    
+  //envio de correo al gerente con anexo  
+    $tmpFile = $ruta;
+                
+                $message = "<html><body>";
+                $message .= "<h3>CX-Management</h3>";   
+                $message .= "Hola, Te enviamos la respuesta de tu caso No.:";
+                $message .= $datanumcaso;
+                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Esperamos tu revisión y aceptación de la misma.";             
+                $message .= "<br><br>Que tengas un buen día";
+                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "</body></html>";
+
+                Yii::$app->mailer->compose()
+                    ->setTo('diego.montoya@grupokonecta.com')
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Actualización de tu caso QyR - CX-Management")                    
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
+
     return $this->redirect('index');
 
   }
@@ -491,6 +554,15 @@ public function actionRevisionqyr($idcaso){
   $command = $txtQuery4->createCommand();
   $dataanexo = $command->queryScalar();
 
+  $txtQuery5 =  new Query;
+  $txtQuery5  ->select(['tbl_qr_casos.numero_caso'])
+              ->from('tbl_qr_casos')       
+              ->Where('tbl_qr_casos.id = :id_caso')
+              ->addParams([':id_caso'=>$id_caso]);
+ 
+  $command = $txtQuery5->createCommand();
+  $datanumcaso = $command->queryScalar();
+
   $paramsinfo = [':varInfo' => $datacorreo];  
   $dataProviderInfo = Yii::$app->db->createCommand('
           SELECT tbl_hojavida_datapersonal.hv_idpersonal,
@@ -515,15 +587,16 @@ public function actionRevisionqyr($idcaso){
       $valrespuesta = $model6->ccdirector;  
       $valestado = 5;
       if($valrespuesta =="Aprobada"){
-
-        $ruta = $dataanexo;
-        //$tmpFile = "images/Alertas_Satu.jpg";
-        $tmpFile = $ruta;
+      
+        $tmpFile = $$dataanexo;
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
-                $message .= "Hola, Te enviamos la respuesta de tu caso.";
+                $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
+                $message .= $datanumcaso;
                 $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Esperamos tu revisión y aceptación de la misma.";             
+                $message .= "<br><br>Que tengas un buen día";
+                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
@@ -536,6 +609,24 @@ public function actionRevisionqyr($idcaso){
 //envio de correo al gerente con anexo
       } else{
 //envio de correo al que envio respuesta con anexo
+$tmpFile = $$dataanexo;
+                
+                $message = "<html><body>";
+                $message .= "<h3>CX-MANAGEMENT</h3>";   
+                $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
+                $message .= $datanumcaso;
+                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Fue rechazado por equipo CX.";             
+                $message .= "<br><br>Que tengas un buen día";
+                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "</body></html>";
+
+                Yii::$app->mailer->compose()
+                    ->setTo('diego.montoya@grupokonecta.com')
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
       }
 
     Yii::$app->db->createCommand()->update('tbl_qr_casos',[     
@@ -617,9 +708,45 @@ public function actionRevisiongerenteqyr($idcaso){
       $valrespuesta = $model6->ccdirector;  
       $valestado = 2;
       if($valrespuesta =="Aprobada"){
-//envio de correo al gerente con anexo
+//envio de correo al solictante con anexo
+      $tmpFile = $$dataanexo;
+                
+                $message = "<html><body>";
+                $message .= "<h3>CX-MANAGEMENT</h3>";   
+                $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
+                $message .= $datanumcaso;
+                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Fue aprobado el caso solicitado.";             
+                $message .= "<br><br>Que tengas un buen día";
+                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "</body></html>";
+
+                Yii::$app->mailer->compose()
+                    ->setTo('diego.montoya@grupokonecta.com')
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
       } else{
 //envio de correo al que envio respuesta con anexo
+      $tmpFile = $$dataanexo;
+                
+                $message = "<html><body>";
+                $message .= "<h3>CX-MANAGEMENT</h3>";   
+                $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
+                $message .= $datanumcaso;
+                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. El proceso fue devuelto a equipo CX.";             
+                $message .= "<br><br>Que tengas un buen día";
+                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "</body></html>";
+
+                Yii::$app->mailer->compose()
+                    ->setTo('diego.montoya@grupokonecta.com')
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
+                    ->attach($tmpFile)
+                    ->setHtmlBody($message)
+                    ->send();
       }
 
     Yii::$app->db->createCommand()->update('tbl_qr_casos',[     
