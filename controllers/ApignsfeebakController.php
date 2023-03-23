@@ -348,7 +348,7 @@ use GuzzleHttp;
                       'fecha_interaccion' => $varTiempoInteraccion,
                       'call_id' => $varInteraccion,
                       'anulado' => 0,
-                      'usua_id' => Yii::$app->user->identity->id,
+                      'usua_id' => 1,
                       'fechacreacion' => date("Y-m-d"),
                 ])->execute();
               }
