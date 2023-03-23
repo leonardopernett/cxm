@@ -207,18 +207,18 @@ AppAsset::register($this);
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Parametrizaci&oacute;n Encuestas&nbsp;&nbsp;'),
                                                     'url' => ['/controlencuestas/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
-                                                ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Quejas y Reclamos &nbsp;&nbsp;'),
-                                                    'url' => ['/qr/index'],
-                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerdirectivo(),
-                                                ],
+                                                ],                                                
                                                 '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',    
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gestor del Cliente&nbsp;&nbsp;'),
                                                     'url' => ['/hojavida/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Quejas y Reclamos &nbsp;&nbsp;'),
+                                                    'url' => ['/qr/index'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ], 
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Plan de Satisfacci&oacute;n Cliente&nbsp;&nbsp;'),
