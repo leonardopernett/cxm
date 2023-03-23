@@ -101,8 +101,6 @@ use app\models\DetallesPilaresGptw;
         }    
                     
         public function actionCreateplanaccionnew(){
-          //  $txtvpuntajeactual = Yii::$app->request->get("txtvpuntajeactual");
-          //  die(json_encode($txtvpuntajeactual));
                         $txtvarea = null;   
                         $txtvopera = null;
                         $txtvfocomejora = null;
@@ -175,9 +173,7 @@ use app\models\DetallesPilaresGptw;
                                 $cantidadpilares = $cantidadpilares + count($varidpilares);
                             }
                             $cantidadpilares = $cantidadpilares + count($txtvfocomejora);
-                            //die(json_encode($cantidadpilares));
-
-                        //if ($cantidadpilares < 3) {    
+                              
                
                             Yii::$app->db->createCommand()->insert('tbl_plan_gptw',[                                            
                                             'id_area_apoyo' => $txtvarea,
@@ -222,9 +218,7 @@ use app\models\DetallesPilaresGptw;
                             ])->execute();
 
                         $resp = 1;
-                    /*}else{
-                        $resp = 2;
-                    }*/
+                    
 
                         die(json_encode($resp));
 
@@ -236,7 +230,7 @@ use app\models\DetallesPilaresGptw;
                         
                         $sessiones = Yii::$app->user->identity->id;
                         
-                        if($sessiones == 3205 || $sessiones == 2953 || $sessiones == 3468 || $sessiones == 7756 || $sessiones == 69 || $sessiones == 6845 || $sessiones == "1290" || $sessiones == "6080" || $sessiones == "8103"){
+                        if($sessiones == "3205" || $sessiones == "2953" || $sessiones == "3468" || $sessiones == "7756" || $sessiones == "69" || $sessiones == "6845" || $sessiones == "1290" || $sessiones == "6080" || $sessiones == "8103" || $sessiones == "4053"){
                             $varListaplangptw = (new \yii\db\Query())
                                                     ->select(['*'])
                                                     ->from(['tbl_plan_gptw'])
@@ -328,13 +322,6 @@ use app\models\DetallesPilaresGptw;
                             FROM tbl_detalle_plan_gptw WHERE tbl_detalle_plan_gptw.id_gptw = :txtIdgptw and tbl_detalle_plan_gptw.anulado = 0
                             ")->bindValues($varParamsCodigo )->queryAll();
 
-                     /*   $varListaplangptw = (new \yii\db\Query())
-                                                    ->select(['*'])
-                                                    ->from(['tbl_plan_gptw'])
-                                                    ->andwhere(['=','id_gptw',$id_gptw])   
-                                                    ->where(['=','anulado',0])       
-                                                    ->all();*/
-
                         $form = Yii::$app->request->post();
                         if ($model->load($form)) {
                             $txtfechaavance = $model->fecha_avance;
@@ -365,17 +352,14 @@ use app\models\DetallesPilaresGptw;
                         $model7 = new DetallesPilaresGptw();
                         $model4 = new areaGptw();
                         
-                        //die(json_encode($id_gptw));
                         $variduser = (new \yii\db\Query())
                                     ->select(['responsable_area'])
                                     ->from(['tbl_plan_gptw'])   
                                     ->where(['=','anulado',0])
                                     ->andwhere(['=','id_gptw',$id_gptw])       
                                     ->Scalar();
-                                  // die(json_encode($variduser));
                         if($variduser){
-                          //  die(json_encode($variduser));
-                          //  var_dump($variduser);
+                          
                             $model3 = usuarios::findOne($variduser);
                         }
                         $variduser1 = (new \yii\db\Query())
@@ -385,11 +369,10 @@ use app\models\DetallesPilaresGptw;
                                     ->andwhere(['=','id_gptw',$id_gptw])       
                                     ->Scalar();
                         if($variduser1){
-                           // die(json_encode($variduser1));
-                         //   var_dump($variduser1);
+                           
                             $model6 = UsuariosEvalua::findOne($variduser1);
                         }
-                        //die(json_encode($variduser1));
+                        
                         $varidarea = (new \yii\db\Query())
                                     ->select(['id_area_apoyo'])
                                     ->from(['tbl_plan_gptw'])   
