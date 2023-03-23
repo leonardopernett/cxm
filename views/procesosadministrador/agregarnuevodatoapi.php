@@ -59,7 +59,16 @@ $this->params['breadcrumbs'][] = $this->title;
               ->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                 [
                   'id'=>'idcliente',
-                  'prompt'=>'Seleccione Cliente...',//placeholder de lo que se va a mostrar
+                  'prompt'=>'Seleccione Cliente...',
+                  'onchange' => '
+                    $.get(
+                      "' . Url::toRoute('listarcodpcrc') . '", 
+                      {id: $(this).val()}, 
+                      function(res){
+                        $("#requester").html(res);
+                      }
+                    );
+                  ',
                 ]
               )->label('');  // para que tome el lavel de arriba 
             ?>
@@ -97,6 +106,41 @@ $this->params['breadcrumbs'][] = $this->title;
           <div class="col-md-4">
             <label style="font-size: 15px;"><em class="fas fa-hand-pointer" style="font-size: 15px; color: #b52aef;"></em> <?= Yii::t('app', 'Ingresar Sociedad') ?></label>            
             <?= $form->field($model, 'sociedadprovieniente')->dropDownList($var, ['prompt' => 'Seleccionar...', 'id'=>'idsociedad']) ?>
+          </div>
+
+          <div class="col-md-4">
+            <label style="font-size: 15px;"><em class="fas fa-hand-pointer" style="font-size: 15px; color: #b52aef;"></em> <?= Yii::t('app', 'Seleccionar Pcrc') ?></label>            
+            <?= 
+              $form->field($model,'cod_pcrc')->dropDownList(
+                  [],
+                  [                  
+                    'prompt' => 'Seleccionar Pcrc...',
+                    'id' => 'requester',
+                    'onchange' => '
+                      $.get(
+                        "' . Url::toRoute('listarextension') . '", 
+                        {id: $(this).val()}, 
+                        function(res){
+                          $("#requestertwo").html(res);
+                        }
+                      );
+                    ',
+                  ]
+              )->label('');
+            ?> 
+          </div>
+
+          <div class="col-md-4">
+            <label style="font-size: 15px;"><em class="fas fa-hand-pointer" style="font-size: 15px; color: #b52aef;"></em> <?= Yii::t('app', 'Seleccionar Extension') ?></label>            
+            <?= 
+              $form->field($model,'extension')->dropDownList(
+                  [],
+                  [                  
+                    'prompt' => 'Seleccionar Extension...',
+                    'id' => 'requestertwo',
+                  ]
+              )->label('');
+            ?> 
           </div>
         </div>
         

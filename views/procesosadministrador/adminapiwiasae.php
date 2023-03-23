@@ -168,6 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id') ?></label></th>
                 <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cliente') ?></label></th>
                 <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Proyecto') ?></label></th>
+                <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tabla') ?></label></th>
                 <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sociedad') ?></label></th>
                 <th scope="col" class="text-center" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
               </tr>
@@ -190,6 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td><label style="font-size: 12px;"> <?= Yii::t('app', $value['id_parametrizarapi']) ?> </label></td>
                   <td><label style="font-size: 12px;"> <?= Yii::t('app', $value['cliente']) ?> </label></td>
                   <td><label style="font-size: 12px;"> <?= Yii::t('app', $value['proyecto_id']) ?> </label></td>
+                  <td><label style="font-size: 12px;"> <?= Yii::t('app', $value['table_id']) ?> </label></td>
                   <td><label style="font-size: 12px;"> <?= Yii::t('app', $varSociedad) ?> </label></td>
                   <td class="text-center">
                       <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deteleapiwiasae','id'=> $value['id_parametrizarapi']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
