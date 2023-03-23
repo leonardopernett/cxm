@@ -128,7 +128,7 @@ $this->title = 'Visualización por Categorias -- QA & Speech --';
                     ?>
 
                     <?php
-                        if($value['orientacionform'] == '0'){
+                        if($value['orientacionform'] == '0' && $value['idcategorias'] != 3){
                     ?>
                         <td class="text-center"><?php echo "Negativo";?></td>
                     <?php
