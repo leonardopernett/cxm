@@ -106,7 +106,7 @@ use app\models\UsuariosEvalua;
 
     public function actionViewqyr($idcaso){
       $id_caso = $idcaso;
-      $model2 = new Areasqyr();   
+      $model2 = new Casosqyr();   
       $model8 = new Areasqyr();   
       $model3 = new Areasqyr();
       $model4 = new Tipopqrs();
@@ -157,7 +157,7 @@ use app\models\UsuariosEvalua;
 
       $form = Yii::$app->request->post();
       if ($model2->load($form)) {
-          $valarea = $model2->id;
+          $valarea = $model2->id_area;
       }
       if ($model8->load($form)) {
         $valtipologia = $model8->id;
@@ -290,7 +290,7 @@ use app\models\UsuariosEvalua;
                     ->send();
       
 
-      return $this->redirect('crearqyr');
+      return $this->redirect('index');
     }
     
     return $this->render('crearqyr',[
@@ -367,9 +367,9 @@ use app\models\UsuariosEvalua;
 public function actionGestionqyr($idcaso){
   $id_caso = $idcaso;  
   $model = new UploadForm2();
-  $model2 = new Areasqyr();   
+  $model2 = new Casosqyr();   
   $model8 = new Areasqyr();   
-  $model3 = new Areasqyr();
+  $model3 = new Casosqyr();
   $model4 = new Tipopqrs();
   $model5 = new Estadosqyr();
   $model6 = new HojavidaDatadirector();
@@ -451,14 +451,14 @@ public function actionGestionqyr($idcaso){
   }
 
   if ($model2->load($form)) {
-      $valarea = $model2->id;
+      $valarea = $model2->id_area;
   }
   if ($model8->load($form)) {
     $valtipologia = $model8->id;
   }
   if ($model3->load($form)) {
     $valcomentario = $model3->nombre;  
-    $valresponsable = $model3->id;
+    $valresponsable = $model3->id_solicitud;
     $valestado = 8;
   
 
@@ -588,7 +588,7 @@ public function actionRevisionqyr($idcaso){
       $valestado = 5;
       if($valrespuesta =="Aprobada"){
       
-        $tmpFile = $$dataanexo;
+        $tmpFile = $dataanexo;
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
@@ -609,7 +609,7 @@ public function actionRevisionqyr($idcaso){
 //envio de correo al gerente con anexo
       } else{
 //envio de correo al que envio respuesta con anexo
-$tmpFile = $$dataanexo;
+$tmpFile = $dataanexo;
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
@@ -709,7 +709,7 @@ public function actionRevisiongerenteqyr($idcaso){
       $valestado = 2;
       if($valrespuesta =="Aprobada"){
 //envio de correo al solictante con anexo
-      $tmpFile = $$dataanexo;
+      $tmpFile = $dataanexo;
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
@@ -729,7 +729,7 @@ public function actionRevisiongerenteqyr($idcaso){
                     ->send();
       } else{
 //envio de correo al que envio respuesta con anexo
-      $tmpFile = $$dataanexo;
+      $tmpFile = $dataanexo;
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
@@ -788,35 +788,23 @@ public function actionVeranexometri($id){
     'ruta' => $ruta,
   ]);
 }
-
 public function actionPruebacorreo(){ 
-
   $datanumcaso = "C-4";
   $tmpFile = 'images/uploads/qyr_1679417953_Carta respuesta Q&R procesada.pdf';   
   $message = "<html><body>";
-  $message .= "<h3>CX-Management</h3>";   
-  $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
-  $message .= $datanumcaso;
-  $message .= "<br><br>Gracias por tu espera, tenemos respuesta a tu caso. Esperamos tu revisión y aceptación de la misma.";             
-  $message .= "<br><br>Que tengas un buen día";
-  $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+  $message .= "<h3>CX-MANAGEMENT</h3>";   
+  $message .= "Hola, Te enviamos la respuesta de tu caso No.  <?php echo  $datanumcaso; ?>";
+  $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Esperamos tu revisión y aceptación de la misma.";             
   $message .= "</body></html>";
 
-  $varListacorreo = (new \yii\db\Query())
-                  ->select(['email'])
-                  ->from(['tbl_qr_correos'])
-                  ->where(['in','id',[9,10]])
-                  ->All(); 
-  foreach ($varListacorreo as $key => $value) {
-                   
-      Yii::$app->mailer->compose()
-          ->setTo($value['email'])
-          ->setFrom(Yii::$app->params['email_satu_from'])
-          ->setSubject("Actualización de tu caso QyR - CX-Management")                    
-          ->attach($tmpFile)
-          ->setHtmlBody($message)
-          ->send();
-  }
+  Yii::$app->mailer->compose()
+      ->setTo('diego.montoya@grupokonecta.com')
+      ->setFrom(Yii::$app->params['email_satu_from'])
+      ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
+      ->attach($tmpFile)
+      ->setHtmlBody($message)
+      ->send();
+
  return $this->redirect('index');
 
 }

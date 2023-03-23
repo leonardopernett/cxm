@@ -372,7 +372,7 @@ use yii\bootstrap\Modal;
 
                         <div class="col-md-6">
                             <label for="txtcliente" style="font-size: 14px;">Área de Asignación</label>
-                            <?=  $form->field($model2, 'id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Areasqyr::find()->distinct()->where("anulado = 0")->orderBy(['nombre'=> SORT_ASC])->all(), 'id', 'nombre'),
+                            <?=  $form->field($model2, 'id_area', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Areasqyr::find()->distinct()->where("anulado = 0")->orderBy(['nombre'=> SORT_ASC])->all(), 'id', 'nombre'),
                                                             [
                                                                 'prompt'=>'Seleccionar...',
                                                                 'onchange' => '
