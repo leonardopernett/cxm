@@ -647,6 +647,9 @@ use app\models\DistribucionAsesores;
           $varIdClientes = [330, 341, 366];          
         }
 
+        if ($varGrupoCorte == "7") {
+          $varIdClientes = [390];          
+        }
         // Hago proceso de borrado sobre el lider o equipo que cada asesor tenga.
         $varListAsesoresEliminar = (new \yii\db\Query())
                                   ->select(['tbl_evaluados.id','tbl_distribucion_asesores.cedulaasesor'])
