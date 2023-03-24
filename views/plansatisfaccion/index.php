@@ -259,6 +259,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <caption><?= Yii::t('app', 'Resultados') ?></caption>
                   <thead>
                     <tr>
+                      <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 13px;"><?= Yii::t('app', '') ?></label></th>
                       <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Procesos') ?></label></th>
                       <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Actividad') ?></label></th>
                       <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Dirección') ?></label></th>
@@ -328,9 +329,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ->count();
                     ?>
                       <tr>
-                        <td><label style="font-size: 12px;">
-                            <?php
-                                $varConteoFaltante = (new \yii\db\Query())
+                        <td>
+                          <?php
+                            $varConteoFaltante = (new \yii\db\Query())
                                                 ->select([
                                                   '*'
                                                 ])
@@ -339,17 +340,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ->andwhere(['=','tbl_plan_secundariosatu.id_generalsatu',$value['id_generalsatu']])
                                                 ->count();
 
-                                if ($varConteoFaltante == 0) {
+                            if ($varConteoFaltante == 0) {
                               
-                            ?>
-                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-trigger="hover" title="Información incompleta en el plan de satisfacción actual">
-                                    <em class="fas fa-info-circle" style="font-size: 18px; color: #ef7c05;pointer-events: none;"></em>
+                          ?>
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-trigger="hover" title="Información incompleta en el plan de satisfacción actual">
+                              <em class="fas fa-info-circle" style="font-size: 18px; color: #ef7c05;pointer-events: none;"></em>
 
-                                </span>
-                            <?php
-                                }
-                            ?>
-                            <?php echo  $value['proceso']; ?></label></td>
+                            </span>
+                          <?php
+                            }else{
+                          ?>
+                            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-trigger="hover" title="Información completa en el plan de satisfacción actual">
+                              <label><em class="fas fa-check" style="font-size: 20px; color: #26cd33;"></em><?= Yii::t('app', '') ?></label>
+                            </span>
+                          <?php
+                            }
+                          ?>
+                        </td>
+                        <td><label style="font-size: 12px;"><?php echo  " ".$value['proceso']; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $value['varActividad']; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $varDirecionString; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $value['nombre_completo']; ?></label></td>
