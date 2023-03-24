@@ -680,18 +680,25 @@ public function actionRevisiongerenteqyr($idcaso){
               ->from('tbl_qr_casos')       
               ->Where('tbl_qr_casos.id = :id_caso')
               ->addParams([':id_caso'=>$id_caso]);
+  $command = $txtQuery3->createCommand();
+  $datacorreo = $command->queryScalar();
 
   $txtQuery4 =  new Query;
   $txtQuery4  ->select(['tbl_qr_casos.archivo2'])
               ->from('tbl_qr_casos')       
               ->Where('tbl_qr_casos.id = :id_caso')
-              ->addParams([':id_caso'=>$id_caso]);
- 
+              ->addParams([':id_caso'=>$id_caso]); 
   $command = $txtQuery4->createCommand();
   $dataanexo = $command->queryScalar();
  
-  $command = $txtQuery3->createCommand();
-  $datacorreo = $command->queryScalar();
+  
+
+  $txtQuery5  ->select(['tbl_qr_casos.numero_caso'])
+              ->from('tbl_qr_casos')       
+              ->Where('tbl_qr_casos.id = :id_caso')
+              ->addParams([':id_caso'=>$id_caso]); 
+  $command = $txtQuery5->createCommand();
+  $datanumcaso = $command->queryScalar();
 
   $paramsinfo = [':varInfo' => $datacorreo];  
   $dataProviderInfo = Yii::$app->db->createCommand('
