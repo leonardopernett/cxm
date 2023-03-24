@@ -726,7 +726,7 @@ public function actionRevisiongerenteqyr($idcaso){
       if($valrespuesta =="Aprobada"){
 //envio de correo al solictante con anexo
       $tmpFile = $dataanexo;
-                
+                $valestado = 2;
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
                 $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
@@ -745,6 +745,7 @@ public function actionRevisiongerenteqyr($idcaso){
                     ->send();
       } else{
 //envio de correo al que envio respuesta con anexo
+      $valestado = 8;
       $tmpFile = $dataanexo;
                 
                 $message = "<html><body>";
