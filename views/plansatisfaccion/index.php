@@ -328,7 +328,28 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ->count();
                     ?>
                       <tr>
-                        <td><label style="font-size: 12px;"><?php echo  $value['proceso']; ?></label></td>
+                        <td><label style="font-size: 12px;">
+                            <?php
+                                $varConteoFaltante = (new \yii\db\Query())
+                                                ->select([
+                                                  '*'
+                                                ])
+                                                ->from(['tbl_plan_secundariosatu'])
+                                                ->where(['=','tbl_plan_secundariosatu.anulado',0])
+                                                ->andwhere(['=','tbl_plan_secundariosatu.id_generalsatu',$value['id_generalsatu']])
+                                                ->count();
+
+                                if ($varConteoFaltante == 0) {
+                              
+                            ?>
+                                <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-trigger="hover" title="Información incompleta en el plan de satisfacción actual">
+                                    <em class="fas fa-info-circle" style="font-size: 18px; color: #ef7c05;pointer-events: none;"></em>
+
+                                </span>
+                            <?php
+                                }
+                            ?>
+                            <?php echo  $value['proceso']; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $value['varActividad']; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $varDirecionString; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $value['nombre_completo']; ?></label></td>
