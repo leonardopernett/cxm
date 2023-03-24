@@ -692,7 +692,7 @@ public function actionRevisiongerenteqyr($idcaso){
   $dataanexo = $command->queryScalar();
  
   
-
+  $txtQuery5 =  new Query;
   $txtQuery5  ->select(['tbl_qr_casos.numero_caso'])
               ->from('tbl_qr_casos')       
               ->Where('tbl_qr_casos.id = :id_caso')
