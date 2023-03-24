@@ -772,6 +772,10 @@ use Exception;
 
       $model =  Plansecundariosatu::findOne($varIdinfo); 
 
+      if (!$model) {
+        return $this->redirect(array('registrarplan','id_plan'=>$id_plan));
+      }
+
       $varPlanProcesos_Modificar = (new \yii\db\Query())
                                 ->select([
                                   'tbl_plan_procesos.proceso'
