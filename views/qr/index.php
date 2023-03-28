@@ -274,18 +274,22 @@ $sessiones = Yii::$app->user->identity->id;
                                 </td>
                                 <td class="text-center">
                                 <?php
+                                //nuevo
                                     if ($varEstadoproceso == 9) {
                                 ?>                                    
                                         <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['viewqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
                                 <?php
+                                //En proceso
                                     } elseif ($varEstadoproceso == 4) {
                                 ?>                                                                  
                                         <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['gestionqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
                                 <?php
+                                //Revision CX
                                     } elseif ($varEstadoproceso == 8) {
                                 ?>
                                         <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['revisionqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
                                 <?php
+                                //Revisión Comercial
                                     } elseif (($varEstadoproceso == 5) && ($roles == 293 || $roles == 299 || $roles == 270) ) {
                                 ?>
                                    <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['revisiongerenteqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>
