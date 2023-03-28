@@ -1823,6 +1823,8 @@ use app\models\Cumplimientoqyr;
         // Se borra procesos de la tabla del servicioen especifico
         Yii::$app->db->createCommand('DELETE FROM tbl_proceso_cliente_centrocosto WHERE id_dp_clientes=:id')->bindParam(':id',$idpcrc)->execute();
 
+        Yii::$app->db->createCommand('DELETE FROM tbl_procesos_volumendirector WHERE id_dp_clientes=:id')->bindParam(':id',$idpcrc)->execute();
+
         // Procesos para buscar e ingresar procesos del servicio nuevo
         $paramsBuscarCliente = [':varAnulado'=>0,':varDocDirOne'=>'111111111',':varDocDirTwo'=>'111111112',':varCliente'=>$idpcrc];
 
@@ -1865,6 +1867,23 @@ use app\models\Cumplimientoqyr;
                         'fechacreacion' => $txtfechacreacion,
                         'feachamodificacion' => null,
                         'usua_id' => $sessiones,
+            ])->execute();
+
+            Yii::$app->db->createCommand()->insert('tbl_procesos_volumendirector',[
+                'ciudad' => $value['ciudad'],
+                'director_programa' => $value['director_programa'],
+                'documento_director' => $value['documento_director'],
+                'id_dp_clientes' => $value['id_dp_clientes'],
+                'cliente' => $value['cliente'],
+                'id_dp_centros_costos' => $value['id_dp_centros_costos'],
+                'centros_costos' => $value['centros_costos'],
+                'cod_pcrc' => $value['cod_pcrc'],
+                'pcrc' => $value['pcrc'],
+                'estado' => $value['estado'],
+                'anulado' => $txtanulado,
+                'fechacreacion' => $txtfechacreacion,
+                'feachamodificacion' => null,
+                'usua_id' => $sessiones,
             ])->execute();
 
         }
