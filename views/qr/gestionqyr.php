@@ -505,7 +505,8 @@ use yii\bootstrap\Modal;
                             </div> 
                             <div class="col-md-4">
                                 <div class="card1 mb">
-                                    <?= Html::submitButton("Guardar - Enviar", ["class" => "btn btn-primary", ]) ?>
+                                    <?= Html::submitButton("Guardar - Enviar", ["class" => "btn btn-primary", 
+                                                            'onclick' => 'verificar();',]) ?>
                                 </div>
                             </div>                                                      
                         </div>
@@ -520,6 +521,15 @@ use yii\bootstrap\Modal;
 </div>
 
 <script type="text/javascript">
+function verificar(){
+    var varenexo = document.getElementById("idfile").text;
+
+    if (varenexo == "") {
+      event.preventDefault();
+      swal.fire("!!! Advertencia !!!","Se debe anexar documento diligenciado en formato pdf.","warning");
+      return;
+    }
+  };
 function respuesta(){
     var varRta = document.getElementById("txttiporespuesta").value;
     document.getElementById("idrespuesta").value = varRta;
