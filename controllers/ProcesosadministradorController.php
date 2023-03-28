@@ -73,7 +73,7 @@ use app\models\Cumplimientoqyr;
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminSistema();
+                            return Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX();
                         },
               ],
             ]
