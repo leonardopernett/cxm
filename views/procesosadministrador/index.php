@@ -402,6 +402,99 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 <hr>
+<br>
+<div id="IdCapaCuatro" class="CapaCuatro" style="display: inline;">
+    <div class="row">
+        <div class="col-md-6">
+          <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Acciones Administrativas Quejas y Reclamos"; ?> </label>
+          </div>
+        </div>
+    </div>
+
+    <br>
+    
+    <div class="row">
+        <div class="col-md-12">
+        
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Tipo de Alertas Q&R') ?></label>
+                        <?= Html::a('Aceptar',  ['viewtipoalertasqyr'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Tipo de Alertas Q&R']) 
+                        ?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Áreas Q&R') ?></label>
+                        <?= Html::a('Aceptar',  ['viewareasqyr'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Áreas Q&R']) 
+                        ?>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-clone" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Tipologías') ?></label>
+                        <?= Html::a('Aceptar',  ['viewtipologiasqyr'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Tipologías']) 
+                        ?>
+                    </div>
+                </div>
+            </div>       
+       
+        <hr>
+        <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Respuestas Automáticas Q&R') ?></label>
+                        <?= Html::a('Aceptar',  ['viewrespuestaautomaticaqyr'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Respuesta Automática Q&R']) 
+                        ?>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Estados Q&R') ?></label>
+                        <?= Html::a('Aceptar',  ['viewestadosqyr'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Estados Q&R']) 
+                        ?>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Cumplimiento y alertas Q&R') ?></label>
+                        <?= Html::a('Aceptar',  ['viewalertacumplimientoqyr'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Cumplimiento y alertas Q&R']) 
+                        ?>
+                    </div>
+                </div>
+        </div>
+        <hr>
+    <div class="row">
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Actualización Carta Respuesta') ?></label>
+                        <?= Html::a('Aceptar',  ['viewcartarespuestaqyr'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Actualización Carta de Respuesta']) 
+                        ?>
+                    </div>
+                </div>
+                
+        </div>
+    <br>
+    </div>
+</div>
 <?php }else{ ?>
     <div id="IdCapaTres" class="CapaTres" style="display: inline;">
         

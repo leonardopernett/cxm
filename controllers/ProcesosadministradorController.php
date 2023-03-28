@@ -44,6 +44,12 @@ use app\models\ProcesosSatisfaccion;
 use app\models\DetallesPilaresGptw;
 use app\models\IndicadorSatisfaccion;
 use app\models\Comdataparametrizarapi;
+use app\models\Tipoalertasqyr;
+use app\models\Areasqyr;
+use app\models\Tipologiasqyr;
+use app\models\RespuestaAutomatica;
+use app\models\Estadosqyr;
+use app\models\Cumplimientoqyr;
 
   class ProcesosadministradorController extends \yii\web\Controller {
 
@@ -59,7 +65,9 @@ use app\models\Comdataparametrizarapi;
             'admingenesys','porconnid','actualizaasesor','gbuscarporasesor','gbuscarporconnid','actualizaservicio',
             'deleteserviciocorte','cortesyservicios','viewmotivosdeclinacion','viewmotivosdeclinacion','deletepilares',
             'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores',
-            'adminusuarios','adminapiwiasae'],
+            'adminusuarios','adminapiwiasae','viewtipoalertasqyr','deletealertasqyr',
+            'viewareasqyr','varListAreasqyr','viewtipologiasqyr','viewrespuestaautomaticaqyr','deleterespuestaqyr',
+            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr'],
             'rules' => [
               [
                 'allow' => true,
@@ -2798,6 +2806,337 @@ use app\models\Comdataparametrizarapi;
             ->execute();        
             return $this->redirect(['adminapiwiasae']);
     }
+
+    public function actionViewtipoalertasqyr(){
+        $model = new Tipoalertasqyr();
+
+        $varListAlertas = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_qr_tipo_alertas'])
+                                    ->orderBy(['nombre' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre;
+
+            Yii::$app->db->createCommand()->insert('tbl_qr_tipo_alertas',[
+                    'nombre' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewtipoalertasqyr']);
+        }
+
+        return $this->render('viewtipoalertasqyr',[
+            'model' => $model,
+            'varListAlertas' => $varListAlertas ,
+        ]);
+    }
+
+    public function actionDeletealertasqyr($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE tbl_qr_tipo_alertas 
+                SET anulado = :varAnulado
+                WHERE 
+                id_tipo_alerta = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewtipoalertasqyr']);
+    }
+
+    public function actionViewareasqyr(){
+        $model = new Areasqyr();
+
+        $varListAreasqyr = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_qr_areas'])
+                                    ->orderBy(['nombre' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre;
+
+            Yii::$app->db->createCommand()->insert('tbl_qr_areas',[
+                    'nombre' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewareasqyr']);
+        }
+
+        return $this->render('viewareasqyr',[
+            'model' => $model,
+            'varListAreasqyr' => $varListAreasqyr ,
+        ]);
+    }
+
+    public function actionDeleteareasqyr($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE tbl_qr_areas 
+                SET anulado = :varAnulado
+                WHERE 
+                id = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewareasqyr']);
+    }
+
+    public function actionViewtipologiasqyr(){
+        $model2 = new Tipologiasqyr();
+        $model = new Areasqyr();
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+
+            $varid = $model->id;
+            $varnombre = $model->nombre;
+           
+
+            Yii::$app->db->createCommand()->insert('tbl_qr_tipologias',[
+                                             'id_areas' => $varid,
+                                             'tipologia' => $varnombre,
+                                             'fechacreacion' => date("Y-m-d"),
+                                             'anulado' => 0,
+                                             'usua_id' => Yii::$app->user->identity->id,
+                                         ])->execute(); 
+
+            return $this->redirect('viewtipologiasqyr',[
+                'model' => $model,
+                'model2' => $model2,
+            ]);
+        }
+
+        return $this->render('viewtipologiasqyr',[
+            'model' => $model,
+            'model2' => $model2,
+        ]);
+    }
+
+    public function actionDeletetipologiaqyr($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE tbl_qr_tipologias 
+                SET anulado = :varAnulado
+                WHERE 
+                id = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewtipologiasqyr']);
+    }
+
+    public function actionViewrespuestaautomaticaqyr(){
+        $model = new RespuestaAutomatica();
+
+        $varListRespuesta = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_qr_respuesta_automatica'])
+                                    ->orderBy(['asunto' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+           
+            $txtestado = $model->id_estado;
+            $txtnombre = $model->asunto;
+            $txtcomentario = $model->comentario;
+
+            Yii::$app->db->createCommand()->insert('tbl_qr_respuesta_automatica',[
+                    'asunto' => $txtnombre,
+                    'comentario' => $txtcomentario,
+                    'id_estado' => $txtestado,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewrespuestaautomaticaqyr']);
+        }
+
+        return $this->render('viewrespuestaautomaticaqyr',[
+            'model' => $model,
+            'varListRespuesta' => $varListRespuesta ,
+        ]);
+    }
+
+    public function actionDeleterespuestaqyr($id){
+        $paramsEliminar = $id;
+
+        Yii::$app->db->createCommand('
+            UPDATE varListRespuesta 
+                SET anulado = :varAnulado
+                WHERE 
+                id_respuesta = :VarId')
+            ->bindValue(':VarId', $paramsEliminar)
+            ->bindValue(':varAnulado', 1)
+            ->execute();        
+            return $this->redirect(['viewrespuestaautomaticaqyr']);
+    }
+
+    public function actionViewestadosqyr(){
+        $model = new Estadosqyr();
+
+        $varListAlertas = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_qr_estados'])
+                                    ->orderBy(['nombre' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre;
+
+            Yii::$app->db->createCommand()->insert('tbl_qr_estados',[
+                    'nombre' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewestadosqyr']);
+        }
+
+        return $this->render('viewestadosqyr',[
+            'model' => $model,
+            'varListAlertas' => $varListAlertas ,
+        ]);
+    }
+
+    public function actionViewalertacumplimientoqyr(){
+        $model = new cumplimientoqyr();
+
+        $varListacumplimiento = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_qr_cumplimiento'])
+                                    ->orderBy(['indicador' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtindicador = $model->indicador;
+            $txtdia1verde = $model->diaverde1;
+            $txtdia2verde = $model->diaverde2;
+            $txtdia1amarillo = $model->diaamarillo1;
+            $txtdia2amarillo = $model->diaamarillo2;
+            $txtdia1rojo = $model->diarojo1;
+            $txtdia2rojo= $model->diarojo1;
+            $txtmensaje1 = $model->mensaje1;
+            $txtmensaje2 = $model->mensaje2;
+            $txtmensaje3 = $model->mensaje3;
+
+            Yii::$app->db->createCommand()->insert('tbl_qr_cumplimiento',[
+                    'indicador' => $txtindicador,
+                    'diaverde1' => $txtdia1verde,
+                    'diaverde2' => $txtdia2verde,
+                    'diaamarillo1' => $txtdia1amarillo,
+                    'diaamarillo2' => $txtdia2amarillo,
+                    'diarojo1' => $txtdia1rojo,
+                    'diarojo2' => $txtdia2rojo,
+                    'mensaje1' => $txtmensaje1,
+                    'mensaje2' => $txtmensaje2,
+                    'mensaje3' => $txtmensaje3,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewalertacumplimientoqyr']);
+        }
+
+        return $this->render('viewalertacumplimientoqyr',[
+            'model' => $model,
+            'varListacumplimiento' => $varListacumplimiento ,
+        ]);
+    }
+
+    public function actionViewcartarespuestaqyr(){
+        $model = new Estadosqyr();
+
+        $varListAlertas = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_qr_estados'])
+                                    ->orderBy(['nombre' => SORT_DESC])
+                                    ->where(['=','anulado',0])          
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+            $txtnombre = $model->nombre;
+
+            Yii::$app->db->createCommand()->insert('tbl_qr_estados',[
+                    'nombre' => $txtnombre,
+                    'fechacreacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['viewcartarespuestaqyr']);
+        }
+
+        return $this->render('viewcartarespuestaqyr',[
+            'model' => $model,
+            'varListAlertas' => $varListAlertas ,
+        ]);
+    }
+    
+    public function actionImportardocumento(){        
+        $model = new UploadForm2();                        
+        $ruta = null;
+        $id = 'cliente';
+  
+        $form = Yii::$app->request->post();     
+  
+        if($model->load($form)){
+  
+          $model->file = UploadedFile::getInstance($model, 'file');
+          if ($model->file && $model->validate()) {
+         
+            foreach ($model->file as $file) {
+              $ruta = 'images/documentos/'."documento_".$id."_".time()."_".$model->file->baseName. ".".$model->file->extension;
+            
+              $model->file->saveAs( $ruta ); 
+            }
+          } 
+           
+          if ($ruta != null) {
+           
+            return $this->redirect(array('index','varidban'=>0));
+          }else{
+            $ruta = null;
+          }
+          
+  
+        }                  
+        
+        return $this->renderAjax('importardocumento',[          
+          'model' => $model,
+          'ruta' => $ruta,
+        ]);
+      }
 
   }
 
