@@ -372,7 +372,7 @@ use GuzzleHttp;
       $encuestas = BaseSatisfaccion::find()->select('id')->where("`tipologia` IS NULL")->all();
 
       if (empty($encuestas)) {
-        echo "No hay encuestas";
+        echo "No hay procesos de actualizacion de tipologias ya que no se encontraron nuevas encuestas con tipologia null";
         exit;
       }
       
