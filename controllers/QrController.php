@@ -457,7 +457,9 @@ public function actionGestionqyr($idcaso){
               ->from('tbl_qr_casos')       
               ->Where('tbl_qr_casos.id = :id_caso')
               ->addParams([':id_caso'=>$id_caso]);
-
+            
+  $command = $txtQuery5->createCommand();
+  $datanumcaso = $command->queryScalar();
   
 
   $varcuerpo1 = (new \yii\db\Query())
