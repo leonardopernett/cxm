@@ -1823,7 +1823,7 @@ use app\models\Cumplimientoqyr;
         // Se borra procesos de la tabla del servicioen especifico
         Yii::$app->db->createCommand('DELETE FROM tbl_proceso_cliente_centrocosto WHERE id_dp_clientes=:id')->bindParam(':id',$idpcrc)->execute();
 
-        Yii::$app->db->createCommand('DELETE FROM tbl_procesos_volumendirector WHERE id_dp_clientes=:id')->bindParam(':id',$idpcrc)->execute();
+        Yii::$app->db->createCommand('DELETE FROM tbl_procesos_volumendirector WHERE id_dp_clientes=:id ADN modificar != :modificar')->bindParam(':id',$idpcrc)->bindParam(':modificar',1)->execute();
 
         // Procesos para buscar e ingresar procesos del servicio nuevo
         $paramsBuscarCliente = [':varAnulado'=>0,':varDocDirOne'=>'111111111',':varDocDirTwo'=>'111111112',':varCliente'=>$idpcrc];
