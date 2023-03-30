@@ -111,9 +111,9 @@ use app\models\DistribucionAsesores;
           INNER JOIN dp_estados de ON 
             dp.id_dp_estados = de.id_dp_estados
           WHERE 
-            dc.id_dp_posicion IN (39,18,40,17,60,41)
+            dc.id_dp_posicion IN (39,18,40,17,60,41,93)
               AND dc.id_dp_funciones IN (322,783,190,909,915,323,324,423,558,559,560,561,562,563,564,565,566,
-              567,568,569,570,571,572,409,426,409,426)
+              567,568,569,570,571,572,409,426,409,426,522,524,519,520)
                 AND dp.fecha_actual >= DATE_FORMAT(NOW() ,'%Y-%m-01')
                   AND de.tipo IN ('ACTIVO','GESTION')
                     AND pc.id_dp_clientes != 1
