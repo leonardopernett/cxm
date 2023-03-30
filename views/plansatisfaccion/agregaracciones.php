@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card1 mb">
                 
                 <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Ingresar Acciones a Seguir') ?></label>
-                <?= $form->field($model, 'acciones', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 300, 'id'=>'idAcciones_string', 'placeholder' => 'Ingresar Acciones a Seguir'])?> 
+                <?= $form->field($model, 'acciones', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id'=>'idAcciones_string', 'placeholder' => 'Ingresar Acciones a Seguir'])?> 
 
             </div>
         </div>
