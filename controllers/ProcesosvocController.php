@@ -5832,7 +5832,8 @@ use app\models\SpeechParametrizar;
       $varDataSetId_BD = null;
       $varTableId_BD = null;
       $varLimitId_BD = null;
-      $varOffsetId_BD = null; 
+      $varOffsetId_BD = null;   
+      $varCliente_BD = null; 
       foreach ($varListaProyecto_BD as $key => $value) {
         $varIdProyecto_BD = $value['proyecto_id'];
         $varDataSetId_BD = $value['dataset_id'];
@@ -5841,6 +5842,8 @@ use app\models\SpeechParametrizar;
         $varOffsetId_BD = $value['offset'];
 
         $varCodpcrc = $value['cod_pcrc'];
+
+        $varExtensionComdata = $value['extension'];
 
         $varHoraInicio = (new \yii\db\Query())
                           ->select([
@@ -5941,6 +5944,7 @@ use app\models\SpeechParametrizar;
                                   ->where(['=','tbl_speech_urlgrabadoras.anulado',0])
                                   ->andwhere(['=','tbl_speech_urlgrabadoras.ipgrabadora',$value['idgrabadora']])
                                   ->scalar();
+
           if ($varGrabadora_count == "") {
             Yii::$app->db->createCommand()->insert('tbl_comdata_llamadaurl',[
                     'callid' => $value['callid'],
@@ -5961,14 +5965,16 @@ use app\models\SpeechParametrizar;
                               ->where(['=','tbl_speech_categorias.anulado',0])
                               ->andwhere(['in','tbl_speech_categorias.cod_pcrc',$arrayListPcrcLlamadaEspeciales])
                               ->groupby(['tbl_speech_categorias.programacategoria'])
-                              ->scalar();
+                              ->scalar(); 
 
+        
         $varListaInteracciones_Dash = (new \yii\db\Query())
                                 ->select(['*'])
                                 ->from(['tbl_dashboardspeechcalls'])            
                                 ->where(['=','anulado',0])
                                 ->andwhere(['=','servicio',$varBolsitaCX_String])
                                 ->andwhere(['between','fechallamada',$varFechaInicioLlamadaEspecial_BD.$varHoraInicio,$varFechaFinLlamadaEspecial_BD.$varHoraFinal])
+                                ->andwhere(['=','extension',$varExtensionComdata])
                                 ->groupby(['callid'])
                                 ->all();
 
@@ -5992,72 +5998,6 @@ use app\models\SpeechParametrizar;
           ])->execute();
         }
 
-        $varReglaNegocioLlamadas =  (new \yii\db\Query())
-                                  ->select(['rn'])
-                                  ->from(['tbl_speech_parametrizar'])            
-                                  ->where(['=','cod_pcrc',$varCodpcrc])
-                                  ->andwhere(['=','anulado',0])
-                                  ->groupby(['rn'])
-                                  ->all();
-
-        if (count($varReglaNegocioLlamadas) != 0) {
-
-          $varArrayRnLlamada = array();
-          foreach ($varReglaNegocioLlamadas as $key => $value) {
-            array_push($varArrayRnLlamada, $value['rn']);
-          }
-
-          $varExtensionesLlamadas = implode("', '", $varArrayRnLlamada); 
-          $varExtensionSpeech = explode(",", str_replace(array("#", "'", ";", " "), '', $varExtensionesLlamadas));             
-
-        }else{
-
-          $varExtLlamadas =  (new \yii\db\Query())
-                                ->select(['ext'])
-                                ->from(['tbl_speech_parametrizar'])            
-                                ->where(['=','cod_pcrc',$varCodpcrc])
-                                ->andwhere(['=','anulado',0])
-                                ->groupby(['ext'])
-                                ->all();
-
-          if (count($varExtLlamadas) != 0) {
-            
-            $varArrayExtLlamadas = array();
-            foreach ($varExtLlamadas as $key => $value) {
-              array_push($varArrayExtLlamadas, $value['ext']);
-            }
-                
-            $varExtensionesLlamadas = implode("', '", $varArrayExtLlamadas);
-            $varExtensionSpeech = explode(",", str_replace(array("#", "'", ";", " "), '', $varExtensionesLlamadas));           
-
-          }else{
-
-            $varUsuaLlamadas =  (new \yii\db\Query())
-                                ->select(['usuared'])
-                                ->from(['tbl_speech_parametrizar'])            
-                                ->where(['=','cod_pcrc',$varCodpcrc])
-                                ->andwhere(['=','anulado',0])
-                                ->groupby(['usuared'])
-                                ->all();
-
-            if (count($varUsuaLlamadas) != 0) {
-              
-              $varArrayUsuaLlamadas = array();
-              foreach ($varUsuaLlamadas as $key => $value) {
-                array_push($varArrayUsuaLlamadas, $value['usuared']);
-              }
-
-              $varExtensionesLlamadas = implode("', '", $varArrayUsuaLlamadas);
-              $varExtensionSpeech = explode(",", str_replace(array("#", "'", ";", " "), '', $varExtensionesLlamadas));
-              
-            }else{
-              $varExtensionesLlamadas = "NA";
-            }
-
-          }
-
-        }
-
         $varFechaInicio_General = $varFechaInicioLlamadaEspecial_BD.$varHoraInicio;
         $varFechaFin_General = $varFechaFinLlamadaEspecial_BD.$varHoraFinal;
 
@@ -6075,7 +6015,7 @@ use app\models\SpeechParametrizar;
                         ORDER BY cod_pcrc, tipoindicador
                     ) cate ON llama.servicio = cate.programacategoria 
                 WHERE llama.servicio IN ('$varBolsitaCX_String') 
-                  AND llama.extension IN ('$varExtensionesLlamadas') 
+                  AND llama.extension = '$varExtensionComdata' 
                     AND llama.fechallamada BETWEEN '$varFechaInicio_General' AND '$varFechaFin_General' 
                 GROUP BY llama.callid, llama.extension, llama.idcategoria, cate.idcategoria  
                   ORDER BY encuentra DESC
@@ -6101,8 +6041,10 @@ use app\models\SpeechParametrizar;
                                                            'arbol_id' => $varIdClienteLlamadaEspecial_BD,
                                                         ])->execute();
           }
-        } 
-      }
+        }
+
+        
+      }      
     }
 
   }
