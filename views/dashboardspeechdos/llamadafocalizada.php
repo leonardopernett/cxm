@@ -456,7 +456,9 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                 $varvalorador = $varsindata;
 
                                 if (!is_numeric($txtidredbox)) {
-                                    $txtidredbox = 'NA';
+                                    $vartxtidredbox = 'NA';
+                                }else{
+                                    $vartxtidredbox = $txtidredbox;
                                 }
 
                                 $paramsBuscarConnid = [':varConnid' => $txtconnids];                                
@@ -616,7 +618,7 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                             <tr>
                                 <td><label style="font-size: 12px;"><?php echo  $txtfechasreal; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $txtloginid; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $txtidredbox; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $vartxtidredbox; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varbaseconnid; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varvaloraestado; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varvalorador; ?></label></td>
