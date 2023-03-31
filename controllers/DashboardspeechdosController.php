@@ -4697,7 +4697,7 @@ public function actionCantidadentto(){
       $vartexto = $varidconnid;
       $varvalencia = null;
 
-      if (isnumeric($varidredbox)) {
+      if (is_numeric($varidredbox)) {
         if ($varidredbox != "" && $varidgrabadora != "") {
           ob_start();
           $curl = curl_init();
