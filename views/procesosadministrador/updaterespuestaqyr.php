@@ -31,6 +31,15 @@ $rol    ->select(['tbl_roles.role_id'])
 $command = $rol->createCommand();
 $roles = $command->queryScalar();
 
+foreach ($varListRespuesta as $key => $value) {
+    $varId = $value['id_respuesta'];
+    $varNombre = $value['asunto'];
+    $varidEstado = $value['id_estado'];
+    $varComentario = $value['comentario'];
+    $varComentario2 = $value['comentario2'];
+    $varEstado = $value['anulado'];
+}
+
 ?>
 <style>
     .card1 {
@@ -124,7 +133,7 @@ $roles = $command->queryScalar();
   <div class="row">
     <div class="col-md-6">
       <div class="card1 mb" style="background: #6b97b1; ">
-        <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Respuestas Automáticas para Quejas y Reclamos"; ?> </label>
+        <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Actualización Respuestas Automáticas para Quejas y Reclamos"; ?> </label>
       </div>
     </div>
   </div>
@@ -134,27 +143,29 @@ $roles = $command->queryScalar();
   <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
   <div class="row">
     
-    <div class="col-md-4">
+    <div class="col-md-6">
       
       <div class="card1 mb">
       <label style="font-size: 15px;">* Seleccionar Estado...</label>
-                        <?=  $form->field($model, 'id_estado', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Estadosqyr::find()->distinct()->where("anulado = 0")->orderBy(['nombre'=> SORT_ASC])->all(), 'id_estado', 'nombre'),
+                        <?=  $form->field($model1, 'id_estado', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Estadosqyr::find()->distinct()->where("anulado = 0")->orderBy(['nombre'=> SORT_ASC])->all(), 'id_estado', 'nombre'),
                                         [
                                             'prompt'=>'Seleccione Estado...',
                                         ]
                                 )->label(''); 
                         ?>
         <br>
-
-            <?= $form->field($model, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250, 'id' => 'idTexto', 'placeholder'=>'Ingresar Asunto'])->label('') ?>
-
-        <br>
-            <?= $form->field($model, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'idTexto2', 'placeholder'=>'Ingresar Comentario'])->label('') ?>
-        <br>
-            <?= $form->field($model, 'comentario2', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'idTexto3', 'placeholder'=>'Ingresar Otro Comentario'])->label('') ?>
+        <label style="font-size: 15px;">* Asunto</label>
+            <?= $form->field($model, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250, 'id' => 'idTexto', 'placeholder'=>'Ingresar Asunto', 'value'=>" $varNombre"])->label('') ?>
 
         <br>
+        <label style="font-size: 15px;">* Comentario</label>
+            <?= $form->field($model, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'idTexto2', 'placeholder'=>'Ingresar Comentario', 'value'=>" $varComentario"])->label('') ?>
+        <br>
+        <label style="font-size: 15px;">* Otro Comentario</label>
+            <?= $form->field($model, 'comentario2', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'idTexto3', 'placeholder'=>'Ingresar Otro Comentario', 'value'=>" $varComentario2"])->label('') ?>
 
+        <br>
+        
          <?= Html::submitButton(Yii::t('app', 'Guardar'),
                             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                 'data-toggle' => 'tooltip',
@@ -168,7 +179,7 @@ $roles = $command->queryScalar();
 
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #b52aef;"></em> Cancelar y Regresar...</label>
-        <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+        <?= Html::a('Regresar',  ['viewrespuestaautomaticaqyr'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #707372',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Regresar']) 
@@ -176,66 +187,7 @@ $roles = $command->queryScalar();
       </div>
 
     </div>
-
-    <div class="col-md-8">
-      
-      <div class="card1 mb">
-        <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
-          <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Listado de Respuestas Automáticas') ?></label></caption>
-          <thead>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Resp.') ?></label></th>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Asunto') ?></label></th>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentario') ?></label></th>            
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Otro Comentario') ?></label></th>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Estado') ?></label></th>  
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Editar') ?></label></th>
-            <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Eliminar') ?></label></th>
-          </thead>
-          <tbody>
-            <?php
-              foreach ($varListRespuesta as $key => $value) {
-                $varId = $value['id_respuesta'];
-                $varNombre = $value['asunto'];
-                $varidEstado = $value['id_estado'];
-                $varComentario = $value['comentario'];
-                $varComentario2 = $value['comentario2'];
-                $varEstado = $value['anulado'];
-
-                $varnombrestado = (new \yii\db\Query())
-                          ->select(['nombre'])
-                          ->from(['tbl_qr_estados'])
-                          ->where(['=','id_estado',$varidEstado])
-                          ->scalar(); 
-            ?>
-              <tr>
-                <td class="text-center"><label style="font-size: 12px;"><?php echo  $varId; ?></label></td>
-                <td class="text-center"><label style="font-size: 12px;"><?php echo  $varNombre; ?></label></td>                
-                <td class="text-center"><label style="font-size: 12px;"><?php echo  $varComentario; ?></label></td>                
-                <td class="text-center"><label style="font-size: 12px;"><?php echo  $varComentario2; ?></label></td>
-                <td class="text-center"><label style="font-size: 12px;"><?php echo  $varnombrestado; ?></label></td>
-                <td class="text-center">
-                <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 15px; color: #337ab7;"></em>',  ['updaterespuestaqyr','idres'=> $value['id_respuesta']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Editar']) ?>
-                </td>
-                <td class="text-center">
-                  <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deleterespuestaqyr','id'=> $value['id_respuesta']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
-                </td>
-              </tr>
-            <?php
-              }
-            ?>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-  </div>
-  <?php ActiveForm::end(); ?>
-
-</div>
-<hr>
-
-<script type="text/javascript">
+    <script type="text/javascript">
   function verificar(){
     var varidEquipo = document.getElementById("idTexto").text;
     var varidcomentario = document.getElementById("idTexto2").text;
@@ -247,25 +199,4 @@ $roles = $command->queryScalar();
     }
   };
 
-  $(document).ready( function () {
-    $('#myTable').DataTable({
-      responsive: true,
-      fixedColumns: true,
-      select: false,
-      "language": {
-        "lengthMenu": "Cantidad de Datos a Mostrar _MENU_ ",
-        "zeroRecords": "No se encontraron datos ",
-        "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
-        "infoEmpty": "No hay datos aun",
-        "infoFiltered": "(Filtrado un _MAX_ total)",
-        "search": "Buscar:",
-        "paginate": {
-          "first":      "Primero",
-          "last":       "Ultimo",
-          "next":       "Siguiente",
-          "previous":   "Anterior"
-        }
-      }
-    });
-  });
 </script>

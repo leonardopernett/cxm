@@ -3157,6 +3157,56 @@ use app\models\Cumplimientoqyr;
         ]);
       }
 
+      public function actionUpdaterespuestaqyr($idres){        
+        $model = new RespuestaAutomatica();
+        $model1 = new Estadosqyr();
+
+        $varListRespuesta = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_qr_respuesta_automatica'])
+                                    ->orderBy(['asunto' => SORT_DESC])
+                                    ->where(['=','anulado',0])
+                                    ->andwhere(['=','id_respuesta',$idres])          
+                                    ->all(); 
+
+        $varid = (new \yii\db\Query())
+                                    ->select(['id_estado'])
+                                    ->from(['tbl_qr_respuesta_automatica'])
+                                    ->orderBy(['asunto' => SORT_DESC])
+                                    ->where(['=','anulado',0])
+                                    ->andwhere(['=','id_respuesta',$idres])       
+                                    ->Scalar();
+        if($varid){            
+            $model1 = Estadosqyr::findOne($varid); 
+        }   
+        
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+           // $txtidEquipo = $model->usua_id;
+           
+            $txtestado = $model1->id_estado;
+            $txtnombre = $model->asunto;
+            $txtcomentario = $model->comentario;
+            $txtcomentario2 = $model->comentario2;
+
+            Yii::$app->db->createCommand()->update('tbl_qr_respuesta_automatica',[
+                'asunto' => $txtnombre,
+                'comentario' => $txtcomentario,
+                'comentario2' => $txtcomentario2,
+                'id_estado' => $txtestado,
+              ],"id_respuesta = '$idres'")->execute(); 
+
+            return $this->redirect(['viewrespuestaautomaticaqyr']);
+        }
+
+        return $this->render('updaterespuestaqyr',[
+            'model' => $model,
+            'model1' => $model1,
+            'varListRespuesta' => $varListRespuesta ,
+        ]);
+        
+    }
+
   }
 
 ?>
