@@ -770,7 +770,7 @@ public function actionRevisionqyr($idcaso){
   $vardocumentojefe = (new \yii\db\Query())
       ->select(['usua_identificacion'])
       ->from(['tbl_usuarios'])
-      ->where(['=','usua_id',$valresponsable])
+      ->where(['=','usua_id',$dataresponsable])
       ->Scalar();
   $datacorreoresponsable = (new \yii\db\Query())
       ->select(['email_corporativo'])
