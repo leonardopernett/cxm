@@ -219,12 +219,12 @@ $sessiones = Yii::$app->user->identity->id;
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id Caso ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Dato ') ?></label></th>                            
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Nombre Usuario ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Documento Usuario ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Nombre Solicitante ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Documento Solicitante ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Correo Electrónico ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Área ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipología ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios ') ?></label></th>
+                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Detalle PQRS ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Estado Proceso') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Solicitudes ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Acción Ver ') ?></label></th>
@@ -240,6 +240,7 @@ $sessiones = Yii::$app->user->identity->id;
                                 $varTipoDato = $value['tipo_de_dato'];
                                 $varComentarios = $value['comentario'];
                                 $varCliente = $value['cliente'];
+                                $varNombreCliente = $value['clientearea'];                                
                                 $varUsuario = $value['nombre'];
                                 $varDocUsuario = $value['documento'];
                                 $varEmail = $value['correo'];
@@ -251,12 +252,14 @@ $sessiones = Yii::$app->user->identity->id;
                                 $varEstadoproceso = $value['id_estado'];                                
                                 $varnombreestado = $value['estado1'];
 
+
+
                         ?>
                             <tr>
                                 <td><label style="font-size: 12px;"><?php echo  $varIdCaso; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varNumCaso; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varTipoDato; ?></label></td>                                
-                                <td><label style="font-size: 12px;"><?php echo  $varCliente; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $varNombreCliente; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varUsuario; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varDocUsuario; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varEmail; ?></label></td>                                
@@ -274,7 +277,7 @@ $sessiones = Yii::$app->user->identity->id;
                                 </td>
                                 <td class="text-center">
                                 <?php
-                                //nuevo
+                                //nuevo abierto
                                     if ($varEstadoproceso == 9) {
                                 ?>                                    
                                         <?= Html::a('<em class="fas fa-pencil-alt" style="font-size: 12px; color: #43ba45;"></em>',  ['viewqyr','idcaso'=> $value['idcaso']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Gestionar']) ?>

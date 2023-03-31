@@ -36,6 +36,25 @@ use yii\bootstrap\Modal;
         $txtarea = $value['area'];
         $txttipologia = $value['tipologia'];   
     }
+
+    foreach ($dataprovider as $key => $value) {
+        $txtfecha_creacion = $value['fecha_creacion'];
+        $txnumero_caso = $value['numero_caso'];
+        $txtnombre = $value['nombre'];
+        $txtdocumento = $value['documento'];
+        $txtcorreo = $value['correo'];
+        $txtcomentario = $value['comentario']; 
+        $txtarea = $value['area'];
+        $txttipologia = $value['tipologia'];
+        $txtusua_nombre = $value['usua_nombre'];
+        $txttipo_respuesta= $value['tipo_respuesta'];
+        $txttipo_de_dato = $value['tipo_de_dato'];
+        $txtestado = $value['estado'];
+        $txtcomentario2 = $value['comentario2'];
+        $txtarchivo2 = $value['archivo2'];
+        $ruta = "../../".$txtarchivo2;
+           
+    }
     $varNA = "Sin datos";
     $listadata = (new \yii\db\Query())
                   ->select(['tbl_qr_casos.id as idcaso','tbl_qr_casos.numero_caso','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_casos.comentario','tbl_qr_casos.cliente','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo','tbl_qr_estados_casos.estado','tbl_qr_estados_casos.id as idestado','tbl_qr_casos.fecha_creacion', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia',])
@@ -345,6 +364,31 @@ use yii\bootstrap\Modal;
                         ?>
                     </tbody>
                 </table>
+                <br>
+                <label><em class="fa fa-address-card" style="font-size: 28px; color: #26bf30;"></em> Tipificaciones: </label>
+                <br>
+                <table id="tblTipificación" class="table table-striped table-bordered tblResDetFreed">
+                    <tbody>
+                    <tr>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Área de Asignación:') ?></label></th>
+                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $txtarea; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipología:') ?></label></th>
+                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txttipologia; ?></label></td>                   
+                    </tr>
+                    <tr>                    
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Responsable:') ?></label></th>
+                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $txtusua_nombre; ?> </label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo de Respuesta:') ?></label></th>
+                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txttipo_respuesta; ?> </label></td>
+                    </tr>
+                    <tr>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo PQRS:') ?></label></th>
+                        <td><label style="font-size: 12px; width: 300px;" ><?php echo  $txttipo_de_dato; ?></label></td>
+                        <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Estado:') ?></label></th>
+                        <td><label style="font-size: 12px; width: 300px;"><?php echo  $txtestado; ?></label></td>
+                    </tr>                                        
+                    </tbody>
+                </table>               
                 <br>
             </div>
         </div>

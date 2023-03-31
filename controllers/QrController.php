@@ -60,9 +60,11 @@ use app\models\UsuariosEvalua;
 
     public function actionIndex(){ 
 
-        
+      $sessiones = Yii::$app->user->identity->id;
+     
+      if($sessiones == "3205" || $sessiones == "2953" || $sessiones == "57" || $sessiones == "1475" || $sessiones == "69" || $sessiones == "1699" || $sessiones == "5658" || $sessiones == "3468" || $sessiones == "7952"){ 
         $model = (new \yii\db\Query())
-                  ->select(['tbl_qr_casos.id as idcaso','tbl_qr_casos.numero_caso','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_casos.comentario','tbl_qr_casos.cliente','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo','tbl_qr_estados_casos.estado','tbl_qr_estados_casos.id as idestado','tbl_qr_casos.fecha_creacion', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia','tbl_qr_casos.id_estado','tbl_qr_estados.nombre estado1'])
+                  ->select(['tbl_qr_casos.id as idcaso','tbl_qr_casos.numero_caso','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_casos.comentario','tbl_qr_casos.cliente','tbl_usuarios_evalua.clientearea','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo','tbl_qr_estados_casos.estado','tbl_qr_estados_casos.id as idestado','tbl_qr_casos.fecha_creacion', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia','tbl_qr_casos.id_estado','tbl_qr_estados.nombre estado1'])
                   ->from(['tbl_qr_casos'])
                   ->join('LEFT OUTER JOIN', 'tbl_qr_tipos_de_solicitud',
                                   'tbl_qr_casos.id_solicitud = tbl_qr_tipos_de_solicitud.id') 
@@ -70,9 +72,45 @@ use app\models\UsuariosEvalua;
                                   'tbl_qr_casos.id_estado_caso = tbl_qr_estados_casos.id')
                   ->join('LEFT JOIN', 'tbl_qr_areas', 'tbl_qr_casos.id_area = tbl_qr_areas.id' )
                   ->join('LEFT JOIN', 'tbl_qr_tipologias', 'tbl_qr_casos.id_tipologia = tbl_qr_tipologias.id')
-                  ->join('LEFT JOIN', 'tbl_qr_estados', 'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')     
+                  ->join('LEFT JOIN', 'tbl_qr_estados', 'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')
+                  ->join('LEFT JOIN', 'tbl_usuarios_evalua', 'tbl_qr_casos.cliente = tbl_usuarios_evalua.idusuarioevalua')     
                   ->All();
+      }else{
+        $varcedulajefe = (new \yii\db\Query())
+              ->select(['usua_identificacion'])
+              ->from(['tbl_usuarios'])
+              ->where(['=','usua_id',$sessiones])
+              ->Scalar();
+       
+        $varcedulas = (new \yii\db\Query())
+              ->select(['documento'])
+              ->from(['tbl_usuarios_jarvis_cliente'])
+              ->where(['=','documento_jefe',$varcedulajefe])
+              ->All();
+                
+          $arralistacedula = array();
+          foreach ($varcedulas as $key => $value) {
+            array_push($arralistacedula, $value['documento']);
+          }
+          $arralistacedula2 = implode(", ", $arralistacedula);
 
+          $dataCedulas = explode(",", str_replace(array("#", "'", ";", " "), '', $arralistacedula2));
+
+        $model = (new \yii\db\Query())
+              ->select(['tbl_qr_casos.id as idcaso','tbl_qr_casos.numero_caso','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_casos.comentario','tbl_qr_casos.cliente','tbl_usuarios_evalua.clientearea','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo','tbl_qr_estados_casos.estado','tbl_qr_estados_casos.id as idestado','tbl_qr_casos.fecha_creacion', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia','tbl_qr_casos.id_estado','tbl_qr_estados.nombre estado1'])
+              ->from(['tbl_qr_casos'])
+              ->join('LEFT OUTER JOIN', 'tbl_qr_tipos_de_solicitud',
+                              'tbl_qr_casos.id_solicitud = tbl_qr_tipos_de_solicitud.id') 
+              ->join('LEFT OUTER JOIN', 'tbl_qr_estados_casos',
+                              'tbl_qr_casos.id_estado_caso = tbl_qr_estados_casos.id')
+              ->join('LEFT JOIN', 'tbl_qr_areas', 'tbl_qr_casos.id_area = tbl_qr_areas.id' )
+              ->join('LEFT JOIN', 'tbl_qr_tipologias', 'tbl_qr_casos.id_tipologia = tbl_qr_tipologias.id')
+              ->join('LEFT JOIN', 'tbl_qr_estados', 'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')
+              ->join('LEFT JOIN', 'tbl_usuarios_evalua', 'tbl_qr_casos.cliente = tbl_usuarios_evalua.idusuarioevalua')
+              ->where(['in','tbl_qr_casos.documento',$dataCedulas])     
+              ->All();
+
+      }
         $varCantidadestados = (new \yii\db\Query())
                   ->select([
                     'tbl_qr_estados.id_estado',
@@ -93,6 +131,7 @@ use app\models\UsuariosEvalua;
                     'count(if(DATEDIFF( now(),tbl_qr_casos.fecha_creacion) <= 5,1,if(DATEDIFF( now(),tbl_qr_casos.fecha_creacion) >5 && DATEDIFF( now(),tbl_qr_casos.fecha_creacion) <=8,2,if(DATEDIFF( now(),tbl_qr_casos.fecha_creacion) > 8,3,"")))) AS canti'
                   ])
                   ->from(['tbl_qr_casos'])
+                  ->where(['<>','tbl_qr_casos.id_estado',2])
                   ->groupBy(['num'])
                   ->all();
 
@@ -183,6 +222,52 @@ use app\models\UsuariosEvalua;
         ],"id = '$id_caso'")->execute();                
         return $this->redirect('index');
 
+        
+        $varNumcaso = (new \yii\db\Query())
+                ->select(['numero_caso'])
+                ->from(['tbl_qr_casos'])
+                ->where(['=','id',$id_caso])
+                ->Scalar();
+        $varasunto = (new \yii\db\Query())
+                ->select(['asunto'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',4])
+                ->Scalar();
+        $varcuerpo1 = (new \yii\db\Query())
+                ->select(['comentario'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',4])
+                ->Scalar();
+        $varcuerpo2 = (new \yii\db\Query())
+                ->select(['comentario2'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',4])
+                ->Scalar();
+        $varcorreo = (new \yii\db\Query())
+                ->select(['email_corporativo'])
+                ->from(['tbl_usuarios_jarvis_cliente'])
+                ->where(['=','id',$id_responsable])
+                ->Scalar();
+
+        //envio de correo a responsable
+        $message = "<html><body>";
+        $message .= "<h3>CX-Management</h3>";   
+        $message .= $varcuerpo1;
+        $message .= $varNumcaso;
+        $message .= $varcuerpo2;             
+        $message .= "<br><br>Que tengas un buen día";
+        $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
+        $message .= "<br>https://qa.grupokonecta.local/qa_managementv2/web/index.php";
+        $message .= "</body></html>";
+
+        Yii::$app->mailer->compose()
+        ->setTo($varcorreo)
+        ->setFrom(Yii::$app->params['email_satu_from'])
+        ->setSubject($varasunto)
+        ->setHtmlBody($message)
+        ->send();
+
+
       }
 
       return $this->render('viewqyr', [
@@ -271,13 +356,18 @@ use app\models\UsuariosEvalua;
                               ->from(['tbl_qr_casos'])
                               ->where(['=','usua_id',Yii::$app->user->identity->id])
                               ->Scalar();
-              $varcuerpo1 = (new \yii\db\Query())
+              $varasunto = (new \yii\db\Query())
                               ->select(['asunto'])
                               ->from(['tbl_qr_respuesta_automatica'])
                               ->where(['=','id_estado',9])
                               ->Scalar();
-              $varcuerpo2 = (new \yii\db\Query())
+              $varcuerpo1 = (new \yii\db\Query())
                               ->select(['comentario'])
+                              ->from(['tbl_qr_respuesta_automatica'])
+                              ->where(['=','id_estado',9])
+                              ->Scalar();
+              $varcuerpo2 = (new \yii\db\Query())
+                              ->select(['comentario2'])
                               ->from(['tbl_qr_respuesta_automatica'])
                               ->where(['=','id_estado',9])
                               ->Scalar();
@@ -289,24 +379,25 @@ use app\models\UsuariosEvalua;
                 $message .= $varNumcaso;
                 $message .= $varcuerpo2;             
                 $message .= "<br><br>Que tengas un buen día";
-                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
                     ->setTo($modelcaso->correo)
                     ->setFrom(Yii::$app->params['email_satu_from'])
-                    ->setSubject("Respuesta de tu caso QyR - CX-Management")  
+                    ->setSubject($varasunto)
                     ->setHtmlBody($message)
                     ->send();
 
                 // correo para grupo CX   
                 $message = "<html><body>";
-                $message .= "<h3>CX-Management</h3>";   
-                $message .= "Nueva solicitud fue recibida, referenciada con el caso No.: ";
+                $message .= "<h3>CX-Management</h3>";
+                $message .= "<br>Buen día Equipo ";
+                $message .= "<br><br> Tenemos una nueva solicitud la cual fue recibida el día de hoy, con N° de caso: ";
                 $message .= $varNumcaso;
-                $message .= "<br><br> En espera de inicio de proceso. Se agrega documento anexo";             
-                $message .= "<br><br>Que tengas un buen día";
-                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "<br><br> En espera de iniciar el proceso de asignación por parte del Equipo CX.";             
+                $message .= "<br><br>Se adjunta el detalle de la PQRS";
+                $message .= "<br><br>Feliz Día";
                 $message .= "</body></html>"; 
                 $varListacorreo = (new \yii\db\Query())
                   ->select(['email'])
@@ -352,7 +443,7 @@ use app\models\UsuariosEvalua;
     $model6 = new HojavidaDatadirector();
     $model7 = new HojavidaDatagerente();
     
-    $txtQuery2 =  new Query;
+    /*$txtQuery2 =  new Query;
     $txtQuery2  ->select(['tbl_qr_casos.fecha_creacion','tbl_qr_casos.numero_caso','tbl_qr_clientes.clientes','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia', 'tbl_qr_casos.comentario'])
                 ->from('tbl_qr_casos')            
                 ->join('LEFT JOIN', 'tbl_qr_areas', 'tbl_qr_casos.id_area = tbl_qr_areas.id' )
@@ -363,7 +454,22 @@ use app\models\UsuariosEvalua;
                 ->addParams([':id_caso'=>$id_caso]);
    
     $command = $txtQuery2->createCommand();
-    $dataProvider = $command->queryAll();
+    $dataProvider = $command->queryAll();*/
+
+    $txtQuery2 =  new Query;
+  $txtQuery2  ->select(['tbl_qr_casos.fecha_creacion','tbl_qr_casos.numero_caso','tbl_qr_clientes.clientes','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia', 'tbl_qr_casos.comentario', 'tbl_usuarios.usua_nombre','tbl_qr_casos.tipo_respuesta','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_estados.nombre estado','tbl_qr_casos.comentario2','tbl_qr_casos.archivo2'])
+              ->from('tbl_qr_casos')            
+              ->join('LEFT JOIN', 'tbl_qr_areas', 'tbl_qr_casos.id_area = tbl_qr_areas.id' )
+              ->join('LEFT JOIN', 'tbl_qr_tipologias', 'tbl_qr_casos.id_tipologia = tbl_qr_tipologias.id')
+              ->join('LEFT JOIN', 'tbl_qr_tipos_de_solicitud', 'tbl_qr_casos.id_solicitud = tbl_qr_tipos_de_solicitud.id')
+              ->join('LEFT JOIN', 'tbl_qr_clientes', 'tbl_qr_casos.cliente = tbl_qr_clientes.id')
+              ->join('LEFT JOIN', 'tbl_usuarios', 'tbl_qr_casos.id_responsable = tbl_usuarios.usua_id')
+              ->join('LEFT JOIN', 'tbl_qr_estados', 'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')                  
+              ->Where('tbl_qr_casos.id = :id_caso')
+              ->addParams([':id_caso'=>$id_caso]);
+ 
+  $command = $txtQuery2->createCommand();
+  $dataProvider = $command->queryAll();
 
     $txtQuery3 =  new Query;
     $txtQuery3  ->select(['tbl_qr_casos.correo'])
@@ -462,7 +568,7 @@ public function actionGestionqyr($idcaso){
   $datanumcaso = $command->queryScalar();
   
 
-  $varcuerpo1 = (new \yii\db\Query())
+  /*$varcuerpo1 = (new \yii\db\Query())
                               ->select(['asunto'])
                               ->from(['tbl_qr_respuesta_automatica'])
                               ->where(['=','id_estado',1])
@@ -471,7 +577,33 @@ public function actionGestionqyr($idcaso){
                               ->select(['comentario'])
                               ->from(['tbl_qr_respuesta_automatica'])
                               ->where(['=','id_estado',1])
-                              ->Scalar();
+                              ->Scalar();*/
+
+        $varNumcaso = (new \yii\db\Query())
+                ->select(['numero_caso'])
+                ->from(['tbl_qr_casos'])
+                ->where(['=','id',$id_caso])
+                ->Scalar();
+        $varasunto = (new \yii\db\Query())
+                ->select(['asunto'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',8])
+                ->Scalar();
+        $varcuerpo1 = (new \yii\db\Query())
+                ->select(['comentario'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',8])
+                ->Scalar();
+        $varcuerpo2 = (new \yii\db\Query())
+                ->select(['comentario2'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',8])
+                ->Scalar();
+        $varcorreo = (new \yii\db\Query())
+                ->select(['email_corporativo'])
+                ->from(['tbl_usuarios_jarvis_cliente'])
+                ->where(['=','id',$id_responsable])
+                ->Scalar();
 
   $paramsinfo = [':varInfo' => $datacorreo];  
   $dataProviderInfo = Yii::$app->db->createCommand('
@@ -528,16 +660,18 @@ public function actionGestionqyr($idcaso){
                 
     ],"id = '$id_caso'")->execute();
     
-  //envio de correo  con anexo  
+  //envio de correo  equipo cx 
     $tmpFile = $ruta;
                 
                 $message = "<html><body>";
-                $message .= "<h3>CX-Management</h3>";   
-                $message .= "Hola, Te enviamos la respuesta de tu caso No.:";
+                $message .= "<h3>CX-Management</h3>";
+                $message .= "Buen día Equipo <br><br>";
+                $message .= $varcuerpo1;
                 $message .= $datanumcaso;
-                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Esperamos tu revisión y aceptación de la misma.";             
+                $message .= $varcuerpo2;             
                 $message .= "<br><br>Que tengas un buen día";
-                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
+                $message .= "<br>https://qa.grupokonecta.local/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
                 $varListacorreo = (new \yii\db\Query())
                   ->select(['email'])
@@ -549,7 +683,7 @@ public function actionGestionqyr($idcaso){
                 Yii::$app->mailer->compose()
                     ->setTo($value['email'])
                     ->setFrom(Yii::$app->params['email_satu_from'])
-                    ->setSubject("Actualización de tu caso QyR - CX-Management")                    
+                    ->setSubject($varasunto)                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
@@ -664,43 +798,83 @@ public function actionRevisionqyr($idcaso){
           tbl_hojavida_datapersonal.email = :varInfo
         GROUP BY tbl_hojavida_datapersonal.hv_idpersonal               
         ')->bindValues($paramsinfo)->queryAll();
-
+          
+          $varasunto = (new \yii\db\Query())
+                  ->select(['asunto'])
+                  ->from(['tbl_qr_respuesta_automatica'])
+                  ->where(['=','id_estado',6])
+                  ->Scalar();
+          $varcuerpo1 = (new \yii\db\Query())
+                  ->select(['comentario'])
+                  ->from(['tbl_qr_respuesta_automatica'])
+                  ->where(['=','id_estado',6])
+                  ->Scalar();
+          $varcuerpo2 = (new \yii\db\Query())
+                  ->select(['comentario2'])
+                  ->from(['tbl_qr_respuesta_automatica'])
+                  ->where(['=','id_estado',6])
+                  ->Scalar();
+          $varcorreo = (new \yii\db\Query())
+                  ->select(['email_corporativo'])
+                  ->from(['tbl_usuarios_jarvis_cliente'])
+                  ->where(['=','id',$id_responsable])
+                  ->Scalar();
   $form = Yii::$app->request->post();
   if ($model6->load($form)) {
       $valrespuesta = $model6->ccdirector;  
-      $valestado = 5;
-      if($valrespuesta =="Aprobada"){
       
+      if($valrespuesta =="Aprobada"){
+        $valestado = 5;
         $tmpFile = $dataanexo;
     //envio de correo al gerente con anexo            
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
-                $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
+                $message .= "<br><br>";
+                $message .= $varcuerpo1;
                 $message .= $datanumcaso;
-                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Esperamos tu revisión y aceptación de la misma.";             
+                $message .= $varcuerpo2;             
                 $message .= "<br><br>Que tengas un buen día";
-                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
+                $message .= "<br>https://qa.grupokonecta.local/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
                     ->setTo($datacorreoresponsable)
                     ->setFrom(Yii::$app->params['email_satu_from'])
-                    ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
+                    ->setSubject($varasunto)                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
 
       } else{
 //envio de correo al que envio respuesta con anexo
-  $tmpFile = $dataanexo;
-                
+              $tmpFile = $dataanexo;
+              $valestado = 4;
+            $varasunto = (new \yii\db\Query())
+              ->select(['asunto'])
+              ->from(['tbl_qr_respuesta_automatica'])
+              ->where(['=','id_estado',7])
+              ->Scalar();
+            $varcuerpo1 = (new \yii\db\Query())
+              ->select(['comentario'])
+              ->from(['tbl_qr_respuesta_automatica'])
+              ->where(['=','id_estado',7])
+              ->Scalar();
+            $varcuerpo2 = (new \yii\db\Query())
+              ->select(['comentario2'])
+              ->from(['tbl_qr_respuesta_automatica'])
+              ->where(['=','id_estado',7])
+              ->Scalar();
+            
                 $message = "<html><body>";
-                $message .= "<h3>CX-MANAGEMENT</h3>";   
-                $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
+                $message .= "<h3>CX-MANAGEMENT</h3>";
+                $message .= "<br><br>";   
+                $message .= $varcuerpo1;
                 $message .= $datanumcaso;
-                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Fue rechazado por equipo CX.";             
+                $message .= $varcuerpo2;             
                 $message .= "<br><br>Que tengas un buen día";
                 $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "<br>https://qa.grupokonecta.local/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
                 $varListacorreo = (new \yii\db\Query())
                 ->select(['email'])
@@ -711,7 +885,7 @@ public function actionRevisionqyr($idcaso){
                 Yii::$app->mailer->compose()
                     ->setTo($value['email'])
                     ->setFrom(Yii::$app->params['email_satu_from'])
-                    ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
+                    ->setSubject("$varasunto")                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
@@ -796,6 +970,23 @@ public function actionRevisiongerenteqyr($idcaso){
               ->addParams([':id_caso'=>$id_caso]); 
   $command = $txtQuery6->createCommand();
   $datacorreosolicitud = $command->queryScalar();
+   
+        $varasunto = (new \yii\db\Query())
+                ->select(['asunto'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',5])
+                ->Scalar();
+        $varcuerpo1 = (new \yii\db\Query())
+                ->select(['comentario'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',5])
+                ->Scalar();
+        $varcuerpo2 = (new \yii\db\Query())
+                ->select(['comentario2'])
+                ->from(['tbl_qr_respuesta_automatica'])
+                ->where(['=','id_estado',5])
+                ->Scalar();
+        
 
   $paramsinfo = [':varInfo' => $datacorreo];  
   $dataProviderInfo = Yii::$app->db->createCommand('
@@ -819,39 +1010,63 @@ public function actionRevisiongerenteqyr($idcaso){
   $form = Yii::$app->request->post();
   if ($model6->load($form)) {
       $valrespuesta = $model6->ccdirector;  
-      $valestado = 2;
+      
       if($valrespuesta =="Aprobada"){
+        $valestado = 2;
 //envio de correo al solictante con anexo
       $tmpFile = $dataanexo;
                 $valestado = 2;
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
-                $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
+                $message .= "Buen día, <br><br>";
+                $message .= $varcuerpo1;
                 $message .= $datanumcaso;
-                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. Fue aprobado el caso solicitado.";             
-                $message .= "<br><br>Que tengas un buen día";
-                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "<br><br>";
+                $message .= $varcuerpo2;             
+                $message .= "<br><br>";
+                $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
+                $message .= "<br>https://qa.grupokonecta.local/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
 
                 Yii::$app->mailer->compose()
                     ->setTo($datacorreosolicitud)
                     ->setFrom(Yii::$app->params['email_satu_from'])
-                    ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT")                    
+                    ->setSubject($varasunto)                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
       } else{
 //envio de correo al que envio respuesta con anexo
-      $valestado = 8;
+     // $valestado = 8;
+
+      $varasunto = (new \yii\db\Query())
+          ->select(['asunto'])
+          ->from(['tbl_qr_respuesta_automatica'])
+          ->where(['=','id_estado',10])
+          ->Scalar();
+      $varcuerpo1 = (new \yii\db\Query())
+          ->select(['comentario'])
+          ->from(['tbl_qr_respuesta_automatica'])
+          ->where(['=','id_estado',10])
+          ->Scalar();
+      $varcuerpo2 = (new \yii\db\Query())
+          ->select(['comentario2'])
+          ->from(['tbl_qr_respuesta_automatica'])
+          ->where(['=','id_estado',10])
+          ->Scalar();
+
       $tmpFile = $dataanexo;
                 
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
-                $message .= "Hola, Te enviamos la respuesta de tu caso No.: ";
+                $message .= "Buen día, <br>";
+                $message .= $varcuerpo1;
                 $message .= $datanumcaso;
-                $message .= "<br> Gracias por tu espera, tenemos respuesta a tu caso. El proceso fue devuelto a equipo CX.";             
-                $message .= "<br><br>Que tengas un buen día";
-                $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
+                $message .= "<br><br>";
+                $message .= $varcuerpo2;             
+                $message .= "<br><br>";
+                $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
+                $message .= "<br>https://qa.grupokonecta.local/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
                 $varListacorreo = (new \yii\db\Query())
                 ->select(['email'])
