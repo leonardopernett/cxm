@@ -252,9 +252,6 @@ $this->title = 'Procesos Voc - Actualizar Llamadas Speech';
 
     </div>
 
-    <?php
-      if ($sessiones == 2953) {
-    ?>
 
     <div class="col-md-4">
       <div class="card1 mb" style="background: #e6edff;">
@@ -282,9 +279,7 @@ $this->title = 'Procesos Voc - Actualizar Llamadas Speech';
       </div>
     </div>
 
-    <?php
-      }
-    ?>
+
 
   </div>
 
