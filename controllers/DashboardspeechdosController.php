@@ -4697,46 +4697,53 @@ public function actionCantidadentto(){
       $vartexto = $varidconnid;
       $varvalencia = null;
 
-
-      if ($varidredbox != "" && $varidgrabadora != "") {
-        ob_start();
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'http://172.20.212.12/ASULWSRedboxReproducirAudio/ASULWSREDBOXReproducirAudioPantalla.asmx',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS =>'<?xml version="1.0" encoding="utf-8"?>
-            <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
-              <soap12:Body>
-                <ASULObtenerURLReproduccionREDBOX xmlns="http://tempuri.org/">
-                  <strIdGrabadora>'.$varidgrabadora.'</strIdGrabadora>
-                  <strIdLlamada>'.$varidredbox.'</strIdLlamada>
-                </ASULObtenerURLReproduccionREDBOX>
-              </soap12:Body>
-            </soap12:Envelope>',
-          CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/soap+xml; charset=utf-8'
-          ),
-          ));
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-        ob_clean();
-
-        $elementos = array_values(explode( "URL" ,  (string)$response ) )[3];
-        $elementos = substr( $elementos,4,-5 );
-
-        $varResultado = $elementos;
-
+      if (isnumeric($varidredbox)) {
+        if ($varidredbox != "" && $varidgrabadora != "") {
+          ob_start();
+          $curl = curl_init();
+          curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://172.20.212.12/ASULWSRedboxReproducirAudio/ASULWSREDBOXReproducirAudioPantalla.asmx',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS =>'<?xml version="1.0" encoding="utf-8"?>
+              <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+                <soap12:Body>
+                  <ASULObtenerURLReproduccionREDBOX xmlns="http://tempuri.org/">
+                    <strIdGrabadora>'.$varidgrabadora.'</strIdGrabadora>
+                    <strIdLlamada>'.$varidredbox.'</strIdLlamada>
+                  </ASULObtenerURLReproduccionREDBOX>
+                </soap12:Body>
+              </soap12:Envelope>',
+            CURLOPT_HTTPHEADER => array(
+              'Content-Type: application/soap+xml; charset=utf-8'
+            ),
+            ));
+  
+          $response = curl_exec($curl);
+          curl_close($curl);
+          ob_clean();
+  
+          $elementos = array_values(explode( "URL" ,  (string)$response ) )[3];
+          $elementos = substr( $elementos,4,-5 );
+  
+          $varResultado = $elementos;
+  
+        }else{
+          $varidredbox = 0;
+          $varidgrabadora = 0;        
+        }
       }else{
         $varidredbox = 0;
-        $varidgrabadora = 0;        
+        $varidgrabadora = 0;   
+        $varResultado = $varidredbox;
       }
+
+      
 
       if ($varidconnid != null) {
         $varidconnid = Yii::$app->db->createCommand("SELECT b.connid FROM tbl_base_satisfaccion b WHERE b.connid in ('$varidconnid') ")->queryScalar();
@@ -6536,7 +6543,7 @@ public function actionCantidadentto(){
             ->All();
 
         }else{
-
+          
           $dataProvider = (new \yii\db\Query())
             ->select(['tbl_dashboardspeechcalls.callId','tbl_dashboardspeechcalls.idcategoria','tbl_dashboardspeechcalls.nombreCategoria','tbl_dashboardspeechcalls.extension','tbl_dashboardspeechcalls.login_id','tbl_dashboardspeechcalls.fechallamada','tbl_dashboardspeechcalls.callduracion','tbl_dashboardspeechcalls.servicio','tbl_dashboardspeechcalls.fechareal','tbl_dashboardspeechcalls.idredbox','tbl_dashboardspeechcalls.idgrabadora','tbl_dashboardspeechcalls.connid','tbl_dashboardspeechcalls.extensiones'])
             ->from(['tbl_speech_general'])
@@ -6575,7 +6582,7 @@ public function actionCantidadentto(){
             ->All();
 
         }else{
-
+          
           $dataProvider = (new \yii\db\Query())
             ->select(['*'])
             ->from(['tbl_dashboardspeechcalls'])
