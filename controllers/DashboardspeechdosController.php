@@ -4737,10 +4737,10 @@ public function actionCantidadentto(){
           $varidredbox = 0;
           $varidgrabadora = 0;        
         }
-      }else{
-        $varidredbox = 0;
+      }else{        
         $varidgrabadora = 0;   
         $varResultado = $varidredbox;
+        $varidredbox = 0;
       }
 
       
