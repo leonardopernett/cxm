@@ -455,6 +455,10 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                 $varsindata = '--';                                
                                 $varvalorador = $varsindata;
 
+                                if (!is_numeric($txtidredbox)) {
+                                    $txtidredbox = 'NA';
+                                }
+
                                 $paramsBuscarConnid = [':varConnid' => $txtconnids];                                
 
                                 if ($txtconnids != "") {
