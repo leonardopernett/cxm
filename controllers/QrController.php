@@ -243,10 +243,15 @@ use app\models\UsuariosEvalua;
                 ->from(['tbl_qr_respuesta_automatica'])
                 ->where(['=','id_estado',4])
                 ->Scalar();
+        $vardocumentojefe = (new \yii\db\Query())
+                ->select(['usua_identificacion'])
+                ->from(['tbl_usuarios'])
+                ->where(['=','usua_id',$valresponsable])
+                ->Scalar();
         $varcorreo = (new \yii\db\Query())
                 ->select(['email_corporativo'])
                 ->from(['tbl_usuarios_jarvis_cliente'])
-                ->where(['=','id',$id_responsable])
+                ->where(['=','documento',$vardocumentojefe])
                 ->Scalar();
 
         //envio de correo a responsable
@@ -596,11 +601,7 @@ public function actionGestionqyr($idcaso){
                 ->from(['tbl_qr_respuesta_automatica'])
                 ->where(['=','id_estado',8])
                 ->Scalar();
-        $varcorreo = (new \yii\db\Query())
-                ->select(['email_corporativo'])
-                ->from(['tbl_usuarios_jarvis_cliente'])
-                ->where(['=','id',$id_responsable])
-                ->Scalar();
+       
 
   $paramsinfo = [':varInfo' => $datacorreo];  
   $dataProviderInfo = Yii::$app->db->createCommand('
@@ -765,15 +766,26 @@ public function actionRevisionqyr($idcaso){
              
   $command = $txtQuery6->createCommand();
   $dataresponsable = $command->queryScalar();
-            
-  $txtQuery7 =  new Query;
+   
+  $vardocumentojefe = (new \yii\db\Query())
+      ->select(['usua_identificacion'])
+      ->from(['tbl_usuarios'])
+      ->where(['=','usua_id',$valresponsable])
+      ->Scalar();
+  $datacorreoresponsable = (new \yii\db\Query())
+      ->select(['email_corporativo'])
+      ->from(['tbl_usuarios_jarvis_cliente'])
+      ->where(['=','documento',$vardocumentojefe])
+      ->Scalar();
+
+  /*$txtQuery7 =  new Query;
   $txtQuery7  ->select(['tbl_usuarios_evalua.email_corporativo'])
               ->from('tbl_usuarios_evalua')       
               ->Where('tbl_usuarios_evalua.idusuarioevalua = :id_caso')
               ->addParams([':id_caso'=>$dataresponsable]);
              
   $command = $txtQuery7->createCommand();
-  $datacorreoresponsable = $command->queryScalar();
+  $datacorreoresponsable = $command->queryScalar();*/
 
   
 
