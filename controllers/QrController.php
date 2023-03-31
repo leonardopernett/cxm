@@ -351,11 +351,7 @@ use app\models\UsuariosEvalua;
                   'usua_id' => Yii::$app->user->identity->id,                                       
               ])->execute();
 
-              $varNumcaso = (new \yii\db\Query())
-                              ->select(['max(numero_caso)'])
-                              ->from(['tbl_qr_casos'])
-                              ->where(['=','usua_id',Yii::$app->user->identity->id])
-                              ->Scalar();
+             
               $varasunto = (new \yii\db\Query())
                               ->select(['asunto'])
                               ->from(['tbl_qr_respuesta_automatica'])
@@ -376,7 +372,8 @@ use app\models\UsuariosEvalua;
                 $message = "<html><body>";
                 $message .= "<h3>CX-Management</h3>";   
                 $message .= $varcuerpo1;
-                $message .= $varNumcaso;
+                $message .= $caso;
+                $message .= "<br><br>";
                 $message .= $varcuerpo2;             
                 $message .= "<br><br>Que tengas un buen día";
                 $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
@@ -394,7 +391,7 @@ use app\models\UsuariosEvalua;
                 $message .= "<h3>CX-Management</h3>";
                 $message .= "<br>Buen día Equipo ";
                 $message .= "<br><br> Tenemos una nueva solicitud la cual fue recibida el día de hoy, con N° de caso: ";
-                $message .= $varNumcaso;
+                $message .= $caso;
                 $message .= "<br><br> En espera de iniciar el proceso de asignación por parte del Equipo CX.";             
                 $message .= "<br><br>Se adjunta el detalle de la PQRS";
                 $message .= "<br><br>Feliz Día";
@@ -814,11 +811,7 @@ public function actionRevisionqyr($idcaso){
                   ->from(['tbl_qr_respuesta_automatica'])
                   ->where(['=','id_estado',6])
                   ->Scalar();
-          $varcorreo = (new \yii\db\Query())
-                  ->select(['email_corporativo'])
-                  ->from(['tbl_usuarios_jarvis_cliente'])
-                  ->where(['=','id',$id_responsable])
-                  ->Scalar();
+         
   $form = Yii::$app->request->post();
   if ($model6->load($form)) {
       $valrespuesta = $model6->ccdirector;  
