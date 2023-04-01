@@ -629,6 +629,11 @@ AppAsset::register($this);
                                                     'url' => ['/dashboardspeech/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Distribuccion Externa'),
+                                                    'url' => ['/distribuccionexterna/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
                                                 '<br>',                                            
                                                 '<li class="dropdown-headercx">&nbsp;Encuestas de Satisfacci&oacute;n</li>',
                                                 [
