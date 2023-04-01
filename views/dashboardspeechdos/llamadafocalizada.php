@@ -713,25 +713,36 @@ $this->title = 'Análisis Focalizados - Escuchar +';
                                             if ($txtidredbox != null && $txtidredbox != "NA" && $txtidgrabadora != null && $txtidgrabadora != "NA") {
                                         
                                         ?>
-                                            <?= 
-                                                Html::a(Yii::t('app', '<i id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #E61313; display: inline;"></i>'),
-                                                        'javascript:void(0)',
-                                                        [
-                                                            'title' => Yii::t('app', 'Escuchar + VOC'),
-                                                            'onclick' => "
-                                                                generarcarga2();                        
-                                                                $.ajax({
-                                                                    type     :'get',
-                                                                    cache    : false,
-                                                                    url  : '" . Url::to(['viewcalls',
-                                                                    'idlogin' => $txtloginid, 'idredbox' => $txtidredbox, 'idgrabadora' => $txtidgrabadora, 'idconnid' => $txtconnids, 'idcallids' => $txtcallid, 'varfechareal' => $txtfechasreal,'varcategolias' => $txtidcategoria]) . "',
-                                                                    success  : function(response) {
-                                                                        $('#ajax_result').html(response);
-                                                                    }
-                                                                });
-                                                            return false;",
-                                                        ]);
+
+                                            <?php
+                                                if (!is_numeric($txtidredbox)) {                                                    
                                             ?>
+                                                <a title="Interacciones" href="<?php echo $txtidredbox; ?>" target="_blank"><em id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #4CB0EC; display: inline;"></em></a>
+                                            <?php
+                                                }else{
+                                            ?>
+                                                <?= 
+                                                    Html::a(Yii::t('app', '<i id="idimage" class="fas fa-play-circle" style="font-size: 17px; color: #E61313; display: inline;"></i>'),
+                                                            'javascript:void(0)',
+                                                            [
+                                                                'title' => Yii::t('app', 'Escuchar + VOC'),
+                                                                'onclick' => "
+                                                                    generarcarga2();                        
+                                                                    $.ajax({
+                                                                        type     :'get',
+                                                                        cache    : false,
+                                                                        url  : '" . Url::to(['viewcalls',
+                                                                        'idlogin' => $txtloginid, 'idredbox' => $txtidredbox, 'idgrabadora' => $txtidgrabadora, 'idconnid' => $txtconnids, 'idcallids' => $txtcallid, 'varfechareal' => $txtfechasreal,'varcategolias' => $txtidcategoria]) . "',
+                                                                        success  : function(response) {
+                                                                            $('#ajax_result').html(response);
+                                                                        }
+                                                                    });
+                                                                return false;",
+                                                            ]);
+                                                ?>
+                                            <?php
+                                                }
+                                            ?>                                            
                                         
                                         <?php
                                             }else{
