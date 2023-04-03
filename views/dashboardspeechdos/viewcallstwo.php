@@ -184,7 +184,7 @@ if ($varEscuchar == "CX_Directv") {
     	<div class="col-md-6">
     		<div class="card3 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Información') ?></label>
-    			<label style="text-align: center; font-size: 12px;"><?php echo "Nota: Para escuchar la llamada, debes pegar la url en el navegador de Internet Explorer."; ?></label>
+    			<label style="text-align: center; font-size: 12px;"><?php echo "Nota: Para escuchar la llamada, debes pegar la url en el navegador de Microsoft Edge."; ?></label>
     		</div>	
     	</div>    	
     </div>
@@ -195,7 +195,7 @@ if ($varEscuchar == "CX_Directv") {
     	<div class="col-md-6">
     		<div class="card3 mb">
     			<label><em class="fas fa-info-circle" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Instructivo de Uso') ?></label>
-    			<a style="font-size: 15px;" rel="stylesheet" type="text/css" href="../../downloadfiles/Manual Configuración Quantify Esp Version 2_Febrero 2018.pdf" target="_blank">Descargar Instructivo</a>
+    			<a style="font-size: 15px;" rel="stylesheet" type="text/css" href="../../downloadfiles/Manual_Configuracion_Microsoft_Edge.pdf" target="_blank">Descargar Instructivo</a>
     		</div>	
     	</div>
 
