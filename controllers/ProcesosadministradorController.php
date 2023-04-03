@@ -3237,8 +3237,8 @@ use app\models\Cumplimientoqyr;
         ]);
     }
 
-    public function actionDeletepcrcs($id,$valor){
-        $paramsEliminar = $id;         
+    public function actionDeletepcrcs($idcon){
+        $paramsEliminar = $idcon;         
 
         Yii::$app->db->createCommand('
         UPDATE tbl_control_pcrc_comdata 
