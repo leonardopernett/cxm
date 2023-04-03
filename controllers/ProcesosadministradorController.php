@@ -67,7 +67,7 @@ use app\models\Cumplimientoqyr;
             'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores',
             'adminusuarios','adminapiwiasae','viewtipoalertasqyr','deletealertasqyr',
             'viewareasqyr','varListAreasqyr','viewtipologiasqyr','viewrespuestaautomaticaqyr','deleterespuestaqyr',
-            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr'],
+            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs'],
             'rules' => [
               [
                 'allow' => true,
@@ -3205,6 +3205,51 @@ use app\models\Cumplimientoqyr;
             'varListRespuesta' => $varListRespuesta ,
         ]);
         
+    }
+    public function actionParametrizarpcrccomdata(){
+        $model = new ControlParams();
+
+        $varListaPcrcs = (new \yii\db\Query())
+                                    ->select(['*'])
+                                    ->from(['tbl_control_pcrc_comdata'])
+                                    ->orderBy(['fecha_creacion' => SORT_DESC])
+                                    ->all(); 
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+            $varidArbol = $model->arbol_id;
+            $varMetricas = $model->argumentos;
+
+            Yii::$app->db->createCommand()->insert('tbl_control_pcrc_comdata',[
+                    'arbol_id' => $varidArbol,
+                    'metrica' => $varMetricas,
+                    'fecha_creacion' => date("Y-m-d"),
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+            ])->execute();
+
+            return $this->redirect(['parametrizarpcrccomdata']);
+        }
+
+        return $this->render('parametrizarpcrccomdata',[
+            'varListaPcrcs' => $varListaPcrcs,
+            'model' => $model,
+        ]);
+    }
+
+    public function actionDeletepcrcs($id,$valor){
+        $paramsEliminar = $id;         
+
+        Yii::$app->db->createCommand('
+        UPDATE tbl_control_pcrc_comdata 
+            SET anulado = :varAnulado
+            WHERE 
+            idcontrolpcrc = :VarId')
+        ->bindValue(':VarId', $paramsEliminar)
+        ->bindValue(':varAnulado', 1)
+        ->execute();
+
+        return $this->redirect(['parametrizarpcrccomdata']);
     }
 
   }

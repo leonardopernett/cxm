@@ -1172,7 +1172,44 @@ class FormulariosController extends Controller {
                     ])->execute();
 		        }
                
+            // proceso comdata Colmena
+
+            $varIdejec = (new \yii\db\Query())
+                        ->select(['max(id)'])
+                        ->from(['tbl_ejecucionformularios'])
+                        ->where(['=','usua_id',Yii::$app->user->identity->id])
+                        ->scalar();
+
+            $varPec = (new \yii\db\Query())
+                        ->select(['i1_nmcalculo'])
+                        ->from(['tbl_ejecucionformularios'])
+                        ->where(['=','id',$varIdejec])
+                        ->scalar();
+
+            $vararbol_id = (new \yii\db\Query())
+                        ->select(['arbol_id'])
+                        ->from(['tbl_ejecucionformularios'])
+                        ->where(['=','id',$varIdejec])
+                        ->scalar();
+
+            $varexistePcrc = (new \yii\db\Query())
+                        ->select(['tbl_control_pcrc_comdata.arbol_id'])
+                        ->from(['tbl_control_pcrc_comdata'])
+                        ->where(['=','tbl_control_pcrc_comdata.arbol_id',$vararbol_id])
+                        ->count();
+
+            if($varexistePcrc > 0){   
+
+                if ($varPec == 0) {
+                 
+                    Yii::$app->db->createCommand()->update('tbl_ejecucionformularios',[
+                        'score' => 0,         
+                    ],"id = '$varIdejec'")->execute();
+
+                }                        
+            }
                 
+        //fin proceso comdata    
 
                 Yii::$app->session->setFlash('success', Yii::t('app', 'Formulario guardado'));
 
