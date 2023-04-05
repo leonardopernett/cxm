@@ -18,9 +18,9 @@ $sesiones =Yii::$app->user->identity->id;
 
 
 
-$varidgrupos = Yii::$app->get('dbslave')->createCommand("select count(1) from tbl_permisosfeedback where anulado = 0 and idusuarios = $sesiones")->queryScalar();
+$varidgrupos = Yii::$app->db->createCommand("select count(1) from tbl_permisosfeedback where anulado = 0 and idusuarios = $sesiones")->queryScalar();
 
-$roles = Yii::$app->get('dbslave')->createCommand("select r.rel_role_id from rel_usuarios_roles r inner join tbl_usuarios u on r.rel_usua_id = u.usua_id  where u.usua_id = $sesiones")->queryScalar();
+$roles = Yii::$app->db->createCommand("select r.rel_role_id from rel_usuarios_roles r inner join tbl_usuarios u on r.rel_usua_id = u.usua_id  where u.usua_id = $sesiones")->queryScalar();
 
 ?>
 
@@ -505,6 +505,10 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                     } : function($data) {
                     return $data->dscomentario;
                 }
+            ],
+            [
+                'attribute' => 'arbol_id',
+                'value' => 'arbol_id'
             ],
             'basessatisfaccion_id',            
                 ];
