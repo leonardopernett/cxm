@@ -430,8 +430,8 @@ use app\models\DetallesPilaresGptw;
                         $txtvfocomejora2 = null;
                         $txtvlistadetalle2 = null;
                         $txtvidgptw = Yii::$app->request->get("txtvidgptw");
-                        $txtvarea = Yii::$app->request->get("txtvarea");
-                        $txtvopera = Yii::$app->request->get("txtvopera");
+                        $txtvarea = Yii::$app->request->get("txtvopera");
+                        $txtvopera = Yii::$app->request->get("txtvarea");
                         $txtvfocomejora = Yii::$app->request->get("txtvfocomejora");
                         for ($i = 0; $i< count($txtvfocomejora); $i++) {
                             $element = $txtvfocomejora[$i];                            
