@@ -33,6 +33,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
     public $verDirectivo;
     public $verAsesormas;
     public $verUsuatlmast;
+    public $verModificaformulario;
     public $hacerValoracion;
     public $grupousuarioid;
     /**
@@ -69,6 +70,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                     . "per_directivo as verDirectivo, "
                     . "per_asesormas as verAsesormas, "
                     . "per_usuatlmast as verUsuatlmast, "
+                    . "per_modificaformulario as verModificaformulario, "
                     . "per_adminprocesos as adminProcesos, "
                     . "per_editarequiposvalorados as edEqipoValorado, "
                     . "per_inboxaleatorio as verInboxAleatorio, per_realizar_valoracion AS hacerValoracion, "
@@ -139,6 +141,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
                 . "per_directivo as verDirectivo, "
                 . "per_asesormas as verAsesormas, "
                 . "per_usuatlmast as verUsuatlmast, "
+                . "per_modificaformulario as verModificaformulario, "
                 . "per_adminprocesos as adminProcesos, "
                 . "per_editarequiposvalorados as edEqipoValorado, "
                 . "per_inboxaleatorio as verInboxAleatorio, per_realizar_valoracion AS hacerValoracion, "
@@ -449,6 +452,17 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
     public function isVerusuatlmast() {
         return ($this->verUsuatlmast) ? true : false;
     }
+    /**
+     * Valida si el usuario tiene permisos para modificar formularios
+     * 
+     * @return boolean
+     * @author Diego
+     * @copyright Konecta
+     * @version Release: $Id$
+     */
+    public function isVermodificaformulario() {
+        return ($this->verModificaformulario) ? true : false;
+    }
 
     /**
      * Valida si el usuario tiene permisos de jefeOP
@@ -542,7 +556,8 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface {
 
                                 default:
                                     $error->hasError = true;
-                                    $error->msgError = \Yii::t("app", "Error en LDAP") . ldap_error($ldapbindtwocom);
+                                    //$error->msgError = \Yii::t("app", "Error en LDAP") . ldap_error($ldapbindtwocom);
+                                    $error->msgError = \Yii::t("app", "Conflictos entre el LDAP y el usuario de red");
                                     break;
                             }
                             return $error;

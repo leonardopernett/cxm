@@ -113,6 +113,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'per_usuatlmast',
                 'value' => $model->getStringBoolean($model->per_usuatlmast)
             ],
+            [
+                'attribute' => 'per_modificaformulario',
+                'value' => $model->getStringBoolean($model->per_modificaformulario)
+            ],
         ],
     ])
     ?>

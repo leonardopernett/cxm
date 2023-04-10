@@ -503,7 +503,7 @@ AppAsset::register($this);
                             ],
                             [
                                 'label' => '<img src="'.Yii::$app->getUrlManager()->getBaseUrl().'/images/admin.png" width="27" height="27">'.Yii::t('app', '&nbsp;ADMIN&nbsp;&nbsp;&nbsp;&nbsp;'),                                
-                                'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX()|| Yii::$app->user->identity->isVerdirectivo(),                                
+                                'visible' => Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema()  || Yii::$app->user->identity->isveralertas() || Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerexterno()  || Yii::$app->user->identity->isVerBA() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVermodificaformulario(),                                
                                 'items' => [
                                     '<div class="row" >',
                                         '<div class="col-md-6">',
@@ -549,62 +549,62 @@ AppAsset::register($this);
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Formularios'),
                                                     'url' => ['/formularios/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Secciones'),
                                                     'url' => ['/seccions/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Bloques'),
                                                     'url' => ['/bloques/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Bloque Detalle'),
                                                     'url' => ['/bloquedetalles/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Textos'),
                                                     'url' => ['/textos/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Tipificaciones'),
                                                     'url' => ['/tipificaciones/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Programa PCRC'),
                                                     'url' => ['/arboles/index'],
-                                                    'visible' => Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isEdEqipoValorado() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Interacciones'),
                                                     'url' => ['/transacions/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Dimensiones'),
                                                     'url' => ['/dimensiones/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Declinaciones'),
                                                     'url' => ['/declinaciones/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Calificaciones'),
                                                     'url' => ['/calificacions/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Feedbacks'),
                                                     'url' => ['/categoriafeedbacks/index'],
-                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario(),
                                                 ],
                                         '</div>',
                                         '<div class="col-md-6">',

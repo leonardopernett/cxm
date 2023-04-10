@@ -60,6 +60,8 @@ use yii\bootstrap\ActiveForm;
     <?= $form->field($model, 'per_asesormas')->checkbox() ?>
 
     <?= $form->field($model, 'per_usuatlmast')->checkbox() ?>
+    
+    <?= $form->field($model, 'per_modificaformulario')->checkbox() ?>
 
 
     
