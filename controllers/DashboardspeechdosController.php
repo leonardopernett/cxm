@@ -77,7 +77,24 @@ use app\models\FormUploadtigo;
         $varFechaIdeal = explode(" ", $model3->fechacreacion);
 
         $varFechaInicioTres = $varFechaIdeal[0];
-        $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]."+ 1 days"));
+        
+
+        $varVericaFecha = (new \yii\db\Query())
+                      ->select([
+                        'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
+                      ])
+                      ->from(['tbl_speech_pcrcsociedades'])            
+                      ->where(['in','cod_pcrc',$varListaCodPcrc])
+                      ->andwhere(['=','anulado',0])
+                      ->count();
+
+        if ($varVericaFecha != 0) {
+          var_dump("Aqui ingresa");
+          $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]));
+        }else{
+          var_dump("Veamos aqui");
+          $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]."+ 1 days"));
+        }
 
         // Agregar Procesos de socieadd identificacion - Hora inicial y final
         $varSociedadHoraInicio = (new \yii\db\Query())
@@ -123,7 +140,7 @@ use app\models\FormUploadtigo;
                                 ->andwhere(['=','idcategoria',$varGeneralLlamada])
                                 ->andwhere(['in','extension',$varListaExtensiones])
                                 ->count();        
-        
+
         if ($varCantidadLlamada != 0) {
 
           return $this->redirect(array('indexvoice','txtidcliente'=>$varIdDpCliente,'txtGeneral'=>$varGeneralLlamada,'txtServicio'=>$varServicios,'txtFechas'=>$model3->fechacreacion,'txtExtensiones'=>$model3->pcrc,'txtTipodash'=>$varTipoDashboard,'txtCantidad'=>$varCantidadLlamada,'txtCodPcrcs'=>$model3->cod_pcrc));
@@ -285,7 +302,24 @@ use app\models\FormUploadtigo;
       $varFechaIdealVoice = explode(" ", $txtFechas);
 
       $varFechaInicioVoice = $varFechaIdealVoice[0];
-      $varFechaFinTresVoice = date('Y-m-d',strtotime($varFechaIdealVoice[2]."+ 1 days"));
+
+      $varVericaFecha = (new \yii\db\Query())
+                      ->select([
+                        'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
+                      ])
+                      ->from(['tbl_speech_pcrcsociedades'])            
+                      ->where(['in','cod_pcrc',$varListaCodPcrcVoice])
+                      ->andwhere(['=','anulado',0])
+                      ->count();
+
+      if ($varVericaFecha != 0) {
+        $varFechaFinTresVoice = date('Y-m-d',strtotime($varFechaIdealVoice[2]));
+      }else{
+        $varFechaFinTresVoice = date('Y-m-d',strtotime($varFechaIdealVoice[2]."+ 1 days"));
+      }
+
+     
+      
 
       $varListaExtensionesVoice = explode(",", str_replace(array("#", "'", ";", " "), '', $txtExtensiones));
 
@@ -385,7 +419,7 @@ use app\models\FormUploadtigo;
                                 ->andwhere(['<=','fechafintmp',$varFechaFinTresVoice])
                                 ->groupby(['cantidadllamada'])
                                 ->Scalar(); 
-
+                                
       if ($varVerificarCantidadLlamadas != $txtCantidad) {
 
         Yii::$app->db->createCommand('DELETE FROM tbl_speech_tmpmotivos WHERE cod_pcrc=:id AND extension=:idparams AND fechainiciotmp >= :idfechaini AND fechafintmp <= :idfechafin')->bindParam(':id',$txtCodPcrcs)->bindParam(':idparams',$txtTipoparametros)->bindParam(':idfechaini',$varFechaInicioVoice)->bindParam(':idfechafin',$varFechaFinTresVoice)->execute();
