@@ -38,7 +38,7 @@ class BloquesController extends Controller {
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function() {
-                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast();
+                            return Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isVermodificaformulario();
                         },
                     ],
                 ],
