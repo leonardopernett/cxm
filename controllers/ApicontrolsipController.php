@@ -42,7 +42,7 @@ class ApicontrolsipController extends \yii\web\Controller {
               
               'rules' => [
                 [
-                  'actions' => ['index','apicontrolsipren'],
+                  'actions' => ['apicontrolsipren'],
                   'allow' => true,
                   'roles' => ['@'],
                   'matchCallback' => function() {
@@ -72,7 +72,8 @@ class ApicontrolsipController extends \yii\web\Controller {
             $varMesActual = date('m');
             $varYearActual = date('Y');
             $vartxtsip = ".sip";            
-            $varHora = date("h") - 1;
+            $varHora = date("H") - 1;
+
             $varfechahorainicio = date("Y-m-d").' '.$varHora.":00:00";
             $varfechahorafin = date("Y-m-d").' '.$varHora.":59:59";
             $varlistaagente = (new \yii\db\Query())
