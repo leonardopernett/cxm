@@ -447,9 +447,12 @@ use app\models\FormUploadtigo;
                                     ->andwhere(['=','servicio',$txtServicio])
                                     ->andwhere(['in','extension',$varListaExtensionesVoice])
                                     ->andwhere(['between','fechallamada',$varFechaInicioVoice.$varSociedadHoraInicio_iv,$varFechaFinTresVoice.$varSociedadHoraFinal_iv])
-                                    ->andwhere(['=','idcategoria',$varMotivoIdVoice])
-                                    ->groupby(['callid'])
+                                    ->andwhere(['=','idcategoria',$varMotivoIdVoice])                                    
                                     ->scalar();
+
+          if ($varDuracionLlamadaVoice == null) {
+            $varDuracionLlamadaVoice = 0;
+          }
 
           if ($varConteoPorMotivosVoice != 0 && $txtCantidad != 0) {
             if ($varConteoPorMotivosVoice != null) {
