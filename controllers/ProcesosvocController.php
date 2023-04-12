@@ -5870,7 +5870,7 @@ use app\models\SpeechParametrizar;
         curl_setopt_array($curl, array(
           CURLOPT_SSL_VERIFYPEER=> false,
           CURLOPT_SSL_VERIFYHOST => false,
-          CURLOPT_URL =>'https://wia-web-api-gw-5j8fyx1b.uc.gateway.dev/conectionDateCXM?key=AIzaSyClC9KoixrqyM3CcO24a29OI3u4e3Vzv4c',
+          CURLOPT_URL => 'https://wia-web-api-gw-5j8fyx1b.uc.gateway.dev/conectionDateCXM?key=AIzaSyClC9KoixrqyM3CcO24a29OI3u4e3Vzv4c',
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
@@ -5893,8 +5893,10 @@ use app\models\SpeechParametrizar;
         $objet_json = json_decode($response,true);
 
 
+
         foreach ($objet_json as $key => $value) {
-           $varCambiaFechas = $value['fechallamada']['value'];
+           $varCambiaFechas = str_replace("Z", "", str_replace("T", " ", strval($value['fechallamada']['value'])));
+
           $varFechas = date('Y-m-d h:i:s:000',strtotime($varCambiaFechas));
 
           if (is_numeric($value['idredbox'])) {
@@ -5914,6 +5916,7 @@ use app\models\SpeechParametrizar;
           if ($varGrabadora == "") {
             $varGrabadora = $value['idgrabadora'];
           }
+
           
           Yii::$app->db->createCommand()->insert('tbl_dashboardspeechcalls',[
                 'callId' => $value['callid'],
@@ -5934,7 +5937,7 @@ use app\models\SpeechParametrizar;
           ])->execute();
 
         }
-
+        
         foreach ($objet_json as $key => $value) {
           $varGrabadora_count = (new \yii\db\Query())
                                   ->select([
@@ -6044,7 +6047,7 @@ use app\models\SpeechParametrizar;
         }
 
         
-      }      
+      }    
     }
 
   }
