@@ -748,16 +748,18 @@ $this->title = 'Dashboard Escuchar +';
                         $varconteo = 0;
                       }
                     }
-
-
+                    
                     if ($varconteo != 0 && $txtCantidad != 0) {
+                      
                       if ($txtTipoFormIndicador == 0) {
                         $txtRtaProcentaje = (round(($varconteo / $txtCantidad) * 100, 1));
+                        var_dump($varNombreIndicador.': '.$varconteo);
                       }else{
-
+                        
                         $txtRtaProcentaje = (100 - (round(($varconteo / $txtCantidad) * 100, 1)));
                       }
                     }else{
+                      
                       if ($txtTipoFormIndicador == 0) {
                         $txtRtaProcentaje = 100;
                       }else{
@@ -829,7 +831,7 @@ $this->title = 'Dashboard Escuchar +';
                     if ($varconteoMarca == null) {
                       $varconteoMarca = 0;
                     }
-                        
+                    
                     if ($varconteoMarca != 0) {
                       if ($txtTipoFormIndicador == 0) {
                         $txtRtaMarca = (round(($varconteoMarca / $txtCantidad) * 100, 1));
@@ -990,7 +992,7 @@ $this->title = 'Dashboard Escuchar +';
                     }
                   }
 
-                  $varResponsableGeneral = round(($varResponsableAgente + $varResponsableMarca + $varResponsableCanal) / 3, 2);
+                  $varResponsableGeneral = round(($varResponsableAgente  + $varResponsableCanal) / 2, 2);
                   $totalvieK = 100 - $varResponsableGeneral;
                   if ($varResponsableGeneral < '80') {
                     $varTColorK = '#D01E53';
