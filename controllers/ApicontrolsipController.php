@@ -77,10 +77,10 @@ class ApicontrolsipController extends \yii\web\Controller {
             $varfechahorainicio = date("Y-m-d").' '.$varHora.":00:00";
             $varfechahorafin = date("Y-m-d").' '.$varHora.":59:59";
             $varlistaagente = (new \yii\db\Query())
-                            ->select(['*'])
-                            ->from(['tbl_base_satisfaccion_copia'])
-                            ->where(['like','tbl_base_satisfaccion_copia.agente',$vartxtsip])
-                            ->andwhere(['between','tbl_base_satisfaccion_copia.fecha_satu', $varfechahorainicio, $varfechahorafin])                           
+                            ->select(['tbl_base_satisfaccion.agente', 'tbl_base_satisfaccion.id'])
+                            ->from(['tbl_base_satisfaccion'])
+                            ->where(['like','tbl_base_satisfaccion.agente',$vartxtsip])
+                            ->andwhere(['between','tbl_base_satisfaccion.fecha_satu', $varfechahorainicio, $varfechahorafin])                           
                             ->All();  
 
             foreach ($varlistaagente as $key => $value) {
@@ -91,20 +91,39 @@ class ApicontrolsipController extends \yii\web\Controller {
                         SELECT du.documento FROM  dp_usuarios_actualizacion du 
                         WHERE 
                         du.usuario = :RedAsesor ')->bindValues($paramsBuscaAsesor)->queryScalar();
-              
-                $paramsBuscaAsesordoc = [':DocumentoAsesor'=>$varDocumentoAsesor];
-                $varusuario = Yii::$app->dbjarvis->createCommand('
-                        SELECT dur.usuario_red FROM  dp_usuarios_red dur 
-                        WHERE 
-                        dur.documento = :DocumentoAsesor ')->bindValues($paramsBuscaAsesordoc)->queryScalar();
-                 
+              if($varDocumentoAsesor){
+                  $paramsBuscaAsesordoc = [':DocumentoAsesor'=>$varDocumentoAsesor];
+                  $varusuario = Yii::$app->dbjarvis->createCommand('
+                          SELECT dur.usuario_red FROM  dp_usuarios_red dur 
+                          WHERE 
+                          dur.documento = :DocumentoAsesor ')->bindValues($paramsBuscaAsesordoc)->queryScalar();
+                  if($varusuario != '') {
 
-                Yii::$app->db->createCommand()->update('tbl_base_satisfaccion_copia',[
-                            'agente' => $varusuario,
-                        ],'id ='.$varidsatisfaccion.'')->execute();
-               
-                }                             
-            
+                      Yii::$app->db->createCommand()->update('tbl_base_satisfaccion',[
+                                  'agente' => $varusuario,
+                              ],'id ='.$varidsatisfaccion.'')->execute();
+                  }    
+              }else{
+                $varDocumentoAsesor = Yii::$app->dbjarvis->createCommand('
+                        SELECT dur.documento FROM  dp_usuarios_red dur 
+                        WHERE 
+                        dur.usuario_red = :RedAsesor ')->bindValues($paramsBuscaAsesor)->queryScalar();
+
+                  if($varDocumentoAsesor){
+                      $paramsBuscaAsesordoc = [':DocumentoAsesor'=>$varDocumentoAsesor];
+                      $varusuario = Yii::$app->dbjarvis->createCommand('
+                                  SELECT du.usuario FROM  dp_usuarios_actualizacion du 
+                                  WHERE 
+                                  du.documento = :DocumentoAsesor ')->bindValues($paramsBuscaAsesordoc)->queryScalar();
+                      if($varusuario != '') {
+        
+                          Yii::$app->db->createCommand()->update('tbl_base_satisfaccion',[
+                                          'agente' => $varusuario,
+                                      ],'id ='.$varidsatisfaccion.'')->execute();
+                      }
+                  } 
+              }    
+            }      
 
             die(json_encode(array("status"=>"1","data"=>"Proceso .sip exitoso")));
     }    
