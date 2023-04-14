@@ -80,7 +80,11 @@ class BasesatisfaccionController extends Controller {
                                     'guardarencuesta', 'index', 'reglanegocio',
                                     'showencuestatelefonica', 'update', 'guardarformulario', 'showsubtipif', 'cancelarformulario', 'declinarformulario',
                                     'reabrirformulariogestionsatisfaccion', 'clientebasesatisfaccion', 'limpiarfiltro', 'buscarllamadas', 'showformulariogestion',
-                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos'],
+                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia',
+                                    'consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor',
+                                     'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar',
+                                     'comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones',
+                                     'enviartextos','enviarmotivos',,'encuestasatifaccion','correoalerta','totalencusaf','totalcomensaf'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -4750,7 +4754,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             public function actionAlertas() {
 
                 $model = new UploadForm();
-
+                $modelup = new Alertas();
                 $searchModel = new BaseSatisfaccionSearch();
                 $listo = 0;
 
@@ -4793,6 +4797,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'searchModel' => $searchModel,
                             'model' => $model,
                             'listo' => $listo,
+                            'modelup' => $modelup,
                 ]);
             }
 
@@ -4982,6 +4987,90 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     'model' => $model['0'],
                 ]);
 
+            }
+
+            public function actionCorreoalerta($id){
+
+                
+                
+                return $this->render('correoalerta',[
+                    
+                    'id'=> $id,
+
+            ]);
+
+            }
+
+            public function actionEncuestasatifaccion($id){
+
+                $model = (new \yii\db\Query())
+                            ->select('a.id, a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
+                            ->from('tbl_alertascx a')
+                            ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
+                            ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
+                            ->join('INNER JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = a.id')
+                            ->all();
+
+                $modelo = new EncuestaSaf();
+
+               
+                $form = Yii::$app->request->post();
+         
+                if ($modelo->load($form)){    
+                    $varRespEncuesta = $modelo->resp_encuesta_saf;
+                    $varComentario = $modelo->comentario_saf;
+                
+                  
+                    Yii::$app->db->createCommand()->insert('tbl_encuesta_saf',[
+                        'id_alerta' => $id,
+                        'resp_encuesta_saf' => $varRespEncuesta,
+                        'comentario_saf' => $varComentario,                
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'fechacreacion' => date('Y-m-d'),
+                        'anulado' => 0,                         
+                        ])->execute();
+
+                       
+                    }
+                          
+                return $this->render('encuestasatifaccion', [
+                    'model' => $model['0'],
+                    'id' => $id,
+                    'modelo' => $modelo,
+                    
+                ]);
+        
+                
+            }
+           
+             
+
+            public function actionTotalcomensaf($id){
+
+
+                $DataInfo = (new \yii\db\Query())
+                            ->select('comentario_saf, resp.descripcion')
+                            ->from(['tbl_encuesta_saf'])
+                            ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')
+                            ->where(['=','id_alerta',$id])
+                            ->orderBy(['resp.id_respuesta'=> SORT_DESC])
+                            ->all();
+
+                $varTipoResp = (new \yii\db\Query())
+                            ->select(['COUNT(resp_encuesta_saf), resp.descripcion'])
+                            ->from(['tbl_encuesta_saf'])
+                            ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')       
+                            ->where(['=','id_alerta',$id])
+                            ->groupBy(['resp_encuesta_saf'])
+                            ->all();
+                
+                return $this->render('totalcomensaf',[
+
+                    'DataInfo'=>$DataInfo,
+                    'id' => $id,
+                    'varTipoResp' =>$varTipoResp,
+                    
+                ]);
             }
 
 
