@@ -1,16 +1,13 @@
 <?php
+/* @var $this yii\web\View */
 
-use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use kartik\daterange\DateRangePicker;
-use yii\helpers\ArrayHelper;
-use yii\bootstrap\Modal;
-use yii\db\Query;
-
+use kartik\export\ExportMenu;
+use yii\helpers\Url;
 
 $variables  = Yii::$app->user->identity->id;
 
@@ -21,161 +18,23 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
         . ' {input}{error}{hint}</div>';
-                
-$varTipoAlerta = (new \yii\db\Query())
-        ->select(['tipo_alerta,COUNT(tipo_alerta) AS cant_alertas'])
-        ->from(['tbl_alertascx'])        
-        ->groupBy('tipo_alerta'); 
-
-$varTipoCliente = (new \yii\db\Query())
-        ->select(['cliente,COUNT(cliente) AS cant_clientes'])
-        ->from(['tbl_proceso_cliente_centrocosto'])        
-        ->groupBy('cliente');  
-?> 
-
+?>
 
 
 <style>
-    .card13 {
-            height: 240px;
-            width: auto;
-            margin-top: auto;
-            margin-bottom: auto;
-            background: #FFFFFF;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            padding: 10px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
-            font-size: 150%;    
-            text-align: left;    
-    }
-    
-     .card12 {
-            height: auto;
-            width: auto;
-            margin-top: auto;
-            margin-bottom: auto;
-            background: #FFFFFF;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            padding: 10px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
-            font-size: 150%;    
-            text-align: left;    
-    }
-    .card123 {
-            height: 580px;
-            width: auto;
-            margin-top: auto;
-            margin-bottom: auto;
-            background: #FFFFFF;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            padding: 10px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
-            font-size: 150%;    
-            text-align: left;    
-    }
-    .card1 {
-            height: auto;
-            width: auto;
-            margin-top: auto;
-            margin-bottom: auto;
-            background: #FFFFFF;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            padding: 10px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
-            font-size: 150%;    
-            text-align: left;    
-    }
-
-    .col-sm-6 {
-        width: 100%;
-    }
-
-    th {
-        text-align: left;
-        font-size: smaller;
-    }
-
-    .masthead {
-        height: 25vh;
-        min-height: 100px;
-        background-image: url('../../images/Alertas-Valoración.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        /*background: #fff;*/
-        border-radius: 5px;
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-    }
-
-    .loader {
-      border: 16px solid #f3f3f3;
-      border-radius: 50%;
-      border-top: 16px solid #3498db;
-      width: 80px;
-      height: 80px;
-      -webkit-animation: spin 2s linear infinite; /* Safari */
-      animation: spin 2s linear infinite;
-    }
-
-    /* Safari */
-    @-webkit-keyframes spin {
-      0% { -webkit-transform: rotate(0deg); }
-      100% { -webkit-transform: rotate(360deg); }
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+  .masthead {
+    height: 25vh;
+    min-height: 100px;
+    background-image: url('../../images/Alertas-Valoración.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  }
 
 </style>
-
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
-<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
-<script src="../../js_extensions/highcharts/highcharts.js"></script>
-<script src="../../js_extensions/chart.min.js"></script>
-<script src="../../js_extensions/highcharts/exporting.js"></script>
-<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
-<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
-<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
-<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
-<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
-<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
-<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
-<script src="../../js_extensions/mijs.js"> </script>
-
+<!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
@@ -186,472 +45,274 @@ $varTipoCliente = (new \yii\db\Query())
 </header>
 <br><br>
 
-<div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
-    <div class="col-md-6">
-        <div class="card1 mb" style="background: #6b97b1; ">
-            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Información"; ?> </label><!--titulo principal de mi modulo-->
-        </div>
-    </div>
-</div>
-<br>
-
 <div class="equipos-evaluados-form">    
 
-        <?php $form = ActiveForm::begin([
+    <?php $form = ActiveForm::begin([
         'layout' => 'horizontal',
         'fieldConfig' => [
             'inputOptions' => ['autocomplete' => 'off']
           ]
         ]); ?>
+
     <div class="row">
-        <div class="col-md-6">
-            <div class="card1"> 
-                <div class="col-md-12">
-
-                    <?=
-                    $form->field($model, 'fecha', [
-                        'labelOptions' => ['class' => 'col-md-12'],
-                        'template' => '<div class="col-md-4">{label}</div>'
-                        . '<div class="col-md-8"><div class="input-group">'
-                        . '<span class="input-group-addon" id="basic-addon1">'
-                        . '<i class="glyphicon glyphicon-calendar"></i>'
-                        . '</span>{input}</div>{error}{hint}</div>',
-                        'inputOptions' => ['aria-describedby' => 'basic-addon1'],
-                        'options' => ['class' => 'drp-container form-group']
-                    ])->widget(DateRangePicker::classname(), [
-                        'useWithAddon' => true,
-                        'convertFormat' => true,
-                        'presetDropdown' => true,
-                        'readonly' => 'readonly',
-                        'pluginOptions' => [
-                            'timePicker' => false,
-                            'format' => 'Y-m-d',
-                            'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
-                            'endDate' => date("Y-m-d"),
-                            'opens' => 'right'
-                    ]]);
-                    ?>
-                </div>
-                <br>
-                <div class="col-md-12">
-                    <?=
-                    $form->field($model, 'pcrc', ['template' => $template])
-                    ->widget(Select2::classname(), [
-                        'language' => 'es',
-                        'options' => ['placeholder' => Yii::t('app', 'Select ...')],
-                        'pluginOptions' => [
-                        'allowClear' => true,
-                        'minimumInputLength' => 3,
-                        'ajax' => [
-                        'url' => \yii\helpers\Url::to(['basesatisfaccion/getarbolesbypcrc']),
-                        'dataType' => 'json',
-                        'data' => new JsExpression('function(term,page) { return {search:term}; }'),
-                        'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
-                        ],
-                        'initSelection' => new JsExpression('function (element, callback) {
-                            var id=$(element).val();
-                            if (id !== "") {
-                                $.ajax("' . Url::to(['basesatisfaccion/getarbolesbypcrc']) . '?id=" + id, {
-                                    dataType: "json",
-                                    type: "post"
-                                }).done(function(data) { callback(data.results[0]);});
-                            }
-                        }')
-                        ]
-                        ]
-                        );
-                        ?>
-                </div>
-                <br>
-                <div class="col-md-12">            
-                        <?=
-                            $form->field($model, 'responsable', ['template' => $template])
-                            ->widget(Select2::classname(), [
-                                'language' => 'es',
-                                'options' => ['placeholder' => Yii::t('app', 'Select ...')],
-                                'pluginOptions' => [
-                                    'allowClear' => true,
-                                    'minimumInputLength' => 4,
-                                    'ajax' => [
-                                        'url' => \yii\helpers\Url::to(['reportes/usuariolist']),
-                                        'dataType' => 'json',
-                                        'data' => new JsExpression('function(term,page) { return {search:term}; }'),
-                                        'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
-                                    ],
-                                    'initSelection' => new JsExpression('function (element, callback) {
-                                                var id=$(element).val();
-                                                if (id !== "") {
-                                                    $.ajax("' . Url::to(['reportes/usuariolist']) . '?id=" + id, {
-                                                        dataType: "json",
-                                                        type: "post"
-                                                    }).done(function(data) { callback(data.results[0]);});
-                                                }
-                                            }')
-                                ]
-                                    ] 
-                        );
-                        ?> 
-                </div>   
-                <br>
-                    <div class="col-md-12">
-                        <?=
-                        Html::submitButton(Yii::t('app', 'Buscar'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','style' => 'width:800px;'])
-                        ?>
-                        <?php //Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default'])      ?>
-                    </div>        
-                
-            </div>
+        <div class="col-md-6">  
+            <?=
+            $form->field($model, 'fecha', [
+                'labelOptions' => ['class' => 'col-md-12'],
+                'template' => '<div class="col-md-4">{label}</div>'
+                . '<div class="col-md-8"><div class="input-group">'
+                . '<span class="input-group-addon" id="basic-addon1">'
+                . '<i class="glyphicon glyphicon-calendar"></i>'
+                . '</span>{input}</div>{error}{hint}</div>',
+                'inputOptions' => ['aria-describedby' => 'basic-addon1'],
+                'options' => ['class' => 'drp-container form-group']
+            ])->widget(DateRangePicker::classname(), [
+                'useWithAddon' => true,
+                'convertFormat' => true,
+                'presetDropdown' => true,
+                'readonly' => 'readonly',
+                'pluginOptions' => [
+                    'timePicker' => false,
+                    'format' => 'Y-m-d',
+                    'startDate' => date("Y-m-d", strtotime(date("Y-m-d") . " -1 day")),
+                    'endDate' => date("Y-m-d"),
+                    'opens' => 'right'
+            ]]);
+            ?>
         </div>
         <div class="col-md-6">
-            <div class="row">
-                    <div class="card1 mb">
-                        <label class="text-center" style="font-size: 20px;"><em class="fas fa-hashtag" style="font-size: 25px; color: #1993a5;"></em> Cantidad de Alertas: </label>
-                        
-                        <label style="font-size: 30px;" class="text-center" ><?php
-                        $var = (new \yii\db\Query())
-                            ->select(['count(*)'])
-                            ->from(['tbl_alertascx'])
-                            ->Scalar();
-                            echo $var
-                        ?></label>
-                        
-                    </div>
+            <?=
+            $form->field($model, 'pcrc', ['template' => $template])
+            ->widget(Select2::classname(), [
+                'language' => 'es',
+                'options' => ['placeholder' => Yii::t('app', 'Select ...')],
+                'pluginOptions' => [
+                'allowClear' => true,
+                'minimumInputLength' => 3,
+                'ajax' => [
+                'url' => \yii\helpers\Url::to(['basesatisfaccion/getarbolesbypcrc']),
+                'dataType' => 'json',
+                'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                ],
+                'initSelection' => new JsExpression('function (element, callback) {
+                    var id=$(element).val();
+                    if (id !== "") {
+                        $.ajax("' . Url::to(['basesatisfaccion/getarbolesbypcrc']) . '?id=" + id, {
+                            dataType: "json",
+                            type: "post"
+                        }).done(function(data) { callback(data.results[0]);});
+                    }
+                }')
+                ]
+                ]
+                );
+                ?>
 
-            </div>
-        
-            <hr>
-            <div class="row">
-                    <div class="card1 mb">
-                        <label style="font-size: 20px;"><em class="fas fa-download" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Descargar Global') ?></label> 
-                        <a id="dlink" style="display:none;"></a>
-                        <button  class="btn btn-primary"  id="btn" rel="stylesheet" type="text/css" title="Descagar Global"><?= Yii::t('app', 'Descargar Global') ?></button>
-                    
-                    </div>
-                        
-                    </div>
-
-            </div>
         </div>
+    </div> 
 
-
-
+    <div class="row">        
+        <div class="col-md-6">            
+            <?=
+                        $form->field($model, 'responsable', ['template' => $template])
+                        ->widget(Select2::classname(), [
+                            'language' => 'es',
+                            'options' => ['placeholder' => Yii::t('app', 'Select ...')],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'minimumInputLength' => 4,
+                                'ajax' => [
+                                    'url' => \yii\helpers\Url::to(['reportes/usuariolist']),
+                                    'dataType' => 'json',
+                                    'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                    'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                                ],
+                                'initSelection' => new JsExpression('function (element, callback) {
+                                            var id=$(element).val();
+                                            if (id !== "") {
+                                                $.ajax("' . Url::to(['reportes/usuariolist']) . '?id=" + id, {
+                                                    dataType: "json",
+                                                    type: "post"
+                                                }).done(function(data) { callback(data.results[0]);});
+                                            }
+                                        }')
+                            ]
+                                ] 
+                    );
+            ?> 
+        </div>  
     </div>
-
-   <br><hr><br>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <?=
+            Html::submitButton(Yii::t('app', 'Buscar'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+            ?>
+            <?php //Html::a(Yii::t('app', 'Cancel'), ['index'] , ['class' => 'btn btn-default'])      ?>
+        </div>        
+    </div>
 
     <?php ActiveForm::end(); ?>    
-
-    <br><br>
-
-    <div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
-        <div class="col-md-6">
-            <div class="card1 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Resumen Proceso"; ?> </label><!--titulo principal de mi modulo-->
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-    
-        
-        <div class="col-md-6">
-            <!-- inicio del div de la tarjeta de tamaño 8 -->
-        
-            <div class="card1 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
-    
-                <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
-                    <caption><label><em class="fas fa-list" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Resumen Proceso') ?></label></caption><!--Titulo de la tabla si se muestra-->
-                    <thead><!--Emcabezados de la tabla -->
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Programa') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Cliente') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Cantidad de alertas') ?></label></th>
-                    </thead>
-                
-                    
-                        <tbody>
-                            <?php foreach ($resumenFeedback as $value) : ?>
-                                <tr>
-                                    <td><?= $value["Programa"]; ?></td>
-                                    <td><?= $value["Cliente"]; ?></td>
-                                    <td><?= $value["Count"]; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                    </tbody><!--fin Tbody de la tabla -->
-                </table><!--fin  de la tabla -->
-    
-            </div><!--fin de la tarjeta dond esta la tabla -->
-        </div>
-
-        <div class="col-md-6"><!-- inicio del div de la tarjeta de tamaño 8 -->
-        <!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
-            <div class="card123 mb">
-                <table style="width:100%">
-                    <th scope="col" class="text-center" style="width: 100px;">
-                            <label style="font-size: 20px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #1993a5;"></em> <?= Yii::t('app', 'Grafica Tipos de Alertas') ?></label><br>
-                            <div id="containeralerta" class="highcharts-container" style="height: 360;"></div> 
-                    </th>
-                </table>
-            </div>                        
-            
-        </div>
-                    
-    </div>
-
-    <br><hr><br> 
-
-    <div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
-        <div class="col-md-6">
-            <div class="card1 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Resumen Técnico"; ?> </label><!--titulo principal de mi modulo-->
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        
-        <div class="col-md-6"><!-- inicio del div de la tarjeta de tamaño 8 -->
-            
-            <div class="card1 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
-        
-                <table id="myTablee" class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
-                    <caption><label><em class="fas fa-list" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Resumen Técnico') ?></label></caption><!--Titulo de la tabla si se muestra-->
-                    <thead><!--Emcabezados de la tabla -->
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Tecnico') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Programa') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Cliente') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Cantidad de alertas') ?></label></th>
-
-                    </thead>
-                
-                    
-                    <tbody>
-                            <?php foreach ($detalleLiderFeedback as $value) : ?>
-                                <tr>
-                                    <td><?= $value["Tecnico"]; ?></td>
-                                    <td><?= $value["Programa"]; ?></td>
-                                    <td><?= $value["Cliente"]; ?></td>
-                                    <td><?= $value["Count"]; ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-
-        <div class="col-md-6">
-            <div class="card12 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
-    
-                <table style="width:100%">
-                    <th scope="col" class="text-center" style="width: 100px;">
-                            <label style="font-size: 20px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #1993a5;"></em> <?= Yii::t('app', 'Grafica Tipo de Cliente') ?></label><br>
-                            <div id="chartContainerClientes" class="highcharts-container" style="height: 650px;"></div> 
-                    </th>
-                </table>
-                
-            </div><!--fin de la tarjeta dond esta la tabla -->
-        </div>
-    </div>
-    <br><hr><br>
-
-                
-    <div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
-        <div class="col-md-6">
-            <div class="card1 mb" style="background: #6b97b1; ">
-            <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Vista Global"; ?> </label><!--titulo principal de mi modulo-->
-            </div>
-        </div>
-    </div>
-
-    <?php
-        if($variables == "70" || $variables == "415" || $variables == "7" || $variables == "438" || $variables == "991" || $variables == "1609" ||
-            $variables == "1796" || $variables == "223" || $variables == "556" || $variables == "1251" || $variables == "790" || $variables == "473" ||
-                $variables == "777" || $variables == "2953" || $variables == "3229" || $variables == "3468" || $variables == "2913" || $variables == "2911" || $variables == "2991" || $variables == "2990" || $variables == "57" ){
-    ?>
-        
-    <div class="row">  
-        <div class="col-md-12"><!-- inicio del div de la tarjeta de tamaño 8 -->
-            
-            <div class="card1 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
-        
-                <table id="myTablee3" class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
-                    <caption><label><em class="fas fa-list" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Global') ?></label></caption><!--Titulo de la tabla si se muestra-->
-                    <thead><!--Emcabezados de la tabla -->
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Fecha') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Servicio / PCRC') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Valorador') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Tipo de Alerta') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Detalle') ?></label></th>
-
-                    </thead>
-                
-                    
-                    <tbody>
-                        <?php foreach ($dataProvider as $value) : ?>
-                            <tr>
-                                <td><?= $value["fecha"]; ?></td>
-                                <td><?= $value["Programa"]; ?></td>
-                                <td><?= $value["Tecnico"]; ?></td>
-                                <td><?= $value["tipo_alerta"]; ?></td>
-                                <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view"></a></td>
-                                <td><input type="image" src="../../../web/images/ico-delete.png" alt="icon-delete" name="imagenes" style="cursor:hand" id="imagenes" onclick="eliminarDato(<?php echo $value["xid"] ?>);" /></td> 
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div> 
-    </div>        
-    <?php
-    }
-    else
-    {
-    ?>
-        
-    <br>
-    <div class="row">   
-        <div class="col-md-12"><!-- inicio del div de la tarjeta de tamaño 8 -->
-            
-            <div class="card1 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
-        
-                <table id="myTablee3" class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
-                    <caption><label><em class="fas fa-list" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Global') ?></label></caption><!--Titulo de la tabla si se muestra-->
-                    <thead><!--Emcabezados de la tabla -->
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Fecha') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Servicio / PCRC') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Valorador') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Tipo de Alerta') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Detalle') ?></label></th>
-                    </thead>
-                
-                    
-                    <tbody>
-                        <?php foreach ($dataProvider as $value) : ?>
-                            <tr>
-                                <td><?= $value["fecha"]; ?></td>
-                                <td><?= $value["Programa"]; ?></td>
-                                <td><?= $value["Tecnico"]; ?></td>
-                                <td><?= $value["tipo_alerta"]; ?></td>
-                                <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view"></a></td>                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div> 
-    <?php
-    }
-    ?>
-
-
-    <?php
-        if($variables == "70" || $variables == "415" || $variables == "7" || $variables == "438" || $variables == "991" || $variables == "1609" ||
-            $variables == "1796" || $variables == "223" || $variables == "556" || $variables == "1251" || $variables == "790" || $variables == "473" ||
-                $variables == "777" || $variables == "2953" || $variables == "3229" || $variables == "3468" || $variables == "2913" || $variables == "2911" || $variables == "2991" || $variables == "2990" || $variables == "57" ){
-    ?>
-        
-    <div class="row" hidden="hidden">  
-        <div class="col-md-12"><!-- inicio del div de la tarjeta de tamaño 8 -->
-            
-            <div class="card1 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
-        
-                <table id="myTableOcult" hidden="hidden" class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
-                    <caption><label><em class="fas fa-list" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Global') ?></label></caption><!--Titulo de la tabla si se muestra-->
-                    <thead><!--Emcabezados de la tabla -->
-                    <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Fecha') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Servicio / PCRC') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Valorador') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Tipo de Alerta') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Destinarios') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Asunto') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Comentarios') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Respuesta') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Comentario Encuesta') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'ID Encuesta') ?></label></th>
-
-                    </thead>
-                
-                    
-                    <tbody>
-                        <?php foreach ($dataTablaGlobal as $value) : ?>
-                            <tr>
-                                <td><?= $value["fecha"]; ?></td>
-                                <td><?= $value["name"]; ?></td>
-                                <td><?= $value["usua_nombre"]; ?></td>
-                                <td><?= $value["tipo_alerta"]; ?></td>
-                                <td><?= $value["remitentes"]; ?></td>
-                                <td><?= $value["asunto"]; ?></td>
-                                <td><?= $value["comentario"]; ?></td>
-                                <td><?= $value["resp_encuesta_saf"]; ?></td>
-                                <td><?= $value["comentario_saf"]; ?></td>
-                                <td><?= $value["id_encuesta_saf"]; ?></td>   
-                                <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view"></a></td>
-                                <td><input type="image" src="../../../web/images/ico-delete.png" alt="icon-delete" name="imagenes" style="cursor:hand" id="imagenes" onclick="eliminarDato(<?php echo $value["xid"] ?>);" /></td> 
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div> 
-    </div>        
-    <?php
-    }
-    else
-    {
-    ?>
-        
-    <br>
-    <div class="row" hidden="hidden" >   
-        <div class="col-md-12"><!-- inicio del div de la tarjeta de tamaño 8 -->
-            
-            <div class="card1 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
-        
-                <table id="myTableOcult"  hidden="hidden"  class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
-                    <caption><label><em class="fas fa-list" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Global') ?></label></caption><!--Titulo de la tabla si se muestra-->
-                    <thead><!--Emcabezados de la tabla -->
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Fecha') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Servicio / PCRC') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Valorador') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Tipo de Alerta') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Destinarios') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Asunto') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Comentarios') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Respuesta') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Comentario Encuesta') ?></label></th>
-                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'ID Encuesta') ?></label></th>
-                    </thead>
-                
-                    
-                    <tbody>
-                    <?php  foreach ($dataTablaGlobal as $key => $value) {
-                        
-                    ?> 
-                            <tr>
-                                <td><?= $value["fecha"]; ?></td>
-                                <td><?= $value["name"]; ?></td>
-                                <td><?= $value["usua_nombre"]; ?></td>
-                                <td><?= $value["tipo_alerta"]; ?></td>
-                                <td><?= $value["remitentes"]; ?></td>
-                                <td><?= $value["asunto"]; ?></td>
-                                <td><?= $value["comentario"]; ?></td>
-                                <td><?= $value["resp_encuesta_saf"]; ?></td>
-                                <td><?= $value["comentario_saf"]; ?></td>
-                                <td><?= $value["id_encuesta_saf"]; ?></td>                           
-                                <td><a href="veralertas/<?php echo $value["id"] ?>"  href="veralertas/" . <?= $value["id"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view"></a></td>                        </tr>
-                        <?php  } ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div> 
-    <?php
-    }
-    ?>
-
-    <br>
-
-    <br><hr><br>
 </div>
+
+
+    <div class="col-sm-6" style="padding-right: 0px;">
+        <div class="page-header">
+            <h3><?= Yii::t('app', 'Resumen Proceso') ?></h3>
+        </div>
+        <div style="max-height: 300px; overflow: auto">
+            <table class="table table-striped table-bordered tblResDetFeed">
+            <caption>...</caption>
+                <thead>
+                    <tr>
+                        <th id="programa"><?= Yii::t('app', 'Programa') ?></th>
+                        <th id="cliente"><?= Yii::t('app', 'Cliente') ?></th>
+                        <th id="cantidadAlertas"><?= Yii::t('app', 'Cantidad de alertas') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($resumenFeedback as $value) : ?>
+                        <tr>
+                            <td><?= $value["Programa"]; ?></td>
+                            <td><?= $value["Cliente"]; ?></td>
+                            <td><?= $value["Count"]; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>    
+   
+    <div class="col-sm-6" style="padding-right: 0px;">
+        <div class="page-header">
+            <h3><?= Yii::t('app', 'Resumen Tecnico') ?></h3>
+        </div>
+        <div style="max-height: 300px; overflow: auto">
+            <table class="table table-striped table-bordered tblResDetFeed">
+            <caption>...</caption>
+                <thead>
+                    <tr>
+                        <th id="tecnico"><?= Yii::t('app', 'Tecnico') ?></th>
+                        <th id="programa"><?= Yii::t('app', 'Programa') ?></th>
+                        <th id="cliente"><?= Yii::t('app', 'Cliente') ?></th>
+                        <th id="cantidadAlertas"><?= Yii::t('app', 'Cantidad de alertas') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($detalleLiderFeedback as $value) : ?>
+                        <tr>
+                            <td><?= $value["Tecnico"]; ?></td>
+                            <td><?= $value["Programa"]; ?></td>
+                            <td><?= $value["Cliente"]; ?></td>
+                            <td><?= $value["Count"]; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<div class="col-sm-6" style="padding-right: 0px;">
+    &nbsp;
+    	<div class="page-header">
+    		<br>
+        	<h3><?= Yii::t('app', 'Vista Global') ?></h3>
+	</div>
+</div>
+
+	<div class="btn-group" style=" padding: 10px; margin-right:1200px">
+		<div class="dropdown open">
+  			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+     				<span class="glyphicon glyphicon-th-list"></span> Exportar
+   			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				<li><a href="#" onclick="javascript:xport.toCSV('Alertas');"> <em class="glyphicon glyphicon-export"></em> Excel 2010</a></li>			
+				<li><a href="#" onclick="javascript:xport.toCSV('Alertas');"> <em class="glyphicon glyphicon-export"></em> Excel 2007</a></li>				
+				<li class="divider"></li>				
+			</ul>
+		</div>
+	</div>
+
+<?php
+	if($variables == "70" || $variables == "415" || $variables == "7" || $variables == "438" || $variables == "991" || $variables == "1609" ||
+		$variables == "1796" || $variables == "223" || $variables == "556" || $variables == "1251" || $variables == "790" || $variables == "473" ||
+			$variables == "777" || $variables == "2953" || $variables == "3229" || $variables == "3468" || $variables == "2913" || $variables == "2911" || $variables == "2991" || $variables == "2990" || $variables == "57" ){
+?>
+    <div class="col-sm-12">    
+	<?php
+		$var = Yii::$app->db->createCommand("select count(*) from tbl_alertascx")->queryScalar();
+		echo "Mostrando " .$var." elementos."
+	?>
+	<br>    
+        <div style="max-height: 300px; overflow: auto">
+            <table id="Alertas" class="table table-striped table-bordered tblResDetFeed">
+            <caption>Tabla alertas </caption>
+                <thead>
+                    <tr>
+                        <th id="fecha"><?= Yii::t('app', 'Fecha') ?></th>
+                        <th id="servicioPcrc"><?= Yii::t('app', 'Servicio / PCRC') ?></th>
+                        <th id="valorador"><?= Yii::t('app', 'Valorador') ?></th>
+                        <th id="tipoAlerta"><?= Yii::t('app', 'Tipo de Alerta') ?></th>
+                        <th id="detalle"><?= Yii::t('app', 'Detalle') ?></th>
+                        <th id="eliminar"><?= Yii::t('app', 'Eliminar') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($dataProvider as $value) : ?>
+                        <tr>
+                            <td><?= $value["fecha"]; ?></td>
+                            <td><?= $value["Programa"]; ?></td>
+                            <td><?= $value["Tecnico"]; ?></td>
+                            <td><?= $value["tipo_alerta"]; ?></td>
+                            <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view"></a></td>
+			    <td><input type="image" src="../../../web/images/ico-delete.png" alt="icon-delete" name="imagenes" style="cursor:hand" id="imagenes" onclick="eliminarDato(<?php echo $value["xid"] ?>);" /></td> 
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?php
+}
+else
+{
+?>
+    <div class="col-sm-12">    
+	<?php
+		$var = Yii::$app->db->createCommand("select count(*) from tbl_alertascx")->queryScalar();
+		echo "Mostrando " .$var." elementos."
+	?>
+	<br>    
+        <div style="max-height: 300px; overflow: auto">
+            <table id="Alertas" class="table table-striped table-bordered tblResDetFeed">
+            <caption>Tabla alertas</caption>
+                <thead>
+                    <tr>
+                        <th id="fecha"><?= Yii::t('app', 'Fecha') ?></th>
+                        <th id="servicioPcrc"><?= Yii::t('app', 'Servicio / PCRC') ?></th>
+                        <th id="valorador"><?= Yii::t('app', 'Valorador') ?></th>
+                        <th id="tipoAlerta"><?= Yii::t('app', 'Tipo de Alerta') ?></th>
+                        <th id="detalle"><?= Yii::t('app', 'Detalle') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($dataProvider as $value) : ?>
+                        <tr>
+                            <td><?= $value["fecha"]; ?></td>
+                            <td><?= $value["Programa"]; ?></td>
+                            <td><?= $value["Tecnico"]; ?></td>
+                            <td><?= $value["tipo_alerta"]; ?></td>
+                            <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view" style="cursor:hand"></a></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?php
+}
+?>
+
 
 <script type="text/javascript">
 
@@ -785,204 +446,11 @@ var xport = {
 
 <script>
 
-var tableToExcel = (function () {
-        var uri = 'data:application/vnd.ms-excel;base64,',
-            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
-            base64 = function (s) {
-                return window.btoa(unescape(encodeURIComponent(s)))
-            }, format = function (s, c) {
-                return s.replace(/{(\w+)}/g, function (m, p) {
-                    return c[p];
-                })
-            }
-        return function (table, name) {
-            if (!table.nodeType) table = document.getElementById(table)
-            var ctx = {
-                worksheet: name || 'Worksheet',
-                table: table.innerHTML
-            }
-            console.log(uri + base64(format(template, ctx)));
-            document.getElementById("dlink").href = uri + base64(format(template, ctx));
-            document.getElementById("dlink").download = "Alertas";
-            document.getElementById("dlink").traget = "_blank";
-            document.getElementById("dlink").click();
-
-        }
-    })();
-    function download(){
-        $(document).find('tfoot').remove();
-        var name = document.getElementById("name");
-        tableToExcel('myTableOcult', 'Plantilla', name+'.xls')
-        //setTimeout("window.location.reload()",0.0000001);
-
-    }
-    var btn = document.getElementById("btn");
-    btn.addEventListener("click",download); 
-    
-
 	$.ajaxSetup({
         data: <?= \yii\helpers\Json::encode([
             \yii::$app->request->csrfParam => \yii::$app->request->csrfToken,
         ]) ?>
     });
 
-    $(document).ready( function () {
-    $('#myTable').DataTable({
-      responsive: true,
-      fixedColumns: true,
-      select: true,
-      "language": {
-        "lengthMenu": "Cantidad de Datos a Mostrar",
-        "zeroRecords": "No se encontraron datos ",
-        "info": "Mostrando p&aacute;gina Page a Pages de Max registros",
-        "infoEmpty": "No hay datos aun",
-        "infoFiltered": "(Filtrado un Max total)",
-        "search": "Buscar:",
-        "paginate": {
-          "first":      "Primero",
-          "last":       "Ultimo",
-          "next":       "Siguiente",
-          "previous":   "Anterior"
-            }
-        } 
-        });
-    });
-    $(document).ready( function () {
-    $('#myTablee').DataTable({
-      responsive: true,
-      fixedColumns: true,
-      select: true,
-      "language": {
-        "lengthMenu": "Cantidad de Datos a Mostrar",
-        "zeroRecords": "No se encontraron datos ",
-        "info": "Mostrando p&aacute;gina Page a Pages de Max registros",
-        "infoEmpty": "No hay datos aun",
-        "infoFiltered": "(Filtrado un Max total)",
-        "search": "Buscar:",
-        "paginate": {
-          "first":      "Primero",
-          "last":       "Ultimo",
-          "next":       "Siguiente",
-          "previous":   "Anterior"
-            }
-        } 
-        });
-    });
-
-    $(document).ready( function () {
-    $('#myTablee3').DataTable({
-      responsive: true,
-      fixedColumns: true,
-      select: true,
-      "language": {
-        "lengthMenu": "Cantidad de Datos a Mostrar",
-        "zeroRecords": "No se encontraron datos ",
-        "info": "Mostrando p&aacute;gina Page a Pages de Max registros",
-        "infoEmpty": "No hay datos aun",
-        "infoFiltered": "(Filtrado un Max total)",
-        "search": "Buscar:",
-        "paginate": {
-          "first":      "Primero",
-          "last":       "Ultimo",
-          "next":       "Siguiente",
-          "previous":   "Anterior"
-            }
-        } 
-        });
-    });
-
-
-    $('#containeralerta').highcharts({
-            chart: {                
-                type: 'bar'
-            },
-
-            yAxis: {
-              title: {
-                text: 'Cantidad de Alertas'
-              }
-            }, 
-
-            title: {
-              text: '',
-            style: {
-                    color: '#3C74AA'
-              }
-            },
-
-            xAxis: {
-                  categories: " ",
-                  title: {
-                      text: null
-                  }
-                },
-
-            series: [              
-                
-                <?php                         
-                        foreach($varTipoAlerta->each() as $alerta){?>
-                        {
-                            name: "<?php echo $alerta['tipo_alerta'];?>",
-                            data: [<?php echo $alerta['cant_alertas'];?> ]                         
-                        },
-                        <?php }?> 
-            ],
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 500
-                    },
-                    chartOptions: {
-                        legend: {
-                            layout: 'horizontal',
-                            align: 'center',
-                            verticalAlign: 'bottom'
-                        }
-                    }
-                }]
-            }        
-          });
-
-         
-        $('#chartContainerClientes').highcharts({
-            chart: {                
-                type: 'column'
-            },
-
-            yAxis: {
-              title: {
-                text: 'Cantidad de Alertas'
-              }
-            }, 
-
-            title: {
-              text: '',
-            style: {
-                    color: '#3C74AA'
-              }
-            },
-
-            xAxis: {
-                  categories: " ",
-                  title: {
-                  text: null,
-                  }
-                },
-
-            series: [              
-                
-                <?php                         
-                        foreach($varTipoCliente->each() as $cliente){?>
-                        {
-                            name: "<?php echo $cliente['cliente'];?>",
-                            data: [<?php echo $cliente['cant_clientes'];?> ]                         
-                        },
-                        <?php }?> 
-            ],
-                
-        });
-
-
-          
 </script>
 
