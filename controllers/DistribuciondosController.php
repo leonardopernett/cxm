@@ -132,6 +132,31 @@ use app\models\DistribucionAsesores;
                   ])->execute();
         }
 
+        Yii::$app->db->createCommand()->truncateTable('tbl_distribucion_lideresclientes')->execute();
+
+        $varListadoLideresActualizado = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_distribucion_asesores.cedulalider',
+                                      'tbl_distribucion_asesores.id_dp_clientes',
+                                      'tbl_distribucion_asesores.cod_pcrc'
+                                    ])
+                                    ->from(['tbl_distribucion_asesores'])
+                                    ->where(['=','tbl_distribucion_asesores.anulado',0])
+                                    ->groupby(['tbl_distribucion_asesores.cedulalider'])
+                                    ->all(); 
+
+        foreach ($varListadoLideresActualizado as $key => $value) {
+          Yii::$app->db->createCommand()->insert('tbl_distribucion_lideresclientes',[
+                      'cedulalider' => $value['cedulalider'], 
+                      'id_dp_clientes' => $value['id_dp_clientes'],
+                      'cod_pcrc' => $value['cod_pcrc'],
+                      'fechamodificacion' => date('Y-m-d'),
+                      'fechacreacion' => date('Y-m-d'),
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,
+                  ])->execute();
+        }
+
         $this->Guardarcantidades();
 
         return $this->redirect('procesaasesores');
