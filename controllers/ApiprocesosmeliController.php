@@ -76,7 +76,7 @@ use GuzzleHttp;
         ignore_user_abort(true);
         set_time_limit(900);
 
-        $varListDataValoracion = Yii::$app->get('dbMeli')->createCommand('
+        $varListDataValoracion = Yii::$app->get('dbmeli')->createCommand('
             SELECT
                 m.submission_id,
                 m.cx_queue_name AS formulario,
