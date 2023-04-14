@@ -753,7 +753,7 @@ $this->title = 'Dashboard Escuchar +';
                       
                       if ($txtTipoFormIndicador == 0) {
                         $txtRtaProcentaje = (round(($varconteo / $txtCantidad) * 100, 1));
-                        var_dump($varNombreIndicador.': '.$varconteo);
+                        
                       }else{
                         
                         $txtRtaProcentaje = (100 - (round(($varconteo / $txtCantidad) * 100, 1)));
