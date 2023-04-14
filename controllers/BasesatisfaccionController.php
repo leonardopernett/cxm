@@ -84,7 +84,7 @@ class BasesatisfaccionController extends Controller {
                                     'consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor',
                                      'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar',
                                      'comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones',
-                                     'enviartextos','enviarmotivos',,'encuestasatifaccion','correoalerta','totalencusaf','totalcomensaf'],
+                                     'enviartextos','enviarmotivos','encuestasatifaccion','correoalerta','totalencusaf','totalcomensaf'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
