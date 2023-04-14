@@ -76,7 +76,7 @@ use GuzzleHttp;
       ignore_user_abort(true);
       set_time_limit(900);
 
-      $varListPrimeraTabla = Yii::$app->get('dbMeli')->createCommand('
+      $varListPrimeraTabla = Yii::$app->get('dbmeli')->createCommand('
         SELECT * FROM mercadolibre.meli_178577_NRT_KTA_OE_ACTION_V3
         ')->queryAll();
 
