@@ -206,6 +206,8 @@ $config = [
         'dbjarvis3' => require(__DIR__ . '/dbjarvis3.php'),
         /*BASE DE DATOS DE JARVIS2*/
         'dbjarvis2' => require(__DIR__ . '/dbjarvis2.php'),
+        /*BASE DE DATOS DE MERCADOLIBRE*/
+        'dbmeli' => require(__DIR__ . '/dbmeli.php'),
 	/*BASE DE DATOS DE experience*/
         'dbexperience' => require(__DIR__ . '/dbexperience.php'),
         /* BASE DE DATOS PARA REDBOX */
