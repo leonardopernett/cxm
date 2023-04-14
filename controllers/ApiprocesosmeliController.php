@@ -66,23 +66,37 @@ use GuzzleHttp;
     }
 
     public function actionApivaloraciones(){
-      $datapost = file_get_contents('php://input');
-      $data_post = json_decode($datapost,true);
+        $datapost = file_get_contents('php://input');
+        $data_post = json_decode($datapost,true);
 
-      ini_set("max_execution_time", "900");
-      ini_set("memory_limit", "1024M");
-      ini_set( 'post_max_size', '1024M' );
+        ini_set("max_execution_time", "900");
+        ini_set("memory_limit", "1024M");
+        ini_set( 'post_max_size', '1024M' );
 
-      ignore_user_abort(true);
-      set_time_limit(900);
+        ignore_user_abort(true);
+        set_time_limit(900);
 
-      $varListPrimeraTabla = Yii::$app->get('dbmeli')->createCommand('
-        SELECT * FROM mercadolibre.meli_178577_NRT_KTA_OE_ACTION_V3
+        $varListDataValoracion = Yii::$app->get('dbMeli')->createCommand('
+            SELECT
+                m.submission_id,
+                m.cx_queue_name AS formulario,
+                m.user_ldap AS valorado,
+                m.user_team_leader_ldap AS lider,
+                m.analysis_owner_ldap AS valorador,
+                m.analysis_reason AS dimensiones,
+                m.pc_comment_analysis AS comentarios,
+                m.oe_extra_mile AS scoregeneral,
+                m.action_datetime AS fechacreacion
+ 
+            FROM meli_178619_NRT_KTA_OE_ACTION_POINTS_REASONS_V3 m
+            WHERE 
+                m.pc_name = "client_problem_rep"
+                    AND m.oe_extra_mile IS NOT NULL 
         ')->queryAll();
 
-      var_dump($varListPrimeraTabla);
+        var_dump($varListDataValoracion);
 
-      die(json_encode("Aqui vamos"));
+        die(json_encode("Aqui vamos"));
     }
 
   }
