@@ -92,7 +92,8 @@ use GuzzleHttp;
             WHERE 
                 m.pc_name = "client_problem_rep"
                     AND m.oe_extra_mile IS NOT NULL 
-            ORDER BY m.action_datetime
+            GROUP BY m.submission_id
+                ORDER BY m.action_datetime
         ')->queryAll();
 
         foreach ($varListDataValoracion as $key => $value) {
