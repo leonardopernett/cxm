@@ -99,11 +99,11 @@ use GuzzleHttp;
           
             $varExisteConexion = (new \yii\db\Query())
                                 ->select([
-                                'tbl_conexionvaloracion_datosorigen.submission_id'
+                                'tbl_conexionvaloracion_datosorigen.identificador_origen'
                                 ])
                                 ->from(['tbl_conexionvaloracion_datosorigen'])
                                 ->where(['=','tbl_conexionvaloracion_datosorigen.anulado',0])
-                                ->andwhere(['=','tbl_conexionvaloracion_datosorigen.submission_id',$value['submission_id']])
+                                ->andwhere(['=','tbl_conexionvaloracion_datosorigen.identificador_origen',$value['submission_id']])
                                 ->count();
 
             if ($varExisteConexion == 0) {
