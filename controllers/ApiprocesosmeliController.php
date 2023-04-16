@@ -92,9 +92,40 @@ use GuzzleHttp;
             WHERE 
                 m.pc_name = "client_problem_rep"
                     AND m.oe_extra_mile IS NOT NULL 
+            ORDER BY m.action_datetime
         ')->queryAll();
 
-        var_dump($varListDataValoracion);
+        foreach ($varListDataValoracion as $key => $value) {
+          
+            $varExisteConexion = (new \yii\db\Query())
+                                ->select([
+                                'tbl_conexionvaloracion_datosorigen.submission_id'
+                                ])
+                                ->from(['tbl_conexionvaloracion_datosorigen'])
+                                ->where(['=','tbl_conexionvaloracion_datosorigen.anulado',0])
+                                ->andwhere(['=','tbl_conexionvaloracion_datosorigen.submission_id',$value['submission_id']])
+                                ->count();
+
+            if ($varExisteConexion == 0) {
+                Yii::$app->db->createCommand()->insert('tbl_conexionvaloracion_datosorigen',[
+                    'identificador_origen' => $value['submission_id'],
+                    'formulario_origen' => $value['formulario'],
+                    'valorado_origen' => $value['valorado'],
+                    'lider_origen' => $value['lider'],
+                    'valorador_origen' => $value['valorador'],
+                    'dimensiones_origen' => $value['dimensiones'],
+                    'comentarios_origen' => $value['comentarios'],
+                    'score_origen' => $value['scoregeneral'],
+                    'fechacreacion_origen' => $value['fechacreacion'],
+                    'fechacreacion' => date('Y-m-d'),
+                    'anulado' => 0,
+                    'usua_id' => 1,
+                ])->execute();
+            } 
+  
+        }
+
+
 
         die(json_encode("Aqui vamos"));
     }
