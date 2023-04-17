@@ -210,6 +210,7 @@ use app\models\UsuariosEvalua;
       if ($model5->load($form)) {
         $valestado = $model5->id_estado;
       }
+      $valestado = 4;
       if ($model6->load($form)) {
         $valtiporesp = $model6->ccdirector;
 
@@ -328,10 +329,15 @@ use app\models\UsuariosEvalua;
 
     if ($modelcaso->load($form)) { 
       
+      $varmaxid = (new \yii\db\Query())
+        ->select(['MAX(tbl_qr_casos.id)'])
+        ->from(['tbl_qr_casos'])
+        ->Scalar();
       $varnumcaso = (new \yii\db\Query())
-      ->select(['MAX(tbl_qr_casos.numero_caso)'])
-      ->from(['tbl_qr_casos'])
-      ->Scalar();
+        ->select(['tbl_qr_casos.numero_caso'])
+        ->from(['tbl_qr_casos'])
+        ->where(['=','id',$varmaxid])
+        ->Scalar();
 
     $posicion_espacio=strpos($varnumcaso, "-");
     $nombre1=substr($varnumcaso,$posicion_espacio + 1);
