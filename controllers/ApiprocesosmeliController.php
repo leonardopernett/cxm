@@ -42,7 +42,7 @@ use GuzzleHttp;
             
             'rules' => [
               [
-                'actions' => ['apivaloraciones'],
+                'actions' => ['apivaloraciones','apiprocesosvalora'],
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
@@ -50,7 +50,7 @@ use GuzzleHttp;
                         },
               ],
               [
-                'actions' => ['apivaloraciones'],
+                'actions' => ['apivaloraciones','apiprocesosvalora'],
                 'allow' => true,
 
               ],
@@ -76,6 +76,8 @@ use GuzzleHttp;
         ignore_user_abort(true);
         set_time_limit(900);
 
+        $varProcesosBuscar = [':varCliente'=>"client_problem_rep"];
+
         $varListDataValoracion = Yii::$app->get('dbmeli')->createCommand('
             SELECT
                 m.submission_id,
@@ -90,45 +92,83 @@ use GuzzleHttp;
  
             FROM meli_178619_NRT_KTA_OE_ACTION_POINTS_REASONS_V3 m
             WHERE 
-                m.pc_name = "client_problem_rep"
+                m.pc_name = :varCliente
                     AND m.oe_extra_mile IS NOT NULL 
             GROUP BY m.submission_id
-                ORDER BY m.action_datetime
-        ')->queryAll();
+              ORDER BY m.action_datetime
+        ')->bindValues($varProcesosBuscar)->queryAll();
 
         foreach ($varListDataValoracion as $key => $value) {
-          
-            $varExisteConexion = (new \yii\db\Query())
+
+          $varExisteConexion = (new \yii\db\Query())
                                 ->select([
-                                'tbl_conexionvaloracion_datosorigen.identificador_origen'
+                                  'tbl_conexionvaloracion_datosorigen.identificador_origen'
                                 ])
                                 ->from(['tbl_conexionvaloracion_datosorigen'])
                                 ->where(['=','tbl_conexionvaloracion_datosorigen.anulado',0])
                                 ->andwhere(['=','tbl_conexionvaloracion_datosorigen.identificador_origen',$value['submission_id']])
                                 ->count();
 
-            if ($varExisteConexion == 0) {
-                Yii::$app->db->createCommand()->insert('tbl_conexionvaloracion_datosorigen',[
-                    'identificador_origen' => $value['submission_id'],
-                    'formulario_origen' => $value['formulario'],
-                    'valorado_origen' => $value['valorado'],
-                    'lider_origen' => $value['lider'],
-                    'valorador_origen' => $value['valorador'],
-                    'dimensiones_origen' => $value['dimensiones'],
-                    'comentarios_origen' => $value['comentarios'],
-                    'score_origen' => $value['scoregeneral'],
-                    'fechacreacion_origen' => $value['fechacreacion'],
-                    'fechacreacion' => date('Y-m-d'),
-                    'anulado' => 0,
-                    'usua_id' => 1,
-                ])->execute();
-            } 
-  
+          if ($varExisteConexion == 0) {
+            Yii::$app->db->createCommand()->insert('tbl_conexionvaloracion_datosorigen',[
+                'identificador_origen' => $value['submission_id'],
+                'formulario_origen' => $value['formulario'],
+                'valorado_origen' => $value['valorado'],
+                'lider_origen' => $value['lider'],
+                'valorador_origen' => $value['valorador'],
+                'dimensiones_origen' => $value['dimensiones'],
+                'comentarios_origen' => $value['comentarios'],
+                'score_origen' => $value['scoregeneral'],
+                'fechacreacion_origen' => $value['fechacreacion'],
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => 1,
+            ])->execute();
+
+          }    
+
         }
 
+    }
+
+    public function actionApiprocesosvalora(){
+      $datapost = file_get_contents('php://input');
+      $data_post = json_decode($datapost,true);
+
+      ini_set("max_execution_time", "900");
+      ini_set("memory_limit", "1024M");
+      ini_set( 'post_max_size', '1024M' );
+
+      ignore_user_abort(true);
+      set_time_limit(900);
+
+      $varListadoProcesos = (new \yii\db\Query())
+                            ->select([
+                              '*'
+                            ])
+                            ->from(['tbl_conexionvaloracion_datosorigen'])
+                            ->where(['=','tbl_conexionvaloracion_datosorigen.anulado',0])
+                            ->all();
+
+      foreach ($varListadoProcesos as $key => $value) {
+        
+        $varFormulario_CXM =  (new \yii\db\Query())
+                                  ->select([
+                                    'tbl_valoracion_formulariosexcel.formulario_cxm'
+                                  ])
+                                  ->from(['tbl_valoracion_formulariosexcel'])
+                                  ->where(['=','tbl_valoracion_formulariosexcel.anulado',0])
+                                  ->andwhere(['=','tbl_valoracion_formulariosexcel.servicio_excel',$value['formulario_origen']])
+                                  ->scalar();
+
+        if ($varFormulario_CXM == "") {
+          var_dump("El submission_id es: ".$value['submission_id']." El Formulario es: ".$value['formulario']);
+        }
+
+      }
 
 
-        die(json_encode("Aqui vamos"));
+      die(json_encode("Aqui vamos"));
     }
 
   }
