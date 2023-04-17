@@ -221,7 +221,7 @@ use app\models\UsuariosEvalua;
           'tipo_respuesta' => $valtiporesp,
           'id_estado' => $valestado,          
         ],"id = '$id_caso'")->execute();                
-        return $this->redirect('index');
+       
 
         
         $varNumcaso = (new \yii\db\Query())
@@ -273,6 +273,7 @@ use app\models\UsuariosEvalua;
         ->setHtmlBody($message)
         ->send();
 
+        return $this->redirect('index');
 
       }
 
