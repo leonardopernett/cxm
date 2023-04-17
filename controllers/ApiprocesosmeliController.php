@@ -162,7 +162,7 @@ use GuzzleHttp;
                                   ->scalar();
 
         if ($varFormulario_CXM == "") {
-          var_dump("El submission_id es: ".$value['identificador_origen']." El Formulario es: ".$value['formulario']);
+          var_dump("El submission_id es: ".$value['identificador_origen']." El Formulario es: ".$value['formulario_origen']);
         }
 
       }
