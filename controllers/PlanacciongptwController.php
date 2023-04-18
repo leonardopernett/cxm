@@ -14,7 +14,7 @@ use app\models\Controldetallemomento;
 use app\models\SpeechParametrizar;
 use app\models\Plangptw;
 use app\models\Usuarios;
-use app\models\UsuariosEvalua;
+use app\models\ProcesosClienteCentrocosto;
 use app\models\AreaGptw;
 use app\models\Pilaresgptw;
 use app\models\DetallesPilaresGptw;
@@ -239,7 +239,7 @@ use app\models\DetallesPilaresGptw;
                                                     ->all();
 
                             $varListaplangptwrep= (new \yii\db\Query())
-                                                    ->select(['tbl_plan_gptw.id_gptw', 'tbl_areasapoyo_gptw.nombre', 'tbl_usuarios_evalua.clientearea', 'tbl_plan_gptw.id_pilares', 'tbl_plan_gptw.id_detalle_pilar', 'tbl_plan_gptw.porcentaje_actual', 'tbl_plan_gptw.porcentaje_meta', 'tbl_plan_gptw.acciones', 'tbl_plan_gptw.fecha_registro', 'tbl_detalle_plan_gptw.fecha_avance', 'tbl_detalle_plan_gptw.observaciones', 'tbl_usuarios.usua_nombre'])
+                                                    ->select(['tbl_plan_gptw.id_gptw', 'tbl_areasapoyo_gptw.nombre', 'tbl_proceso_cliente_centrocosto.cliente', 'tbl_plan_gptw.id_pilares', 'tbl_plan_gptw.id_detalle_pilar', 'tbl_plan_gptw.porcentaje_actual', 'tbl_plan_gptw.porcentaje_meta', 'tbl_plan_gptw.acciones', 'tbl_plan_gptw.fecha_registro', 'tbl_detalle_plan_gptw.fecha_avance', 'tbl_detalle_plan_gptw.observaciones', 'tbl_usuarios.usua_nombre'])
                                                     ->from(['tbl_plan_gptw'])
                                                     ->join('LEFT JOIN', 'tbl_areasapoyo_gptw',
                                                     'tbl_plan_gptw.id_area_apoyo = tbl_areasapoyo_gptw.id_areaapoyo')
@@ -249,8 +249,8 @@ use app\models\DetallesPilaresGptw;
                                                     'tbl_plan_gptw.responsable_area = tbl_usuarios.usua_id')
                                                     ->join('LEFT JOIN', 'tbl_detalle_plan_gptw',
                                                     'tbl_plan_gptw.id_gptw = tbl_detalle_plan_gptw.id_gptw')
-                                                    ->join('LEFT JOIN', 'tbl_usuarios_evalua',
-                                                    'tbl_plan_gptw.id_operacion = tbl_usuarios_evalua.idusuarioevalua')
+                                                    ->join('LEFT JOIN', 'tbl_proceso_cliente_centrocosto',
+                                                    'tbl_plan_gptw.id_operacion = tbl_proceso_cliente_centrocosto.idvolumendirector')
                                                     ->join('LEFT JOIN', 'tbl_detalle_pilaresgptw',
                                                     'tbl_plan_gptw.id_detalle_pilar = tbl_detalle_pilaresgptw.id_detalle_pilar')
                                                     ->All();
@@ -289,7 +289,7 @@ use app\models\DetallesPilaresGptw;
                         }                                                  
 
                         $varListaplangptwrep= (new \yii\db\Query())
-                                                    ->select(['tbl_plan_gptw.id_gptw', 'tbl_areasapoyo_gptw.nombre', 'tbl_usuarios_evalua.clientearea', 'tbl_plan_gptw.id_pilares', 'tbl_plan_gptw.id_detalle_pilar', 'tbl_plan_gptw.porcentaje_actual', 'tbl_plan_gptw.porcentaje_meta', 'tbl_plan_gptw.acciones', 'tbl_plan_gptw.fecha_registro', 'tbl_detalle_plan_gptw.fecha_avance', 'tbl_detalle_plan_gptw.observaciones', 'tbl_usuarios.usua_nombre'])
+                                                    ->select(['tbl_plan_gptw.id_gptw', 'tbl_areasapoyo_gptw.nombre', 'tbl_proceso_cliente_centrocosto.cliente', 'tbl_plan_gptw.id_pilares', 'tbl_plan_gptw.id_detalle_pilar', 'tbl_plan_gptw.porcentaje_actual', 'tbl_plan_gptw.porcentaje_meta', 'tbl_plan_gptw.acciones', 'tbl_plan_gptw.fecha_registro', 'tbl_detalle_plan_gptw.fecha_avance', 'tbl_detalle_plan_gptw.observaciones', 'tbl_usuarios.usua_nombre'])
                                                     ->from(['tbl_plan_gptw'])
                                                     ->join('LEFT JOIN', 'tbl_areasapoyo_gptw',
                                                     'tbl_plan_gptw.id_area_apoyo = tbl_areasapoyo_gptw.id_areaapoyo')
@@ -299,8 +299,8 @@ use app\models\DetallesPilaresGptw;
                                                     'tbl_plan_gptw.responsable_area = tbl_usuarios.usua_id')
                                                     ->join('LEFT JOIN', 'tbl_detalle_plan_gptw',
                                                     'tbl_plan_gptw.id_gptw = tbl_detalle_plan_gptw.id_gptw')
-                                                    ->join('LEFT JOIN', 'tbl_usuarios_evalua',
-                                                    'tbl_plan_gptw.id_operacion = tbl_usuarios_evalua.idusuarioevalua')
+                                                    ->join('LEFT JOIN', 'tbl_proceso_cliente_centrocosto',
+                                                    'tbl_plan_gptw.id_operacion = tbl_proceso_cliente_centrocosto.idvolumendirector')
                                                     ->join('LEFT JOIN', 'tbl_detalle_pilaresgptw',
                                                     'tbl_plan_gptw.id_detalle_pilar = tbl_detalle_pilaresgptw.id_detalle_pilar')
                                                     ->where(['=','tbl_plan_gptw.anulado',0])
@@ -346,7 +346,7 @@ use app\models\DetallesPilaresGptw;
                       }
                       public function actionUpdatecargaplan($id_gptw){
                         $model = new Plangptw();
-                        $model6 = new UsuariosEvalua();
+                        $model6 = new ProcesosClienteCentrocosto();
                         $model3 = new usuarios();
                         $model2 = new Controldetallemomento();
                         $model7 = new DetallesPilaresGptw();
@@ -370,7 +370,7 @@ use app\models\DetallesPilaresGptw;
                                     ->Scalar();
                         if($variduser1){
                            
-                            $model6 = UsuariosEvalua::findOne($variduser1);
+                            $model6 = ProcesosClienteCentrocosto::findOne($variduser1);
                         }
                         
                         $varidarea = (new \yii\db\Query())

@@ -35,8 +35,14 @@ $this->params['breadcrumbs'][] = $this->title;
     $listData2 = ArrayHelper::map($data2, 'usua_id', 'usua_nombre');
     
                                                             
-    $data = Yii::$app->db->createCommand("SELECT u.idusuarioevalua, u.clientearea FROM tbl_usuarios_evalua u WHERE u.clientearea IS NOT NULL AND u.idusuarioevalua NOT IN(2202) group BY u.clientearea order BY u.clientearea")->queryAll();
-    $listData = ArrayHelper::map($data, 'idusuarioevalua', 'clientearea');
+    //$data = Yii::$app->db->createCommand("SELECT u.idusuarioevalua, u.clientearea FROM tbl_usuarios_evalua u WHERE u.clientearea IS NOT NULL AND u.idusuarioevalua NOT IN(2202) group BY u.clientearea order BY u.clientearea")->queryAll();
+    $data = (new \yii\db\Query())
+      ->select(['tbl_proceso_cliente_centrocosto.idvolumendirector', 'tbl_proceso_cliente_centrocosto.cliente'])
+      ->from(['tbl_proceso_cliente_centrocosto'])
+      ->groupBy('tbl_proceso_cliente_centrocosto.cliente')
+      ->orderBY ('tbl_proceso_cliente_centrocosto.cliente')
+      ->All();
+    $listData = ArrayHelper::map($data, 'idvolumendirector', 'cliente');
    
     $datanew = (new \yii\db\Query())
       ->select(['id_pilares', 'nombre_pilar'])
@@ -198,8 +204,8 @@ $this->params['breadcrumbs'][] = $this->title;
                       </div>
                       <div id="operacion" style="display:none">
                      
-                          <?=  $form->field($model6, 'idusuarioevalua', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\usuariosEvalua::find()->groupby('clientearea')->orderBy(['clientearea'=> SORT_ASC])->all(), 'idusuarioevalua', 'clientearea'),
-                                          [
+                      <?=  $form->field($model6, 'idvolumendirector', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->groupby('cliente')->orderBy(['cliente'=> SORT_ASC])->all(), 'idvolumendirector', 'cliente'),
+                                       [
                                               'prompt'=>'Seleccionar...',
                                               'id'=>'txtarea',
                                           ]

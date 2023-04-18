@@ -33,17 +33,16 @@ $this->params['breadcrumbs'][] = $this->title;
         ->orderBY ('nombre')
         ->All();
    
-    $listData2 = ArrayHelper::map($data2, 'usua_id', 'nombre');
-   $data = (new \yii\db\Query())
-      ->select(['tbl_usuarios_evalua.idusuarioevalua', 'tbl_usuarios_evalua.clientearea'])
-      ->from(['tbl_usuarios_evalua'])
-      ->where(['IS not','tbl_usuarios_evalua.clientearea',NULL])
-      ->andwhere(['<>','tbl_usuarios_evalua.idusuarioevalua',2202])
-      ->groupBy('tbl_usuarios_evalua.clientearea')
-      ->orderBY ('tbl_usuarios_evalua.clientearea')
-      ->All();
+    $listData2 = ArrayHelper::map($data2, 'usua_id', 'nombre');  
+
+    $data = (new \yii\db\Query())
+      ->select(['tbl_proceso_cliente_centrocosto.idvolumendirector', 'tbl_proceso_cliente_centrocosto.cliente'])
+      ->from(['tbl_proceso_cliente_centrocosto'])
+      ->groupBy('tbl_proceso_cliente_centrocosto.cliente')
+      ->orderBY ('tbl_proceso_cliente_centrocosto.cliente')
+      ->All(); 
     
-    $listData = ArrayHelper::map($data, 'idusuarioevalua', 'clientearea');
+    $listData = ArrayHelper::map($data, 'idvolumendirector', 'cliente');
     $datanew = (new \yii\db\Query())
       ->select(['id_pilares', 'nombre_pilar'])
       ->from(['tbl_pilares_gptw'])
