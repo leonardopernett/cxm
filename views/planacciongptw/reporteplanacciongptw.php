@@ -213,11 +213,11 @@ $template = '<div class="col-md-12">'
                         }else{
                            
                             $data3= (new \yii\db\Query())
-                                ->select(['tbl_usuarios_evalua.clientearea'])
-                                ->from(['tbl_usuarios_evalua'])
-                                ->where(['=','tbl_usuarios_evalua.idusuarioevalua',$varid_area_opera])
-                                ->Scalar();
-                            $varid = $data3;                           
+                            ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                            ->from(['tbl_proceso_cliente_centrocosto'])
+                            ->where(['=','tbl_proceso_cliente_centrocosto.idvolumendirector',$varid_area_opera])
+                            ->Scalar();
+                        $varid = $data3;                           
                             
                         }
                         // busca el foco
@@ -343,7 +343,7 @@ $template = '<div class="col-md-12">'
                     foreach ($varListaplangptwrep as $key => $value) {
                         $varid_gptw1 = $value['id_gptw'];
                         $varid_area_opera1 = $value['nombre'];
-                        $varid_area_apoyo1 = $value['clientearea'];
+                        $varid_area_apoyo1 = $value['cliente'];
                         $varid_pilares1 = $value['id_pilares'];
                         $varid_detallepilares1 = $value['id_detalle_pilar'];                        
                         $varporcentaje_actual1 = $value['porcentaje_actual'];
