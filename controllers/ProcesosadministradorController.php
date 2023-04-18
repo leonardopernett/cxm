@@ -1888,6 +1888,88 @@ use app\models\Cumplimientoqyr;
 
         }
 
+        $varListarDirectores = (new \yii\db\Query())
+                                ->select(['id_dp_clientes', 'documento_director'])
+                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                ->where(['=','anulado',0])
+                                ->andwhere(['=','estado',1])
+                                ->groupby(['id_dp_clientes'])
+                                ->all();
+
+
+        foreach ($varListarDirectores as $key => $value) {
+            $varClienteiddp = $value['id_dp_clientes'];
+            $varCCDirector = $value['documento_director'];
+
+            $varActualizarDirectores = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_hojavida_datadirector.hv_idpersonal',
+                                    'tbl_hojavida_datadirector.hv_iddirector'
+                                ])
+                                ->from(['tbl_hojavida_datadirector'])
+                                ->join('INNER JOIN', 'tbl_hojavida_datapcrc', 
+                                      'tbl_hojavida_datadirector.hv_idpersonal = tbl_hojavida_datapcrc.hv_idpersonal')
+                                ->where(['=','tbl_hojavida_datadirector.anulado',0])
+                                ->andwhere(['=','tbl_hojavida_datapcrc.anulado',0])
+                                ->andwhere(['=','tbl_hojavida_datapcrc.id_dp_cliente',$varClienteiddp])
+                                ->groupby(['tbl_hojavida_datadirector.hv_iddirector'])
+                                ->all();
+
+            foreach ($varActualizarDirectores as $key => $value) {
+                $varIdDataDirector = $value['hv_iddirector'];
+
+                Yii::$app->db->createCommand()->update('tbl_hojavida_datadirector',[
+                                            'ccdirector' => $varCCDirector,
+                                        ],'hv_iddirector ='.$varIdDataDirector.'')->execute();
+            }
+        }
+
+        $varActualizarGerentes = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_hojavida_datapcrc.id_dp_cliente', 
+                                    'tbl_hojavida_datagerente.hv_idgerente', 
+                                    'tbl_hojavida_datagerente.hv_idpersonal', 
+                                    'tbl_hojavida_datagerente.ccgerente'
+                                ])
+                                ->from(['tbl_hojavida_datapcrc'])
+                                ->join('INNER JOIN', 'tbl_hojavida_datagerente', 
+                                      'tbl_hojavida_datapcrc.hv_idpersonal = tbl_hojavida_datagerente.hv_idpersonal')
+                                ->where(['=','tbl_hojavida_datagerente.anulado',0])
+                                ->andwhere(['=','tbl_hojavida_datapcrc.anulado',0])
+                                ->groupby(['tbl_hojavida_datagerente.hv_idgerente'])
+                                ->all();
+
+        foreach ($varActualizarGerentes as $key => $value) {
+            $varIdHvGerente = $value['hv_idgerente'];
+            $varConteoExisteGerente = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_proceso_cliente_centrocosto.documento_gerente'
+                                ])
+                                ->from(['tbl_proceso_cliente_centrocosto'])   
+                                ->where(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$value['id_dp_cliente']])
+                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.documento_gerente',$value['ccgerente']])
+                                ->count();
+
+            if ($varConteoExisteGerente == 0) {
+                $varCcGerenteNuevo = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_proceso_cliente_centrocosto.documento_gerente'
+                                ])
+                                ->from(['tbl_proceso_cliente_centrocosto'])   
+                                ->where(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$value['id_dp_cliente']])
+                                ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                                ->scalar();
+
+                Yii::$app->db->createCommand()->update('tbl_hojavida_datagerente',[
+                                            'ccgerente' => $varCcGerenteNuevo,
+                                        ],'hv_idgerente ='.$varIdHvGerente.'')->execute();
+            }
+        }
+
 
         return $this->redirect(array('procesopcrc','iddpclientes'=>$idpcrc));
     }
