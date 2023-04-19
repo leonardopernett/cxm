@@ -37,7 +37,7 @@ use app\models\UsuariosEvalua;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewqyr', 'listartipologia','verqyr','Cargadatodoc'],
+            'only' => ['index','viewqyr', 'listartipologia','verqyr','cargadatodoc', 'crearqyrn'],
             'rules' => [
               [
                 'allow' => true,
