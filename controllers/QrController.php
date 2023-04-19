@@ -37,7 +37,7 @@ use app\models\UsuariosEvalua;
       return[
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','viewqyr', 'listartipologia','verqyr'],
+            'only' => ['index','viewqyr', 'listartipologia','verqyr','Cargadatodoc'],
             'rules' => [
               [
                 'allow' => true,
@@ -1153,6 +1153,18 @@ public function actionPruebacorreo(){
       ->send();
 
  return $this->redirect('index');
+
+}
+
+public function actionCargadatodoc(){ 
+  $txtvarusua_id = Yii::$app->request->post('varusua_id');
+  $txtRta = Yii::$app->db->createCommand("SELECT u.usua_identificacion documento, uj.email_corporativo email FROM tbl_usuarios u
+  inner join tbl_usuarios_jarvis_cliente uj on
+  u.usua_identificacion = uj.documento
+  WHERE u.usua_id =:txtId")
+  ->bindValue(':txtId',$txtvarusua_id)
+  ->queryAll();
+  die(json_encode($txtRta));
 
 }
 
