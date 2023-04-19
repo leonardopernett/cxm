@@ -307,7 +307,7 @@ use app\models\UsuariosEvalua;
       }
 
   }
-  public function actionCrearqyr(){
+  public function actionCrearqyrn(){
     $modelcaso = new Casosqyr(); 
     $model = new UploadForm2();
     $ruta = null;
@@ -436,7 +436,7 @@ use app\models\UsuariosEvalua;
       return $this->redirect('index');
     }
     
-    return $this->render('crearqyr',[
+    return $this->render('crearqyrn',[
       'modelcaso' => $modelcaso,
       'model' => $model,
     ]);
