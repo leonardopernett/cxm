@@ -905,43 +905,47 @@ $this->title = 'Dashboard Escuchar +';
                         }
                       }
                     }
-                    
 
-                    if ($txtRtaAgente == 0 && $txtRtaMarca != 0 && $txtRtaCanal != 0) {
-                      $txtRtaProcentaje = round( (($txtRtaMarca + $txtRtaCanal) / 2), 2 );
-                    }
-                    if ($txtRtaAgente != 0 && $txtRtaMarca == 0 && $txtRtaCanal != 0) {
-                      $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaCanal) / 2), 2 );
-                    }
-                    if ($txtRtaAgente != 0 && $txtRtaMarca != 0 && $txtRtaCanal == 0) {
-                      $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaMarca) / 2), 2 );
-                    }
-                    if ($txtRtaAgente != 0 && $txtRtaMarca != 0 && $txtRtaCanal != 0) {
-                      $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaMarca + $txtRtaCanal) / 3), 2 );
-                    }
-                    if ($txtRtaAgente == 0 && $txtRtaMarca == 0 && $txtRtaCanal == 0) {
-                      $txtRtaProcentaje = 100;
+                    // Se genera cambios en esta parte del codigo para aquellos indicadores que solo son de desempeño.
+                    if ($varTipoParametro == "2") {
 
-                      if (count($arrayRAgente) != null) {
-                        $txtRtaAgente = 100;
+                      if ($txtRtaAgente == 0 && $txtRtaMarca != 0 && $txtRtaCanal != 0) {
+                        $txtRtaProcentaje = round( (($txtRtaMarca + $txtRtaCanal) / 2), 2 );
                       }
-                      if (count($arrayRCanal) != 0) {
-                        $txtRtaCanal = 100;
+                      if ($txtRtaAgente != 0 && $txtRtaMarca == 0 && $txtRtaCanal != 0) {
+                        $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaCanal) / 2), 2 );
                       }
-                      if (count($arrayRMarca) != null) {
-                        $txtRtaMarca = 100;
+                      if ($txtRtaAgente != 0 && $txtRtaMarca != 0 && $txtRtaCanal == 0) {
+                        $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaMarca) / 2), 2 );
+                      }
+                      if ($txtRtaAgente != 0 && $txtRtaMarca != 0 && $txtRtaCanal != 0) {
+                        $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaMarca + $txtRtaCanal) / 3), 2 );
+                      }
+                      if ($txtRtaAgente == 0 && $txtRtaMarca == 0 && $txtRtaCanal == 0) {
+                        $txtRtaProcentaje = 100;
+  
+                        if (count($arrayRAgente) != null) {
+                          $txtRtaAgente = 100;
+                        }
+                        if (count($arrayRCanal) != 0) {
+                          $txtRtaCanal = 100;
+                        }
+                        if (count($arrayRMarca) != null) {
+                          $txtRtaMarca = 100;
+                        }
+                        
+                      }
+                      if ($txtRtaAgente != 0 && $txtRtaMarca == 0 && $txtRtaCanal == 0) {
+                        $txtRtaProcentaje = $txtRtaAgente;
+                      }
+                      if ($txtRtaAgente == 0 && $txtRtaMarca != 0 && $txtRtaCanal == 0) {
+                        $txtRtaProcentaje = $txtRtaMarca;
+                      }
+                      if ($txtRtaAgente == 0 && $txtRtaMarca == 0 && $txtRtaCanal != 0) {
+                        $txtRtaProcentaje = $txtRtaCanal;
                       }
                       
-                    }
-                    if ($txtRtaAgente != 0 && $txtRtaMarca == 0 && $txtRtaCanal == 0) {
-                      $txtRtaProcentaje = $txtRtaAgente;
-                    }
-                    if ($txtRtaAgente == 0 && $txtRtaMarca != 0 && $txtRtaCanal == 0) {
-                      $txtRtaProcentaje = $txtRtaMarca;
-                    }
-                    if ($txtRtaAgente == 0 && $txtRtaMarca == 0 && $txtRtaCanal != 0) {
-                      $txtRtaProcentaje = $txtRtaCanal;
-                    }
+                    }                    
                   
                     
                 ?>
