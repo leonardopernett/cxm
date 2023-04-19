@@ -167,7 +167,7 @@ $sessiones = Yii::$app->user->identity->id;
         <div class="col-md-6">
             <div class="card1 mb">                    
             <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Crear QyR') ?></label>                
-                <?= Html::a('Aceptar',  ['crearqyr'], ['class' => 'btn btn-success',
+                <?= Html::a('Aceptar',  ['crearqyrn'], ['class' => 'btn btn-success',
                         'style' => 'background-color: #337ab7',
                         'data-toggle' => 'tooltip',
                         'title' => 'Crear QyR'])
