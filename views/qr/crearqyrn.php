@@ -108,7 +108,6 @@ use app\models\Casosqyr;
         <br>
         <div class="col-md-12">
             <div class="card1 mb">
-
                 <div class="row">
                     <div class="col-md-6">                
                         <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> <?= Yii::t('app', ' Cliente') ?></label>
