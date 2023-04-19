@@ -750,12 +750,12 @@ $this->title = 'Dashboard Escuchar +';
                     }
                     
                     if ($varconteo != 0 && $txtCantidad != 0) {
-                      
+                        
                       if ($txtTipoFormIndicador == 0) {
                         $txtRtaProcentaje = (round(($varconteo / $txtCantidad) * 100, 1));
                         
                       }else{
-                        
+                      
                         $txtRtaProcentaje = (100 - (round(($varconteo / $txtCantidad) * 100, 1)));
                       }
                     }else{
@@ -791,7 +791,7 @@ $this->title = 'Dashboard Escuchar +';
                       if ($txtTipoFormIndicador == 0) {
                         $txtRtaAgente = (round(($varconteoAgente / $txtCantidad) * 100, 1));
                       }else{
-                        $txtRtaAgente = (100 - (round(($varconteoAgente / $txtCantidad) * 100, 1)));
+                        $txtRtaAgente = (100 - (round(($varconteoAgente / $txtCantidad) * 100, 1)));                        
                       }
                     }else{
                       $txtRtaAgente = 0;
@@ -828,6 +828,7 @@ $this->title = 'Dashboard Escuchar +';
                                   ->groupby(['callid'])
                                   ->count();
 
+                    
                     if ($varconteoMarca == null) {
                       $varconteoMarca = 0;
                     }
@@ -872,7 +873,7 @@ $this->title = 'Dashboard Escuchar +';
                                   ->andwhere(['in','idvariable',$arrayCanal])
                                   ->groupby(['callid'])
                                   ->count();
-
+                                  
                     if ($varconteoCanal == null) {
                       $varconteoCanal = 0;
                     }
@@ -904,6 +905,44 @@ $this->title = 'Dashboard Escuchar +';
                         }
                       }
                     }
+                    
+
+                    if ($txtRtaAgente == 0 && $txtRtaMarca != 0 && $txtRtaCanal != 0) {
+                      $txtRtaProcentaje = round( (($txtRtaMarca + $txtRtaCanal) / 2), 2 );
+                    }
+                    if ($txtRtaAgente != 0 && $txtRtaMarca == 0 && $txtRtaCanal != 0) {
+                      $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaCanal) / 2), 2 );
+                    }
+                    if ($txtRtaAgente != 0 && $txtRtaMarca != 0 && $txtRtaCanal == 0) {
+                      $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaMarca) / 2), 2 );
+                    }
+                    if ($txtRtaAgente != 0 && $txtRtaMarca != 0 && $txtRtaCanal != 0) {
+                      $txtRtaProcentaje = round( (($txtRtaAgente + $txtRtaMarca + $txtRtaCanal) / 3), 2 );
+                    }
+                    if ($txtRtaAgente == 0 && $txtRtaMarca == 0 && $txtRtaCanal == 0) {
+                      $txtRtaProcentaje = 100;
+
+                      if (count($arrayRAgente) != null) {
+                        $txtRtaAgente = 100;
+                      }
+                      if (count($arrayRCanal) != 0) {
+                        $txtRtaCanal = 100;
+                      }
+                      if (count($arrayRMarca) != null) {
+                        $txtRtaMarca = 100;
+                      }
+                      
+                    }
+                    if ($txtRtaAgente != 0 && $txtRtaMarca == 0 && $txtRtaCanal == 0) {
+                      $txtRtaProcentaje = $txtRtaAgente;
+                    }
+                    if ($txtRtaAgente == 0 && $txtRtaMarca != 0 && $txtRtaCanal == 0) {
+                      $txtRtaProcentaje = $txtRtaMarca;
+                    }
+                    if ($txtRtaAgente == 0 && $txtRtaMarca == 0 && $txtRtaCanal != 0) {
+                      $txtRtaProcentaje = $txtRtaCanal;
+                    }
+                  
                     
                 ?>
                   <tr>
