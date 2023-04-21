@@ -101,7 +101,7 @@ class AlertasController extends Controller
              * * @author German Mejia Vieco
              */
 
-            public function enviarcorreoalertas($fecha, $pcrc, $valorador, $tipo_alerta, $archivo_adjunto, $remitentes, $asunto, $comentario){
+            public function enviarcorreoalertas($fecha, $pcrc, $valorador, $tipo_alerta, $archivo_adjunto, $remitentes, $asunto, $comentario,$id){
 
                 $equipos = \app\models\Arboles::find()->where(['id' => $pcrc])->all();
                 $usuario = \app\models\Usuarios::find()->where(['usua_id' => $valorador])->all();
@@ -110,31 +110,30 @@ class AlertasController extends Controller
 
                 $target_path = "alertas/" . $archivo_adjunto;
 
-                $html ='<div class="col-md-6">
-                            <div class="card1 mb" style="display:grid; place-items:center;">
-                                <img src="../../images/cxx.png" style="width:120px;" >'
-                                "<h2>¡Hola Equipo!</h2>
-                                <h3><b>Haz recibido una nueva alerta</b></h3>
-                                <h4>Fecha de envio  :</h4>". $fecha 
-                                "<h4>Tipo de alerta:</h4>". $tipo_alerta 
-                                "<h4>Asunto:</h4>". $asunto  
-                                "<h4>Programa PCRC:</h4>". $equipos['0']->name 
-                                "<h4>Valorador:</h4> ". $usuario['0']->usua_nombre  
-                                "<h4>Comentarios:</h4>". $comentario  
-                                "<br><br>"
-                                "<h4>Nos encataría saber tu opinión te invitamos a ingresar a <b>CXM</b> y responder la siguiente encuesta.</h4>
-                                <br>"
-                                '<div style="heigth: 200px;">'
-                                <?= Html::a('Ingresar a CXM',  ['encuestasatifaccion'], ['class' => 'btn btn-success btn-lg',//index es para que me redireccione o sea volver a el inicio 
-                                                        'style' => 'background-color: #337ab7; ',//color del boton  
-                                                        'data-toggle' => 'tooltip',
-                                                        'title' => 'Ingresar a CXM'])//titulo del boton  
-                                ?>
-                                "</div>
-                                <br>"
-                                '<img src="../../images/link.png" class="img-responsive">'
-                            "</div>
-                        </div>";
+                $html = "
+                Correo enviado por: ".$varNombre." con correo: ".$varCorreo."
+                <br>
+                <div class='col-md-6'>
+                                <div class='card1 mb' style='display:grid; place-items:center;'>
+                                    <img src='../../images/cxx.png' style='width:120px;' >
+                                    <h2>¡Hola Equipo!</h2>
+                                    <h3><b>Haz recibido una nueva alerta</b></h3>
+                                    <h4>Fecha de envio  :</h4>". $fecha.
+                                    "<h4>Tipo de alerta:</h4>". $tipo_alerta .
+                                    "<h4>Asunto:</h4>". $asunto  .
+                                    "<h4>Programa PCRC:</h4>". $equipos['0']->name .
+                                    "<h4>Valorador:</h4> ". $usuario['0']->usua_nombre . 
+                                    "<h4>Comentarios:</h4>". $comentario .
+                                    "<br><br>"
+                                    "<h4>Nos encataría saber tu opinión te invitamos a ingresar a <b>CXM</b> y responder la siguiente encuesta.</h4>
+                                    <br>
+                                    <div style='heigth: 200px;'>
+                                    <a href='encuestasatifaccion' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
+                                    </div>
+                                    <br>"
+                                    "<img src='../../images/link.png' class='img-responsive'>
+                                </div>
+                            </div>";
 
                 foreach ($destinatario as $send) {
                     Yii::$app->mailer->compose()
@@ -248,11 +247,24 @@ class AlertasController extends Controller
                             ->all();
 
                 }
+
+                $dataTablaGlobal = (new \yii\db\Query())
+                            ->select('tbl_alertascx.id, fecha, tbl_arbols.name, 
+                            tipo_alerta, tbl_usuarios.usua_nombre,tbl_alertascx.remitentes,tbl_alertascx.asunto,
+                            tbl_alertascx.comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
+                            ->from('tbl_alertascx')
+                            ->join('LEFT JOIN', 'tbl_arbols', 'tbl_arbols.id = tbl_alertascx.pcrc')
+                            ->join('LEFT JOIN', 'tbl_usuarios', 'tbl_alertascx.valorador = tbl_usuarios.usua_id')
+                            ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = tbl_alertascx.id')                          
+                            ->orderBy(['fecha' => SORT_DESC])
+                            ->all();
+
                 return $this->render('alertasview', [
                             'model' => $model,
                             'dataProvider' => $dataProvider,
                             'resumenFeedback' => $resumenFeedback,
                             'detalleLiderFeedback' => $detalleLiderFeedback,
+                            'dataTablaGlobal' => $dataTablaGlobal,
                         ]);
             }
 
