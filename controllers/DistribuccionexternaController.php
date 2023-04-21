@@ -209,7 +209,7 @@ use Exception;
       
       if($count == count($evaluados_temp)){        
         do{
-          $identificacion = random_int(10000000,99999999);
+          $identificacion = rand(10000000,99999999);
           $identificadores = (new \yii\db\Query())
               ->select(['*'])
               ->from(['tbl_evaluados'])   
