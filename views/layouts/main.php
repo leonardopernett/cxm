@@ -630,7 +630,12 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Distribuccion Externa'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Valoración Externa&nbsp;&nbsp;'),
+                                                    'url' => ['/valoracionexterna/index'],
+                                                    'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Distribucción Externa'),
                                                     'url' => ['/distribuccionexterna/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],

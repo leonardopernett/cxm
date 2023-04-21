@@ -194,10 +194,6 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td><label style="font-size: 12px;"><?php echo  $value['cliente']; ?></label></td>
                   <td><label style="font-size: 12px;"><?php echo  $value['sociedad']; ?></label></td>
                   <td class="text-center">
-                    <?= 
-                      Html::a('<em class="fas fa-search" style="font-size: 12px; color: #B833FF;"></em>',  ['verexterna','id_general'=> $value['id_clientenuevo']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Ver Parametrizacion Valoración Externa']) 
-                    ?> 
-
 
                     <?= 
                       Html::a('<em class="fas fa-upload" style="font-size: 12px; color: #B833FF;"></em>',  ['agregarvaloraciones','id_general'=> $value['id_clientenuevo']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Subir Archivo de Valoraciones']) 

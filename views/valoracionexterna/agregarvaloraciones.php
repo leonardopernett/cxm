@@ -133,24 +133,45 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <br>
+    <br><br>
     
     <div class="row">
         <div class="col-md-6">
-            <div class="card1 mb">               
+            <div class="card1 mb">
 
-                <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #337ab7;"></em><?= Yii::t('app', ' Seleccionar Archivo') ?></label>
-                     
+              
+                <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 20px; color: #337ab7;"></em><?= Yii::t('app', ' Seleccionar Archivo') ?></label>
+                      
+                  
+                <?= $form->field($model, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput() ?>     
                 
-                <?= $form->field($model, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput() ?>                         
+                <br>
 
+                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #337ab7;"></em><?= Yii::t('app', ' Descargar Plantilla') ?></label>
+                <a style=" background-color: #337ab7" class="btn btn-success" rel="stylesheet" type="text/css" href="..\..\downloadfiles\Plantilla_ValoracionExterna.xlsx" title="Plantilla Valoracion Externa" target="_blank">
+                Descargar Plantilla</a> 
+              
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card1 mb">
+
+              
+                <label style="font-size: 15px;"><em class="fas fa-exclamation" style="font-size: 20px; color: #E3203B;"></em><?= Yii::t('app', ' Información Importante') ?></label>
+                      
+                 <p>Recuerda tener presente los campos en las columnas a agregar, de las 
+                  respuestas correspondientes a las preguntas de los formularios, de lo contrario no se guardará 
+                  correctamente la información.</p>
+                                        
+              
             </div>
         </div>
 
     </div>
 </div>
 
-<br>
+<br> <br>
 
 <!-- Capa Proceso Botones -->
 <div id="capaIdBtn" class="capaBtn" style="display: inline;">
