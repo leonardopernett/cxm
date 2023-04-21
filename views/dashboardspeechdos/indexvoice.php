@@ -923,11 +923,11 @@ $this->title = 'Dashboard Escuchar +';
                       }
                       if ($txtRtaAgente == 0 && $txtRtaMarca == 0 && $txtRtaCanal == 0) {
                         $txtRtaProcentaje = 100;
-  
+
                         if (count($arrayRAgente) != null) {
                           $txtRtaAgente = 100;
                         }
-                        if (count($arrayRCanal) != 0) {
+                        if (count($arrayRCanal) != null) {
                           $txtRtaCanal = 100;
                         }
                         if (count($arrayRMarca) != null) {
