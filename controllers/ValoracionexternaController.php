@@ -33,7 +33,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','agregarvaloraciones'],
+              'only' => ['index','agregarvaloraciones','agregarasesoresmas'],
               'rules' => [
                 [
                   'allow' => true,
@@ -441,27 +441,17 @@ use Exception;
 
         $sheet = $objPHPExcel->getSheet(0);
         $highestRow = $sheet->getHighestRow();
-
-        for ($row = 2; $row <= $highestRow; $row++) { 
-            var_dump($sheet->getCell("A".$row)->getValue());
-            var_dump($sheet->getCell("B".$row)->getValue());
-            var_dump($sheet->getCell("C".$row)->getValue());
-            var_dump($sheet->getCell("D".$row)->getValue());
-            var_dump($sheet->getCell("E".$row)->getValue());
-            var_dump($sheet->getCell("F".$row)->getValue());
-            var_dump($sheet->getCell("G".$row)->getValue());
-            var_dump($sheet->getCell("H".$row)->getValue());
-            var_dump($sheet->getCell("I".$row)->getValue());
-            var_dump($sheet->getCell("J".$row)->getValue());
-            var_dump($sheet->getCell("K".$row)->getValue());
-            var_dump($sheet->getCell("L".$row)->getValue());
-            var_dump($sheet->getCell("M".$row)->getValue());
-            var_dump($sheet->getCell("N".$row)->getValue());
-        }
-
-      var_dump("Aqui estamos");
+ 
     }
 
+ 
+ 
+    public function actionAgregarasesoresmas(){
+
+      return $this->render('agregarasesoresmas');
+    }
+
+ 
 
   }
 
