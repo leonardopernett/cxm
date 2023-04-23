@@ -226,7 +226,7 @@ use app\models\Calificaciondetalles;
 
 
       foreach ($varListadoProcesos as $key => $value) {
-        $varIdListado = $value['id_datosorigen'];
+        $varIdListado = $value['identificador_origen'];
         $varIdFormularios = $value['formulario_origen'];
         $arrCheckPits = null;
         $arrFormulario = [];
