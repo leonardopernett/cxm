@@ -558,7 +558,20 @@ use app\models\Calificaciondetalles;
             $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
 
             if (!$validarPasoejecucionform) {
-              die(json_encode("Procesos no realizados, generar verificacion."));
+              Yii::$app->db->createCommand()->insert('tbl_conexionvaloracion_datosnovalorados',[
+                'identificador_no_origen' => $value['submission_id'],
+                'formulario_no_origen' => $value['formulario'],
+                'valorado_no_origen' => $value['valorado'],
+                'lider_no_origen' => $value['lider'],
+                'valorador_no_origen' => $value['valorador'],
+                'dimensiones_no_origen' => $value['dimensiones'],
+                'comentarios_no_origen' => $value['comentarios'],
+                'score_no_origen' => $value['scoregeneral'],
+                'fechacreacion_no_origen' => $value['fechacreacion'],
+                'fechacreacion' => date('Y-m-d'),
+                'anulado' => 0,
+                'usua_id' => 1,
+              ])->execute();
             }
 
           }
