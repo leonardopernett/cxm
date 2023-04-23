@@ -559,19 +559,27 @@ use app\models\Calificaciondetalles;
 
             if (!$validarPasoejecucionform) {
               Yii::$app->db->createCommand()->insert('tbl_conexionvaloracion_datosnovalorados',[
-                'identificador_no_origen' => $value['submission_id'],
-                'formulario_no_origen' => $value['formulario'],
-                'valorado_no_origen' => $value['valorado'],
-                'lider_no_origen' => $value['lider'],
-                'valorador_no_origen' => $value['valorador'],
-                'dimensiones_no_origen' => $value['dimensiones'],
-                'comentarios_no_origen' => $value['comentarios'],
-                'score_no_origen' => $value['scoregeneral'],
-                'fechacreacion_no_origen' => $value['fechacreacion'],
+                'identificador_no_origen' => $value['identificador_origen'],
+                'formulario_no_origen' => $value['formulario_origen'],
+                'valorado_no_origen' => $value['valorado_origen'],
+                'lider_no_origen' => $value['lider_origen'],
+                'valorador_no_origen' => $value['valorador_origen'],
+                'dimensiones_no_origen' => $value['dimensiones_origen'],
+                'score_no_origen' => $value['score_origen'],
+                'fechacreacion_no_origen' => $value['fechacreacion_origen'],
                 'fechacreacion' => date('Y-m-d'),
                 'anulado' => 0,
                 'usua_id' => 1,
               ])->execute();
+            }else{
+              Yii::$app->db->createCommand('
+                UPDATE tbl_conexionvaloracion_datosorigen 
+                  SET gestor_valora = :varGestor
+                WHERE 
+                  identificador_origen = :VarIdOrigen')
+                            ->bindValue(':varGestor', 1)
+                            ->bindValue(':VarIdOrigen', $value['identificador_origen'])
+                            ->execute();
             }
 
           }
