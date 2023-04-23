@@ -486,7 +486,7 @@ use app\models\Calificaciondetalles;
               
               \app\models\Tmpejecucionbloquedetalles::updateAll($arrDetalleForm, ["id" => $varIDTmpBloquedetallesCalificacionCxm]);
               $calificacion = \app\models\Tmpejecucionbloquedetalles::findOne(["id" => $varIDTmpBloquedetallesCalificacionCxm]);
-              $calificacionDetalle = \app\models\Calificaciondetalles::findOne(['id' => $varCalificacionDetalleCxm]);
+              
 
               // Cuento las preguntas en las cuales esta seleccionado el NA
               //lleno $arrayBloques para tener marcados en que bloques no se selecciono el check
@@ -502,7 +502,7 @@ use app\models\Calificaciondetalles;
               } else {
               
                 //actualizo $arrayCountBloques sumandole 1 cada q encuentra un NA de ese bloque
-                if (empty($arrayCountBloques)) {
+                if (count($arrayCountBloques) != 0) {
                   if ((array_key_exists($calificacion->bloque_id, $arrayCountBloques[count($arrayCountBloques) - 1])) && (strtoupper($varCalificacionDetalleNameCxm) == 'NA')) {
                     
                     $arrayCountBloques[count($arrayCountBloques) - 1][$varBloquesCxm] = ($arrayCountBloques[count($arrayCountBloques) - 1][$cvarBloquesCxm] + 1);
@@ -545,7 +545,7 @@ use app\models\Calificaciondetalles;
                               ->groupBy("s.id")->asArray()
                               ->all();
 
-              if (empty($bloquessnna)) {
+              if (count($bloquessnna) > 0) {
                 if ($bloquessnna[0]['conteo'] == $totalBloques[0]['conteo']) {
                 
                   \app\models\Tmpejecucionsecciones::updateAll(['snna' => 1], ['tmpejecucionformulario_id' => $tmp_id, 'seccion_id' => ($seccion->seccion_id)]);
