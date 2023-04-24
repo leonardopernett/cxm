@@ -444,27 +444,7 @@ use app\models\Calificaciondetalles;
                 $model->save();
                 
 
-                //TO-DO  : COMENTAR LINEA EN CASO DE NO NECESITAR LO DE ADICIONAR Y ESCALAR
-                /* Guardo en la tabla tbl_registro_ejec para tener un seguimiento 
-                * de los diversos involucrados en la valoracion en el tiempo */
-                $modelRegistro = \app\models\RegistroEjec::findOne(['ejec_form_id' => $model->ejecucionformulario_id, 'valorador_id' => $model->usua_id]);
-                        
-                if (!isset($modelRegistro)) {
-
-                  $modelRegistro = new \app\models\RegistroEjec();
-                  $modelRegistro->ejec_form_id = $tmp_id;
-                  $modelRegistro->descripcion = 'Primera valoración externa';
-                }
-                        
-                $modelRegistro->dimension_id = $varDimensionIdCxm;
-                $modelRegistro->valorado_id = $data->evaluado_id;
-                $modelRegistro->valorador_id = $data->usua_id;
-                $modelRegistro->pcrc_id = $data->arbol_id;
-                $modelRegistro->tipo_interaccion = $data->tipo_interaccion;
-                $modelRegistro->fecha_modificacion = date("Y-m-d H:i:s");
                 
-                $modelRegistro->save();
-
                 \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
                 \app\models\Tmpejecucionsecciones::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
                 \app\models\Tmpejecucionbloques::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
