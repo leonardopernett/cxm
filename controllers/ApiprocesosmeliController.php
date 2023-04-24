@@ -366,7 +366,7 @@ use app\models\Calificaciondetalles;
                                 ->where(['=','tbl_formularios.id',$varFormularioIdCxm])
                                 ->scalar();
 
-        if (coun($varAsesorIdCxm) != 0) {
+        if (count($varAsesorIdCxm) != 0) {
         
 
           // CONSULTO SI YA EXISTE LA EVALUACION
