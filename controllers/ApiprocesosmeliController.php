@@ -574,8 +574,9 @@ use app\models\Calificaciondetalles;
                   'anulado' => 0,
                   'usua_id' => 1,
                 ])->execute();
-              }else{
-                Yii::$app->db->createCommand('
+              }
+
+              Yii::$app->db->createCommand('
                   UPDATE tbl_conexionvaloracion_datosorigen 
                     SET gestor_valora = :varGestor
                   WHERE 
@@ -583,7 +584,7 @@ use app\models\Calificaciondetalles;
                               ->bindValue(':varGestor', 1)
                               ->bindValue(':VarIdOrigen', $value['identificador_origen'])
                               ->execute();
-              }
+              
 
             }
 
