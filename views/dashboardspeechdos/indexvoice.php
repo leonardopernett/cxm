@@ -1035,7 +1035,19 @@ $this->title = 'Dashboard Escuchar +';
                     }
                   }
 
-                  $varResponsableGeneral = round(($varResponsableAgente  + $varResponsableCanal) / 2, 2);
+                  if ($varResponsableAgente != 0 && $varResponsableCanal != 0) {
+                    $varResponsableGeneral = round(($varResponsableAgente  + $varResponsableCanal) / 2, 2);
+                  }
+                  if ($varResponsableAgente == 0 && $varResponsableCanal != 0) {
+                    $varResponsableGeneral = $varResponsableCanal;
+                  }
+                  if ($varResponsableAgente != 0 && $varResponsableCanal == 0) {
+                    $varResponsableGeneral = $varResponsableAgente;
+                  }
+                  if ($varResponsableAgente == 0 && $varResponsableCanal == 0) {
+                    $varResponsableGeneral = 0;
+                  }
+                  
                   $totalvieK = 100 - $varResponsableGeneral;
                   if ($varResponsableGeneral < '80') {
                     $varTColorK = '#D01E53';
