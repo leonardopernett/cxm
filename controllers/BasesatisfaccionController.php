@@ -4796,6 +4796,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'searchModel' => $searchModel,
                             'model' => $model,
                             'listo' => $listo,
+                            'modelup' => $modelup,
                 ]);
             }
 
@@ -4878,6 +4879,17 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->join('INNER JOIN', 'tbl_arbols c', 'b.arbol_id = c.id')
                             ->groupBy('a.pcrc')
                             ->all();
+
+                $dataTablaGlobal = (new \yii\db\Query())
+                            ->select('tbl_alertascx.id, fecha, tbl_arbols.name, 
+                            tipo_alerta, tbl_usuarios.usua_nombre,tbl_alertascx.remitentes,tbl_alertascx.asunto,
+                            tbl_alertascx.comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
+                            ->from('tbl_alertascx')
+                            ->join('LEFT JOIN', 'tbl_arbols', 'tbl_arbols.id = tbl_alertascx.pcrc')
+                            ->join('LEFT JOIN', 'tbl_usuarios', 'tbl_alertascx.valorador = tbl_usuarios.usua_id')
+                            ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = tbl_alertascx.id')                          
+                            ->orderBy(['fecha' => SORT_DESC])
+                            ->all();
                             
 
                 $detalleLiderFeedback = (new \yii\db\Query())
@@ -4951,7 +4963,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->join('LEFT JOIN', 'tbl_usuarios', 'tbl_alertascx.valorador = tbl_usuarios.usua_id')
                             ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = tbl_alertascx.id')                          
                             ->orderBy(['fecha' => SORT_DESC])
-                            ->limit(100)
                             ->all();
 
                     $dataProvider = (new \yii\db\Query())
