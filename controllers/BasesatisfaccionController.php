@@ -80,10 +80,7 @@ class BasesatisfaccionController extends Controller {
                                     'guardarencuesta', 'index', 'reglanegocio',
                                     'showencuestatelefonica', 'update', 'guardarformulario', 'showsubtipif', 'cancelarformulario', 'declinarformulario',
                                     'reabrirformulariogestionsatisfaccion', 'clientebasesatisfaccion', 'limpiarfiltro', 'buscarllamadas', 'showformulariogestion',
-                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi',
-                                     'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal',
-                                     'prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario',
-                                     'enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos','encuestasatifaccion','correoalerta','totalcomensaf'],
+                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -4796,7 +4793,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'searchModel' => $searchModel,
                             'model' => $model,
                             'listo' => $listo,
-                            'modelup' => $modelup,
                 ]);
             }
 
@@ -4879,17 +4875,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->join('INNER JOIN', 'tbl_arbols c', 'b.arbol_id = c.id')
                             ->groupBy('a.pcrc')
                             ->all();
-
-                $dataTablaGlobal = (new \yii\db\Query())
-                            ->select('tbl_alertascx.id, fecha, tbl_arbols.name, 
-                            tipo_alerta, tbl_usuarios.usua_nombre,tbl_alertascx.remitentes,tbl_alertascx.asunto,
-                            tbl_alertascx.comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
-                            ->from('tbl_alertascx')
-                            ->join('LEFT JOIN', 'tbl_arbols', 'tbl_arbols.id = tbl_alertascx.pcrc')
-                            ->join('LEFT JOIN', 'tbl_usuarios', 'tbl_alertascx.valorador = tbl_usuarios.usua_id')
-                            ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = tbl_alertascx.id')                          
-                            ->orderBy(['fecha' => SORT_DESC])
-                            ->all();
                             
 
                 $detalleLiderFeedback = (new \yii\db\Query())
@@ -4954,17 +4939,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->groupBy('a.pcrc')
                             ->all();
 
-                    $dataTablaGlobal = (new \yii\db\Query())
-                            ->select('tbl_alertascx.id, fecha, tbl_arbols.name, 
-                            tipo_alerta, tbl_usuarios.usua_nombre,tbl_alertascx.remitentes,tbl_alertascx.asunto,
-                            tbl_alertascx.comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
-                            ->from('tbl_alertascx')
-                            ->join('LEFT JOIN', 'tbl_arbols', 'tbl_arbols.id = tbl_alertascx.pcrc')
-                            ->join('LEFT JOIN', 'tbl_usuarios', 'tbl_alertascx.valorador = tbl_usuarios.usua_id')
-                            ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = tbl_alertascx.id')                          
-                            ->orderBy(['fecha' => SORT_DESC])
-                            ->all();
-
                     $dataProvider = (new \yii\db\Query())
                             ->select('a.id as xid, fecha, b.name AS Programa, tipo_alerta, d.usua_nombre AS Tecnico')
                             ->from('tbl_alertascx a')
@@ -4984,7 +4958,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'dataProvider' => $dataProvider,
                             'resumenFeedback' => $resumenFeedback,
                             'detalleLiderFeedback' => $detalleLiderFeedback,
-                            'dataTablaGlobal' => $dataTablaGlobal,
                         ]);
             }
 
@@ -5010,59 +4983,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 ]);
 
             }
-            public function actionCorreoalerta($id){
 
-                
-                
-                return $this->render('correoalerta',[
-                    
-                    'id'=> $id,
-
-            ]);
-
-            }
-
-            public function actionEncuestasatifaccion($id){
-
-                $model = (new \yii\db\Query())
-                            ->select('a.id, a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
-                            ->from('tbl_alertascx a')
-                            ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
-                            ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            ->join('INNER JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = a.id')
-                            ->scalar();
-
-                $modelo = new EncuestaSaf();
-
-               
-                $form = Yii::$app->request->post();
-         
-                if ($modelo->load($form)){    
-                    $varRespEncuesta = $modelo->resp_encuesta_saf;
-                    $varComentario = $modelo->comentario_saf;
-                
-                  
-                    Yii::$app->db->createCommand()->insert('tbl_encuesta_saf',[
-                        'id_alerta' => $id,
-                        'resp_encuesta_saf' => $varRespEncuesta,
-                        'comentario_saf' => $varComentario,                
-                        'usua_id' => Yii::$app->user->identity->id,
-                        'fechacreacion' => date('Y-m-d'),
-                        'anulado' => 0,                         
-                        ])->execute();
-
-                       
-                    }
-                          
-                return $this->render('encuestasatifaccion', [
-                    'model' => $model,
-                    'id' => $id,
-                    'modelo' => $modelo,
-                    
-                ]);
-        
-                
-            }
 
             /**
              * pruebas permite realizar el borrado o el delete de los datos en base de datos.
