@@ -413,7 +413,7 @@ if ($sessiones == '2953') {
     
     if (varComdata == "SinProceso") {
       event.preventDefault();
-      swal.fire("!!! Advertencia !!!","El Centro de Costos seleccionado no tiene un dash de LookerStudio, Contactarse con el analista encagrado para verificar información.","warning");
+      swal.fire("!!! Advertencia !!!","El Centro de Costos seleccionado no tiene un dash de LookerStudio, Contactarse con el analista encargado para verificar información.","warning");
       return;
     }else{
       if (varComdata != "") {
