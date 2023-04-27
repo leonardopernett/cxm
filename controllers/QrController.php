@@ -454,18 +454,6 @@ use app\models\UsuariosEvalua;
     $model6 = new HojavidaDatadirector();
     $model7 = new HojavidaDatagerente();
     
-    /*$txtQuery2 =  new Query;
-    $txtQuery2  ->select(['tbl_qr_casos.fecha_creacion','tbl_qr_casos.numero_caso','tbl_qr_clientes.clientes','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia', 'tbl_qr_casos.comentario'])
-                ->from('tbl_qr_casos')            
-                ->join('LEFT JOIN', 'tbl_qr_areas', 'tbl_qr_casos.id_area = tbl_qr_areas.id' )
-                ->join('LEFT JOIN', 'tbl_qr_tipologias', 'tbl_qr_casos.id_tipologia = tbl_qr_tipologias.id')
-                ->join('LEFT JOIN', 'tbl_qr_tipos_de_solicitud', 'tbl_qr_casos.id_solicitud = tbl_qr_tipos_de_solicitud.id')
-                ->join('LEFT JOIN', 'tbl_qr_clientes', 'tbl_qr_casos.cliente = tbl_qr_clientes.id')                  
-                ->Where('tbl_qr_casos.id = :id_caso')
-                ->addParams([':id_caso'=>$id_caso]);
-   
-    $command = $txtQuery2->createCommand();
-    $dataProvider = $command->queryAll();*/
 
     $txtQuery2 =  new Query;
   $txtQuery2  ->select(['tbl_qr_casos.fecha_creacion','tbl_qr_casos.numero_caso','tbl_qr_clientes.clientes','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia', 'tbl_qr_casos.comentario', 'tbl_usuarios.usua_nombre','tbl_qr_casos.tipo_respuesta','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_estados.nombre estado','tbl_qr_casos.comentario2','tbl_qr_casos.archivo2'])
@@ -535,6 +523,7 @@ public function actionGestionqyr($idcaso){
   $model5 = new Estadosqyr();
   $model6 = new HojavidaDatadirector();
   $model7 = new HojavidaDatagerente();
+  $ruta = null;
   
   $txtQuery2 =  new Query;
   $txtQuery2  ->select(['tbl_qr_casos.fecha_creacion','tbl_qr_casos.numero_caso','tbl_qr_clientes.clientes','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia', 'tbl_qr_casos.comentario', 'tbl_usuarios.usua_nombre','tbl_qr_casos.tipo_respuesta','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_estados.nombre estado'])
@@ -578,18 +567,6 @@ public function actionGestionqyr($idcaso){
   $command = $txtQuery5->createCommand();
   $datanumcaso = $command->queryScalar();
   
-
-  /*$varcuerpo1 = (new \yii\db\Query())
-                              ->select(['asunto'])
-                              ->from(['tbl_qr_respuesta_automatica'])
-                              ->where(['=','id_estado',1])
-                              ->Scalar();
-  $varcuerpo2 = (new \yii\db\Query())
-                              ->select(['comentario'])
-                              ->from(['tbl_qr_respuesta_automatica'])
-                              ->where(['=','id_estado',1])
-                              ->Scalar();*/
-
         $varNumcaso = (new \yii\db\Query())
                 ->select(['numero_caso'])
                 ->from(['tbl_qr_casos'])
