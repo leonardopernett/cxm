@@ -494,6 +494,11 @@ AppAsset::register($this);
                                                     'url' => ['/reportepbi/reporte?varid=3'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Reporte Looker Studio&nbsp;&nbsp;'),
+                                                    'url' => ['/dashboardcomdata/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminSistema() ||  Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],
                                                 '<br>',
                                         '</div>',
                                             
