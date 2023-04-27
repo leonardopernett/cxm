@@ -215,7 +215,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div class="capaDos" style="display: inline;">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 
                 <div class="card1 mb">
 
@@ -234,7 +234,39 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             </div>
+
+            <div class="col-md-6">
+                
+                <div class="card3 mb">
+                    <label><em class="fas fa-list-alt" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Lista de Servicios con los permisos ') ?> </label>
+
+                    <table id="tblData" class="table table-striped table-bordered tblResDetFreed">
+                    <caption><?php echo "Resultados Servicios: " ?></caption>
+                        <thead>
+                        <tr>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Servicio') ?></label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            foreach ($dataProviderClientes as $key => $value) {
+                        ?>
+                            <tr>
+                                <td><label style="font-size: 12px;"><?php echo  $value['id_dp_clientes']; ?></label></td>
+                                <td><label style="font-size: 12px;"><?php echo  $value['cliente']; ?></label></td>                                
+                            </tr>
+                        <?php
+                            }
+                        ?>
+                    </tbody>
+                    </table>
+                </div>
+
+            </div>
         </div>
+
+        
     </div>
     <hr>
 <?php

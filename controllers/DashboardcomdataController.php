@@ -176,6 +176,7 @@ use app\models\Comdataparametrizarapi;
       $modelpermiso = new Comdatareportestudio();
       $varNombre = null;
       $varUsuario = null;
+      $dataProviderClientes = null;
 
       $form = Yii::$app->request->post();
       if ($modelpermiso->load($form)) {
@@ -186,6 +187,21 @@ use app\models\Comdataparametrizarapi;
                                 ->from(['tbl_usuarios'])            
                                 ->where(['=','tbl_usuarios.usua_id',$varUsuario])
                                 ->scalar();
+
+        $dataProviderClientes = (new \yii\db\Query())
+                                ->select([
+                                  'tbl_proceso_cliente_centrocosto.id_dp_clientes',
+                                  'tbl_proceso_cliente_centrocosto.cliente'
+                                ])
+                                ->from(['tbl_proceso_cliente_centrocosto'])
+                                ->join('LEFT OUTER JOIN', 'tbl_comdata_permisosreportestudio',
+                                            'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_comdata_permisosreportestudio.id_dp_clientes')
+                                ->where(['=','tbl_comdata_permisosreportestudio.anulado',0])
+                                ->andwhere(['=','tbl_comdata_permisosreportestudio.usuario_permiso',$varUsuario])
+                                ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                                ->orderby(['tbl_proceso_cliente_centrocosto.cliente' => SORT_DESC])
+                                ->all();
+
       }
 
 
@@ -193,6 +209,7 @@ use app\models\Comdataparametrizarapi;
         'modelpermiso' => $modelpermiso,
         'varNombre' => $varNombre,
         'varUsuario' => $varUsuario,
+        'dataProviderClientes' => $dataProviderClientes,
       ]);
     }
 
