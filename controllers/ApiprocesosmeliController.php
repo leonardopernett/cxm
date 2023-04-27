@@ -124,7 +124,7 @@ use app\models\Calificaciondetalles;
                 'comentarios_origen' => $value['comentarios'],
                 'score_origen' => $value['scoregeneral'],
                 'fechacreacion_origen' => $value['fechacreacion'],
-                'casoid' => $value['cas_case_id'],
+                'casoid' => $value['casoid'],
                 'fechacreacion' => date('Y-m-d'),
                 'anulado' => 0,
                 'usua_id' => 1,
