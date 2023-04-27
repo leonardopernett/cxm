@@ -90,7 +90,8 @@ use app\models\Calificaciondetalles;
                 m.analysis_reason AS dimensiones,
                 m.pc_comment_analysis AS comentarios,
                 m.oe_extra_mile AS scoregeneral,
-                m.action_datetime AS fechacreacion
+                m.action_datetime AS fechacreacion,
+                m.cas_case_id AS casoid
  
             FROM meli_178619_NRT_KTA_OE_ACTION_POINTS_REASONS_V3 m
             WHERE 
@@ -123,6 +124,7 @@ use app\models\Calificaciondetalles;
                 'comentarios_origen' => $value['comentarios'],
                 'score_origen' => $value['scoregeneral'],
                 'fechacreacion_origen' => $value['fechacreacion'],
+                'casoid' => $value['cas_case_id'],
                 'fechacreacion' => date('Y-m-d'),
                 'anulado' => 0,
                 'usua_id' => 1,
@@ -228,6 +230,7 @@ use app\models\Calificaciondetalles;
       foreach ($varListadoProcesos as $key => $value) {
         $varIdListado = $value['identificador_origen'];
         $varIdFormularios = $value['formulario_origen'];
+        $varCasoId = $value['casoid'];
         $arrCheckPits = null;
         $arrFormulario = [];
         $arrayCountBloques = [];
@@ -283,7 +286,7 @@ use app\models\Calificaciondetalles;
 
         $varCreatedCxm = date('Y-m-d H:i:s', strtotime($value['fechacreacion_origen']));
 
-        $vardsFuenteCxm = 'Proceso Externo '.$varIdListado." - ".$varCreatedCxm;
+        $vardsFuenteCxm = 'Id del Caso: '.$varCasoId.' - Proceso Externo: '.$varIdListado." - ".$varCreatedCxm;
 
         $vardsComentariosCxm = $value['comentarios_origen'];
 
