@@ -74,6 +74,7 @@ use app\models\UsuariosEvalua;
                   ->join('LEFT JOIN', 'tbl_qr_tipologias', 'tbl_qr_casos.id_tipologia = tbl_qr_tipologias.id')
                   ->join('LEFT JOIN', 'tbl_qr_estados', 'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')
                   ->join('LEFT JOIN', 'tbl_usuarios_evalua', 'tbl_qr_casos.cliente = tbl_usuarios_evalua.idusuarioevalua')     
+                  ->where(['=','tbl_qr_casos.estatus',0])  
                   ->All();
       }else{
         $varcedulajefe = (new \yii\db\Query())
@@ -107,7 +108,8 @@ use app\models\UsuariosEvalua;
               ->join('LEFT JOIN', 'tbl_qr_tipologias', 'tbl_qr_casos.id_tipologia = tbl_qr_tipologias.id')
               ->join('LEFT JOIN', 'tbl_qr_estados', 'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')
               ->join('LEFT JOIN', 'tbl_usuarios_evalua', 'tbl_qr_casos.cliente = tbl_usuarios_evalua.idusuarioevalua')
-              ->where(['in','tbl_qr_casos.id_responsable',$sessiones])     
+              ->where(['in','tbl_qr_casos.id_responsable',$sessiones])   
+              ->andwhere(['=','tbl_qr_casos.estatus',0])  
               ->All();
 
       }
@@ -1167,6 +1169,16 @@ public function actionCargadatodoc(){
   die(json_encode($txtRta));
 
 }
+
+    public function actionDeleteqr($idcaso){
+
+      Yii::$app->db->createCommand()->update('tbl_qr_casos',[
+        'estatus' => 1,                                               
+      ],'id ='.$idcaso.'')->execute();
+
+      return $this->redirect(['index']);
+
+    }
 
   }
 
