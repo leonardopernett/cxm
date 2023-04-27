@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-md-6">
                         <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Seleccionar Centros de Costos') ?></label>
                         <?= 
-                          $form->field($modelconf,'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
+                          $form->field($modelconf,'extension', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
                               [],
                               [                  
                                 'prompt' => 'Seleccionar Pcrc...',
