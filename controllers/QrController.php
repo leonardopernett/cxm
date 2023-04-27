@@ -664,13 +664,23 @@ public function actionGestionqyr($idcaso){
              
               foreach ($varListacorreo as $key => $value) {
 
-                Yii::$app->mailer->compose()
+                if ($ruta == null) {
+                  Yii::$app->mailer->compose()
+                    ->setTo($value['email'])
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject($varasunto)  
+                    ->setHtmlBody($message)
+                    ->send();
+                }else{
+                  Yii::$app->mailer->compose()
                     ->setTo($value['email'])
                     ->setFrom(Yii::$app->params['email_satu_from'])
                     ->setSubject($varasunto)                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
+                }
+                
               }
 
     return $this->redirect('index');
@@ -763,17 +773,6 @@ public function actionRevisionqyr($idcaso){
       ->from(['tbl_usuarios_jarvis_cliente'])
       ->where(['=','documento',$vardocumentojefe])
       ->Scalar();
-
-  /*$txtQuery7 =  new Query;
-  $txtQuery7  ->select(['tbl_usuarios_evalua.email_corporativo'])
-              ->from('tbl_usuarios_evalua')       
-              ->Where('tbl_usuarios_evalua.idusuarioevalua = :id_caso')
-              ->addParams([':id_caso'=>$dataresponsable]);
-             
-  $command = $txtQuery7->createCommand();
-  $datacorreoresponsable = $command->queryScalar();*/
-
-  
 
   $paramsinfo = [':varInfo' => $datacorreo];  
   $dataProviderInfo = Yii::$app->db->createCommand('
