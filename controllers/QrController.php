@@ -107,7 +107,7 @@ use app\models\UsuariosEvalua;
               ->join('LEFT JOIN', 'tbl_qr_tipologias', 'tbl_qr_casos.id_tipologia = tbl_qr_tipologias.id')
               ->join('LEFT JOIN', 'tbl_qr_estados', 'tbl_qr_casos.id_estado = tbl_qr_estados.id_estado')
               ->join('LEFT JOIN', 'tbl_usuarios_evalua', 'tbl_qr_casos.cliente = tbl_usuarios_evalua.idusuarioevalua')
-              ->where(['in','tbl_qr_casos.documento',$dataCedulas])     
+              ->where(['in','tbl_qr_casos.id_responsable',$sessiones])     
               ->All();
 
       }
