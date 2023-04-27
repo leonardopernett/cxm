@@ -151,7 +151,7 @@ use app\models\Comdataparametrizarapi;
       $form = Yii::$app->request->post();
       if ($modelconf->load($form)) {
         $varIdDpClientesConfig = $modelconf->id_dp_clientes;
-        $varCodPcrcConfig = $modelconf->extension;
+        $varCodPcrcConfig = $modelconf->proyecto_id;
         $varTextoUrlConfig = $modelconf->table_id;
 
         Yii::$app->db->createCommand()->insert('tbl_comdata_reportestudio',[
