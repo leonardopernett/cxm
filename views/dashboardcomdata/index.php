@@ -287,11 +287,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <hr>
 
-<?php
 
-if ($sessiones == '2953') {
-
-?>
 
 <!-- Capa Permisos y Configuraciones -->
 <div id="capaIdConfig" class="capaConfig" style="display: inline;">
@@ -366,9 +362,7 @@ if ($sessiones == '2953') {
 
 <hr>
 
-<?php
-}
-?>
+
 
 <?php ActiveForm::end(); ?>
 
