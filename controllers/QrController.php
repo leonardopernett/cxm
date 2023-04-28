@@ -629,8 +629,18 @@ public function actionGestionqyr($idcaso){
     $valtipologia = $model8->id;
   }
   if ($model3->load($form)) {
-    $valcomentario = $model3->nombre;  
-    $valresponsable = $model3->id_solicitud;
+    $valcomentario = $model3->nombre;      
+    $valresponsable = (new \yii\db\Query())
+                      ->select([
+                        'tbl_usuarios.usua_id'
+                      ])
+                      ->from(['tbl_usuarios'])
+                      ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
+                                  'tbl_usuarios.usua_identificacion = tbl_usuarios_evalua.documento')
+                      ->where(['=','tbl_usuarios_evalua.anulado',0])
+                      ->andwhere(['=','tbl_usuarios_evalua.idusuarioevalua',$model3->id_solicitud])
+                      ->groupby(['tbl_usuarios.usua_id'])
+                      ->scalar();
     $valestado = 8;
   
 
