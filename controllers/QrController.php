@@ -313,9 +313,28 @@ use app\models\UsuariosEvalua;
     $modelcaso = new Casosqyr(); 
     $model = new UploadForm2();
     $ruta = null;
-    
-     $form = Yii::$app->request->post();     
 
+    $varIdSesion = Yii::$app->user->identity->id;
+    $varNombreCompleto = (new \yii\db\Query())
+                            ->select(['tbl_usuarios.usua_nombre'])                            
+                            ->from(['tbl_usuarios'])
+                            ->where(['=','tbl_usuarios.usua_id',$varIdSesion])
+                            ->Scalar();
+
+    $varDocumentoCompleto = (new \yii\db\Query())
+                            ->select(['tbl_usuarios.usua_identificacion'])                            
+                            ->from(['tbl_usuarios'])
+                            ->where(['=','tbl_usuarios.usua_id',$varIdSesion])
+                            ->Scalar();
+    
+    $varParamsDoc = [":varDocumento"=>$varDocumentoCompleto];
+    $varCorreoCompleto = Yii::$app->dbjarvis->createCommand('
+    SELECT dp_actualizacion_datos.email_personal 
+      FROM  dp_actualizacion_datos
+	      WHERE 
+		      dp_actualizacion_datos.documento = :varDocumento ')->bindValues($varParamsDoc)->queryScalar();
+    
+    $form = Yii::$app->request->post();     
     if($model->load($form)){
 
       $model->file = UploadedFile::getInstance($model, 'file');
@@ -326,9 +345,9 @@ use app\models\UsuariosEvalua;
         }
       } 
       
-      }else{
-        $ruta = null;
-      }
+    }else{
+      $ruta = null;
+    }
 
     if ($modelcaso->load($form)) { 
       
@@ -353,16 +372,16 @@ use app\models\UsuariosEvalua;
       Yii::$app->db->createCommand()->insert('tbl_qr_casos',[
                   'id_solicitud' => $modelcaso->id_estado_caso,
                   'comentario' => $modelcaso->comentario,
-                  'documento' => $modelcaso->documento,
-                  'nombre' => $modelcaso->nombre,
-                  'correo' => $modelcaso->correo,
+                  'documento' => $varDocumentoCompleto,
+                  'nombre' => $varNombreCompleto,
+                  'correo' => $varCorreoCompleto,
                   'cliente' => $modelcaso->cliente,
                   'numero_caso' => $caso,
                   'archivo' => $ruta,
                   'id_estado_caso' => $estado,
                   'id_estado' => $estado_new,
                   'estatus' => 0,
-                  'usua_id' => Yii::$app->user->identity->id,                                       
+                  'usua_id' => Yii::$app->user->identity->id,      
               ])->execute();
 
              
@@ -438,7 +457,7 @@ use app\models\UsuariosEvalua;
       return $this->redirect('index');
     }
     
-    return $this->render('crearqyrn',[
+    return $this->renderAjax('crearqyrn',[
       'modelcaso' => $modelcaso,
       'model' => $model,
     ]);

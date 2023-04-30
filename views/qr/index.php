@@ -11,7 +11,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 
-$this->title = 'Quejas y Reclamos';
+$this->title = 'Gestor de PQRS';
 $this->params['breadcrumbs'][] = $this->title;
 
 $template = '<div class="col-md-12">'
@@ -167,11 +167,24 @@ $sessiones = Yii::$app->user->identity->id;
         <div class="col-md-6">
             <div class="card1 mb">                    
             <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Crear QyR') ?></label>                
-                <?= Html::a('Aceptar',  ['crearqyrn'], ['class' => 'btn btn-success',
-                        'style' => 'background-color: #337ab7',
-                        'data-toggle' => 'tooltip',
-                        'title' => 'Crear QyR'])
-                ?>                                                                    
+                       
+                <?= Html::button('Aceptar', ['value' => url::to(['crearqyrn']), 'class' => 'btn btn-success', 
+                'id'=>'modalButton',
+                'data-toggle' => 'tooltip',
+                'title' => 'Crear PQRS']) 
+                ?> 
+
+                <?php
+                Modal::begin([
+                    'header' => '<h4>Crear Procesos de PQRS</h4>',
+                    'id' => 'modal',
+                    'size' => 'modal-lg',
+                ]);
+
+                echo "<div id='modalContent'></div>";
+                                                                                                        
+                Modal::end(); 
+                ?>                                                            
             </div>
         </div>
         <div class="col-md-6">
