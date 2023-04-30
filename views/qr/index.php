@@ -166,7 +166,7 @@ $sessiones = Yii::$app->user->identity->id;
     <div class="row">
         <div class="col-md-6">
             <div class="card1 mb">                    
-            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Crear QyR') ?></label>                
+            <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Crear Caso PQRS') ?></label>                
                        
                 <?= Html::button('Aceptar', ['value' => url::to(['crearqyrn']), 'class' => 'btn btn-success', 
                 'id'=>'modalButton',
@@ -189,7 +189,7 @@ $sessiones = Yii::$app->user->identity->id;
         </div>
         <div class="col-md-6">
             <div class="card1 mb">
-            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Descargar QyR') ?></label>
+            <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Descargar Casos PQRS') ?></label>
                 <a id="dlink" style="display:none;"></a>
                     <button  class="btn btn-info" style="background-color: #4298B4" id="btn">Aceptar</button>
             </div>
@@ -225,7 +225,7 @@ $sessiones = Yii::$app->user->identity->id;
         <div class="col-md-12">
             <div class="card1 mb">
                 <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" >
-                <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Reporte Quejas y Reclamos') ?></label></caption>
+                <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Reporte Casos PQRS') ?></label></caption>
                     <thead>
                         <tr>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id') ?></label></th>

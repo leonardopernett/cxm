@@ -11,7 +11,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 
-	$this->title = 'Ver Información de los Casos QyR';
+	$this->title = 'Gestor de PQRS - Vista del Caso';
 	$this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-12">'
