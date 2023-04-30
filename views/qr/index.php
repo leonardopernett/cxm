@@ -265,7 +265,13 @@ $sessiones = Yii::$app->user->identity->id;
                                 $varEstadoproceso = $value['id_estado'];                                
                                 $varnombreestado = $value['estado1'];
 
-
+                                $varNombreCliente = (new \yii\db\Query())
+                                                    ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                                                    ->from(['tbl_proceso_cliente_centrocosto'])
+                                                    ->where(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varCliente])
+                                                    ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                                    ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                                                    ->scalar();
 
                         ?>
                             <tr>
