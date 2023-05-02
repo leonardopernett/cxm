@@ -13,7 +13,7 @@ use yii\bootstrap\Modal;
 use app\models\Dashboardcategorias;
 use app\models\Planprocesos;
 
-$this->title = 'Gestor de PQRS - Crear Casos PQRS';
+$this->title = 'Gestor de PQRS - Crear Casos PQRSF';
 $this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-12">'

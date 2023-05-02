@@ -15,7 +15,7 @@ use app\models\Hojavidainforme;
 use app\models\Hojavidaperiocidad;
 use app\models\Hojavidametricas;
 
-$this->title = 'Gestor de PQRS - Ver Imagen';
+$this->title = 'Gestor de PQRSF - Ver Imagen';
 $this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-12">'
