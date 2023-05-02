@@ -216,7 +216,7 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestor de PQRS&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Gestor de PQRSF&nbsp;&nbsp;'),
                                                     'url' => ['/qr/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ], 

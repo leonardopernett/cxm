@@ -498,24 +498,12 @@ use app\models\UsuariosEvalua;
     $command = $txtQuery3->createCommand();
     $datacorreo = $command->queryScalar();
 
-    $paramsinfo = [':varInfo' => $datacorreo];  
-    $dataProviderInfo = Yii::$app->db->createCommand('
-            SELECT tbl_hojavida_datapersonal.hv_idpersonal,
-            tbl_hojavida_datapcrc.id_dp_cliente AS IdCliente, tbl_hojavida_datapersonal.clasificacion,
-            tbl_hojavida_sociedad.sociedad
-            FROM tbl_hojavida_datapersonal
-            INNER JOIN tbl_hojavida_datapcrc  ON
-            tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datapcrc.hv_idpersonal
-            LEFT JOIN tbl_hojavida_datacomplementos ON
-            tbl_hojavida_datacomplementos.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
-            LEFT JOIN tbl_hv_estilosocial ON
-            tbl_hv_estilosocial.idestilosocial = tbl_hojavida_datacomplementos.idestilosocial
-            LEFT JOIN tbl_hojavida_sociedad ON
-            tbl_hojavida_sociedad.id_sociedad = tbl_hojavida_datapersonal.id_sociedad
-            WHERE
-            tbl_hojavida_datapersonal.email = :varInfo
-          GROUP BY tbl_hojavida_datapersonal.hv_idpersonal               
-          ')->bindValues($paramsinfo)->queryAll();
+     
+    $dataProviderInfo = (new \yii\db\Query())
+                ->select(['*'])
+                ->from(['tbl_qr_casos'])
+                ->where(['=','tbl_qr_casos.id',$id_caso])
+                ->All();
 
     return $this->render('verqyr', [
       'dataprovider' => $dataProvider, 
@@ -606,26 +594,12 @@ public function actionGestionqyr($idcaso){
                 ->from(['tbl_qr_respuesta_automatica'])
                 ->where(['=','id_estado',8])
                 ->Scalar();
-       
-
-  $paramsinfo = [':varInfo' => $datacorreo];  
-  $dataProviderInfo = Yii::$app->db->createCommand('
-          SELECT tbl_hojavida_datapersonal.hv_idpersonal,
-          tbl_hojavida_datapcrc.id_dp_cliente AS IdCliente, tbl_hojavida_datapersonal.clasificacion,
-          tbl_hojavida_sociedad.sociedad
-          FROM tbl_hojavida_datapersonal
-          INNER JOIN tbl_hojavida_datapcrc  ON
-          tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datapcrc.hv_idpersonal
-          LEFT JOIN tbl_hojavida_datacomplementos ON
-          tbl_hojavida_datacomplementos.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
-          LEFT JOIN tbl_hv_estilosocial ON
-          tbl_hv_estilosocial.idestilosocial = tbl_hojavida_datacomplementos.idestilosocial
-          LEFT JOIN tbl_hojavida_sociedad ON
-          tbl_hojavida_sociedad.id_sociedad = tbl_hojavida_datapersonal.id_sociedad
-          WHERE
-          tbl_hojavida_datapersonal.email = :varInfo
-        GROUP BY tbl_hojavida_datapersonal.hv_idpersonal               
-        ')->bindValues($paramsinfo)->queryAll();
+        
+  $dataProviderInfo = (new \yii\db\Query())
+                ->select(['*'])
+                ->from(['tbl_qr_casos'])
+                ->where(['=','tbl_qr_casos.id',$id_caso])
+                ->All();
 
   $form = Yii::$app->request->post();    
                   
@@ -740,6 +714,8 @@ public function actionRevisionqyr($idcaso){
   $model5 = new Estadosqyr();
   $model6 = new HojavidaDatadirector();
   $model7 = new HojavidaDatagerente();
+  $valestado = null;
+  $tmpFile = null;
   
   $txtQuery2 =  new Query;
   $txtQuery2  ->select(['tbl_qr_casos.fecha_creacion','tbl_qr_casos.numero_caso','tbl_qr_clientes.clientes','tbl_qr_casos.nombre','tbl_qr_casos.documento','tbl_qr_casos.correo', 'tbl_qr_areas.nombre area','tbl_qr_tipologias.tipologia', 'tbl_qr_casos.comentario', 'tbl_usuarios.usua_nombre','tbl_qr_casos.tipo_respuesta','tbl_qr_tipos_de_solicitud.tipo_de_dato','tbl_qr_estados.nombre estado','tbl_qr_casos.comentario2','tbl_qr_casos.archivo2'])
@@ -804,23 +780,11 @@ public function actionRevisionqyr($idcaso){
       ->Scalar();
 
   $paramsinfo = [':varInfo' => $datacorreo];  
-  $dataProviderInfo = Yii::$app->db->createCommand('
-          SELECT tbl_hojavida_datapersonal.hv_idpersonal,
-          tbl_hojavida_datapcrc.id_dp_cliente AS IdCliente, tbl_hojavida_datapersonal.clasificacion,
-          tbl_hojavida_sociedad.sociedad
-          FROM tbl_hojavida_datapersonal
-          INNER JOIN tbl_hojavida_datapcrc  ON
-          tbl_hojavida_datapersonal.hv_idpersonal = tbl_hojavida_datapcrc.hv_idpersonal
-          LEFT JOIN tbl_hojavida_datacomplementos ON
-          tbl_hojavida_datacomplementos.hv_idpersonal = tbl_hojavida_datapersonal.hv_idpersonal
-          LEFT JOIN tbl_hv_estilosocial ON
-          tbl_hv_estilosocial.idestilosocial = tbl_hojavida_datacomplementos.idestilosocial
-          LEFT JOIN tbl_hojavida_sociedad ON
-          tbl_hojavida_sociedad.id_sociedad = tbl_hojavida_datapersonal.id_sociedad
-          WHERE
-          tbl_hojavida_datapersonal.email = :varInfo
-        GROUP BY tbl_hojavida_datapersonal.hv_idpersonal               
-        ')->bindValues($paramsinfo)->queryAll();
+  $dataProviderInfo = (new \yii\db\Query())
+                ->select(['*'])
+                ->from(['tbl_qr_casos'])
+                ->where(['=','tbl_qr_casos.id',$id_caso])
+                ->All();
           
           $varasunto = (new \yii\db\Query())
                   ->select(['asunto'])
@@ -845,7 +809,7 @@ public function actionRevisionqyr($idcaso){
       if($valrespuesta =="Aprobada"){
         $valestado = 5;
         $tmpFile = $dataanexo;
-    //envio de correo al gerente con anexo            
+        //envio de correo al gerente con anexo            
                 $message = "<html><body>";
                 $message .= "<h3>CX-MANAGEMENT</h3>";   
                 $message .= "<br><br>";
@@ -857,16 +821,26 @@ public function actionRevisionqyr($idcaso){
                 $message .= "<br>https://qa.grupokonecta.local/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
 
-                Yii::$app->mailer->compose()
+        if ($tmpFile != "") {
+          Yii::$app->mailer->compose()
                     ->setTo($datacorreoresponsable)
                     ->setFrom(Yii::$app->params['email_satu_from'])
                     ->setSubject($varasunto)                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
+        }else{
+          Yii::$app->mailer->compose()
+                    ->setTo($datacorreoresponsable)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject($varasunto) 
+                    ->setHtmlBody($message)
+                    ->send();
+        }
+                
 
       } else{
-//envio de correo al que envio respuesta con anexo
+      //envio de correo al que envio respuesta con anexo
               $tmpFile = $dataanexo;
               $valestado = 4;
             $varasunto = (new \yii\db\Query())
@@ -901,6 +875,8 @@ public function actionRevisionqyr($idcaso){
                 ->All(); 
            
             foreach ($varListacorreo as $key => $value) {
+
+              if ($tmpFile != "") {
                 Yii::$app->mailer->compose()
                     ->setTo($value['email'])
                     ->setFrom(Yii::$app->params['email_satu_from'])
@@ -908,6 +884,15 @@ public function actionRevisionqyr($idcaso){
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
+              }else{
+                Yii::$app->mailer->compose()
+                    ->setTo($value['email'])
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("$varasunto") 
+                    ->setHtmlBody($message)
+                    ->send();
+              }
+                
             }
       }
 

@@ -11,7 +11,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 
-$this->title = 'Gestor de PQRS';
+$this->title = 'Gestor de PQRSF';
 $this->params['breadcrumbs'][] = $this->title;
 
 $template = '<div class="col-md-12">'
