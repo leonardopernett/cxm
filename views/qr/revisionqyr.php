@@ -358,8 +358,11 @@ use yii\bootstrap\Modal;
                         <?php if(($diastrans >= $diaamarillo1) && ($diastrans <= $diaamarillo2)){?>
                             <td ><label style="font-size: 12px; width: 250px;"><?php echo  $diastrans; ?><em class="fas fa-meh" style="font-size: 28px; color: #fae716; float: right;"></em></label>&nbsp;Faltan <?php echo  $diasfaltan; ?> días</td>
                         <?php } ?>
-                        <?php if(($diastrans >= $diarojo1)){?>
+                        <?php if(($diastrans >= 9) && ($diastrans <= 10)){?>
                             <td ><label style="font-size: 12px; width: 250px;"><?php echo  $diastrans; ?><em class="fas fa-frown" style="font-size: 28px; color: #f7331e; float: right;"></em></label>&nbsp;Faltan <?php echo  $diasfaltan; ?> días</td>
+                        <?php } ?>
+                        <?php if($diastrans >= 11){?>
+                            <td ><label style="font-size: 12px; width: 250px;"><?php echo  $diastrans; ?><em class="fas fa-frown" style="font-size: 28px; color: #f7331e; float: right;"></em></label>&nbsp;Caso Vencido</td>
                         <?php } ?>
                         <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Cumplimiento %:') ?></label></th>
                         <td><label style="font-size: 12px; width: 300px;"><?php echo  $cumplimiento; ?></label></td>
