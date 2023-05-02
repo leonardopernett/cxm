@@ -35,7 +35,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','parametrizarclientes','subirclientesnuevos'],
+              'only' => ['index','parametrizarclientes','subirclientesnuevos','agregarasesoresmas'],
               'rules' => [
                 [
                   'allow' => true,
@@ -113,24 +113,23 @@ use Exception;
 
     $varidcliente = $id_general;
 
-    $varfechaMax = (new \yii\db\Query())
-                                  ->select(['MAX(fecharegistro)'])
-                                  ->from(['tbl_distribucion_tres_para_cantidades'])
-                                  ->where(['=','id_cliente_para',$id_general])
-                                  ->scalar();
-
-
-    $varCantAsesores = (new \yii\db\Query())
-                                  ->select(['COUNT(cantidad_asesor_para)'])
-                                  ->from(['tbl_distribucion_tres_para_cantidades'])
-                                  ->where(['=','id_cliente_para',$id_general])
-                                  ->scalar();
+  
 
     $varNombreCliente = (new \yii\db\Query())
                                   ->select(['cliente'])
                                   ->from(['tbl_proceso_cliente_centrocosto'])
                                   ->where(['=','id_dp_clientes',$id_general])
                                   ->scalar();
+
+    $datosTablaGlobal  = (new \yii\db\Query())
+                                  ->select(['tbl_evaluados.id','tbl_evaluados.name', 'tbl_evaluados.dsusuario_red', 'tbl_equipos.name AS name_equipo'])
+                                  ->from(['tbl_evaluados'])
+                                  ->join('LEFT OUTER JOIN', 'tbl_equipos_evaluados',
+                                  'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')
+                                  ->join('LEFT OUTER JOIN', 'tbl_equipos',
+                                  'tbl_equipos.id = tbl_equipos_evaluados.equipo_id')
+                                  ->where(['=','idpcrc',4041])
+                                  ->all(); 
 
 
     $model = new FormUploadtigo();        
@@ -156,9 +155,9 @@ use Exception;
     return $this->render('subirclientesnuevos',[
       'model' => $model,
       'varidcliente' => $varidcliente,
-      'varfechaMax' => $varfechaMax,
-      'varCantAsesores' => $varCantAsesores,
       'varNombreCliente' =>$varNombreCliente,
+      'datosTablaGlobal' => $datosTablaGlobal,
+      'id_general' => $varidcliente,
       
     ]);
   }
@@ -168,7 +167,6 @@ use Exception;
     $inputFile = 'categorias/' . $name . '.xlsx';
 
     try {
-
         $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
         $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
         $objPHPExcel = $objReader->load($inputFile);
@@ -180,34 +178,12 @@ use Exception;
     $sheet = $objPHPExcel->getSheet(0);
     $highestRow = $sheet->getHighestRow();
 
-    $evaluados_temp = (new \yii\db\Query())
-      ->select(['*'])
-      ->from(['tbl_evaluados'])   
-      ->where(['=', 'idpcrc', 4041])                               
-      ->all();
 
-    
-    $usuariosExcel = [];
-    for ($i=11; $i <= $highestRow; $i++) { 
-      $username = $sheet->getCell("A".$i)->getValue();      
-      $usuariosExcel[] = $username;  
-    }    
-    
-    $countExcel = count($evaluados_temp);
-
-    for ($i=11; $i <= $highestRow; $i++) {  
-      $count= 0;
-      $username = $sheet->getCell("A".$i)->getValue();
-      foreach($evaluados_temp as $evaluados){                
-        if(array_search($username, $evaluados) != FALSE){ 
-          $countExcel-= 1;
-          break; 
-        }else{
-          $count+= 1;
-        }        
-      }        
+    for ($i=12; $i <= $highestRow; $i++) {  
       
-      if($count == count($evaluados_temp)){        
+     
+      $username = $sheet->getCell("A".$i)->getValue();
+             
         do{
           $identificacion = rand(10000000,99999999);
           $identificadores = (new \yii\db\Query())
@@ -244,41 +220,27 @@ use Exception;
           ->where(['=', 'dsusuario_red', $username])
           ->all();          
         
+        
+
         Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
             'evaluado_id' => $id_evaluado[0]["id"],
             'equipo_id' => $id_equipo[0]["id"],
         ])->execute();
 
-      }
-      
-      
-    } 
-    
-    if($countExcel > 0){ 
-      $usuariosAuxiliares = [];
-      foreach($evaluados_temp as $evaluados){
-        if(in_array($evaluados["dsusuario_red"], $usuariosExcel) == false){
-          $usuariosAuxiliares[] = $evaluados["dsusuario_red"];
-        }
-      }    
-
-     foreach($usuariosAuxiliares as $usuarioNoUsar){
-        $evaluado = (new \yii\db\Query())
-          ->select(['*'])
-          ->from(['tbl_evaluados'])    
-          ->where(['=', 'dsusuario_red', $usuarioNoUsar])
-          ->all();        
-        
-        $name = $evaluado[0]["name"];
-      
-        Yii::$app->db->createCommand()->update('tbl_evaluados',[
-          'name' => "(NO USAR)".$name,
-          'dsusuario_red' => "(NO USAR)".$usuarioNoUsar,
-        ],'id ='.$evaluado[0]["id"].'')->execute();          
-
-      }
-    }
+      }   
   }
+
+  public function actionDeleteasesor($id,$id_general){ 
+
+    Yii::$app->db->createCommand("UPDATE tbl_evaluados SET 
+    name = CONCAT('(NO USAR)', name), 
+    dsusuario_red = CONCAT('(NO USAR)', dsusuario_red) 
+    WHERE id ='".$id."'")->execute();   
+
+    return $this->redirect(array('subirclientesnuevos','id_general'=>$id_general));//retornar  la vista 
+
+  }
+ 
          
   
 }
