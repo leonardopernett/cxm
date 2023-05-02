@@ -166,28 +166,69 @@ $roles = $command->queryScalar();
    
 
    
-        <div class="col-md-4">
+        <div class="col-md-8">
             <div class="card1 mb">
+                <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
+                    <caption><label><em class="fas fa-list" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Asesores Nuevos') ?></label></caption><!--Titulo de la tabla si se muestra-->
+                    <thead><!--Emcabezados de la tabla -->
+                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Usuario Red') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Nombre') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Equipo') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Acción Eliminar') ?></label></th>
+                    </thead>
+                    <tbody><!--Tbody de la tabla -->
+                    
+                         <?php
+                            foreach ($datosTablaGlobal as $key => $value) {
+
+                        ?>
+
+                        <tr><!--Filas de la tabla -->
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['dsusuario_red']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['name']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['name_equipo']; ?></label></td>
+                        <td class="text-center"><!--boton eliminar que esta dentro de esa fila-->
+                        <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deleteasesor','id'=> $value['id'],'id_general' => $id_general], 
+                        ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?></td>
+                        </tr>
+                              
+                        <?php  }   ?>
+
+                
+                
+                
+                
+                    </tbody><!--fin Tbody de la tabla -->
+                </table><!--fin  de la tabla -->
                
-                <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 15px; color: #1993a5;"></em> Fecha Ultimo Procesamiento: </label>
-
-                <div class="text-center">
-                    <label style="font-size: 25px;"><?= Yii::t('app',$varfechaMax); ?></label>
-                </div>
-          
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 15px; color: #1993a5;"></em> Cantidad de Asesores: </label>
-
-                <div class="text-center">
-                <label style="font-size: 25px;"><?= Yii::t('app', $varCantAsesores) ?></label>
-                </div>
             
             </div>
         </div>
     
+
+<script>  
+
+$(document).ready( function () {
+    $('#myTable').DataTable({
+      responsive: true,
+      fixedColumns: true,
+      select: true,
+      "language": {
+        "lengthMenu": "Cantidad de Datos a Mostrar",
+        "zeroRecords": "No se encontraron datos ",
+        "info": "Mostrando p&aacute;gina Page a Pages de Max registros",
+        "infoEmpty": "No hay datos aun",
+        "infoFiltered": "(Filtrado un Max total)",
+        "search": "Buscar:",
+        "paginate": {
+          "first":      "Primero",
+          "last":       "Ultimo",
+          "next":       "Siguiente",
+          "previous":   "Anterior"
+        }
+      } 
+    });
+  });
+</script>
 
 
