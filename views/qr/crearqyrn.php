@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <div class="col-md-6">
                         <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Ingresar Comentarios') ?></label>
-                        <?= $form->field($modelcaso, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => 500, 'id'=>'idvarComentarios', 'placeholder'=>'Ingresar Comentarios', 'style' => 'resize: vertical;'])?>
+                        <?= $form->field($modelcaso, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => 1000, 'id'=>'idvarComentarios', 'placeholder'=>'Ingresar Comentarios', 'style' => 'resize: vertical;'])?>
                     </div>
 
                     <div class="col-md-6">
