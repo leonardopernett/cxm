@@ -774,9 +774,9 @@ public function actionRevisionqyr($idcaso){
       ->where(['=','usua_id',$dataresponsable])
       ->Scalar();
   $datacorreoresponsable = (new \yii\db\Query())
-      ->select(['email_corporativo'])
-      ->from(['tbl_usuarios_jarvis_cliente'])
-      ->where(['=','documento',$vardocumentojefe])
+      ->select(['tbl_usuarios.usua_email'])
+      ->from(['tbl_usuarios'])
+      ->where(['=','tbl_usuarios.usua_identificacion',$vardocumentojefe])
       ->Scalar();
 
   $paramsinfo = [':varInfo' => $datacorreo];  
