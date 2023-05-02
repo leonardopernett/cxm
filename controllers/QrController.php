@@ -1032,13 +1032,23 @@ public function actionRevisiongerenteqyr($idcaso){
                 $message .= "<br>https://qa.grupokonecta.local/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
 
-                Yii::$app->mailer->compose()
+                if ($tmpFile != "") {
+                  Yii::$app->mailer->compose()
                     ->setTo($datacorreosolicitud)
                     ->setFrom(Yii::$app->params['email_satu_from'])
                     ->setSubject($varasunto)                    
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
+                }else{
+                  Yii::$app->mailer->compose()
+                    ->setTo($datacorreosolicitud)
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject($varasunto)     
+                    ->setHtmlBody($message)
+                    ->send();
+                }
+                
       } else{
 //envio de correo al que envio respuesta con anexo
      // $valestado = 8;
@@ -1078,6 +1088,8 @@ public function actionRevisiongerenteqyr($idcaso){
                 ->All(); 
            
             foreach ($varListacorreo as $key => $value) {
+
+              if ($tmpFile != "") {
                 Yii::$app->mailer->compose()
                     ->setTo($value['email'])
                     ->setFrom(Yii::$app->params['email_satu_from'])
@@ -1085,6 +1097,15 @@ public function actionRevisiongerenteqyr($idcaso){
                     ->attach($tmpFile)
                     ->setHtmlBody($message)
                     ->send();
+              }else{
+                Yii::$app->mailer->compose()
+                    ->setTo($value['email'])
+                    ->setFrom(Yii::$app->params['email_satu_from'])
+                    ->setSubject("Actualización de tu caso QyR - CX-MANAGEMENT") 
+                    ->setHtmlBody($message)
+                    ->send();
+              }
+                
             }
       }
 
