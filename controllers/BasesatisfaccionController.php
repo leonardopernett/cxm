@@ -5585,6 +5585,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,                            
                 ])->execute();
+                
 
             }
         }

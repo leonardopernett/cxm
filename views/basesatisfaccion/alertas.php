@@ -343,5 +343,9 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
                 <br><hr>
             </div>
         </div>
-    </div>
+<br>
+<div class="col-md-offset-2 col-sm-8 panel panel-default">
+  <div class="panel-body text-center">
+    <p>En el campo de destinatarios se ingresan los correos electronicos de los interesados en la alerta. <strong><p style="color: #FE562C">Cada dato debe estar separado por una ","</p></strong></p>
+  </div>
 </div>

@@ -107,7 +107,6 @@ class AlertasController extends Controller
                 $usuario = \app\models\Usuarios::find()->where(['usua_id' => $valorador])->all();
 
                 $destinatario = explode(",", $remitentes); 
-
                 $target_path = "alertas/" . $archivo_adjunto;
 
                 $html = "

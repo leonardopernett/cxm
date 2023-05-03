@@ -219,9 +219,7 @@ $template = '<div class="col-md-12">'
       </div>
     </div>
   </div>
-  <br><hr><br>
-  
-</div>
+</div>  
 
 
 			
