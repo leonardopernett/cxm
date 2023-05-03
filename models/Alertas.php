@@ -30,7 +30,7 @@ class Alertas extends \yii\db\ActiveRecord
  
     public function attributeLabels() {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'id' => Yii::t('app', ''),
             'fecha' => Yii::t('app', 'Tipofeedback ID'),
             'pcrc' => Yii::t('app', 'Formulario ID'),
             'valorador' => Yii::t('app', 'Evaluador'),
