@@ -5378,7 +5378,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     foreach ($varEmail as $key => $value) {
                         array_push($varArraydestinos,$value['usua_email']);
                     }
-                    $varcorreos = implode("; ",$varArraydestinos);
+                    $varcorreos = implode(", ",$varArraydestinos);
                 }                
                 
 
