@@ -4767,7 +4767,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     if ($model->upload()) {
                 // file is uploaded successfully
 
-                            $modelup = new Alertas();
 
                             
                             $modelup->fecha = date("Y-m-d H:i:s");
@@ -4790,7 +4789,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                     ->andwhere(['>=','tbl_alertascx.fecha', date("y-m-d")])
                                     ->scalar();
 
-                                  //  die(json_encode($id));
 
                             $this->enviarcorreoalertas($id,$modelup->fecha, $modelup->pcrc, $modelup->valorador, $modelup->tipo_alerta, $modelup->archivo_adjunto, $modelup->remitentes, $modelup->asunto, $modelup->comentario);
 

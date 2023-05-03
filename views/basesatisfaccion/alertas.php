@@ -1,9 +1,9 @@
 <?php
 
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
+use yii\bootstrap\ActiveForm;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use kartik\daterange\DateRangePicker;
@@ -31,32 +31,10 @@ $rol    ->select(['tbl_roles.role_id'])
 $command = $rol->createCommand();
 $roles = $command->queryScalar();
 
-$this->title = 'Alertas Valorador CX';
-$template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
-        . ' {input}{error}{hint}</div>';
+
+
 ?>
-
-
-<?php $this->params['breadcrumbs'][] = $this->title; ?>
-
-<style type="text/css">
-    
-    .form-group {
-        margin: 11px !important; 
-        padding: 15px !important;
-    }
-
-  .masthead {
-    height: 25vh;
-    min-height: 100px;
-    background-image: url('../../images/Crear-Alerta.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 5px;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-  }
-
+<style>
     .card1 {
             height: auto;
             width: auto;
@@ -132,6 +110,7 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
 <script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
 <script src="../../js_extensions/datatables/buttons.print.min.js"></script>
 <script src="../../js_extensions/mijs.js"> </script>
+
 <header class="masthead">
   <div class="container h-100">
     <div class="row h-100 align-items-center">
@@ -141,17 +120,8 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
   </div>
 </header>
 <br><br>
-    <?php if ($listo == 1){ ?>
-        <div class="col-md-offset-2 col-sm-8 alert alert-success">Alerta Guardada Satisfactoriamente</div>
-    <?php }elseif ($listo == 2) { ?>
-        <div class="col-md-offset-2 col-sm-8 alert alert-danger">Ocurrio un Error al Guardar la Alerta, Recuerda que el archivo debe ser .pdf - .jpg o .png</div>
-    <?php }else ?>
 
-    <?php {?>
-        <!--code-->
-        <?php } ?>
-
-        <div class="capaInfo" id="idCapaInfo" style="display: inline;">
+<div class="capaInfo" id="idCapaInfo" style="display: inline;">
 
 
 
@@ -253,7 +223,7 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
                     
                     <div class="col-md-4">
                         <label><em class="fas fa-check" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Destinarios:') ?></label> 
-                        <?= $form->field($modelup, 'remitentes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'remitentes', 'placeholder'=>'Destinatario ...'])->label('') ?>
+                        <?= $form->field($modelup, 'remitentes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'destino', 'name'=>'remitentes', 'placeholder'=>'Destinatario ...'])->label('') ?>
                     </div>  
 
                 </div>
@@ -264,12 +234,12 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
 
                     <div class="col-md-4">
                         <label><em class="fas fa-check" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Asunto:') ?></label> 
-                        <?= $form->field($modelup, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'asunto', 'placeholder'=>'Asunto ...'])->label('') ?>
+                        <?= $form->field($modelup, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'asunto', 'name'=>'asunto', 'placeholder'=>'Asunto ...'])->label('') ?>
                     </div>
                     
                     <div class="col-md-4">           
                         <label><em class="fas fa-check" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Comentarios:') ?></label> 
-                        <?= $form->field($modelup, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'comentario', 'placeholder'=>'Comentarios ...'])->label('') ?>
+                        <?= $form->field($modelup, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'comentario', 'name'=>'comentario', 'placeholder'=>'Comentarios ...'])->label('') ?>
                     </div>                
                     <br> 
                     <div class="col-md-4">
@@ -342,9 +312,5 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
                 <br><hr>
             </div>
         </div>
-<br>
-<div class="col-md-offset-2 col-sm-8 panel panel-default">
-  <div class="panel-body text-center">
-    <p>En el campo de destinatarios se ingresan los correos electronicos de los interesados en la alerta. <strong><p style="color: #FE562C">Cada dato debe estar separado por una ","</p></strong></p>
-  </div>
+    </div>
 </div>
