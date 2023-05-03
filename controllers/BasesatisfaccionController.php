@@ -4877,6 +4877,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
             public function actionAlertasvaloracion() {
                 $model = new BaseSatisfaccionSearch();
+                $dataTablaGlobal = null;
 
                 $dataProvider = (new \yii\db\Query())
                             ->select('a.id as xid, fecha, b.name AS Programa, tipo_alerta, d.usua_nombre AS Tecnico')
