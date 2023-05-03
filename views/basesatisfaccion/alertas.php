@@ -273,7 +273,7 @@ $roles = $command->queryScalar();
                     <div class="col-md-4">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #ffc034;"></em><?= Yii::t('app', ' Enviar información...') ?></label>
-                            <input type="submit" class="btn btn-primary" value="Enviar">
+                            <input type="submit" class="btn btn-primary" value="Enviar" onclick="varvarficar();">
                          </div>
                     </div>
 
@@ -319,3 +319,39 @@ $roles = $command->queryScalar();
         </div>
     </div>
 </div>
+
+<!-- Capa Espera -->
+<div class="capaLoader" id="idCapa" style="display: none;">
+  
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card1 mb">
+        <table class="text-center">
+          <thead>
+            <tr>
+              <th class="text-center">
+                  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+              </th>
+              <th><?= Yii::t('app', '') ?>                
+              </th>
+              <th class="text-justify">
+                  <h4><?= Yii::t('app', 'Actualmente CXM esta enviando la alerta al correo indicado, por favor espere...') ?></h4>
+              </th>
+            </tr>            
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>
+
+<script type="text/javascript">
+  function varVerificar(){
+      var varidCapa = document.getElementById("idCapa");
+      var varidCapaInfo = document.getElementById("idCapaInfo");
+
+      varidCapa.style.display = 'inline';
+      varidCapaInfo.style.display = 'none';
+  };
+</script>
