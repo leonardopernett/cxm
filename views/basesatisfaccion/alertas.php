@@ -301,7 +301,12 @@ $roles = $command->queryScalar();
                     <div class="col-md-4">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #ffc034;"></em><?= Yii::t('app', ' Limpiar Proceso...') ?></label>
-                            <input type="reset" class="btn btn-default" value="Limpiar">  
+                            
+                            <?= Html::a('Limpiar',  ['basesatisfaccion/alertas'], ['class' => 'btn btn-success',
+                                                        'style' => 'background-color: #707372',
+                                                        'data-toggle' => 'tooltip',
+                                                        'title' => 'Regresar']) 
+                            ?> 
                         </div>
                     </div>
                     <?php ActiveForm::end(); ?>

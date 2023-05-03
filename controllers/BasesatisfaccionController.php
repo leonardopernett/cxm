@@ -4794,7 +4794,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                             $modelup->save();
 
-                            $return $this->redirect(['index']);
+                            return $this->redirect(['index']);
 
                     }else{
                         
