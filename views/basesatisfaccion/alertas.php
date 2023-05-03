@@ -173,4 +173,3 @@ $template = '<div class="col-md-3">{label}</div><div class="col-xs-9">'
     <p>En el campo de destinatarios se ingresan los correos electronicos de los interesados en la alerta. <strong><p style="color: #FE562C">Cada dato debe estar separado por una ","</p></strong></p>
   </div>
 </div>
-    
