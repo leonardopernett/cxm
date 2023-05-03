@@ -273,7 +273,7 @@ $roles = $command->queryScalar();
                     <div class="col-md-4">
                         <div class="card1 mb">
                             <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #ffc034;"></em><?= Yii::t('app', ' Enviar información...') ?></label>
-                            <input type="submit" class="btn btn-primary" value="Enviar" onclick="varvarficar();">
+                            <input type="submit" class="btn btn-primary" value="Enviar" onclick="varVerificar();">
                          </div>
                     </div>
 
