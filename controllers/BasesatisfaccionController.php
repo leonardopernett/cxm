@@ -4799,6 +4799,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'searchModel' => $searchModel,
                             'model' => $model,
                             'listo' => $listo,
+                            'modelup' => $modelup,
                 ]);
                     }else{
                         
