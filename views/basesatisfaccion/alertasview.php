@@ -427,7 +427,8 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 
                     
                     <tbody>
-                        <?php foreach ($dataTablaGlobal as $value) : ?>
+                        <?php 
+                            foreach ($dataTablaGlobal as $key => $value) { ?>
                             <tr>
                                 <td><?= $value["fecha"]; ?></td>
                                 <td><?= $value["name"]; ?></td>
@@ -442,7 +443,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                                 <td><a href="veralertas/<?php echo $value["xid"] ?>"  href="veralertas/" . <?= $value["xid"]; ?>><img src="../../../web/images/ico-view.png" alt="icon-view"></a></td>
                                 <td><input type="image" src="../../../web/images/ico-delete.png" alt="icon-delete" name="imagenes" style="cursor:hand" id="imagenes" onclick="eliminarDato(<?php echo $value["xid"] ?>);" /></td> 
                             </tr>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
