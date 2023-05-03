@@ -427,8 +427,7 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 
                     
                     <tbody>
-                        <?php 
-                            foreach ($dataTablaGlobal as $key => $value) { ?>
+                        <?php foreach ($dataTablaGlobal as $key => $value) { ?>
                             <tr>
                                 <td><?= $value["fecha"]; ?></td>
                                 <td><?= $value["name"]; ?></td>
