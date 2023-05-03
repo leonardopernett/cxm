@@ -4793,12 +4793,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             $this->enviarcorreoalertas($id,$modelup->fecha, $modelup->pcrc, $modelup->valorador, $modelup->tipo_alerta, $modelup->archivo_adjunto, $modelup->remitentes, $modelup->asunto, $modelup->comentario);
 
                             $modelup->save();
-                            return $this->render('alertas', [
-                            'searchModel' => $searchModel,
-                            'model' => $model,
-                            'listo' => $listo,
-                            'modelup' => $modelup,
-                ]);
+
+                            $return $this->redirect(['index']);
+
                     }else{
                         
                         $listo = 2;
