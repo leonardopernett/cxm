@@ -238,7 +238,7 @@ $roles = $command->queryScalar();
                     
                     <div class="col-md-4">
                         <label><em class="fas fa-check" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Destinarios:') ?></label> 
-                        <?= $form->field($modelup, 'remitentes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'destino', 'name'=>'remitentes', 'placeholder'=>'Destinatario ...'])->label('') ?>
+                        <?= $form->field($modelup, 'remitentes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'destino', 'name'=>'remitentes', 'placeholder'=>'Destinatario ...'])->label('') ?>
                     </div>  
 
                 </div>
@@ -249,12 +249,12 @@ $roles = $command->queryScalar();
 
                     <div class="col-md-4">
                         <label><em class="fas fa-check" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Asunto:') ?></label> 
-                        <?= $form->field($modelup, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'asunto', 'name'=>'asunto', 'placeholder'=>'Asunto ...'])->label('') ?>
+                        <?= $form->field($modelup, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250, 'id' => 'asunto', 'name'=>'asunto', 'placeholder'=>'Asunto ...'])->label('') ?>
                     </div>
                     
                     <div class="col-md-4">           
                         <label><em class="fas fa-check" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Comentarios:') ?></label> 
-                        <?= $form->field($modelup, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 50, 'id' => 'comentario', 'name'=>'comentario', 'placeholder'=>'Comentarios ...'])->label('') ?>
+                        <?= $form->field($modelup, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 1000, 'id' => 'comentario', 'name'=>'comentario', 'placeholder'=>'Comentarios ...'])->label('') ?>
                     </div>                
                     <br> 
                     <div class="col-md-4">
