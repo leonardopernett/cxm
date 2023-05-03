@@ -4874,7 +4874,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
             public function actionAlertasvaloracion() {
                 $model = new BaseSatisfaccionSearch();
-                $dataTablaGlobal = array();
 
                 $dataProvider = (new \yii\db\Query())
                             ->select('a.id as xid, fecha, b.name AS Programa, tipo_alerta, d.usua_nombre AS Tecnico')
@@ -4955,18 +4954,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->groupBy('a.pcrc')
                             ->all();
 
-                    $dataTablaGlobal = (new \yii\db\Query())
-                            ->select('tbl_alertascx.id, tbl_alertascx.fecha, tbl_arbols.name, 
-                            tbl_alertascx.tipo_alerta, tbl_usuarios.usua_nombre,tbl_alertascx.remitentes,tbl_alertascx.asunto,
-                            tbl_alertascx.comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
-                            ->from('tbl_alertascx')
-                            ->join('LEFT JOIN', 'tbl_arbols', 'tbl_arbols.id = tbl_alertascx.pcrc')
-                            ->join('LEFT JOIN', 'tbl_usuarios', 'tbl_alertascx.valorador = tbl_usuarios.usua_id')
-                            ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = tbl_alertascx.id')                          
-                            ->orderBy(['fecha' => SORT_DESC])
-                            ->limit('10')
-                            ->all();
-
                     $dataProvider = (new \yii\db\Query())
                             ->select('a.id as xid, fecha, b.name AS Programa, tipo_alerta, d.usua_nombre AS Tecnico')
                             ->from('tbl_alertascx a')
@@ -4986,7 +4973,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'dataProvider' => $dataProvider,
                             'resumenFeedback' => $resumenFeedback,
                             'detalleLiderFeedback' => $detalleLiderFeedback,
-                            'dataTablaGlobal' => $dataTablaGlobal,
                         ]);
             }
 
