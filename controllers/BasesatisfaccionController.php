@@ -5354,7 +5354,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             public function actionPrueba(){
                 $varUsuarios = Yii::$app->request->post("varcorreos");
                
-                //$varIdUsu = Yii::$app->db->createCommand("select usua_id from tbl_correogrupal where nombre like '$varUsuarios'")->queryAll();   
                 $varIdUsu = (new \yii\db\Query())
                     ->select(['usua_id'])
                     ->from(['tbl_correogrupal'])
@@ -5362,15 +5361,14 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     ->all();
                 
                 
-                $varRta1 = null;
                 $varcorreos = null;
                 $varEmail = null;
                 $varRta = null;
 
+                $varArraydestinos = array();
                 foreach ($varIdUsu as $key => $value) {
                    
                     $varRta = $value['usua_id'];
-                    //$varEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = $varRta")->queryAll(); 
                     $varEmail = (new \yii\db\Query())
                         ->select(['usua_email'])
                         ->from(['tbl_usuarios'])
@@ -5378,15 +5376,13 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         ->all();
                         
                     foreach ($varEmail as $key => $value) {
-                        $varRta1[] = $value['usua_email'];
-                        $varcorreos = implode(", ", $varRta1);
+                        array_push($varArraydestinos,$value['usua_email']);
                     }
+                    $varcorreos = implode("; ",$varArraydestinos);
                 }                
                 
-                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                return [
-                    'varCorreos' => $varcorreos
-                ];
+
+                die(json_encode($varcorreos));
                 
             }
             
