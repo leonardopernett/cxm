@@ -105,7 +105,19 @@ class AlertasController extends Controller
 
                 $equipos = \app\models\Arboles::find()->where(['id' => $pcrc])->all();
                 $usuario = \app\models\Usuarios::find()->where(['usua_id' => $valorador])->all();
+                
+                $varNombre = (new \yii\db\Query())
+                                ->select(['tbl_usuarios.usua_nombre'])
+                                ->from(['tbl_usuarios'])            
+                                ->where(['=','tbl_usuarios.usua_id',$valorador])
+                                ->scalar();
 
+                $varCorreo = (new \yii\db\Query())
+                                ->select(['tbl_usuarios.usua_email'])
+                                ->from(['tbl_usuarios'])            
+                                ->where(['=','tbl_usuarios.usua_id',$valorador])
+                                ->scalar();
+                
                 $destinatario = explode(",", $remitentes); 
                 $target_path = "alertas/" . $archivo_adjunto;
 
