@@ -230,7 +230,7 @@ use app\models\DetallesPilaresGptw;
                         
                         $sessiones = Yii::$app->user->identity->id;
                         
-                        if($sessiones == "3205" || $sessiones == "2953" || $sessiones == "3468" || $sessiones == "7756" || $sessiones == "69" || $sessiones == "6845" || $sessiones == "1290" || $sessiones == "6080" || $sessiones == "8103" || $sessiones == "4053"){
+                        if($sessiones == "3205" || $sessiones == "2953"  || $sessiones == "7756" || $sessiones == "69" || $sessiones == "6845" || $sessiones == "1290" || $sessiones == "6080" ){
                             $varListaplangptw = (new \yii\db\Query())
                                                     ->select(['*'])
                                                     ->from(['tbl_plan_gptw'])
