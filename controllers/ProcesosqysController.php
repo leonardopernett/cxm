@@ -34,6 +34,7 @@ use app\models\IdealServicios;
 use app\models\SpeechServicios;
 use app\models\ProcesosClienteCentrocosto;
 use app\models\SpeechParametrizar;
+use \yii\base\Exception;
 
   class ProcesosqysController extends \yii\web\Controller {
 

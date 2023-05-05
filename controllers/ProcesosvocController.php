@@ -26,6 +26,7 @@ use app\models\FormUploadtigo;
 use app\models\Dashboardspeechcalls;
 use app\models\IdealServicios;
 use app\models\SpeechParametrizar;
+use \yii\base\Exception;
 
 
   class ProcesosvocController extends \yii\web\Controller {
@@ -1178,6 +1179,7 @@ use app\models\SpeechParametrizar;
       $varFechaInicioChat = null;
       $varFechaFinChat = null;
       $varConnidChat = null;
+      $varCategoriaGeneralChat = null;
 
       $varListaItemsChat = explode("; ", $varConcatenarChat);
       for ($i=0; $i < count($varListaItemsChat); $i++) { 
@@ -1376,7 +1378,7 @@ use app\models\SpeechParametrizar;
         if ($varBaseRealChat == "7339") {
           
           $varListaChat = Yii::$app->get('dbSpeechA1')->createCommand("
-            SELECT DISTINCT (b.callId), CASE WHEN a.categoryid = 7339 THEN $varCategoriaGeneral ELSE a.categoryid END AS CAtegoriaID, a.name AS Nombre_Categoria, d.fieldValue as extension, d1.fieldValue AS login_id, DATEADD(s,c.originalTime,'19700101') AS Fecha_Llamada, dd.fieldValue AS COLUMN1, e.name AS Servicio, DATEADD(s,c.originalTime,'19700101') AS Fechareal, c.externalTextId AS idredbox, 'NA' AS idgrabadora
+            SELECT DISTINCT (b.callId), CASE WHEN a.categoryid = 7339 THEN $varCategoriaGeneralChat ELSE a.categoryid END AS CAtegoriaID, a.name AS Nombre_Categoria, d.fieldValue as extension, d1.fieldValue AS login_id, DATEADD(s,c.originalTime,'19700101') AS Fecha_Llamada, dd.fieldValue AS COLUMN1, e.name AS Servicio, DATEADD(s,c.originalTime,'19700101') AS Fechareal, c.externalTextId AS idredbox, 'NA' AS idgrabadora
 
               FROM 
               [speechminer_8_5_512_A1].[dbo].[categoryInfoTbl] a,
@@ -1476,7 +1478,7 @@ use app\models\SpeechParametrizar;
                                                            'fechacreacion' => date('Y-m-d'),
                                                            'anulado' => 0,
                                                            'usua_id' => Yii::$app->user->identity->id,
-                                                           'arbol_id' => $varIdClienteLlamada,
+                                                           'arbol_id' => $varIdClienteChat,
                                                         ])->execute();
             }
 
@@ -5589,7 +5591,7 @@ use app\models\SpeechParametrizar;
                                 ->andwhere(['=','anulado',0])
                                 ->andwhere(['=','usabilidad',1])
                                 ->andwhere(['!=','usuared',''])
-                                ->andwhere(['=','tipoparametro',$varTipoParametroA])
+                                ->andwhere(['=','tipoparametro',$varParametroTipoL])
                                 ->groupby(['usuared'])
                                 ->all();
               }else{
