@@ -229,12 +229,13 @@ use app\models\ProcesosClienteCentrocosto;
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">                
-                <table align="center">
+                <table class="center">
+                <caption><?= Yii::t('app', '.') ?></caption>
                   <thead>
                     <tr>
-                      <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
-                      <th><?= Yii::t('app', '') ?></th>
-                      <th class="text-justify"><h4><?= Yii::t('app', 'Buscando información de los filtros seleccionados, por favor espere...') ?></h4></th>
+                      <th scope="col" class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+                      <th scope="col" ><?= Yii::t('app', '') ?></th>
+                      <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Buscando información de los filtros seleccionados, por favor espere...') ?></h4></th>
                     </tr>            
                   </thead>
                 </table>

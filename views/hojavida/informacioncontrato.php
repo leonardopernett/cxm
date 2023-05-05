@@ -53,7 +53,7 @@ $this->title = 'Gestor de Clientes - Requerimientos del Contrato';
     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;    
-    font-family: "Nunito";
+    font-family: "Nunito",sans-serif;
     font-size: 150%;    
     text-align: left;    
   }
@@ -147,7 +147,11 @@ $this->title = 'Gestor de Clientes - Requerimientos del Contrato';
                 <div class="capaListapcrcs" id="capaListapcrcs" style="display: none;">
                     <div class="row">
                         <div class="col-md-12">
-                            <table border="0">
+                            <table class="center">
+                            <caption> <?= Yii::t('app', 'Data') ?></caption>
+                            <tr>
+                                <th scope="col"><?= Yii::t('app', '...') ?></th>
+                            </tr>
                                 <?php 
                                     foreach ($varNombrePcrcs as $key => $value) {
                                         $varPcrcNombre = $value['pcrc'];
@@ -184,7 +188,11 @@ $this->title = 'Gestor de Clientes - Requerimientos del Contrato';
                 <div class="capaListadir" id="capaListadir" style="display: none;">
                     <div class="row">
                         <div class="col-md-12">
-                            <table border="0">
+                            <table class="center">
+                            <caption> <?= Yii::t('app', 'Procesando Información') ?></caption>
+                            <tr>
+                                <th scope="col"><?= Yii::t('app', '') ?></th>
+                            </tr>
                                 <?php 
                                     foreach ($varNombreDirectores as $key => $value) {
                                         $varDirNombre = $value['director_programa'];

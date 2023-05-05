@@ -654,18 +654,18 @@ $this->registerJs($js);
       <div class="card3 mb">
         <label style="font-size: 15px;"><em class="fas fa-chart-bar" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Detalle de Procesamiento Mixto') ?></label>
 
-        <table style="width:100%">
+        <table class="center" style="width:100%">
           <caption><?= Yii::t('app', ' .') ?></caption>
           <tr>
-            <td scope="col" class="text-center" style="width: 100px;">
+            <th scope="col" class="text-center" style="width: 100px;">
               <label style="font-size: 15px;"><?= Yii::t('app', 'Calidad: General Konecta') ?></label>
-            </td>
-            <td scope="col" class="text-center" style="width: 100px;">
+            </th>
+            <th scope="col" class="text-center" style="width: 100px;">
               <label style="font-size: 15px;"><?= Yii::t('app', 'Calidad y Consistencia') ?></label>
-            </td>
-            <td scope="col" class="text-center" style="width: 100px;">
+            </th>
+            <th scope="col" class="text-center" style="width: 100px;">
               <label style="font-size: 15px;"><?= Yii::t('app', 'Procesamiento Automático') ?></label>
-            </td>
+            </th>
           </tr>
           <tr>
             <td class="text-center" style="width: 100px;"><div style="width: 120px; height: 120px;  display:block; margin:auto;"><canvas id="chartContainerGP"></canvas></div><span style="font-size: 15px;"><?php echo $varArrayKonectaGeneral.' %'; ?></span></td> 

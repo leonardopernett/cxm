@@ -169,6 +169,7 @@ use yii\bootstrap\Modal;
                 <label><em class="far fa-address-card" style="font-size: 28px; color: #2CA5FF;"></em> Información Caso: </label>
                 <br>
                 <table id="tblDataInfo" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?= Yii::t('app', '.') ?></caption>
                     <tbody>
                     <tr>
                         <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Fecha Creación:') ?></label></th>
@@ -315,6 +316,7 @@ use yii\bootstrap\Modal;
            
                 ?>
                 <table id="tblDataInfo" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?= Yii::t('app', '.') ?></caption>
                     <tbody>
                     <tr>
                         <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Servicio:') ?></label></th>
@@ -360,6 +362,7 @@ use yii\bootstrap\Modal;
                 <label><em class="fa fa-address-card" style="font-size: 28px; color: #26bf30;"></em> Tipificaciones: </label>
                 <br>
                 <table id="tblTipificación" class="table table-striped table-bordered tblResDetFreed">
+                <caption><?= Yii::t('app', '.') ?></caption>
                     <tbody>
                     <tr>
                         <th scope="col" style="background-color: #97b4bf; width: 250px;"><label style="font-size: 13px;"><?= Yii::t('app', 'Área de Asignación:') ?></label></th>
