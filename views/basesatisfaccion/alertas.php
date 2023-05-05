@@ -342,14 +342,15 @@ $roles = $command->queryScalar();
     <div class="col-md-12">
       <div class="card1 mb">
         <table class="text-center">
+        <caption><?= Yii::t('app', '.') ?></caption>
           <thead>
             <tr>
-              <th class="text-center">
+              <th scope="col" class="text-center">
                   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
               </th>
-              <th><?= Yii::t('app', '') ?>                
+              <th scope="col"><?= Yii::t('app', '') ?>                
               </th>
-              <th class="text-justify">
+              <th scope="col" class="text-justify">
                   <h4><?= Yii::t('app', 'Actualmente CXM esta enviando la alerta al correo indicado, por favor espere...') ?></h4>
               </th>
             </tr>            

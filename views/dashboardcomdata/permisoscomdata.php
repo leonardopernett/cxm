@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $roles = $command->queryScalar();
 
 ?>
+<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 <style>
     .card1 {
             height: 213px;
@@ -116,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
-<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
+
 <!-- Full Page Image Header with Vertically Centered Content -->
 <header class="masthead">
   <div class="container h-100">

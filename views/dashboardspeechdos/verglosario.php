@@ -191,6 +191,7 @@ $varTipoCategoria = (new \yii\db\Query())
 
             <div class="card1 mb">
             <table style="width:100%">
+            <caption><?= Yii::t('app', '.') ?></caption>
                   <th scope="col" class="text-center" style="width: 100px;">
                     <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></em> <?= Yii::t('app', 'Grafica Tipos de Categoria') ?></label>
                       <div id="containerA" class="highcharts-container" style="height: 150px;"></div> 

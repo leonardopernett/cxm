@@ -148,27 +148,27 @@ $roles = $command->queryScalar();
 
         
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/satisfecho.png' class="img-responsive">
+            <img src='../../../images/satisfecho.png' class="img-responsive" alt="satisafecho">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 5, 'uncheck' => null])->label('Satisfecho')?> 
           </div>
 
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/mediosatisfecho.png' class="img-responsive">
+            <img src='../../../images/mediosatisfecho.png' class="img-responsive" alt="medio">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 4, 'uncheck' => null])->label('Medio Satisfecho')?> 
            </div>
 
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/neutro.png' class="img-responsive">
+            <img src='../../../images/neutro.png' class="img-responsive" alt="neutro">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 3, 'uncheck' => null])->label('Neutro')?> 
           </div>
 
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/medioinsatisfecho.png' class="img-responsive">
+            <img src='../../../images/medioinsatisfecho.png' class="img-responsive" alt="medioinsatu">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 2, 'uncheck' => null])->label('Medio Insatisfecho')?> 
           </div>
 
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/insatisfecho.png' class="img-responsive">
+            <img src='../../../images/insatisfecho.png' class="img-responsive" alt="insatu">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 1, 'uncheck' => null])->label('Insatisfecho');?> 
           </div>
 
