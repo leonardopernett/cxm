@@ -186,7 +186,7 @@ $template = '<div class="col-md-12">'
 		<div class="col-md-12">
 			<div class="card1 mb">
 				<table id="myTableInfo" class="table table-hover table-bordered" style="margin-top:12px" >
-					<caption> <b> ID Alerta  <?php echo $model['id'] ?></b></caption>
+					<caption> <strong> <?php echo "Id Alerta ".$model['id'] ?></strong></caption>
 						<th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios / Respuestas') ?></label></th>
 						<td style="max-width:10px;">
               <?= Html::a('Ver',  ['totalcomensaf','id'=>$id], ['class' => 'btn btn-success',//index es para que me redireccione o sea volver a el inicio 

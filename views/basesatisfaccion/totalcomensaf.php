@@ -242,6 +242,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-12">
             <div class="card1 mb">
                 <table style="width:100%">
+                <caption><?= Yii::t('app', '.') ?></caption>
                     <th scope="col" class="text-center" style="width: 100px;">
                         <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #ffc034;"></em> <?= Yii::t('app', 'Grafica Cantidad de Encuestas') ?></label>
                         <div id="containerA" class="highcharts-container" style="height:250px;"></div>        
