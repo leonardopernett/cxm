@@ -21,17 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $sessiones = Yii::$app->user->identity->id;
   
     $valor = null;
-   
-   /* $data2 = (new \yii\db\Query())
-        ->select(['usua_id', 'usua_nombre'])
-        ->from(['tbl_usuarios'])
-        ->join('LEFT JOIN', 'rel_usuarios_roles',
-              'tbl_usuarios.usua_id = rel_usuarios_roles.rel_usua_id')
-        ->join('LEFT JOIN', 'tbl_roles',
-              'rel_usuarios_roles.rel_role_id = tbl_roles.role_id')
-        ->where(['in','tbl_roles.role_id',[278, 293, 301, 303, 300]])
-        ->orderby('tbl_usuarios.usua_nombre')
-        ->All();*/
+
         $data2 = (new \yii\db\Query())
           ->select(['tbl_usuarios_jarvis_cliente.idusuarioevalua', "UPPER(trim(replace(tbl_usuarios_jarvis_cliente.nombre_completo,'\n',''))) AS nombre"])
           ->from(['tbl_usuarios_jarvis_cliente'])

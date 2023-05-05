@@ -257,7 +257,7 @@ $template = '<div class="col-md-12">'
                          
 
                     ?>
-                    <tr><i class="fa-sharp fa-solid fa-comment-pen"></i>
+                    <tr><em class="fa-sharp fa-solid fa-comment-pen"></em>
                         <td class="text-center"><label style="font-size: 9px;"><?php echo  $varid_satis; ?></label></td>
                         <td class="text-center"><label style="font-size: 9px;"><?php echo  $varid; ?></label></td>
                         <td class="text-center"><label style="font-size: 9px;"><?php echo  $varconcepto_mejora; ?></label></td>
@@ -408,7 +408,7 @@ $template = '<div class="col-md-12">'
                          ->Scalar();
 
                     ?>
-                    <tr><i class="fa-sharp fa-solid fa-comment-pen"></i>
+                    <tr><em class="fa-sharp fa-solid fa-comment-pen"></em>
                         <td class="text-center"><label style="font-size: 12px;"><?php echo  $varid_satisfaccion; ?></label></td>
                         <td class="text-center"><label style="font-size: 12px;"><?php echo  $varid1; ?></label></td>
                         <td class="text-center"><label style="font-size: 12px;"><?php echo  $varconcepto_mejora; ?></label></td>
