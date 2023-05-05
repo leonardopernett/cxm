@@ -260,13 +260,6 @@ $template = '<div class="col-md-12">'
                             ")->bindValues($varParamsCodigo )->queryScalar();
                             
                             $varid_pilares = $datanew;
-                        // busca usuario responsable
-                            /*$paramsresponsable = [':id_area'=>$varresponsable_area];
-                            $data4 = Yii::$app->get('dbexperience')->createCommand("select usuarios.nombre 
-                            FROM usuarios
-                            WHERE usuarios.id = :id_area")
-                            ->bindValues($paramsresponsable)
-                            ->queryScalar(); */
 
                             $data4 = (new \yii\db\Query())
                                     ->select(['usua_nombre'])
@@ -274,14 +267,10 @@ $template = '<div class="col-md-12">'
                                     ->where(['=','usua_id',$varresponsable_area])
                                     ->Scalar();
                                     
-                           /* foreach ($data4 as $key => $value2) {
-                                $varid1 = $value2['nombre']; 
-                            }*/
-                            //$varresponsable_area = ArrayHelper::map($data4, 'id', 'nombre');
                             $varresponsable_area = $data4;
 
                     ?>
-                    <tr><i class="fa-sharp fa-solid fa-comment-pen"></i>
+                    <tr><em class="fa-sharp fa-solid fa-comment-pen"></em>
                         <td class="text-center"><label style="font-size: 11px;"><?php echo  $varid_gptw; ?></label></td>
                         <td class="text-center"><label style="font-size: 11px;"><?php echo  $varid; ?></label></td>
                         <td class="text-center"><label style="font-size: 11px;"><?php echo  $nombre_p; ?></label></td>
@@ -410,7 +399,7 @@ $template = '<div class="col-md-12">'
                             $varid_pilares1 = $datanew;                      
 
                     ?>
-                    <tr><i class="fa-sharp fa-solid fa-comment-pen"></i>
+                    <tr><em class="fa-sharp fa-solid fa-comment-pen"></em>
                         <td class="text-center"><label style="font-size: 12px;"><?php echo  $varid_gptw1; ?></label></td>
                         <td class="text-center"><label style="font-size: 12px;"><?php echo  $varid1; ?></label></td>
                         <td class="text-center"><label style="font-size: 12px;"><?php echo  $nombre_p1; ?></label></td>

@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ->count();
 
 ?>
+
 <style>
   .card1 {
     height: auto;
@@ -56,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;    
-   	font-family: "Nunito";
+   	font-family: "Nunito",sans-serif;
     font-size: 150%;    
     text-align: left;    
   }
@@ -76,10 +77,11 @@ $this->params['breadcrumbs'][] = $this->title;
     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;    
-    font-family: "Nunito";
+    font-family: "Nunito",sans-serif;
     font-size: 150%;    
     text-align: left;    
   }
+  
 
   .masthead {
     height: 25vh;
@@ -148,6 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
 <script src="../../js_extensions/datatables/buttons.print.min.js"></script>
 <script src="../../js_extensions/mijs.js"> </script>
+
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 
 
@@ -170,14 +173,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-12">
       <div class="card1 mb">
         <table class="text-center">
+        <caption><?= Yii::t('app', 'Procesando Información') ?></caption>
           <thead>
             <tr>
-              <th class="text-center">
+              <th scope="col" class="text-center">
                   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
               </th>
-              <th><?= Yii::t('app', '') ?>                
+              <th scope="col"><?= Yii::t('app', '') ?>                
               </th>
-              <th class="text-justify">
+              <th scope="col" class="text-justify">
                   <h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion de los filtros previamente seleccionado para visualizar el dashboard del LookerStudio...') ?></h4>
               </th>
             </tr>            
@@ -332,6 +336,10 @@ $this->params['breadcrumbs'][] = $this->title;
       </div>
     </div>
 
+    <?php
+      }else{
+    ?>
+      <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #ff453c;"></em> <?= Yii::t('app', 'Importante: Actualmente no tienes permisos de configuracion para el ingreso de la url de LookerStudio.') ?></label>
     <?php
       }
     ?>

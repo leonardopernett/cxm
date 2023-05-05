@@ -1062,12 +1062,13 @@ $this->title = 'Dashboard Escuchar +';
           </div>
 
           <div id="capaIndiVarBuscarId" class="capaIndiVarBuscar" style="display: none;">
-            <table align="center">
+            <table class="center">
+            <caption> <?= Yii::t('app', 'Procesando Información') ?></caption>
               <thead>
                 <tr>
-                  <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
-                  <th><?= Yii::t('app', '') ?></th>
-                  <th class="text-justify"><h4><?= Yii::t('app', 'Buscando Variables del indicador previamente seleccionado...') ?></h4></th>
+                  <th scope="col" class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+                  <th scope="col" ><?= Yii::t('app', '') ?></th>
+                  <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Buscando Variables del indicador previamente seleccionado...') ?></h4></th>
                 </tr>            
               </thead>
             </table>
@@ -1431,12 +1432,13 @@ $this->title = 'Dashboard Escuchar +';
       <div class="card1 mb">
       
         <div id="capaIndiVarAsesorBuscarId" class="capaIndiVarAsesorBuscar" style="display: none;">
-          <table align="center">
+          <table class="center">
+          <caption> <?= Yii::t('app', 'Procesando Información') ?></caption>
             <thead>
               <tr>
-                <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
-                <th><?= Yii::t('app', '') ?></th>
-                <th class="text-justify"><h4><?= Yii::t('app', 'Buscando Variables del indicador previamente seleccionado...') ?></h4></th>
+                <th scope="col" class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+                <th scope="col" ><?= Yii::t('app', '') ?></th>
+                <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Buscando Variables del indicador previamente seleccionado...') ?></h4></th>
               </tr>            
             </thead>
           </table>

@@ -109,7 +109,7 @@ $this->title = 'Dashboard Escuchar +';
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -144,12 +144,13 @@ $this->title = 'Dashboard Escuchar +';
   <div class="row">
     <div class="col-md-12">
       <div class="card1 mb">
-        <table align="center">
+        <table class="center">
+        <caption> <?= Yii::t('app', 'Procesando Información') ?></caption>
           <thead>
             <tr>
-              <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
-              <th><?= Yii::t('app', '') ?></th>
-              <th class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion de los filtros para el Dashboard Escuchar + ...') ?></h4></th>
+              <th scope="col" class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+              <th scope="col" ><?= Yii::t('app', '') ?></th>
+              <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion de los filtros para el Dashboard Escuchar + ...') ?></h4></th>
             </tr>            
           </thead>
         </table>
@@ -368,9 +369,9 @@ $this->title = 'Dashboard Escuchar +';
     <div class="col-md-12">
       <div class="card1 mb">
 
-        <div class="panel-body"><center>
-          <p><b><?= Yii::t('app', ' Importante') ?></b> <?= Yii::t('app', ' No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta.') ?> </p></center>
-          <div class="row" align="center">
+        <div class="panel-body center">
+          <p><strong><?= Yii::t('app', ' Importante') ?></strong> <?= Yii::t('app', ' No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta.') ?> </p></center>
+          <div class="row center">
             <?= Html::a('Nueva consulta',  ['index'], ['class' => 'btn btn-success',
                             'style' => 'background-color: #707372',
                             'data-toggle' => 'tooltip',

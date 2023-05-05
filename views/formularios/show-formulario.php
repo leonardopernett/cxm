@@ -580,7 +580,7 @@ $contadorSecciones = 0;
                             if ($data->tmp_formulario->urlgenesys):
                                 ?>
                                 <tr>
-                                    <th><?php echo Yii::t("app", "Url interación - Genesys"); ?></th>
+                                    <th scope="col"><?php echo Yii::t("app", "Url interación - Genesys"); ?></th>
                                     <td>
                                         <label style="font-size: 12px;"><a href="<?php echo  $data->tmp_formulario->urlgenesys; ?>" target="_blank"> <?= Yii::t('app', 'Abrir Enlace de Interacción -> '.$data->tmp_formulario->genesysconnid) ?> </a></label>
                                         
