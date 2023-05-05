@@ -487,7 +487,7 @@ use yii\bootstrap\Modal;
                     
                     <div class="row" >
                         <div class="col-md-6">                                        
-                            <a href="../../images/uploads/Carta respuesta Q&R.docx" download style="font-size: 16px;"><b> Descargar documento </b>&nbsp;&nbsp;&nbsp; <em class="fas fa-download" style="font-size: 25px; color: #26cd33;"></em></a>
+                            <a href="../../images/uploads/Carta respuesta Q&R.docx" download style="font-size: 16px;"><strong> Descargar documento </strong>&nbsp;&nbsp;&nbsp; <em class="fas fa-download" style="font-size: 25px; color: #26cd33;"></em></a>
                         </div>
 
                          <div class="col-md-6"> 
