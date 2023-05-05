@@ -138,8 +138,8 @@ class AlertasController extends Controller
                                     "<br><br>
                                     <h4>Nos encataría saber tu opinión te invitamos a ingresar a <b>CXM</b> y responder la siguiente encuesta.</h4>
                                     <br>
-                                    <div style='heigth: 200px;'>
-                                    <a href='encuestasatifaccion' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
+                                    <div>
+                                        <a href='encuestasatifaccion' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
                                     </div>
                                     <br>
                                     <img src='../../images/link.png' class='img-responsive'>
