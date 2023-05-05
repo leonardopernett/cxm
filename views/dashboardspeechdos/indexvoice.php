@@ -1545,7 +1545,7 @@ $this->title = 'Dashboard Escuchar +';
       <div class="card1 mb">
       
         <div id="capaIndiVarAsesorBuscarId" class="capaIndiVarAsesorBuscar" style="display: none;">
-          <table class="text-center">
+          <table class="text-center"> 
           <caption><?= Yii::t('app', 'Procesando Información') ?></caption>
             <thead>
               <tr>

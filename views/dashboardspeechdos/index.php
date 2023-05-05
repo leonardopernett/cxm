@@ -110,7 +110,7 @@ $this->title = 'Dashboard Escuchar +';
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito";
+            font-family: "Nunito",sans-serif;
             font-size: 150%;    
             text-align: left;    
     }
@@ -371,7 +371,7 @@ $this->title = 'Dashboard Escuchar +';
       <div class="card1 mb">
 
         <div class="panel-body center">
-          <p><strong><?= Yii::t('app', ' Importante') ?></strong> <?= Yii::t('app', ' No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta.') ?> </p></center>
+          <p><strong><?= Yii::t('app', ' Importante') ?></strong> <?= Yii::t('app', ' No se encontraron llamadas para la busqueda anterior, por favor vuelva a realizar una nueva consulta.') ?> </p>
           <div class="row center">
             <?= Html::a('Nueva consulta',  ['index'], ['class' => 'btn btn-success',
                             'style' => 'background-color: #707372',
