@@ -839,19 +839,15 @@ use app\models\Formularios;
 
         public function actionCategoriasupdate($txtServicioCategorias){
           $model = new Dashboardcategorias();
-          $sessiones = Yii::$app->user->identity->id;
+          $varServiciosGenerales = $txtServicioCategorias;
 
           $model = $this->findModel($txtServicioCategorias);
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-          Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
-          return $this->redirect('categoriasconfig');
-      } else {
-              return $this->render('categoriasupdate', [
-                'model' => $model,
-              ]);
-      }
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
+              Yii::$app->session->setFlash('success', Yii::t('app', 'Successful update!'));            
+              return $this->redirect('categoriasconfig');
+          } 
 
-          if (Yii::$app->request->get('txtServicioCategorias')) {
+          if ($varServiciosGenerales) {
             $id_params = Html::encode($_GET['txtServicioCategorias']);
 
             if ((int)$id_params) {
@@ -5871,7 +5867,7 @@ public function actionCantidadentto(){
                 $json = json_encode($enlaces);
                 $tmpeje->url_llamada = $json;
               }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
               \Yii::error('#####' . __FILE__ . ':' . __LINE__
                   . $exc->getMessage() . '#####', 'redbox');
               $msg = Yii::t('app', 'Error redbox');
@@ -5915,7 +5911,7 @@ public function actionCantidadentto(){
                 $msg = Yii::t('app', 'Error redbox');
                 Yii::$app->session->setFlash('danger', $msg);
               }
-            } catch (Exception $e) {
+            } catch (Exception $exc) {
               \Yii::error('#####' . __FILE__ . ':' . __LINE__
                                         . $exc->getMessage() . '#####', 'redbox');
               $msg = Yii::t('app', 'Error redbox');
@@ -7237,7 +7233,7 @@ public function actionCantidadentto(){
             ->Scalar();
 
       $arrayExtensiones_down = str_replace(array("#", "'", ";", " "), '', $varextensiond);
-      $arrayExtensionesTwo_down = explode(",", $arrayExtensiones);
+      $arrayExtensionesTwo_down = explode(",", $arrayExtensiones_down);
 
       $dataListSpeech_down = (new \yii\db\Query())
             ->select(['*'])
@@ -7609,7 +7605,7 @@ public function actionCantidadentto(){
                 ->join('LEFT OUTER JOIN', 'tbl_speech_mixta',
                           'tbl_ejecucionformularios.id = tbl_speech_mixta.formulario_id')
                 ->where('tbl_speech_mixta.callId IN (:varCallids)',[':varCallids'=>$txtcallid_down])
-                ->andwhere('tbl_speech_mixta.fechareal IN (:varFechareals)',[':varFechareals'=>$varfechareal])
+                ->andwhere('tbl_speech_mixta.fechareal IN (:varFechareals)',[':varFechareals'=>$txtfechasreal_down])
                 ->andwhere('tbl_speech_mixta.anulado = :varAnulado',[':varAnulado'=>0])
                 ->scalar();
 
@@ -7742,7 +7738,7 @@ public function actionCantidadentto(){
           foreach ($varListCategorias as $key => $value) {
             $varorientaciones = $value['orientacionsmart'];
 
-            $paramsBuscarCategorias = [':varIdCategoria'=>$value['idcategoria'],':varProgramaCategoria'=>$value['programacategoria'],':varAnulado'=>0,':varCallid'=>$varCallid];
+            $paramsBuscarCategorias = [':varIdCategoria'=>$value['idcategoria'],':varProgramaCategoria'=>$value['programacategoria'],':varAnulado'=>0,':varCallid'=>$txtcallid_down];
 
             if ($varorientaciones == '2') {
               $varContarNegativas += 1;

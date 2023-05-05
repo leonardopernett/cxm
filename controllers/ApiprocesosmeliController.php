@@ -68,8 +68,6 @@ use app\models\Calificaciondetalles;
     }
 
     public function actionApivaloraciones(){
-        $datapost = file_get_contents('php://input');
-        $data_post = json_decode($datapost,true);
 
         ini_set("max_execution_time", "900");
         ini_set("memory_limit", "1024M");
@@ -140,7 +138,6 @@ use app\models\Calificaciondetalles;
 
     public function actionApiprocesosasesores(){
       $datapost = file_get_contents('php://input');
-      $data_post = json_decode($datapost,true);
 
       ini_set("max_execution_time", "900");
       ini_set("memory_limit", "1024M");
@@ -201,9 +198,7 @@ use app\models\Calificaciondetalles;
       die();
     }
 
-    public function actionApiprocesosvalora(){
-      $datapost = file_get_contents('php://input');
-      $data_post = json_decode($datapost,true);
+    public function actionApiprocesosvalora(){      
 
       ini_set("max_execution_time", "900");
       ini_set("memory_limit", "1024M");
@@ -436,7 +431,7 @@ use app\models\Calificaciondetalles;
 
                 //  CONSULTA DEL FORMULARIO PARA VERIFICAR EL SUBIRCALCULO
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
-                if (isset($varSubirCalculoCxm) AND $varSubirCalculoCxm != '') {
+                if (isset($varSubirCalculoCxm) && $varSubirCalculoCxm != '') {
                   $data->subi_calculo .= $varSubirCalculoCxm;
                   $data->save();
                 }
@@ -492,7 +487,7 @@ use app\models\Calificaciondetalles;
                     if (count($arrayCountBloques) != 0) {
                       if ((array_key_exists($calificacion->bloque_id, $arrayCountBloques[count($arrayCountBloques) - 1])) && (strtoupper($varCalificacionDetalleNameCxm) == 'NA')) {
                         
-                        $arrayCountBloques[count($arrayCountBloques) - 1][$varBloquesCxm] = ($arrayCountBloques[count($arrayCountBloques) - 1][$cvarBloquesCxm] + 1);
+                        $arrayCountBloques[count($arrayCountBloques) - 1][$varBloquesCxm] = ($arrayCountBloques[count($arrayCountBloques) - 1][$varBloquesCxm] + 1);
                       
                       }
                     }
