@@ -125,7 +125,7 @@ use app\models\SpeechParametrizar;
                         ->orderBy(['cod_pcrc' => SORT_DESC])
                         ->all();            
                     echo "<option value='' disabled selected> Seleccione Centro de Costo...</option>";
-                    foreach ($varListaPcrc as $key => $value) {
+                    foreach ($varListaPcrc as $value) {
                            echo "<option value='" . $value->cod_pcrc . "'>" . $value->cod_pcrc." - ".$value->pcrc . "</option>";
                            }
                }else{
@@ -224,7 +224,7 @@ use app\models\SpeechParametrizar;
                                 ->orderBy(['id_detalle_momento' => SORT_DESC])
                                 ->all();            
                             echo "<option value='' disabled selected> Seleccione Motivo...</option>";
-                            foreach ($varListamomento as $key => $value) {
+                            foreach ($varListamomento as $value) {
                                 echo "<option value='" . $value->id_detalle_momento . "'>" . ''.$value->detalle_momento . "</option>";
                                    }
                        }else{

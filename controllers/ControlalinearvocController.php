@@ -346,7 +346,7 @@ class ControlalinearvocController extends \yii\web\Controller
 
         $arraydatos = (array)json_decode(Yii::$app->request->post("data"));
 
-        foreach ($arraydatos as $key => $value) {
+        foreach ($arraydatos as $value) {
             $value = (array)$value;
             $txtvacuerdo = $value['varAcuerdo'];
             $txtvmedir = $value['varMedir'];
@@ -424,7 +424,7 @@ class ControlalinearvocController extends \yii\web\Controller
             ->all();
 
         $arrayUsu = array();
-        foreach ($txtRta as $key => $value) {
+        foreach ($txtRta as $value) {
             array_push($arrayUsu, array("idlistahijovoc" => $value['idlistahijovoc'], "nombrelistah" => $value['nombrelistah']));
         }
 
@@ -825,7 +825,7 @@ class ControlalinearvocController extends \yii\web\Controller
             ->all();
         //Incluir en la base de datos el id de la sesion en tbl_control_alinear_bloque3 y pasarlo a verlistaalinearvoc para mostrar los atributs de esa sesion           
 
-        foreach ($txtPlanAccion as $key => $value) {
+        foreach ($txtPlanAccion as $value) {
             $txtConcepto_mejora = $value['concepto_mejora'];
             $txtAnalisis_causa = $value['analisis_causa'];
             $txtAccion_seguir = $value['accion_seguir'];

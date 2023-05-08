@@ -107,7 +107,7 @@ use app\models\Formularios;
           $paramsBusqueda = [':v.varpcrc'=>$varpcrc,':v.varFechaInicio'=>$varFechaInicio,':v.varFechaFin'=>$varFechaFin];
           $vardataList = Yii::$app->db->createCommand("select b.ano, b.mes, b.dia, b.pcrc, a.name, b.buzon, b.created, b.connid from tbl_arbols a inner join tbl_base_satisfaccion b on a.id = b.pcrc where b.pcrc = :v.varpcrc and b.created between ':v.varFechaInicio 00:00:00' and ':v.varFechaFin 23:59:59' and b.buzon like '%/srv/www/htdocs/qa_managementv2/web/buzones_qa/%'")->bindValues($paramsBusqueda)->queryAll();
 
-          foreach ($vardataList as $key => $value) {
+          foreach ($vardataList as $value) {
             $varbuzones = $value['buzon'];
             $varpcrc = $value['pcrc'];
             $varnombrepcrc = $value['name'];
@@ -221,7 +221,7 @@ use app\models\Formularios;
       $paramsBusqueda = [':v.varfechainicial'=>$varfechainicial];
       $varlista = Yii::$app->db->createCommand("SELECT b.connid, b.created FROM tbl_base_satisfaccion b WHERE b.fecha_satu BETWEEN ':v.varfechainicial 00:00:00' AND ':v.varfechainicial 23:59:59' AND b.connid IS NOT NULL AND b.tipo_inbox IN ('ALEATORIO','NORMAL') ")->bindValues($paramsBusqueda)->queryAll();
 
-      foreach ($varlista as $key => $value) {
+      foreach ($varlista as $value) {
         $txtvaridruta = $value['connid'];
         $txtcreated = $value['created'];
 
