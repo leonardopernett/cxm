@@ -6417,15 +6417,6 @@ public function actionCantidadentto(){
         $varParametros_idV = null;
         $varCodparametrizar = null;
 
-        // $var_FechaIni = Yii::$app->request->post("var_FechaIni");
-        // $var_FechaFin = Yii::$app->request->post("var_FechaFin");
-        // $txtServicio = Yii::$app->request->post("varArbol_idV");
-        // $txtParametros = Yii::$app->request->post("varParametros_idV");
-        // $varIndicador = Yii::$app->request->post("varIndicador");
-        // $varCodparametrizar = Yii::$app->request->post("varCodparametrizar");
-        // $varCorreo = Yii::$app->request->post("var_Destino");
-        // $txtCodPcrcok = Yii::$app->request->post("var_CodsPcrc");
-
         $var_FechaIni = $fechainicio;
         $var_FechaFin = $fechafin;
         $txtServicio = $arbolid;
