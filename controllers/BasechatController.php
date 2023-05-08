@@ -69,6 +69,7 @@ use \yii\base\Exception;
 
         public function actionImportarexcel2(){
             $model = new FormUploadtigo();
+            $varArray = null;
 
                 if (Yii::$app->request->isPost) {
                 
@@ -1172,9 +1173,14 @@ use \yii\base\Exception;
             $varvasrchatid = $basechatid;
             $varcreacion = null;
             $varrta = null;
-
-            $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = $basechatid")->queryAll();
-            foreach ($varlistencuestas as $key => $value) {
+            
+            $varlistencuestas = (new \yii\db\Query())
+                                            ->select(['*'])
+                                            ->from(['tbl_basechat_tigob'])
+                                            ->where(['=','tbl_basechat_tigob.anulado',0])
+                                            ->andwhere(['=','tbl_basechat_tigob.idbasechat_tigob',$basechatid])
+                                            ->All();
+            foreach ($varlistencuestas as $value) {
                 $varticket = $value['ticked_id'];
                 $varencuesta = $value['fecha_transaccion'];
                 $varcreacion = $value['fecha_creacion'];
@@ -1383,8 +1389,13 @@ use \yii\base\Exception;
             $varcreacion = null;
             $varrta = null;
 
-            $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = $basechatid")->queryAll();
-            foreach ($varlistencuestas as $key => $value) {
+            $varlistencuestas  = (new \yii\db\Query())
+                                            ->select(['*'])
+                                            ->from(['tbl_basechat_tigob'])
+                                            ->where(['=','tbl_basechat_tigob.anulado',0])
+                                            ->andwhere(['=','tbl_basechat_tigob.idbasechat_tigob',$basechatid])
+                                            ->All();
+            foreach ($varlistencuestas as $value) {
                 $varticket = $value['ticked_id'];
                 $varencuesta = $value['fecha_transaccion'];
                 $varcreacion = $value['fecha_creacion'];
@@ -1437,7 +1448,7 @@ use \yii\base\Exception;
 
             $varlistjarvis = Yii::$app->get('dbjarvis2')->createCommand("select ua.usuario, ur.usuario_red from dp_usuarios_red ur inner join dp_usuarios_actualizacion ua on ur.documento = ua.documento  where         ua.usuario like '%@tigo.net.bo%' group by ua.usuario")->queryAll();
 
-            foreach ($varlistjarvis as $key => $value) {
+            foreach ($varlistjarvis as $value) {
                 $varusuatigo = $value['usuario'];
                 $varusuak = $value['usuario_red'];
 
@@ -1716,8 +1727,13 @@ public function actionElegirimportar(){
         $varrta = null;
         $varcomentario_fcr = null;
 
-        $varlistencuestas = Yii::$app->db->createCommand("select * from tbl_basechat_tigob where anulado = 0 and idbasechat_tigob = $basechatid")->queryAll();
-        foreach ($varlistencuestas as $key => $value) {
+        $varlistencuestas = (new \yii\db\Query())
+                                            ->select(['*'])
+                                            ->from(['tbl_basechat_tigob'])
+                                            ->where(['=','tbl_basechat_tigob.anulado',0])
+                                            ->andwhere(['=','tbl_basechat_tigob.idbasechat_tigob',$basechatid])
+                                            ->All();
+        foreach ($varlistencuestas as $value) {
             $varticket = $value['ticked_id'];
             $varrta = $value['fecha_respuesta'];
             $varcliente = $value['nombre_cliente'];
@@ -1954,7 +1970,7 @@ public function actionElegirimportar(){
         $phpExc->getActiveSheet()->getStyle('U2')->applyFromArray($styleArraySubTitle2);
         
 	$numCell = 2;
-        foreach ($valist as $key => $value) {
+        foreach ($valist as $value) {
             $varidticket = $value['NumeroTicket'];
             $varbasesatisfaccion = $value['Basesatisfaccion'];
             $vartransaccion = $value['FechaTransaccion'];
@@ -2222,7 +2238,7 @@ public function actionElegirimportar(){
 
         
         $numCell = 2;
-        foreach ($valist as $key => $value) {
+        foreach ($valist as $value) {
             $varidticket = $value['NumeroTicket'];
             $varbasesatisfaccion = $value['Basesatisfaccion'];
             $varcliente = $value['Cliente'];

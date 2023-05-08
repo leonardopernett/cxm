@@ -100,7 +100,7 @@ use app\models\Calificaciondetalles;
               ORDER BY m.action_datetime
         ')->bindValues($varProcesosBuscar)->queryAll();
 
-        foreach ($varListDataValoracion as $key => $value) {
+        foreach ($varListDataValoracion as $value) {
 
           $varExisteConexion = (new \yii\db\Query())
                                 ->select([
@@ -137,8 +137,7 @@ use app\models\Calificaciondetalles;
     }
 
     public function actionApiprocesosasesores(){
-      $datapost = file_get_contents('php://input');
-
+      
       ini_set("max_execution_time", "900");
       ini_set("memory_limit", "1024M");
       ini_set( 'post_max_size', '1024M' );
@@ -156,7 +155,7 @@ use app\models\Calificaciondetalles;
                             ->all();
 
 
-      foreach ($varListadoProcesosAsesores as $key => $value) {
+      foreach ($varListadoProcesosAsesores as $value) {
         $varOrigenAsesor = $value['valorado_origen'];
 
         $paramsBuscaValorado = [':ProcesosValorado'=>$varOrigenAsesor];
@@ -222,7 +221,7 @@ use app\models\Calificaciondetalles;
                             ->all();
 
 
-      foreach ($varListadoProcesos as $key => $value) {
+      foreach ($varListadoProcesos as $value) {
         $varIdListado = $value['identificador_origen'];
         $varIdFormularios = $value['formulario_origen'];
         $varCasoId = $value['casoid'];
@@ -448,7 +447,7 @@ use app\models\Calificaciondetalles;
                 \app\models\Tmpejecucionbloques::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
 
                 // SE GUARDAN LAS CALIFICACIONES
-                foreach ($arrCalificaciones as $form_detalle_id => $calif_detalle_id) {
+                foreach ($arrCalificaciones as $calif_detalle_id) {
                   $arrDetalleForm = [];
 
                   //se valida que existan check de pits seleccionaddos y se valida
