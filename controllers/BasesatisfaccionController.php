@@ -4772,7 +4772,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             $modelup->remitentes = Yii::$app->request->post('remitentes');
                             $modelup->asunto = Yii::$app->request->post('asunto');
                             $modelup->comentario = Yii::$app->request->post('comentario');
-
+                            
                             $listo = 1;
 
                             $sesion = Yii::$app->user->identity->id;
@@ -4812,7 +4812,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
              * * @author German Mejia Vieco
              */
 
-            public function enviarcorreoalertas($fecha, $pcrc, $valorador, $tipo_alerta, $archivo_adjunto, $remitentes, $asunto, $comentario){
+            public function enviarcorreoalertas($id, $fecha, $pcrc, $valorador, $tipo_alerta, $archivo_adjunto, $remitentes, $asunto, $comentario){
 
                 $equipos = \app\models\Arboles::find()->where(['id' => $pcrc])->all();
                 $usuario = \app\models\Usuarios::find()->where(['usua_id' => $valorador])->all();
@@ -4822,32 +4822,41 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $target_path = "alertas/" . $archivo_adjunto;
                 $sessiones = Yii::$app->user->identity->id;
 
-                $varNombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = '$sessiones'")->queryScalar();
-                $varCorreo = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = '$sessiones'")->queryScalar();
+                $varNombre = (new \yii\db\Query())
+                    ->select(['usua_nombre'])
+                    ->from(['tbl_usuarios'])
+                    ->where(['=','usua_id',$sessiones])
+                    ->Scalar();
+                    $varCorreo = (new \yii\db\Query())
+                    ->select(['usua_email'])
+                    ->from(['tbl_usuarios'])
+                    ->where(['=','usua_id',$sessiones])
+                    ->Scalar();
 
-            $html = "
-            Correo enviado por: ".$varNombre." con correo: ".$varCorreo."
-            <br>
-            <br>
-            <br>
-<table align='center' border='2'>
-                <tr>
-                    <th style='padding: 10px;'>Fecha de Envio</th>
-                    <th style='padding: 10px;'>Programa</th>
-                    <th style='padding: 10px;'>Valorador</th>
-                    <th style='padding: 10px;'>Tipo de Alerta</th>
-                    <th style='padding: 10px;'>Asunto</th>
-                    <th style='padding: 10px;'>Comentario</th>
-                </tr>
-                <tr>
-                    <td style='padding: 10px;'>" . $fecha . "</td>
-                    <td style='padding: 10px;'>" . $equipos['0']->name . "</td>
-                    <td style='padding: 10px;'>" . $usuario['0']->usua_nombre . "</td>
-                    <td style='padding: 10px;'>" . $tipo_alerta . "</td>
-                    <td style='padding: 10px;'>" . $asunto  . "</td>
-                    <td style='padding: 10px;'>" . $comentario  . "</td>
-                </tr>
-            </table>";
+                    $html = "
+                    Correo enviado por: ".$varNombre." con correo: ".$varCorreo."
+                    <br>
+                    <div class='col-md-6'>
+                                    <div class='card1 mb' style='display:grid; place-items:center;'>
+                                        <img src='../../images/cxx.png' style='width:120px;' >
+                                        <h2>¡Hola Equipo!</h2>
+                                        <h3><b>Haz recibido una nueva alerta</b></h3>
+                                        <h4>Fecha de envio  :</h4>". $fecha.
+                                        "<h4>Tipo de alerta:</h4>". $tipo_alerta .
+                                        "<h4>Asunto:</h4>". $asunto  .
+                                        "<h4>Programa PCRC:</h4>". $equipos['0']->name .
+                                        "<h4>Valorador:</h4> ". $usuario['0']->usua_nombre . 
+                                        "<h4>Comentarios:</h4>". $comentario .
+                                        "<br><br>
+                                        <h4>Nos encataría saber tu opinión te invitamos a ingresar a <b>CXM</b> y responder la siguiente encuesta.</h4>
+                                        <br>
+                                        <div style='heigth: 200px;'>
+                                        <a href='encuestasatifaccion' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
+                                        </div>
+                                        <br>
+                                        <img src='../../images/link.png' class='img-responsive'>
+                                    </div>
+                                </div>";
 
                 foreach ($destinatario as $send) {
                     Yii::$app->mailer->compose()
