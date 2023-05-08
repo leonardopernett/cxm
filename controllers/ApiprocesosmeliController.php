@@ -69,13 +69,6 @@ use app\models\Calificaciondetalles;
 
     public function actionApivaloraciones(){
 
-        ini_set("max_execution_time", "900");
-        ini_set("memory_limit", "1024M");
-        ini_set( 'post_max_size', '1024M' );
-
-        ignore_user_abort(true);
-        set_time_limit(900);
-
         $varProcesosBuscar = [':varCliente'=>"client_problem_rep"];
 
         $varListDataValoracion = Yii::$app->get('dbmeli')->createCommand('
@@ -198,13 +191,6 @@ use app\models\Calificaciondetalles;
     }
 
     public function actionApiprocesosvalora(){      
-
-      ini_set("max_execution_time", "900");
-      ini_set("memory_limit", "1024M");
-      ini_set( 'post_max_size', '1024M' );
-
-      ignore_user_abort(true);
-      set_time_limit(900);
 
       $varFechaMesActual = date('Y-m-01');
 

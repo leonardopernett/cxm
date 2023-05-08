@@ -561,6 +561,7 @@ use app\models\FormUploadtigo;
         'varidLllamada' => $varidLllamada,
         'txtidcliente' => $txtidcliente,
         'txtTipoparametros' => $txtTipoparametros,
+        'varListCallidsVoice' => $varListCallidsVoice,
       ]);
     }
 
@@ -1879,7 +1880,7 @@ use app\models\FormUploadtigo;
       $phpExc->getActiveSheet()->getStyle('A8')->applyFromArray($styleArrayTitle);
 
       $lastColumn = 'A';
-      $numCell = 9;
+      
       foreach ($varListarIndicadoresExport as $key => $value) {
         $txtIdIndicadores = $value['idcategoria'];
         $varNombreIndicador = $value['nombre'];

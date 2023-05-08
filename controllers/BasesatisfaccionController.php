@@ -4750,7 +4750,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             public function actionAlertas() {
 
                 $model = new UploadForm();
-
+                $modelup = new Alertas();
                 $searchModel = new BaseSatisfaccionSearch();
                 $listo = 0;
 
@@ -4775,13 +4775,23 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                             $listo = 1;
 
-                            $this->enviarcorreoalertas($modelup->fecha, $modelup->pcrc, $modelup->valorador, $modelup->tipo_alerta, $modelup->archivo_adjunto, $modelup->remitentes, $modelup->asunto, $modelup->comentario);
+                            $sesion = Yii::$app->user->identity->id;
+ 
+                            $varid  = (new \yii\db\Query())
+                                    ->select(['max(tbl_alertascx.id)'])
+                                    ->from(['tbl_alertascx'])
+                                    ->where(['=','tbl_alertascx.valorador', $sesion])
+                                    ->andwhere(['>=','tbl_alertascx.fecha',date("y-m-d")])
+                                    ->scalar();
+
+                            $this->enviarcorreoalertas($varid, $modelup->fecha, $modelup->pcrc, $modelup->valorador, $modelup->tipo_alerta, $modelup->archivo_adjunto, $modelup->remitentes, $modelup->asunto, $modelup->comentario);
 
                             $modelup->save();
                             return $this->render('alertas', [
                             'searchModel' => $searchModel,
                             'model' => $model,
                             'listo' => $listo,
+                            'modelup' => $modelup,
                 ]);
                     }else{
                         
@@ -4793,6 +4803,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'searchModel' => $searchModel,
                             'model' => $model,
                             'listo' => $listo,
+                            'modelup' => $modelup,
                 ]);
             }
 
