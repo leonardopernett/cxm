@@ -763,6 +763,7 @@ class BasesatisfaccionController extends Controller {
              */
             public function actionGuardarencuesta($id) {
                 $model = \app\models\BaseSatisfaccion::findOne($id);
+                $comando = null;
                 if (Yii::$app->request->post()) {
                     $datosForm = Yii::$app->request->post();
                     foreach ($datosForm as $key => $value) {
@@ -1034,6 +1035,7 @@ class BasesatisfaccionController extends Controller {
              * @version Release: $Id$             
              */
             public function insertBasesatisfaccion($datos) {
+                $comando = null;
                 $this->flagServer = false;
                 if (empty($datos) || count($datos) < 1) {
                     return[
@@ -1584,6 +1586,7 @@ class BasesatisfaccionController extends Controller {
              * @return boolean
              */
             private function _consultDB($connId, $server, $user, $pass, $db) {
+                
                 if (!empty($connId) && !empty($server) && !empty($user) && !empty($pass) && !empty($db)) {
                     try {
                         $table = "Llamada" . date('Ym');
@@ -1665,7 +1668,7 @@ class BasesatisfaccionController extends Controller {
                     $checked = '';
                     $disabled = '';
                     if ($preview == 1) {
-                        foreach ($respuestas as $key => $value) {
+                        foreach ($respuestas as $value) {
                             if ($objTipif['id'] == $value->subtipificacion_id) {
                                 $checked = 'checked="checked"';
                             }
@@ -2473,6 +2476,7 @@ class BasesatisfaccionController extends Controller {
              * @version Release: $Id$
              */
             public function actionGuardaryenviarformulariogestion() {
+                $tmp_ejecucion = null;
 
                 $calificaciones = Yii::$app->request->post('calificaciones');
                 $tipificaciones = Yii::$app->request->post('tipificaciones');
@@ -2670,11 +2674,16 @@ class BasesatisfaccionController extends Controller {
                     $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
                     /* validacion de guardado exitoso del tmp y paso a las tablas de ejecucion
                       en caso de no cumplirla, se redirige nuevamente al formulario */
+
+                    $varResponsabilidadesspc = Yii::$app->request->post('responsabilidadspc');
+                    $varCanalesspc = Yii::$app->request->post('canalspc');
+                    $varMarcasspc = Yii::$app->request->post('marcaspc');
+                    $varEquivospc = Yii::$app->request->post('equivocacionspc');
                     
-                    $varResponsabilidadspc = (isset($_POST['responsabilidadspc'])) ? $_POST['responsabilidadspc'] : "";
-                    $varCanalspc = (isset($_POST['canalspc'])) ? implode(", ", $_POST['canalspc']) : "";
-                    $varMarcaspc = (isset($_POST['marcaspc'])) ? implode(", ", $_POST['marcaspc']) : "";
-                    $varEquispc = (isset($_POST['equivocacionspc'])) ? implode(", ", $_POST['equivocacionspc']) : "";
+                    $varResponsabilidadspc = (!$varResponsabilidadesspc) ? Yii::$app->request->post('responsabilidadspc') : "";
+                    $varCanalspc = (!$varCanalesspc) ? implode(", ", Yii::$app->request->post('canalspc')) : "";
+                    $varMarcaspc = (!$varMarcasspc) ? implode(", ", Yii::$app->request->post('marcaspc')) : "";
+                    $varEquispc = (!$varEquivospc) ? implode(", ", Yii::$app->request->post('equivocacionspc')) : "";
 
                     if ($varResponsabilidadspc != "") {     
                         
@@ -3749,7 +3758,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
              * @version Release: $Id$
              */
             public function actionRecalculartipologia() {
-
+                $comando = null;
                 //TRAIGO LAS ENCUESTAS SIN TIPOLOGIA
                 $encuestas = BaseSatisfaccion::find()->select('id')->where("`tipologia` IS NULL")->all();
 

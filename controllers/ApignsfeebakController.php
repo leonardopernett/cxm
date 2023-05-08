@@ -68,15 +68,6 @@ use GuzzleHttp;
     }
 
     public function actionApignsencuestas(){
-      $datapost = file_get_contents('php://input');
-      $data_post = json_decode($datapost,true);
-
-      ini_set("max_execution_time", "900");
-      ini_set("memory_limit", "1024M");
-      ini_set( 'post_max_size', '1024M' );
-
-      ignore_user_abort(true);
-      set_time_limit(900);
 
       $varHora = date("H");
 
@@ -127,7 +118,7 @@ use GuzzleHttp;
 
       if (count($objet_json['Data']) != 0) {
         
-        foreach ($objet_json['Data'] as $key => $value) {
+        foreach ($objet_json['Data'] as $value) {
           if (count($value['Answers']) != 0 && $value['QueueName'] != "") {
             
             $varIdentificacion = $value['CustomerId'];
@@ -263,7 +254,7 @@ use GuzzleHttp;
             $varUsuaLider = null;
             $varLider = null;
             $varCCLider = null;
-            foreach ($varListaEquipos as $key => $value) {
+            foreach ($varListaEquipos as $value) {
               $varUsuaLider = $value['usua_id'];
               $varLider = $value['usua_nombre'];
               $varCCLider = $value['usua_identificacion'];
@@ -425,7 +416,7 @@ use GuzzleHttp;
 
             if (!$errorConfig) {
               
-              foreach ($config as $key => $value) {
+              foreach ($config as $value) {
               
                 if (!empty($value['configuracion'])) {
                   

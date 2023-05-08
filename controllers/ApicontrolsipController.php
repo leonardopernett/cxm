@@ -65,12 +65,7 @@ class ApicontrolsipController extends \yii\web\Controller {
     }
 
     public function actionApicontrolsipren(){
-        
-            $txtanulado = 0;
-            $txtfechacreacion = date("Y-m-d");
-            $varDiaActual = date('j');
-            $varMesActual = date('m');
-            $varYearActual = date('Y');
+                    
             $vartxtsip = ".sip";            
             $varHora = date("H") - 1;
 
@@ -83,7 +78,7 @@ class ApicontrolsipController extends \yii\web\Controller {
                             ->andwhere(['between','tbl_base_satisfaccion.fecha_satu', $varfechahorainicio, $varfechahorafin])                           
                             ->All();  
 
-            foreach ($varlistaagente as $key => $value) {
+            foreach ($varlistaagente as $value) {
                 $varredagente = $value['agente'];
                 $varidsatisfaccion = $value['id'];
                 $paramsBuscaAsesor = [':RedAsesor'=>$varredagente];

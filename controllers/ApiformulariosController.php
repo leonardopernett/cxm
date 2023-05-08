@@ -108,7 +108,7 @@ use GuzzleHttp;
             GROUP BY s.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatas = array();
-      foreach ($varListSecciones as $key => $value) {
+      foreach ($varListSecciones as $value) {
         $varIdSeccion = $value['id'];
         $varNombreSeccion = $value['Seccion'];
 
@@ -135,7 +135,7 @@ use GuzzleHttp;
                 es.seccion_id = :Id_Session ')->bindValues($paramsSessiones)->queryAll();
 
         
-        foreach ($varListScoreS as $key => $value) {          
+        foreach ($varListScoreS as $value) {          
 
           array_push($arraydatas, array("Id_Formulario "=>$value['Id_Formulario'],"Seccion "=>$varNombreSeccion,"Score"=>$value['Score']));
         }        
@@ -182,7 +182,7 @@ use GuzzleHttp;
 
 
       $arraydatab = array();
-      foreach ($varListBloques as $key => $value) {
+      foreach ($varListBloques as $value) {
         $varIdSecciones = $value['id_Seccion'];
         $varIdBloques = $value['id_Bloque'];
         $varNombreBloque = $value['Bloque'];
@@ -213,7 +213,7 @@ use GuzzleHttp;
                   AND eb.bloque_id = :IdBloques
                     ORDER BY ef.id')->bindValues($paramsBloques)->queryAll();
 
-        foreach ($varListScoreB as $key => $value) {
+        foreach ($varListScoreB as $value) {
           array_push($arraydatab, array("Id_Formulario "=>$value['id_Formulario'],"Id_Bloque "=>$varIdBloques,"Bloque "=>$varNombreBloque,"Score"=>$value['Score']));          
         }
 
@@ -285,7 +285,7 @@ use GuzzleHttp;
               AND f.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsFormularios)->queryAll();
 
       $arraydataf = array();
-      foreach ($varListFormularios as $key => $value) {
+      foreach ($varListFormularios as $value) {
       
 
         array_push($arraydataf, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC'],"CentroCostos"=>$value['CentroCostos'],"Canal"=>$value['Pcrc']));  
@@ -339,7 +339,7 @@ use GuzzleHttp;
               AND ef.created BETWEEN :Fecha_inicio AND :Fecha_Fin')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatap = array();
-      foreach ($varListPreguntas as $key => $value) {
+      foreach ($varListPreguntas as $value) {
 
         array_push($arraydatap, array("Id_Formulario "=>$value['Id_Formulario'],"Id_Bloque"=>$value['Id_Bloque'],"Bloque"=>$value['Bloque'],"Id_Pregunta"=>$value['Id_Pregunta'],"Pregunta "=>$value['Pregunta'],"Id_Respuesta"=>$value['Id_Respuesta'],"Respuesta "=>$value['Respuesta'])); 
 
@@ -396,7 +396,7 @@ use GuzzleHttp;
         GROUP BY ef.id, td.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatapi = array();
-      foreach ($varListTipificaciones as $key => $value) {
+      foreach ($varListTipificaciones as $value) {
 
         array_push($arraydatapi, array("Id_Formulario "=>$value['Id_Formulario'],"Id_sesiones"=>$value['Id_sesiones'],"Id_Bloques"=>$value['Id_Bloques'],"Id_Preguntas"=>$value['Id_Preguntas'],"Id_Tipificacion "=>$value['id_Tipificacion'],"Tipificaciones "=>$value['Tipificaciones'],'RespuestaTipificacion'=>$value['Rtatipi'],"Fechavaloracion"=>$value['FechaValoracion'])); 
       }
@@ -454,7 +454,7 @@ use GuzzleHttp;
         GROUP BY ef.id, td.id')->bindValues($paramsBusqueda)->queryAll();
 
       $arraydatapi = array();
-      foreach ($varListTipificaciones as $key => $value) {
+      foreach ($varListTipificaciones as $value) {
 
         array_push($arraydatapi, array("Id_Formulario "=>$value['Id_Formulario'],"Id_sesiones"=>$value['Id_sesiones'],"Id_Bloques"=>$value['Id_Bloques'],"Id_Preguntas"=>$value['Id_Preguntas'],"Id_Tipificacion "=>$value['id_Tipificacion'],"Tipificaciones "=>$value['Tipificaciones'],'RespuestaTipificacion'=>$value['Rtatipi'],"Fechavaloracion"=>$value['FechaValoracion'])); 
       }
@@ -535,7 +535,7 @@ use GuzzleHttp;
               a.id IN (:Arbol_idG)
               AND f.created BETWEEN :Fecha_inicioG AND :Fecha_FinG')->bindValues($paramsFormulariosG)->queryAll();
 
-        foreach ($varListFormulariosG as $key => $value) {
+        foreach ($varListFormulariosG as $value) {
           array_push($arraydatafG, array("Id_Formulario "=>$value['id'],"Id_Encuesta "=>$value['ID_Encuesta'],"Fecha&Hora "=>$value['FechaYHora'],"Hora_Inicio_Valoracion "=>$value['HoraInicialValoracion'],"Hora_Fin_Valoracion "=>$value['HoraFinalValoracion'],"Cantidad_Modificaciones "=>$value['CantModificaciones'],"Tiempo_Modificaciones "=>$value['TiempoModificaciones'],"Dimensiones "=>$value['Dimension'],"Arbol_Padre "=>$value['ArbolPadre'],"Id_Pcrc "=>$value['IDArbol'],"Programa_Pcrc "=>$value['Arbol'],"Formulario "=>$value['Formulario'],"Nombre_Lider "=>$value['Lider'],"Nombre_Asesor "=>$value['Asesor'],"Identificacion_Asesor "=>$value['CedulaEvaluado'],"Responsable "=>$value['Rsponsable'],"Nombre_Evaluador "=>$value['Evaluador'],"Rol "=>$value['rol'],"Fuente "=>$value['Fuente'],"Transacciones "=>$value['Transacciones'],"Equipo "=>$value['Equipo'],"Comentarios "=>$value['Comentarios'],"Score "=>$value['Score'],"PEC "=>$value['PEC'],"PENC "=>$value['PENC'],"SPC_FRC "=>$value['SPC_FRC'],"CARINO_WOW "=>$value['CARINO_WOW'],"Indice_de_Proceso "=>$value['Indice_de_Proceso'],"Indice_de_Experiencia "=>$value['Indice_de_Experiencia'],"Cumplimiento_Promesa_de_Marca "=>$value['Cumplimiento_Promesa_de_Marca'],"Desempeño_del_Canal "=>$value['Desempeño_del_Canal'],"Desempeño_del_Agente "=>$value['Desempeño_del_Agente'],"Habilidad_Comercia l"=>$value['Habilidad_Comercial']));
         }
       }

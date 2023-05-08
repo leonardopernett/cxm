@@ -85,7 +85,6 @@ use GuzzleHttp;
 
         ignore_user_abort(true);
         set_time_limit(900);
-
       
         $varListSecciones = Yii::$app->dbjarvis->createCommand("
         SELECT dp.documento AS CedulaAsesor, dp.documento_jefe AS CedulaLider, pc.id_dp_clientes AS id_dp_clientes, 
@@ -107,7 +106,7 @@ use GuzzleHttp;
 
         Yii::$app->db->createCommand()->truncateTable('tbl_distribucion_asesores')->execute();
 
-        foreach ($varListSecciones as $key => $value) {
+        foreach ($varListSecciones as  $value) {
             Yii::$app->db->createCommand()->insert('tbl_distribucion_asesores',[
                       'cedulaasesor' => $value['CedulaAsesor'],
                       'cedulalider' => $value['CedulaLider'],
@@ -175,7 +174,7 @@ use GuzzleHttp;
                                       ->where(['=','anulado',0])
                                       ->all(); 
   
-          foreach ($varListaAsesores as $key => $value) {
+          foreach ($varListaAsesores as $value) {
             $varDocumentoAsesor = $value['cedulaasesor'];
   
             $varExisteAsesor = (new \yii\db\Query())
@@ -245,9 +244,8 @@ use GuzzleHttp;
                                       ->where(['=','anulado',0])
                                       ->all(); 
   
-          foreach ($varListaLideres as $key => $value) {
+          foreach ($varListaLideres as  $value) {
             $varDocumentoLider = $value['cedulalider'];
-            $varIdCliente = $value['id_dp_clientes'];
   
             $varExisteLider = (new \yii\db\Query())
                                       ->select(['usua_id'])
@@ -468,7 +466,7 @@ use GuzzleHttp;
                                                       ->all();         
                             
                             
-                                    foreach ($varListUsuariosD as $key => $value) {
+                                    foreach ($varListUsuariosD as $value) {
                                       $varUsuarioD = $value['usua_id'];
                                       $varClienteD = $value['id_dp_clientes'];
                             
@@ -479,7 +477,7 @@ use GuzzleHttp;
                                                                 ->all();
                             
                                       if (count($varListaEquipoD) != 0) {
-                                        foreach ($varListaEquipoD as $key => $value) {
+                                        foreach ($varListaEquipoD as $value) {
                                           $varIdEquipoD = $value['id'];
                                           $varNombreEquipoD = $value['name'];
                             
@@ -563,7 +561,7 @@ use GuzzleHttp;
                                                                 ->andwhere(['not like','name','No usar'])
                                                                 ->all();
                             
-                                      foreach ($varListaEquipoDOk as $key => $value) {
+                                      foreach ($varListaEquipoDOk as $value) {
                                         $varEquipoIdD = $value['id'];
                                         
                                         $varListAsesoresD = (new \yii\db\Query())
@@ -577,7 +575,7 @@ use GuzzleHttp;
                                                             ->groupby(['tbl_evaluados.id'])
                                                             ->all();
                             
-                                        foreach ($varListAsesoresD as $key => $value) {
+                                        foreach ($varListAsesoresD as  $value) {
                                           Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
                                                     'evaluado_id' => $value['id'],
                                                     'equipo_id' => $varEquipoIdD,                             
