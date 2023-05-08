@@ -78,13 +78,6 @@ use GuzzleHttp;
     public function actionApiprocesadistribucionauto(){
 
         $arraydatas = "Proceso realizado";
-
-        ini_set("max_execution_time", "900");
-        ini_set("memory_limit", "1024M");
-        ini_set( 'post_max_size', '1024M' );
-
-        ignore_user_abort(true);
-        set_time_limit(900);
       
         $varListSecciones = Yii::$app->dbjarvis->createCommand("
         SELECT dp.documento AS CedulaAsesor, dp.documento_jefe AS CedulaLider, pc.id_dp_clientes AS id_dp_clientes, 
@@ -161,13 +154,7 @@ use GuzzleHttp;
   
         $form = Yii::$app->request->post();
         if($model->load($form)){
-          ini_set("max_execution_time", "900");
-          ini_set("memory_limit", "1024M");
-          ini_set( 'post_max_size', '1024M' );
-  
-          ignore_user_abort(true);
-          set_time_limit(900);
-  
+            
           $varListaAsesores = (new \yii\db\Query())
                                       ->select(['cedulaasesor'])
                                       ->from(['tbl_distribucion_asesores'])
@@ -231,13 +218,7 @@ use GuzzleHttp;
   
         $form = Yii::$app->request->post();
         if($model->load($form)){
-          ini_set("max_execution_time", "900");
-          ini_set("memory_limit", "1024M");
-          ini_set( 'post_max_size', '1024M' );
-  
-          ignore_user_abort(true);
-          set_time_limit(900);
-  
+          
           $varListaLideres = (new \yii\db\Query())
                                       ->select(['cedulalider','id_dp_clientes'])
                                       ->from(['tbl_distribucion_asesores'])

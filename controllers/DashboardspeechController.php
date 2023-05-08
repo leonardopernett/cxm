@@ -670,6 +670,7 @@ use app\models\Speechpcrcsociedades;
         $varCorreo = null;
         $varCodparametrizar = null;
         $VarCodsPcrc = null;
+        $txtRtaIndicador = 0;
 
         $var_FechaIni = Yii::$app->request->post("var_FechaIni");
         $var_FechaFin = Yii::$app->request->post("var_FechaFin");
