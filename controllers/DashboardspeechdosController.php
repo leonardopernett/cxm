@@ -1631,7 +1631,8 @@ use app\models\FormUploadtigo;
       $txtParametros = Yii::$app->request->get("varParametros_idV");
       $varCorreo = Yii::$app->request->get("var_Destino");
       $txtCodPcrcok = Yii::$app->request->get("var_CodsPcrc");  
-      $txtextensionParams = Yii::$app->request->get("var_extensionparams");            
+      $txtextensionParams = Yii::$app->request->get("var_extensionparams");   
+      $varconteo = null;         
 
       $varListaCodPcrcExport = explode(",", str_replace(array("#", "'", ";", " "), '', $txtCodPcrcok));
 
@@ -2080,7 +2081,6 @@ use app\models\FormUploadtigo;
       $phpExc->getActiveSheet()->getStyle('I12')->applyFromArray($styleArraySubTitle);
       $phpExc->getActiveSheet()->getStyle('I12')->applyFromArray($styleArrayTitle);
       
-      $lastColumn = 'A';
       $numCell = 13;
       foreach ($varListarIndicadoresExport as $key => $value) {
         $txtIdIndicadoresExport = $value['idcategoria'];
@@ -2382,7 +2382,7 @@ use app\models\FormUploadtigo;
                                   ->groupby(['login_id'])
                                   ->all();
                         
-      $lastColumn = 'A';
+      
       $numCell = $numCell + 1;
       foreach ($varListAsesoresExport as $key => $value) {
           $lastColumn = 'A';
@@ -3206,13 +3206,7 @@ use app\models\FormUploadtigo;
 
         public function actionAutomaticspeecha($varNumber) {
           $txtProblemas = 0;
-          ini_set("max_execution_time", "900");
-          ini_set("memory_limit", "1024M");
-          ini_set( 'post_max_size', '1024M' );
-
-          ignore_user_abort(true);
-          set_time_limit(900);
-
+          
           $txtfechacreacion = date("Y-m-d");
           $txtProblemas = null;
           $varMesActual2 = date('m');
@@ -4732,7 +4726,7 @@ public function actionCantidadentto(){
       $varvarcategolias = Yii::$app->request->get('varcategolias');      
 
       $varResultado = null;
-      $vartexto = $varidconnid;
+      $vartexto = null;
       $varvalencia = null;
 
       
