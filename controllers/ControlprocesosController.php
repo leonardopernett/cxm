@@ -748,8 +748,7 @@ class ControlprocesosController extends \yii\web\Controller {
 		*@return mixed
 		*/
 		public function actionVercortes(){
-			$model = new ControlTipoCortes();
-			$sessiones = Yii::$app->user->identity->id;
+			$model = new ControlTipoCortes();			
 			$dataProvider = $model->searchcortes(Yii::$app->request->post());			
 			
 			return $this->render('_formviewcort',[

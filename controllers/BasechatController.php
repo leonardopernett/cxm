@@ -67,40 +67,7 @@ use \yii\base\Exception;
                 ]);
         }
 
-        public function actionImportarexcel2(){
-            $model = new FormUploadtigo();
-            $varArray = null;
-
-                if (Yii::$app->request->isPost) {
-                
-                    $model->file = UploadedFile::getInstance($model, 'file');
-
-                    if ($model->file && $model->validate()) {
-                        $model->file->saveAs('categorias/' . $model->file->baseName . '.' . $model->file->extension);
-
-                        $fila = 1;
-                        if (($gestor = fopen('categorias/' . $model->file->baseName . '.' . $model->file->extension, "r")) !== false) {                            
-                            while (($datos = fgetcsv($gestor)) !== false) {
-                                $numero = count($datos); 
-
-                                $fila++;
-                                for ($c=0; $c < $numero; $c++) { 
-                                    $varArray = $datos[$c];
-                                }
-                            }
-                            fclose($gestor);
-                        }
-                    }
-                
-                }
-           
-
-            return $this->render('importarexcel',[
-                'model' => $model,
-                ]);
-        }
-
-
+        
         public function actionImportarexcel(){
             $model = new FormUploadtigo();
 
@@ -1997,7 +1964,7 @@ public function actionElegirimportar(){
             $varlistacategorias = Yii::$app->db->createCommand("select concat(bc.nombrecategoria,': ',bm.nombrelista) 'unidos' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on bc.idlista = bm.idlista inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista where  bf.ticked_id = $varidticket    and bf.basesatisfaccion_id = $varbasesatisfaccion")->queryAll();
 
             $vararraymotivos = array();
-              foreach ($varlistacategorias as $key => $value) {
+              foreach ($varlistacategorias as $value) {
                   array_push($vararraymotivos, $value['unidos']);
               }
             $vartextcm = implode(", ", $vararraymotivos);
@@ -2263,7 +2230,7 @@ public function actionElegirimportar(){
             $varlistacategorias = Yii::$app->db->createCommand("select concat(bc.nombrecategoria,': ',bm.nombrelista) 'unidos' from tbl_basechat_categorias bc inner join tbl_basechat_motivos bm on bc.idlista = bm.idlista inner join tbl_basechat_formulario bf on bm.idbaselista = bf.idbaselista where  bf.ticked_id = $varidticket    and bf.basesatisfaccion_id = $varbasesatisfaccion")->queryAll();
 
             $vararraymotivos = array();
-            foreach ($varlistacategorias as $key => $value) {
+            foreach ($varlistacategorias as $value) {
                 array_push($vararraymotivos, $value['unidos']);
             }
             $vartextcm = implode(", ", $vararraymotivos);
