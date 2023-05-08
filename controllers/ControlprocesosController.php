@@ -276,6 +276,9 @@ class ControlprocesosController extends \yii\web\Controller {
 																									$arbol_id = 480;
 																									die(json_encode($arbol_id));
 																								}
+																								else{
+																									die(json_encode("NA"));
+																								}
 				}
 				else
 				{
