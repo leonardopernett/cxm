@@ -766,7 +766,7 @@ class BasesatisfaccionController extends Controller {
                 $comando = null;
                 if (Yii::$app->request->post()) {
                     $datosForm = Yii::$app->request->post();
-                    foreach ($datosForm as $key => $value) {
+                    foreach ($datosForm as $value) {
                         $model->$key = $value;
                     }
                     Yii::$app->session->setFlash('success', Yii::t('app', 'guardado encuesta'));
@@ -815,7 +815,7 @@ class BasesatisfaccionController extends Controller {
                             }
 
                             if (!$errorConfig) {
-                                foreach ($config as $key => $value) {
+                                foreach ($config as $value) {
                                     if (!empty($value['configuracion'])) {
                                         $preExplode = explode('-', $value['configuracion']);
                                         $explode = explode('||', $preExplode[0]);
@@ -1055,7 +1055,7 @@ class BasesatisfaccionController extends Controller {
                 unset($datos["modalidad_encuesta"]);
 
                 //INGRESO LOS DATOS QUE ME LLEGARON POR EL IVR EN EL MODELO DE SATISFACCION KONECTA
-                foreach ($datos as $key => $value) {
+                foreach ($datos as $value) {
                     $model->$key = $value;
                 }
                 //BUSCO LA REGLA DE NEGOCIO PARA SABER SI EXITE ANTES DE CREAR EL REGISTRO
@@ -1123,7 +1123,7 @@ class BasesatisfaccionController extends Controller {
                 if (!$model->save()) {
                     //SI HAY ERROR DEVUELVO LA RESPUESTA -1 CON LOS ERRORES
                     $msj = "Error guardando los datos: ";
-                    foreach ($model->getErrors() as $key => $value) {
+                    foreach ($model->getErrors() as $value) {
                         $msj .= $key . ": " . $value[0] . "<br />";
                     }
                     //ESCRIBO EN EL LOG
@@ -1176,7 +1176,7 @@ class BasesatisfaccionController extends Controller {
                             }
 
                             if (!$errorConfig) {
-                                foreach ($config as $key => $value) {
+                                foreach ($config as $value) {
                                     if (!empty($value['configuracion'])) {
                                         $preExplode = explode('-', $value['configuracion']);
                                         $explode = explode('||', $preExplode[0]);
@@ -1286,7 +1286,7 @@ class BasesatisfaccionController extends Controller {
                     if (!$nModel->save()) {
                         \Yii::error($msj, 'basesatisfaccion');
                         $error = "Error guardando los datos: ";
-                        foreach ($nModel->getErrors() as $key => $value) {
+                        foreach ($nModel->getErrors() as $value) {
                             $error .= $key . ": " . $value[0] . "<br />";
                         }
                         //ESCRIBO EN EL LOG
@@ -3810,7 +3810,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             }
 
                             if (!$errorConfig) {
-                                foreach ($config as $key => $value) {
+                                foreach ($config as $value) {
                                     if (!empty($value['configuracion'])) {
                                         $preExplode = explode('-', $value['configuracion']);
                                         $explode = explode('||', $preExplode[0]);
@@ -5331,11 +5331,11 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     $txtFecha = $model2->fechacreacion;
                     $arrayUsu = array();
 
-                    foreach ($txtUsuarios as $key => $value) {
+                    foreach ($txtUsuarios as  $value) {
                         array_push($arrayUsu, array("nombre"=>$txtNombre,"nombre2"=>$txtNombre2,"usua_id"=> $value,"fechacreacion"=>$txtFecha));
                     }
 
-                    foreach ($arrayUsu as $key => $value) {
+                    foreach ($arrayUsu as  $value) {
                         $varNom = $value["nombre"];
                         $varNom2 = $value["nombre2"];
                         $varUsu = $value["usua_id"];
@@ -5375,7 +5375,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $varRta = null;
 
                 $varArraydestinos = array();
-                foreach ($varIdUsu as $key => $value) {
+                foreach ($varIdUsu as $value) {
                    
                     $varRta = $value['usua_id'];
                     $varEmail = (new \yii\db\Query())
@@ -5384,7 +5384,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         ->where(['=','usua_id',$varRta])
                         ->all();
                         
-                    foreach ($varEmail as $key => $value) {
+                    foreach ($varEmail as $value) {
                         array_push($varArraydestinos,$value['usua_email']);
                     }
                     $varcorreos = implode(", ",$varArraydestinos);
@@ -5422,11 +5422,11 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $txtRtaEmail = null;
 
                 $arrayUsu = array();
-                foreach ($varIdUsu as $key => $value) {
+                foreach ($varIdUsu as $value) {
                     array_push($arrayUsu, array("usua_id"=>$value));
                 }
 
-                foreach ($arrayUsu as $key => $value) {
+                foreach ($arrayUsu as $value) {
                     $txtIdUsu = $value["usua_id"];
                     (string)$txtRtaEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = $txtIdUsu")->queryScalar(); 
 
@@ -5473,11 +5473,11 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $txtRtaEmail = null;
 
                 $arrayUsu = array();
-                foreach ($varIdUsu as $key => $value) {
+                foreach ($varIdUsu as $value) {
                     array_push($arrayUsu, array("usua_id"=>$value));
                 }
 
-                foreach ($arrayUsu as $key => $value) {
+                foreach ($arrayUsu as $value) {
                     $txtIdUsu = $value["usua_id"];
                     (string)$txtRtaName = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = $txtIdUsu")->queryScalar(); 
                     (string)$txtRtaEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = $txtIdUsu")->queryScalar(); 
