@@ -134,7 +134,7 @@ use app\models\Comdataparametrizarapi;
                   ->all(); 
 
               echo "<option value='' disabled selected>Seleccionar...</option>";
-              foreach ($varListaLideresx as $key => $value) {
+              foreach ($varListaLideresx as $value) {
                 echo "<option value='" . $value->cod_pcrc. "'>" . $value->cod_pcrc.' - '.$value->pcrc . "</option>";
               }
             }else{

@@ -36,9 +36,6 @@ use app\models\Equipos;
 use app\models\UploadForm2;
 use \yii\base\Exception;
 use app\models\Declinaciones;
-use app\models\ EncuestaSaf;
-use app\models\HojavidaDatapersonal;
-use yii\db\Query;
 
 
 /**
@@ -83,10 +80,7 @@ class BasesatisfaccionController extends Controller {
                                     'guardarencuesta', 'index', 'reglanegocio',
                                     'showencuestatelefonica', 'update', 'guardarformulario', 'showsubtipif', 'cancelarformulario', 'declinarformulario',
                                     'reabrirformulariogestionsatisfaccion', 'clientebasesatisfaccion', 'limpiarfiltro', 'buscarllamadas', 'showformulariogestion',
-                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 
-                                    'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal',
-                                    'prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario',
-                                    'enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos','encuestasatifaccion','correoalerta','totalcomensaf'],
+                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -763,7 +757,6 @@ class BasesatisfaccionController extends Controller {
              */
             public function actionGuardarencuesta($id) {
                 $model = \app\models\BaseSatisfaccion::findOne($id);
-                $comando = null;
                 if (Yii::$app->request->post()) {
                     $datosForm = Yii::$app->request->post();
                     foreach ($datosForm as $key => $value) {
@@ -815,7 +808,7 @@ class BasesatisfaccionController extends Controller {
                             }
 
                             if (!$errorConfig) {
-                                foreach ($config as $value) {
+                                foreach ($config as $key => $value) {
                                     if (!empty($value['configuracion'])) {
                                         $preExplode = explode('-', $value['configuracion']);
                                         $explode = explode('||', $preExplode[0]);
@@ -1035,7 +1028,6 @@ class BasesatisfaccionController extends Controller {
              * @version Release: $Id$             
              */
             public function insertBasesatisfaccion($datos) {
-                $comando = null;
                 $this->flagServer = false;
                 if (empty($datos) || count($datos) < 1) {
                     return[
@@ -1123,7 +1115,7 @@ class BasesatisfaccionController extends Controller {
                 if (!$model->save()) {
                     //SI HAY ERROR DEVUELVO LA RESPUESTA -1 CON LOS ERRORES
                     $msj = "Error guardando los datos: ";
-                    foreach ($model->getErrors() as $value) {
+                    foreach ($model->getErrors() as $key => $value) {
                         $msj .= $key . ": " . $value[0] . "<br />";
                     }
                     //ESCRIBO EN EL LOG
@@ -1176,7 +1168,7 @@ class BasesatisfaccionController extends Controller {
                             }
 
                             if (!$errorConfig) {
-                                foreach ($config as $value) {
+                                foreach ($config as $key => $value) {
                                     if (!empty($value['configuracion'])) {
                                         $preExplode = explode('-', $value['configuracion']);
                                         $explode = explode('||', $preExplode[0]);
@@ -1286,7 +1278,7 @@ class BasesatisfaccionController extends Controller {
                     if (!$nModel->save()) {
                         \Yii::error($msj, 'basesatisfaccion');
                         $error = "Error guardando los datos: ";
-                        foreach ($nModel->getErrors() as $value) {
+                        foreach ($nModel->getErrors() as $key => $value) {
                             $error .= $key . ": " . $value[0] . "<br />";
                         }
                         //ESCRIBO EN EL LOG
@@ -1586,7 +1578,6 @@ class BasesatisfaccionController extends Controller {
              * @return boolean
              */
             private function _consultDB($connId, $server, $user, $pass, $db) {
-                
                 if (!empty($connId) && !empty($server) && !empty($user) && !empty($pass) && !empty($db)) {
                     try {
                         $table = "Llamada" . date('Ym');
@@ -1668,7 +1659,7 @@ class BasesatisfaccionController extends Controller {
                     $checked = '';
                     $disabled = '';
                     if ($preview == 1) {
-                        foreach ($respuestas as $value) {
+                        foreach ($respuestas as $key => $value) {
                             if ($objTipif['id'] == $value->subtipificacion_id) {
                                 $checked = 'checked="checked"';
                             }
@@ -2476,7 +2467,6 @@ class BasesatisfaccionController extends Controller {
              * @version Release: $Id$
              */
             public function actionGuardaryenviarformulariogestion() {
-                $tmp_ejecucion = null;
 
                 $calificaciones = Yii::$app->request->post('calificaciones');
                 $tipificaciones = Yii::$app->request->post('tipificaciones');
@@ -2674,16 +2664,11 @@ class BasesatisfaccionController extends Controller {
                     $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
                     /* validacion de guardado exitoso del tmp y paso a las tablas de ejecucion
                       en caso de no cumplirla, se redirige nuevamente al formulario */
-
-                    $varResponsabilidadesspc = Yii::$app->request->post('responsabilidadspc');
-                    $varCanalesspc = Yii::$app->request->post('canalspc');
-                    $varMarcasspc = Yii::$app->request->post('marcaspc');
-                    $varEquivospc = Yii::$app->request->post('equivocacionspc');
                     
-                    $varResponsabilidadspc = (!$varResponsabilidadesspc) ? Yii::$app->request->post('responsabilidadspc') : "";
-                    $varCanalspc = (!$varCanalesspc) ? implode(", ", Yii::$app->request->post('canalspc')) : "";
-                    $varMarcaspc = (!$varMarcasspc) ? implode(", ", Yii::$app->request->post('marcaspc')) : "";
-                    $varEquispc = (!$varEquivospc) ? implode(", ", Yii::$app->request->post('equivocacionspc')) : "";
+                    $varResponsabilidadspc = (isset($_POST['responsabilidadspc'])) ? $_POST['responsabilidadspc'] : "";
+                    $varCanalspc = (isset($_POST['canalspc'])) ? implode(", ", $_POST['canalspc']) : "";
+                    $varMarcaspc = (isset($_POST['marcaspc'])) ? implode(", ", $_POST['marcaspc']) : "";
+                    $varEquispc = (isset($_POST['equivocacionspc'])) ? implode(", ", $_POST['equivocacionspc']) : "";
 
                     if ($varResponsabilidadspc != "") {     
                         
@@ -3758,7 +3743,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
              * @version Release: $Id$
              */
             public function actionRecalculartipologia() {
-                $comando = null;
+
                 //TRAIGO LAS ENCUESTAS SIN TIPOLOGIA
                 $encuestas = BaseSatisfaccion::find()->select('id')->where("`tipologia` IS NULL")->all();
 
@@ -3810,7 +3795,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             }
 
                             if (!$errorConfig) {
-                                foreach ($config as $value) {
+                                foreach ($config as $key => $value) {
                                     if (!empty($value['configuracion'])) {
                                         $preExplode = explode('-', $value['configuracion']);
                                         $explode = explode('||', $preExplode[0]);
@@ -4765,7 +4750,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             public function actionAlertas() {
 
                 $model = new UploadForm();
-                $modelup = new Alertas();
+
                 $searchModel = new BaseSatisfaccionSearch();
                 $listo = 0;
 
@@ -4776,6 +4761,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     if ($model->upload()) {
                 // file is uploaded successfully
 
+                            $modelup = new Alertas();
 
                             
                             $modelup->fecha = date("Y-m-d H:i:s");
@@ -4789,22 +4775,14 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                             $listo = 1;
 
-                            $sesion = Yii::$app->user->identity->id;
-                            
-                            $id  = (new \yii\db\Query())
-                                    ->select(['max(tbl_alertascx.id)'])
-                                    ->from(['tbl_alertascx'])
-                                    ->where(['=','tbl_alertascx.valorador', $sesion])
-                                    ->andwhere(['>=','tbl_alertascx.fecha', date("y-m-d")])
-                                    ->scalar();
-
-
-                            $this->enviarcorreoalertas($id,$modelup->fecha, $modelup->pcrc, $modelup->valorador, $modelup->tipo_alerta, $modelup->archivo_adjunto, $modelup->remitentes, $modelup->asunto, $modelup->comentario);
+                            $this->enviarcorreoalertas($modelup->fecha, $modelup->pcrc, $modelup->valorador, $modelup->tipo_alerta, $modelup->archivo_adjunto, $modelup->remitentes, $modelup->asunto, $modelup->comentario);
 
                             $modelup->save();
-
-                            return $this->redirect(['basesatisfaccion/alertas']);
-
+                            return $this->render('alertas', [
+                            'searchModel' => $searchModel,
+                            'model' => $model,
+                            'listo' => $listo,
+                ]);
                     }else{
                         
                         $listo = 2;
@@ -4815,7 +4793,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'searchModel' => $searchModel,
                             'model' => $model,
                             'listo' => $listo,
-                            'modelup' => $modelup,
                 ]);
             }
 
@@ -4824,7 +4801,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
              * * @author German Mejia Vieco
              */
 
-            public function enviarcorreoalertas($id,$fecha, $pcrc, $valorador, $tipo_alerta, $archivo_adjunto, $remitentes, $asunto, $comentario){
+            public function enviarcorreoalertas($fecha, $pcrc, $valorador, $tipo_alerta, $archivo_adjunto, $remitentes, $asunto, $comentario){
 
                 $equipos = \app\models\Arboles::find()->where(['id' => $pcrc])->all();
                 $usuario = \app\models\Usuarios::find()->where(['usua_id' => $valorador])->all();
@@ -4837,30 +4814,29 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $varNombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = '$sessiones'")->queryScalar();
                 $varCorreo = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = '$sessiones'")->queryScalar();
 
-                $html = "
-                Correo enviado por: ".$varNombre." con correo: ".$varCorreo."
-                <br>
-                <div class='col-md-6'>
-                                <div class='card1 mb' style='display:grid; place-items:center;'>
-                                    <img src='../../images/cxx.png' style='width:120px;' >
-                                    <h2>¡Hola Equipo!</h2>
-                                    <h3><b>Haz recibido una nueva alerta</b></h3>
-                                    <h4>Fecha de envio  :</h4>". $fecha.
-                                    "<h4>Tipo de alerta:</h4>". $tipo_alerta .
-                                    "<h4>Asunto:</h4>". $asunto  .
-                                    "<h4>Programa PCRC:</h4>". $equipos['0']->name .
-                                    "<h4>Valorador:</h4> ". $usuario['0']->usua_nombre . 
-                                    "<h4>Comentarios:</h4>". $comentario .
-                                    "<br><br>
-                                    <h4>Nos encataría saber tu opinión te invitamos a ingresar a <b>CXM</b> y responder la siguiente encuesta.</h4>
-                                    <br>
-                                    <div>
-                                    <a href='encuestasatifaccion' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
-                                    </div>
-                                    <br>
-                                    <img src='../../images/link.png' class='img-responsive'>
-                                </div>
-                            </div>";
+            $html = "
+            Correo enviado por: ".$varNombre." con correo: ".$varCorreo."
+            <br>
+            <br>
+            <br>
+<table align='center' border='2'>
+                <tr>
+                    <th style='padding: 10px;'>Fecha de Envio</th>
+                    <th style='padding: 10px;'>Programa</th>
+                    <th style='padding: 10px;'>Valorador</th>
+                    <th style='padding: 10px;'>Tipo de Alerta</th>
+                    <th style='padding: 10px;'>Asunto</th>
+                    <th style='padding: 10px;'>Comentario</th>
+                </tr>
+                <tr>
+                    <td style='padding: 10px;'>" . $fecha . "</td>
+                    <td style='padding: 10px;'>" . $equipos['0']->name . "</td>
+                    <td style='padding: 10px;'>" . $usuario['0']->usua_nombre . "</td>
+                    <td style='padding: 10px;'>" . $tipo_alerta . "</td>
+                    <td style='padding: 10px;'>" . $asunto  . "</td>
+                    <td style='padding: 10px;'>" . $comentario  . "</td>
+                </tr>
+            </table>";
 
                 foreach ($destinatario as $send) {
                     Yii::$app->mailer->compose()
@@ -4994,12 +4970,10 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
 
                 $model = (new \yii\db\Query())
-                            ->select('a.id, a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf,tbl_respuesta_encuesta_saf.descripcion')
+                            ->select('a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario')
                             ->from('tbl_alertascx a')
-                            ->join('LEFT JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
-                            ->join('LEFT JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = a.id')
-                            ->join('LEFT JOIN', 'tbl_respuesta_encuesta_saf', 'tbl_respuesta_encuesta_saf.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')
+                            ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
+                            ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
                             ->andWhere('a.id ="' . $id . '"')
                             ->all();
 
@@ -5008,90 +4982,6 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     'model' => $model['0'],
                 ]);
 
-            }
-
-            public function actionCorreoalerta($id){
-
-                
-                
-                return $this->render('correoalerta',[
-                    
-                    'id'=> $id,
-
-            ]);
-
-            }
-
-            public function actionEncuestasatifaccion($id){
-
-                $model = (new \yii\db\Query())
-                            ->select('a.id, a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
-                            ->from('tbl_alertascx a')
-                            ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
-                            ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            ->join('INNER JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = a.id')
-                            ->scalar();
-
-                $modelo = new EncuestaSaf();
-
-               
-                $form = Yii::$app->request->post();
-         
-                if ($modelo->load($form)){    
-                    $varRespEncuesta = $modelo->resp_encuesta_saf;
-                    $varComentario = $modelo->comentario_saf;
-                
-                  
-                    Yii::$app->db->createCommand()->insert('tbl_encuesta_saf',[
-                        'id_alerta' => $id,
-                        'resp_encuesta_saf' => $varRespEncuesta,
-                        'comentario_saf' => $varComentario,                
-                        'usua_id' => Yii::$app->user->identity->id,
-                        'fechacreacion' => date('Y-m-d'),
-                        'anulado' => 0,                         
-                        ])->execute();
-
-                       
-                    }
-                          
-                return $this->render('encuestasatifaccion', [
-                    'model' => $model,
-                    'id' => $id,
-                    'modelo' => $modelo,
-                    
-                ]);
-        
-                
-            }
-           
-             
-
-            public function actionTotalcomensaf($id){
-
-
-                $DataInfo = (new \yii\db\Query())
-                            ->select('comentario_saf, resp.descripcion')
-                            ->from(['tbl_encuesta_saf'])
-                            ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')
-                            ->where(['=','id_alerta',$id])
-                            ->orderBy(['resp.id_respuesta'=> SORT_DESC])
-                            ->all();
-
-                $varTipoResp = (new \yii\db\Query())
-                            ->select(['COUNT(resp_encuesta_saf), resp.descripcion'])
-                            ->from(['tbl_encuesta_saf'])
-                            ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')       
-                            ->where(['=','id_alerta',$id])
-                            ->groupBy(['resp_encuesta_saf'])
-                            ->all();
-                
-                return $this->render('totalcomensaf',[
-
-                    'DataInfo'=>$DataInfo,
-                    'id' => $id,
-                    'varTipoResp' =>$varTipoResp,
-                    
-                ]);
             }
 
 
@@ -5331,11 +5221,11 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     $txtFecha = $model2->fechacreacion;
                     $arrayUsu = array();
 
-                    foreach ($txtUsuarios as  $value) {
+                    foreach ($txtUsuarios as $key => $value) {
                         array_push($arrayUsu, array("nombre"=>$txtNombre,"nombre2"=>$txtNombre2,"usua_id"=> $value,"fechacreacion"=>$txtFecha));
                     }
 
-                    foreach ($arrayUsu as  $value) {
+                    foreach ($arrayUsu as $key => $value) {
                         $varNom = $value["nombre"];
                         $varNom2 = $value["nombre2"];
                         $varUsu = $value["usua_id"];
@@ -5362,39 +5252,25 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
             public function actionPrueba(){
                 $varUsuarios = Yii::$app->request->post("varcorreos");
-               
-                $varIdUsu = (new \yii\db\Query())
-                    ->select(['usua_id'])
-                    ->from(['tbl_correogrupal'])
-                    ->where(['like','nombre',$varUsuarios])
-                    ->all();
-                
-                
-                $varcorreos = null;
-                $varEmail = null;
-                $varRta = null;
 
-                $varArraydestinos = array();
-                foreach ($varIdUsu as $value) {
-                   
+                $varIdUsu = Yii::$app->db->createCommand("select usua_id from tbl_correogrupal where nombre like '$varUsuarios'")->queryAll();   
+
+        $varRta1 = null;
+        $varcorreos = null;
+        $varEmail = null;
+        $varRta = null;
+                foreach ($varIdUsu as $key => $value) {
                     $varRta = $value['usua_id'];
-                    $varEmail = (new \yii\db\Query())
-                        ->select(['usua_email'])
-                        ->from(['tbl_usuarios'])
-                        ->where(['=','usua_id',$varRta])
-                        ->all();
-                        
-                    foreach ($varEmail as $value) {
-                        array_push($varArraydestinos,$value['usua_email']);
+                    $varEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = $varRta")->queryAll(); 
+
+                    foreach ($varEmail as $key => $value) {
+                        $varRta1[] = $value['usua_email'];
+            $varcorreos = implode(", ", $varRta1);
                     }
-                    $varcorreos = implode(", ",$varArraydestinos);
                 }                
-                
 
                 die(json_encode($varcorreos));
-                
             }
-            
 
             public function actionActualizarcorreos(){
                 $model = new UsuariosSearch();
@@ -5422,11 +5298,11 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $txtRtaEmail = null;
 
                 $arrayUsu = array();
-                foreach ($varIdUsu as $value) {
+                foreach ($varIdUsu as $key => $value) {
                     array_push($arrayUsu, array("usua_id"=>$value));
                 }
 
-                foreach ($arrayUsu as $value) {
+                foreach ($arrayUsu as $key => $value) {
                     $txtIdUsu = $value["usua_id"];
                     (string)$txtRtaEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = $txtIdUsu")->queryScalar(); 
 
@@ -5473,11 +5349,11 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $txtRtaEmail = null;
 
                 $arrayUsu = array();
-                foreach ($varIdUsu as $value) {
+                foreach ($varIdUsu as $key => $value) {
                     array_push($arrayUsu, array("usua_id"=>$value));
                 }
 
-                foreach ($arrayUsu as $value) {
+                foreach ($arrayUsu as $key => $value) {
                     $txtIdUsu = $value["usua_id"];
                     (string)$txtRtaName = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = $txtIdUsu")->queryScalar(); 
                     (string)$txtRtaEmail = Yii::$app->db->createCommand("select usua_email from tbl_usuarios where usua_id = $txtIdUsu")->queryScalar(); 
@@ -5575,10 +5451,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     'anulado' => 0,
                     'usua_id' => Yii::$app->user->identity->id,                            
                 ])->execute();
-                
 
             }
+
         }
-        
-        
         

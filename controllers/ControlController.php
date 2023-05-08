@@ -2485,7 +2485,7 @@ class ControlController extends \yii\web\Controller
      * @license http://www.opensource.org/licenses/bsd-license.php  BSD License
      * @version Release: $Id$
      */
-    private function getDataGrapTendencia($model, $agrupar, $idsArboles)
+    private function getDataGrapTendencia($model, $agrupar)
     {
         echo "hola";
         die;
