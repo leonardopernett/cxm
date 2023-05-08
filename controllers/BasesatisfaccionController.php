@@ -766,7 +766,7 @@ class BasesatisfaccionController extends Controller {
                 $comando = null;
                 if (Yii::$app->request->post()) {
                     $datosForm = Yii::$app->request->post();
-                    foreach ($datosForm as $value) {
+                    foreach ($datosForm as $key => $value) {
                         $model->$key = $value;
                     }
                     Yii::$app->session->setFlash('success', Yii::t('app', 'guardado encuesta'));
@@ -1055,7 +1055,7 @@ class BasesatisfaccionController extends Controller {
                 unset($datos["modalidad_encuesta"]);
 
                 //INGRESO LOS DATOS QUE ME LLEGARON POR EL IVR EN EL MODELO DE SATISFACCION KONECTA
-                foreach ($datos as $value) {
+                foreach ($datos as $key => $value) {
                     $model->$key = $value;
                 }
                 //BUSCO LA REGLA DE NEGOCIO PARA SABER SI EXITE ANTES DE CREAR EL REGISTRO

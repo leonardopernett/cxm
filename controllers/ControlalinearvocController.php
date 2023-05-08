@@ -481,22 +481,14 @@ class ControlalinearvocController extends \yii\web\Controller
             'anulado' => $txtanulado,
         ])->execute();
 
-
-        $txtVRta = (new \yii\db\Query())
-            ->select(['count(*)'])
-            ->from('tbl_controlvoc_bloque1')
-            ->where(['valorador_id=:valoradorid' and 'arbol_id=:arbolid' and 'tecnico_id=:tecnicoid' and 'anulado' => 0])
-            ->addParams([':valoradorid' => $txtvaloradorID, ':arbolid' => $txtvArbol, ':tecnicoid' => $txtvValorado])
-            ->Scalar();
-
-
-
         $txtvIdBloque = (new \yii\db\Query())
-            ->select(['max(idbloque1)'])
-            ->from('tbl_controlvoc_bloque1')
-            ->where(['valorador_id=:valoradorid' and 'arbol_id=:arbolid' and 'tecnico_id=:tecnicoid' and 'anulado' => 0])
-            ->addParams([':valoradorid' => $txtvaloradorID, ':arbolid' => $txtvArbol, ':tecnicoid' => $txtvValorado])
-            ->Scalar();
+                ->select(['max(tbl_controlvoc_bloque1.idbloque1)'])
+                ->from(['tbl_controlvoc_bloque1'])
+                ->where(['=','tbl_controlvoc_bloque1.tecnico_id',$txtvValorado])
+                ->andwhere(['=','tbl_controlvoc_bloque1.anulado',0])
+                ->andwhere(['=','tbl_controlvoc_bloque1.valorador_id',$txtvaloradorID])
+                ->andwhere(['=','tbl_controlvoc_bloque1.arbol_id',$txtvArbol])
+                ->scalar();
 
 
         Yii::$app->db->createCommand()->update('tbl_medir_alinear', [
@@ -553,10 +545,9 @@ class ControlalinearvocController extends \yii\web\Controller
         $txtArbol_id = null;
         $txtFechacreacion = null;
         $txtTecnico = null;
+        $dataProvider = null;
 
         if ($model->load($formData)) {
-            $dataProvider = $model->buscarAlinearVoc($formData);
-        } else {
             $dataProvider = $model->buscarAlinearVoc($formData);
         }
 
