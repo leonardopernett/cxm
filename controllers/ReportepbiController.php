@@ -601,8 +601,9 @@ use app\models\ControlProcesosEquipos;
   public function actionAdd_workspace_colaborator(){
     $model = new ReportesAdministracion();
 
-    $workspace = Yii::$app->request->post("workspace");
-    $colaborator = Yii::$app->request->post("colaborator");
+    $workspace = Yii::$app->request->get("workspace");
+    $colaborator = Yii::$app->request->get("colaborator");
+    
     $accessToken = $model->getAzureAccessToken();
 
     $add_workspace_colaborator = $model->add_workspace_colaborator($workspace,$accessToken,$colaborator);

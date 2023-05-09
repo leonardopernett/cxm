@@ -105,7 +105,7 @@ $varid = $_GET['varid'];
     function permisocolab(){
     var varcorreo = document.getElementById("nombrecorreo").value;
     var vararearab = "<?php echo $areatrabajo; ?>";
-    alert(vararearab);
+    console.log(varcorreo);
 	var varnombrerep = "<?php echo $nombrerepor; ?>";
     var varreporteid = "<?php echo $idreporte; ?>";
     if (varcorreo == "" ) {
@@ -114,7 +114,7 @@ $varid = $_GET['varid'];
 			return;
       }else{
         $.ajax({
-              method: "post",
+              method: "get",
               url: "add_workspace_colaborator",
               data : {              
                 workspace: vararearab,
