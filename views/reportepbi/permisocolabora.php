@@ -114,7 +114,7 @@ $varid = $_GET['varid'];
 			return;
       }else{
         $.ajax({
-              method: "get",
+              method: "post",
               url: "add_workspace_colaborator",
               data : {              
                 workspace: vararearab,
