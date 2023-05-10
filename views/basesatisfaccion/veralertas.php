@@ -144,7 +144,7 @@ $varServicio = (new \yii\db\Query())
                                   ->where(['=','id_alerta',$id])
                                   ->count();
 
-          if ($varVerificarEncuesta == 0) {
+          if ($varVerificarEncuesta != 0) {
            
         ?>
 
