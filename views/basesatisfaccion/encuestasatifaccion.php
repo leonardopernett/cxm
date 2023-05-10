@@ -67,7 +67,7 @@ $roles = $command->queryScalar();
     .masthead {
         height: 25vh;
         min-height: 100px;
-        background-image: url('../../../images/satisfaccion2.png');
+        background-image: url('../../images/satisfaccion2.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -129,78 +129,115 @@ $roles = $command->queryScalar();
 </header>
 <br><br>
 
-<div class="capaInfo" id="idCapaInfo" style="display: inline;">
+<?php
+  if ($varValidaEncuesta == 0) {    
+?>
+<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
 
-<div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
+<!-- Capa Procesos -->
+<div class="capaProcesos" id="capaIdProcesos" style="display: inline;">
+  
+  <div class="row">
     <div class="col-md-6">
       <div class="card1 mb" style="background: #6b97b1; ">
-        <label style="font-size: 20px; color: #FFFFFF;"><?php echo "Encuesta de Satisfacción"; ?> </label><!--titulo principal de mi modulo-->
+        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Encuesta de Satisfacción') ?></label>
       </div>
     </div>
   </div>
-<br>
+
+  <br>
+
   <div class="row">
     <div class="col-md-8">
       <div class="card1 mb">
-        <br><br>
-        <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> 
-        <div class="row" style="display:flex;justify-content:center;align-items:center;" >
+        <label style="font-size: 15px;"><em class="fas fa-smile" style="font-size: 20px; color: #1993a5;"></em><?= Yii::t('app', ' Elegir Indicador de Satisfacción') ?></label>
 
-        
+        <div class="row" style="display:flex;justify-content:center;align-items:center;">
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/satisfecho.png' class="img-responsive" alt="satisafecho">
+            <img src='../../images/satisfecho.png' class="img-responsive" alt="satisafecho">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 5, 'uncheck' => null])->label('Satisfecho')?> 
           </div>
 
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/mediosatisfecho.png' class="img-responsive" alt="medio">
+            <img src='../../images/mediosatisfecho.png' class="img-responsive" alt="medio">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 4, 'uncheck' => null])->label('Medio Satisfecho')?> 
            </div>
 
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/neutro.png' class="img-responsive" alt="neutro">
+            <img src='../../images/neutro.png' class="img-responsive" alt="neutro">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 3, 'uncheck' => null])->label('Neutro')?> 
           </div>
 
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/medioinsatisfecho.png' class="img-responsive" alt="medioinsatu">
+            <img src='../../images/medioinsatisfecho.png' class="img-responsive" alt="medioinsatu">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 2, 'uncheck' => null])->label('Medio Insatisfecho')?> 
           </div>
 
           <div class="col-md-2" style="display: grid;place-items:center;">
-            <img src='../../../images/insatisfecho.png' class="img-responsive" alt="insatu">
+            <img src='../../images/insatisfecho.png' class="img-responsive" alt="insatu">
             <?= $form->field($modelo, 'resp_encuesta_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->radio(['label' => '', 'value' => 1, 'uncheck' => null])->label('Insatisfecho');?> 
           </div>
-
         </div>
 
-        <br><br>
+        <hr>
 
-        <div class="row" style="display:flex;justify-content:center;align-items:center;" >
-          <div class="col-md-10">
-            <label >Comentarios* :</label>
-            <?= $form->field($modelo, 'comentario_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textarea(['rows' => '3'])?> 
-          </div>
-        </div>
-        <br><br>
+        <label style="font-size: 15px;"><em class="fas fa-paperclip" style="font-size: 20px; color: #1993a5;"></em><?= Yii::t('app', ' Ingresar Comentarios') ?></label>
+        <?= $form->field($modelo, 'comentario_saf', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textarea(['rows' => '3'])?> 
 
-        <div class="row" style="display:grid;justify-content:center;align-items:center;" >
-          <div class="col-md-12">
-          <?= Html::submitButton(Yii::t('app', 'Guardar'),//nombre del boton
+        <hr>
+
+        <?= Html::submitButton(Yii::t('app', 'Guardar Encuesta'),
                             ['class' => $modelo->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Guardar'])
-              ?>   
-          </div>
-        </div>
-        <br>
+        ?>          
+
       </div>
     </div>
-    <?php ActiveForm::end(); ?>
+
     <div class="col-md-4">
       <div class="card1 mb">
-        <label >Archivo de la Alerta...</label> 
-        <img src="../../../web/alertas/<?php echo $model ?>" alt="Image.png">      
+        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 20px; color: #1993a5;"></em><?= Yii::t('app', ' Archivo Adjuntado') ?></label>
+        <img src="../../web/alertas/<?php echo $model ?>" alt="Image.png"> 
       </div>
     </div>
-</div>  
+  </div>
+
+</div>
+
+<hr>
+
+<?php ActiveForm::end(); ?>
+
+<?php
+  }else{
+?>
+
+<!-- Capa Mensaje -->
+<div class="capaMensaje" id="capaIdMensaje" style="display: inline;">
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card1 mb" style="background: #6b97b1; ">
+        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Información') ?></label>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #ff453c;"></em> <?= Yii::t('app', 'De acuerdo a nuestro sistema, ya realizaste la encuesta asociada a la alerta actual con id '.$id.', Gracias. Te invitamos a seguir gestionando otras encuestas con sus alertas.') ?></label>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
+<?php
+  }
+?>
+
