@@ -36,6 +36,7 @@ use app\models\Equipos;
 use app\models\UploadForm2;
 use \yii\base\Exception;
 use app\models\Declinaciones;
+use app\models\ EncuestaSaf;
 
 
 /**
@@ -80,7 +81,7 @@ class BasesatisfaccionController extends Controller {
                                     'guardarencuesta', 'index', 'reglanegocio',
                                     'showencuestatelefonica', 'update', 'guardarformulario', 'showsubtipif', 'cancelarformulario', 'declinarformulario',
                                     'reabrirformulariogestionsatisfaccion', 'clientebasesatisfaccion', 'limpiarfiltro', 'buscarllamadas', 'showformulariogestion',
-                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos','totalcomensaf'],
+                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos','totalcomensaf','encuestasatifaccion'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -4851,7 +4852,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                         <h4>Nos encataría saber tu opinión te invitamos a ingresar a <b>CXM</b> y responder la siguiente encuesta.</h4>
                                         <br>
                                         <div style='heigth: 200px;'>
-                                        <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/basesatisfaccion/encuestasatifaccion/".$id."' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
+                                        <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/basesatisfaccion/encuestasatifaccion?id=".$id."' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
                                         </div>
                                         <br>
                                         <img src='../../images/link.png' class='img-responsive'>
@@ -5539,6 +5540,42 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     'id' => $id,
                     'varTipoResp' =>$varTipoResp,                    
                 ]);
+            }
+
+            public function actionEncuestasatifaccion($id){
+
+                $model = (new \yii\db\Query())
+                            ->select('a.id, a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
+                            ->from('tbl_alertascx a')
+                            ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
+                            ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
+                            ->join('INNER JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = a.id')
+                            ->scalar();
+
+                $modelo = new EncuestaSaf();       
+
+                $form = Yii::$app->request->post();         
+                if ($modelo->load($form)){    
+                    $varRespEncuesta = $modelo->resp_encuesta_saf;
+                    $varComentario = $modelo->comentario_saf;               
+                  
+                    Yii::$app->db->createCommand()->insert('tbl_encuesta_saf',[
+                        'id_alerta' => $id,
+                        'resp_encuesta_saf' => $varRespEncuesta,
+                        'comentario_saf' => $varComentario,                
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'fechacreacion' => date('Y-m-d'),
+                        'anulado' => 0,                         
+                        ])->execute();
+                }
+                          
+                return $this->render('encuestasatifaccion', [
+                    'model' => $model,
+                    'id' => $id,
+                    'modelo' => $modelo,
+                    
+                ]);        
+                
             }
 
         }
