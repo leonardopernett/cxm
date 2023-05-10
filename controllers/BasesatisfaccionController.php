@@ -5567,6 +5567,8 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                         'fechacreacion' => date('Y-m-d'),
                         'anulado' => 0,                         
                         ])->execute();
+
+                    return $this->redirect(['alertas']);
                 }
                           
                 return $this->render('encuestasatifaccion', [
