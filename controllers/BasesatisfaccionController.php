@@ -4781,8 +4781,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             $varidconteo  = (new \yii\db\Query())
                                             ->select(['max(tbl_alertascx.id)'])
                                             ->from(['tbl_alertascx'])
-                                            ->where(['=','tbl_alertascx.valorador', $sesion])
-                                            ->andwhere(['>=','tbl_alertascx.fecha',date("y-m-d")])
+                                            ->where(['>=','tbl_alertascx.fecha',date("y-m-d")])
                                             ->scalar();
 
                             $varid = $varidconteo + 1;
