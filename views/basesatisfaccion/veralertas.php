@@ -76,24 +76,7 @@ $varServicio = (new \yii\db\Query())
     }
 
 </style>
-<!-- Data extensiones -->
-<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
-<script src="../../js_extensions/highcharts/highcharts.js"></script>
-<script src="../../js_extensions/highcharts/exporting.js"></script>
 
-<script src="../../js_extensions/chart.min.js"></script>
-
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
-
-<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
-<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
-<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
-<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
-<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
-<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
-<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
-<script src="../../js_extensions/mijs.js"> </script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 
 <header class="masthead">
@@ -106,7 +89,6 @@ $varServicio = (new \yii\db\Query())
 </header>
 
 <br><br>
-
 
 <!-- Capa Botones -->
 <div class="capaBtns" id="capaIdBtns" style="display: inline;">
@@ -125,7 +107,7 @@ $varServicio = (new \yii\db\Query())
     <div class="col-md-6">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #707372;"></em> <?= Yii::t('app', 'Cancelar y Regresar') ?></label>
-        <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+        <?= Html::a('Regresar',  ['basesatisfaccion/alertasvaloracion'], ['class' => 'btn btn-success',
                                                 'style' => 'background-color: #707372',
                                                 'data-toggle' => 'tooltip',
                                                 'title' => 'Regresar']) 
@@ -135,7 +117,7 @@ $varServicio = (new \yii\db\Query())
 
     <div class="col-md-6">
       <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 20px; color: #707372;"></em><?= Yii::t('app', ' Ver Detalle') ?></label>
+      <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 20px; color: #707372;"></em><?= Yii::t('app', ' Ver Detalle') ?></label>
         <?php
           $varVerificarEncuesta = (new \yii\db\Query())
                                   ->select('*')
@@ -252,4 +234,5 @@ $varServicio = (new \yii\db\Query())
 </div>
 
 <hr>
+
 
