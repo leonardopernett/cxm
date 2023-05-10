@@ -200,7 +200,7 @@ $roles = $command->queryScalar();
     <div class="col-md-4">
       <div class="card1 mb">
         <label >Archivo de la Alerta...</label> 
-        <img src="../../../alertas/<?php echo $model['Adjunto'] ?>" alt="Image.png">      
+        <img src="../../../alertas/<?php echo $model ?>" alt="Image.png">      
       </div>
     </div>
 </div>  

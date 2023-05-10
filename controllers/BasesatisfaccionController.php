@@ -5545,11 +5545,9 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             public function actionEncuestasatifaccion($id){
 
                 $model = (new \yii\db\Query())
-                            ->select('a.id, a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
-                            ->from('tbl_alertascx a')
-                            ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
-                            ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            ->join('INNER JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = a.id')
+                            ->select(['archivo_adjunto'])
+                            ->from(['tbl_alertascx'])
+                            ->where(['=','id',$id])
                             ->scalar();
 
                 $modelo = new EncuestaSaf();       
