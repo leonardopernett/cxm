@@ -4854,7 +4854,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                         <h4>Nos encataría saber tu opinión te invitamos a ingresar a <b>CXM</b> y responder la siguiente encuesta.</h4>
                                         <br>
                                         <div style='heigth: 200px;'>
-                                        <a href='".URL_CXM."/qa_managementv2/web/index.php/basesatisfaccion/encuestasatifaccion?id=".$id."' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
+                                        <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/basesatisfaccion/encuestasatifaccion?id=".$id."' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
                                         </div>
                                         <br>
                                         <img src='../../images/link.png' class='img-responsive'>
