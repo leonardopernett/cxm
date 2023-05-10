@@ -19,7 +19,7 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <!--Fontawesome CDN-->
-        <link rel="stylesheet" href="<?php echo URL_CXM;?>/web/css/font-awesome/css/font-awesome.css"  >
+        <link rel="stylesheet" href="<?php echo URL_CXM;?>/qa_managementv2/web/css/font-awesome/css/font-awesome.css"  >
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -697,7 +697,7 @@ AppAsset::register($this);
             
         </nav>
 
-            <script defer src="<?php echo URL_CXM;?>/web/font_awesome_local/js.js"></script>
+            <script defer src="<?php echo URL_CXM;?>/qa_managementv2/web/font_awesome_local/js.js"></script>
             
         <div class="wrap">
             <div class="container-fluid">		
@@ -713,7 +713,7 @@ AppAsset::register($this);
             
         <footer class="footer2">
             <div class="container1">
-                <div class="col-md-12" style="background-image: url('<?php echo URL_CXM;?>/web/images/link.png');
+                <div class="col-md-12" style="background-image: url('<?php echo URL_CXM;?>/qa_managementv2/web/images/link.png');
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;"><br>
