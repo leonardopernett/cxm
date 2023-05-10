@@ -198,7 +198,7 @@ $roles = $command->queryScalar();
     <div class="col-md-4">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 20px; color: #1993a5;"></em><?= Yii::t('app', ' Archivo Adjuntado') ?></label>
-        <img src="../../web/alertas/<?php echo $model ?>" alt="Image.png"> 
+        <img src="../../../web/alertas/<?php echo $model ?>" alt="Image.png"> 
       </div>
     </div>
   </div>
