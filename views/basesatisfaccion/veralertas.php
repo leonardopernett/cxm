@@ -76,7 +76,24 @@ $varServicio = (new \yii\db\Query())
     }
 
 </style>
+<!-- Data extensiones -->
+<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
+<script src="../../js_extensions/highcharts/highcharts.js"></script>
+<script src="../../js_extensions/highcharts/exporting.js"></script>
 
+<script src="../../js_extensions/chart.min.js"></script>
+
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
+<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
+<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
+<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
+<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
+<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
+<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
+<script src="../../js_extensions/mijs.js"> </script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 
 <header class="masthead">
@@ -89,6 +106,67 @@ $varServicio = (new \yii\db\Query())
 </header>
 
 <br><br>
+
+
+<!-- Capa Botones -->
+<div class="capaBtns" id="capaIdBtns" style="display: inline;">
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card1 mb" style="background: #6b97b1; ">
+        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Acciones & Encuestas - Id Alerta: '.$model['id']) ?></label>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #707372;"></em> <?= Yii::t('app', 'Cancelar y Regresar') ?></label>
+        <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                                'style' => 'background-color: #707372',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Regresar']) 
+        ?>
+      </div>      
+    </div>
+
+    <div class="col-md-6">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 20px; color: #707372;"></em><?= Yii::t('app', ' Ver Detalle') ?></label>
+        <?php
+          $varVerificarEncuesta = (new \yii\db\Query())
+                                  ->select('*')
+                                  ->from(['tbl_encuesta_saf'])
+                                  ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')
+                                  ->where(['=','id_alerta',$id])
+                                  ->count();
+
+          if ($varVerificarEncuesta == 0) {
+           
+        ?>
+
+          <?= Html::a('Ver Detalle',  ['totalcomensaf','id'=>$id], ['class' => 'btn btn-success',                     
+                      'data-toggle' => 'tooltip',
+                      'title' => 'Ver'])
+          ?>
+
+        <?php
+          }else{
+        ?>
+          <label style="font-size: 15px;"><?= Yii::t('app', 'Actualmente no tiene encuesta asociada.') ?></label>
+        <?php
+          }
+        ?>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<hr>
 
 <!-- Capa Informacion -->
 <div class="capaInfo" id="idCapaInfo" style="display: inline;">
@@ -155,7 +233,7 @@ $varServicio = (new \yii\db\Query())
   <div class="row">
     <div class="col-md-6">
       <div class="card1 mb" style="background: #6b97b1; ">
-        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Detalle de la Encuesta & Adjunto') ?></label>
+        <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Detalle del Adjunto') ?></label>
       </div>
     </div>
   </div>
@@ -163,44 +241,7 @@ $varServicio = (new \yii\db\Query())
   <br>
 
   <div class="row">
-    <div class="col-md-6">
-      <div class="card1 mb">
-
-        <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 20px; color: #707372;"></em><?= Yii::t('app', ' Id de la Alerta') ?></label>
-        <label style="font-size: 15px;"><?= Yii::t('app', $model['id']) ?></label>
-
-        <br>
-
-        <label style="font-size: 15px;"><em class="fas fa-info" style="font-size: 20px; color: #707372;"></em><?= Yii::t('app', ' Ver Detalle') ?></label>
-        <?php
-          $varVerificarEncuesta = (new \yii\db\Query())
-                                  ->select('*')
-                                  ->from(['tbl_encuesta_saf'])
-                                  ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')
-                                  ->where(['=','id_alerta',$id])
-                                  ->count();
-
-          if ($varVerificarEncuesta != 0) {
-           
-        ?>
-
-          <?= Html::a('Ver Detalle',  ['totalcomensaf','id'=>$id], ['class' => 'btn btn-success',                     
-                      'data-toggle' => 'tooltip',
-                      'title' => 'Ver'])
-          ?>
-
-        <?php
-          }else{
-        ?>
-          <label style="font-size: 15px;"><?= Yii::t('app', 'Actualmente no tiene encuesta asociada.') ?></label>
-        <?php
-          }
-        ?>
-
-      </div>
-    </div>
-
-    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #707372;"></em> <?= Yii::t('app', ' Archivo Adjunto de la Alerta') ?></label>
         <img src="../../../alertas/<?php echo $model['Adjunto'] ?>" alt="Image.png">
@@ -212,22 +253,3 @@ $varServicio = (new \yii\db\Query())
 
 <hr>
 
-<!-- Capa Botones -->
-<div class="capaBtns" id="capaIdBtns" style="display: inline;">
-  
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #707372;"></em> <?= Yii::t('app', 'Cancelar y Regresar') ?></label>
-        <?= Html::a('Regresar',  ['basesatisfaccion/alertasvaloracion'], ['class' => 'btn btn-success',
-                                                'style' => 'background-color: #707372',
-                                                'data-toggle' => 'tooltip',
-                                                'title' => 'Regresar']) 
-        ?>
-      </div>      
-    </div>
-  </div>
-
-</div>
-
-<hr>
