@@ -265,7 +265,7 @@ use app\models\UsuariosEvalua;
         $message .= $varcuerpo2;             
         $message .= "<br><br>Que tengas un buen día";
         $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
-        $message .= "<br><?php echo URL_CXM;?>/web/index.php";
+        $message .= "<br><?php echo URL_CXM;?>/qa_managementv2/web/index.php";
         $message .= "</body></html>";
 
         Yii::$app->mailer->compose()
@@ -658,7 +658,7 @@ public function actionGestionqyr($idcaso){
                 $message .= $varcuerpo2;             
                 $message .= "<br><br>Que tengas un buen día";
                 $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
-                $message .= "<br><?php echo URL_CXM;?>/web/index.php";
+                $message .= "<br><?php echo URL_CXM;?>/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
                 $varListacorreo = (new \yii\db\Query())
                   ->select(['email'])
@@ -818,7 +818,7 @@ public function actionRevisionqyr($idcaso){
                 $message .= $varcuerpo2;             
                 $message .= "<br><br>Que tengas un buen día";
                 $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
-                $message .= "<br><?php echo URL_CXM;?>/web/index.php";
+                $message .= "<br><?php echo URL_CXM;?>/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
 
         if ($tmpFile != "") {
@@ -867,7 +867,7 @@ public function actionRevisionqyr($idcaso){
                 $message .= $varcuerpo2;             
                 $message .= "<br><br>Que tengas un buen día";
                 $message .= "<br><br><h3>Equipo CX - Konecta</h3>";
-                $message .= "<br><?php echo URL_CXM;?>/web/index.php";
+                $message .= "<br><?php echo URL_CXM;?>/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
                 $varListacorreo = (new \yii\db\Query())
                 ->select(['email'])
@@ -1029,7 +1029,7 @@ public function actionRevisiongerenteqyr($idcaso){
                 $message .= $varcuerpo2;             
                 $message .= "<br><br>";
                 $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
-                $message .= "<br><?php echo URL_CXM;?>/web/index.php";
+                $message .= "<br><?php echo URL_CXM;?>/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
 
                 if ($tmpFile != "") {
@@ -1080,7 +1080,7 @@ public function actionRevisiongerenteqyr($idcaso){
                 $message .= $varcuerpo2;             
                 $message .= "<br><br>";
                 $message .= "<br><br><h3>Equipo Experiencia de Clientes - Konecta</h3>";
-                $message .= "<br><?php echo URL_CXM;?>/web/index.php";
+                $message .= "<br><?php echo URL_CXM;?>/qa_managementv2/web/index.php";
                 $message .= "</body></html>";
                 $varListacorreo = (new \yii\db\Query())
                 ->select(['email'])
