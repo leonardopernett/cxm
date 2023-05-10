@@ -98,7 +98,6 @@ $varServicio = (new \yii\db\Query())
           $varVerificarEncuesta = (new \yii\db\Query())
                                   ->select('*')
                                   ->from(['tbl_encuesta_saf'])
-                                  ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')
                                   ->where(['=','id_alerta',$id])
                                   ->count();
 
