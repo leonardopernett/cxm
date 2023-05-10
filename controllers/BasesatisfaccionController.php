@@ -4778,12 +4778,14 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                             $sesion = Yii::$app->user->identity->id;
  
-                            $varid  = (new \yii\db\Query())
-                                    ->select(['max(tbl_alertascx.id)'])
-                                    ->from(['tbl_alertascx'])
-                                    ->where(['=','tbl_alertascx.valorador', $sesion])
-                                    ->andwhere(['>=','tbl_alertascx.fecha',date("y-m-d")])
-                                    ->scalar();
+                            $varidconteo  = (new \yii\db\Query())
+                                            ->select(['max(tbl_alertascx.id)'])
+                                            ->from(['tbl_alertascx'])
+                                            ->where(['=','tbl_alertascx.valorador', $sesion])
+                                            ->andwhere(['>=','tbl_alertascx.fecha',date("y-m-d")])
+                                            ->scalar();
+
+                            $varid = $varidconteo + 1;
 
                             $this->enviarcorreoalertas($varid, $modelup->fecha, $modelup->pcrc, $modelup->valorador, $modelup->tipo_alerta, $modelup->archivo_adjunto, $modelup->remitentes, $modelup->asunto, $modelup->comentario);
 
@@ -5550,6 +5552,12 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->where(['=','id',$id])
                             ->scalar();
 
+                $varValidaEncuesta = (new \yii\db\Query())
+                                  ->select('*')
+                                  ->from(['tbl_encuesta_saf'])
+                                  ->where(['=','id_alerta',$id])
+                                  ->count();
+
                 $modelo = new EncuestaSaf();       
 
                 $form = Yii::$app->request->post();         
@@ -5573,7 +5581,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     'model' => $model,
                     'id' => $id,
                     'modelo' => $modelo,
-                    
+                    'varValidaEncuesta' => $varValidaEncuesta,
                 ]);        
                 
             }
