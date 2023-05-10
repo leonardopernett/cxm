@@ -256,7 +256,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6"> 
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 15px; color: #707372;"></em> Cancelar y Regresar...</label><!-- label del titulo de lo que vamos a mostrar ------>
-                <?= Html::a('Regresar',  ['veralertas','id'=>$id], ['class' => 'btn btn-success',//index es para que me redireccione o sea volver a el inicio 
+                <?= Html::a('Regresar',  ['basesatisfaccion/veralertas/'.$id], ['class' => 'btn btn-success',//index es para que me redireccione o sea volver a el inicio 
                                                 'style' => 'background-color: #707372',//color del boton  
                                                 'data-toggle' => 'tooltip',
                                                 'title' => 'Regresar'])//titulo del boton  
