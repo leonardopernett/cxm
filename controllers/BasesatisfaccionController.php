@@ -80,7 +80,7 @@ class BasesatisfaccionController extends Controller {
                                     'guardarencuesta', 'index', 'reglanegocio',
                                     'showencuestatelefonica', 'update', 'guardarformulario', 'showsubtipif', 'cancelarformulario', 'declinarformulario',
                                     'reabrirformulariogestionsatisfaccion', 'clientebasesatisfaccion', 'limpiarfiltro', 'buscarllamadas', 'showformulariogestion',
-                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos'],
+                                    'guardaryenviarformulariogestion', 'eliminartmpform', 'buscarllamadasmasivas', 'recalculartipologia','consultarcalificacionsubi', 'metricalistmultipleform', 'cronalertadesempenolider', 'cronalertadesempenoasesor', 'showlistadesempenolider','correogrupal','prueba','actualizarcorreos','comprobacion','pruebaactualizar','comprobacionlista','importarencuesta','listasformulario','enviarvalencias','buscarllamadasbuzones','enviartextos','enviarmotivos','totalcomensaf'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -4822,7 +4822,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                 $target_path = "alertas/" . $archivo_adjunto;
                 $sessiones = Yii::$app->user->identity->id;
 
-                $varNombre = (new \yii\db\Query())
+                    $varNombre = (new \yii\db\Query())
                     ->select(['usua_nombre'])
                     ->from(['tbl_usuarios'])
                     ->where(['=','usua_id',$sessiones])
@@ -4851,7 +4851,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                         <h4>Nos encataría saber tu opinión te invitamos a ingresar a <b>CXM</b> y responder la siguiente encuesta.</h4>
                                         <br>
                                         <div style='heigth: 200px;'>
-                                        <a href='encuestasatifaccion' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
+                                        <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/basesatisfaccion/encuestasatifaccion/".$id."' class='btn btn-primary' target='_blank' >Ingresar a CXM</a>
                                         </div>
                                         <br>
                                         <img src='../../images/link.png' class='img-responsive'>
@@ -4885,7 +4885,20 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->from('tbl_alertascx a')
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                ->orderBy(['fecha' => SORT_DESC])
+                            ->orderBy(['fecha' => SORT_DESC])
+                            ->limit(100)
+                            ->all();
+
+                $dataTablaGlobal = (new \yii\db\Query())
+                            ->select('a.id, fecha, tbl_arbols.name, 
+                            tipo_alerta, tbl_usuarios.usua_nombre,a.remitentes,a.asunto,
+                            a.comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
+                            ->from('tbl_alertascx a')
+                            ->join('LEFT JOIN', 'tbl_arbols', 'tbl_arbols.id = a.pcrc')
+                            ->join('LEFT JOIN', 'tbl_usuarios', 'a.valorador = tbl_usuarios.usua_id')
+                            ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = a.id')                          
+                            ->orderBy(['fecha' => SORT_DESC])
+                            ->limit(100)
                             ->all();
 
                 $resumenFeedback = (new \yii\db\Query())
@@ -4906,6 +4919,20 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->groupBy('a.valorador, a.pcrc')
                             ->all();
 
+                $varListaClientes = (new \yii\db\Query())
+                            ->select(['if(tbl_hojavida_datapcrc.id_dp_cliente="","Sin Definir",tbl_hojavida_datapcrc.id_dp_cliente) AS IdClientes','(SELECT p.cliente FROM tbl_proceso_cliente_centrocosto p WHERE p.id_dp_clientes = tbl_hojavida_datapcrc.id_dp_cliente LIMIT 1) AS NombreCliente','COUNT(tbl_hojavida_datapcrc.id_dp_cliente) AS ConteoClientes'])
+                            ->from(['tbl_hojavida_datapcrc'])
+                            ->where(['!=','tbl_hojavida_datapcrc.id_dp_cliente',''])
+                            ->andwhere(['!=','tbl_hojavida_datapcrc.id_dp_cliente',1])
+                            ->groupby(['tbl_hojavida_datapcrc.id_dp_cliente'])
+                            ->all(); 
+
+                            $arrayListaCliente = array();
+                            $arrayListaClienteCantidad = array();
+                            foreach ($varListaClientes as $key => $value) {
+                              array_push($arrayListaCliente, $value['NombreCliente']);
+                              array_push($arrayListaClienteCantidad, $value['ConteoClientes']);
+                            }          
 
                 if ($model->load(Yii::$app->request->post()) && $model->validate()) {
                     $post = Yii::$app->request->post('BaseSatisfaccionSearch');
@@ -4964,20 +4991,35 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             ->from('tbl_alertascx a')
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
-                            ->andWhere($xfecha)
+                            ->andwhere($xfecha)
                             ->andWhere($xpcrc)
                             ->andWhere($xresponsable)
-                ->orderBy(['fecha' => SORT_DESC])
+                            ->orderBy(['a.fecha' => SORT_DESC]) 
                             ->all();
-
+                    
+                    $dataTablaGlobal = (new \yii\db\Query())
+                            ->select('a.id, fecha, tbl_arbols.name, 
+                            tipo_alerta, tbl_usuarios.usua_nombre,a.remitentes,a.asunto,
+                            a.comentario, tbl_encuesta_saf.resp_encuesta_saf,tbl_encuesta_saf.comentario_saf,tbl_encuesta_saf.id_encuesta_saf')
+                            ->from('tbl_alertascx a')
+                            ->join('LEFT JOIN', 'tbl_arbols', 'tbl_arbols.id = a.pcrc')
+                            ->join('LEFT JOIN', 'tbl_usuarios', 'a.valorador = tbl_usuarios.usua_id')
+                            ->join('LEFT JOIN', 'tbl_encuesta_saf', 'tbl_encuesta_saf.id_alerta = a.id')                          
+                            ->andwhere($xfecha)
+                            ->andWhere($xpcrc)
+                            ->andWhere($xresponsable)
+                            ->orderBy(['fecha' => SORT_DESC])
+                            ->all();
                 }
+
                 $showGrid = true;
                 return $this->render('alertasview', [
                             'model' => $model,
                             'showGrid' => $showGrid,
                             'dataProvider' => $dataProvider,
                             'resumenFeedback' => $resumenFeedback,
-                            'detalleLiderFeedback' => $detalleLiderFeedback,
+                            'detalleLiderFeedback' => $detalleLiderFeedback,    
+                            'dataTablaGlobal' => $dataTablaGlobal,                        
                         ]);
             }
 
@@ -4990,7 +5032,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
 
                 $model = (new \yii\db\Query())
-                            ->select('a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario')
+                            ->select('a.id, a.fecha AS Fecha, b.name AS Programa, d.usua_nombre AS Tecnico, a.tipo_alerta AS Tipoalerta, a.archivo_adjunto AS Adjunto, a.remitentes AS Destinatarios, a.asunto AS Asunto, a.comentario AS Comentario')
                             ->from('tbl_alertascx a')
                             ->join('INNER JOIN', 'tbl_arbols b', 'b.id = a.pcrc')
                             ->join('INNER JOIN', 'tbl_usuarios d', 'a.valorador = d.usua_id')
@@ -5000,6 +5042,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
 
                 return $this->render('veralertas', [
                     'model' => $model['0'],
+                    'id' => $id,
                 ]);
 
             }
@@ -5012,7 +5055,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
              * @return mixed
              */ 
             public function actionPruebas() {
-        $varAlertas = Yii::$app->request->post("alertas_cx");   
+        $varAlertas = Yii::$app->request->get("alertas_cx");   
         
         $model = Yii::$app->db->createCommand("delete from tbl_alertascx where id = $varAlertas")->execute();
 
@@ -5472,6 +5515,30 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                     'usua_id' => Yii::$app->user->identity->id,                            
                 ])->execute();
 
+            }
+
+            public function actionTotalcomensaf($id){
+                $DataInfo = (new \yii\db\Query())
+                            ->select('comentario_saf, resp.descripcion')
+                            ->from(['tbl_encuesta_saf'])
+                            ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')
+                            ->where(['=','id_alerta',$id])
+                            ->orderBy(['resp.id_respuesta'=> SORT_DESC])
+                            ->all();
+
+                $varTipoResp = (new \yii\db\Query())
+                            ->select(['COUNT(resp_encuesta_saf), resp.descripcion'])
+                            ->from(['tbl_encuesta_saf'])
+                            ->join('INNER JOIN', 'tbl_respuesta_encuesta_saf resp', 'resp.id_respuesta = tbl_encuesta_saf.resp_encuesta_saf')       
+                            ->where(['=','id_alerta',$id])
+                            ->groupBy(['resp_encuesta_saf'])
+                            ->all();
+                
+                return $this->render('totalcomensaf',[
+                    'DataInfo'=>$DataInfo,
+                    'id' => $id,
+                    'varTipoResp' =>$varTipoResp,                    
+                ]);
             }
 
         }
