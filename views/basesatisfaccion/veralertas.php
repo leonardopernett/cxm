@@ -63,32 +63,8 @@ $varServicio = (new \yii\db\Query())
         font-size: smaller;
     }
 
-    .masthead {
-        height: 25vh;
-        min-height: 100px;
-        background-image: url('../../images/Alertas-Valoración.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        /*background: #fff;*/
-        border-radius: 5px;
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-    }
-
 </style>
-
-<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-
-<header class="masthead">
-  <div class="container h-100">
-    <div class="row h-100 align-items-center">
-      <div class="col-12 text-center">
-      </div>
-    </div>
-  </div>
-</header>
-
-<br><br>
+<br>
 
 <!-- Capa Botones -->
 <div class="capaBtns" id="capaIdBtns" style="display: inline;">
