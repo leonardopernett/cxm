@@ -6076,6 +6076,36 @@ public function actionCantidadentto(){
     ]);
   }
 
+  public function actionListarpcrcprocesos(){            
+    $txtAnulado = 0; 
+    $txtId = Yii::$app->request->post('id');           
+
+    if ($txtId) {
+        $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
+                    ->where(['id_dp_clientes' => $txtId])
+                    ->count();            
+
+        if ($txtControl > 0) {
+          $varListaPcrc = \app\models\ProcesosClienteCentrocosto::find()
+              ->select(['cod_pcrc','pcrc'])->distinct()
+                    ->where(['id_dp_clientes' => $txtId])
+                    ->andwhere("anulado = 0")
+                    ->andwhere("estado = 1")                            
+                    ->orderBy(['cod_pcrc' => SORT_DESC])
+                    ->all();            
+
+            foreach ($varListaPcrc as $key => $value) {
+                echo "<option value='" . $value->cod_pcrc . "'>" . $value->cod_pcrc." - ".$value->pcrc . "</option>";
+            }
+        }else{
+            echo "<option>-</option>";
+        }
+    }else{
+            echo "<option>No hay datos</option>";
+    }
+
+}
+
 
   }
 
