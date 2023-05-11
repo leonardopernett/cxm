@@ -5555,6 +5555,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                                   ->select('*')
                                   ->from(['tbl_encuesta_saf'])
                                   ->where(['=','id_alerta',$id])
+                                  ->andwhere(['=','usua_id',Yii::$app->user->identity->id])
                                   ->count();
 
                 $modelo = new EncuestaSaf();       
