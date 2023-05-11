@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->title = 'Reporte Power BI -- Propiedades --';
 
 
-$rutaframe = "https://app.powerbi.com/reportEmbed?reportId=c9266a88-857e-4383-8e59-57196822f246&groupId=7cc1ac20-d3ed-4e01-b4bb-252845fc9b85&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVNPVVRILUNFTlRSQUwtVVMtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjpmYWxzZX19";
+// $rutaframe = "https://app.powerbi.com/reportEmbed?reportId=c9266a88-857e-4383-8e59-57196822f246&groupId=7cc1ac20-d3ed-4e01-b4bb-252845fc9b85&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVNPVVRILUNFTlRSQUwtVVMtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjpmYWxzZX19";
 
     $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
     . ' {input}{error}{hint}</div>';
