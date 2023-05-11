@@ -53,7 +53,7 @@ $this->title = 'Registro de Categorias DashBoard Speech';
                                                     'prompt'=>'Seleccione Cliente Speech...',
                                                     'onchange' => '
                                                         $.post(
-                                                            "' . Url::toRoute('dashboardspeech/listarpcrc') . '", 
+                                                            "' . Url::toRoute('dashboardspeech/listarpcrcprocesos') . '", 
                                                             {id: $(this).val()}, 
                                                             function(res){
                                                                 $("#requester").html(res);
