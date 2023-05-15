@@ -2644,7 +2644,7 @@ class FormulariosController extends Controller {
                                 ->andwhere(['=','tbl_genesys_formularios.arbol_id',$txtvarArbolId])
                                 ->scalar();
 
-                $varFechasAsesor = $txtvarFechaInicios."T00:00:00.000Z/".$txtvarFechaFines."T00:00:00.000Z";
+                $varFechasAsesor = $txtvarFechaInicios."T00:00:00.000Z/".$txtvarFechaFines."T23:59:59.000Z";
 
                 $varDocumentoAsesor = (new \yii\db\Query())
                                 ->select(['tbl_evaluados.identificacion'])
