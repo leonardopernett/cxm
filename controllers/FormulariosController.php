@@ -2810,7 +2810,7 @@ class FormulariosController extends Controller {
                                 ->andwhere(['=','tbl_genesys_formularios.arbol_id',$txtvarArbolIdAuto])
                                 ->scalar();
 
-                $varFechasAsesorAuto = $txtvarFechaIniciosAuto."T00:00:00.000Z/".$txtvarFechaFinesAuto."T00:00:00.000Z";
+                $varFechasAsesorAuto = $txtvarFechaIniciosAuto."T00:00:00.000Z/".$txtvarFechaFinesAuto."T23:59:59.000Z";
 
                 $varDocumentoAsesorAuto = (new \yii\db\Query())
                                 ->select(['tbl_evaluados.identificacion'])
