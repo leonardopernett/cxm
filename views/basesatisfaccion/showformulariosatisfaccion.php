@@ -17,6 +17,20 @@ if(!isset($_GET['motivo'])){
     $motivo = null;
 }
 
+$template = '<div class="col-md-12">'
+    . ' {input}{error}{hint}</div>';
+
+$varIdClientes = (new \yii\db\Query())
+                ->select(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                ->from(['tbl_proceso_cliente_centrocosto'])   
+                ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                        'tbl_proceso_cliente_centrocosto.cliente = tbl_arbols.name
+                            AND tbl_proceso_cliente_centrocosto.estado = 1')  
+
+                ->where(['=','tbl_arbols.id',$data->basesatisfaccion->cliente])
+                ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                ->scalar();
+
 ?>
 
 
@@ -1859,6 +1873,37 @@ $datanew = (new \yii\db\Query())
                 <?php endif; ?>
 
             <?php endif; ?>
+            <tr>
+                <th><?php echo Yii::t("app", "Centro de Costos"); ?></th>
+                <td>
+                    <div style="width:100%">
+                        <?php 
+                            $form = ActiveForm::begin([
+                                'layout' => 'horizontal'
+                            ]); 
+                        ?>
+
+                        <?=  $form->field($model, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->select([
+                                            'cod_pcrc',
+                                            'CONCAT(cod_pcrc," - ",pcrc) AS pcrc'
+                                            ])->where(['=','estado',1])->andwhere(['=','anulado',0])->andwhere(['=','id_dp_clientes',$varIdClientes])->groupby(['cod_pcrc'])->orderBy(['pcrc'=> SORT_ASC])->all(), 'cod_pcrc', 'pcrc'),
+                                                    [
+                                                        'id' => 'idVarPcrc',
+                                                        'prompt'=>'Seleccionar centro de costos...',     
+                                                        'style' => 'width:400px', 
+                                                        'name' => 'idVarPcrc'
+                                                    ]
+                                            )->label(''); 
+                        ?>
+
+                        <?= $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'idVarClientes','class'=>'hidden','value'=>$varIdClientes,'name' => 'idVarClientes'])?>
+
+                        <?php
+                            ActiveForm::end();
+                        ?>
+                    </div>
+                </td>
+            </tr>
 
 
         </tbody>
@@ -3246,42 +3291,50 @@ $datanew = (new \yii\db\Query())
                 });
                 /* BOTÓN GUARDAR Y ENVIAR */
                 $(".soloFinalizar").click(function() {
-                    $("#submitcorrecto").val("SI");
-                    $(this).attr("disabled", "disabled");
-                    $(".soloCancelar").attr("disabled", "disabled");
-                    $(".soloCalcular").attr("disabled", "disabled");
-                    var guardarFormulario = $("#guardarFormulario");
-                    guardarFormulario.attr('action', '<?php echo Url::to(['basesatisfaccion/guardaryenviarformulariogestion']); ?>');
-                    var varArbols = "<?php echo $varPcrc; ?>";
+                    var varidpcrc =  document.getElementById("idVarPcrc").value;
+                    
+                    if (varidpcrc == "") {
+                        event.preventDefault();
+                        swal.fire("!!! Advertencia !!!","Debe seleccionar un Centro de costos.","warning");
+                        return;
+                    }else{
+                        $("#submitcorrecto").val("SI");
+                        $(this).attr("disabled", "disabled");
+                        $(".soloCancelar").attr("disabled", "disabled");
+                        $(".soloCalcular").attr("disabled", "disabled");
+                        var guardarFormulario = $("#guardarFormulario");
+                        guardarFormulario.attr('action', '<?php echo Url::to(['basesatisfaccion/guardaryenviarformulariogestion']); ?>');
+                        var varArbols = "<?php echo $varPcrc; ?>";
 
-                    if (varArbols == '3104') {
-                        var varidformulario = document.getElementById("txtVariable").value;
-                        var varEncuesta = "<?php echo $varBase; ?>";
+                        if (varArbols == '3104') {
+                            var varidformulario = document.getElementById("txtVariable").value;
+                            var varEncuesta = "<?php echo $varBase; ?>";
 
-                        $.ajax({
-                            method: "post",
-                            url: "listasformulario",
-                            data: {
-                                txtvidformulario: varidformulario,
-                                txtvarbols: varArbols,
-                                txtvencuesta: varEncuesta,
-                            },
-                            success: function(response) {
-                                var Rta = JSON.parse(response);
-                                console.log(Rta);
-                            }
-                        });
-                    }
+                            $.ajax({
+                                method: "post",
+                                url: "listasformulario",
+                                data: {
+                                    txtvidformulario: varidformulario,
+                                    txtvarbols: varArbols,
+                                    txtvencuesta: varEncuesta,
+                                },
+                                success: function(response) {
+                                    var Rta = JSON.parse(response);
+                                    console.log(Rta);
+                                }
+                            });
+                        }
 
-                    var valid = validarFormulario();
-                    if (valid) {
-                        guardarFormulario.submit();
-                    } else {
-                        $("#submitcorrecto").val("NO");
-                        $(this).removeAttr("disabled");
-                        $(".soloGuardar").removeAttr("disabled");
-                        $(".soloCancelar").removeAttr("disabled");
-                        $(".soloCalcular").removeAttr("disabled");
+                        var valid = validarFormulario();
+                        if (valid) {
+                            guardarFormulario.submit();
+                        } else {
+                            $("#submitcorrecto").val("NO");
+                            $(this).removeAttr("disabled");
+                            $(".soloGuardar").removeAttr("disabled");
+                            $(".soloCancelar").removeAttr("disabled");
+                            $(".soloCalcular").removeAttr("disabled");
+                        }
                     }
                 });
 
