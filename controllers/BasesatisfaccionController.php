@@ -37,6 +37,7 @@ use app\models\UploadForm2;
 use \yii\base\Exception;
 use app\models\Declinaciones;
 use app\models\ EncuestaSaf;
+use app\models\SpeechParametrizar;
 
 
 /**
@@ -2031,6 +2032,9 @@ class BasesatisfaccionController extends Controller {
              */
             public function actionShowformulariogestion($basesatisfaccion_id, $preview, $aleatorio = null, $fill_values, $view = "index",$banderaescalado = false, $idtmp = null) {
                 $model1 = new Declinaciones();
+                // Ingresar Procesos model Centro de costos
+                $model = new SpeechParametrizar();
+
                 $txtbasefuente = null;
                 if ($preview == 5) {
                     $txtpreview = $basesatisfaccion_id;
@@ -2455,6 +2459,7 @@ class BasesatisfaccionController extends Controller {
                             'varConnids' => $varConnids,
                             'varcontenido' => $varcontenido,
                             'model1' => $model1,
+                            'model' => $model,
                 ]);
             }
 
@@ -2497,6 +2502,8 @@ class BasesatisfaccionController extends Controller {
                 $postView = Yii::$app->request->post('view');
 		        $view = (isset($postView))?Yii::$app->request->post('view'):null;
 
+                $varid_clientes = Yii::$app->request->post('idVarClientes');
+                $varid_centro_costo = Yii::$app->request->post('idVarPcrc');
 
 
                 $modelBase = BaseSatisfaccion::findOne($basesatisfaccion_id);
@@ -2723,6 +2730,68 @@ class BasesatisfaccionController extends Controller {
                     $modelBase->equivocacion = (isset($equivocacion)) ? implode(", ", $equivocacion) : "";
 
                     $modelBase->save();
+
+                    $varIdFormulario = (new \yii\db\Query())
+                                        ->select(['tbl_ejecucionformularios.id'])
+                                        ->from(['tbl_ejecucionformularios']) 
+                                        ->where(['=','tbl_ejecucionformularios.basesatisfaccion_id',$modelBase->id])
+                                        ->scalar();
+
+                    $varClientes = (new \yii\db\Query())
+                                        ->select(['tbl_proceso_cliente_centrocosto.cliente'])
+                                        ->from(['tbl_proceso_cliente_centrocosto']) 
+                                        ->where(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varid_clientes])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.cod_pcrc',$varid_centro_costo])
+                                        ->scalar();
+
+                    $varCentrosCostos = (new \yii\db\Query())
+                                        ->select(['CONCAT(tbl_proceso_cliente_centrocosto.cod_pcrc," - ", tbl_proceso_cliente_centrocosto.pcrc)'])
+                                        ->from(['tbl_proceso_cliente_centrocosto']) 
+                                        ->where(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varid_clientes])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.cod_pcrc',$varid_centro_costo])
+                                        ->scalar();
+
+                    $varGerenteSatu =  (new \yii\db\Query())
+                                        ->select(['tbl_proceso_cliente_centrocosto.gerente_cuenta'])
+                                        ->from(['tbl_proceso_cliente_centrocosto']) 
+                                        ->where(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varid_clientes])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.cod_pcrc',$varid_centro_costo])
+                                        ->scalar();    
+
+                    $varDirectorSatu =  (new \yii\db\Query())
+                                        ->select(['tbl_proceso_cliente_centrocosto.director_programa'])
+                                        ->from(['tbl_proceso_cliente_centrocosto']) 
+                                        ->where(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varid_clientes])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.cod_pcrc',$varid_centro_costo])
+                                        ->scalar();
+
+                    $varCiudadSatu =  (new \yii\db\Query())
+                                        ->select(['tbl_proceso_cliente_centrocosto.ciudad'])
+                                        ->from(['tbl_proceso_cliente_centrocosto']) 
+                                        ->where(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varid_clientes])
+                                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.cod_pcrc',$varid_centro_costo])
+                                        ->scalar();
+
+
+                    if ($varIdFormulario) {
+                        Yii::$app->db->createCommand()->insert('tbl_registro_ejec_cliente',[
+                            'ejec_form_id' => $varIdFormulario,
+                            'id_dp_clientes' => $varid_clientes,
+                            'cod_pcrc' => $varid_centro_costo,
+                            'cliente' => $varClientes,
+                            'pcrc' => $varCentrosCostos,
+                            'ciudad' => $varCiudadSatu,
+                            'director_programa' => $varDirectorSatu,
+                            'gerente' => $varGerenteSatu,
+                            'fechacreacion' => date('Y-m-d'),
+                            'anulado' => 0,
+                        ])->execute();
+                    }
 
                     Yii::$app->session->setFlash('success', Yii::t('app', 'Formulario guardado'));
                     // Se quita codigo del proceso de Amigo
