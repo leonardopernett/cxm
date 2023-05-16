@@ -31,6 +31,10 @@ $varIdClientes = (new \yii\db\Query())
                 ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
                 ->scalar();
 
+if (!$varIdClientes) {
+    $varIdClientes = substr($data->basesatisfaccion->pcrc0->name, 0,3);
+}
+
 ?>
 
 
