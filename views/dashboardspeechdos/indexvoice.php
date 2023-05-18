@@ -768,7 +768,7 @@ $this->title = 'Dashboard Escuchar +';
                     }
 
 
-                    array_push($arrayPorcentajesIVoice, $txtRtaProcentaje);
+                    
 
                     $varconteoAgente =  (new \yii\db\Query())
                                   ->select(['callid','SUM(cantproceso)'])
@@ -947,7 +947,7 @@ $this->title = 'Dashboard Escuchar +';
                       
                     }                    
                   
-                    
+                    array_push($arrayPorcentajesIVoice, $txtRtaProcentaje);  
                 ?>
                   <tr>
                     <td><label style="font-size: 13px;"><?= Yii::t('app', $varNombreIndicador) ?></label></td>
