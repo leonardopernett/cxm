@@ -3340,7 +3340,7 @@ use app\models\WorspaceReportesPowerbi;
         return $this->render('parametrizarpbi');
     }
 
-    public function actionAgregarcredencialpbi(){
+    public function actionAgregarcredencialespbi(){
         $model = new WorspaceReportesPowerbi();
 
         $form = Yii::$app->request->post();
@@ -3381,7 +3381,7 @@ use app\models\WorspaceReportesPowerbi;
 
         }
 
-        return $this->renderAjax('agregarcredencialpbi',[
+        return $this->renderAjax('agregarcredencialespbi',[
             'model' => $model,
         ]);
     }
