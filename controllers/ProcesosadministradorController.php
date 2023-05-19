@@ -50,6 +50,7 @@ use app\models\Tipologiasqyr;
 use app\models\RespuestaAutomatica;
 use app\models\Estadosqyr;
 use app\models\Cumplimientoqyr;
+use app\models\WorspaceReportesPowerbi;
 
   class ProcesosadministradorController extends \yii\web\Controller {
 
@@ -67,7 +68,7 @@ use app\models\Cumplimientoqyr;
             'deleteareaapoyo','viewareaapoyogptw','viewprocesossatisfaccion','viewdetallepilaresgptw','viewindicadores',
             'adminusuarios','adminapiwiasae','viewtipoalertasqyr','deletealertasqyr',
             'viewareasqyr','varListAreasqyr','viewtipologiasqyr','viewrespuestaautomaticaqyr','deleterespuestaqyr',
-            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs'],
+            'viewalertacumplimientoqyr','importardocumento','viewcartarespuestaqyr','parametrizarpcrccomdata','deletepcrcs','parametrizarpbi'],
             'rules' => [
               [
                 'allow' => true,
@@ -3332,6 +3333,73 @@ use app\models\Cumplimientoqyr;
         ->execute();
 
         return $this->redirect(['parametrizarpcrccomdata']);
+    }
+
+    public function actionParametrizarpbi(){
+
+        return $this->render('parametrizarpbi');
+    }
+
+    public function actionAgregarcredencialpbi(){
+        $model = new WorspaceReportesPowerbi();
+
+        $form = Yii::$app->request->post();
+        if($model->load($form)){
+            $varListHistorico = (new \yii\db\Query())
+                                ->select([
+                                    '*'
+                                ])
+                                ->from(['tbl_config_powerbi'])
+                                ->all();
+
+            foreach ($varListHistorico as $value) {
+                Yii::$app->db->createCommand()->insert('tbl_config_powerbihistorico',[
+                    'azure_param' => $value['azure_param'],
+                    'azure_content' => $value['azure_content'],
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                    'fechacreacion' => date("Y-m-d"),
+                ])->execute();
+            }
+
+            Yii::$app->db->createCommand()->update('tbl_config_powerbi',[
+                      'azure_param' => 'azure_tenant_id',                   
+                      'azure_content' => $model->id_workspace,                     
+            ],'id_config = 1')->execute();
+
+            Yii::$app->db->createCommand()->update('tbl_config_powerbi',[
+                      'azure_param' => 'azure_client_id',                   
+                      'azure_content' => $model->nombre_workspace,                     
+            ],'id_config = 2')->execute();
+
+            Yii::$app->db->createCommand()->update('tbl_config_powerbi',[
+                      'azure_param' => 'azure_client_secret',                   
+                      'azure_content' => $model->id_reporte,                     
+            ],'id_config = 3')->execute();
+
+            return $this->redirect(['parametrizarpbi']);
+
+        }
+
+        return $this->renderAjax('agregarcredencialpbi',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionVercredencialpbi(){
+        $varListCredenciales = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_config_powerbihistorico.azure_param',
+                                    'tbl_config_powerbihistorico.azure_content',
+                                    'tbl_config_powerbihistorico.fechacreacion'
+                                ])
+                                ->from(['tbl_config_powerbihistorico'])
+                                ->where(['=','tbl_config_powerbihistorico.anulado',0])
+                                ->all();
+
+        return $this->renderAjax('vercredencialpbi',[
+            'varListCredenciales' => $varListCredenciales,
+        ]);
     }
 
   }

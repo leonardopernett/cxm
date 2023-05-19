@@ -406,6 +406,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="card1 mb">
+                        <label style="font-size: 15px;"><em class="fas fa-file" style="font-size: 15px; color: #ffc034;"></em><?= Yii::t('app', ' Parametrizar Credenciales Power BI') ?></label>
+                        <?= Html::a('Aceptar',  ['parametrizarpbi'], ['class' => 'btn btn-primary',                                        
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Parametrizar Credenciales PBI']) 
+                        ?>
+                    </div>
+                </div>
             </div> 
         </div>
     </div>
