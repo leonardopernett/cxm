@@ -862,7 +862,7 @@ use app\models\WorspaceReportesPowerbi;
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
            // $txtidEquipo = $model->usua_id;
-            $txtnombre = $model->nombre;
+            $txtnombre = $model->id_proceso_satis;
 
             Yii::$app->db->createCommand()->insert('tbl_procesos_satisfaccion_cliente',[
                     'nombre' => $txtnombre,
