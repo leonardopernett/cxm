@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "tbl_categoriafeedbacks".
@@ -91,5 +92,19 @@ class Categoriafeedbacks extends \yii\db\ActiveRecord {
         } else {
             return false;
         }
+    }
+
+    // funcion para buscar todas las categorias
+    public function searchlist(){
+        $query = Categoriafeedbacks::find()
+                    ->orderBy([
+                              'id' => SORT_DESC
+                            ]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);   
+
+        return  $dataProvider;
     }
 }

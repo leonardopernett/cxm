@@ -188,46 +188,46 @@ use app\models\WorspaceReportesPowerbi;
     }
 
     public function actionCategoriascxm(){
-      $modelpadre = new Categoriafeedbacks();
-      $modelhijo = new Tipofeedbacks();
-
-      $dataProvider = $modelpadre->searchlist();
-
-      $form = Yii::$app->request->post();
-      if ($modelpadre->load($form)) {
-
-        if ($modelpadre->name) {
-            Yii::$app->db->createCommand()->insert('tbl_categoriafeedbacks',[
-                    'name' => $modelpadre->name,                                     
-                ])->execute();
-
-          return $this->redirect('categoriascxm',['modelpadre'=>$modelpadre,'dataProvider' => $dataProvider,'modelhijo' => $modelhijo,]);
-        }          
-      }
-
-      if ($modelhijo->load($form)) {
-       
-       if ($modelhijo->categoriafeedback_id && $modelhijo->name) {
-           Yii::$app->db->createCommand()->insert('tbl_tipofeedbacks',[
-                    'categoriafeedback_id' => $modelhijo->categoriafeedback_id,
-                    'name' => $modelhijo->name,
-                    'snaccion_correctiva' => 1,
-                    'sncausa_raiz' => 1,
-                    'sncompromiso' => 1,
-                    'cdtipo_automatico' => 0,
-                    'dsmensaje_auto' => 'Generado por el usuario',                             
-                ])->execute();
-
+        $modelpadre = new Categoriafeedbacks();
+        $modelhijo = new Tipofeedbacks();
+  
+        $dataProvider = $modelpadre->searchlist();
+  
+        $form = Yii::$app->request->post();
+        if ($modelpadre->load($form)) {
+  
+          if ($modelpadre->name) {
+              Yii::$app->db->createCommand()->insert('tbl_categoriafeedbacks',[
+                      'name' => $modelpadre->name,                                     
+                  ])->execute();
+  
             return $this->redirect('categoriascxm',['modelpadre'=>$modelpadre,'dataProvider' => $dataProvider,'modelhijo' => $modelhijo,]);
-       }
-            
-      }
-
-      return $this->render('categoriascxm',[
-        'modelpadre' => $modelpadre,
-        'dataProvider' => $dataProvider,
-        'modelhijo' => $modelhijo,
-      ]);
+          }          
+        }
+  
+        if ($modelhijo->load($form)) {
+         
+         if ($modelhijo->categoriafeedback_id && $modelhijo->name) {
+             Yii::$app->db->createCommand()->insert('tbl_tipofeedbacks',[
+                      'categoriafeedback_id' => $modelhijo->categoriafeedback_id,
+                      'name' => $modelhijo->name,
+                      'snaccion_correctiva' => 1,
+                      'sncausa_raiz' => 1,
+                      'sncompromiso' => 1,
+                      'cdtipo_automatico' => 0,
+                      'dsmensaje_auto' => 'Generado por el usuario',                             
+                  ])->execute();
+  
+              return $this->redirect('categoriascxm',['modelpadre'=>$modelpadre,'dataProvider' => $dataProvider,'modelhijo' => $modelhijo,]);
+         }
+              
+        }
+  
+        return $this->render('categoriascxm',[
+          'modelpadre' => $modelpadre,
+          'dataProvider' => $dataProvider,
+          'modelhijo' => $modelhijo,
+        ]);
     }
 
     public function actionViewescucharmas(){
