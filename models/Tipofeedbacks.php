@@ -37,7 +37,7 @@ class Tipofeedbacks extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['categoriafeedback_id', 'name', 'dsmensaje_auto'], 'required'],
+            [['name', 'dsmensaje_auto'], 'required'],
             [['categoriafeedback_id', 'snaccion_correctiva', 'sncausa_raiz', 'sncompromiso', 'cdtipo_automatico'], 'integer'],
             [['name', 'dsmensaje_auto'], 'string', 'max' => 255],
         ];
