@@ -24,6 +24,7 @@ use app\models\Planconceptos;
 use app\models\Planmejoras;
 use app\models\Planacciones;
 use app\models\Planeficacia;
+use app\models\ProcesosSatisfaccionCliente;
 use Exception;
 
   class PlansatisfaccionController extends Controller {
@@ -81,7 +82,7 @@ use Exception;
         $varListPlanes = (new \yii\db\Query())
                         ->select([
                         'tbl_plan_generalsatu.id_generalsatu',
-                        'tbl_plan_procesos.proceso',
+                        'tbl_procesos_satisfaccion_cliente.nombre',
                         'if(tbl_plan_generalsatu.id_actividad=1,"Área","Operación") AS varActividad',
                         'tbl_plan_generalsatu.id_dp_clientes', 'tbl_plan_generalsatu.id_dp_area',
                         'tbl_usuarios_jarvis_cliente.nombre_completo',
@@ -89,8 +90,8 @@ use Exception;
                         'tbl_plan_generalsatu.estado'
                         ])
                         ->from(['tbl_plan_generalsatu'])
-                        ->join('LEFT OUTER JOIN', 'tbl_plan_procesos',
-                              'tbl_plan_procesos.id_procesos = tbl_plan_generalsatu.id_proceso')
+                        ->join('LEFT OUTER JOIN', 'tbl_procesos_satisfaccion_cliente',
+                              'tbl_procesos_satisfaccion_cliente.id_proceso_satis = tbl_plan_generalsatu.id_proceso')
                         ->join('LEFT OUTER JOIN', 'tbl_usuarios_jarvis_cliente',
                               'tbl_usuarios_jarvis_cliente.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                         ->where(['=','tbl_plan_generalsatu.anulado',0])
@@ -99,7 +100,7 @@ use Exception;
         $varListPlanes = (new \yii\db\Query())
                         ->select([
                         'tbl_plan_generalsatu.id_generalsatu',
-                        'tbl_plan_procesos.proceso',
+                        'tbl_procesos_satisfaccion_cliente.nombre',
                         'if(tbl_plan_generalsatu.id_actividad=1,"Área","Operación") AS varActividad',
                         'tbl_plan_generalsatu.id_dp_clientes', 'tbl_plan_generalsatu.id_dp_area',
                         'tbl_usuarios_jarvis_cliente.nombre_completo',
@@ -107,8 +108,8 @@ use Exception;
                         'tbl_plan_generalsatu.estado'
                         ])
                         ->from(['tbl_plan_generalsatu'])
-                        ->join('LEFT OUTER JOIN', 'tbl_plan_procesos',
-                              'tbl_plan_procesos.id_procesos = tbl_plan_generalsatu.id_proceso')
+                        ->join('LEFT OUTER JOIN', 'tbl_procesos_satisfaccion_cliente',
+                              'tbl_procesos_satisfaccion_cliente.id_proceso_satis = tbl_plan_generalsatu.id_proceso')
                         ->join('LEFT OUTER JOIN', 'tbl_usuarios_jarvis_cliente',
                               'tbl_usuarios_jarvis_cliente.idusuarioevalua = tbl_plan_generalsatu.cc_responsable')
                         ->where(['=','tbl_plan_generalsatu.anulado',0])
@@ -119,15 +120,15 @@ use Exception;
 
       $varCantidadProcesos = (new \yii\db\Query())
                                 ->select([
-                                  'tbl_plan_procesos.id_procesos',
-                                  'tbl_plan_procesos.proceso',
-                                  'COUNT(tbl_plan_procesos.id_procesos) AS varCantidad'
+                                  'tbl_procesos_satisfaccion_cliente.id_proceso_satis',
+                                  'tbl_procesos_satisfaccion_cliente.nombre',
+                                  'COUNT(tbl_procesos_satisfaccion_cliente.id_proceso_satis) AS varCantidad'
                                 ])
                                 ->from(['tbl_plan_generalsatu'])
-                                ->join('LEFT OUTER JOIN', 'tbl_plan_procesos',
-                                  'tbl_plan_procesos.id_procesos = tbl_plan_generalsatu.id_proceso')
+                                ->join('LEFT OUTER JOIN', 'tbl_procesos_satisfaccion_cliente',
+                                  'tbl_procesos_satisfaccion_cliente.id_proceso_satis = tbl_plan_generalsatu.id_proceso')
                                 ->where(['=','tbl_plan_generalsatu.anulado',0])
-                                ->groupBy(['tbl_plan_procesos.id_procesos'])
+                                ->groupBy(['tbl_procesos_satisfaccion_cliente.id_proceso_satis'])
                                 ->all();
 
       $varCantidadActividad = (new \yii\db\Query())
@@ -778,11 +779,11 @@ use Exception;
 
       $varPlanProcesos_Modificar = (new \yii\db\Query())
                                 ->select([
-                                  'tbl_plan_procesos.proceso'
+                                  'tbl_procesos_satisfaccion_cliente.nombre'
                                 ])
                                 ->from(['tbl_plan_generalsatu'])
-                                ->join('LEFT OUTER JOIN', 'tbl_plan_procesos',
-                                  'tbl_plan_procesos.id_procesos = tbl_plan_generalsatu.id_proceso')
+                                ->join('LEFT OUTER JOIN', 'tbl_procesos_satisfaccion_cliente',
+                                  'tbl_procesos_satisfaccion_cliente.id_proceso_satis = tbl_plan_generalsatu.id_proceso')
                                 ->where(['=','tbl_plan_generalsatu.anulado',0])
                                 ->andwhere(['=','tbl_plan_generalsatu.id_generalsatu',$id_plan])
                                 ->scalar();  

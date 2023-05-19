@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-4">
                         <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Seleccionar Proceso') ?></label>
-                        <?=  $form->field($model, 'id_proceso', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Planprocesos::find()->orderBy(['proceso'=> SORT_DESC])->all(), 'id_procesos', 'proceso'),
+                        <?=  $form->field($model, 'id_proceso', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosSatisfaccionCliente::find()->where(['=','anulado',0])->orderBy(['nombre'=> SORT_DESC])->all(), 'id_proceso_satis', 'nombre'),
                                                     [
                                                         'id' => 'idProcesos',
                                                         'prompt'=>'Seleccionar Procesos...',

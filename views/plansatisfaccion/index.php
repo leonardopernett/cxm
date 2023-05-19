@@ -357,7 +357,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                           ?>
                         </td>
-                        <td><label style="font-size: 12px;"><?php echo  " ".$value['proceso']; ?></label></td>
+                        <td><label style="font-size: 12px;"><?php echo  " ".$value['nombre']; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $value['varActividad']; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $varDirecionString; ?></label></td>
                         <td><label style="font-size: 12px;"><?php echo  $value['nombre_completo']; ?></label></td>
@@ -475,15 +475,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     foreach ($varCantidadProcesos as $key => $value) {
                         $varColor = null;
 
-                        if ($value['id_procesos'] == 1) {
+                        if ($value['id_proceso_satis'] == 1) {
                             $varColor = '#4298B5';
                         }
-                        if ($value['id_procesos'] == 2) {
+                        if ($value['id_proceso_satis'] == 2) {
                             $varColor = '#FBCE52';
                         }
                 ?>
                     {
-                        name: "<?php echo $value['proceso'];?>",
+                        name: "<?php echo $value['nombre'];?>",
                         y: parseFloat("<?php echo $value['varCantidad'];?>"),
                         color: "<?php echo $varColor; ?>",
                         dataLabels: {
