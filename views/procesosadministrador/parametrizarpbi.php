@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
       <div class="card1 mb">
         <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Ingresar Nuevas Credenciales') ?></label>
 
-        <?= Html::button('Aceptar', ['value' => url::to(['agregarcredencialpbi']), 'class' => 'btn btn-success', 'id'=>'modalButton',
+        <?= Html::button('Aceptar', ['value' => url::to(['agregarcredencialespbi']), 'class' => 'btn btn-success', 'id'=>'modalButton',
                                 'data-toggle' => 'tooltip',
                                 'title' => 'Ingresar Nuevas Credenciales']) 
         ?> 
