@@ -665,7 +665,7 @@ use app\models\DistribucionAsesores;
         }
 
         if ($varGrupoCorte == "5") {
-          $varIdClientes = [330, 341, 366];          
+          $varIdClientes = [330, 341, 366, 372];          
         }
 
         if ($varGrupoCorte == "7") {
