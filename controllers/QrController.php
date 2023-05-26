@@ -251,11 +251,14 @@ use app\models\UsuariosEvalua;
                 ->from(['tbl_usuarios'])
                 ->where(['=','usua_id',$valresponsable])
                 ->Scalar();
-        $varcorreo = (new \yii\db\Query())
-                ->select(['email_corporativo'])
-                ->from(['tbl_usuarios_jarvis_cliente'])
-                ->where(['=','documento',$vardocumentojefe])
-                ->Scalar();
+
+        $varParams = [':varDocumento'=>$vardocumentojefe];        
+        $varcorreo = Yii::$app->dbjarvis->createCommand('
+        SELECT 
+          email 
+        FROM dp_usuarios_red 
+          WHERE 
+            dp_usuarios_red.usuario_red = :varDocumento ')->bindValues($varParams)->queryScalar();
 
         //envio de correo a responsable
         $message = "<html><body>";
