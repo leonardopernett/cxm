@@ -236,7 +236,6 @@ $sessiones = Yii::$app->user->identity->id;
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Documento Solicitante ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Correo Electrónico ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Área ') ?></label></th>
-                            <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipología ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Detalle PQRS ') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Estado Proceso') ?></label></th>
                             <th scope="col" class="text-center" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Solicitudes ') ?></label></th>
@@ -283,10 +282,6 @@ $sessiones = Yii::$app->user->identity->id;
                                 <td><label style="font-size: 12px;"><?php echo  $varDocUsuario; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varEmail; ?></label></td>                                
                                 <td><label style="font-size: 12px;"><?php echo  $varArea; ?></label></td>
-                                <td><label style="font-size: 12px;"><?php echo  $varTipologia; ?></label></td>      
-
-
-                                
                                 
                                 <td><label style="font-size: 12px;"><?php echo  $varComentarios; ?></label></td>
                                 <td><label style="font-size: 12px;"><?php echo  $varnombreestado; ?></label></td>
