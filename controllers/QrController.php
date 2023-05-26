@@ -252,13 +252,14 @@ use app\models\UsuariosEvalua;
                 ->where(['=','usua_id',$valresponsable])
                 ->Scalar();
 
-        $varParams = [':varDocumento'=>$vardocumentojefe];        
+        $varParams = [':varDocumento'=>$vardocumentojefe];     
+        
         $varcorreo = Yii::$app->dbjarvis->createCommand('
         SELECT 
           email 
         FROM dp_usuarios_red 
           WHERE 
-            dp_usuarios_red.usuario_red = :varDocumento ')->bindValues($varParams)->queryScalar();
+            dp_usuarios_red.documento = :varDocumento ')->bindValues($varParams)->queryScalar();
 
         //envio de correo a responsable
         $message = "<html><body>";
