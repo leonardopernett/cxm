@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
   $listData2 = ArrayHelper::map($query2, 'id_dp_posicion', 'posicion');
 
 ?>
+
 <style>
   .card1 {
     height: auto;
@@ -73,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
 
-  hr{border:0;border-top:1px solid #eee;margin:20px 0}
+  hr {border:0;border-top:1px solid #eee;margin:20px 0}
     .w3-image{max-width:100%;height:auto}img{vertical-align:middle}a{color:inherit}
     .w3-table,.w3-table-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}.w3-table-all{border:1px solid #ccc}
     .w3-bordered tr,.w3-table-all tr{border-bottom:1px solid #ddd}.w3-striped tbody tr:nth-child(even){background-color:#f1f1f1}
@@ -275,6 +276,10 @@ $this->params['breadcrumbs'][] = $this->title;
     .w3-border-dark-grey,.w3-hover-border-dark-grey:hover,.w3-border-dark-gray,.w3-hover-border-dark-gray:hover{border-color:#616161!important}
     .w3-border-pale-red,.w3-hover-border-pale-red:hover{border-color:#ffe7e7!important}.w3-border-pale-green,.w3-hover-border-pale-green:hover{border-color:#e7ffe7!important}
     .w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffffcc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}
+    
+    .help-block {
+    font-size: 12px; /* Ajusta el tamaño de fuente de las validaciones */
+    }
 </style>
 
 <!-- Data extensiones -->
@@ -311,10 +316,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 
 <!-- Capa principal -->
-<div id="capaIdPrincipal" class="capaPrincipal" > 
-    <div class="row">
-        <div class="col-md-12">
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<div id="capaIdPrincipal" class="capaPrincipal" style="display: inline;">
+        <div class="row">
+            <div class="col-md-12">  
+            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>          
                 <!-- CARD -->
                 <div class="card1 mb">
                     <!-- TAB LINKS -->
@@ -345,14 +350,26 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="row"> 
                                     <div class="col-md-5">   
                                         <div class="card1 mb">                                 
-                                            <div class="row">                                        
+                                            <div class="row" >  
                                                     <div class="col-md-12">                                        
-                                                        <label style="font-size: 16px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ingresar Pregunta') ?></label>
-                                                        <?= $form->field($modal, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_pregunta','placeholder'=>''])?>
+                                                        <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Evaluación') ?></label>
+                                                        <?=  $form->field($modalPreguntas, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'],
+                                                                'template' => $template])->dropDownList(ArrayHelper::map(\app\models\EvaluacionNombre
+                                                                ::find()->select(['nombreeval', 'idevaluacionnombre'])->where("anulado = 0")->all(), 'idevaluacionnombre', 'nombreeval'),
+                                                                [
+                                                                    'id' => 'id_nombre_evaluacion',
+                                                                    'prompt'=>'Seleccionar Evaluación...'  
+                                                                ]
+                                                            )->label(''); 
+                                                        ?>
+                                                    </div>                                      
+                                                    <div class="col-md-12">                                        
+                                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ingresar Pregunta') ?></label>
+                                                        <?= $form->field($modalPreguntas, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>''])?>
                                                     </div>
                                                     <div class="col-md-12">
-                                                        <label style="font-size: 16px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em><?= Yii::t('app', ' Ingresar Descripción') ?></label>
-                                                        <?= $form->field($modal, 'descripcionpregunta',  ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => true, 'style' => 'font-size: 15px'])?>                                                    
+                                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em><?= Yii::t('app', ' Ingresar Descripción') ?></label>
+                                                        <?= $form->field($modalPreguntas, 'descripcionpregunta',  ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => true, 'id'=>'id_descripcion_pregunta'])?>                                                    
                                                     </div>
                                             </div>
                                             <div class="row" style="margin-top: 18px;">
@@ -360,7 +377,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     <?= Html::submitButton(Yii::t('app', 'Guardar'),
                                                         ['class' => 'btn btn-success btn-block' ,
                                                         'data-toggle' => 'tooltip',
-                                                        'onclick' => '',
+                                                        'onclick' => 'guardarPregunta();',
                                                         'style' => '',
                                                         'title' => 'Guardar datos']) 
                                                     ?>
@@ -380,43 +397,84 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <div class="col-md-7">
                                         <div class="card1 mb"> 
-                                            <label style="font-size: 16px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', 'Lista de Preguntas') ?></label>
-                                        
-                                            <?= GridView::widget([
-                                                'dataProvider' => $dataProvider,
-                                                'columns' => [
-                                                    [
-                                                        'attribute' => 'pregunta',
-                                                        'value' => 'pregunta',
-                                                        'headerOptions' => ['style' => 'width: 20%', 'font-size: 12px']
-                                                    ],
-                                                    [
-                                                        'attribute' => 'descripción',
-                                                        'value' => 'descripcion',
-                                                        'headerOptions' => ['style' => 'width: 70%', 'font-size: 10px']
-                                                    ],                                                    
-                                                    [
-                                                        'class' => 'yii\grid\ActionColumn',
-                                                        'headerOptions' => ['style' => 'color:#337ab7', 'width: 10%' ],
-                                                        'template' => '{update} {delete}',
-                                                    ]
-                                                ],
-                                            ]); ?>
+                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Preguntas') ?></label>
+
+                                        <table id="tablePreguntas" class="table table-hover table-bordered">
+                                            <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="color: #827DF9;"></em><?= Yii::t('app', ' Competencias') ?></label></caption>
+                                            <thead>                                                    
+                                                <tr>
+                                                    <th class="text-center" style="background-color: #C6C6C6; width: 30%;">
+                                                        <label style="font-size: 15px;"><?= Yii::t('app', 'Preguntas') ?></label>
+                                                    </th>
+                                                    <th class="text-center" style="background-color: #C6C6C6; width: 65%">
+                                                        <label style="font-size: 15px;"><?= Yii::t('app', 'Descripción') ?></label>
+                                                    </th>
+                                                    <th class="text-center" style="background-color: #C6C6C6; width: 5%">
+                                                        <label style="font-size: 15px;"><?= Yii::t('app', 'Acción') ?></label>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php foreach ($array_preguntas as $fila):?>
+                                                <tr>
+                                                    <td><label style="font-size: 13px;"><?= Yii::t('app', $fila['pregunta']) ?></label></td> 
+                                                    <td><label style="font-size: 13px;"><?= Yii::t('app', $fila['descripcion']) ?></label></td>  
+                                                    <td  class="text-center">
+                                                        <?= Html::a('<em class="glyphicon glyphicon-pencil"></em>', ['editar', ['class' => 'btn btn-primary', 'title' => 'Editar']]) ?>
+                                                        <?= Html::a('<em class="glyphicon glyphicon-trash"></em>', ['eliminar', ['class' => 'btn btn-danger', 'title' => 'Eliminar', 'data' => ['confirm' => '¿Estás seguro de eliminar esta fila?']]]) ?>
+                                                    </td>                                                  
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                            
+                                        </table>                                            
                                         </div>  
                                     </div>
-                                </div> 
-
-                                <br>
-                                <div class="row">
-                                    
-                                                               
                                 </div> 
                             </div>
                             <!-- Submodulo Respuestas -->
                             <div id="Respuestas" class="w3-container city tabcontent" style="display:none;">
-                                <div class="row">
-                                    <h3>London</h3>
-                                    <p>London is the capital city of England.</p>
+                                <div class="card1 mb" style="margin-top: 20px">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Respuesta:') ?></label>
+                                            <?= $form->field($modalRespuestas, 'namerespuesta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250,  'id'=>'Idnamerespuesta']) ?> 
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Valor:') ?> </label>
+                                            <?= $form->field($modalRespuestas, 'valor', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250,  'id'=>'Idvalorres']) ?>
+                                        </div>
+                                    </div>
+                                    <div class="row">   
+                                        <div class="col-md-6">
+                                            <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Descripción:') ?> </label>
+                                            <?= $form->field($modalRespuestas, "fechacrecion", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => true]) ?>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Evaluación:') ?> </label>
+                                            <?= $form->field($modalRespuestas, 'idevaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250, 'value'=>'Evaluacion Desarrollo 2023']) ?>                                        
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 18px;">
+                                        <div class="col-md-3">
+                                            <?= Html::submitButton(Yii::t('app', 'Guardar'),
+                                                ['class' => 'btn btn-success btn-block' ,
+                                                'data-toggle' => 'tooltip',
+                                                'onclick' => '',
+                                                'style' => '',
+                                                'title' => 'Guardar datos']) 
+                                            ?>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <?= Html::submitButton(Yii::t('app', 'Cancelar'),
+                                                ['class' => 'btn btn-success btn-block',
+                                                'data-toggle' => 'tooltip',
+                                                'style'=>'background-color: #707372',
+                                                'onclick' => '',
+                                                'title' => 'Cancelar']) 
+                                            ?> 
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Submodulo Evaluaciones -->
@@ -452,4 +510,50 @@ $this->params['breadcrumbs'][] = $this->title;
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.firstElementChild.className += " w3-border-red";
   };
+
+  function guardarPregunta(){
+      //obtener valor de lso campos
+    var var_id_evaluacion = document.getElementById("id_nombre_evaluacion").value;
+    var var_nombre_pregunta = document.getElementById("id_nom_pregunta").value;
+    var var_descrip_pregunta = document.getElementById("id_descripcion_pregunta").value;
+    
+    //Validacion de campos    
+    if (var_id_evaluacion == "") {
+        swal.fire("","No ha seleccionado la Evaluación","warning");
+        return;
+    }
+    if (var_nombre_pregunta == "") {
+        swal.fire("","El nombre de la pregunta esta vacío","warning");
+        return;
+    }
+    if (var_descrip_pregunta == "") {
+        swal.fire("!","La descripción esta vacía","warning");
+        return;
+    }
+
+    //AJAX
+    $.ajax({
+        method: "post",
+        url: "crearpregunta",
+        data: {
+            id_evaluacion: var_id_evaluacion,
+            nom_pregunta: var_nombre_pregunta,
+            descripcion_pregunta: var_descrip_pregunta,
+        },
+        success: function(response) {
+            var numRtaT = JSON.parse(response);
+            console.log("parseado el json: ", numRtaT );
+            console.log("Sin parsear: ", response );            
+            location.reload();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            
+            swal.fire("","Error obteniendo datos en: guardarPregunta","error");
+            
+        }
+    });
+    //AJAX end
+            
+                
+    };
 </script>
