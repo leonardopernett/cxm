@@ -454,19 +454,21 @@ use app\models\FormUploadtigo;
           
         }
 
-
+        
         // Se empieza a validar Lider.
         $varLiderRed = $sheet->getCell("C".$i)->getValue();       
 
         $paramsLiderRed = [':varLideresRed' => $varLiderRed];
         if (is_numeric($varLiderRed)) {
+          
           $varDocumentosLider = Yii::$app->dbjarvis->createCommand('
               SELECT 
                 documento, usuario_red, nombre 
-              FROM dp_usuarios_red 
+              FROM dp_usurios_red 
                 WHERE 
                   dp_usuarios_red.documento = :varLideresRed')->bindValues($paramsLiderRed)->queryAll();
         }else{
+          
           $varDocumentosLider = Yii::$app->dbjarvis->createCommand('
               SELECT 
                 documento, usuario_red, nombre 
@@ -474,7 +476,7 @@ use app\models\FormUploadtigo;
                 WHERE 
                   dp_usuarios_red.usuario_red = :varLideresRed')->bindValues($paramsLiderRed)->queryAll();
         }
-        var_dump("Vamos Vamos datos del lider ".$varLiderRed);
+        
         if (count($varDocumentosLider) != 0) {
           foreach ($varDocumentosLider as $value) {
             $varDocumentoLider = $value['documento'];
@@ -487,7 +489,7 @@ use app\models\FormUploadtigo;
                                     ->from(['tbl_usuarios'])
                                     ->where(['=','usua_identificacion',$varDocumentoLider])
                                     ->scalar(); 
-
+                                                                   
           if ($varExisteLider == 0) {
             $paramsBuscaLider = [':DocumentoLider'=>$varDocumentoLider];
             
@@ -564,12 +566,12 @@ use app\models\FormUploadtigo;
           $varValidaAccion = 2;
         }
 
-        var_dump($varValidaAsesorCXM);
-        var_dump($varExisteLider);
-        die(json_encode('Aqui vamos'));
-
+        
+        
         // Se empieza a Gestionar el Equipo de los Lideres con los Asesores
         if ($varValidaAccion == 1) {
+
+
           
           $varValidaAsesorConEquipo = (new \yii\db\Query())
                                     ->select(['tbl_equipos_evaluados.equipo_id'])

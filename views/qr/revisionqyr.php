@@ -477,7 +477,7 @@ use yii\bootstrap\Modal;
                             </div> 
                             <div class="col-md-4">
                                 <div class="card1 mb">
-                                    <?= Html::submitButton("Guardar", ["class" => "btn btn-primary", ]) ?>
+                                    <?= Html::submitButton("Guardar", ["class" => "btn btn-primary", 'onclick' => 'varverificar();']) ?>
                                 </div>
                             </div>                                                      
                         </div>
@@ -488,6 +488,16 @@ use yii\bootstrap\Modal;
     </div><br>    
 </div>
 <script type="text/javascript">
+    function varverificar(){
+        var vartxttiporespuesta = document.getElementById("txttiporespuesta").value;
+
+        if (vartxttiporespuesta == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Se debe de seleccionar un tipo de respuesta.","warning");
+            return;
+        }
+    };
+
 function respuesta(){
     var varRta = document.getElementById("txttiporespuesta").value;
     document.getElementById("idrespuesta").value = varRta;
