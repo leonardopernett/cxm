@@ -85,6 +85,16 @@ use yii\bootstrap\Modal;
 
     $varListatotalGerentes = ArrayHelper::map($dataG, 'hv_idgerente', 'gerente_cuenta');
 
+    $varid_area = null;
+    $varid = null;
+    $varid_solicitud = null;
+    $varnombre = null;
+    foreach ($dataProviderInfo as $value) {
+        $varid_area = $value['id_area'];
+        $varid = $value['id_tipologia'];
+        $varid_solicitud = $value['id_responsable'];
+        $varnombre = $value['comentario2'];
+    }
 
 ?>
 
@@ -393,7 +403,7 @@ use yii\bootstrap\Modal;
 <hr>
 <!-- Capa carga de información -->
     
-<div class="capaDos">
+<div class="capaDos" style="display: none;">
 <?php $form = ActiveForm::begin([
             'layout' => 'horizontal',
             "method" => "post",
@@ -421,47 +431,25 @@ use yii\bootstrap\Modal;
 
                         <div class="col-md-6">
                             <label for="txtcliente" style="font-size: 14px;">Área de Asignación</label>
-                            <?=  $form->field($model2, 'id_area', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Areasqyr::find()->distinct()->where("anulado = 0")->orderBy(['nombre'=> SORT_ASC])->all(), 'id', 'nombre'),
-                                                            [
-                                                                'prompt'=>'Seleccionar...',
-                                                                'onchange' => '
-                                                                    $.post(
-                                                                        "' . Url::toRoute('listartipologia') . '", 
-                                                                        {id: $(this).val()}, 
-                                                                        function(res){
-                                                                            $("#requester").html(res);
-                                                                        }
-                                                                    );
-                                                                ',
-                                                            ]
-                                                ); 
-                            ?>
+                            <?= $form->field($model2, 'id_area', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['value' => $varid_area, 'readonly'=>true])?> 
+                            
                         </div>
                         <div class="col-md-6">
                             <label for="txtgerente" style="font-size: 14px;">Tipología</label>
-                            <?= $form->field($model8,'id', ['labelOptions' => [], 'template' => $template])->dropDownList(
-                                                            [],
-                                                            [
-                                                                'prompt' => 'Seleccionar...',                                         
-                                                                'id' => 'requester'
-                                                            ]
-                                                        );
-                            ?>
+                            <?= $form->field($model8, 'id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['value' => $varid, 'readonly'=>true])?> 
+                            
                         </div>
                     </div>
                     <div class="row" >
                         <div class="col-md-6">                  
-                            <label for="txtResponsable" style="font-size: 14px;">Responsable Asignación</label>                      
-                            <?=  $form->field($model3, 'id_solicitud', ['labelOptions' => [], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\UsuariosEvalua::find()->orderBy(['nombre_completo'=> SORT_ASC])->all(), 'idusuarioevalua', 'nombre_completo'),
-                                                [
-                                                    'prompt'=>'Seleccionar...',
-                                                ]
-                                        )->label(''); 
-                            ?>
+                            <label for="txtResponsable" style="font-size: 14px;">Responsable Asignación</label>         
+                            <?= $form->field($model3, 'id_solicitud', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['value' => $varid_solicitud, 'readonly'=>true])?>              
+                            
                         </div>
-                        <div class="col-md-6">                        
+                        <div class="col-md-6">                                      
                             <label style="font-size: 15px;"><span class="texto" style="color: #FC4343">*</span> <?= Yii::t('app', ' Comentarios') ?></label>
-                            <?= $form->field($model3, 'nombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => 500, 'id'=>'idperfil', 'placeholder'=>'Ingresar Comentario', 'style' => 'resize: vertical;'])?>
+                            <?= $form->field($model3, 'nombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['value' => $varnombre, 'readonly'=>true])?>
+                            
                         </div>
                     </div>
                     <br>                                        
@@ -469,7 +457,7 @@ use yii\bootstrap\Modal;
             </div>    
         </div>
 </div>
-<hr>
+
 <div class="capaTres">
         <div class="row">    
             <div class="col-md-6">
@@ -524,9 +512,17 @@ use yii\bootstrap\Modal;
                             <div class="col-md-4">
                                 <div class="card1 mb">
                                     <?= Html::submitButton("Guardar - Enviar", ["class" => "btn btn-primary", 
-                                                            'onclick' => 'verificar();',]) ?>
+                                                            'onclick' => 'varverificar();']) ?>
                                 </div>
-                            </div>                                                      
+                            </div>    
+                            <div class="col-md-4">
+                                <div class="card1 mb">
+                                    <?= Html::a('Devolver Caso',  ['devolver', 'idcaso'=>$id_caso], ['class' => 'btn btn-danger',
+                                            'data-toggle' => 'tooltip',
+                                            'title' => 'Devolver Caso']) 
+                                    ?>
+                                </div>
+                            </div>                                                   
                         </div>
                     </div>
                 </div>
@@ -539,8 +535,8 @@ use yii\bootstrap\Modal;
 </div>
 
 <script type="text/javascript">
-function verificar(){
-    var varenexo = document.getElementById("idfile").text;
+function varverificar(){
+    var varenexo = document.getElementById("idfile").value;
 
     if (varenexo == "") {
       event.preventDefault();

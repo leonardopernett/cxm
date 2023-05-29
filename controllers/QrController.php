@@ -627,25 +627,10 @@ public function actionGestionqyr($idcaso){
   }
   if ($model3->load($form)) {
     $valcomentario = $model3->nombre;      
-    $valresponsable = (new \yii\db\Query())
-                      ->select([
-                        'tbl_usuarios.usua_id'
-                      ])
-                      ->from(['tbl_usuarios'])
-                      ->join('LEFT OUTER JOIN', 'tbl_usuarios_evalua',
-                                  'tbl_usuarios.usua_identificacion = tbl_usuarios_evalua.documento')
-                      ->where(['=','tbl_usuarios_evalua.anulado',0])
-                      ->andwhere(['=','tbl_usuarios_evalua.idusuarioevalua',$model3->id_solicitud])
-                      ->groupby(['tbl_usuarios.usua_id'])
-                      ->scalar();
-    $valestado = 8;
-  
+    $valresponsable = $model3->id_solicitud;
+    $valestado = 8;  
 
     Yii::$app->db->createCommand()->update('tbl_qr_casos',[
-      'id_area' => $valarea,
-      'id_tipologia' => $valtipologia,
-      'id_responsable' => $valresponsable,
-      'comentario2' => $valcomentario,
       'id_estado' => $valestado,
       'archivo2' => $ruta,
                 
@@ -705,7 +690,7 @@ public function actionGestionqyr($idcaso){
     'model6' => $model6,
     'model7' => $model7,
     'model8' => $model8,
-  ]);
+    'id_caso' => $id_caso,  ]);
   
 }
 
@@ -1193,6 +1178,46 @@ public function actionCargadatodoc(){
 
       return $this->redirect(['index']);
 
+    }
+
+    public function actionDevolver($idcaso){
+      Yii::$app->db->createCommand()->update('tbl_qr_casos',[
+        'id_area' => null,
+        'id_tipologia' => null,
+        'id_responsable' => null,
+        'tipo_respuesta' => null,
+        'id_estado' => 9,
+                  
+      ],"id = '$idcaso'")->execute();
+      
+      // correo para grupo CX   
+      $message = "<html><body>";
+      $message .= "<h3>CX-Management</h3>";
+      $message .= "<br>Buen día Equipo ";
+      $message .= "<br><br> Tenemos una solicitud devuelta la cual fue recibida el día de hoy, con N° de caso: ";
+      $message .= $idcaso;
+      $message .= "<br><br> En espera de iniciar el proceso de Re-asignación por parte del Equipo CX.";             
+      $message .= "<br><br>Se adjunta el detalle de la PQRS";
+      $message .= "<br><br>Feliz Día";
+      $message .= "</body></html>"; 
+      
+      $varListacorreo = (new \yii\db\Query())
+                  ->select(['email'])
+                  ->from(['tbl_qr_correos'])
+                  ->All(); 
+             
+      foreach ($varListacorreo as $key => $value) {
+        
+          Yii::$app->mailer->compose()
+                  ->setTo($value['email'])
+                  ->setFrom(Yii::$app->params['email_satu_from'])
+                  ->setSubject("Devolución caso QyR - CX-Management")                     
+                  ->setHtmlBody($message)
+                  ->send();
+        
+      }
+
+      return $this->redirect(['index']);
     }
 
   }

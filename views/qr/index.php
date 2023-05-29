@@ -255,7 +255,15 @@ $sessiones = Yii::$app->user->identity->id;
                                 $varNombreCliente = $value['clientearea'];                                
                                 $varUsuario = $value['nombre'];
                                 $varDocUsuario = $value['documento'];
-                                $varEmail = $value['correo'];
+
+                                $varParams = [':varParams' => $varDocUsuario];
+                                $varEmail = Yii::$app->dbjarvis->createCommand('
+                                SELECT 
+                                  email 
+                                FROM dp_usuarios_red 
+                                  WHERE 
+                                    dp_usuarios_red.documento = :varParams ')->bindValues($varParams)->queryScalar();
+
                                 $varArea = $value['area'];
                                 $varTipologia = $value['tipologia'];
                                 $varEstado = $value['estado'];
