@@ -666,6 +666,13 @@ AppAsset::register($this);
                                                     'url' => ['/informeinboxaleatorio/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
+                                                '<br>',                                            
+                                                '<li class="dropdown-headercx">&nbsp;Procesos de Integraciones</li>',                                                
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesos TrackSale'),
+                                                    'url' => ['/procesostracksale/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
                                         '</div>',
 
                                     '</div>',
