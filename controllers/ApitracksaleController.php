@@ -257,82 +257,93 @@ use GuzzleHttp;
 
           $varNoAplica = "NO APLICA";
 
-          if ($varPregunta_Uno <= '10') {
-            Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
-                      'identificacion' => $varIdentificacion,
-                      'nombre' => $varNombreCliente,
-                      'ani' => 'TrackSale',
-                      'agente' => $varAsesorRed,
-                      'cc_agente' => $varDocAsesor,
-                      'agente2' => null,
-                      'ano' => $varAnnio,
-                      'mes' => $varMes,
-                      'dia' => $varDia,
-                      'hora' => $varHora,
-                      'chat_transfer' => null,
-                      'ext' => null,
-                      'rn' => $varRn,
-                      'industria' => $varConIndustria,
-                      'institucion' => $varConInstitucion,
-                      'pcrc' => $varPcrc,
-                      'cliente' => $varCliente,
-                      'tipo_servicio' => $varServicio,
-                      'pregunta1' => $varPregunta_Uno,
-                      'pregunta2' => $varNoAplica,
-                      'pregunta3' => $varNoAplica,
-                      'pregunta4' => $varNoAplica,
-                      'pregunta5' => $varNoAplica,
-                      'pregunta6' => $varNoAplica,
-                      'pregunta7' => $varNoAplica,
-                      'pregunta8' => $varNoAplica,
-                      'pregunta9' => $varNoAplica,
-                      'pregunta10' => $varNoAplica,
-                      'connid' => $varConnid,
-                      'tipo_encuesta' => 'A',
-                      'comentario' => $varComentarios,
-                      'id_lider_equipo' => $varUsuaLider,
-                      'lider_equipo' => $varLider,
-                      'cc_lider' => $varCCLider,
-                      'coordinador' => null,
-                      'jefe_operaciones' => null,
-                      'tipologia' => null,
-                      'estado' => 'Abierto',
-                      'llamada' => null,
-                      'buzon' => null,
-                      'responsable' => null,
-                      'usado' => 'NO',
-                      'fecha_gestion' => $varSatuFechas,
-                      'created' => date("Y-m-d h:i:s"),
-                      'tipo_inbox' => 'NORMAL',
-                      'responsabilidad' => null,
-                      'canal' => null,
-                      'marca' => null,
-                      'equivocacion' => null,
-                      'fecha_satu' => $varSatuFechas,
-                      'aliados' => 'NAT',
-                      'modalidad_encuesta' => null,
-            ])->execute();
+          $varVerificaConnid = (new \yii\db\Query())
+                                  ->select([
+                                      'tbl_base_satisfaccion.id'
+                                  ])
+                                  ->from(['tbl_base_satisfaccion'])
+                                  ->where(['=','tbl_base_satisfaccion.ani','TrackSale'])
+                                  ->andwhere(['=','tbl_base_satisfaccion.connid',$varConnid])
+                                  ->count();
 
-            Yii::$app->db->createCommand()->insert('tbl_tracksale_baseencuesta',[
-                      'arbol_id' => $varPcrc,
-                      'cliente' => $varCliente,
-                      'id_trackservicio' => $varCampana,
-                      'id_trackid' => $varTimes,
-                      'time' => $varSatuFechas,                      
-                      'anulado' => 0,
-                      'usua_id' => Yii::$app->user->identity->id,
-                      'fechacreacion' => date('Y-m-d'),
-            ])->execute();
+          if ($varVerificaConnid == 0) {
+            if ($varPregunta_Uno <= '10') {
+              Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
+                        'identificacion' => $varIdentificacion,
+                        'nombre' => $varNombreCliente,
+                        'ani' => 'TrackSale',
+                        'agente' => $varAsesorRed,
+                        'cc_agente' => $varDocAsesor,
+                        'agente2' => null,
+                        'ano' => $varAnnio,
+                        'mes' => $varMes,
+                        'dia' => $varDia,
+                        'hora' => $varHora,
+                        'chat_transfer' => null,
+                        'ext' => null,
+                        'rn' => $varRn,
+                        'industria' => $varConIndustria,
+                        'institucion' => $varConInstitucion,
+                        'pcrc' => $varPcrc,
+                        'cliente' => $varCliente,
+                        'tipo_servicio' => $varServicio,
+                        'pregunta1' => $varPregunta_Uno,
+                        'pregunta2' => $varNoAplica,
+                        'pregunta3' => $varNoAplica,
+                        'pregunta4' => $varNoAplica,
+                        'pregunta5' => $varNoAplica,
+                        'pregunta6' => $varNoAplica,
+                        'pregunta7' => $varNoAplica,
+                        'pregunta8' => $varNoAplica,
+                        'pregunta9' => $varNoAplica,
+                        'pregunta10' => $varNoAplica,
+                        'connid' => $varConnid,
+                        'tipo_encuesta' => 'A',
+                        'comentario' => $varComentarios,
+                        'id_lider_equipo' => $varUsuaLider,
+                        'lider_equipo' => $varLider,
+                        'cc_lider' => $varCCLider,
+                        'coordinador' => null,
+                        'jefe_operaciones' => null,
+                        'tipologia' => null,
+                        'estado' => 'Abierto',
+                        'llamada' => null,
+                        'buzon' => null,
+                        'responsable' => null,
+                        'usado' => 'NO',
+                        'fecha_gestion' => $varSatuFechas,
+                        'created' => date("Y-m-d h:i:s"),
+                        'tipo_inbox' => 'NORMAL',
+                        'responsabilidad' => null,
+                        'canal' => null,
+                        'marca' => null,
+                        'equivocacion' => null,
+                        'fecha_satu' => $varSatuFechas,
+                        'aliados' => 'NAT',
+                        'modalidad_encuesta' => null,
+              ])->execute();
 
-          }else{
-            Yii::$app->db->createCommand()->insert('tbl_tracksale_novedades',[
-                      'tracksale' => $varAsesorRed,
-                      'id_novedad' => 2,
-                      'motivo_novedad' => 'Respuesta no concueda con lo parametrizado en la encuesta. Dato relacional '.$varTimes,
-                      'anulado' => 0,
-                      'usua_id' => Yii::$app->user->identity->id,
-                      'fechacreacion' => date('Y-m-d'),
-            ])->execute();
+              Yii::$app->db->createCommand()->insert('tbl_tracksale_baseencuesta',[
+                        'arbol_id' => $varPcrc,
+                        'cliente' => $varCliente,
+                        'id_trackservicio' => $varCampana,
+                        'id_trackid' => $varTimes,
+                        'time' => $varSatuFechas,                      
+                        'anulado' => 0,
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'fechacreacion' => date('Y-m-d'),
+              ])->execute();
+
+            }else{
+              Yii::$app->db->createCommand()->insert('tbl_tracksale_novedades',[
+                        'tracksale' => $varAsesorRed,
+                        'id_novedad' => 2,
+                        'motivo_novedad' => 'Respuesta no concueda con lo parametrizado en la encuesta. Dato relacional '.$varTimes,
+                        'anulado' => 0,
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'fechacreacion' => date('Y-m-d'),
+              ])->execute();
+            }
           }
 
           
