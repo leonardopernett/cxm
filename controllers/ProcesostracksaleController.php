@@ -93,7 +93,7 @@ use Exception;
                         ->where(['=','tbl_tracksale_parametrizarformulario.anulado',0])
                         ->andwhere(['=','tbl_tracksale_parametrizarformulario.arbol_id',$varArbol])
                         ->scalar(); 
-          
+
           ob_start();
           
           $curl = curl_init();

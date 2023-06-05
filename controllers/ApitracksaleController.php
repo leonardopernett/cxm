@@ -112,7 +112,7 @@ use GuzzleHttp;
       curl_setopt_array($curl, array(
         CURLOPT_SSL_VERIFYPEER=> false,
         CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_URL => 'https://api.tracksale.co/v2/report/answer?start='.$varFechaInicioEspecial_BD.'&end='.$varFechaFinEspecial_BD.'&codes='.$varArraySale.'&tags=true',
+        CURLOPT_URL => 'https://api.tracksale.co/v2/report/answer?start=2023-05-01T00:00:00&end=2023-05-31T23:59:59&codes='.$varArraySale.'&tags=true',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -130,7 +130,7 @@ use GuzzleHttp;
       curl_close($curl);
       ob_clean();
 
-      $varListaDatos = json_decode($response,true);
+      $varListaDatos = json_decode($response,true); 
 
       if (count($varListaDatos) != 0) {
 
@@ -154,21 +154,16 @@ use GuzzleHttp;
               WHERE 
                 du.usuario_red = :varAsesor ')->bindValues($paramsBuscaAsesor)->queryScalar();
 
+          if ($varDocAsesor == '') {
+            $varDocAsesor = Yii::$app->dbjarvis->createCommand('
+              SELECT du.documento FROM  dp_usuarios_actualizacion du 
+                WHERE 
+                  du.usuario = :varAsesor ')->bindValues($paramsBuscaAsesor)->queryScalar();
+          }
+
           // Datos fecha Satu
           $varTimes = $value['time'];
-          $varSatuFechas = date("Y-m-d H:i:s", $varTimes);
-
-          // Aqui se guarda novedad de asesor
-          if ($varDocAsesor == '') {
-            Yii::$app->db->createCommand()->insert('tbl_tracksale_novedades',[
-                      'tracksale' => $varAsesorRed,
-                      'id_novedad' => 1,
-                      'motivo_novedad' => 'Asesor no encontrado en Base de Jarvis. Dato relacional '.$varTimes,
-                      'anulado' => 0,
-                      'usua_id' => Yii::$app->user->identity->id,
-                      'fechacreacion' => date('Y-m-d'),
-            ])->execute();
-          }
+          $varSatuFechas = date("Y-m-d H:i:s", $varTimes);          
 
           // Datos de tiempos Año, Mes, Dia y Hora
           $varAnnio = date("Y", strtotime($varSatuFechas));
@@ -267,6 +262,19 @@ use GuzzleHttp;
                                   ->count();
 
           if ($varVerificaConnid == 0) {
+
+            // Aqui se guarda novedad de asesor
+            if ($varDocAsesor == '') {
+              Yii::$app->db->createCommand()->insert('tbl_tracksale_novedades',[
+                        'tracksale' => $varAsesorRed,
+                        'id_novedad' => 1,
+                        'motivo_novedad' => 'Asesor no encontrado en Base de Jarvis. Dato relacional '.$varTimes,
+                        'anulado' => 0,
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'fechacreacion' => date('Y-m-d'),
+              ])->execute();
+            }
+            
             if ($varPregunta_Uno <= '10') {
               Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
                         'identificacion' => $varIdentificacion,
@@ -345,6 +353,8 @@ use GuzzleHttp;
               ])->execute();
             }
           }
+
+          
 
           
         }       
