@@ -171,14 +171,15 @@ $roles = $command->queryScalar();
         <div class="card1 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
 
             <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
-                <caption><label><em class="fas fa-list" style="font-size: 20px; color: #ffc034;"></em> <?= Yii::t('app', 'Glosario') ?></label></caption><!--Titulo de la tabla si se muestra-->
+                <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Glosario') ?></label></caption><!--Titulo de la tabla si se muestra-->
                 <thead><!--Emcabezados de la tabla -->
-                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;" ><?= Yii::t('app', 'Tipo Categoria') ?></label></th>
-                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Marca/Canal/Agente') ?></label></th>
-                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:140px;"><?= Yii::t('app', 'Nombre de la Categoria') ?></label></th>
-                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Descripción') ?></label></th>
-                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Variables y Ejemplos') ?></label></th>
-                <th scope="col" class="text-center" style="background-color: #F5F3F3;"><label style="font-size: 15px; width:10; "><?= Yii::t('app', 'Eliminar Item') ?></label></th>
+                <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px;  color:white;" ><?= Yii::t('app', 'Categoria') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px;  color:white;" ><?= Yii::t('app', 'Tipo Categoria') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app', 'Indicador') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app','Responsabilidad (Agente/Marca/Canal/Mixta)') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px; color:white;"><?= Yii::t('app', 'Descripción') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app', 'Ejemplos') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app', 'Accion Eliminar') ?></label></th>
                 </thead>
                 <tbody><!--Tbody de la tabla -->
 
@@ -188,12 +189,13 @@ $roles = $command->queryScalar();
                 ?>
 
                     <tr><!--Filas de la tabla -->
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['tipocategoria']; ?></label></td>
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['marca_canal_agente']; ?></label></td>
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['nombrecategoria']; ?></label></td>
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['descripcioncategoria']; ?></label></td>
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['variablesejemplos']; ?></label></td>
-                    <td class="text-center"><!--boton eliminar que esta dentro de esa fila-->
+                      <td class="text-center"><label style="font-size: 12px;"><?php echo $value['categoria']; ?></label></td>
+                      <td class="text-center"><label style="font-size: 12px;"><?php echo $value['tipocategoria']; ?></label></td>
+                      <td class="text-center"><label style="font-size: 12px;"><?php echo $value['indicador']; ?></label></td>
+                      <td class="text-center"><label style="font-size: 12px;"><?php echo $value['marca_canal_agente']; ?></label></td>
+                      <td class="text-center"><label style="font-size: 12px;"><?php echo $value['descripcioncategoria']; ?></label></td>
+                      <td class="text-center"><label style="font-size: 12px;"><?php echo $value['variablesejemplos']; ?></label></td>
+                      <td class="text-center"><!--boton eliminar que esta dentro de esa fila-->
                         <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deleteitemglosario','id'=> $value['id_glosario'],'txtServicioCategorias' => $varcodigopcrc], 
                         ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?></td>
                     </tr>
