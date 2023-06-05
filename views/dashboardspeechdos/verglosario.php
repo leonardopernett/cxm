@@ -38,7 +38,8 @@ $vartotalAuto = 0;
 $varTipoCategoria = (new \yii\db\Query())
         ->select(['tipocategoria, count(tipocategoria) as cantidad'])
         ->from(['tbl_speech_glosario'])
-        ->where(['=','anulado',0])        
+        ->where(['=','anulado',0])
+        ->andwhere(['=','cod_pcrc',$varcodigopcrc])       
         ->groupBy('tipocategoria');          
 
 ?>
@@ -178,47 +179,78 @@ $varTipoCategoria = (new \yii\db\Query())
         </div>
     </div>
 
-    <br> 
-    <div class="row">   
-        <div class="col-md-4">
+    <br><hr>
+
+    
+
+    <div class="row"> 
+        <div class="col-md-6">
+            <div class="card1 mb">
+                <table class="table-bordered" style="borden:5px">
+                <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Informacion Importante') ?></label></caption><!--Titulo de la tabla si se muestra-->
+                     
+                     <tr>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px; width:140px; color:white;" ><?= Yii::t('app', 'Categoría Lingüística') ?></label></th>
+                        <td class="text-center" style="font-size: 15px;">Se refiere a las categorías que se configuran a través de la verbalización de palabras claves por parte del agente o el cliente.</td>
+                    </tr> 
+                    <tr>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px; width:140px; color:white;" ><?= Yii::t('app', 'Categoría No Lingüística') ?></label></th>
+                        <td class="text-center" style="font-size: 15px;">Hace referencia a las categorías que nos permiten identificar habilidades o situaciones que no son posibles identificar por medio de la verbalización.</td>
+                    </tr> 
+                    <tr>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px; width:140px; color:white;" ><?= Yii::t('app', 'Categoría Compuesta') ?></label></th>
+                        <td class="text-center" style="font-size: 15px;">Hace referencia a las categorías que se componen por una o mas categorías ya creadas.</label></td>
+                    </tr>                          
+                </table>
+            </div>
+        </div>  
+        
+        
+        <div class="col-md-6">
+            <div class="card1 mb">
+                <table style="width:100%">
+                    <th scope="col" class="text-center" style="width: 100px;">
+                        <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></em> <?= Yii::t('app', 'Grafica Tipos de Categoria') ?></label>
+                        <div id="containerA" class="highcharts-container" style="height: 150px;"></div> 
+                    </th>
+                </table>
+            </div>
+        </div>
+    </div> 
+<br>
+    <div class="row">
+        <div class="col-md-6">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 15px; color: #b52aef;"></em> <?= Yii::t('app', 'Descargar Glosario') ?></label> 
                 <a id="dlink" style="display:none;"></a>
                 <button  class="btn btn-info" style="background-color: #337ab7" id="btn" rel="stylesheet" type="text/css" title="Descagar Glosario"><?= Yii::t('app', 'Descargar Glosario') ?></button>
             </div>
-        
-            <hr>
-
+        </div>
+        <div class="col-md-6">
             <div class="card1 mb">
-            <table style="width:100%">
-            <caption><?= Yii::t('app', '.') ?></caption>
-                  <th scope="col" class="text-center" style="width: 100px;">
-                    <label style="font-size: 15px;"><em class="fas fa-chart-pie" style="font-size: 15px; color: #559FFF;"></em> <?= Yii::t('app', 'Grafica Tipos de Categoria') ?></label>
-                      <div id="containerA" class="highcharts-container" style="height: 150px;"></div> 
-                  </th>
-            </table>
-            </div>
-
-            <hr>
-            
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 15px; color: #b52aef;"></em> <?= Yii::t('app', 'Última Fecha Actualización:') ?></label> 
+                <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 15px; color: #b52aef;"></em> <?= Yii::t('app', 'Última Fecha de Actualización:') ?></label> 
                 <label  style="font-size: 20px; text-align: center;"><?= Yii::t('app', $varfechaMax) ?></label>
             </div>
-
-        </div>
+        </div>  
         
-        <div class="col-md-8"><!-- inicio del div de la tarjeta de tamaño 8 -->
+
+    </div>
+    <br><hr><br>
+    <div class="row">  
+        
+        
+        <div class="col-md-12"><!-- inicio del div de la tarjeta de tamaño 8 -->
             <div class="card1 mb"><!-- div de la carta principal donde van a ir la informacion ---( me pone la tarjeta)-------------------> 
 
                 <table id="myTable" class="table table-hover table-bordered" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
                     <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Glosario') ?></label></caption><!--Titulo de la tabla si se muestra-->
                      <thead><!--Emcabezados de la tabla -->
-                    <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px; width:140px; color:white;" ><?= Yii::t('app', 'Tipo Categoria') ?></label></th>
-                    <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px; width:140px; color:white;"><?= Yii::t('app', 'Marca/Canal/Agente') ?></label></th>
-                    <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px; width:140px; color:white;"><?= Yii::t('app', 'Nombre de la Categoria') ?></label></th>
-                    <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px; width:10; color:white;"><?= Yii::t('app', 'Descripción') ?></label></th>
-                    <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px; width:10; color:white;"><?= Yii::t('app', 'Variables y Ejemplos') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px;  color:white;" ><?= Yii::t('app', 'Categoria') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px;  color:white;" ><?= Yii::t('app', 'Tipo Categoria') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app', 'Indicador') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app','Responsabilidad (Agente/Marca/Canal/Mixta)') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px; color:white;"><?= Yii::t('app', 'Descripción') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app', 'Ejemplos') ?></label></th>
                     </thead>
                     <tbody><!--Tbody de la tabla -->
 
@@ -231,11 +263,46 @@ $varTipoCategoria = (new \yii\db\Query())
                     ?>
 
                     <tr><!--Filas de la tabla -->
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['tipocategoria']; ?></label></td>
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['marca_canal_agente']; ?></label></td>
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['nombrecategoria']; ?></label></td>
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['descripcioncategoria']; ?></label></td>
-                    <td class="text-center"><label style="font-size: 12px;"><?php echo $value['variablesejemplos']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['categoria']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['tipocategoria']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['indicador']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['marca_canal_agente']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['descripcioncategoria']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['variablesejemplos']; ?></label></td>
+                    </tr>
+                    <?php  }   ?>  
+                
+          
+                    </tbody><!--fin Tbody de la tabla -->
+                </table>
+                
+                <table  id="myTablehidden"  class="table table-hover table-bordered" hidden="hidden;" style="margin-top:20px" ><!--Titulo de la tabla no se muestra-->
+                    <caption><label><em class="fas fa-list" style="font-size: 20px; color: #b52aef;"></em> <?= Yii::t('app', 'Glosario') ?></label></caption><!--Titulo de la tabla si se muestra-->
+                     <thead><!--Emcabezados de la tabla -->
+                        <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px;  color:white;" ><?= Yii::t('app', 'Categoria') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1"><label style="font-size: 15px;  color:white;" ><?= Yii::t('app', 'Tipo Categoria') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app', 'Indicador') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app','Responsabilidad (Agente/Marca/Canal/Mixta)') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px; color:white;"><?= Yii::t('app', 'Descripción') ?></label></th>
+                        <th scope="col" class="text-center" style="background-color: #6b97b1;"><label style="font-size: 15px;  color:white;"><?= Yii::t('app', 'Ejemplos') ?></label></th>
+                    </thead>
+                    <tbody><!--Tbody de la tabla -->
+
+                  
+                
+          
+                    <?php
+                    foreach ($varData as $key => $value) {
+
+                    ?>
+
+                    <tr><!--Filas de la tabla -->
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['categoria']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['tipocategoria']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['indicador']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['marca_canal_agente']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['descripcioncategoria']; ?></label></td>
+                        <td class="text-center"><label style="font-size: 12px;"><?php echo $value['variablesejemplos']; ?></label></td>
                     </tr>
                     <?php  }   ?>  
                 
@@ -308,7 +375,7 @@ $varTipoCategoria = (new \yii\db\Query())
     function download(){
         $(document).find('tfoot').remove();
         var name = document.getElementById("name");
-        tableToExcel('myTable', 'Plantilla_Glosario', name+'.xls')
+        tableToExcel('myTablehidden','Plantilla_Glosario', name+'.xlxs')
         //setTimeout("window.location.reload()",0.0000001);
 
     }

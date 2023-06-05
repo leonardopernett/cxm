@@ -12,10 +12,13 @@ use Yii;
  * @property string $nombrecategoria
  * @property string $descripcioncategoria
  * @property string $variablesejemplos
- * @property integer $cod_pcrc
+ * @property string $cod_pcrc
  * @property integer $anulado
  * @property integer $usua_id
  * @property string $fechacreacion
+ * @property string $marca_canal_agente
+ * @property string $categoria
+ * @property string $indicador
  */
 class Speechglosario extends \yii\db\ActiveRecord
 {
@@ -33,12 +36,13 @@ class Speechglosario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cod_pcrc', 'anulado', 'usua_id'], 'integer'],
+            [['anulado', 'usua_id'], 'integer'],
             [['fechacreacion'], 'safe'],
-            [['tipocategoria'], 'string', 'max' => 100],
+            [['tipocategoria', 'categoria', 'indicador'], 'string', 'max' => 100],
             [['nombrecategoria'], 'string', 'max' => 200],
-            [['marca_canal_agente'], 'string', 'max' => 30],
-            [['descripcioncategoria', 'variablesejemplos'], 'string', 'max' => 500]
+            [['descripcioncategoria', 'variablesejemplos'], 'string', 'max' => 500],
+            [['cod_pcrc'], 'string', 'max' => 50],
+            [['marca_canal_agente'], 'string', 'max' => 30]
         ];
     }
 
@@ -48,16 +52,18 @@ class Speechglosario extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_glosario' => Yii::t('app', 'Id Glosario'),
-            'tipocategoria' => Yii::t('app', 'Tipocategoria'),
-            'nombrecategoria' => Yii::t('app', 'Nombrecategoria'),
-            'descripcioncategoria' => Yii::t('app', 'Descripcioncategoria'),
-            'variablesejemplos' => Yii::t('app', 'Variablesejemplos'),
-            'cod_pcrc' => Yii::t('app', 'Cod Pcrc'),
-            'anulado' => Yii::t('app', 'Anulado'),
-            'usua_id' => Yii::t('app', 'Usua ID'),
-            'fechacreacion' => Yii::t('app', 'Fechacreacion'),
-            'marca_canal_agente' => Yii::t('app', ' MarcaCanalAgente'),
+            'id_glosario' => Yii::t('app', ''),
+            'tipocategoria' => Yii::t('app', ''),
+            'nombrecategoria' => Yii::t('app', ''),
+            'descripcioncategoria' => Yii::t('app', ''),
+            'variablesejemplos' => Yii::t('app', ''),
+            'cod_pcrc' => Yii::t('app', ''),
+            'anulado' => Yii::t('app', ''),
+            'usua_id' => Yii::t('app', ''),
+            'fechacreacion' => Yii::t('app', ''),
+            'marca_canal_agente' => Yii::t('app', ''),
+            'categoria' => Yii::t('app', ''),
+            'indicador' => Yii::t('app', ''),
         ];
     }
 }
