@@ -105,6 +105,8 @@ use GuzzleHttp;
       }
       $varArraySale = implode(",", $varArrayTrack);
 
+      ob_start();
+
       $curl = curl_init();
 
       curl_setopt_array($curl, array(
