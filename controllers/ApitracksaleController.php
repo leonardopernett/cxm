@@ -256,7 +256,7 @@ use GuzzleHttp;
                         'id_novedad' => 1,
                         'motivo_novedad' => 'Asesor no encontrado en Base de Jarvis. Dato relacional '.$varTimes,
                         'anulado' => 0,
-                        'usua_id' => Yii::$app->user->identity->id,
+                        'usua_id' => 1,
                         'fechacreacion' => date('Y-m-d'),
               ])->execute();
             }
@@ -324,7 +324,7 @@ use GuzzleHttp;
                         'id_trackid' => $varTimes,
                         'time' => $varSatuFechas,                      
                         'anulado' => 0,
-                        'usua_id' => Yii::$app->user->identity->id,
+                        'usua_id' => 1,
                         'fechacreacion' => date('Y-m-d'),
               ])->execute();
 
@@ -334,7 +334,7 @@ use GuzzleHttp;
                         'id_novedad' => 2,
                         'motivo_novedad' => 'Respuesta no concueda con lo parametrizado en la encuesta. Dato relacional '.$varTimes,
                         'anulado' => 0,
-                        'usua_id' => Yii::$app->user->identity->id,
+                        'usua_id' => 1,
                         'fechacreacion' => date('Y-m-d'),
               ])->execute();
             }
@@ -553,7 +553,7 @@ use GuzzleHttp;
                         'id_novedad' => 1,
                         'motivo_novedad' => 'Asesor no encontrado en Base de Jarvis. Dato relacional '.$varTimes,
                         'anulado' => 0,
-                        'usua_id' => Yii::$app->user->identity->id,
+                        'usua_id' => 1,
                         'fechacreacion' => date('Y-m-d'),
               ])->execute();
             }
@@ -621,7 +621,7 @@ use GuzzleHttp;
                         'id_trackid' => $varTimes,
                         'time' => $varSatuFechas,                      
                         'anulado' => 0,
-                        'usua_id' => Yii::$app->user->identity->id,
+                        'usua_id' => 1,
                         'fechacreacion' => date('Y-m-d'),
               ])->execute();
 
@@ -631,7 +631,7 @@ use GuzzleHttp;
                         'id_novedad' => 2,
                         'motivo_novedad' => 'Respuesta no concueda con lo parametrizado en la encuesta. Dato relacional '.$varTimes,
                         'anulado' => 0,
-                        'usua_id' => Yii::$app->user->identity->id,
+                        'usua_id' => 1,
                         'fechacreacion' => date('Y-m-d'),
               ])->execute();
             }
