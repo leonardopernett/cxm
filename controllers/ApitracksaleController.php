@@ -98,7 +98,7 @@ use GuzzleHttp;
       curl_setopt_array($curl, array(
         CURLOPT_SSL_VERIFYPEER=> false,
         CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_URL => 'https://api.tracksale.co/v2/report/answer?start=2023-06-01T00:00:00&end=2023-06-04T23:59:59&codes='.$varArraySale.'&tags=true',
+        CURLOPT_URL => 'https://api.tracksale.co/v2/report/answer?start='.$varFechaInicioEspecial_BD.'&end='.$varFechaFinEspecial_BD.'&codes='.$varArraySale.'&tags=true',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -395,7 +395,7 @@ use GuzzleHttp;
       curl_setopt_array($curl, array(
         CURLOPT_SSL_VERIFYPEER=> false,
         CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_URL => 'https://api.tracksale.co/v2/report/answer?start=2023-06-01T00:00:00&end=2023-06-04T23:59:59&codes='.$varArraySale.'&tags=true',
+        CURLOPT_URL => 'https://api.tracksale.co/v2/report/answer?start='.$varFechaInicioEspecial_BD.'&end='.$varFechaFinEspecial_BD.'&codes='.$varArraySale.'&tags=true',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
