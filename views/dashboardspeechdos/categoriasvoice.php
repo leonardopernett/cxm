@@ -97,7 +97,7 @@ $this->title = 'DashBoard Voz del Cliente';
 
         var varWord1 = "allus";
         var varWord2 = "multienlace";
-        var varWord3 = "grupokonecta";
+        var varWord3 = "konecta";
 
         var nvarWord1 = varDestino.indexOf(varWord1);
         var nvarWord2 = varDestino.indexOf(varWord2);
