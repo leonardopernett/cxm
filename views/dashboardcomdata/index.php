@@ -218,7 +218,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-6">
               <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', 'Listado de Clientes') ?></label>
 
-                <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where(['=','anulado',0])->andwhere(['=','estado',1])->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where(['=','anulado',0])->andwhere(['=','estado',1])->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                                       [
                                                           'id' => 'txtidclientes',
                                                           'prompt'=>'Seleccionar...',

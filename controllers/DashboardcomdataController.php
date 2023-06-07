@@ -115,22 +115,18 @@ use app\models\Comdataparametrizarapi;
 
 
           if ($txtidcliente) {
-            $txtControl = \app\models\SpeechCategorias::find()->distinct()
-              ->select(['tbl_speech_categorias.cod_pcrc'])
-              ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
-                                  'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
-              ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
-              ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
+            $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
+              ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc'])
+              ->where('tbl_proceso_cliente_centrocosto.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
+              ->andwhere('tbl_proceso_cliente_centrocosto.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
               ->count();
 
             if ($txtControl > 0) {
-              $varListaLideresx = \app\models\SpeechCategorias::find()->distinct()
-                  ->select(['tbl_speech_categorias.cod_pcrc','tbl_speech_categorias.pcrc'])
-                  ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
-                                      'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
-                  ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
-                  ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
-                  ->groupby(['tbl_speech_categorias.cod_pcrc'])                  
+              $varListaLideresx = \app\models\ProcesosClienteCentrocosto::find()->distinct()
+                  ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])
+                  ->where('tbl_proceso_cliente_centrocosto.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
+                  ->andwhere('tbl_proceso_cliente_centrocosto.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
+                  ->groupby(['tbl_proceso_cliente_centrocosto.cod_pcrc'])                  
                   ->all(); 
 
               echo "<option value='' disabled selected>Seleccionar...</option>";
