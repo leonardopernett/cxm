@@ -350,6 +350,7 @@ use app\models\FormUploadtigo;
                                 ->andwhere(['in','cod_pcrc',$varListaCodPcrcVoice])
                                 ->andwhere(['=','idcategorias',1])
                                 ->groupby(['idcategoria'])
+                                ->orderby(['nombre' => SORT_ASC])
                                 ->all();
 
       $data = Yii::$app->request->post();     
