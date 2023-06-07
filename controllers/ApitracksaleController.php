@@ -91,6 +91,7 @@ use GuzzleHttp;
       }
       $varArraySale = implode(",", $varArrayTrack);
 
+
       ob_start();
 
       $curl = curl_init();
@@ -348,9 +349,10 @@ use GuzzleHttp;
       $this->Generarrecalculartipologia();
 
       die();
-    }
+    }    
 
     public function actionApitrackencuestas(){
+
       $datapost = file_get_contents('php://input');
       $data_post = json_decode($datapost,true);
 
