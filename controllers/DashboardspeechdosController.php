@@ -89,10 +89,10 @@ use app\models\FormUploadtigo;
                       ->count();
 
         if ($varVericaFecha != 0) {
-          var_dump("Aqui ingresa");
+          
           $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]));
         }else{
-          var_dump("Veamos aqui");
+          
           $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]."+ 1 days"));
         }
 
@@ -281,7 +281,10 @@ use app\models\FormUploadtigo;
             ->where(['in','cod_pcrc',$varListaCodPcrcVoice])
             ->andwhere(['=','anulado',0])
             ->Scalar();
-
+      if ($varSociedadHoraInicio_iv == "") {
+        $varSociedadHoraInicio_iv = ' 05:00:00';
+      }
+ 
       $varSociedadHoraFinal_iv = (new \yii\db\Query())
             ->select([
               'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
@@ -290,6 +293,9 @@ use app\models\FormUploadtigo;
             ->where(['in','cod_pcrc',$varListaCodPcrcVoice])
             ->andwhere(['=','anulado',0])
             ->Scalar();
+      if ($varSociedadHoraFinal_iv == "") {
+        $varSociedadHoraFinal_iv = ' 05:00:00';
+      }
 
       $varNombrePcrcVoice =   (new \yii\db\Query())
                               ->select(['CONCAT(cod_pcrc," - ",pcrc) as NombrePcrc'])
@@ -806,9 +812,9 @@ use app\models\FormUploadtigo;
 
       if($model->load($form)){
         $txtIdServicio = $model->idservicios;
-        var_dump($txtIdServicio);
+        
         $txtIdArbol = $model->arbol_id;
-        var_dump($txtIdArbol);
+        
 
         Yii::$app->db->createCommand()->update('tbl_dashboardservicios',[
                                           'arbol_id' => $txtIdArbol,
@@ -3047,10 +3053,7 @@ use app\models\FormUploadtigo;
         }
 
         public function actionElegirprograma($varcod, $varfecha){
-          $model2 = new ProcesosVolumendirector(); 
-
-          
-            var_dump($varcod);
+          $model2 = new ProcesosVolumendirector();           
 
              return $this->renderAjax('createelegirprograma',[
                  'model2'=>$model2,
@@ -4797,7 +4800,7 @@ public function actionCantidadentto(){
         ));
 
         $response = curl_exec($curl);
-        var_dump($response);
+        
 
         curl_close($curl);
         ob_clean();
@@ -6298,7 +6301,7 @@ public function actionCantidadentto(){
         ));
 
         $response = curl_exec($curl);
-        var_dump($response);
+        
 
         curl_close($curl);
         ob_clean();
@@ -6351,6 +6354,33 @@ public function actionCantidadentto(){
       $varcantllamadas = $vartcantllamadas;
       $varAnulados = 0;
 
+      $varListaCodPcrcVoicefocalizada = explode(",", str_replace(array("#", "'", ";", " "), '', $paramsvarcodigopcrc));
+      // Agregar Procesos de socieadd identificacion - Hora inicial y final Parte 2
+      $varSociedadHoraInicio_ivf = (new \yii\db\Query())
+            ->select([
+              'if(tbl_speech_pcrcsociedades.id_sociedad=5," 00:00:00"," 05:00:00") AS varTiempoInicio'
+            ])
+            ->from(['tbl_speech_pcrcsociedades'])            
+            ->where(['in','cod_pcrc',$varListaCodPcrcVoicefocalizada])
+            ->andwhere(['=','anulado',0])
+            ->Scalar();
+      if ($varSociedadHoraInicio_ivf == "") {
+        $varSociedadHoraInicio_ivf = ' 05:00:00';
+      }
+
+      $varSociedadHoraFinal_ivf = (new \yii\db\Query())
+            ->select([
+              'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
+            ])
+            ->from(['tbl_speech_pcrcsociedades'])            
+            ->where(['in','cod_pcrc',$varListaCodPcrcVoicefocalizada])
+            ->andwhere(['=','anulado',0])
+            ->Scalar();
+      if ($varSociedadHoraFinal_ivf == "") {
+        $varSociedadHoraFinal_ivf = ' 05:00:00';
+      }
+      
+      
       $datafechas = $varfechainireal.' - '.$varfechafinreal;
 
       $paramsBuscarCategoriaGeneral = [':varPcrc' => $paramsvarcodigopcrc];
@@ -6392,7 +6422,7 @@ public function actionCantidadentto(){
             WHERE
               sa.cod_pcrc IN (:varPcrc)')->bindValues($paramsBuscarCategoriaGeneral)->queryScalar();
       $cantidadAleatoria = intval($cantidadAleatoria);
-
+      
 
       $form = Yii::$app->request->post();
       if ($model->load($form)) {
@@ -6515,7 +6545,7 @@ public function actionCantidadentto(){
             ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
                                   'tbl_base_satisfaccion.connid = tbl_dashboardspeechcalls.connid')
             ->where(['=','tbl_dashboardspeechcalls.servicio',$databolsita])
-            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])
+            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio.$varSociedadHoraInicio_ivf,$paramsvarfechasfin.$varSociedadHoraFinal_ivf])
             ->andwhere(['=','tbl_dashboardspeechcalls.anulado',$varAnulados])
             ->andwhere(['IN','tbl_dashboardspeechcalls.extension',$arrayExtTwo])
             ->andwhere(['=','tbl_base_satisfaccion.tipologia',$dataTipologia])
@@ -6539,7 +6569,7 @@ public function actionCantidadentto(){
             ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
                                   'tbl_speech_general.callid = tbl_dashboardspeechcalls.callid')
             ->where(['=','tbl_dashboardspeechcalls.servicio',$databolsita])
-            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])            
+            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio.$varSociedadHoraInicio_ivf,$paramsvarfechasfin.$varSociedadHoraFinal_ivf])            
             ->andwhere(['=','tbl_dashboardspeechcalls.anulado',$varAnulados])
             ->andwhere('tbl_dashboardspeechcalls.idcategoria != :varGeneralCategoria',[':varGeneralCategoria'=>$dataidgeneral])
             ->andwhere(['IN','tbl_dashboardspeechcalls.extension',$arrayExtTwo])
@@ -6562,7 +6592,7 @@ public function actionCantidadentto(){
             ->select(['tbl_dashboardspeechcalls.callId','tbl_dashboardspeechcalls.idcategoria','tbl_dashboardspeechcalls.nombreCategoria','tbl_dashboardspeechcalls.extension','tbl_dashboardspeechcalls.login_id','tbl_dashboardspeechcalls.fechallamada','tbl_dashboardspeechcalls.callduracion','tbl_dashboardspeechcalls.servicio','tbl_dashboardspeechcalls.fechareal','tbl_dashboardspeechcalls.idredbox','tbl_dashboardspeechcalls.idgrabadora','tbl_dashboardspeechcalls.connid','tbl_dashboardspeechcalls.extensiones'])
             ->from(['tbl_dashboardspeechcalls'])
             ->where(['=','tbl_dashboardspeechcalls.servicio',$databolsita])
-            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])            
+            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio.$varSociedadHoraInicio_ivf,$paramsvarfechasfin.$varSociedadHoraFinal_ivf])            
             ->andwhere(['=','tbl_dashboardspeechcalls.anulado',$varAnulados])
             ->andwhere('tbl_dashboardspeechcalls.idcategoria != :varGeneralCategoria',[':varGeneralCategoria'=>$dataidgeneral])
             ->andwhere(['IN','tbl_dashboardspeechcalls.extension',$arrayExtTwo])
@@ -6579,7 +6609,7 @@ public function actionCantidadentto(){
             ->join('LEFT OUTER JOIN', 'tbl_dashboardspeechcalls',
                                   'tbl_speech_general.callid = tbl_dashboardspeechcalls.callid')
             ->where(['=','tbl_dashboardspeechcalls.servicio',$databolsita])
-            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio,$paramsvarfechasfin])            
+            ->andwhere(['BETWEEN','tbl_dashboardspeechcalls.fechallamada',$paramsvarfechasinicio.$varSociedadHoraInicio_ivf,$paramsvarfechasfin.$varSociedadHoraFinal_ivf])            
             ->andwhere(['=','tbl_dashboardspeechcalls.anulado',$varAnulados])
             ->andwhere('tbl_dashboardspeechcalls.idcategoria != :varGeneralCategoria',[':varGeneralCategoria'=>$dataidgeneral])
             ->andwhere(['IN','tbl_dashboardspeechcalls.extension',$arrayExtTwo])
@@ -6602,7 +6632,7 @@ public function actionCantidadentto(){
             ->select(['*'])
             ->from(['tbl_dashboardspeechcalls'])
             ->where('servicio = :varServicio',[':varServicio'=>$databolsita])
-            ->andwhere('fechallamada BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>$paramsvarfechasinicio,':varFechafines'=>$paramsvarfechasfin])
+            ->andwhere('fechallamada BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>$paramsvarfechasinicio.$varSociedadHoraInicio_ivf,':varFechafines'=>$paramsvarfechasfin.$varSociedadHoraFinal_ivf])
             ->andwhere('idcategoria = :varCategoriGeneral',[':varCategoriGeneral'=>$dataidgeneral])
             ->andwhere('anulado = :varAnulado',[':varAnulado'=>$varAnulados])
             ->andwhere(['IN','extension',$arrayExtTwo])
@@ -6616,7 +6646,7 @@ public function actionCantidadentto(){
             ->select(['*'])
             ->from(['tbl_dashboardspeechcalls'])
             ->where('servicio = :varServicio',[':varServicio'=>$databolsita])
-            ->andwhere('fechallamada BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>$paramsvarfechasinicio,':varFechafines'=>$paramsvarfechasfin])
+            ->andwhere('fechallamada BETWEEN :varFechainicios AND :varFechafines',[':varFechainicios'=>$paramsvarfechasinicio.$varSociedadHoraInicio_ivf,':varFechafines'=>$paramsvarfechasfin.$varSociedadHoraFinal_ivf])
             ->andwhere('idcategoria = :varCategoriGeneral',[':varCategoriGeneral'=>$dataidgeneral])
             ->andwhere('anulado = :varAnulado',[':varAnulado'=>$varAnulados])
             ->andwhere(['IN','extension',$arrayExtTwo])
@@ -6625,8 +6655,6 @@ public function actionCantidadentto(){
         }   
         
       }    
-
-       
 
       return $this->render('llamadafocalizada',[
         'model' => $model,
