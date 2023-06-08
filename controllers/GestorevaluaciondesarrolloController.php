@@ -24,9 +24,10 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     public function behaviors(){
         return[
+        
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','parametrizador'],
+            'only' => ['index','parametrizador', 'cargardatostablapreguntas', 'crearpregunta', 'editarpregunta', 'eliminarpregunta'],
             'rules' => [
                 [
                 'allow' => true,
@@ -34,13 +35,13 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 'matchCallback' => function() {
                             return Yii::$app->user->identity->isCuadroMando()  || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerevaluacion() || Yii::$app->user->identity->isVerdirectivo();
                         },
-                ],
+                ]
             ]
             ],
         'verbs' => [          
             'class' => VerbFilter::className(),
             'actions' => [
-            'delete' => ['post'],
+            'delete' => ['post']
             ],
         ],
         ];
@@ -60,23 +61,132 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     public function actionParametrizador(){
         $modalPreguntas = new GestorEvaluacionPreguntas();
-        $modalRespuestas = new EvaluacionRespuestas();       
-
-        $array_preguntas = [
-            ['pregunta' => 'Brindamos soluciones','descripcion' => "Obtener información relevante e identificar los elementos críticos de las situaciones, sus implicaciones y detalles relevantes para elegir acciones apropiadas, propones soluciones y hace que las cosas pasen"],
-            ['pregunta' => 'Nos transformamos', 'descripcion' => "Capacidad de anticiparse y aprovechar las oportunidades de cambio y realizar transformaciones exitosas en la organización."],
-            ['pregunta' => 'Servimos con pasión', 'descripcion' => "Pasión por brindar un excelente trato y una experiencia agradable y memorable tanto a clientes internos como externos. Representa servir a las personas, generando conexión, empatía y un impacto positivo en sus clientes."],
-            ['pregunta' => 'Excelencia en Resultados', 'descripcion' => "Capacidad de promover acciones específicas y de alto valor para la consecución de los mejores resultados para si mismo, su equipo de trabajo, organización y clientes, por medio de la innovación, medición y retroalimentación de  los logros obtenidos."],
-            ['pregunta' => 'Autocuidado', 'descripcion' => "Capacidad para elegir libremente una forma segura de trabajar, reconoce los Factores de Riesgo que pueden afectar su salud y de las personas a su alrededor y que pueden influir en el desempeño y/o producir accidentes de trabajo o enfermedades profesionales."],
-        ];
-
+        $modalRespuestas = new EvaluacionRespuestas();
+        
 
         return $this->render('parametrizador', [
             'modalPreguntas' => $modalPreguntas,
             'modalRespuestas' => $modalRespuestas,
-            'array_preguntas' => $array_preguntas
         ]);
-    }   
+    } 
+
+    public function actionCargardatostablapreguntas(){ 
+
+        $id_evaluacion = Yii::$app->request->get('id');
+
+        $datos = GestorEvaluacionPreguntas::find()
+        ->select(['id_evaluacionnombre', 'id_gestorevaluacionpreguntas', 'nombrepregunta', 'descripcionpregunta'])
+        ->where(['id_evaluacionnombre' => $id_evaluacion,
+                  'anulado'=>'0'])
+        ->asArray()
+        ->all();  
+
+        $response = [
+            'status' => 'success',
+            'data' => $datos,
+        ];
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        return $response;
+    }
+
+    public function actionCrearpregunta(){
+
+        $model = new GestorEvaluacionPreguntas();
+
+        // Asignar los valores al modelo
+        $model->id_evaluacionnombre = Yii::$app->request->post('id_evaluacion');
+        $model->nombrepregunta = Yii::$app->request->post('nom_pregunta');
+        $model->descripcionpregunta =  Yii::$app->request->post('descripcion_pregunta');
+        $model->usua_id = Yii::$app->user->identity->id;
+        
+        
+        if ($model->save()) {            
+            // $nuevaData = $model->attributes;
+            // unset($nuevaData['fechacreacion']);
+            // unset($nuevaData['usua_id']);
+            // unset($nuevaData['anulado']);            
+
+            $response = [
+                'status' => 'success',
+                'data' => 'Los datos se guardaron correctamente.'
+            ];
+
+        } else {        
+            // Ocurrió un error al guardar los datos
+            $response = [
+                'status' => 'error',
+                'data' => 'Ocurrió un error al guardar los datos.',
+            ];
+        }        
+         
+        // return json_encode(['status' => 'success', 'nuevaFila' => $nuevaFila]);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; // Devuelve la respuesta en formato JSON
+
+        return $response;
+
+        die(json_encode("Finaliza correctamente la accion"));
+    }
+
+    public function actionEditarpregunta(){
+
+        $form = Yii::$app->request->post();
+
+        $id_pregunta = $form['id_evaluacion_pregunta'];
+        $nombre_editado = $form['pregunta_edit'];
+        $descripcion_editada = $form['descripcion_edit']; 
+
+        $actualizar_datos = Yii::$app->db->createCommand()->update('tbl_gestor_evaluacion_preguntas',[
+            'nombrepregunta' => $nombre_editado,
+            'descripcionpregunta' => $descripcion_editada
+        ],'id_gestorevaluacionpreguntas ='.$id_pregunta.'')->execute();
+        
+        if(!$actualizar_datos){
+            $response = [
+                'status' => 'error',
+                'data' => 'Ocurrió un error al actualizar los datos',
+            ];
+        }
+
+        $response = [
+            'status' => 'success',
+            'data' => 'Datos actualizados correctamente',
+        ]; 
+
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        return $response;     
+
+    }
+
+    public function actionEliminarpregunta() {
+
+        $id_pregunta = Yii::$app->request->post('id_pregunta');
+
+        $eliminar_logicamente_datos = Yii::$app->db->createCommand()->update('tbl_gestor_evaluacion_preguntas',[
+            'anulado' => 1,
+        ],'id_gestorevaluacionpreguntas ='.$id_pregunta.'')->execute();
+
+        if(!$eliminar_logicamente_datos){
+            $response = [
+                'status' => 'error',
+                'data' => 'Ocurrió un error al eliminar los datos',
+            ];
+        }
+
+        $response = [
+            'status' => 'success',
+            'data' => 'Datos eliminados correctamente',
+        ];  
+
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        return $response;  
+        
+    }
 
 }
 ?>

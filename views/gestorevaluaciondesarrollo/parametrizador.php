@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;    
-   	font-family: var(--font);
+   	font-family: "Nunito",sans-serif;
     font-size: 150%;    
     text-align: left;    
   }
@@ -280,6 +280,60 @@ $this->params['breadcrumbs'][] = $this->title;
     .help-block {
     font-size: 12px; /* Ajusta el tamaño de fuente de las validaciones */
     }
+
+    .dataTables_filter input {
+        width: 150px; /* Ajusta el ancho del campo de búsqueda según tus necesidades */
+        font-size: 12px; /* Ajusta el tamaño de fuente del campo de búsqueda según tus necesidades */
+    }
+
+    .size_font_dataTable {
+        font-size: 14px;
+    }
+
+    .pagination {
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 0;
+        border-radius: 4px;
+    }
+     
+    .column-font-size {
+        font-size: 14px;
+    }
+
+    body #tablePreguntas tbody tr td,
+    body #tablePreguntas tbody tr td a,
+    body #tablePreguntas thead tr th a {
+        font-size: 12px !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        font-size: 11px;
+        padding: 5px 10px !important;
+        
+    }
+    
+    .dataTables_wrapper .dataTables_info {
+        padding-top: 0em  !important;        
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        padding-top: 0em  !important; 
+    }
+
+    .height-text-area {
+        width: 570px;
+        height: 80px;        
+    }
+
+    .table-container {
+        margin: 10px;
+        padding: 10px;
+    }
+    
+
+    
+
 </style>
 
 <!-- Data extensiones -->
@@ -358,7 +412,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 ::find()->select(['nombreeval', 'idevaluacionnombre'])->where("anulado = 0")->all(), 'idevaluacionnombre', 'nombreeval'),
                                                                 [
                                                                     'id' => 'id_nombre_evaluacion',
-                                                                    'prompt'=>'Seleccionar Evaluación...'  
+                                                                    'prompt'=>'Seleccionar Evaluación...',
+                                                                    'onchange' => 'cargarDatosTablaPreguntas()'
                                                                 ]
                                                             )->label(''); 
                                                         ?>
@@ -369,66 +424,62 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     </div>
                                                     <div class="col-md-12">
                                                         <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em><?= Yii::t('app', ' Ingresar Descripción') ?></label>
-                                                        <?= $form->field($modalPreguntas, 'descripcionpregunta',  ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => true, 'id'=>'id_descripcion_pregunta'])?>                                                    
+                                                        <?= $form->field($modalPreguntas, 'descripcionpregunta',  ['labelOptions' => ['class' => 'col-md-12 '], 'template' => $template])->textArea(['maxlength' => true, 'id'=>'id_descripcion_pregunta'])?>                                                    
                                                     </div>
                                             </div>
-                                            <div class="row" style="margin-top: 18px;">
-                                                <div class="col-md-6">
-                                                    <?= Html::submitButton(Yii::t('app', 'Guardar'),
+                                            <div class="row" style="margin-top: 18px; margin-bottom: 18px;">
+                                                <div class="col-md-12">
+                                                    <?= Html::submitButton(Yii::t('app', 'Guardar Datos'),
                                                         ['class' => 'btn btn-success btn-block' ,
                                                         'data-toggle' => 'tooltip',
-                                                        'onclick' => 'guardarPregunta();',
+                                                        'onclick' => 'crearPregunta();',
                                                         'style' => '',
-                                                        'title' => 'Guardar datos']) 
+                                                        ]) 
                                                     ?>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <?= Html::submitButton(Yii::t('app', 'Cancelar'),
-                                                        ['class' => 'btn btn-success btn-block',
-                                                        'data-toggle' => 'tooltip',
-                                                        'style'=>'background-color: #707372',
-                                                        'onclick' => '',
-                                                        'title' => 'Cancelar']) 
-                                                    ?> 
-                                                </div>
+                                                </div>                                                
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-7">
-                                        <div class="card1 mb"> 
-                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Preguntas') ?></label>
-
-                                        <table id="tablePreguntas" class="table table-hover table-bordered">
-                                            <caption><label style="font-size: 15px;"><em class="fas fa-hashtag" style="color: #827DF9;"></em><?= Yii::t('app', ' Competencias') ?></label></caption>
-                                            <thead>                                                    
-                                                <tr>
-                                                    <th class="text-center" style="background-color: #C6C6C6; width: 30%;">
-                                                        <label style="font-size: 15px;"><?= Yii::t('app', 'Preguntas') ?></label>
-                                                    </th>
-                                                    <th class="text-center" style="background-color: #C6C6C6; width: 65%">
-                                                        <label style="font-size: 15px;"><?= Yii::t('app', 'Descripción') ?></label>
-                                                    </th>
-                                                    <th class="text-center" style="background-color: #C6C6C6; width: 5%">
-                                                        <label style="font-size: 15px;"><?= Yii::t('app', 'Acción') ?></label>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php foreach ($array_preguntas as $fila):?>
-                                                <tr>
-                                                    <td><label style="font-size: 13px;"><?= Yii::t('app', $fila['pregunta']) ?></label></td> 
-                                                    <td><label style="font-size: 13px;"><?= Yii::t('app', $fila['descripcion']) ?></label></td>  
-                                                    <td  class="text-center">
-                                                        <?= Html::a('<em class="glyphicon glyphicon-pencil"></em>', ['editar', ['class' => 'btn btn-primary', 'title' => 'Editar']]) ?>
-                                                        <?= Html::a('<em class="glyphicon glyphicon-trash"></em>', ['eliminar', ['class' => 'btn btn-danger', 'title' => 'Eliminar', 'data' => ['confirm' => '¿Estás seguro de eliminar esta fila?']]]) ?>
-                                                    </td>                                                  
-                                                </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
+                                        <div class="card1 mb" style="width:100%"> 
+                                            <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Preguntas') ?></label>
+                                            <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No hay datos para mostrar') ?></label>
                                             
-                                        </table>                                            
-                                        </div>  
+                                            <div class="table-responsive table-container" id="container_table_preguntas">                                
+                                                <table id="tablePreguntas" class="table table-hover table-striped table-bordered table-condensed table-celda" style="width:100% !important;" aria-hidden="true" >
+                                                </table>    
+                                            </div>            
+                                        </div> 
+                                        <!-- Modal Editar Pregunta -->
+                                        <?php
+                                            Modal::begin([
+                                                'id' => 'modalEditar',
+                                                'header' => '<h4>Editar Pregunta</h4>',
+                                                'footer' => Html::button('Actualizar datos', ['class' => 'btn btn-success btn-block', 'style'=>'margin-top: 1.5%; padding:0.5%', 'id' => 'guardarCambios', 'onClick' => 'editarPregunta();']),
+                                            ]);
+
+                                            ActiveForm::begin([
+                                                'id' => 'formEditarPregunta', 
+                                            ]);
+                                           
+                                            echo '<div class="row" id="modal_edit_pregunta">';
+                                            echo '<div class="col-md-12">';
+                                            echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar Pregunta </label>';
+                                            echo $form->field($modalPreguntas, 'nombrepregunta',  ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'nombre_pregunta_edit','placeholder'=>'Ingresar pregunta']);
+                                            echo '</div>';
+                                            echo '<div class="col-md-12" style="margin-top: 20px">';
+                                            echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar descripción</label>';           
+                                            echo $form->field($modalPreguntas, 'descripcionpregunta',  ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'descripcion_pregunta_edit', 'style'=>'width: 570px; height: 80px;']);
+                                            echo '</div>';
+                                            echo '</div>';
+                                            
+                                            
+                                            ActiveForm::end();
+
+                                            Modal::end();
+                                        ?> 
+                                        <!-- Modal Editar Pregunta Fin -->
                                     </div>
                                 </div> 
                             </div>
@@ -487,6 +538,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                         </div>
                         <!-- TAB CONTENT END-->
+                        <br>
+                        <br>
                     </div>
                     <!-- TAB LINKS END -->
                 </div>
@@ -496,7 +549,9 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 
-<script>
+
+<script type="text/javascript">
+
     function openCity(evt, cityName) {
     var i, x, tablinks;
     x = document.getElementsByClassName("city");
@@ -511,23 +566,28 @@ $this->params['breadcrumbs'][] = $this->title;
     evt.currentTarget.firstElementChild.className += " w3-border-red";
   };
 
-  function guardarPregunta(){
-      //obtener valor de lso campos
-    var var_id_evaluacion = document.getElementById("id_nombre_evaluacion").value;
-    var var_nombre_pregunta = document.getElementById("id_nom_pregunta").value;
-    var var_descrip_pregunta = document.getElementById("id_descripcion_pregunta").value;
+  //FUNCION CREAR PREGUNTA
+  function crearPregunta(){    
+    var id_evaluacion_selector = document.getElementById("id_nombre_evaluacion");
+    var nombre_pregunta_selector = document.getElementById("id_nom_pregunta");
+    var descrip_pregunta_selector = document.getElementById("id_descripcion_pregunta");
+
+    //obtener valor de los campos
+    var id_evaluacion_txt = id_evaluacion_selector.value;
+    var nombre_pregunta_txt = nombre_pregunta_selector.value;
+    var descrip_pregunta_txt = descrip_pregunta_selector.value;
     
     //Validacion de campos    
-    if (var_id_evaluacion == "") {
-        swal.fire("","No ha seleccionado la Evaluación","warning");
+    if (id_evaluacion_txt == "") {
+        swal.fire("!!! Advertencia !!!","No ha seleccionado la Evaluación","warning");
         return;
     }
-    if (var_nombre_pregunta == "") {
-        swal.fire("","El nombre de la pregunta esta vacío","warning");
+    if (nombre_pregunta_txt == "") {
+        swal.fire("!!! Advertencia !!!","No ha ingresado la pregunta","warning");
         return;
     }
-    if (var_descrip_pregunta == "") {
-        swal.fire("!","La descripción esta vacía","warning");
+    if (descrip_pregunta_txt == "") {
+        swal.fire("!!! Advertencia !!!","No ha ingresado la descripción","warning");
         return;
     }
 
@@ -536,24 +596,279 @@ $this->params['breadcrumbs'][] = $this->title;
         method: "post",
         url: "crearpregunta",
         data: {
-            id_evaluacion: var_id_evaluacion,
-            nom_pregunta: var_nombre_pregunta,
-            descripcion_pregunta: var_descrip_pregunta,
+            id_evaluacion: id_evaluacion_txt,
+            nom_pregunta: nombre_pregunta_txt,
+            descripcion_pregunta: descrip_pregunta_txt,
+            _csrf:'<?=\Yii::$app->request->csrfToken?>'
         },
         success: function(response) {
-            var numRtaT = JSON.parse(response);
-            console.log("parseado el json: ", numRtaT );
-            console.log("Sin parsear: ", response );            
-            location.reload();
+
+            if (response.status === 'error') {
+                swal.fire("",response.data,"error");
+                return;
+            } 
+            // Procesar la respuesta exitosa
+            if (response.status === 'success') {
+
+                $( "#container_table_preguntas" ).show();
+                cargarDatosTablaPreguntas();
+
+                nombre_pregunta_selector.value = '';
+                descrip_pregunta_selector.value = '';
+
+                swal.fire("",response.data,"info");
+                return;
+            }                  
+            
         },
         error: function(jqXHR, textStatus, errorThrown) {
             
-            swal.fire("","Error obteniendo datos en: guardarPregunta","error");
+            swal.fire("","Error obteniendo datos en: crearPregunta","error");
             
         }
     });
-    //AJAX end
-            
+    //AJAX end           
                 
     };
+
+    //FUNCION EDITAR PREGUNTA 
+    function editarPregunta(){
+
+        //Obtener valor ingresado
+        var id_evaluacion_txt = $('#modal_edit_pregunta').data("id_gestor");
+        var nombre_pregunta_txt = document.getElementById("nombre_pregunta_edit").value;
+        var descrip_pregunta_txt = document.getElementById("descripcion_pregunta_edit").value;
+        
+        //Validacion de campos
+        if (id_evaluacion_txt == "") {
+            swal.fire("!!! Advertencia !!!","No se pudo obtener el id del nuevo registro","warning");
+            return;
+        }
+
+        if (nombre_pregunta_txt == "") {
+            swal.fire("!!! Advertencia !!!","No ha ingresado la pregunta","warning");
+            return;
+        }
+        if (descrip_pregunta_txt == "") {
+            swal.fire("!!! Advertencia !!!","No ha ingresado la descripción","warning");
+            return;
+        }
+
+        $.ajax({
+            method: "post",
+            url: "editarpregunta",
+            data: {
+                id_evaluacion_pregunta: id_evaluacion_txt,
+                pregunta_edit: nombre_pregunta_txt,
+                descripcion_edit : descrip_pregunta_txt,
+                _csrf:'<?=\Yii::$app->request->csrfToken?>'
+            },
+            success: function(response) {
+
+                if(response.status=="error"){
+                    swal.fire("!!! Error !!!",response.data,"error");
+                    return;                    
+                }
+
+                if(response.status=="success"){
+                    cargarDatosTablaPreguntas();
+                    swal.fire("",response.data,"success");                    
+                    $('#modalEditar').modal('hide');                                        
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Manejar el error
+                console.log("Error al cargar los datos en editarPregunta: ", errorThrown);
+            }
+        });
+
+    }
+    //FUNCION EDITAR PREGUNTA FIN
+
+    //FUNCION ELIMINAR PREGUNTA
+    function eliminarPregunta($id_pregunta){ 
+
+        var id_pregunta_eliminar = $id_pregunta;        
+
+        if (id_pregunta_eliminar == "") {
+            swal.fire("!!! Error !!!","No llegó el id de la pregunta a eliminar","error");
+            return;
+        }
+
+        $.ajax({
+            method: "post",
+            url: "eliminarpregunta",
+            data: {
+                id_pregunta: id_pregunta_eliminar,                
+                _csrf:'<?=\Yii::$app->request->csrfToken?>'
+            },
+            success: function(response) {
+
+                if(response.status=="error"){
+                    swal.fire("!!! Error !!!",response.data,"error");
+                    return;                    
+                }
+
+                if(response.status=="success"){
+                    
+                    swal.fire("",response.data,"success");
+                    cargarDatosTablaPreguntas();                                        
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Manejar el error
+                console.log("Error al cargar los datos eliminarPregunta: ", errorThrown);
+            }
+        });
+
+    }
+    //FUNCION ELIMINAR PREGUNTA FIN
+
+    // FUNCIÓN AGREGAR FILA A UN DATATABLE
+    function agregarFilaEnDatatable(tabla, datos) {        
+        tabla.row.add(datos).draw();
+    }
+    // FUNCIÓN AGREGAR FILA A UN DATATABLE FIN
+
+    // FUNCION PARA MOSTRAR DATOS DE UNA LISTA USANDO EL MISMO DATATABLE 
+    function cargarDatosTablaPreguntas() {
+        var selectedId = $("#id_nombre_evaluacion").val();
+
+        $.ajax({
+            method: "get",
+            url: "cargardatostablapreguntas",
+            data: {
+                id: selectedId,
+            },
+            success: function(response) {
+                console.log("response cargar datos", response);
+                console.log("size data cargar datos", response.data.length);
+
+                if(response.data.length>0) {
+                    $( "#emptyMessage" ).hide();
+                    $( "#container_table_preguntas" ).show();
+
+                    // Limpiar datatable 
+                    $( "#container_table_preguntas" ).empty();
+                    $( "#container_table_preguntas" ).classList= "table-container";
+                    var new_table = document.createElement("table");
+                    new_table.setAttribute("id","tablePreguntas");                 
+                    new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
+                    document.getElementById("container_table_preguntas").appendChild(new_table); 
+                
+                    init_table_preguntas(response.data);
+                }
+
+                if(response.data.length==0){
+                    $( "#container_table_preguntas" ).hide();
+                    $( "#emptyMessage" ).show();
+                   // init_table_preguntas(response.data);
+                }                
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Manejar el error
+                swal.fire("", "Error al cargar los datos en cargarDatosTablaPreguntas: " + errorThrown + ".", "error" );
+                console.log("Error al cargar los datos:", errorThrown);
+            }
+        });
+    }
+    // FUNCION PARA MOSTRAR DATOS DE UNA LISTA USANDO EL MISMO DATATABLE FIN
+
+    function init_table_preguntas(data) {
+
+        if(data.length > 0) {            
+            var tabla_preguntas = $('#tablePreguntas').DataTable({
+            
+            select: true,
+            "autoWidth": true,
+            data:data,
+            select: false,
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay datos disponibles en la Tabla",
+                "lengthMenu": "<span class='size_font_dataTable'> Cantidad de Datos a Mostrar _MENU_ </span>",
+                "zeroRecords": "No se encontraron datos ",
+                "info": "<span style='font-size: 14px;'> Mostrando _START_ a _END_ de _TOTAL_ registros </span>",
+                "infoEmpty": "<span style='font-size: 14px;'> Mostrando 0 de 0 registros </span>",
+                "infoFiltered": "(Filtrado un _MAX_ total)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "search": "<span style='font-size: 14px;'>Buscar:</span>",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "paginate": {
+                "first":      "<span class='size_font_dataTable'> Primero </span>",
+                "last":       "<span class='size_font_dataTable'> Ultimo </span>",
+                "next":       "<span class='size_font_dataTable'> Siguiente </span>",
+                "previous":   "<span class='size_font_dataTable'> Anterior </span>"
+                },
+                "order": [[ 0, "desc" ]],
+                autoWidth : false,
+                "table-layout": "fixed",
+                paging: true,      
+            },
+            
+                "lengthMenu": [5, 10, 25, 50],
+                "pageLength": 5,
+            columnDefs: [
+                { targets: '_all', className: 'column-font-size' }
+            ],
+            columns: [
+                {   title: "Id",
+                    data: 'id_gestorevaluacionpreguntas',
+                    visible : false                   
+                },
+                {   title: "Pregunta",
+                    data: 'nombrepregunta',
+                    width: '20%'
+                   
+                },
+                {    title: "Descripción",
+                    data: 'descripcionpregunta',
+                    width: '70%'
+                },
+                {   title: "Acción",
+                    defaultContent : "<button class='btn btn-xs btn-info edit_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Editar'>  <span class='fas fa-pencil-alt'></span> </button> <button class='btn btn-xs btn-danger delete_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Eliminar' ng-click='delete_pregunta(x)'> <span class='fa fa-trash'> </span> </button>",
+                    searchable : false,
+                    width: '10%'
+                    
+                }
+            ],
+            initComplete : function(){
+
+                // Click Boton Editar
+                $('#tablePreguntas tbody').on( 'click', '.edit_btn', function () {                
+                    var fila = $(this).closest('tr'); // Obtener la fila correspondiente al click                
+                    var datos = tabla_preguntas.row(fila).data(); // Obtener los datos de la fila 
+                    
+                    $('#nombre_pregunta_edit').val(datos.nombrepregunta);
+                    $('#descripcion_pregunta_edit').val(datos.descripcionpregunta);                
+                    $('#modal_edit_pregunta').data('id_gestor', datos.id_gestorevaluacionpreguntas );
+                    $('#modalEditar').modal('show');
+                });
+                // Click Boton Editar Fin
+
+                // Click Boton Eliminar
+                $('#tablePreguntas tbody').on( 'click', '.delete_btn', function () {
+                    var datos = tabla_preguntas.row($(this).closest('tr')).data(); // Obtener los datos de la fila
+                    eliminarPregunta(datos.id_gestorevaluacionpreguntas); //enviar id a eliminar
+                });
+                // Click Boton Eliminar Fin
+
+
+            }
+            // INITCOMPLETE END
+            });        
+
+            //Inicializar en la primer página del datatable
+            $("#tablePreguntas").DataTable().page( 0 ).draw( false );
+
+        } 
+    }
+
+
+
+
 </script>
