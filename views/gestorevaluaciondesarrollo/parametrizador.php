@@ -371,9 +371,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <!-- Capa principal -->
 <div id="capaIdPrincipal" class="capaPrincipal" style="display: inline;">
+<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
         <div class="row">
             <div class="col-md-12">  
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>          
+                      
                 <!-- CARD -->
                 <div class="card1 mb">
                     <!-- TAB LINKS -->
@@ -400,7 +401,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="tab-content">                       
                             <!-- Submodulo Preguntas -->
                             <div id="Preguntas" class="w3-container city tabcontent" style="display:inline;">
-                                <br>
+                            <br>
+                            
                                 <div class="row"> 
                                     <div class="col-md-5">   
                                         <div class="card1 mb">                                 
@@ -429,13 +431,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             </div>
                                             <div class="row" style="margin-top: 18px; margin-bottom: 18px;">
                                                 <div class="col-md-12">
-                                                    <?= Html::submitButton(Yii::t('app', 'Guardar Datos'),
-                                                        ['class' => 'btn btn-success btn-block' ,
-                                                        'data-toggle' => 'tooltip',
-                                                        'onclick' => 'crearPregunta();',
-                                                        'style' => '',
-                                                        ]) 
-                                                    ?>
+                                                    <?= Html::button('Guardar Datos', ['class' => 'btn btn-success btn-block', 'id' => 'guardarCambios', 'onClick' => 'crearPregunta()']) ?>
                                                 </div>                                                
                                             </div>
                                         </div>
@@ -481,7 +477,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ?> 
                                         <!-- Modal Editar Pregunta Fin -->
                                     </div>
-                                </div> 
+                                </div>                            
                             </div>
                             <!-- Submodulo Respuestas -->
                             <div id="Respuestas" class="w3-container city tabcontent" style="display:none;">
@@ -508,7 +504,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </div>
                                     <div class="row" style="margin-top: 18px;">
                                         <div class="col-md-3">
-                                            <?= Html::submitButton(Yii::t('app', 'Guardar'),
+                                        
+                                            <?= Html::button(Yii::t('app', 'Guardar'),
                                                 ['class' => 'btn btn-success btn-block' ,
                                                 'data-toggle' => 'tooltip',
                                                 'onclick' => '',
@@ -517,7 +514,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ?>
                                         </div>
                                         <div class="col-md-3">
-                                            <?= Html::submitButton(Yii::t('app', 'Cancelar'),
+                                            <?= Html::button(Yii::t('app', 'Cancelar'),
                                                 ['class' => 'btn btn-success btn-block',
                                                 'data-toggle' => 'tooltip',
                                                 'style'=>'background-color: #707372',
@@ -544,8 +541,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <!-- TAB LINKS END -->
                 </div>
                 <!-- CARD END -->
-            <?php ActiveForm::end(); ?>
         </div>
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
 
@@ -687,9 +684,9 @@ $this->params['breadcrumbs'][] = $this->title;
     //FUNCION EDITAR PREGUNTA FIN
 
     //FUNCION ELIMINAR PREGUNTA
-    function eliminarPregunta($id_pregunta){ 
+    function eliminarPregunta(id_pregunta){ 
 
-        var id_pregunta_eliminar = $id_pregunta;        
+        var id_pregunta_eliminar = id_pregunta;        
 
         if (id_pregunta_eliminar == "") {
             swal.fire("!!! Error !!!","No llegó el id de la pregunta a eliminar","error");
@@ -743,9 +740,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 id: selectedId,
             },
             success: function(response) {
-                console.log("response cargar datos", response);
-                console.log("size data cargar datos", response.data.length);
-
+                
                 if(response.data.length>0) {
                     $( "#emptyMessage" ).hide();
                     $( "#container_table_preguntas" ).show();
@@ -830,7 +825,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     width: '70%'
                 },
                 {   title: "Acción",
-                    defaultContent : "<button class='btn btn-xs btn-info edit_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Editar'>  <span class='fas fa-pencil-alt'></span> </button> <button class='btn btn-xs btn-danger delete_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Eliminar' ng-click='delete_pregunta(x)'> <span class='fa fa-trash'> </span> </button>",
+                    defaultContent : "<button class='btn btn-xs btn-info edit_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Editar'>  <span class='fas fa-pencil-alt'></span> </button> <button class='btn btn-xs btn-danger delete_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Eliminar' > <span class='fa fa-trash'> </span> </button>",
                     searchable : false,
                     width: '10%'
                     
@@ -839,7 +834,8 @@ $this->params['breadcrumbs'][] = $this->title;
             initComplete : function(){
 
                 // Click Boton Editar
-                $('#tablePreguntas tbody').on( 'click', '.edit_btn', function () {                
+                $('#tablePreguntas tbody').on( 'click', '.edit_btn', function () {                     
+                    event.preventDefault();               
                     var fila = $(this).closest('tr'); // Obtener la fila correspondiente al click                
                     var datos = tabla_preguntas.row(fila).data(); // Obtener los datos de la fila 
                     
@@ -852,12 +848,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 // Click Boton Eliminar
                 $('#tablePreguntas tbody').on( 'click', '.delete_btn', function () {
+                    event.preventDefault();
                     var datos = tabla_preguntas.row($(this).closest('tr')).data(); // Obtener los datos de la fila
                     eliminarPregunta(datos.id_gestorevaluacionpreguntas); //enviar id a eliminar
                 });
                 // Click Boton Eliminar Fin
-
-
             }
             // INITCOMPLETE END
             });        

@@ -125,8 +125,6 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; // Devuelve la respuesta en formato JSON
 
         return $response;
-
-        die(json_encode("Finaliza correctamente la accion"));
     }
 
     public function actionEditarpregunta(){
