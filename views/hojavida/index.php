@@ -860,7 +860,7 @@ $this->title = 'Gestor de Clientes';
                 <div class="col-md-12">
 
                 	<div class="row">
-                		<div class="col-md-6">
+                		<div class="col-md-4">
                 			<div class="card1 mb">
                 				<label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Agregar Contrato') ?></label>
                                 <?= Html::button('Aceptar', ['value' => url::to(['seleccioncontrato']), 'class' => 'btn btn-success', 'id'=>'modalButton',
@@ -881,7 +881,7 @@ $this->title = 'Gestor de Clientes';
                 			</div>
                 		</div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="card1 mb">
                                 <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Descarga General') ?></label>
                                 <?= Html::button('Aceptar', ['value' => url::to(['descargageneral']), 'class' => 'btn btn-success', 'id'=>'modalButton1',
@@ -898,6 +898,42 @@ $this->title = 'Gestor de Clientes';
                                                                                                   
                                     Modal::end(); 
                                 ?>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Descarga Administrativa') ?></label>
+
+                                <?php
+                                if ($roles == '270') {
+                                ?>
+                                    <?= Html::button('Aceptar', ['value' => url::to(['descargamasivo']), 'class' => 'btn btn-success', 'id'=>'modalButton3',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Desacarga Masivo']) ?> 
+
+                                    <?php
+                                        Modal::begin([
+                                            'header' => '<h4>Descarga Masiva Contratos</h4>',
+                                            'id' => 'modal3',
+                                        ]);
+
+                                        echo "<div id='modalContent3'></div>";
+                                                                                                      
+                                        Modal::end(); 
+                                    ?>
+                                <?php
+                                }else{
+                                ?>
+                                    <?= Html::a('Sin Permisos',  ['index'], ['class' => 'btn btn-success',
+                                            'style' => 'background-color: #707372',
+                                            'data-toggle' => 'tooltip',
+                                            'title' => 'Sin Permisos']) 
+                                    ?>
+                                <?php
+                                }
+                                ?>
+                                
                             </div>
                         </div>
                 	</div>

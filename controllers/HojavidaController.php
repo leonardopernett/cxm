@@ -53,7 +53,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion','tiposeventos','informacioncontrato','contratorol','contratoinforme','contratopriocidad','contratometrica','importarpersona'],
+              'only' => ['index','resumen','eventos','paisciudad','eliminarevento','creapais','creaciudad','eliminarpais','eliminarciudad','informacionpersonal','listarciudades','viewinfo','permisoshv','complementoshv','asignarpermisos','eliminarpermisos','editarpermisos','createdservicio','deleteinfo','editinfo','complementosaccion','tiposeventos','informacioncontrato','contratorol','contratoinforme','contratopriocidad','contratometrica','importarpersona','descargamasivo'],
               'rules' => [
                 [
                   'allow' => true,
@@ -5093,6 +5093,80 @@ $modelos = new HojavidaDatapersonal();
 
     die(json_encode($txtvaridsociedades));
 
+  }
+
+  public function actionDescargamasivo(){
+    $varListaContratosMasivos = (new \yii\db\Query())
+                                ->select([
+                                  'tbl_hojavida_contratogeneral.id_contratogeneral AS varContrato',
+                                  'tbl_proceso_cliente_centrocosto.cliente AS varCliente',
+                                  'tbl_proceso_cliente_centrocosto.director_programa AS varDirector',
+                                  'CONCAT(tbl_proceso_cliente_centrocosto.pcrc," - ",tbl_proceso_cliente_centrocosto.cod_pcrc) AS varPcrc',
+                                  'tbl_hojavida_roles.hvroles AS varRoles',
+                                  'tbl_hojavida_bloquepersona.ratiopricing AS varTramosPricing',
+                                  'tbl_hojavida_bloquepersona.tramocontrol AS varTramosControl',
+                                  'tbl_hojavida_bloquepersona.salario AS varSalario',
+                                  'tbl_hojavida_bloquepersona.variable AS varVariable',
+                                  'tbl_hojavida_bloquepersona.totalsalario AS varTotalSalario',
+                                  'tbl_hojavida_bloquepersona.perfil AS varPerfil',
+                                  'tbl_hojavida_bloquepersona.funciones  AS varFunciones',
+                                  'tbl_hojavida_bloquepersona.rutaanexo AS varTieneAnexoUno',
+                                  'tbl_hojavida_informe.hvinforme AS varEntregable',
+                                  'tbl_hojavida_bloqueinformes.alcance AS varInforme',
+                                  'tbl_hojavida_periocidad.hvperiocidad AS varPeriocidad',
+                                  'tbl_hojavida_bloqueinformes.detalle AS varDetalles',
+                                  'tbl_hojavida_bloqueinformes.rutaanexoinforme AS varTieneAnexoDos',
+                                  'tbl_hojavida_bloqueherramienta.alcance AS varAlcance',
+                                  'tbl_hojavida_bloqueherramienta.funcionalidades AS varFuncionalidades',
+                                  'tbl_hojavida_bloqueherramienta.detalle AS varDetallesHerramientas',
+                                  'tbl_hojavida_bloqueherramienta.rutaanexoherramienta AS varTieneAnexoTres',
+                                  'tbl_hojavida_metricas.hvmetrica AS varMetrica',
+                                  'tbl_hojavida_bloquekpis.obtjetivo AS varObjetivo',
+                                  'tbl_hojavida_bloquekpis.penalizacion AS varPenalizacion',
+                                  'tbl_hojavida_bloquekpis.rango AS varRangos',
+                                  'tbl_hojavida_bloquekpis.rutaanexokpis AS varTieneAnexoCuatro',
+                                  'if(tbl_hojavida_bloquesalas.exclusivas=2,"No","Si") AS varSalas',
+                                  'tbl_hojavida_bloquesalas.comentarios AS varComentariosSalas'
+                                ])
+                                ->from(['tbl_hojavida_roles'])
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_bloquepersona',
+                                  'tbl_hojavida_roles.id_hvroles = tbl_hojavida_bloquepersona.id_hvroles')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_contratogeneral',
+                                  'tbl_hojavida_bloquepersona.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_bloqueinformes',
+                                  'tbl_hojavida_bloqueinformes.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_informe',
+                                  'tbl_hojavida_informe.id_hvinforme = tbl_hojavida_bloqueinformes.id_hvinforme')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_periocidad',
+                                  'tbl_hojavida_periocidad.id_hvperiocidad = tbl_hojavida_bloqueinformes.id_hvperiocidad')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_bloqueherramienta',
+                                  'tbl_hojavida_bloqueherramienta.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_bloquekpis',
+                                  'tbl_hojavida_bloquekpis.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_metricas',
+                                  'tbl_hojavida_metricas.id_hvmetrica = tbl_hojavida_bloquekpis.id_hvmetrica')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_bloquesalas',
+                                  'tbl_hojavida_bloquesalas.id_contratogeneral = tbl_hojavida_contratogeneral.id_contratogeneral')
+
+                                ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
+                                  'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_hojavida_contratogeneral.id_dp_clientes')
+                                
+                                ->where(['=','tbl_hojavida_contratogeneral.anulado',0])
+                                ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes','tbl_hojavida_bloquepersona.id_bloquepersona'])
+                                ->all();
+
+    return $this->renderAjax('descargamasivo',[
+      'varListaContratosMasivos' => $varListaContratosMasivos,
+    ]);
   }
 
 }
