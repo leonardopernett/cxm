@@ -11,6 +11,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use app\models\GestorEvaluacionPreguntas;
+use app\models\GestorEvaluacionRespuestas;
 
 $this->title = 'Gestor Evaluación de Desarrollo - Parametrizador';
 $this->params['breadcrumbs'][] = $this->title;
@@ -33,11 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
   $query2 = Yii::$app->get('dbjarvis2')->createCommand("select * from dp_posicion where estado = 1")->queryAll();
   
-  $var2 = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10'];
-  $var3 = ['30' => 'Lider', '37' => 'Tecnico', '0' => 'Todos'];
-  $var4 = ['0' => 'Buena Gente', '1' => 'Gente Buena'];
-
-  $listData2 = ArrayHelper::map($query2, 'id_dp_posicion', 'posicion');
+  $option_nombre_evaluacion = ArrayHelper::map(\app\models\EvaluacionNombre::find()
+  ->select(['nombreeval', 'idevaluacionnombre'])
+  ->where("anulado = 0")
+  ->all(),
+  'idevaluacionnombre',
+  'nombreeval'
+  );
 
 ?>
 
@@ -410,8 +413,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     <div class="col-md-12">                                        
                                                         <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Evaluación') ?></label>
                                                         <?=  $form->field($modalPreguntas, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'],
-                                                                'template' => $template])->dropDownList(ArrayHelper::map(\app\models\EvaluacionNombre
-                                                                ::find()->select(['nombreeval', 'idevaluacionnombre'])->where("anulado = 0")->all(), 'idevaluacionnombre', 'nombreeval'),
+                                                                'template' => $template])->dropDownList($option_nombre_evaluacion,
                                                                 [
                                                                     'id' => 'id_nombre_evaluacion',
                                                                     'prompt'=>'Seleccionar Evaluación...',
@@ -481,48 +483,109 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <!-- Submodulo Respuestas -->
                             <div id="Respuestas" class="w3-container city tabcontent" style="display:none;">
-                                <div class="card1 mb" style="margin-top: 20px">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Respuesta:') ?></label>
-                                            <?= $form->field($modalRespuestas, 'namerespuesta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250,  'id'=>'Idnamerespuesta']) ?> 
+                                <br> 
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card1 mb" >
+                                            <label  style="font-size: 18px; color: #db2c23;"><em class="fas fa-exclamation-triangle" style="font-size: 20px; color: #db2c23;"></em> <?= Yii::t('app', 'Para tener en cuenta: ') ?></label>
+                                            <label style="font-size: 15px;"> <?= Yii::t('app', 'Las respuestas ingresadas se asignarán por igual a todas las preguntas.') ?></label>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Valor:') ?> </label>
-                                            <?= $form->field($modalRespuestas, 'valor', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250,  'id'=>'Idvalorres']) ?>
+                                    </div> 
+                                </div>   
+                                <hr> 
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="card1 mb">
+                                            <div class="row">  
+                                                <div class="col-md-12">                                        
+                                                    <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Evaluación') ?></label>
+                                                    <?=  $form->field($modalRespuestas, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
+                                                    ->dropDownList($option_nombre_evaluacion,
+                                                        [
+                                                            'id' => 'id_nombre_evaluacion_rta',
+                                                            'prompt'=>'Seleccionar Evaluación...',
+                                                            'onchange' => 'cargarDatosTablaRespuestas()'
+                                                        ]
+                                                    )->label(''); 
+                                                    ?>
+                                                </div>                                              
+                                                <div class="col-md-12">
+                                                    <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Respuesta:') ?></label>
+                                                    <?= $form->field($modalRespuestas, 'nombre_respuesta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 100,  'id'=>'id_nombre_respuesta']) ?> 
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Valor:') ?> </label>
+                                                    <?= $form->field($modalRespuestas, 'valornumerico_respuesta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_valor_respuesta', 'onkeypress' => 'return valida(event)']) ?>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Descripción:') ?> </label>
+                                                    <?= $form->field($modalRespuestas, "descripcion_respuesta", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'id_descripcion_rta', 'maxlength' => true]) ?>
+                                                </div> 
+                                                
+                                            </div>  
+                                            
+                                            <div class="row" style="margin-top: 18px;">
+                                                <div class="col-md-12">
+                                                    <?= Html::button(Yii::t('app', 'Guardar Datos'),
+                                                        ['class' => 'btn btn-success btn-block' ,
+                                                        'data-toggle' => 'tooltip',
+                                                        'onclick' => 'crearRespuesta();',
+                                                        'style' => '',
+                                                        'title' => 'Guardar datos']) 
+                                                    ?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">   
-                                        <div class="col-md-6">
-                                            <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Descripción:') ?> </label>
-                                            <?= $form->field($modalRespuestas, "fechacrecion", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['maxlength' => true]) ?>
+
+                                    <div class="col-md-7">
+                                        <div class="card1 mb" style="width:100%"> 
+                                                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Preguntas') ?></label>
+                                                <label id="emptyMessageRespuestas" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No hay datos para mostrar') ?></label>
+                                                
+                                                <div class="table-responsive table-container" id="container_table_respuestas">                                
+                                                    <table id="tableRespuestas" class="table table-hover table-striped table-bordered table-condensed" style="width:100% !important;" aria-hidden="true" >
+                                                        
+                                                    </table>    
+                                                </div>            
                                         </div>
-                                        <div class="col-md-6">
-                                            <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Evaluación:') ?> </label>
-                                            <?= $form->field($modalRespuestas, 'idevaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 250, 'value'=>'Evaluacion Desarrollo 2023']) ?>                                        
-                                        </div>
-                                    </div>
-                                    <div class="row" style="margin-top: 18px;">
-                                        <div class="col-md-3">
                                         
-                                            <?= Html::button(Yii::t('app', 'Guardar'),
-                                                ['class' => 'btn btn-success btn-block' ,
-                                                'data-toggle' => 'tooltip',
-                                                'onclick' => '',
-                                                'style' => '',
-                                                'title' => 'Guardar datos']) 
-                                            ?>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <?= Html::button(Yii::t('app', 'Cancelar'),
-                                                ['class' => 'btn btn-success btn-block',
-                                                'data-toggle' => 'tooltip',
-                                                'style'=>'background-color: #707372',
-                                                'onclick' => '',
-                                                'title' => 'Cancelar']) 
-                                            ?> 
-                                        </div>
+                                        <!-- Modal Editar Respuesta -->
+                                        <?php
+                                            Modal::begin([
+                                                'id' => 'modalEditarRta',
+                                                'header' => '<h4>Editar Respuesta</h4>',
+                                                'footer' => Html::button('Actualizar datos', ['class' => 'btn btn-success btn-block', 'style'=>'margin-top: 1.5%; padding:0.5%', 'id' => 'guardarCambios_rta', 'onClick' => 'editarRespuesta();']),
+                                            ]);
+
+                                            ActiveForm::begin([
+                                                'id' => 'formEditarRespuesta', 
+                                            ]);
+                                           
+                                            echo '<div class="row" id="modal_edit_rta">';
+                                            echo '<div class="col-md-12">';
+                                            echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar Respuesta </label>';
+                                            echo $form->field($modalRespuestas, 'nombre_respuesta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 100,  'id'=>'nombre_respuesta_edit']); 
+                                            echo '</div>';
+                                            echo '<div class="col-md-12" style="margin-top: 20px">';
+                                            echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar Valor </label>';           
+                                            echo $form->field($modalRespuestas, 'valornumerico_respuesta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'valor_respuesta_edit', 'onkeypress' => 'return valida(event)']);
+                                            echo '</div>';
+                                            echo '<div class="col-md-12" style="margin-top: 20px">';
+                                            echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar descripción</label>';           
+                                            echo $form->field($modalRespuestas, "descripcion_respuesta", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'descripcion_rta_edit', 'maxlength' => true]);
+                                            echo '</div>';
+                                            echo '</div>';
+                                            
+                                            
+                                            ActiveForm::end();
+
+                                            Modal::end();
+                                        ?> 
+                                        <!-- Modal Editar Respuesta Fin -->
+                                        
                                     </div>
+
                                 </div>
                             </div>
                             <!-- Submodulo Evaluaciones -->
@@ -548,6 +611,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <script type="text/javascript">
+
+    // FUNCION PARA VALIDAR SOLO ENTRADA NUMERICA
+    function valida(e){
+        tecla = (document.all) ? e.keyCode : e.which;
+
+        //Tecla de retroceso para borrar, siempre la permite
+        if (tecla==8){
+        return true;
+        }
+                
+        // Patron de entrada, en este caso solo acepta numeros
+        patron =/[0-9]/;
+        tecla_final = String.fromCharCode(tecla);
+        return patron.test(tecla_final);
+    };
+    // FUNCION PARA VALIDAR SOLO ENTRADA NUMERICA FIN
+  
 
     function openCity(evt, cityName) {
     var i, x, tablinks;
@@ -627,6 +707,7 @@ $this->params['breadcrumbs'][] = $this->title;
     //AJAX end           
                 
     };
+    //FUNCION CREAR PREGUNTA FIN
 
     //FUNCION EDITAR PREGUNTA 
     function editarPregunta(){
@@ -862,6 +943,325 @@ $this->params['breadcrumbs'][] = $this->title;
 
         } 
     }
+
+    //---------RESPUESTAS ------
+    // FUNCION PARA MOSTRAR DATOS DE UNA LISTA USANDO EL MISMO DATATABLE 
+    function cargarDatosTablaRespuestas() {
+        var selectedId = $("#id_nombre_evaluacion_rta").val();
+
+        $.ajax({
+            method: "get",
+            url: "cargardatostablarespuestas",
+            data: {
+                id: selectedId,
+            },
+            success: function(response) {
+                
+                if(response.data.length>0) {
+                    $( "#emptyMessageRespuestas" ).hide();
+                    $( "#container_table_respuestas" ).show();
+
+                    // Limpiar datatable 
+                    $( "#container_table_respuestas" ).empty();
+                    $( "#container_table_respuestas" ).classList= "table-container";
+                    var new_table = document.createElement("table");
+                    new_table.setAttribute("id","tableRespuestas");                 
+                    new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
+                    document.getElementById("container_table_respuestas").appendChild(new_table); 
+                
+                    init_table_respuestas(response.data);
+                }
+
+                if(response.data.length==0){
+                    $( "#container_table_respuestas" ).hide();
+                    $( "#emptyMessageRespuestas" ).show();
+                }                
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Manejar el error
+                swal.fire("", "Error al cargar los datos en cargar Datos Tabla Respuestas: " + errorThrown + ".", "error" );
+                console.log("Error al cargar los datos:", errorThrown);
+            }
+        });
+    }
+    // FUNCION PARA MOSTRAR DATOS DE UNA LISTA USANDO EL MISMO DATATABLE FIN
+
+    //FUNCION INICIALIZAR DATATABLE PARA LA TABLA RESPUESTAS
+    function init_table_respuestas(data) {
+
+        if(data.length > 0) {            
+            var tabla_respuestas = $('#tableRespuestas').DataTable({
+            
+            select: true,
+            "autoWidth": true,
+            data:data,
+            select: false,
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay datos disponibles en la Tabla",
+                "lengthMenu": "<span class='size_font_dataTable'> Cantidad de Datos a Mostrar _MENU_ </span>",
+                "zeroRecords": "No se encontraron datos ",
+                "info": "<span style='font-size: 14px;'> Mostrando _START_ a _END_ de _TOTAL_ registros </span>",
+                "infoEmpty": "<span style='font-size: 14px;'> Mostrando 0 de 0 registros </span>",
+                "infoFiltered": "(Filtrado un _MAX_ total)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "search": "<span style='font-size: 14px;'>Buscar:</span>",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "paginate": {
+                "first":      "<span class='size_font_dataTable'> Primero </span>",
+                "last":       "<span class='size_font_dataTable'> Ultimo </span>",
+                "next":       "<span class='size_font_dataTable'> Siguiente </span>",
+                "previous":   "<span class='size_font_dataTable'> Anterior </span>"
+                },
+                "order": [[ 0, "desc" ]],
+                autoWidth : false,
+                "table-layout": "fixed",
+                paging: true,      
+            },
+            
+                "lengthMenu": [5, 10, 25, 50],
+                "pageLength": 5,
+            columnDefs: [
+                { targets: '_all', className: 'column-font-size' }
+            ],
+            columns: [
+                {   title: "Id",
+                    data: 'id_gestorevaluacionrespuestas',
+                    visible : false                   
+                },
+                {   title: "Respuesta",
+                    data: 'nombre_respuesta',
+                    width: '20%'
+                   
+                },
+                {   title: "Valor",
+                    data: 'valornumerico_respuesta',
+                    width: '10%'
+                   
+                },
+                {    title: "Descripción",
+                    data: 'descripcion_respuesta',
+                    width: '60%'
+                },
+                {   title: "Acción",
+                    defaultContent : "<button class='btn btn-xs btn-info edit_btn_rta' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Editar'>  <span class='fas fa-pencil-alt'></span> </button> <button class='btn btn-xs btn-danger delete_btn_rta' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Eliminar' > <span class='fa fa-trash'> </span> </button>",
+                    searchable : false,
+                    width: '10%'
+                    
+                }
+            ],
+            initComplete : function(){
+
+                // Click Boton Editar
+                $('#tableRespuestas tbody').on( 'click', '.edit_btn_rta', function () {                     
+                    event.preventDefault();               
+                    var fila = $(this).closest('tr'); // Obtener la fila correspondiente al click                
+                    var datos = tabla_respuestas.row(fila).data(); // Obtener los datos de la fila 
+                    
+                    $('#nombre_respuesta_edit').val(datos.nombre_respuesta);
+                    $('#valor_respuesta_edit').val(datos.valornumerico_respuesta);
+                    $('#descripcion_rta_edit').val(datos.descripcion_respuesta);                
+                    $('#modal_edit_rta').data('id_gestor', datos.id_gestorevaluacionrespuestas );
+                    $('#modalEditarRta').modal('show');
+                });
+                // Click Boton Editar Fin
+
+                // Click Boton Eliminar
+                $('#tableRespuestas tbody').on( 'click', '.delete_btn_rta', function () {
+                    event.preventDefault();
+                    var datos = tabla_respuestas.row($(this).closest('tr')).data(); // Obtener los datos de la fila
+                    deleteRespuesta(datos.id_gestorevaluacionrespuestas); //enviar id a eliminar
+                });
+                // Click Boton Eliminar Fin
+            }
+            // INITCOMPLETE END
+            });        
+
+            //Inicializar en la primer página del datatable
+            $("#tableRespuestas").DataTable().page( 0 ).draw( false );
+
+        } 
+    }
+     //FUNCION INICIALIZAR DATATABLE PARA LA TABLA RESPUESTAS END
+
+    //FUNCION CREAR RESPUESTA
+    function crearRespuesta(){  
+
+    var id_evaluacion_selector = document.getElementById("id_nombre_evaluacion_rta");
+    var nombre_rta_selector = document.getElementById("id_nombre_respuesta");
+    var valor_rta_selector = document.getElementById("id_valor_respuesta");
+    var descrip_rta_selector = document.getElementById("id_descripcion_rta");
+        
+        
+    var id_evaluacion_txt = id_evaluacion_selector.value;
+    var nombre_rta_txt = nombre_rta_selector.value;
+    var valor_rta_txt = valor_rta_selector.value;
+    var descrip_rta_txt = descrip_rta_selector.value;
+
+    //Validacion de campos    
+    if (id_evaluacion_txt == "") {
+        swal.fire("!!! Advertencia !!!","No ha seleccionado la Evaluación","warning");
+        return;
+    }
+    if (nombre_rta_txt == "") {
+        swal.fire("!!! Advertencia !!!","No ha ingresado la respuesta","warning");
+        return;
+    }
+    if (valor_rta_txt == "") {
+        swal.fire("!!! Advertencia !!!","No ha ingresado valor asociado a la respuesta","warning");
+        return;
+    }
+    if (descrip_rta_txt == "") {
+        swal.fire("!!! Advertencia !!!","No ha ingresado la descripción","warning");
+        return;
+    }
+
+    //AJAX
+    $.ajax({
+        method: "post",
+        url: "createrespuesta",
+        data: {
+            id_evaluacion: id_evaluacion_txt,
+            nom_respuesta: nombre_rta_txt,
+            valor_respuesta: valor_rta_txt,
+            descripcion_respuesta: descrip_rta_txt,
+            _csrf:'<?=\Yii::$app->request->csrfToken?>'
+        },
+        success: function(response) {
+
+            if (response.status === 'error') {
+                swal.fire("",response.data,"error");
+                return;
+            }
+
+            if (response.status === 'success') {
+
+                nombre_rta_selector.value = '';
+                valor_rta_selector.value = '';
+                descrip_rta_selector.value = '';
+
+                swal.fire("",response.data,"info");
+
+                $( "#container_table_respuestas" ).show();
+                cargarDatosTablaRespuestas();
+                
+                return;
+            }                  
+            
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            
+            swal.fire("","Error obteniendo datos en: crear respuesta","error");
+            
+        }
+    });
+    //AJAX end           
+                
+    };
+    //FUNCION CREAR RESPUESTA FIN
+
+    //FUNCION EDITAR RESPUESTA 
+    function editarRespuesta(){
+
+        //Obtener valor ingresado
+        var id_evaluacion_txt = $('#modal_edit_rta').data("id_gestor");
+        var nombre_rta_txt = document.getElementById("nombre_respuesta_edit").value;
+        var valor_rta_txt = document.getElementById("valor_respuesta_edit").value;
+        var descrip_rta_txt = document.getElementById("descripcion_rta_edit").value;
+
+        //Validacion de campos
+        if (id_evaluacion_txt == "") {
+            swal.fire("!!! Advertencia !!!","No se pudo obtener el id del nuevo registro","warning");
+            return;
+        }
+
+        if (nombre_rta_txt == "") {
+            swal.fire("!!! Advertencia !!!","No ha ingresado la respuesta","warning");
+            return;
+        }
+        if (valor_rta_txt == "") {
+            swal.fire("!!! Advertencia !!!","No ha ingresado valor asociado a la respuesta","warning");
+            return;
+        }
+        if (descrip_rta_txt == "") {
+            swal.fire("!!! Advertencia !!!","No ha ingresado la descripción","warning");
+            return;
+        }
+
+        $.ajax({
+            method: "post",
+            url: "editrespuesta",
+            data: {
+                id_evaluacion_rta: id_evaluacion_txt,
+                nom_rta_edit: nombre_rta_txt,
+                valor_rta_edit: valor_rta_txt,
+                descripcion_rta_edit : descrip_rta_txt,
+                _csrf:'<?=\Yii::$app->request->csrfToken?>'
+            },
+            success: function(response) {
+
+                if(response.status=="error"){
+                    swal.fire("!!! Error !!!",response.data,"error");
+                    return;                    
+                }
+
+                if(response.status=="success"){
+                    cargarDatosTablaRespuestas();
+                    swal.fire("",response.data,"success");                    
+                    $('#modalEditarRta').modal('hide');                                        
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Manejar el error
+                console.log("Error al cargar los datos ", errorThrown);
+            }
+        });
+
+    }
+    //FUNCION EDITAR RESPUESTA FIN
+
+    //FUNCION ELIMINAR RESPUESTA
+    function deleteRespuesta(id_respuesta){ 
+
+        var id_rta_eliminar = id_respuesta;        
+
+        if (id_rta_eliminar == "") {
+            swal.fire("!!! Error !!!","No llegó el id de la pregunta a eliminar","error");
+            return;
+        }
+
+        $.ajax({
+            method: "post",
+            url: "deleterespuesta",
+            data: {
+                id_rta: id_rta_eliminar,                
+                _csrf:'<?=\Yii::$app->request->csrfToken?>'
+            },
+            success: function(response) {
+
+                if(response.status=="error"){
+                    swal.fire("!!! Error !!!",response.data,"error");
+                    return;                    
+                }
+
+                if(response.status=="success"){
+                    
+                    swal.fire("",response.data,"success");
+                    cargarDatosTablaRespuestas();                                        
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Manejar el error
+                console.log("Error al cargar los datos: ", errorThrown);
+            }
+        });
+
+    }
+    //FUNCION ELIMINAR RESPUESTA FIN
 
 
 

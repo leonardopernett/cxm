@@ -18,7 +18,7 @@ use PHPExcel;
 use PHPExcel_IOFactory;
 use yii\base\Exception;
 use app\models\GestorEvaluacionPreguntas;
-use app\models\EvaluacionRespuestas;
+use app\models\GestorEvaluacionRespuestas;
 
 class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
@@ -27,7 +27,8 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         
         'access' => [
             'class' => AccessControl::classname(),
-            'only' => ['index','parametrizador', 'cargardatostablapreguntas', 'crearpregunta', 'editarpregunta', 'eliminarpregunta'],
+            'only' => ['index','parametrizador', 'cargardatostablapreguntas', 'crearpregunta', 'editarpregunta', 'eliminarpregunta',
+                        'cargardatostablarespuestas', 'createrespuesta', 'editrespuesta', 'deleterespuesta'],
             'rules' => [
                 [
                 'allow' => true,
@@ -61,7 +62,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     public function actionParametrizador(){
         $modalPreguntas = new GestorEvaluacionPreguntas();
-        $modalRespuestas = new EvaluacionRespuestas();
+        $modalRespuestas = new GestorEvaluacionRespuestas();
         
 
         return $this->render('parametrizador', [
@@ -166,6 +167,129 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $eliminar_logicamente_datos = Yii::$app->db->createCommand()->update('tbl_gestor_evaluacion_preguntas',[
             'anulado' => 1,
         ],'id_gestorevaluacionpreguntas ='.$id_pregunta.'')->execute();
+
+        if(!$eliminar_logicamente_datos){
+            $response = [
+                'status' => 'error',
+                'data' => 'Ocurrió un error al eliminar los datos',
+            ];
+        }
+
+        $response = [
+            'status' => 'success',
+            'data' => 'Datos eliminados correctamente',
+        ];  
+
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        return $response;  
+        
+    }
+
+    // ---- RESPUESTAS -----
+
+    public function actionCargardatostablarespuestas(){ 
+
+        $id_evaluacion = Yii::$app->request->get('id');
+
+        $datos = GestorEvaluacionRespuestas::find()
+        ->select(['id_evaluacionnombre', 'id_gestorevaluacionrespuestas', 'nombre_respuesta', 'valornumerico_respuesta', 'descripcion_respuesta'])
+        ->where(['id_evaluacionnombre' => $id_evaluacion,
+                  'anulado'=>'0'])
+        ->asArray()
+        ->all();  
+
+        $response = [
+            'status' => 'success',
+            'data' => $datos,
+        ];
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        return $response;
+    }
+
+    public function actionCreaterespuesta(){        
+
+        // Asignar los valores al modelo
+        $id_evaluacionnombre = Yii::$app->request->post('id_evaluacion');
+        $nombre_respuesta = Yii::$app->request->post('nom_respuesta');
+        $valornumerico_respuesta = Yii::$app->request->post('valor_respuesta');        
+        $descripcion_respuesta =  Yii::$app->request->post('descripcion_respuesta');
+        $usua_id = Yii::$app->user->identity->id; 
+     
+
+        $crear_pregunta = Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_respuestas',[
+            'id_evaluacionnombre' => $id_evaluacionnombre,
+            'nombre_respuesta' => $nombre_respuesta,
+            'valornumerico_respuesta' => $valornumerico_respuesta,
+            'descripcion_respuesta' => $descripcion_respuesta,
+            'usua_id' => Yii::$app->user->identity->id
+        ])->execute();
+        
+        if ($crear_pregunta) {   
+
+            $response = [
+                'status' => 'success',
+                'data' => 'Los datos se guardaron correctamente.'
+            ];
+
+        } else {  
+            // Ocurrió un error al guardar los datos
+            $response = [
+                'status' => 'error',
+                'data' => 'Ocurrió un error al guardar los datos.',
+            ];
+        }        
+         
+        // return json_encode(['status' => 'success', 'nuevaFila' => $nuevaFila]);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; // Devuelve la respuesta en formato JSON
+
+        return $response;
+    }
+    
+    public function actionEditrespuesta(){
+
+        $form = Yii::$app->request->post();
+
+        $id_pregunta = $form['id_evaluacion_rta'];
+        $nombre_editado = $form['nom_rta_edit'];
+        $valor_editado = $form['valor_rta_edit'];
+        $descripcion_editada = $form['descripcion_rta_edit']; 
+
+        $actualizar_datos = Yii::$app->db->createCommand()->update('tbl_gestor_evaluacion_respuestas',[
+            'nombre_respuesta' => $nombre_editado,
+            'valornumerico_respuesta' => $valor_editado,
+            'descripcion_respuesta' => $descripcion_editada
+        ],'id_gestorevaluacionrespuestas ='.$id_pregunta.'')->execute();
+        
+        if(!$actualizar_datos){
+            $response = [
+                'status' => 'error',
+                'data' => 'Ocurrió un error al actualizar los datos',
+            ];
+        }
+
+        $response = [
+            'status' => 'success',
+            'data' => 'Datos actualizados correctamente',
+        ]; 
+
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        return $response;     
+
+    }
+
+    public function actionDeleterespuesta() {
+
+        $id_rta = Yii::$app->request->post('id_rta');
+
+        $eliminar_logicamente_datos = Yii::$app->db->createCommand()->update('tbl_gestor_evaluacion_respuestas',[
+            'anulado' => 1,
+        ],'id_gestorevaluacionrespuestas ='.$id_rta.'')->execute();
 
         if(!$eliminar_logicamente_datos){
             $response = [
