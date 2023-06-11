@@ -586,20 +586,39 @@ $this->title = 'Análisis Focalizados - Escuchar +';
 
 
                                 $paramsEvaluado = [':varLogin' => $txtloginid];
-
+                                $varEvaluado_id_Jarvis = null;
                                 if (is_numeric($txtloginid)) {
-                                    $varEvaluado_id = Yii::$app->db->createCommand('
-                                    SELECT e.id AS ideval FROM tbl_evaluados e 
-                                        WHERE 
-                                            e.identificacion IN  (:varLogin)
-                                        GROUP BY e.identificacion')->bindValues($paramsEvaluado)->queryScalar();
+                                    $varEvaluado_id_Jarvis = Yii::$app->dbjarvis->createCommand('
+                                        SELECT du.documento FROM  dp_usuarios_red du 
+                                          WHERE 
+                                            du.documento = :varLogin ')->bindValues($paramsEvaluado)->queryScalar();
+                            
+                                    
                                 }else{
-                                    $varEvaluado_id = Yii::$app->db->createCommand('
-                                    SELECT e.id AS ideval FROM tbl_evaluados e 
+                                    $varEvaluado_id_Jarvis = Yii::$app->dbjarvis->createCommand('
+                                    SELECT du.documento FROM  dp_usuarios_red du 
+                                      WHERE 
+                                        du.usuario_red = :varLogin ')->bindValues($paramsEvaluado)->queryScalar();
+
+                                    if ($varEvaluado_id_Jarvis == "") {
+                                        $varEvaluado_id_Jarvis = Yii::$app->dbjarvis->createCommand('
+                                        SELECT du.documento FROM  dp_usuarios_actualizacion du 
                                         WHERE 
-                                            e.dsusuario_red IN  (:varLogin)
-                                        GROUP BY e.identificacion')->bindValues($paramsEvaluado)->queryScalar();
+                                            du.usuario = :varLogin ')->bindValues($paramsEvaluado)->queryScalar();
+                                    }                                    
                                 }
+
+                                if ($varEvaluado_id_Jarvis != "") {
+                                    
+                                    $varEvaluado_id = (new \yii\db\Query())
+                                                ->select(['tbl_evaluados.id'])
+                                                ->from(['tbl_evaluados'])
+                                                ->where(['=','tbl_evaluados.identificacion',$varEvaluado_id_Jarvis])
+                                                ->scalar();
+                                }else{
+                                    $varEvaluado_id = null;
+                                }
+                                                                 
                                 
                                 if ($varEvaluado_id == "" && $varIdClientes == "289") {
                                     $varEvaluado_id = "0";
