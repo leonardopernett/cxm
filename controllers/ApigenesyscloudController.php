@@ -412,7 +412,6 @@ use GuzzleHttp;
       $varToken = null;
       $varCantidadPaginado = null;
       $varListaAsesores = null;
-      $usua_id = Yii::$app->user->identity->id; 
 
       // Primera accion Se genera el Token para ser usado en las APIs
       ob_start();
@@ -527,7 +526,7 @@ use GuzzleHttp;
                                         'documento_asesor' => $varDocumento,
                                         'username_asesor' => $value['username'],
                                         'selfUri' => $value['selfUri'], 
-                                        'usua_id' => $usua_id,
+                                        'usua_id' => 1,
                                         'fechacreacion' => date('Y-m-d'),
                                         'anulado' => 0,                         
                   ])->execute();
@@ -547,7 +546,7 @@ use GuzzleHttp;
                                         'sociedad' => $varSocidad,
                                         'title' => 'NA',
                                         'selfUri' => $value['selfUri'], 
-                                        'usua_id' => $usua_id,
+                                        'usua_id' => 1,
                                         'fechacreacion' => date('Y-m-d'),
                                         'anulado' => 0,                         
                   ])->execute();
