@@ -122,6 +122,9 @@ use GuzzleHttp;
       if (count($varListaDatos) != 0) {
 
         foreach ($varListaDatos as $value) {
+          // Datos TrackSale Servicios
+          $varCampania = $value['campaign_name'];
+          $varIdCampania = $value['campaign_code'];
 
           // Datos del Cliente
           $varIdentificacion = $value['id'];
@@ -266,7 +269,7 @@ use GuzzleHttp;
               Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
                         'identificacion' => $varIdentificacion,
                         'nombre' => $varNombreCliente,
-                        'ani' => 'TrackSale',
+                        'ani' => 'TrackSale - '.$varCampania.' '.$varIdCampania,
                         'agente' => $varAsesorRed,
                         'cc_agente' => $varDocAsesor,
                         'agente2' => null,
@@ -339,14 +342,11 @@ use GuzzleHttp;
                         'fechacreacion' => date('Y-m-d'),
               ])->execute();
             }
-          }         
-
+          }     
           
         }       
 
       }
-
-      $this->Generarrecalculartipologia();
 
       die();
     }    
@@ -420,6 +420,9 @@ use GuzzleHttp;
       if (count($varListaDatos) != 0) {
 
         foreach ($varListaDatos as $value) {
+          // Datos TrackSale Servicios
+          $varCampania = $value['campaign_name'];
+          $varIdCampania = $value['campaign_code'];
 
           // Datos del Cliente
           $varIdentificacion = $value['id'];
@@ -564,7 +567,7 @@ use GuzzleHttp;
               Yii::$app->db->createCommand()->insert('tbl_base_satisfaccion',[
                         'identificacion' => $varIdentificacion,
                         'nombre' => $varNombreCliente,
-                        'ani' => 'TrackSale',
+                        'ani' => 'TrackSale - '.$varCampania.' '.$varIdCampania,
                         'agente' => $varAsesorRed,
                         'cc_agente' => $varDocAsesor,
                         'agente2' => null,
