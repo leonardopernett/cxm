@@ -2424,11 +2424,7 @@ class BasesatisfaccionController extends Controller {
                             $varcontenido = 0;
                         }else{
 
-                            if ($response['message'] == 'Internal server error') {
-                                $vartexto = "Transcripcion no encontrada";
-                                $varvalencia = "Valencia emocional no encontrada";
-                                $varcontenido = 0;
-                            }else{
+                            
                                 $vartexto = $response[0]['transcription'];
                                 $varvalencia = $response[0]['valencia'];
 
@@ -2451,7 +2447,7 @@ class BasesatisfaccionController extends Controller {
                                 }
 
                                 $varcontenido = 1;
-                            }
+                            
                             
                         } 
                     }
