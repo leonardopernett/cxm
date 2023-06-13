@@ -117,7 +117,7 @@ use GuzzleHttp;
           "FromDate": "'.$varFechaInicioEspecial_BD.'",
           "ToDate": "'.$varFechaFinEspecial_BD.'",
           "Start": 0,
-          "Limit": 100,
+          "Limit": 1,
           "Completed": true,
           "Queueidentifiers": ["'.$varListadoColas.'"]
         }',
@@ -135,7 +135,7 @@ use GuzzleHttp;
       $varTotalPaginado = substr($varTotalPaginado_one['TotalCount'],0,1) + 1;
 
       // Segunda accion para obtener los datos de acuerdo al paginado por dia o por hora.
-      for ($i=0; $i < $varTotalPaginado['TotalCount']; $i++) { 
+      for ($i=0; $i < $varTotalPaginado; $i++) { 
       
         $varStart = $i.'0'.$i;
         $varLimit = ($i + 1).'00';
