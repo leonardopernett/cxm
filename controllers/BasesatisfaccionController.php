@@ -2423,28 +2423,36 @@ class BasesatisfaccionController extends Controller {
                             $varvalencia = "Valencia emocional no encontrada";
                             $varcontenido = 0;
                         }else{
-                            $vartexto = $response[0]['transcription'];
-                            $varvalencia = $response[0]['valencia'];
 
-                            if ($varvalencia == "NULL" || $varvalencia == "" || $varvalencia == "null") {
-                                $varvalencia = "Buzón sin información";
+                            if ($response['message'] == 'Internal server error') {
+                                $vartexto = "Transcripcion no encontrada";
+                                $varvalencia = "Valencia emocional no encontrada";
+                                $varcontenido = 0;
+                            }else{
+                                $vartexto = $response[0]['transcription'];
+                                $varvalencia = $response[0]['valencia'];
+
+                                if ($varvalencia == "NULL" || $varvalencia == "" || $varvalencia == "null") {
+                                    $varvalencia = "Buzón sin información";
+                                }
+
+                                $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN ('$varConnids')")->queryScalar();
+
+                                if ($varverificaconnid == 0) { 
+                                    Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
+                                        'connid' => $varConnids,
+                                        'transcripcion' => $vartexto,
+                                        'valencia' => $varvalencia,
+                                        'fechagenerada' => $modelBase->fecha_satu,
+                                        'fechacreacion' => date("Y-m-d"),
+                                        'usua_id' => Yii::$app->user->identity->id,
+                                        'anulado' => 0,
+                                    ])->execute();
+                                }
+
+                                $varcontenido = 1;
                             }
-
-                            $varverificaconnid = Yii::$app->db->createCommand("SELECT COUNT(connid) FROM tbl_kaliope_transcipcion k WHERE k.connid IN ('$varConnids')")->queryScalar();
-
-                            if ($varverificaconnid == 0) { 
-                                Yii::$app->db->createCommand()->insert('tbl_kaliope_transcipcion',[
-                                    'connid' => $varConnids,
-                                    'transcripcion' => $vartexto,
-                                    'valencia' => $varvalencia,
-                                    'fechagenerada' => $modelBase->fecha_satu,
-                                    'fechacreacion' => date("Y-m-d"),
-                                    'usua_id' => Yii::$app->user->identity->id,
-                                    'anulado' => 0,
-                                ])->execute();
-                            }
-
-                            $varcontenido = 1;
+                            
                         } 
                     }
 
