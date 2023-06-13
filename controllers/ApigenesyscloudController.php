@@ -131,13 +131,14 @@ use GuzzleHttp;
 
       curl_close($curlPaginado);
       ob_clean();
-      $varTotalPaginado = json_decode($responsePaginado,true); 
+      $varTotalPaginado_one = json_decode($responsePaginado,true); 
+      $varTotalPaginado = substr($varTotalPaginado_one['TotalCount'],0,1) + 1;
 
       // Segunda accion para obtener los datos de acuerdo al paginado por dia o por hora.
       for ($i=0; $i < $varTotalPaginado['TotalCount']; $i++) { 
       
-        $varStart = $i;
-        $varLimit = ($i + 1);
+        $varStart = $i.'0'.$i;
+        $varLimit = ($i + 1).'00';
 
         ob_start();
         $curlEncuestas = curl_init();
