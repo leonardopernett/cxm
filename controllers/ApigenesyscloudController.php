@@ -73,7 +73,7 @@ use GuzzleHttp;
       $varHoras = date("H");
       $varHora = null;
 
-      if ($varHoras < 10) {
+      if ($varHoras <= '10') {
         $varHora = '0'.(strval(intval($varHoras) - 1));
       }else{
         $varHora = strval(intval($varHoras) - 1);
