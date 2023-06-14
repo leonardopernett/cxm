@@ -70,10 +70,17 @@ use GuzzleHttp;
     public function actionApignsencuestas(){
       $varTotalPaginado = null;
       $varListaEncuestas = null;
-      $varHora = date("H");
+      $varHoras = date("H");
+      $varHora = null;
+
+      if ($varHoras < 10) {
+        $varHora = '0'.(strval(intval($varHoras) - 1));
+      }else{
+        $varHora = strval(intval($varHoras) - 1);
+      }
 
       $varHoraInicio = '00:00:00';
-      $varHoraFin = strval(intval($varHora) - 1).':59:59';
+      $varHoraFin = $varHora.':59:59';
 
       if ($varHoraFin == '23:59:59') {
         $varDias = strval(intval(date("d") -1));
