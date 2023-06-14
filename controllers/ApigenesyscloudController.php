@@ -139,7 +139,11 @@ use GuzzleHttp;
       curl_close($curlPaginado);
       ob_clean();
       $varTotalPaginado_one = json_decode($responsePaginado,true); 
-      $varTotalPaginado = substr($varTotalPaginado_one['TotalCount'],0,1) + 1;
+      if (strlen($varTotalPaginado_one['TotalCount']) >= 4) {
+        $varTotalPaginado = substr($varTotalPaginado_one['TotalCount'],0,2) + 1;
+      }else{
+        $varTotalPaginado = substr($varTotalPaginado_one['TotalCount'],0,1) + 1;
+      }
 
       // Segunda accion para obtener los datos de acuerdo al paginado por dia o por hora.
       for ($i=0; $i < $varTotalPaginado; $i++) { 
