@@ -12,13 +12,10 @@ use Yii;
  * @property string $nombrecategoria
  * @property string $descripcioncategoria
  * @property string $variablesejemplos
- * @property string $cod_pcrc
+ * @property integer $cod_pcrc
  * @property integer $anulado
  * @property integer $usua_id
  * @property string $fechacreacion
- * @property string $marca_canal_agente
- * @property string $categoria
- * @property string $indicador
  */
 class Speechglosario extends \yii\db\ActiveRecord
 {
@@ -36,13 +33,12 @@ class Speechglosario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['anulado', 'usua_id'], 'integer'],
+            [['cod_pcrc', 'anulado', 'usua_id','idcategoria'], 'integer'],
             [['fechacreacion'], 'safe'],
-            [['tipocategoria', 'categoria', 'indicador'], 'string', 'max' => 100],
+            [['tipocategoria'], 'string', 'max' => 100],
             [['nombrecategoria'], 'string', 'max' => 200],
-            [['descripcioncategoria', 'variablesejemplos'], 'string', 'max' => 500],
-            [['cod_pcrc'], 'string', 'max' => 50],
-            [['marca_canal_agente'], 'string', 'max' => 30]
+            [['marca_canal_agente'], 'string', 'max' => 30],
+            [['descripcioncategoria', 'variablesejemplos'], 'string', 'max' => 500]
         ];
     }
 
@@ -57,13 +53,12 @@ class Speechglosario extends \yii\db\ActiveRecord
             'nombrecategoria' => Yii::t('app', ''),
             'descripcioncategoria' => Yii::t('app', ''),
             'variablesejemplos' => Yii::t('app', ''),
-            'cod_pcrc' => Yii::t('app', ''),
+            'cod_pcrc' => Yii::t('app', ' '),
             'anulado' => Yii::t('app', ''),
-            'usua_id' => Yii::t('app', ''),
+            'usua_id' => Yii::t('app', ' '),
             'fechacreacion' => Yii::t('app', ''),
-            'marca_canal_agente' => Yii::t('app', ''),
-            'categoria' => Yii::t('app', ''),
-            'indicador' => Yii::t('app', ''),
+            'marca_canal_agente' => Yii::t('app', ' '),
+            'idcategoria' => Yii::t('app', ''),
         ];
     }
 }
