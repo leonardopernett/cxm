@@ -5934,47 +5934,33 @@ public function actionCantidadentto(){
           die('Error');
       }
 
-      
 
       $sheet = $objPHPExcel->getSheet(0);
       $highestRow = $sheet->getHighestRow();
 
-      $varcodigopcrcC = [
-        ':varid'=> $varcodigopcrc
-    ];
-    Yii::$app->db->createCommand('
-          UPDATE tbl_speech_glosario SET anulado = 1
-            WHERE 
-            cod_pcrc = :varid')
-        ->bindValues($varcodigopcrcC)
-        ->execute();
-
-      
-     
+  
 
         for ($i=9; $i <= $highestRow; $i++) { 
 
-          $contar = (new \yii\db\Query())
-                            ->select(['*'])
-                            ->from(['tbl_speech_glosario'])
-                            ->where(['=','categoria',$sheet->getCell("A".$i)->getValue()])
-                            ->andwhere(['=','tipocategoria',$sheet->getCell("B".$i)->getValue()])
-                            ->andwhere(['=','indicador',$sheet->getCell("C".$i)->getValue()])
-                            ->andwhere(['=','marca_canal_agente',$sheet->getCell("D".$i)->getValue()])
-                            ->andwhere(['=','descripcioncategoria',$sheet->getCell("E".$i)->getValue()])
-                            ->andwhere(['=','variablesejemplos',$sheet->getCell("F".$i)->getValue()])
-                            ->andwhere(['=','anulado',0])
-                            ->count();
-        
+          $varIdCategoriaGlosario = $sheet->getCell("A".$i)->getValue();
 
-          if ($contar == 0) {
+          $varIdCategoria = (new \yii\db\Query())
+                                          ->select(['*'])
+                                          ->from(['tbl_speech_glosario'])
+                                          ->where(['=','anulado',0])
+                                          ->andwhere(['=','tbl_speech_glosario.idcategoria',$varIdCategoriaGlosario])
+                                          ->andwhere(['=','tbl_speech_glosario.cod_pcrc',$varcodigopcrc])
+                                          ->count();                        
+                                     
+          if ($varIdCategoria == 0) {
             Yii::$app->db->createCommand()->insert('tbl_speech_glosario',[
-              'categoria'=>$sheet->getCell("A".$i)->getValue(),
-              'tipocategoria' => $sheet->getCell("B".$i)->getValue(),
-              'indicador'=> $sheet->getCell("C".$i)->getValue(),
-              'marca_canal_agente' => $sheet->getCell("D".$i)->getValue(),
-              'descripcioncategoria' => $sheet->getCell("E".$i)->getValue(),
-              'variablesejemplos' => $sheet->getCell("F".$i)->getValue(),
+              'idcategoria'=>$varIdCategoriaGlosario,
+              'categoria'=>$sheet->getCell("B".$i)->getValue(),
+              'tipocategoria' => $sheet->getCell("C".$i)->getValue(),
+              'indicador'=> $sheet->getCell("D".$i)->getValue(),
+              'marca_canal_agente' => $sheet->getCell("E".$i)->getValue(),
+              'descripcioncategoria' => $sheet->getCell("F".$i)->getValue(),
+              'variablesejemplos' => $sheet->getCell("G".$i)->getValue(),
               'fechacreacion' => date("Y-m-d"),
               'usua_id' => Yii::$app->user->identity->id,                    
               'cod_pcrc' => $varcodigopcrc,
@@ -5998,8 +5984,6 @@ public function actionCantidadentto(){
       return $this->redirect(array('subirglosario','txtServicioCategorias'=>$txtServicioCategorias));//retornar  la vista 
 
   }
-
-  
 
   public function actionParamsformularios($txtServicioCategorias){
     $model = new Speechpcrcformularios();
