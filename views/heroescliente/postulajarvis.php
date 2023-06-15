@@ -136,7 +136,7 @@ $roles = $command->queryScalar();
                                 $var = (new \yii\db\Query())
                                     ->select(['count(*)'])
                                     ->from(['tbl_postulacion_heroes'])
-                                    ->where(['=','embajadorpostular',$])
+                                    //->where(['=','embajadorpostular',$])
                                     ->scalar();
                                     echo $var
                                 ?></label>
