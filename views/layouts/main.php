@@ -669,6 +669,11 @@ AppAsset::register($this);
                                                 '<br>',                                            
                                                 '<li class="dropdown-headercx">&nbsp;Procesos de Integraciones</li>',                                                
                                                 [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesos GNS'),
+                                                    'url' => ['/procesosgenesys/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX(),
+                                                ],
+                                                [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Procesos TrackSale'),
                                                     'url' => ['/procesostracksale/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminProcesos(),
