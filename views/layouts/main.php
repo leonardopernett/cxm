@@ -478,6 +478,11 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
                                                 [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Heroes por Cliente&nbsp;'),
+                                                    'url' => ['heroescliente/dasheroes'],
+                                                    'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
+                                                ],  
+                                                [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Satisfacci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/reportes/historicosatisfaccion'],
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo(),
