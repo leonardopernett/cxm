@@ -1,0 +1,683 @@
+<?php
+
+namespace app\controllers;
+
+use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
+use yii\web\Response;
+use yii\filters\AccessControl;
+use yii\db\Query;
+use yii\db\mssql\PDO;
+use yii\web\UploadedFile;
+use yii\web\Controller;
+use yii\helpers\Url;
+use PHPExcel;
+use PHPExcel_IOFactory;
+use app\models\UploadForm2;
+use GuzzleHttp;
+use app\models\PostulacionHeroes;
+use app\models\ProcesosVolumendirector;
+use app\models\SpeechParametrizar;
+use app\models\Formularios;
+use Exception;
+
+  class HeroesclienteController extends Controller {
+
+    public function behaviors(){
+        return[
+          'access' => [
+              'class' => AccessControl::classname(),
+              'only' => ['index','postulajarvis'],
+              'rules' => [
+                [
+                  'allow' => true,
+                  'roles' => ['@'],
+                  'matchCallback' => function() {
+                    return Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
+                  },
+                ],
+              ]
+            ],
+          'verbs' => [          
+            'class' => VerbFilter::className(),
+            'actions' => [
+              'delete' => ['get'],
+            ],
+          ],
+
+          'corsFilter' => [
+            'class' => \yii\filters\Cors::class,
+        ],
+        ];
+    } 
+
+    public function actions() {
+      return [
+          'error' => [
+            'class' => 'yii\web\ErrorAction',
+          ]
+      ];
+    }
+   
+    public function actionIndex(){     
+
+        $model = new PostulacionHeroes();
+        
+        $varTipoPostu = ['Embajadores que Konectan' => 'Embajadores que Konectan', 'Gente Buena,Buena Gente' => 'Gente Buena,Buena Gente', 'Eureka' => 'Eureka'];
+
+        $varTipoCargo = ['Analista de cuenta' => 'Analista de cuenta', 'Coordinador de Operaciones' => 'Coordinador de Operaciones', 'Coordinador de Experiencia' => 'Coordinador de Experiencia','Representante de servicio' => 'Representante de servicio', 'Tutor' => 'Tutor', 'Técnico Valorador' => 'Técnico Valorador', 'Líder de equipo' => 'Líder de equipo'];
+
+        $varCiudad = ['Armenia' => 'Armenia','Bogotá' => 'Bogotá','Cali' => 'Cali','Ibague' => 'Ibague','Manizales' => 'Manizales','Medellín' => 'Medellín','Montería' => 'Montería','Pereira' => 'Pereira'];
+ 
+        $form = Yii::$app->request->post();
+          if ($model->load($form) ) {
+            Yii::$app->db->createCommand()->insert('tbl_postulacion_heroes',[
+              'tipodepostulacion' => $model->tipodepostulacion,
+              'nombrepostula' => $model->nombrepostula,
+              'cargopostula' => $model->cargopostula,
+              'embajadorpostular' => $model->embajadorpostular,
+              'ciudad' => $model->ciudad,
+              'fechahorapostulacion' => $model->fechahorapostulacion, 
+              'extensioniteracion' => $model->extensioniteracion,
+              'usuariovivexperiencia' => $model->usuariovivexperiencia,
+              'historiabuenagente' => $model->historiabuenagente,
+              'idea' => $model->idea,
+              'fechacreacion' => date("Y-m-d"),                    
+              'anulado' => 0,
+              'usua_id' => Yii::$app->user->identity->id,
+              'estado' => "Abierto",
+              'valorador' => $model->valorador,
+              'pcrc' => $model->pcrc,
+          ])->execute();
+
+          return $this->redirect(['index']);
+          }
+
+        return $this->render('index',[
+            'model' => $model,
+            'varTipoPostu' => $varTipoPostu,
+            'varCiudad' => $varCiudad,
+            'varTipoCargo' => $varTipoCargo,
+            
+        ]);
+    }
+
+    public function actionHistorico(){
+
+       
+        $model = new PostulacionHeroes();
+
+        return $this->render('historico',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionDasheroes(){
+
+      $modelo = new ProcesosVolumendirector();
+      $model = new PostulacionHeroes();
+                           
+      $varData = (new \yii\db\Query())                                                                    
+                        ->select(['rol','embajadorpostular','fechacreacion','id_postulacion','tipodepostulacion','nombrepostula','fechahorapostulacion','extensioniteracion','usuariovivexperiencia','estado','valorador'])
+                        ->from(['tbl_postulacion_heroes'])
+                        ->all();
+
+      foreach ($varData as $key => $value) {
+        if ($value['rol'] == "") {
+          $varNombre = (new \yii\db\Query())
+                        ->select(['name'])
+                        ->from(['tbl_evaluados'])
+                        ->where(['=','tbl_evaluados.id',$value["nombrepostula"]])
+                        ->scalar();
+        }else{
+          $varNombre = (new \yii\db\Query())
+                        ->select(['usua_nombre'])
+                        ->from(['tbl_usuarios'])
+                        ->where(['=','tbl_usuarios.usua_id',$value["nombrepostula"]])
+                        ->scalar();
+        }
+       
+          $varNombreValorador = (new \yii\db\Query())
+                        ->select(['usua_nombre'])
+                        ->from(['tbl_usuarios'])
+                        ->where(['=','tbl_usuarios.usua_id',$value["valorador"]])
+                        ->scalar();
+        
+
+        $varData[$key]['nombrepostula']= $varNombre;
+        $varData[$key]['valorador']= $varNombreValorador;
+        
+      }
+
+      $varTipoPostu = ['Embajadores que Konectan' => 'Embajadores que Konectan', 'Gente Buena,Buena Gente' => 'Gente Buena,Buena Gente', 'Eureka' => 'Eureka'];
+
+      $varTipoEstado  = ['Abierto' => 'Abierto', 'Cerrado' => 'Cerrado'];
+
+      $form = Yii::$app->request->post(); 
+        if ($model->load($form) ) {
+
+
+          $fechaGenrenal = explode(' ',$model->fechahorapostulacion);
+          $vartipopostu = $model->tipodepostulacion;
+          $vartipoestado = $model->estado;
+          $varfechaini = $fechaGenrenal[0];
+          $varfechafin =$fechaGenrenal[2];
+
+          $varData = (new \yii\db\Query())                                                                    
+                      ->select(['*'])
+                      ->from(['tbl_postulacion_heroes'])
+                      ->where(['=','anulado',0])
+                      ->andfilterwhere(['=','tipodepostulacion',$vartipopostu])
+                      ->andfilterwhere(['=','estado',$vartipoestado])
+                      ->andwhere(['BETWEEN','fechahorapostulacion',$varfechaini.' 00:00:00',$varfechafin.' 23:59:59'])
+                      ->all();
+        }
+
+        return $this->render('dasheroes',[
+            'model' => $model,
+            'varData' => $varData,
+            'varTipoPostu' => $varTipoPostu,
+            'varTipoEstado' => $varTipoEstado,
+            'modelo' => $modelo,
+            ]);
+    }
+    
+    public function actionDetalleheroes($id_postulacion){
+
+        $varPcrc = (new \yii\db\Query())
+                    ->select(['tbl_procesos_volumendirector.cliente'])
+                    ->from(['tbl_postulacion_heroes'])
+                    ->join('LEFT JOIN','tbl_procesos_volumendirector',
+                    'tbl_procesos_volumendirector.id_dp_clientes = tbl_postulacion_heroes.pcrc')
+                    ->where(['=','id_postulacion',$id_postulacion])
+                    ->scalar();
+
+        $varDatosDetalle  = (new \yii\db\Query())                                                                    
+                    ->select([
+                      'id_postulacion','tipodepostulacion','nombrepostula','cargopostula','embajadorpostular','ciudad','extensioniteracion','usuariovivexperiencia','fechahorapostulacion', 'historiabuenagente','idea','pcrc'])
+                    ->from(['tbl_postulacion_heroes'])
+                    ->where(['=','id_postulacion',$id_postulacion])
+                    ->all();
+
+        $varLista =  (new \yii\db\Query())
+                      ->select(['*'])
+                      ->from(['tbl_postulacion_heroes'])
+                      ->where(['=','tbl_postulacion_heroes.anulado',0])
+                      ->all();
+
+        foreach ($varLista as $key => $value) {
+          if ($value['rol'] == "") {
+            $varNombre = (new \yii\db\Query())
+                          ->select(['name'])
+                          ->from(['tbl_evaluados'])
+                          ->where(['=','tbl_evaluados.id',$varDatosDetalle[0]["nombrepostula"]])
+                          ->scalar();
+          }else{
+            $varNombre = (new \yii\db\Query())
+                          ->select(['usua_nombre'])
+                          ->from(['tbl_usuarios'])
+                          ->where(['=','tbl_usuarios.usua_id',$varDatosDetalle[0]["nombrepostula"]])
+                          ->scalar();
+          }        
+            
+        }
+        foreach ($varLista as $key => $value) {
+          if ($value['rol'] == "") {
+            $varNombrePostulador = (new \yii\db\Query())
+                          ->select(['name'])
+                          ->from(['tbl_evaluados'])
+                          ->where(['=','tbl_evaluados.id',$varDatosDetalle[0]["embajadorpostular"]])
+                          ->scalar();
+          }else{
+            $varNombrePostulador = (new \yii\db\Query())
+                          ->select(['usua_nombre'])
+                          ->from(['tbl_usuarios'])
+                          ->where(['=','tbl_usuarios.usua_id',$varDatosDetalle[0]["embajadorpostular"]])
+                          ->scalar();
+          }
+          
+        }
+  
+        return $this->render('detalleheroes',[
+            'varDatosDetalle' => $varDatosDetalle,
+            'varLista' => $varLista,
+            'varNombre' => $varNombre,
+            'varNombrePostulador' => $varNombrePostulador,
+            'varPcrc' => $varPcrc,
+
+        ]);
+    }
+
+    public function actionListapostu(){
+         
+
+        $model = new TipoPostulacion();
+
+        return $this->render('detalleheroes',[
+            'model' => $model,
+        ]);
+    }
+
+    public function actionPostulajarvis($evaluado_usuared){
+
+      $model = new PostulacionHeroes();
+
+      $modelEvaluado = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
+      $id_evaluado = (isset($modelEvaluado->id)) ? $modelEvaluado->id : '';
+
+      if ($id_evaluado == '') {
+        $msg = \Yii::t('app', 'No se recibió o no existe un asesor para poder realizar la consulta');
+        Yii::$app->session->setFlash('danger', $msg);
+      } else {
+          if (Yii::$app->request->get('page') || Yii::$app->request->get('sort')) {
+            $model->nombrepostula = $id_evaluado;
+          }
+      }
+
+      $modelEvaluado1 = (new \yii\db\Query())
+                        ->select(['name'])
+                        ->from(['tbl_evaluados'])
+                        ->where(['=','tbl_evaluados.id',$id_evaluado])
+                        ->scalar(); 
+        
+      $varTipoPostu = ['Embajadores que Konectan' => 'Embajadores que Konectan', 'Gente Buena,Buena Gente' => 'Gente Buena,Buena Gente', 'Eureka' => 'Eureka'];
+
+      $varTipoCargo = ['Analista de cuenta' => 'Analista de cuenta', 'Coordinador de Operaciones' => 'Coordinador de Operaciones', 'Coordinador de Experiencia' => 'Coordinador de Experiencia','Representante de servicio' => 'Representante de servicio', 'Tutor' => 'Tutor', 'Técnico Valorador' => 'Técnico Valorador', 'Líder de equipo' => 'Líder de equipo'];
+
+      $varCiudad = ['Armenia' => 'Armenia','Bogotá' => 'Bogotá','Cali' => 'Cali','Ibague' => 'Ibague','Manizales' => 'Manizales','Medellín' => 'Medellín','Montería' => 'Montería','Pereira' => 'Pereira'];           
+
+      $form = Yii::$app->request->post();
+        if ($model->load($form) ) {
+          Yii::$app->db->createCommand()->insert('tbl_postulacion_heroes',[
+            'tipodepostulacion' => $model->tipodepostulacion,
+            'nombrepostula' => $id_evaluado,
+            'cargopostula' => $model->cargopostula,
+            'embajadorpostular' => $model->embajadorpostular,
+            'ciudad' => $model->ciudad,
+            'fechahorapostulacion' => $model->fechahorapostulacion, 
+            'extensioniteracion' => $model->extensioniteracion,
+            'usuariovivexperiencia' => $model->usuariovivexperiencia,
+            'historiabuenagente' => $model->historiabuenagente,
+            'idea' => $model->idea,
+            'fechacreacion' => date("Y-m-d"),                    
+            'anulado' => 0,
+            'usua_id' => Yii::$app->user->identity->id,
+            'estado' => "Abierto",
+            'valorador' => $model->valorador,
+            'pcrc' => $model->pcrc,
+        ])->execute();
+
+        return $this->redirect(['index']);
+      }
+
+         
+
+      return $this->render('postulajarvis',[
+        'modelEvaluado' => $id_evaluado,
+        'model' => $model,
+        'varTipoPostu' => $varTipoPostu,
+        'varCiudad' => $varCiudad,
+        'varTipoCargo' => $varTipoCargo,
+        'modelEvaluado1' => $modelEvaluado1,
+    ]);
+  
+    } 
+
+    public function actionInteraccionmanual($embajadorpostular) {
+
+      $varNombreAsesor = (new \yii\db\Query())                                                                    
+                    ->select(['name'])
+                    ->from(['tbl_evaluados'])
+                    ->where(['=','id',$embajadorpostular])
+                    ->scalar();
+
+      $model = new PostulacionHeroes();
+      
+          $arbol_id = 2119;
+          $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
+          $dimension_id = 12;
+          $nmArbol = \app\models\Arboles::findOne($arbol_id);
+          $nmDimension = \app\models\Dimensiones::findOne($dimension_id);
+          $modelE = new \app\models\Evaluados;
+          $formulario_id = $infoArbol->formulario_id;
+
+          
+
+          return $this->render("show-paso2", [
+                      "arbol_id" => $arbol_id,
+                      "nmArbol" => $nmArbol,
+                      "dimension_id" => $dimension_id,
+                      "nmDimension" => $nmDimension,
+                      "formulario_id" => $formulario_id,
+                      "model" => $model,
+                      "modelE" => $modelE,
+                      'varNombreAsesor' => $varNombreAsesor,
+                      'embajadorpostular' =>   $embajadorpostular,
+          ]);
+    }
+
+    public function actionEvaluadosbyarbol($search = null, $arbol_id = null) {
+      $out = ['more' => false];
+      if (!is_null($search)) {
+          $data = \app\models\Evaluados::find()
+                  ->joinWith('equiposevaluados')
+                  ->join('INNER JOIN', 'tbl_arbols_equipos', 'tbl_arbols_equipos.equipo_id = tbl_equipos_evaluados.equipo_id'
+                  )
+                  ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
+                  ->where('name LIKE "%":search"%" AND tbl_arbols_equipos.arbol_id = :arbol_id')
+                  ->addParams([':search'=>$search,':arbol_id'=>$arbol_id])
+                  ->orderBy('name')
+                  ->asArray()
+                  ->all();
+          $out['results'] = array_values($data);
+      } else {
+          $out['results'] = ['id' => 0, 'text' => Yii::t('app', 'No matching records found')];
+      }
+      echo \yii\helpers\Json::encode($out);
+    }
+
+    public function actionGuardarpaso2($preview = 0) {
+
+      $modelE = new \app\models\Evaluados;;
+      $showInteraccion = 0;
+      $showBtnIteraccion = 0;
+
+      if (isset($_POST) && !empty($_POST)) {
+
+          $arbol_id = Yii::$app->request->post("arbol_id");
+          $dimension_id = Yii::$app->request->post("dimension_id");
+          $formulario_id = Yii::$app->request->post("formulario_id");
+          $evaluados = Yii::$app->request->post("Evaluados");
+          $evaluado_id = $evaluados["evaluado_id"];
+          $tipoInteraccion = (isset($_POST["tipo_interaccion"])) ? Yii::$app->request->post("tipo_interaccion") : 1;
+          $usua_id = ($preview == 1) ? 0 : Yii::$app->user->identity->id;
+          $created = date("Y-m-d H:i:s");
+          $sneditable = 1;
+
+          //CONSULTO SI YA EXISTE LA EVALUACION
+          $condition = [
+              "usua_id" => $usua_id,
+              "arbol_id" => $arbol_id,
+              "evaluado_id" => $evaluado_id,
+              "dimension_id" => $dimension_id,
+              "basesatisfaccion_id" => null,
+              "sneditable" => $sneditable,
+          ];
+
+          $idTmpForm = \app\models\Tmpejecucionformularios::findOne($condition);
+
+          //SI NO EXISTE EL TMP FORMULARIO LO CREO
+          if (empty($idTmpForm)) {
+              $tmpeje = new \app\models\Tmpejecucionformularios();
+              $tmpeje->dimension_id = $dimension_id;
+              $tmpeje->arbol_id = $arbol_id;
+              $tmpeje->usua_id = $usua_id;
+              $tmpeje->evaluado_id = $evaluado_id;
+              $tmpeje->formulario_id = $formulario_id;
+              $tmpeje->created = $created;
+              $tmpeje->sneditable = $sneditable;
+              date_default_timezone_set('America/Bogota');
+              $tmpeje->hora_inicial = date("Y-m-d H:i:s");
+
+              //EN CASO DE SELECCIONAR ITERACCION AUTOMATICA
+              //CONSULTAMOS LA ITERACCION
+              if ($tipoInteraccion == 0) {
+                  //CONSULTA DE LLAMADAS Y PANTALLAS CON WS
+                  try {
+                      $modelFormularios = new Formularios;
+                      $enlaces = $modelFormularios->getEnlaces($evaluado_id);
+                      if ($enlaces && count($enlaces) > 0) {
+                          $json = json_encode($enlaces);
+                          $tmpeje->url_llamada = $json;
+                      }
+                  } catch (\Exception $exc) {
+                      \Yii::error('#####' . __FILE__ . ':' . __LINE__
+                              . $exc->getMessage() . '#####', 'redbox');
+                      $msg = Yii::t('app', 'Error redbox');
+                      Yii::$app->session->setFlash('danger', $msg);
+                  }
+
+                  $showInteraccion = 1;
+                  $showBtnIteraccion = 1;
+              } else {
+                  $showInteraccion = 0;
+                  $showBtnIteraccion = 0;
+              }
+              $tmpeje->tipo_interaccion = $tipoInteraccion;
+              $tmpeje->save();
+              $idTmp = $tmpeje->id;
+          } else {
+              $idTmp = $idTmpForm->id;
+              //EN CASO DE SELECCIONAR ITERACCION MANUAL
+              // ELIMINAMOS EL REGSTRO ANTERIOR
+              $showInteraccion = 1;
+              $showBtnIteraccion = 1;
+              //SI ES AUTOMATICA Y ES VACIA
+              if ($tipoInteraccion == 0 && empty($idTmpForm->url_llamada)) {
+                  //CONSULTA DE LLAMADAS Y PANTALLAS CON WS 
+                  try {
+                      $modelFormularios = new Formularios;
+                      $enlaces = $modelFormularios->getEnlaces($evaluado_id);
+                      if ($enlaces && count($enlaces) > 0) {
+                          date_default_timezone_set('America/Bogota');
+                          $idTmpForm->hora_inicial = date("Y-m-d H:i:s");
+                          $json = json_encode($enlaces);
+                          $idTmpForm->url_llamada = $json;
+                          $idTmpForm->tipo_interaccion = $tipoInteraccion;
+                          $idTmpForm->save();
+                      } else {
+                          date_default_timezone_set('America/Bogota');
+                          $idTmpForm->hora_inicial = date("Y-m-d H:i:s");
+                          $idTmpForm->url_llamada = "";
+                          $idTmpForm->tipo_interaccion = $tipoInteraccion;
+                          $idTmpForm->save();
+                          $msg = Yii::t('app', 'Error redbox');
+                          Yii::$app->session->setFlash('danger', $msg);
+                      }
+                  } catch (\Exception $exc) {
+                      \Yii::error('#####' . __FILE__ . ':' . __LINE__
+                              . $exc->getMessage() . '#####', 'redbox');
+                      $msg = Yii::t('app', 'Error redbox');
+                      Yii::$app->session->setFlash('danger', $msg);
+                  }
+                  // SI ES MANUAL
+              } elseif ($tipoInteraccion == 1) {
+                  $idTmpForm->url_llamada = '';
+                  $idTmpForm->tipo_interaccion = $tipoInteraccion;
+                  date_default_timezone_set('America/Bogota');
+                  $idTmpForm->hora_inicial = date("Y-m-d H:i:s");
+
+                  $idTmpForm->save();
+                  $showInteraccion = 0;
+                  $showBtnIteraccion = 0;
+              }
+          }
+
+          return $this->redirect([
+                      "showformulario",
+                      "formulario_id" => $idTmp,
+                      "preview" => $preview,
+                      "escalado" => 0,
+                      "showInteraccion" => base64_encode($showInteraccion),
+                      "showBtnIteraccion" => base64_encode($showBtnIteraccion)]);
+      }
+    }
+
+    public function actionShowformulario($formulario_id, $preview, $fill_values = false) {
+
+    $formulario = 2378;
+
+      //DATOS QUE SERAN ENVIADOS AL FORMULARIO
+      $data = new \stdClass();                                
+      $model = new SpeechParametrizar();
+
+      //OBTENGO EL FORMULARIO
+      $TmpForm = \app\models\Tmpejecucionformularios::findOne($formulario_id);
+
+      if (is_null($TmpForm)) {
+          Yii::$app->session->setFlash('danger', Yii::t('app', 'Formulario no exite'));
+          return $this->redirect(['interaccionmanual']);
+      }
+
+      $data->tmp_formulario = $TmpForm;
+
+      //OBTEGO EL ID DEL EQUIPO Y EL ID DEL LIDER
+      $datos_eq_li = \app\models\Equipos::getEquipoLider($TmpForm->evaluado_id, $TmpForm->arbol_id);
+
+      if (count($datos_eq_li) > 0) {
+          $data->equipo_id = $datos_eq_li["equipo_id"];
+          $data->usua_id_lider = $datos_eq_li["lider"];
+      } else {
+          $data->equipo_id = "";
+          $data->usua_id_lider = "";
+      }
+
+      //NOMBRE DEL EVALUADO
+      $evaluado = \app\models\Evaluados::findOne($TmpForm->evaluado_id);
+      $data->evaluado = $evaluado->name;
+
+      //INFORMACION ADICIONAL
+      $arbol = \app\models\Arboles::findOne($TmpForm->arbol_id);
+      $data->info_adicional = [
+          'problemas' => $arbol->snactivar_problemas,
+          'tipo_llamada' => $arbol->snactivar_tipo_llamada
+      ];
+      $data->ruta_arbol = $arbol->dsname_full;
+      $data->dimension = \yii\helpers\ArrayHelper::map(\app\models\Dimensiones::find()->all(), 'id', 'name');
+      $data->detalles = \app\models\Tmpejecucionbloquedetalles::getAllByFormId($formulario_id);
+      $data->totalBloques = \app\models\Tmpejecucionbloques::findAll(['tmpejecucionformulario_id' => $TmpForm->id]);
+
+      //CALIFICACIONES
+      $tmp_calificaciones_ids = $tmp_tipificaciones_ids = array();
+      foreach ($data->detalles as $j => $d) {
+          if (!in_array($d->calificacion_id, $tmp_calificaciones_ids)) {
+              $tmp_calificaciones_ids[] = $d->calificacion_id;
+          }
+          if (!in_array($d->tipificacion_id, $tmp_tipificaciones_ids)) {
+              $tmp_tipificaciones_ids[] = $d->tipificacion_id;
+          }
+          if ($d->tipificacion_id != null) {
+              $data->detalles[$j]->tipif_seleccionados = \app\models\TmpejecucionbloquedetallesTipificaciones::getTipificaciones($d->id);
+          } else {
+              $data->detalles[$j]->tipif_seleccionados = array();
+          }
+      }
+
+      //CALIFICACIONES Y TIPIFICACIONES
+      $data->calificaciones = \app\models\Calificaciondetalles::getDetallesFromIds($tmp_calificaciones_ids);
+      $data->calificacionesArray = \app\models\Calificaciondetalles::getDetallesFromIdsAsArray($tmp_calificaciones_ids);
+      $data->tipificaciones = \app\models\Tipificaciondetalles::getDetallesFromIds($tmp_tipificaciones_ids);
+
+      //TRANSACCIONES Y ENFOQUES
+      $data->transacciones = \yii\helpers\ArrayHelper::map(\app\models\Transacions::find()->all(), 'id', 'name');
+      $data->enfoques = \app\models\Tableroenfoques::find()->asArray()->all();
+
+      //FORMULARIO ID
+      $data->formulario_id = $formulario_id;
+
+      /* OBTIENE EL LISTADO DETALLADO DE TABLERO DE EXPERIENCIAS Y LLAMADA
+        EN MODO VISUALIZACI�N FORMULARIO. */
+      $data->tablaproblemas = \app\models\Ejecuciontableroexperiencias::
+                      find()
+                      ->where(["ejecucionformulario_id" => $TmpForm->ejecucionformulario_id])
+                      ->all();
+      $data->tablallamadas = \app\models\Ejecuciontiposllamada::getTabLlamByIdEjeForm($TmpForm->ejecucionformulario_id);
+      $data->list_Add_feedbacks = \app\models\Tmpejecucionfeedbacks::getJoinTipoFeedbacks($formulario_id);
+
+      //PREVIEW
+      $data->preview = $preview == 1 ? true : false;
+      $data->fill_values = $fill_values;
+      //busco el formulario al cual esta atado la valoracion a cargar
+      //y valido de q si tenga un formulario, de lo contrario se fija 
+      //en 1 por defecto
+      $data->formulario = Formularios::find()->where(['id' => $data->tmp_formulario->formulario_id])->one();
+      if (!isset($TmpForm->subi_calculo)) {
+          if (isset($data->formulario->subi_calculo)) {
+              $TmpForm->subi_calculo = $data->formulario->subi_calculo;
+              $TmpForm->save();
+              $array_indices_TmpForm = \app\models\Textos::find()
+                      ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
+                      ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                      ->asArray()
+                      ->all();
+              foreach ($array_indices_TmpForm as $value) {
+                  $data->indices_calcular[$value['id']] = $value['text'];
+              }
+          }
+      } else {
+          if (isset($data->formulario->subi_calculo)) {
+              $array_indices_TmpForm = \app\models\Textos::find()
+                      ->select(['id' => 'id', 'text' => 'UPPER(detexto)'])
+                      ->where('id IN (' . $TmpForm->subi_calculo . ')')
+                      ->asArray()
+                      ->all();
+              foreach ($array_indices_TmpForm as $value) {
+                  $data->indices_calcular[$value['id']] = $value['text'];
+              }
+          }
+      }
+
+      if($data->tmp_formulario->hora_inicial != "" AND $data->tmp_formulario->hora_final != ""){
+          $inicial = new DateTime($data->tmp_formulario->hora_inicial);
+          $final = new DateTime($data->tmp_formulario->hora_final);
+
+          $dteDiff1  = $inicial->diff($final);
+
+          $dteDiff1->format("Y-m-d H:i:s");
+
+          $data->fecha_inicial = $data->tmp_formulario->hora_inicial;
+          $data->fecha_final = $data->tmp_formulario->hora_final;
+          $data->minutes = $dteDiff1->h . ":" . $dteDiff1->i . ":" . $dteDiff1->s;
+      }else{
+          #code
+      }
+
+
+      $varIdformu = Yii::$app->db->createCommand("select ejecucionformulario_id from tbl_tmpejecucionformularios where id = :formulario_id")
+      ->bindValue(':formulario_id',$formulario_id)
+      ->queryScalar();
+    //DATOS GENERALES
+
+      $varidarbol = Yii::$app->db->createCommand("select a.id FROM tbl_arbols a INNER JOIN tbl_arbols b ON a.id = b.arbol_id WHERE b.id = :TmpFormarbol_id")
+      ->bindValue(':TmpFormarbol_id',$TmpForm->arbol_id)
+      ->queryScalar();
+
+      $varIdclienteSel = Yii::$app->db->createCommand("select LEFT(ltrim(name),3) FROM tbl_arbols a WHERE a.id = :TmpFormarbol_id")
+      ->bindValue(':TmpFormarbol_id',$TmpForm->arbol_id)
+      ->queryScalar();
+
+      $varIdcliente = Yii::$app->db->createCommand("select id_dp_clientes from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = :varIdformu")
+      ->bindValue(':varIdformu',$varIdformu)
+      ->queryScalar();
+      $varCodpcrc = Yii::$app->db->createCommand("select cod_pcrc from tbl_registro_ejec_cliente where anulado = 0 and ejec_form_id = :varIdformu")
+      ->bindValue(':varIdformu',$varIdformu)
+      ->queryScalar();
+      if(is_numeric($varIdclienteSel)){
+          $varIdclienteSel = $varIdclienteSel;
+      }else{
+          $varIdclienteSel = 0;
+      }
+    if($varIdclienteSel > 0){
+          $data->idcliente =  $varIdclienteSel;
+      }else{
+          $data->idcliente =  $varIdcliente;
+      }
+      $data->varidarbol =  $varidarbol;
+      $data->codpcrc =  $varCodpcrc;
+      $data->IdclienteSel =$varIdclienteSel;
+    $data->varIdformu =  $varIdformu;
+
+
+      return $this->render('show-formulario', [
+                                              'data' => $data,                            
+                                              'model' => $model,
+      ]);
+    }
+
+  }
+?>
+
+
