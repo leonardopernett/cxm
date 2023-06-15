@@ -871,7 +871,15 @@ class FormulariosController extends Controller {
                 $model->usua_id_actual = Yii::$app->user->identity->id;
                 $model->save();
 
+                if(Yii::$app->request->post('dimension_id') == "12"){
 
+                     
+                    Yii::$app->db->createCommand()->update('tbl_postulacion_heroes',[
+                            'estado' => 'Cerrado',
+                            'valorador' => $data->usua_id,
+                        ],'embajadorpostular ='.$data->evaluado_id.'')->execute();                                             
+                     
+                }
                 
                 //TO-DO  : COMENTAR LINEA EN CASO DE NO NECESITAR LO DE ADICIONAR Y ESCALAR
                 /* Guardo en la tabla tbl_registro_ejec para tener un seguimiento 
