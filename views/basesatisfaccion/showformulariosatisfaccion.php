@@ -549,7 +549,11 @@ $datanew = (new \yii\db\Query())
                                                 ?>
                                             </td>
                                         </tr>
-                                    <?php endif; ?>
+                                    <?php endif; ?>                                    
+                                    <tr>
+                                        <th scope="col"><?php echo Yii::t("app", "Comentarios Encuestas"); ?></th>
+                                        <td><?php echo $data->basesatisfaccion->comentario; ?></td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <?php
@@ -1526,7 +1530,11 @@ $datanew = (new \yii\db\Query())
                                     ?>
                                 </td>
                             </tr>
-                        <?php endif; ?>
+                        <?php endif; ?>                                    
+                        <tr>
+                            <th scope="col"><?php echo Yii::t("app", "Comentarios Encuestas"); ?></th>
+                            <td><?php echo $data->basesatisfaccion->comentario; ?></td>
+                        </tr>
                     </tbody>
                 </table>
                 <?php
