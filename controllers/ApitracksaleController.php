@@ -209,7 +209,7 @@ use GuzzleHttp;
           $varPregunta_Uno = $value['nps_answer'];
 
           // Datos para obtener el connid - Por ahora se concatena hasta que se tenga un id de la llamada.
-          $varConnid = '000000'.$varTimes;
+          $varConnid = $value['phone'];
 
           // Datos para obtener los comentarios.
           $varComentarios = $value['nps_comment'];
@@ -507,7 +507,7 @@ use GuzzleHttp;
           $varPregunta_Uno = $value['nps_answer'];
 
           // Datos para obtener el connid - Por ahora se concatena hasta que se tenga un id de la llamada.
-          $varConnid = '000000'.$varTimes;
+          $varConnid = $value['phone'];
 
           // Datos para obtener los comentarios.
           $varComentarios = $value['nps_comment'];
