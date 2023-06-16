@@ -14,24 +14,16 @@ use yii\db\Query;
 $this->title = 'Heroes por Cliente';//nombre del titulo de mi modulo
 $this->params['breadcrumbs'][] = $this->title;
 
-$sesiones =Yii::$app->user->identity->id;   
 
-$template = '<div class="col-md-12">'
-    . ' {input}{error}{hint}</div>';
-
-$rol =  new Query;
-$rol    ->select(['tbl_roles.role_id'])
-        ->from('tbl_roles')
-        ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
-                'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
-        ->join('LEFT OUTER JOIN', 'tbl_usuarios',
-                'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
-        ->where('tbl_usuarios.usua_id = '.$sesiones.'');                    
-$command = $rol->createCommand();
-$roles = $command->queryScalar();
+$template = '<div class="col-md-3">{label}</div><div class="col-md-9">'
+        . ' {input}{error}{hint}</div>';
+?>
 
 
-
+<?php
+foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+    echo '<div class="alert alert-' . $key . '" role="alert">' . $message . '</div>';
+}
 ?>
 <style>
     .card1 {

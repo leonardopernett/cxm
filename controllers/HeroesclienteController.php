@@ -26,33 +26,60 @@ use Exception;
 
   class HeroesclienteController extends Controller {
 
-    public function behaviors(){
-        return[
+    public function behaviors() {
+      return [
           'access' => [
-              'class' => AccessControl::classname(),
-              'only' => ['index','postulajarvis'],
-              'rules' => [
-                [
-                  'allow' => true,
-                  'roles' => ['@'],
-                  'matchCallback' => function() {
-                    return Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo();
-                  },
-                ],
-              ]
-            ],
-          'verbs' => [          
-            'class' => VerbFilter::className(),
-            'actions' => [
-              'delete' => ['get'],
-            ],
-          ],
+              'class' => \yii\filters\AccessControl::className(),
+              'denyCallback' => function ($rule, $action) {
+                  $msg = \Yii::t('app', 'The requested Item could not be found.');
+                  Yii::$app->session->setFlash('danger', $msg);
+                  $url = \yii\helpers\Url::to(['site/index']);
+                  return $action->controller->redirect($url);
+              },
+                      'rules' => [
+                          [
+                              'actions' => ['index', 'postulajarvis', 'historicoencuestasamigo', 'alertasamigo'],
+                              'allow' => true,
+                          ],
+                          [
+                              'actions' => ['calculatefeedback', 'equiposlist',
+                                  'evaluadolist', 'extractarformulario',
+                                  'feedbackexpress', 'historicoformularios',
+                                  'lidereslist', 'preguntas', 'promcalificaciones',
+                                  'tableroexperiencias', 'updatefeedback',
+                                  'usuariolist', 'valorados', 'variables',
+                                  'updatefeedbackcm', 'declinaciones', 'satisfaccion',
+                                  'controlsatisfaccion', 'historicosatisfaccion', 'dimensionlist', 'evaluadolistmultiple',
+                                  'getarboles', 'rollistmultiple', 'reportesegundocalificador'],
+                              'allow' => true,
+                              'roles' => ['@'],
+                              'matchCallback' => function() {
+                          return Yii::$app->user->identity->isReportes() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
+                      },
+                          ],
+                          [
+                              'actions' => ['historicoformularios', 'usuariolist',
+                                  'lidereslist', 'evaluadolist', 'equiposlist', 'dimensionlist', 'evaluadolistmultiple'
+                                  , 'getarboles', 'rollistmultiple'],
+                              'allow' => true,
+                              'roles' => ['@'],
+                              'matchCallback' => function() {
+                          return Yii::$app->user->identity->isModificarMonitoreo() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
+                      },
+                          ],
+                          [
+                              'actions' => ['updatefeedbackcm'],
+                              'allow' => true,
+                              'roles' => ['@'],
+                              'matchCallback' => function() {
+                          return Yii::$app->user->identity->isHacerMonitoreo() || Yii::$app->user->identity->isVerexterno() || Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast();
+                      },
+                          ],
+                      ],
+                  ],
+              ];
+          }
 
-          'corsFilter' => [
-            'class' => \yii\filters\Cors::class,
-        ],
-        ];
-    } 
 
     public function actions() {
       return [
