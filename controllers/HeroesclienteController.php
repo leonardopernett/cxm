@@ -38,7 +38,7 @@ use Exception;
               },
                       'rules' => [
                           [
-                              'actions' => ['index', 'postulajarvis', 'historicoencuestasamigo', 'alertasamigo'],
+                              'actions' => ['index', 'postulajarvis', 'dasheroes', 'detalleheroes'],
                               'allow' => true,
                           ],
                           [
@@ -114,7 +114,6 @@ use Exception;
               'idea' => $model->idea,
               'fechacreacion' => date("Y-m-d"),                    
               'anulado' => 0,
-              'usua_id' => Yii::$app->user->identity->id,
               'estado' => "Abierto",
               'valorador' => $model->valorador,
               'pcrc' => $model->pcrc,
@@ -288,6 +287,33 @@ use Exception;
         ]);
     }
 
+    public function actionEvaluadolistmultiple($search = null, $id = null) {
+      if (!Yii::$app->getRequest()->isAjax) {
+          return $this->goHome();
+      }
+
+      $out = ['more' => false];
+      if (!is_null($search)) {
+          $data = \app\models\Evaluados::find()
+                  ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
+                  ->where('name LIKE "%' . $search . '%"')
+                  ->orderBy('name')
+                  ->asArray()
+                  ->all();
+          $out['results'] = array_values($data);
+      } elseif (!empty($id)) {
+          $data = \app\models\Evaluados::find()
+                  ->select(['id' => 'tbl_evaluados.id', 'text' => 'UPPER(name)'])
+                  ->where('tbl_evaluados.id IN (' . $id . ')')
+                  ->asArray()
+                  ->all();
+          $out['results'] = array_values($data);
+      } else {
+          $out['results'] = ['id' => 0, 'text' => Yii::t('app', 'No matching records found')];
+      }
+      echo \yii\helpers\Json::encode($out);
+  }
+
     public function actionPostulajarvis($evaluado_usuared){
 
       $model = new PostulacionHeroes();
@@ -331,13 +357,12 @@ use Exception;
             'idea' => $model->idea,
             'fechacreacion' => date("Y-m-d"),                    
             'anulado' => 0,
-            'usua_id' => Yii::$app->user->identity->id,
             'estado' => "Abierto",
             'valorador' => $model->valorador,
             'pcrc' => $model->pcrc,
         ])->execute();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['postulajarvis']);
       }
 
          
