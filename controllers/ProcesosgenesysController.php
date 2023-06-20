@@ -295,13 +295,13 @@ use Exception;
                   ob_clean();
                   $varListaEncuestas = json_decode($responseEncuestas,true);
                   
-                  var_dump($varListaEncuestas['Data']);
-                  die();
-                 /*if(is_array($varListaEncuestas['Data']) || is_object($varListaEncuestas['Data']) ){*/
+               
+              
+                 if(is_array($varListaEncuestas['Data']) || is_object($varListaEncuestas['Data']) ){
                    foreach ($varListaEncuestas['Data'] as $value) {
                      array_push($varArrayEncuestas, array("AgentNames"=>$value['AgentName'],"AddDates"=>$value['AddedDate'],"QueueNames"=>$value['QueueName'],"ConversationIDs"=>$value['ConversationID'],"Answer1s"=>$value['Answers'][0]['Answer'],"Answer2s"=>$value['Answers'][1]['Answer'],"Answer3s"=>$value['Answers'][2]['Answer']));
                    }
-                /* }*/
+                 }
             }
             
             $varPreguntas = (new \yii\db\Query())
