@@ -59,7 +59,7 @@ class PostulacionHeroes extends \yii\db\ActiveRecord
             'nombrepostula' => Yii::t('app', ''),
             'cargopostula' => Yii::t('app', ''),
             'embajadorpostular' => Yii::t('app', ''),
-            'ciudad' => Yii::t('app', 'Ciudad'),
+            'ciudad' => Yii::t('app', ''),
             'fechahorapostulacion' => Yii::t('app', ''),
             'extensioniteracion' => Yii::t('app', ''),
             'usuariovivexperiencia' => Yii::t('app', ''),

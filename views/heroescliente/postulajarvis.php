@@ -128,7 +128,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                                 $var = (new \yii\db\Query())
                                     ->select(['count(*)'])
                                     ->from(['tbl_postulacion_heroes'])
-                                    //->where(['=','embajadorpostular',$])
+                                    ->where(['=','embajadorpostular',$id_evaluado])
                                     ->scalar();
                                     echo $var
                                 ?></label>
@@ -233,7 +233,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
           <div class="col-md-6"> 
             <div id="IdBloque3">      
             
-              <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Fecha / Hora de la Interacción:') ?></label>
+              <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Fecha / Hora de la Interacción:') ?> Ej: 2023-05-26 22:37:06</label>
               <?= $form->field($model, 'fechahorapostulacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'fechahorapostulacion', 'placeholder'=>'AA-MM-DD HH:MM:SS','title' => 'Importante AÑO-MES-DIA HORA:MIN:SEG'])->label('') ?>
 
               <br>
