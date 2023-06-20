@@ -312,8 +312,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     .dataTables_wrapper .dataTables_paginate .paginate_button {
         font-size: 11px;
-        padding: 5px 10px !important;
-        
+        padding: 5px 10px !important;        
     }
     
     .dataTables_wrapper .dataTables_info {
@@ -332,6 +331,9 @@ $this->params['breadcrumbs'][] = $this->title;
     .table-container {
         margin: 10px;
         padding: 10px;
+    }
+    .font-size-title{
+        font-size: 15px;        
     }
     
 
@@ -393,9 +395,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <label><em class="fas fa-users" style="font-size: 20px; color: #C148D0;"></em><strong>  <?= Yii::t('app', 'Respuestas') ?></strong></label>
                                 </div>
                             </a>
-                            <a href="javascript:void(0)" onclick="openCity(event, 'Evaluaciones');">
+                            <a href="javascript:void(0)" onclick="openCity(event, 'cargamasiva');">
                                 <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">
-                                    <label><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><strong>  <?= Yii::t('app', 'Evaluaciones') ?></strong></label>
+                                    <label><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><strong>  <?= Yii::t('app', 'Carga Masiva') ?></strong></label>
                                 </div>
                             </a>
                         </div>
@@ -588,13 +590,64 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 </div>
                             </div>
-                            <!-- Submodulo Evaluaciones -->
-                            <div id="Evaluaciones" class="w3-container city tabcontent" style="display:none;">
+                            <!-- Submodulo Carga Masiva -->
+                            <div id="cargamasiva" class="w3-container city tabcontent" style="display:none;">
                                 <br>
                                 <div class="row">
-                                    <h3>Tokyo</h3>
-                                    <p>Tokyo is the capital of Japan.</p>
+                                    <div class="col-md-6">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card1 mb">
+                                                    <label style="font-size: 18px;"><em class="fas fa-file" style="font-size: 18px; color: #b52aef;"></em> <?= Yii::t('app', 'Plantilla') ?></label>
+                                                    <label style="font-size: 15px;"><?= Yii::t('app', 'Recuerda no borrar ni alterar el orden de las columnas.') ?></label>                                        
+                                                    <a style="font-size: 15px;" class="text-danger" rel="stylesheet" href="../../downloadfiles/Plantilla_CargaMasiva_EvDllo.xlsx" target="_blank">Descargar Archivo</a>                                            
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">                                                
+                                                <div class="card1 mb"> 
+                                                    <label style="font-size: 18px;"><em class="fas fa-download" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Subir Carga Masiva') ?></label>
+                                                    
+                                                    <?= Html::button('Aceptar', ['value' => url::to(['viewcargamasiva']),
+                                                                    'class' => 'btn btn-success', 'id'=>'modalButton',
+                                                                    'data-toggle' => 'tooltip',
+                                                                    'title' => 'Cargar Datos Masivos']) 
+                                                    ?> 
+
+                                                    <?php
+                                                        Modal::begin([
+                                                            'header' => '<h4>Carga Masiva</h4>',
+                                                            'id' => 'modal',
+                                                        ]);
+
+                                                        echo "<div id='modalContent'></div>";
+                                                                                                                                    
+                                                        Modal::end(); 
+                                                    ?>
+                                                </div>  
+                                            </div>                                            
+                                        </div>                                        
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="card1 mb" >
+                                                <label  style="font-size: 18px; color: #db2c23; margin-botton: 10px;"><em class="fas fa-exclamation-triangle" style="font-size: 20px; color: #db2c23;"></em> <?= Yii::t('app', 'Para tener en cuenta: ') ?></label>
+                                                <label style="font-size: 15px;"> <?= Yii::t('app', '- Solo se permiten archivos con extension') ?><?= Html::tag('span', ' .xlsx', ['class' => 'text-danger']); ?> </label>
+                                                <label style="font-size: 15px;"> <?= Yii::t('app', '- Tamaño máximo del archivo debe ser 2048 KB (2MB)') ?></label>
+                                                <label style="font-size: 15px;"> <?= Yii::t('app', '- Todos los campos deben ser texto, excepto la cédula que debe ser numérica') ?></label>
+                                                <label style="font-size: 15px;"> <?= Yii::t('app', '- Toda la información debe estar en la hoja 0 del archivo') ?></label>
+                                                <label style="font-size: 15px;"> <?= Yii::t('app', '- Eliminar completamente las filas vacias dentro del archivo') ?></label>
+                                                <label style="font-size: 15px;"> <?= Yii::t('app', '- Todos los campos deben estar como valores (sin fórmulas)') ?></label>
+                                        </div>
+                                    </div>
                                 </div>
+                                <br>
+                                
+                                
+                                
                             </div>
                         </div>
                         <!-- TAB CONTENT END-->

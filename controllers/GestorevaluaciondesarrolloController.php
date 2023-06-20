@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-ini_set('upload_max_filesize', '50M');
+
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -19,6 +19,7 @@ use PHPExcel_IOFactory;
 use yii\base\Exception;
 use app\models\GestorEvaluacionPreguntas;
 use app\models\GestorEvaluacionRespuestas;
+use app\models\FormUploadtigo;
 
 class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
@@ -28,7 +29,10 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         'access' => [
             'class' => AccessControl::classname(),
             'only' => ['index','parametrizador', 'cargardatostablapreguntas', 'crearpregunta', 'editarpregunta', 'eliminarpregunta',
-                        'cargardatostablarespuestas', 'createrespuesta', 'editrespuesta', 'deleterespuesta'],
+                        'cargardatostablarespuestas', 'createrespuesta', 'editrespuesta', 'deleterespuesta',
+                        'importardatoscargamasiva', 'detallecargamasiva',
+                        'autoevaluacion',
+                        'modalevaluacionacargo', 'evaluacionacargo'],
             'rules' => [
                 [
                 'allow' => true,
@@ -309,6 +313,231 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         return $response;  
         
     }
+    
+
+    // ---- CARGA MASIVA -----
+
+    public function actionViewcargamasiva(){
+
+        $model = new FormUploadtigo();
+
+        if ($model->load(Yii::$app->request->post()))
+            {
+                $model->file = UploadedFile::getInstances($model, 'file');
+
+                if ($model->file && $model->validate()) {
+                    foreach ($model->file as $file) {
+                        $fecha = date('Y-m-d-h-i-s');
+                        $user = Yii::$app->user->identity->username;
+                        $name = $fecha . '-' . $user;
+                        $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                        $this->Importexcelusuarios($name);
+
+                        return $this->redirect('parametrizador');
+                    }
+                }
+           }
+
+        return $this->renderAjax('viewcargamasiva',[
+            'model' => $model,
+        ]);
+
+    }
+
+
+    public function actionImportardatoscargamasiva(){
+        $model = new FormUploadtigo();
+
+            if ($model->load(Yii::$app->request->post()))
+            {
+                $model->file = UploadedFile::getInstances($model, 'file');
+                
+
+                if ($model->file && $model->validate()) {
+
+                    foreach ($model->file as $file) {
+                        $fecha = date('Y-m-d-h-i-s');
+                        $user = Yii::$app->user->identity->username;
+                        $name = $fecha . '-' . $user;
+                        $file->saveAs('categorias/' . $name . '.' . $file->extension);
+                        $this->importExcelUsuarios($name);
+                        unlink('categorias/' . $name . '.' . $file->extension);
+                        return $this->redirect(['parametrizador']);
+                    } 
+                }
+           }        
+        
+        return $this->renderAjax('viewcargamasiva',[
+            'model' => $model,
+        ]);
+    }
+
+    public function importExcelUsuarios($name){
+
+        ini_set("max_execution_time", "900");
+        ini_set("memory_limit", "1024M");
+        ini_set( 'post_max_size', '1024M' );
+
+        ignore_user_abort(true);
+        set_time_limit(900);
+
+        $inputFile = 'categorias/' . $name . '.xlsx';
+        $pk_jefe = null;
+        $cc_jefe = null;
+        $pk_colaborador = null;
+        $cc_colaborador = null;
+
+        try {
+            $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($inputFile);
+        } catch (Exception $e) {
+            die('Error');
+        }
+
+        $sheet = $objPHPExcel->getSheet(0); //Primer Hoja del Excel
+        $highestRow = $sheet->getHighestRow(); //Numero de ultima fila
+        
+        for ($row = 3; $row <= $highestRow; $row++) { 
+            $cc_jefe = $sheet->getCell("C".$row)->getValue(); 
+                
+            if ( $cc_jefe != null) {
+
+                $paramsBusqueda = [':varJefeCC' => $cc_jefe];
+
+                $varExisteJefe = Yii::$app->db->createCommand('
+                  SELECT COUNT(jefe.id_gestor_evaluacion_jefes) AS num_registros_jefe FROM tbl_gestor_evaluacion_jefes jefe
+                    WHERE 
+                    jefe.identificacion IN (:varJefeCC)')->bindValues($paramsBusqueda)->queryScalar();
+
+                
+                if ($varExisteJefe == "0") {                               
+
+                    Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_jefes',[
+                                        'nombre_completo' => $sheet->getCell("B".$row)->getValue(),
+                                        'identificacion' => $cc_jefe,
+                                        'genero' =>  $sheet->getCell("F".$row)->getValue(),
+                                        'cargo' => $sheet->getCell("A".$row)->getValue(),
+                                        'area_operacion' => $sheet->getCell("D".$row)->getValue(),
+                                        'ciudad' => $sheet->getCell("E".$row)->getValue(),
+                                        'sociedad' => $sheet->getCell("G".$row)->getValue(),
+                                        'fechacreacion' => date("Y-m-d"),                                        
+                                        'usua_id' => Yii::$app->user->identity->id,
+                                        'anulado' => 0,
+                                        ])->execute();
+
+                    // Obtener el valor de la clave primaria generada
+                    $pk_jefe = Yii::$app->db->getLastInsertID();
+                }  
+                
+                if ($varExisteJefe == "1") {
+
+                    $pk_jefe = (new \yii\db\Query())
+                            ->select('id_gestor_evaluacion_jefes')
+                            ->from('tbl_gestor_evaluacion_jefes')
+                            ->where(['identificacion' => $cc_jefe])
+                            ->scalar();
+                }
+                 
+            }
+
+            $cc_colaborador = $sheet->getCell("J".$row)->getValue();
+
+            if ($cc_colaborador != null) {
+                $paramsBusqueda = [':varColaboradorCC' => $cc_colaborador];
+
+                $varExisteColaborador = Yii::$app->db->createCommand('
+                  SELECT COUNT(colaborador.id_gestor_evaluacion_colaboradores) AS num_registros FROM tbl_gestor_evaluacion_colaboradores colaborador
+                    WHERE 
+                    colaborador.identificacion IN (:varColaboradorCC)')->bindValues($paramsBusqueda)->queryScalar();
+
+                if ($varExisteColaborador == "0") {                               
+
+                    Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_colaboradores',[
+                                        'nombre_completo' => $sheet->getCell("I".$row)->getValue(),
+                                        'identificacion' => $cc_colaborador,
+                                        'genero' =>  $sheet->getCell("M".$row)->getValue(),
+                                        'cargo' => $sheet->getCell("H".$row)->getValue(),
+                                        'area_operacion' => $sheet->getCell("K".$row)->getValue(),
+                                        'ciudad' => $sheet->getCell("L".$row)->getValue(),
+                                        'sociedad' => $sheet->getCell("N".$row)->getValue(),
+                                        'fechacreacion' => date("Y-m-d"),                                        
+                                        'usua_id' => Yii::$app->user->identity->id,
+                                        'anulado' => 0,
+                                        ])->execute();
+
+                    // Obtener el valor de la clave primaria generada
+                    $pk_colaborador = Yii::$app->db->getLastInsertID();
+                }       
+                
+                if ($varExisteColaborador == "1") {
+
+                    $pk_colaborador = (new \yii\db\Query())
+                            ->select('id_gestor_evaluacion_colaboradores')
+                            ->from('tbl_gestor_evaluacion_colaboradores')
+                            ->where(['identificacion' => $cc_colaborador])
+                            ->scalar();
+                }
+                 
+            }
+            
+            if($pk_jefe!=null && $pk_colaborador!=null){ 
+                
+                try {
+                    Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_jefe_colaborador',[
+                        'id_usuario_jefe' => $pk_jefe,
+                        'id_usuario_colaborador' => $pk_colaborador,                    
+                        'fechacreacion' => date("Y-m-d"),                                        
+                        'usua_id' => Yii::$app->user->identity->id,
+                        'anulado' => 0,
+                        ])->execute();  
+                } catch (\yii\db\IntegrityException $e) {
+                    continue;
+                }
+
+                              
+            }
+
+        }
+
+    }
+
+
+    //----- EVALUACIÓN AUTOEVALUACION ------------
+    public function actionAutoevaluacion(){ 
+        $model =  new GestorEvaluacionPreguntas();
+  
+        return $this->render('autoevaluacion',[
+            'model' => $model,
+        ]);
+      }
+
+
+
+    //----EVALUACION A CARGO ------------------------------------------------------
+    public function actionModalevaluacionacargo(){
+        $model = new GestorEvaluacionPreguntas();
+  
+        // $form = Yii::$app->request->post();
+        // if ($model->load($form)) {
+            
+        //   return $this->redirect(array('evaluaciondecargos','idparams'=>'cod'.$model->documento.'cargo'));
+        // }
+  
+        return $this->renderAjax('modalevaluacionacargo',[
+          'model' => $model
+          ]);
+      }
+
+      public function actionEvaluacionacargo(){
+        $model =  new GestorEvaluacionPreguntas();
+        return $this->render('evaluacionacargo',[
+            'model' => $model,
+        ]);
+      }
+
+
+
 
 }
 ?>
