@@ -38,7 +38,8 @@ use Exception;
               },
                       'rules' => [
                           [
-                              'actions' => ['index', 'postulajarvis', 'dasheroes', 'detalleheroes'],
+                              'actions' => ['index', 'postulajarvis', 'dasheroes', 'detalleheroes',
+                              'historico','dasheroes','detalleheroes','evaluadolistmultiple','interaccionmanual','evaluadosbyarbol','guardarpaso2','showformulario','gracias'],
                               'allow' => true,
                           ],
                           [
@@ -130,7 +131,15 @@ use Exception;
             
         ]);
     }
+    
+    public function actionGracias(){
 
+        $model = new PostulacionHeroes();
+
+        return $this->render('gracias',[
+            'model' => $model,
+        ]);
+    }
     public function actionHistorico(){
 
        
@@ -335,7 +344,8 @@ use Exception;
                         ->from(['tbl_evaluados'])
                         ->where(['=','tbl_evaluados.id',$id_evaluado])
                         ->scalar(); 
-        
+
+
       $varTipoPostu = ['Embajadores que Konectan' => 'Embajadores que Konectan', 'Gente Buena,Buena Gente' => 'Gente Buena,Buena Gente', 'Eureka' => 'Eureka'];
 
       $varTipoCargo = ['Analista de cuenta' => 'Analista de cuenta', 'Coordinador de Operaciones' => 'Coordinador de Operaciones', 'Coordinador de Experiencia' => 'Coordinador de Experiencia','Representante de servicio' => 'Representante de servicio', 'Tutor' => 'Tutor', 'Técnico Valorador' => 'Técnico Valorador', 'Líder de equipo' => 'Líder de equipo'];
@@ -343,7 +353,7 @@ use Exception;
       $varCiudad = ['Armenia' => 'Armenia','Bogotá' => 'Bogotá','Cali' => 'Cali','Ibague' => 'Ibague','Manizales' => 'Manizales','Medellín' => 'Medellín','Montería' => 'Montería','Pereira' => 'Pereira'];           
 
       $form = Yii::$app->request->post();
-        if ($model->load($form) ) {
+        if ($model->load($form)) {
           Yii::$app->db->createCommand()->insert('tbl_postulacion_heroes',[
             'tipodepostulacion' => $model->tipodepostulacion,
             'nombrepostula' => $id_evaluado,
@@ -362,10 +372,8 @@ use Exception;
             'pcrc' => $model->pcrc,
         ])->execute();
 
-        return $this->redirect(['postulajarvis']);
+        return $this->redirect(['gracias']);
       }
-
-         
 
       return $this->render('postulajarvis',[
         'modelEvaluado' => $id_evaluado,
@@ -374,6 +382,7 @@ use Exception;
         'varCiudad' => $varCiudad,
         'varTipoCargo' => $varTipoCargo,
         'modelEvaluado1' => $modelEvaluado1,
+        'id_evaluado' => $id_evaluado,
     ]);
   
     } 
