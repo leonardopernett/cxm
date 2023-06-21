@@ -102,8 +102,15 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 <script src="../../js_extensions/datatables/buttons.print.min.js"></script>
 <script src="../../js_extensions/mijs.js"> </script>
 
-
-<br><br><br>
+<header class="masthead">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-12 text-center">
+      </div>
+    </div>
+  </div>
+</header>
+<br><hr><br>
 <div class="capaInfo" id="idCapaInfo" ">
 
   <div class="row" style="display:flex-wrap:wrap;justify-content:center;"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->

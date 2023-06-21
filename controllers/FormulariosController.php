@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
+use app\models\PostulacionHeroes;
 
 /**
  * FormulariosController implements the CRUD actions for Formularios model.
@@ -54,7 +55,7 @@ class FormulariosController extends Controller {
                             [
                                 'actions' => ['eliminartmpform', 'evaluadosbyarbol',
                                     'guardarformulario', 'guardarpaso2',
-                                    'guardaryenviarformulario', 'interaccionmanual',
+                                    'guardaryenviarformulario', 'interaccionmanual','interaccionmanual_ds',
                                     'showformulario', 'showsubtipif',
                                     'getarbolesbyroles', 'getarbolesbypermisos', 'getarboles', 'indexescalados', 'indexescaladosenviados', 'consultarcalificacionsubi', 'metricalistmultipleform',
                                     'adicionarform', 'escalarform', 'evaluadosbyform', 'getarbolesbyform', 'borrarformulariodiligenciadoescalado', 'evaluadoresbyarbolseleccescalado','listarllamadasgenesys','listarllamadasgenesysauto'],
@@ -311,6 +312,39 @@ class FormulariosController extends Controller {
                             'modelD' => $modelD
                 ]);
             }
+
+            public function actionInteraccionmanual_ds($evaluado_id) {
+
+                $varNombreAsesor = (new \yii\db\Query())                                                                    
+                ->select(['name'])
+                ->from(['tbl_evaluados'])
+                ->where(['=','id',$evaluado_id])
+                ->scalar();
+
+                $model = new PostulacionHeroes();
+                
+                    $arbol_id = 2119;
+                    $infoArbol = \app\models\Arboles::findOne(["id" => $arbol_id]);
+                    $dimension_id = 12;
+                    $nmArbol = \app\models\Arboles::findOne($arbol_id);
+                    $nmDimension = \app\models\Dimensiones::findOne($dimension_id);
+                    $modelE = new \app\models\Evaluados;
+                    $formulario_id = $infoArbol->formulario_id;
+          
+                    
+          
+                    return $this->render("show-paso22", [
+                                "arbol_id" => $arbol_id,
+                                "nmArbol" => $nmArbol,
+                                "dimension_id" => $dimension_id,
+                                "nmDimension" => $nmDimension,
+                                "formulario_id" => $formulario_id,
+                                "model" => $model,
+                                "modelE" => $modelE,
+                                'varNombreAsesor' => $varNombreAsesor,
+                                'evaluado_id' => $evaluado_id,
+                    ]);
+              }
 
             /**
              * Action para guardar el paso 2 de la creaci�n del formulario
@@ -646,6 +680,7 @@ class FormulariosController extends Controller {
                 return $this->render('show-formulario', [
                                                         'data' => $data,                            
                                                         'model' => $model,
+                                                        'evaluado_id' => $TmpForm->evaluado_id,
                 ]);
             }
 
