@@ -139,11 +139,15 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
       <div class="col-md-3">
         <div class="card1 mb">
           <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #C31CB4;"></em> Enviar y Guardar </label> 
-            <?= Html::submitButton(Yii::t('app', 'Enviar y Guardar'),//nombre del boton
+          <?= Html::submitButton(Yii::t('app', 'Enviar y Guardar'),//nombre del boton
                                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                     'data-toggle' => 'tooltip',
                                     'onClick'=> 'varVerificar();',//funcion de JS que al dar clic verifique que estoy enviando 
-                                    'title' => 'Enviar']) 
+                                    'title' => 'Enviar']);
+
+                                    $form = ActiveForm::begin([
+                                      'validateOnSubmit' => false,
+                                  ]);
               ?>
         </div>
       </div>
