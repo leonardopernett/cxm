@@ -329,7 +329,7 @@ use Exception;
 
       $modelEvaluado = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
       if (!isset($modelEvaluado->id)) {
-        $modelUsuarios = \app\models\Usuarios::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
+        $modelUsuarios = \app\models\Usuarios::findOne(['usua_usuario' => base64_decode($evaluado_usuared)]);
         }
         if (isset($modelEvaluado->id)) {
             $id_evaluado =  $modelEvaluado->id;  
