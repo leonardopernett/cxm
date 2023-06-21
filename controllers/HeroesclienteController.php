@@ -328,7 +328,16 @@ use Exception;
       $model = new PostulacionHeroes();
 
       $modelEvaluado = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
-      $id_evaluado = (isset($modelEvaluado->id)) ? $modelEvaluado->id : '';
+      if (!isset($modelEvaluado->id)) {
+        $modelUsuarios = \app\models\Usuarios::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
+        }
+        if (isset($modelEvaluado->id)) {
+            $id_evaluado =  $modelEvaluado->id;  
+        }elseif (isset($modelEvaluado->id)) {
+            $id_evaluado =  $modelUsuarios->id;
+        }else{
+            $id_evaluado = '';
+        }
 
       if ($id_evaluado == '') {
         $msg = \Yii::t('app', 'No se recibió o no existe un asesor para poder realizar la consulta');
