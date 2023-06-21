@@ -376,8 +376,8 @@ class FormulariosController extends Controller {
                     $created = date("Y-m-d H:i:s");
                     $sneditable = 1;
 
-                    if ($_POST["Evaluados"]["identificacion"] != "") {
-                        $varUrlgenesys =  $_POST["Evaluados"]["identificacion"];
+                    if ($_POST["Evaluados"]["evaluado_id"] != "") {
+                        $varUrlgenesys =  $_POST["Evaluados"]["evaluado_id"];
 
                     }else{
                         $varUrlgenesys = null;
