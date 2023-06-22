@@ -159,6 +159,16 @@ $varConteo = (new \yii\db\Query())
                 <?= $form->field($model,'estado',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($varTipoEstado,['prompt'=>'Seleccionar...'])?>
     
                 <br>
+                <label><em class="fas fa-check" style="font-size: 20px; color: #559FFF;"></em> <?= Yii::t('app', 'Seleccionar Programa PCRC') ?></label> <!-- label  del titulo de lo que vamos a mostrar ------>
+                <?=  $form->field($model, 'pcrc', 
+                ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
+                ->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                                [
+                                                    'prompt'=>'Seleccione Servicio...',//placeholder de lo que se va a mostrar
+                                                ]
+                                        )->label('');  // para que tome el lavel de arriba 
+                ?>
+                <br>
 
                 <label style="font-size: 15px;"><em class="fas fa-calendar" style="font-size: 20px; color: #559FFF;"></em><?= Yii::t('app', ' Rango de Fecha') ?></label>
                             <?=
