@@ -333,7 +333,7 @@ use Exception;
         }
         if (isset($modelEvaluado->id)) {
             $id_evaluado =  $modelEvaluado->id;  
-        }elseif (isset($modelEvaluado->id)) {
+        }elseif (isset($modelUsuarios->id)) {
             $id_evaluado =  $modelUsuarios->id;
         }else{
             $id_evaluado = '';
