@@ -1456,7 +1456,7 @@ $contadorSecciones = 0;
                 ?>  
                 <?= Html::a(Yii::t('app', 'Calcular subi'), "javascript:void(0)", ['class' => 'btn  btn-primary soloCalcular'])
                 ?> 
-                <?= Html::a(Yii::t('app', 'Postular'), ['formularios/interaccionmanual_ds','evaluado_id'=>$evaluado_id], ['class' => 'btn  btn-primary soloPostular'])
+                <?= Html::a(Yii::t('app', 'Postular'), ['formularios/interaccionmanual_ds','evaluado_id'=>$evaluado_id], ['target' => '_blank','class' => 'btn  btn-primary'])
                 ?> 
                 <?php 
                     $escalado = Yii::$app->request->get("escalado");
