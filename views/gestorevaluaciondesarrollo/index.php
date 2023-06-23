@@ -21,6 +21,20 @@ $sessiones = Yii::$app->user->identity->id;
 $var_document = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
 $var_exist_jefe = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_jefes where identificacion in ('$var_document')")->queryScalar();
 $var_exist_colaborador = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_colaboradores where identificacion in ('$var_document')")->queryScalar();
+
+$existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$var_document')")->queryOne();
+
+$esjefe = $existe_usuario['es_jefe'];
+$esColaborador = $existe_usuario['es_colaborador'];
+
+if($esjefe!=null){
+    $id_usuario = $existe_usuario['id_gestor_evaluacion_usuarios'];    
+}
+
+if($esjefe==null && $esColaborador!=null){
+    $id_usuario = $existe_usuario['id_gestor_evaluacion_usuarios'];    
+}
+
 $varauto = 0; 
 $varnovedadesa =0;
 $varcargo=0; //si realizo evaluacion a personas a cargo
@@ -112,23 +126,22 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
 </header>
 <br><br>
 <?php 
-    if ($var_exist_jefe == '0' && $var_exist_colaborador) {    
+    if ($existe_usuario['cant_registros'] == '0') {    
 ?>
 <div class="CapaUno" style="display: inline;">
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <label><em class="fa fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
-                <label style="font-size: 15px;"> <?= Yii::t('app', 'Este Usuario no se encuentra registrado en nuestra base de datos de evaluación de desarrollo. Por favor comunicarse con el administrador.') ?></label>
+                <label style="font-size: 18px; color: #db2c23;"><em class="fa fa-info-circle" style="font-size: 20px; color: #db2c23;"></em> Aviso </label>
+                <label style="font-size: 15px;"> <?= Yii::t('app', 'Tu usuario no se encuentra registrado para realizar la Evaluación de Desarrollo. Si crees que se trata de un error, por favor notificarle al administrador.') ?></label>
             </div>
         </div>
     </div>
 </div>
 <hr>
 <?php 
-    }    
+    } else {   
 ?>
-
 <div class="CapaDos" style="display: inline;">   
         <div class="row">
             <div class="col-md-12">
@@ -158,7 +171,7 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
                                     <?php }else{?>
                                         <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                         <br>
-                                        <?= Html::a('Realizar evaluación',  ['autoevaluacion'], ['class' => 'btn btn-success',
+                                        <?= Html::a('Realizar evaluación',  ['autoevaluacion', 'id_user' => $existe_usuario['id_gestor_evaluacion_usuarios'], 'id_evalua'=> $id_evaluacion_actual], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #337ab7',
                                                     'data-toggle' => 'tooltip',
                                                     'id'=> 'btn_autoevaluacion',
@@ -277,5 +290,8 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
             </div>
         </div>
     </div> 
+<?php 
+    } 
+?>
 
 

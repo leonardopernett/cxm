@@ -18,16 +18,16 @@ use yii\helpers\ArrayHelper;
 
     $sessiones = Yii::$app->user->identity->id;
 
-    $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-    $varnombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-    $varcargo = 'Prueba de Cargo'; // Buscarlo si es jefe o colaboradore para traerme el cargo
+    //$vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+    // $varnombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+    $varnombre = $datos_usuario['nombre_completo'];
+    $varcargo = $datos_usuario['cargo']; 
     $vartipoeva = Yii::$app->db->createCommand("select tipoevaluacion from tbl_evaluacion_tipoeval where idevaluaciontipo = 1 and anulado = 0")->queryScalar();
-
-    $option_nombre_evaluacion = [
-        '1' => 'En Desarrollo',
-        '2' => 'Satisfactorio',
-        '3' => 'Potencial',
-    ];
+    $nombre_jefe =$jefe[0]['nom_jefe']; //Toma el primer jefe que encuentra
+    $area_operacion = $datos_usuario['area_operacion'];
+    $ciudad = $datos_usuario['ciudad'];
+    $sociedad = $datos_usuario['sociedad'];
+  
     ?>
 
     <style>
@@ -94,6 +94,10 @@ use yii\helpers\ArrayHelper;
         100% { transform: rotate(360deg); }
         }
 
+        .color-required{
+            color: #db2c23;
+        }
+
     </style>
     <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
     <script src="../../js_extensions/highcharts/highcharts.js"></script>
@@ -118,19 +122,19 @@ use yii\helpers\ArrayHelper;
                 <div class="col-md-4">
                     <div class="card1 mb">
                         <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Usuario:</label>
-                        <label><?php echo $varnombre; ?></label>
+                        <label><?= Yii::t('app',  $datos_usuario['nombre_completo']) ?></label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card1 mb">
                         <label><em class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></em> Cargo:</label>
-                        <label><?php echo $varcargo; ?></label>
+                        <label><?= Yii::t('app',  $datos_usuario['cargo']) ?></label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card1 mb">
                         <label><em class="fas fa-list" style="font-size: 20px; color: #2CA5FF;"></em> Tipo evaluación:</label>
-                        <label><?php echo $vartipoeva; ?></label>
+                        <label><?= Yii::t('app', $vartipoeva) ?></label>
                     </div>
                 </div>
             </div>
@@ -165,32 +169,27 @@ use yii\helpers\ArrayHelper;
         </div>
     </div>
     <br>
-    <!-- SECCIÓN DE AUTOEVALUACION ------------------------------------------------------------>
-    <?php $form = ActiveForm::begin([
-            'layout' => 'horizontal',
-            'fieldConfig' => [
-                'inputOptions' => ['autocomplete' => 'off']
-            ]
-            ]); ?> 
-
-    <div id="capaTres" style="display: inline">         
+    <!-- FORMULARIO AUTOEVALUACION ----------------------------------------------------------------------------------------->
+    <?php $form = ActiveForm::begin(); ?> 
+    <div id="capaTres" style="display: inline">
+            <!-- SECCION DATOS PERSONALES ---------------------------------------------------------------------------------------------->
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
-                    <label style="font-size: 18px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Datos') ?> </label>
+                        <label style="font-size: 18px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Datos Personales') ?> </label>
                         
                         <div class="row">
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Nombre de Jefe Inmediato:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> 'Iveht Teresa Romero'])?>
+                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $nombre_jefe])?>
                             </div>
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Área o Campaña:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> 'Experience Learning'])?>                                
+                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $area_operacion])?>                                
                             </div>
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ciudad:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> 'Medellín'])?>                                
+                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $ciudad])?>                                
                             </div>
                         </div>
                         <br>
@@ -198,11 +197,15 @@ use yii\helpers\ArrayHelper;
                         <div class="row">
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Razon Social:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> 'Comdata Colombia S.A.S.'])?>
+                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $sociedad])?>
                             </div>
                             <div class="col-md-4">
-                                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Indique el tiempo total realizando el cargo administrativo:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>''])?>                                
+                                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Tiempo total realizando el cargo administrativo:') ?><span class="color-required"> *</span></label> </label>
+                                <?= $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($lista_tiempo_en_cargo, [
+                                                                    'id' => 'id_nombre_evaluacion',
+                                                                    'prompt'=>'Seleccionar...',                                                                    
+                                                                ])->label(''); 
+                                                                ?>                                
                             </div>
                         </div>
                         
@@ -212,6 +215,7 @@ use yii\helpers\ArrayHelper;
 
             <br>
 
+            <!-- SECCION COMPETENCIAS ----------------------------------------------------------------------------------------->                        
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
@@ -226,140 +230,84 @@ use yii\helpers\ArrayHelper;
                             </div>
                         </div>
                         <br>
-
+                        <!-- TABLA MODELO DE RESPUESTAS -------------------------->
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-bordered table-striped table-hover center">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Nombre') ?></label></th>
-                                        <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Valor') ?></label></th>
-                                        <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Descripción') ?></label></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><label style="font-size: 15px; text-align: center;">En Desarrollo</label></td>
-                                        <td><label style="font-size: 15px; text-align: center;">1</label></td>
-                                        <td><label style="font-size: 15px; text-align: center;">La competencia esta en un nivel basico de desarrollo</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label style="font-size: 15px; text-align: center;">Satisfactorio</label></td>
-                                        <td><label style="font-size: 15px; text-align: center;"> 2</label></td>
-                                        <td><label style="font-size: 15px; text-align: center;">La competencia esta en un nivel satisfactorio de desarrollo</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label style="font-size: 15px; text-align: center;">Potencial</label></td>
-                                        <td><label style="font-size: 15px; text-align: center;"> 3</label></td>
-                                        <td><label style="font-size: 15px; text-align: center;"> La competencia esta en un nivel esperado y potencial de desarrollo</label></td>
-                                    </tr>
-                                </tbody>
-                                </table>                            
+                                <table class="table table-bordered table-hover center">
+                                    <thead style="background-color: #F5F3F3;">
+                                        <tr>
+                                            <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Nombre') ?></label></th>
+                                            <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Valor') ?></label></th>
+                                            <th scope="col"><label style="font-size: 15px; text-align: center;"><?= Yii::t('app', 'Descripción') ?></label></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($array_respuestas as $fila): ?>
+                                            <tr>
+                                            <td><label style="font-size: 15px; text-align: center;"><?= $fila['nombre_respuesta']; ?></label></td>
+                                            <td><label style="font-size: 15px; text-align: center;"><?= $fila['valor']; ?></label></td>
+                                            <td><label style="font-size: 15px; text-align: center;"><?= $fila['descripcion_respuesta']; ?></label></td>                                        
+                                            </tr>
+                                        <?php endforeach; ?>                           
+                                    </tbody>
+                                </table>
+                            </div>
                             </div>                                                        
                         </div>
-                        <br>      
-                                    
+                        <br>  
+
+                        <!-- PREGUNTAS Y RESPUESTAS (COMPETENCIAS ORGANIZACIONALES) -------------------------->
+                        <?php foreach ($array_preguntas as $fila): ?>
                         <div class="row"> 
                             <div class="col-md-12">
                                 <div class="card1 mb" style="font-size: 16px;">
-                                    <label style="font-size: 18px;"><em class="fas fa-bookmark" style="font-size: 20px; color: #22D7CF;"></em> <?= Yii::t('app', ' Brindamos Soluciones: ') ?></label>
-                                    <div class="row">                                    
-                                        <div class="col-md-6">
-                                            <label  style="font-size: 16px;"><?= Yii::t('app', 'Obtener información relevante e identificar los elementos críticos de las situaciones, sus implicaciones y detalles relevantes para elegir acciones apropiadas, propones soluciones y hace que las cosas pasen.') ?></label> 
-                                            
+                                        <label style="font-size: 18px; color: #002855; "><em class="fas fa-bookmark" style="font-size: 20px; color: #22D7CF;"></em> <?= Yii::t('app', $fila['nombrepregunta']) ?></label>
+                                        <div class="row">                                    
+                                            <div class="col-md-6">
+                                            <br>
+                                                <label  style="font-size: 16px;"><?= Yii::t('app', $fila['descripcionpregunta']) ?></label>                                            
+                                            </div>
+                                            <div class="col-md-6"> 
+                                            <label  style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em><?= Yii::t('app', ' Respuesta: ') ?><span class="color-required"> *</span></label>                                    
+                                            <?=  $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12']])->dropDownList($opcion_respuestas,
+                                                                    [
+                                                                        'id' => 'id_nombre_evaluacion',
+                                                                        'prompt'=>'Seleccionar...',
+                                                                        
+                                                                    ]
+                                                                )->label(''); 
+                                            ?>  
+                                            </div>
+                                        </div>                                  
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                    <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Observaciones y/o Acuerdos:</label><span class="color-required"> *</span>
+                                                    <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>                                                
+                                            </div>
+                                        
+                                        
+                                            <div class="col-md-6">
+                                                    <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Acuerdos para el desarrollo:</label><span class="color-required"> *</span>
+                                                    <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>                                                
+                                            </div>
                                         </div>
-                                        <div class="col-md-6"> 
-                                        <label  style="font-size: 17px;"><?= Yii::t('app', 'Respuesta: ') ?></label>                                    
-                                        <?=  $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'],
-                                                                'template' => $template])->dropDownList($option_nombre_evaluacion,
-                                                                [
-                                                                    'id' => 'id_nombre_evaluacion',
-                                                                    'prompt'=>'Seleccionar...',
-                                                                    
-                                                                ]
-                                                            )->label(''); 
-                                                        ?>  
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                                <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Observaciones y/o Acuerdos:</label>
-                                                <?= $form->field($model, 'nombrepregunta')->textInput(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>
-                                            
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                                <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Acuerdos para el desarrollo:</label>
-                                                <?= $form->field($model, 'nombrepregunta')->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>
-                                            
-                                        </div>
-                                    </div>
-                                                               
+                                 
                                     
                                 </div>
                                 <br>
                             </div>
                             <br>                       
                         </div>
-
-                        <div class="row"> 
-                            <div class="col-md-12">
-                                <div class="card1 mb" style="font-size: 16px;">
-                                    <label style="font-size: 18px;"><em class="fas fa-bookmark" style="font-size: 20px; color: #22D7CF;"></em> <?= Yii::t('app', ' Nos Transformamos: ') ?></label>
-                                    <div class="row">                                    
-                                        <div class="col-md-6">
-                                            <label  style="font-size: 16px;"><?= Yii::t('app', 'Capacidad de anticiparse y aprovechar las oportunidades de cambio y realizar transformaciones exitosas en la organización.') ?></label> 
-                                            
-                                        </div>
-                                        <div class="col-md-6"> 
-                                        <label  style="font-size: 16px;"><?= Yii::t('app', 'Respuesta: ') ?></label>                                    
-                                        <?=  $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'],
-                                                                'template' => $template])->dropDownList($option_nombre_evaluacion,
-                                                                [
-                                                                    'id' => 'id_nombre_evaluacion',
-                                                                    'prompt'=>'Seleccionar...',
-                                                                    
-                                                                ]
-                                                            )->label(''); 
-                                                        ?>  
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                                <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Observaciones y/o Acuerdos:</label>
-                                                <?= $form->field($model, 'nombrepregunta')->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>
-                                            
-                                        </div>
-                                    
-                                   
-                                        <div class="col-md-6">
-                                                <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Acuerdos para el desarrollo:</label>
-                                                <?= $form->field($model, 'nombrepregunta')->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>
-                                            
-                                        </div>
-                                    </div>
-                                                               
-                                    
-                                </div>
-                                <br>
-                            </div>
-                            <br>                       
-                        </div>
-                                
-
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
-            
-            
-        
     </div>
+    
 
     <hr>
+    <!-- SECCION ACCIONES-------------------------->
     <div id="capaCinco" style="display: inline"> 
         <div class="row">
             <div class="col-md-12">
@@ -407,6 +355,6 @@ use yii\helpers\ArrayHelper;
             </div>
         </div>
     </div>
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 

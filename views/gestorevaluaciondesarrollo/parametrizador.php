@@ -336,8 +336,9 @@ $this->params['breadcrumbs'][] = $this->title;
         font-size: 15px;        
     }
     
-
-    
+    .color-required{
+        color: #db2c23;
+    }   
 
 </style>
 
@@ -413,7 +414,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <div class="card1 mb">                                 
                                             <div class="row" >  
                                                     <div class="col-md-12">                                        
-                                                        <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Evaluación') ?></label>
+                                                        <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Evaluación') ?><span class="color-required"> *</span></label></label>
                                                         <?=  $form->field($modalPreguntas, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'],
                                                                 'template' => $template])->dropDownList($option_nombre_evaluacion,
                                                                 [
@@ -425,11 +426,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ?>
                                                     </div>                                      
                                                     <div class="col-md-12">                                        
-                                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ingresar Pregunta') ?></label>
+                                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ingresar Pregunta') ?><span class="color-required"> *</span></label>
                                                         <?= $form->field($modalPreguntas, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>''])?>
                                                     </div>
                                                     <div class="col-md-12">
-                                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em><?= Yii::t('app', ' Ingresar Descripción') ?></label>
+                                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em><?= Yii::t('app', ' Ingresar Descripción') ?><span class="color-required"> *</span></label></label>
                                                         <?= $form->field($modalPreguntas, 'descripcionpregunta',  ['labelOptions' => ['class' => 'col-md-12 '], 'template' => $template])->textArea(['maxlength' => true, 'id'=>'id_descripcion_pregunta'])?>                                                    
                                                     </div>
                                             </div>
@@ -500,7 +501,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <div class="card1 mb">
                                             <div class="row">  
                                                 <div class="col-md-12">                                        
-                                                    <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Evaluación') ?></label>
+                                                    <label style="font-size: 15px;"><em class="fa fa-info-circle" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Evaluación') ?><span class="color-required"> *</span></label></label>
                                                     <?=  $form->field($modalRespuestas, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                                     ->dropDownList($option_nombre_evaluacion,
                                                         [
@@ -512,15 +513,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     ?>
                                                 </div>                                              
                                                 <div class="col-md-12">
-                                                    <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Respuesta:') ?></label>
+                                                    <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Respuesta:') ?><span class="color-required"> *</span></label></label>
                                                     <?= $form->field($modalRespuestas, 'nombre_respuesta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 100,  'id'=>'id_nombre_respuesta']) ?> 
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Valor:') ?> </label>
+                                                    <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Valor:') ?><span class="color-required"> *</span></label> </label>
                                                     <?= $form->field($modalRespuestas, 'valornumerico_respuesta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_valor_respuesta', 'onkeypress' => 'return valida(event)']) ?>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Descripción:') ?> </label>
+                                                    <label style="font-size: 15px;"> <em class="fas fa-pencil-alt" style="font-size: 18px; color: #C148D0; margin-top:1.5%;"></em> <?= Yii::t('app', ' Ingresar Descripción:') ?><span class="color-required"> *</span></label> </label>
                                                     <?= $form->field($modalRespuestas, "descripcion_respuesta", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'id_descripcion_rta', 'maxlength' => true]) ?>
                                                 </div> 
                                                 
