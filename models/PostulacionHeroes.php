@@ -44,7 +44,7 @@ class PostulacionHeroes extends \yii\db\ActiveRecord
             [['anulado', 'usua_id'], 'integer'],
             [['tipodepostulacion'], 'string', 'max' => 100],
             [['nombrepostula'], 'string', 'max' => 200],
-            [['cargopostula', 'embajadorpostular', 'ciudad', 'extensioniteracion', 'usuariovivexperiencia', 'historiabuenagente', 'idea', 'estado', 'valorador', 'rol', 'pcrc'], 'string', 'max' => 500]
+            [['cargopostula', 'embajadorpostular', 'ciudad', 'extensioniteracion', 'usuariovivexperiencia', 'historiabuenagente', 'idea', 'estado', 'valorador', 'rol', 'pcrc','cod_pcrc'], 'string', 'max' => 500]
         ];
     }
 
@@ -72,6 +72,7 @@ class PostulacionHeroes extends \yii\db\ActiveRecord
             'valorador'  => Yii::t('app', ''),
             'rol'  => Yii::t('app', ''),
             'pcrc'  => Yii::t('app', ''),
+            'cod_pcrc'  => Yii::t('app', ''),
         ];
     }
 }

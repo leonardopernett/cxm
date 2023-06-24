@@ -38,7 +38,7 @@ use Exception;
               },
                       'rules' => [
                           [
-                              'actions' => ['index', 'postulajarvis', 'dasheroes', 'detalleheroes',
+                              'actions' => ['index','listarpcrcs','postulajarvis', 'dasheroes', 'detalleheroes',
                               'historico','dasheroes','detalleheroes','evaluadolistmultiple','interaccionmanual','evaluadosbyarbol','guardarpaso2','showformulario','gracias'],
                               'allow' => true,
                           ],
@@ -118,9 +118,10 @@ use Exception;
               'estado' => "Abierto",
               'valorador' => $model->valorador,
               'pcrc' => $model->pcrc,
+              'cod_pcrc' => $model->cod_pcrc,
           ])->execute();
 
-          return $this->redirect(['index']);
+          return $this->redirect(['gracias']);
           }
 
         return $this->render('index',[
@@ -152,7 +153,6 @@ use Exception;
 
     public function actionDasheroes(){
 
-      $modelo = new ProcesosVolumendirector();
       $model = new PostulacionHeroes();
                            
       $varData = (new \yii\db\Query())                                                                    
@@ -161,6 +161,7 @@ use Exception;
                         ->all();
 
       foreach ($varData as $key => $value) {
+        $varNombre = "No Encontro Usuario de Red";
         if ($value['rol'] == "") {
           $varNombre = (new \yii\db\Query())
                         ->select(['name'])
@@ -194,7 +195,6 @@ use Exception;
       $form = Yii::$app->request->post(); 
         if ($model->load($form) ) {
 
-
           $fechaGenrenal = explode(' ',$model->fechahorapostulacion);
           $vartipopostu = $model->tipodepostulacion;
           $vartipoestado = $model->estado;
@@ -207,7 +207,7 @@ use Exception;
                       ->where(['=','anulado',0])
                       ->andfilterwhere(['=','tipodepostulacion',$vartipopostu])
                       ->andfilterwhere(['=','estado',$vartipoestado])
-                      ->andwhere(['BETWEEN','fechahorapostulacion',$varfechaini.' 00:00:00',$varfechafin.' 23:59:59'])
+                      ->andwhere(['BETWEEN','fechacreacion',$varfechaini.' 00:00:00',$varfechafin.' 23:59:59'])
                       ->all();
         }
 
@@ -216,7 +216,6 @@ use Exception;
             'varData' => $varData,
             'varTipoPostu' => $varTipoPostu,
             'varTipoEstado' => $varTipoEstado,
-            'modelo' => $modelo,
             ]);
     }
     
@@ -244,6 +243,7 @@ use Exception;
                       ->all();
 
         foreach ($varLista as $key => $value) {
+            $varNombre = "No Encontro Usuario de Red";
           if ($value['rol'] == "") {
             $varNombre = (new \yii\db\Query())
                           ->select(['name'])
@@ -260,6 +260,7 @@ use Exception;
             
         }
         foreach ($varLista as $key => $value) {
+            $varNombrePostulador = "No Encontro Usuario de Red";
           if ($value['rol'] == "") {
             $varNombrePostulador = (new \yii\db\Query())
                           ->select(['name'])
@@ -340,8 +341,9 @@ use Exception;
         }
 
       if ($id_evaluado == '') {
-        $msg = \Yii::t('app', 'No se recibió o no existe un asesor para poder realizar la consulta');
-        Yii::$app->session->setFlash('danger', $msg);
+
+            header("Location: https://qa.grupokonecta.local/qa_managementv2/web/index.php/heroescliente/index.php");
+            exit();
       } else {
           if (Yii::$app->request->get('page') || Yii::$app->request->get('sort')) {
             $model->nombrepostula = $id_evaluado;
@@ -379,6 +381,7 @@ use Exception;
             'estado' => "Abierto",
             'valorador' => $model->valorador,
             'pcrc' => $model->pcrc,
+            'cod_pcrc' => $model->cod_pcrc,
         ])->execute();
 
         return $this->redirect(['gracias']);
@@ -745,6 +748,42 @@ use Exception;
                                               'data' => $data,                            
                                               'model' => $model,
       ]);
+    }
+
+    public function actionListarpcrcs(){
+        $txtanulado = 0;
+        $txtidcliente = Yii::$app->request->get('id');
+
+
+          if ($txtidcliente) {
+            $txtControl = \app\models\SpeechCategorias::find()->distinct()
+              ->select(['tbl_speech_categorias.cod_pcrc'])
+              ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                  'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+              ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
+              ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
+              ->count();
+
+            if ($txtControl > 0) {
+              $varListaLideresx = \app\models\SpeechCategorias::find()->distinct()
+                  ->select(['tbl_speech_categorias.cod_pcrc','tbl_speech_categorias.pcrc'])
+                  ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                      'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+                  ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
+                  ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
+                  ->groupby(['tbl_speech_categorias.cod_pcrc'])                  
+                  ->all(); 
+
+              echo "<option value='' disabled selected>Seleccionar...</option>";
+              foreach ($varListaLideresx as $key => $value) {
+                echo "<option value='" . $value->cod_pcrc. "'>" . $value->cod_pcrc.' - '.$value->pcrc . "</option>";
+              }
+            }else{
+              echo "<option>--</option>";
+            }
+          }else{
+            echo "<option>Seleccionar...</option>";
+          }          
     }
 
   }

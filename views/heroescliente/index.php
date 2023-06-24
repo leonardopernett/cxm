@@ -14,24 +14,36 @@ use yii\db\Query;
 $this->title = 'Heroes por Cliente';//nombre del titulo de mi modulo
 $this->params['breadcrumbs'][] = $this->title;
 
-$sesiones =Yii::$app->user->identity->id;   
 
-$template = '<div class="col-md-12">'
-    . ' {input}{error}{hint}</div>';
+$template = '<div class="col-md-3">{label}</div><div class="col-md-9">'
+        . ' {input}{error}{hint}</div>';
+$sesiones= null; 
+$paramsBusqueda = [':varSesion' => $sesiones, ':anulado' => 0];
 
-$rol =  new Query;
-$rol    ->select(['tbl_roles.role_id'])
-        ->from('tbl_roles')
-        ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
-                'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
-        ->join('LEFT OUTER JOIN', 'tbl_usuarios',
-                'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
-        ->where('tbl_usuarios.usua_id = '.$sesiones.'');                    
-$command = $rol->createCommand();
-$roles = $command->queryScalar();
+$varConteoExist = Yii::$app->db->createCommand('
+        SELECT d.iddashservicio FROM tbl_dashboardpermisos d 
+          WHERE d.usuaid = :varSesion 
+            AND anulado = :anulado
+          GROUP BY d.iddashservicio')->bindValues($paramsBusqueda)->queryAll();
+    
+  $varlistiddpclientes = array();
+  $varservicios = null;
+  if (count($varConteoExist) != 0) {
+        foreach ($varConteoExist as $key => $value) {
+          array_push($varlistiddpclientes, $value['iddashservicio']);
+        }
+        $varservicios = implode(", ", $varlistiddpclientes);
+      }
+?>
+
+
+<?php
+foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
+    echo '<div class="alert alert-' . $key . '" role="alert">' . $message . '</div>';
 
 
 
+}
 ?>
 <style>
     .card1 {
@@ -120,45 +132,33 @@ $roles = $command->queryScalar();
 </header>
 <br><hr><br>
 <div class="capaInfo" id="idCapaInfo" style="display: inline;">
-<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+  <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
   <div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
-      <div class="col-md-6">
-          <div class="card1 mb">
-              <label style="font-size: 17px;"><em class="fas fa-hand-point-right" style="font-size: 25px; color: #C31CB4;"></em> <?= Yii::t('app', '¡Qué bueno que estés aquí!  Cuando sentimos pasión por el servicio hacemos que nuestros usuarios queden tranquilos y satisfechos con nuestra labor Demuéstranos aquí en tu postulación, que lo más importante es que la experiencia de nuestros usuarios se transforme positivamente y genere memorabilidad hacía la marca que estás representando.') ?></label>
-          </div>
+    <div class="col-md-6">
+      <div class="card1 mb">
+        <label style="font-size: 17px;"><em class="fas fa-hand-point-right" style="font-size: 25px; color: #C31CB4;"></em> <?= Yii::t('app', '¡Qué bueno que estés aquí!  Cuando sentimos pasión por el servicio hacemos que nuestros usuarios queden tranquilos y satisfechos con nuestra labor Demuéstranos aquí en tu postulación, que lo más importante es que la experiencia de nuestros usuarios se transforme positivamente y genere memorabilidad hacía la marca que estás representando.') ?></label>
       </div>
+    </div>
 
-      <div class="col-md-3">
-        <div class="card1 mb">
-          <label class="text-center" style="font-size: 15px;""><em class="fas fa-hashtag" style="font-size: 25px; color: #C31CB4;"></em> Cantidad de Postulaciones : </label>
-                        
-            <label style="font-size: 20px;" class="text-center" ><?php
-                                $var = (new \yii\db\Query())
-                                    ->select(['count(*)'])
-                                    ->from(['tbl_postulacion_heroes'])
-                                    //->where(['=','id_postulacion',$])
-                                    ->scalar();
-                                    echo $var
-                                ?></label>
-        </div>
-      </div>
-      
-      
-      <div class="col-md-3">
-        <div class="card1 mb">
-          <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #C31CB4;"></em> Enviar y Guardar </label> 
-            <?= Html::submitButton(Yii::t('app', 'Enviar y Guardar'),//nombre del boton
+    <div class="col-md-3">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 15px; color: #C31CB4;"></em> Enviar y Guardar </label> 
+          <?= Html::submitButton(Yii::t('app', 'Enviar y Guardar'),//nombre del boton
                                 ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                     'data-toggle' => 'tooltip',
                                     'onClick'=> 'varVerificar();',//funcion de JS que al dar clic verifique que estoy enviando 
-                                    'title' => 'Enviar']) 
+                                    'title' => 'Enviar']);
+
+                                    
+                                  
               ?>
-        </div>
+
       </div>
+    </div>
   </div>  
 
-  </div>
-  <br><hr><br>
+</div>
+<br><hr><br>
 
   <div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
     <div class="col-md-12">
@@ -173,6 +173,7 @@ $roles = $command->queryScalar();
             <br>
               
             <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Nombre de Quién Postula:') ?></label> 
+            
             <?=
                     $form->field($model, 'nombrepostula', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                     ->widget(Select2::classname(), [
@@ -202,13 +203,12 @@ $roles = $command->queryScalar();
                             ]
             );
             ?>
-
             <br>
               
             <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Cargo de Quién Postula:') ?></label> 
+
             <?= $form->field($model,'cargopostula',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($varTipoCargo,['prompt'=>'Seleccionar...', 'id' => 'cargopostula'])?>
 
-              
             <br>
               
             <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Embajador/ Persona a Postular:') ?></label> 
@@ -244,17 +244,68 @@ $roles = $command->queryScalar();
 
             <br>
 
-            <label><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Tipo de Cliente') ?></label> <!-- label  del titulo de lo que vamos a mostrar ------>
-                <?=  $form->field($model, 'pcrc', 
-                ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
-                ->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
-                                                [
-                                                    'prompt'=>'Seleccionar...',//placeholder de lo que se va a mostrar
-                                                ]
-                                        )->label('');  // para que tome el lavel de arriba 
-            ?>
+                        <label><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> Seleccionar Cliente: </label>
+                            <?php
+                                if (count($varConteoExist) != 0) {                                  
+                            ?>
+                                <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes in ($varservicios)")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
+                                                    [
+                                                        'id' => 'txtidclientes',
+                                                        'prompt'=>'Seleccionar ',
+                                                        'onchange' => '
+                                                            $.get(
+                                                                "' . Url::toRoute('listarpcrcs') . '", 
+                                                                {id: $(this).val()}, 
+                                                                function(res){
+                                                                    $("#requester").html(res);
+                                                                }
+                                                            );
+                                                            
+                                                        ',
 
-            <br>
+                                                    ]
+                                        )->label(''); 
+                                ?>
+                            <?php
+                                } else{
+                            ?>
+                                <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes != 1")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
+                                                    [
+                                                        'id' => 'txtidclientes',
+                                                        'prompt'=>'Seleccionar',
+                                                        'onchange' => '
+                                                            $.get(
+                                                                "' . Url::toRoute('listarpcrcs') . '", 
+                                                                {id: $(this).val()}, 
+                                                                function(res){
+                                                                    $("#requester").html(res);
+                                                                }
+                                                            );
+                                                            
+                                                        ',
+
+                                                    ]
+                                        )->label(''); 
+                                ?>
+                            <?php                                    
+                                }                                 
+                            ?>
+
+
+              
+                <br>
+
+                <label><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> Seleccionar Programa/Pcrc: </label>
+                            <?= $form->field($model,'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
+                                                [],
+                                                [
+                                                    
+                                                    'prompt' => 'Seleccionar...',
+                                                    'id' => 'requester',
+                                                    'onclick' => 'carga_programa();',
+                                                ]
+                                            )->label('');
+                            ?>
 
             <div id="IdBloque2" style="display:inline;">
               
@@ -268,7 +319,7 @@ $roles = $command->queryScalar();
           <div class="col-md-6"> 
             <div id="IdBloque3">      
             
-              <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Fecha / Hora de la Interacción:') ?></label>
+              <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Fecha / Hora de la Interacción:') ?> Ej: 2023-05-26 22:37:06</label>
               <?= $form->field($model, 'fechahorapostulacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'fechahorapostulacion', 'placeholder'=>'AA-MM-DD HH:MM:SS','title' => 'Importante AÑO-MES-DIA HORA:MIN:SEG'])->label('') ?>
 
               <br>
@@ -335,16 +386,16 @@ $roles = $command->queryScalar();
       varBloque2.style.display='none';
       varBloque3.style.display='none';
     }
-
-
   }
 
   function varVerificar() {
 
     var tipodepostulacion = document.getElementById("tipodepostulacion").value;  
-    var nombrepostula = document.getElementById("s2id_autogen1").value;
-    var cargopostula = document.getElementById("cargopostula").value;  
-    var embajadorpostular = document.getElementById("s2id_autogen2").value;
+    var nombrepostula = document.getElementById("postulacionheroes-nombrepostula").value;
+    var cargopostula = document.getElementById("cargopostula").value;
+    var embajador = document.getElementById("s2id_autogen1").value;  
+    var cliente = document.getElementById("txtidclientes").value;  
+    var pcrc = document.getElementById("requester").value;
     var ciudad = document.getElementById("ciudad").value;  
    
 
@@ -353,7 +404,7 @@ $roles = $command->queryScalar();
             swal.fire("!!! Advertencia !!!","Se debe seleccionar tipo de postulacion","warning");
             return;
     }
-    if (s2id_autogen1 == "") {
+    if (nombrepostula == "") {
       event.preventDefault();
             swal.fire("!!! Advertencia !!!","Se debe ingresar nombre de quien postula","warning");
             return;
@@ -363,9 +414,14 @@ $roles = $command->queryScalar();
             swal.fire("!!! Advertencia !!!","Se debe seleccionar cargo de la persona","warning");
             return;
     }
-    if (s2id_autogen2 == "") {
+    if (cliente == "") {
       event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Se debe ingresar embajador a postular","warning");
+            swal.fire("!!! Advertencia !!!","Se debe seleccionar el cliente","warning");
+            return;
+    }
+    if (pcrc == "") {
+      event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Se debe seleccionar la pcrc","warning");
             return;
     }
     if (ciudad == "") {
@@ -373,6 +429,12 @@ $roles = $command->queryScalar();
             swal.fire("!!! Advertencia !!!","Se debe seleccionar la ciudad","warning");
             return;
     }
+    if (embajador == "Seleccione ...") {
+      event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Se debe seleccionar el embajador","warning");
+            return;
+    }
+
     
     
   }
