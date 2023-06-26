@@ -386,12 +386,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <!-- TAB LINKS -->
                     <div class="w3-container">                        
                         <div class="w3-row">
-                            <a href="javascript:void(0)" onclick="openCity(event, 'Preguntas');">
+                            <a href="javascript:void(0)" onclick="openCity(event, 'preguntas');">
                                 <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">
-                                    <label><em class="fas fa-chart-bar" style="font-size: 20px; color: #827DF9;"></em><strong>  <?= Yii::t('app', 'Preguntas') ?></strong></label>
+                                    <label><em class="fas fa-chart-bar" style="font-size: 20px; color: #827DF9;"></em><strong>  <?= Yii::t('app', 'Competencias') ?></strong></label>
                                 </div>
                             </a>
-                            <a href="javascript:void(0)" onclick="openCity(event, 'Respuestas');">
+                            <a href="javascript:void(0)" onclick="openCity(event, 'respuestas');">
                                 <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">
                                     <label><em class="fas fa-users" style="font-size: 20px; color: #C148D0;"></em><strong>  <?= Yii::t('app', 'Respuestas') ?></strong></label>
                                 </div>
@@ -406,7 +406,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <!-- TAB CONTENT -->
                         <div class="tab-content">                       
                             <!-- Submodulo Preguntas -->
-                            <div id="Preguntas" class="w3-container city tabcontent" style="display:inline;">
+                            <div id="preguntas" class="w3-container city tabcontent" style="display:inline;">
                             <br>
                             
                                 <div class="row"> 
@@ -426,7 +426,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ?>
                                                     </div>                                      
                                                     <div class="col-md-12">                                        
-                                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ingresar Pregunta') ?><span class="color-required"> *</span></label>
+                                                        <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ingresar Competencia') ?><span class="color-required"> *</span></label>
                                                         <?= $form->field($modalPreguntas, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>''])?>
                                                     </div>
                                                     <div class="col-md-12">
@@ -444,7 +444,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <div class="col-md-7">
                                         <div class="card1 mb" style="width:100%"> 
-                                            <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Preguntas') ?></label>
+                                            <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Competencias') ?></label>
                                             <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No hay datos para mostrar') ?></label>
                                             
                                             <div class="table-responsive table-container" id="container_table_preguntas">                                
@@ -456,7 +456,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?php
                                             Modal::begin([
                                                 'id' => 'modalEditar',
-                                                'header' => '<h4>Editar Pregunta</h4>',
+                                                'header' => '<h4>Editar Competencia</h4>',
                                                 'footer' => Html::button('Actualizar datos', ['class' => 'btn btn-success btn-block', 'style'=>'margin-top: 1.5%; padding:0.5%', 'id' => 'guardarCambios', 'onClick' => 'editarPregunta();']),
                                             ]);
 
@@ -466,7 +466,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                            
                                             echo '<div class="row" id="modal_edit_pregunta">';
                                             echo '<div class="col-md-12">';
-                                            echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar Pregunta </label>';
+                                            echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar Competencia </label>';
                                             echo $form->field($modalPreguntas, 'nombrepregunta',  ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'nombre_pregunta_edit','placeholder'=>'Ingresar pregunta']);
                                             echo '</div>';
                                             echo '<div class="col-md-12" style="margin-top: 20px">';
@@ -485,13 +485,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>                            
                             </div>
                             <!-- Submodulo Respuestas -->
-                            <div id="Respuestas" class="w3-container city tabcontent" style="display:none;">
+                            <div id="respuestas" class="w3-container city tabcontent" style="display:none;">
                                 <br> 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="card1 mb" >
                                             <label  style="font-size: 18px; color: #db2c23;"><em class="fas fa-exclamation-triangle" style="font-size: 20px; color: #db2c23;"></em> <?= Yii::t('app', 'Para tener en cuenta: ') ?></label>
-                                            <label style="font-size: 15px;"> <?= Yii::t('app', 'Las respuestas ingresadas se asignarán por igual a todas las preguntas.') ?></label>
+                                            <label style="font-size: 15px;"> <?= Yii::t('app', 'Las respuestas ingresadas se asignarán por igual a todas las competencias.') ?></label>
                                         </div>
                                     </div> 
                                 </div>   
@@ -543,7 +543,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     <div class="col-md-7">
                                         <div class="card1 mb" style="width:100%"> 
-                                                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Preguntas') ?></label>
+                                                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Lista de Competencias') ?></label>
                                                 <label id="emptyMessageRespuestas" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No hay datos para mostrar') ?></label>
                                                 
                                                 <div class="table-responsive table-container" id="container_table_respuestas">                                
@@ -630,7 +630,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     ?>
                                                 </div>  
                                             </div>                                            
-                                        </div>                                        
+                                        </div>  
+                                        <br> 
+                                        <!-- Alerta para carga masiva-->
+                                        <?php if (Yii::$app->session->hasFlash('success')): 
+                                            $mensaje= Yii::$app->session->getFlash('success');
+                                            ?>
+                                            <script>
+                                                 swal.fire("",'<?= $mensaje ?>',"success");    
+                                            </script>
+                                        <?php endif; ?>
+                                                                           
                                     </div>
 
                                     <div class="col-md-6">
@@ -714,11 +724,11 @@ $this->params['breadcrumbs'][] = $this->title;
         return;
     }
     if (nombre_pregunta_txt == "") {
-        swal.fire("!!! Advertencia !!!","No ha ingresado la pregunta","warning");
+        swal.fire("!!! Advertencia !!!","No ha ingresado el nombre de la competencia","warning");
         return;
     }
     if (descrip_pregunta_txt == "") {
-        swal.fire("!!! Advertencia !!!","No ha ingresado la descripción","warning");
+        swal.fire("!!! Advertencia !!!","No ha ingresado la descripción de la competencia","warning");
         return;
     }
 
@@ -778,11 +788,11 @@ $this->params['breadcrumbs'][] = $this->title;
         }
 
         if (nombre_pregunta_txt == "") {
-            swal.fire("!!! Advertencia !!!","No ha ingresado la pregunta","warning");
+            swal.fire("!!! Advertencia !!!","No ha ingresado el nombre de la competencia","warning");
             return;
         }
         if (descrip_pregunta_txt == "") {
-            swal.fire("!!! Advertencia !!!","No ha ingresado la descripción","warning");
+            swal.fire("!!! Advertencia !!!","No ha ingresado la descripción de la competencia","warning");
             return;
         }
 
@@ -824,7 +834,7 @@ $this->params['breadcrumbs'][] = $this->title;
         var id_pregunta_eliminar = id_pregunta;        
 
         if (id_pregunta_eliminar == "") {
-            swal.fire("!!! Error !!!","No llegó el id de la pregunta a eliminar","error");
+            swal.fire("!!! Error !!!","No llegó el id de la competencia a eliminar","error");
             return;
         }
 
@@ -950,7 +960,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     data: 'id_gestorevaluacionpreguntas',
                     visible : false                   
                 },
-                {   title: "Pregunta",
+                {   title: "Competencia",
                     data: 'nombrepregunta',
                     width: '20%'
                    

@@ -19,8 +19,10 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 
 $sessiones = Yii::$app->user->identity->id;
 $var_document = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-$var_exist_jefe = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_jefes where identificacion in ('$var_document')")->queryScalar();
-$var_exist_colaborador = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_colaboradores where identificacion in ('$var_document')")->queryScalar();
+$var_document = 456;
+//$var_exist_jefe = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_jefes where identificacion in ('$var_document')")->queryScalar();
+//$var_exist_colaborador = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_colaboradores where identificacion in ('$var_document')")->queryScalar();
+
 
 $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$var_document')")->queryOne();
 
@@ -171,7 +173,7 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
                                     <?php }else{?>
                                         <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                         <br>
-                                        <?= Html::a('Realizar evaluación',  ['autoevaluacion', 'id_user' => $existe_usuario['id_gestor_evaluacion_usuarios'], 'id_evalua'=> $id_evaluacion_actual], ['class' => 'btn btn-success',
+                                        <?= Html::a('Realizar evaluación',  ['autoevaluacion', 'id_user' => $id_usuario, 'id_evalua'=> $id_evaluacion_actual], ['class' => 'btn btn-success',
                                                     'style' => 'background-color: #337ab7',
                                                     'data-toggle' => 'tooltip',
                                                     'id'=> 'btn_autoevaluacion',
@@ -186,86 +188,88 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
                             </div>
                         </div>                        
                         
-                        <div class="col-md-3">
-                            <div class="card2 mb">
-                                <label style="font-size: 23px; text-align: center;"> Evaluación a Cargo </label>
-                                <?php if ($varcargo == 0) { ?>
-                                    <?php if ($varidconteocargo >= 1) { ?>
-                                        <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
-                                        <br> 
-                                        <?= Html::button('Realizar evaluación', ['value' => url::to(['modalevaluacionacargo']), 'class' => 'btn btn-success', 'id'=>'modalButton', 'data-toggle' => 'tooltip', 'title' => 'Evaluación a Cargo', 'style' => 'background-color: #337ab7']) 
-                                            ?> 
-
-                                            <?php
-                                                Modal::begin([
-                                                          'header' => '<h4></h4>',
-                                                          'id' => 'modal',
-                                                ]);
-
-                                                echo "<div id='modalContent'></div>";
-                                                                              
-                                                Modal::end(); 
-                                            ?>
-                                    <?php }else{ ?>
-                                        <em class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></em>
-                                        <br>
-                                        <label style="font-size: 15px; text-align: center;"> Sin personas a cargo </label>
-                                    <?php } ?>
-                                <?php }else{ ?>
-                                    <?php if ($varresulcargo == 100) { ?>  
-                                        <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
-                                        <br>                                                                              
-                                             
-                                        <div class="row">    
-                                            <div class="col-md-5" class="text-right">        
-                                                <label style="font-size: 15px; text-align: center;"> Completado </label>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <?= Html::button('[ + ]', ['value' => url::to(['evaluaciondesarrollo/evaluacioncargo']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Realizar más evaluaciones', 'style' => 'background-color: #4298b400; border-color: #4298b500 !important; color:#000000;']) 
+                        <?php if($esjefe==1){ ?>
+                            <div class="col-md-3">
+                                <div class="card2 mb">
+                                    <label style="font-size: 23px; text-align: center;"> Evaluación a Cargo </label>
+                                    <?php if ($varcargo == 0) { ?>
+                                        <?php if ($varidconteocargo >= 1) { ?>
+                                            <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
+                                            <br> 
+                                            <?= Html::button('Realizar evaluación', ['value' => url::to(['modalevaluacionacargo', 'id_jefe' => $id_usuario, 'id_evalua'=> $id_evaluacion_actual]), 'class' => 'btn btn-success', 'id'=>'modalButton', 'data-toggle' => 'tooltip', 'title' => 'Evaluación a Cargo', 'style' => 'background-color: #337ab7']) 
                                                 ?> 
 
                                                 <?php
                                                     Modal::begin([
-                                                      'header' => '<h4></h4>',
-                                                      'id' => 'modal3',
+                                                            'header' => '<h4></h4>',
+                                                            'id' => 'modal',
                                                     ]);
 
-                                                    echo "<div id='modalContent3'></div>";
-                                                                          
+                                                    echo "<div id='modalContent'></div>";
+                                                                                
                                                     Modal::end(); 
                                                 ?>
-                                            </div>
-                                        </div>
-
+                                        <?php }else{ ?>
+                                            <em class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></em>
+                                            <br>
+                                            <label style="font-size: 15px; text-align: center;"> Sin personas a cargo </label>
+                                        <?php } ?>
                                     <?php }else{ ?>
-                                        <em class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></em>
-                                        <br>  
-                                        <div class="row">
-                                        
-                                            <div class="col-md-7"class="text-right">
-                                                <label style="font-size: 15px; text-align: center;"><?php echo 'Evaluaciones: '.$varresulcargo.'%'; ?></label>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <?= Html::button('[ + ]', ['value' => url::to(['evaluaciondesarrollo/evaluacioncargo']), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Realizar más evaluaciones', 'style' => 'background-color: #4298b400; border-color: #4298b500 !important; color:#000000;']) 
-                                                ?> 
+                                        <?php if ($varresulcargo == 100) { ?>  
+                                            <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
+                                            <br>                                                                              
+                                                
+                                            <div class="row">    
+                                                <div class="col-md-5" class="text-right">        
+                                                    <label style="font-size: 15px; text-align: center;"> Completado </label>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <?= Html::button('[ + ]', ['value' => url::to(['evaluaciondesarrollo/evaluacioncargo']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Realizar más evaluaciones', 'style' => 'background-color: #4298b400; border-color: #4298b500 !important; color:#000000;']) 
+                                                    ?> 
 
-                                                <?php
-                                                    Modal::begin([
-                                                      'header' => '<h4></h4>',
-                                                      'id' => 'modal2',
-                                                    ]);
+                                                    <?php
+                                                        Modal::begin([
+                                                        'header' => '<h4></h4>',
+                                                        'id' => 'modal3',
+                                                        ]);
 
-                                                    echo "<div id='modalContent2'></div>";
-                                                                          
-                                                    Modal::end(); 
-                                                ?>
+                                                        echo "<div id='modalContent3'></div>";
+                                                                            
+                                                        Modal::end(); 
+                                                    ?>
+                                                </div>
                                             </div>
-                                        
-                                        </div>
+
+                                        <?php }else{ ?>
+                                            <em class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></em>
+                                            <br>  
+                                            <div class="row">
+                                            
+                                                <div class="col-md-7"class="text-right">
+                                                    <label style="font-size: 15px; text-align: center;"><?php echo 'Evaluaciones: '.$varresulcargo.'%'; ?></label>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <?= Html::button('[ + ]', ['value' => url::to(['evaluaciondesarrollo/evaluacioncargo']), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Realizar más evaluaciones', 'style' => 'background-color: #4298b400; border-color: #4298b500 !important; color:#000000;']) 
+                                                    ?> 
+
+                                                    <?php
+                                                        Modal::begin([
+                                                        'header' => '<h4></h4>',
+                                                        'id' => 'modal2',
+                                                        ]);
+
+                                                        echo "<div id='modalContent2'></div>";
+                                                                            
+                                                        Modal::end(); 
+                                                    ?>
+                                                </div>
+                                            
+                                            </div>
+                                        <?php } ?>
                                     <?php } ?>
-                                <?php } ?>
-                            </div>
-                        </div>                    
+                                </div>
+                            </div>  
+                        <?php } ?>                  
                     </div>
                     <br>
 

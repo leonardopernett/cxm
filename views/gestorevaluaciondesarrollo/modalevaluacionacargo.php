@@ -21,12 +21,7 @@ $sessiones = Yii::$app->user->identity->id;
 $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
 
 $varidlist = Yii::$app->db->createCommand("select ue.nombre_completo, ue.documento from tbl_usuarios_evalua ue where ue.documento_jefe = '$vardocument' and ue.documento != '$vardocument' order by ue.nombre_completo asc")->queryAll();
-$listData = [
-    '1' => 'Usuario 1',
-    '2' => 'Usuario 2',
-    '3' => 'Usuario 3',
-    '4' => 'Usuario 4'
-];
+
 
 $varTipos = ['Persona no esta a mi cargo' => 'Persona no esta a mi cargo', 'Falta persona a mi cargo' => 'Falta persona a mi cargo', 'Otros inconvenientes' => 'Otros inconvenientes' ];
 
@@ -52,7 +47,7 @@ $listdelete = ['Retiro konecta' => 'Retiro konecta', 'No debe realizar evaluacio
                 <div class="card1 mb">
                     <label style="font-size: 16px;"><em class="fas fa-bolt" style="font-size: 20px; color: #4D83FE;"></em> Seleccionar persona </label>
                     
-                    <?= $form->field($model, "id_evaluacionnombre")->dropDownList($listData, ['prompt' => 'Seleccionar Una Persona', 'id'=>"id_nombre_evaluacion", 'style' => 'margin-bottom: 20px;']) ?>
+                    <?= $form->field($model, "id_evaluacionnombre")->dropDownList($opcion_personas_a_cargo, ['prompt' => 'Seleccionar Una Persona', 'id'=>"id_lista_colaborador_a_cargo", 'style' => 'margin-bottom: 20px;']) ?>
                     
                     <?= Html::submitButton(Yii::t('app', 'Aceptar'),
                                     ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',                

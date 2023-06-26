@@ -31,7 +31,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'only' => ['index','parametrizador', 'cargardatostablapreguntas', 'crearpregunta', 'editarpregunta', 'eliminarpregunta',
                         'cargardatostablarespuestas', 'createrespuesta', 'editrespuesta', 'deleterespuesta',
                         'importardatoscargamasiva', 'detallecargamasiva',
-                        'autoevaluacion',
+                        'autoevaluacion', 'crearautoevaluacion',
                         'modalevaluacionacargo', 'evaluacionacargo'],
             'rules' => [
                 [
@@ -342,7 +342,9 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         $name = $fecha . '-' . $user;
                         $file->saveAs('categorias/' . $name . '.' . $file->extension);
                         $this->Importexcelusuarios($name);
-
+                        // Carga masiva exitosa
+                        Yii::$app->session->setFlash('success', 'Carga masiva subida exitosamente.');
+                        
                         return $this->redirect('parametrizador');
                     }
                 }
@@ -352,34 +354,6 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'model' => $model,
         ]);
 
-    }
-
-
-    public function actionImportardatoscargamasiva(){
-        $model = new FormUploadtigo();
-
-            if ($model->load(Yii::$app->request->post()))
-            {
-                $model->file = UploadedFile::getInstances($model, 'file');
-                
-
-                if ($model->file && $model->validate()) {
-
-                    foreach ($model->file as $file) {
-                        $fecha = date('Y-m-d-h-i-s');
-                        $user = Yii::$app->user->identity->username;
-                        $name = $fecha . '-' . $user;
-                        $file->saveAs('categorias/' . $name . '.' . $file->extension);
-                        $this->importExcelUsuarios($name);
-                        unlink('categorias/' . $name . '.' . $file->extension);
-                        return $this->redirect(['parametrizador']);
-                    } 
-                }
-           }        
-        
-        return $this->renderAjax('viewcargamasiva',[
-            'model' => $model,
-        ]);
     }
 
     public function importExcelUsuarios($name){
@@ -550,7 +524,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         INNER JOIN tbl_gestor_evaluacion_usuarios jefe
         ON jefe_x_colaborador.id_usuario_jefe = jefe.id_gestor_evaluacion_usuarios
         WHERE jefe_x_colaborador.anulado=0 AND jefe_x_colaborador.id_usuario_colaborador IN (:id_usuario)')->bindValues($paramsBusqueda)->queryAll();
-
+      
         // Query para traer las preguntas (competencias) asociadas a un id_evaluacion
         $paramsEvaluacion = [':id_evalua' => $id_evalua];
         $array_preguntas = Yii::$app->db->createCommand('
@@ -581,7 +555,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         return $this->render('autoevaluacion',[
             'model' => $model,
             'datos_usuario' => $datos_usuario_logueado,
-            'jefe' => $datos_jefe,
+            'datos_jefe' => $datos_jefe,
             'array_preguntas' => $array_preguntas,
             'array_respuestas'=> $array_respuestas,
             'opcion_respuestas'=> $opcion_respuestas,
@@ -590,27 +564,98 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         ]);
       }
 
+      public function actionCrearautoevaluacion(){
+
+
+          
+      }
+
 
 
     //----EVALUACION A CARGO ------------------------------------------------------
-    public function actionModalevaluacionacargo(){
+    public function actionModalevaluacionacargo($id_jefe,$id_evalua){
+       
         $model = new GestorEvaluacionPreguntas();
+        
+        $params_busqueda = [':id_jefe' => $id_jefe];
+        $array_personas_a_cargo =  Yii::$app->db->createCommand('
+        SELECT u.id_gestor_evaluacion_usuarios AS id_colaborador, u.nombre_completo, 
+		 u.identificacion
+        FROM tbl_gestor_evaluacion_jefe_colaborador relacion  
+        INNER JOIN tbl_gestor_evaluacion_usuarios u
+        ON relacion.id_usuario_colaborador = u.id_gestor_evaluacion_usuarios
+        WHERE relacion.anulado=0 AND relacion.id_usuario_jefe IN (:id_jefe)')->bindValues($params_busqueda)->queryAll(); 
+
+        $opcion_personas_a_cargo = ArrayHelper::map($array_personas_a_cargo,
+        'id_colaborador',
+        'nombre_completo');   
+
   
-        // $form = Yii::$app->request->post();
-        // if ($model->load($form)) {
-            
-        //   return $this->redirect(array('evaluaciondecargos','idparams'=>'cod'.$model->documento.'cargo'));
-        // }
+        $form = Yii::$app->request->post();
+        if ($model->load($form)) {
+        
+            $id_seleccionado = $model->id_evaluacionnombre;
+            $id_evaluacion_actual = $id_evalua;
+
+          return $this->redirect(['evaluacionacargo','id_user'=> $id_seleccionado, 'id_evalua'=> $id_evaluacion_actual]);
+        }
   
         return $this->renderAjax('modalevaluacionacargo',[
-          'model' => $model
+          'model' => $model,
+          'opcion_personas_a_cargo' => $opcion_personas_a_cargo
           ]);
       }
 
-      public function actionEvaluacionacargo(){
+      public function actionEvaluacionacargo($id_user, $id_evalua){      
         $model =  new GestorEvaluacionPreguntas();
+        // Datos usuario de carga masiva
+        $datos_colaborador_seleccionado = Yii::$app->db->createCommand("select id_gestor_evaluacion_usuarios as id_user, nombre_completo, identificacion, cargo, area_operacion, ciudad, sociedad FROM tbl_gestor_evaluacion_usuarios WHERE id_gestor_evaluacion_usuarios in ('$id_user')")->queryOne();
+        
+        // Query para obtener el jefe asociado
+        $paramsBusqueda = [':id_usuario' => $id_user];
+        $datos_jefe = Yii::$app->db->createCommand('
+        SELECT jefe.id_gestor_evaluacion_usuarios AS id_jefe, jefe.nombre_completo AS nom_jefe, jefe.identificacion AS identificacion_jefe
+        FROM tbl_gestor_evaluacion_jefe_colaborador jefe_x_colaborador
+        INNER JOIN tbl_gestor_evaluacion_usuarios jefe
+        ON jefe_x_colaborador.id_usuario_jefe = jefe.id_gestor_evaluacion_usuarios
+        WHERE jefe_x_colaborador.anulado=0 AND jefe_x_colaborador.id_usuario_colaborador IN (:id_usuario)')->bindValues($paramsBusqueda)->queryAll();
+
+    
+        // Query para traer las preguntas (competencias) asociadas a un id_evaluacion
+         $paramsEvaluacion = [':id_evalua' => $id_evalua];
+         $array_preguntas = Yii::$app->db->createCommand('
+         SELECT id_gestorevaluacionpreguntas AS id_pregunta, id_evaluacionnombre, nombrepregunta, descripcionpregunta 
+         FROM tbl_gestor_evaluacion_preguntas
+         WHERE anulado = 0 AND id_evaluacionnombre IN (:id_evalua)')->bindValues($paramsEvaluacion)->queryAll(); 
+                 
+         // Query para obtener las respuestas asociadas a un id_evaluacion        
+         $array_respuestas = Yii::$app->db->createCommand('
+         SELECT id_gestorevaluacionrespuestas AS id_rta, nombre_respuesta, 
+         descripcion_respuesta, valornumerico_respuesta AS valor 
+         FROM tbl_gestor_evaluacion_respuestas
+         WHERE anulado = 0 AND id_evaluacionnombre IN (:id_evalua)')->bindValues($paramsEvaluacion)->queryAll(); 
+                 
+         // Nombre de la respuesta con su valor numerio    
+         $opcion_respuestas = ArrayHelper::map($array_respuestas,
+         'valor',
+         'nombre_respuesta');      
+ 
+         //Lista de tiempo de desarrollo
+         $option_tiempo_en_el_cargo = [
+             '1' => 'Inferior a 6 meses',
+             '2' => '6 meses a 1 año',
+             '3' => '2 años a 3 años',
+             '3' => '3 años en adelante',
+         ];
+
         return $this->render('evaluacionacargo',[
             'model' => $model,
+            'datos_colaborador' => $datos_colaborador_seleccionado,
+            'datos_jefe' => $datos_jefe,
+            'array_preguntas' => $array_preguntas,
+            'array_respuestas'=> $array_respuestas,
+            'opcion_respuestas'=> $opcion_respuestas,
+            'lista_tiempo_en_cargo' => $option_tiempo_en_el_cargo
         ]);
       }
 

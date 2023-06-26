@@ -18,12 +18,18 @@ use yii\helpers\ArrayHelper;
 
     $sessiones = Yii::$app->user->identity->id;
 
-    //$vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+    $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
     // $varnombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = $sessiones")->queryScalar();
     $varnombre = $datos_usuario['nombre_completo'];
     $varcargo = $datos_usuario['cargo']; 
     $vartipoeva = Yii::$app->db->createCommand("select tipoevaluacion from tbl_evaluacion_tipoeval where idevaluaciontipo = 1 and anulado = 0")->queryScalar();
-    $nombre_jefe =$jefe[0]['nom_jefe']; //Toma el primer jefe que encuentra
+    $nombre_jefe = "NO EXISTE UN JEFE DIRECTO";
+    
+    if(!empty($datos_jefe)) {
+        $nombre_jefe =$datos_jefe[0]['nom_jefe']; //Toma el primer jefe que encuentra
+    }
+   
+    
     $area_operacion = $datos_usuario['area_operacion'];
     $ciudad = $datos_usuario['ciudad'];
     $sociedad = $datos_usuario['sociedad'];
@@ -170,7 +176,10 @@ use yii\helpers\ArrayHelper;
     </div>
     <br>
     <!-- FORMULARIO AUTOEVALUACION ----------------------------------------------------------------------------------------->
-    <?php $form = ActiveForm::begin(); ?> 
+    <?php $form = ActiveForm::begin([
+        'action' => ['gestorevaluacioncontroller/crearautoevaluacion'], 
+        'method' => 'post'
+    ]); ?> 
     <div id="capaTres" style="display: inline">
             <!-- SECCION DATOS PERSONALES ---------------------------------------------------------------------------------------------->
             <div class="row">
@@ -202,7 +211,7 @@ use yii\helpers\ArrayHelper;
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Tiempo total realizando el cargo administrativo:') ?><span class="color-required"> *</span></label> </label>
                                 <?= $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($lista_tiempo_en_cargo, [
-                                                                    'id' => 'id_nombre_evaluacion',
+                                                                    'id' => 'id_tiempo_laboral',
                                                                     'prompt'=>'Seleccionar...',                                                                    
                                                                 ])->label(''); 
                                                                 ?>                                
@@ -244,9 +253,9 @@ use yii\helpers\ArrayHelper;
                                     <tbody>
                                         <?php foreach ($array_respuestas as $fila): ?>
                                             <tr>
-                                            <td><label style="font-size: 15px; text-align: center;"><?= $fila['nombre_respuesta']; ?></label></td>
-                                            <td><label style="font-size: 15px; text-align: center;"><?= $fila['valor']; ?></label></td>
-                                            <td><label style="font-size: 15px; text-align: center;"><?= $fila['descripcion_respuesta']; ?></label></td>                                        
+                                                <td><label style="font-size: 15px; text-align: center;"><?= $fila['nombre_respuesta']; ?></label></td>
+                                                <td><label style="font-size: 15px; text-align: center;"><?= $fila['valor']; ?></label></td>
+                                                <td><label style="font-size: 15px; text-align: center;"><?= $fila['descripcion_respuesta']; ?></label></td>                                        
                                             </tr>
                                         <?php endforeach; ?>                           
                                     </tbody>
@@ -317,6 +326,7 @@ use yii\helpers\ArrayHelper;
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar y Enviar: </label> 
+                    
                                 <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                   Guardar y Enviar
                                 </div>
@@ -356,5 +366,4 @@ use yii\helpers\ArrayHelper;
         </div>
     </div>
 <?php ActiveForm::end(); ?>
-
 
