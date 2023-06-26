@@ -268,6 +268,7 @@ $varConteo = (new \yii\db\Query())
                                                     
                                                     'prompt' => 'Seleccionar...',
                                                     'id' => 'requester',
+                                                    'multiple' => true,
                                                     'onclick' => 'carga_programa();',
                                                 ]
                                             )->label('');

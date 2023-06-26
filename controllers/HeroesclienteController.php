@@ -206,7 +206,7 @@ use Exception;
                       ->from(['tbl_postulacion_heroes'])
                       ->where(['=','anulado',0])
                       ->andfilterwhere(['=','tipodepostulacion',$vartipopostu])
-                      ->andfilterwhere(['=','estado',$vartipoestado])
+                      ->andfilterwhere(['IN','estado',$vartipoestado])
                       ->andwhere(['BETWEEN','fechacreacion',$varfechaini.' 00:00:00',$varfechafin.' 23:59:59'])
                       ->all();
         }
