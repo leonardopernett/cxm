@@ -475,7 +475,7 @@ use Exception;
             ob_clean();
 
             $varListadoLlamadas_one = json_decode(iconv( "Windows-1252", "UTF-8//IGNORE", $responseAsesorAuto ),true);
-            var_dump($varListadoLlamadas_one['conversations']);
+            var_dump($varListadoLlamadas_one);
             die();
             foreach ($varListadoLlamadas_one['conversations'] as $value) {
                     array_push($varArrayllamadas, array("varConnid"=>$value['conversationId'],"varOrigen"=>$value['originatingDirection']));
