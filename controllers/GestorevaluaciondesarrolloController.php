@@ -17,9 +17,14 @@ use yii\web\UploadedFile;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use yii\base\Exception;
+
 use app\models\GestorEvaluacionPreguntas;
 use app\models\GestorEvaluacionRespuestas;
 use app\models\FormUploadtigo;
+use app\models\GestorEvaluacionFormulario;
+use app\models\GestorEvaluacionEstadoEval;
+use app\models\GestorEvaluacionRespuestasForm;
+
 
 class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
@@ -32,7 +37,8 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         'cargardatostablarespuestas', 'createrespuesta', 'editrespuesta', 'deleterespuesta',
                         'importardatoscargamasiva', 'detallecargamasiva',
                         'autoevaluacion', 'crearautoevaluacion',
-                        'modalevaluacionacargo', 'evaluacionacargo'],
+                        'modalevaluacionacargo', 'evaluacionacargo',
+                        'reporteria'],
             'rules' => [
                 [
                 'allow' => true,
@@ -61,6 +67,23 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
     }    
     
     public function actionIndex(){
+        $sessiones = Yii::$app->user->identity->id;
+        $estado_evaluacion=0;
+        $var_document = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+        $var_document = 456;
+        
+        $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$var_document')")->queryOne();
+        $esjefe = $existe_usuario['es_jefe'];
+        $esColaborador = $existe_usuario['es_colaborador'];
+
+        if($esjefe!=null){
+            $id_usuario = $existe_usuario['id_gestor_evaluacion_usuarios'];    
+        }
+
+        if($esjefe==null && $esColaborador!=null){
+            $id_usuario = $existe_usuario['id_gestor_evaluacion_usuarios'];    
+        }
+
         $evaluacion_actual = Yii::$app->db->createCommand('
         SELECT idevaluacionnombre AS id_evalua, nombreeval
         FROM tbl_evaluacion_nombre 
@@ -68,9 +91,29 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         ORDER BY fechacrecion
         ')->queryOne();
 
+        
+        //$id_estado = Yii::$app->db->createCommand("select id_gestor_evaluacion_estadoeval FROM tbl_gestor_evaluacion_estadoeval WHERE  estado= 'Incompleto' and anulado = 0")->queryScalar();
+        $varauto = (new \yii\db\Query())
+        ->select('id_estado_evaluacion')
+        ->from('tbl_gestor_evaluacion_formulario')
+        ->where(['id_evaluacionnombre' => $evaluacion_actual])
+        ->andWhere(['id_tipo_evalua' => 1 ])
+        ->andWhere(['id_evaluador' => $id_usuario ])
+        ->scalar();
+
+        if($varauto){
+            $estado_evaluacion = $varauto;
+        }
+
       return $this->render('index', [
           'id_evaluacion_actual' => $evaluacion_actual['id_evalua'],
-          'nom_eval_actual' => $evaluacion_actual['nombreeval']
+          'nom_eval_actual' => $evaluacion_actual['nombreeval'],
+          'varauto' => $estado_evaluacion,
+          'existe_usuario' => $existe_usuario,
+          'id_usuario'=> $id_usuario,
+          'esjefe'=> $esjefe,
+
+
       ]);
     }
 
@@ -341,7 +384,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         $user = Yii::$app->user->identity->username;
                         $name = $fecha . '-' . $user;
                         $file->saveAs('categorias/' . $name . '.' . $file->extension);
-                        $this->Importexcelusuarios($name);
+                        $this->importExcelUsuarios($name);
                         // Carga masiva exitosa
                         Yii::$app->session->setFlash('success', 'Carga masiva subida exitosamente.');
                         
@@ -483,23 +526,24 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                     
                 }
                  
-            }
-
+            }          
             
-
-            
-            if($pk_jefe!=null && $pk_colaborador!=null){                
+            if($pk_jefe!=null && $pk_colaborador!=null){    
+                            
                 try {
-                   Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_jefe_colaborador',[
+                    
+                   $insert_data = Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_jefe_colaborador',[
                         'id_usuario_jefe' => $pk_jefe,
                         'id_usuario_colaborador' => $pk_colaborador,                    
                         'fechacreacion' => date("Y-m-d"),                                        
                         'usua_id' => Yii::$app->user->identity->id,
                         'anulado' => 0,
                         ])->execute();
+
+                    
                 } catch (\yii\db\IntegrityException $e) {
                     continue;
-                }      
+                } 
             }
 
         }
@@ -508,11 +552,15 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     //----- EVALUACIÓN AUTOEVALUACION ------------
     public function actionAutoevaluacion($id_user, $id_evalua){
-        
+       
+        $pk_evaluacion_desarrollo="";
         $id_usuario_logueado = $id_user;
         $id_evaluacion_actual = $id_evalua;
         $model =  new GestorEvaluacionPreguntas();
-
+        //$model_evalua_desarrollo = new GestorEvaluacionFormulario();
+        $model_respuestas_form = new GestorEvaluacionRespuestasForm();
+        $vartipoeva = Yii::$app->db->createCommand("select idevaluaciontipo as id, tipoevaluacion from tbl_evaluacion_tipoeval where idevaluaciontipo = 1  and anulado = 0")->queryOne();
+               
         // Datos usuario de carga masiva
         $datos_usuario_logueado = Yii::$app->db->createCommand("select nombre_completo, identificacion, cargo, area_operacion, ciudad, sociedad FROM tbl_gestor_evaluacion_usuarios WHERE id_gestor_evaluacion_usuarios in ('$id_usuario_logueado')")->queryOne();
         
@@ -541,7 +589,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 
         // Nombre de la respuesta con su valor numerio    
         $opcion_respuestas = ArrayHelper::map($array_respuestas,
-        'valor',
+        'id_rta',
         'nombre_respuesta');      
 
         //Lista de tiempo de desarrollo
@@ -551,22 +599,80 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             '3' => '2 años a 3 años',
             '3' => '3 años en adelante',
         ];
-
+      
         return $this->render('autoevaluacion',[
             'model' => $model,
+            'model_rta_form' => $model_respuestas_form,            
             'datos_usuario' => $datos_usuario_logueado,
             'datos_jefe' => $datos_jefe,
             'array_preguntas' => $array_preguntas,
             'array_respuestas'=> $array_respuestas,
             'opcion_respuestas'=> $opcion_respuestas,
-            'lista_tiempo_en_cargo' => $option_tiempo_en_el_cargo
+            'lista_tiempo_en_cargo' => $option_tiempo_en_el_cargo,
+            'id_usuario_logueado' => $id_usuario_logueado,
+            'id_evaluacion_actual' => $id_evaluacion_actual,
+            'vartipoeva' => $vartipoeva
             
         ]);
       }
 
       public function actionCrearautoevaluacion(){
+                
+        $id_user = Yii::$app->request->post("id_user");
+        $id_evalua_nombre = Yii::$app->request->post("id_evalua_nombre");
+        $id_tipo_evalua = Yii::$app->request->post("id_tipo_evalua");
+        $array_preguntas_rtas = Yii::$app->request->post("array_preguntas_rtas");
+       
+        //Crear un formulario de autoevalaucion 
+        $model_evalua_desarrollo = new GestorEvaluacionFormulario();
 
+        $model_evalua_desarrollo->id_evaluacionnombre = $id_evalua_nombre;
+        $model_evalua_desarrollo->id_tipo_evalua = $id_tipo_evalua;
+        $model_evalua_desarrollo->id_evaluador = $id_user;
+        $model_evalua_desarrollo->id_evaluado = $id_user;
+        $model_evalua_desarrollo->id_estado_evaluacion = 1;
+        $model_evalua_desarrollo->usua_id = Yii::$app->user->identity->id;
 
+        if( $model_evalua_desarrollo->validate() ){
+            if($model_evalua_desarrollo->save()){
+                $pk_evaluacion_desarrollo = $model_evalua_desarrollo->id_gestor_evaluacion_formulario;            
+            } else {
+                // Respuesta error 
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ['status' => 'error', 'data' => 'No se pudo crear el formulario asociado al id_user ' . $id_user];
+            }
+        };        
+
+        if ($pk_evaluacion_desarrollo !==null && $array_preguntas_rtas !== null) {
+
+            foreach ($array_preguntas_rtas as $datos) {
+                $id_pregunta = $datos['id_pregunta'];
+                $id_respuesta = $datos['id_respuesta'];
+                $observaciones = $datos['observaciones'];
+                $acuerdos = $datos['acuerdos'];
+
+                //Asoxiar las respuestas al formulario de autoevaluacion 
+                $model_respuestas_form = new GestorEvaluacionRespuestasForm();
+
+                $model_respuestas_form->id_gestor_evaluacion_formulario = $pk_evaluacion_desarrollo;
+                $model_respuestas_form->id_pregunta = $id_pregunta;
+                $model_respuestas_form->id_respuesta = $id_respuesta;
+                $model_respuestas_form->observacion = $observaciones;
+                $model_respuestas_form->acuerdos = $acuerdos;
+                $model_respuestas_form->fechacreacion = date("Y-m-d");
+                $model_respuestas_form->usua_id = Yii::$app->user->identity->id;
+                $model_respuestas_form->save();
+            }
+            // Respuesta exitosa
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['status' => 'success', 'data' => 'Se registro exitosamente la autoevaluación'];         
+             
+        
+        } else {
+            // Respuesta error 
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['status' => 'error', 'data' => 'No se recibieron datos para el id_formulario ' . $pk_evaluacion_desarrollo ];
+        }            
           
       }
 
@@ -659,6 +765,18 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         ]);
       }
 
+
+      //REPORTERIA COLABORADOR -------------------------------------------------------------------->
+
+      public function actionReporteria(){
+          $model = new GestorEvaluacionPreguntas();
+
+        return $this->render('reporteria',[
+            'model' => $model
+            
+        ]);
+                 
+      }
 
 
 

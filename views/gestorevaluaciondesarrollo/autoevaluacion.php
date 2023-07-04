@@ -17,14 +17,16 @@ use yii\helpers\ArrayHelper;
     . ' {input}{error}{hint}</div>';
 
     $sessiones = Yii::$app->user->identity->id;
+    $nombre_evaluacion = $vartipoeva['tipoevaluacion'];
+    $id_nombre_evalua = $vartipoeva['id'];
 
     $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
     // $varnombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = $sessiones")->queryScalar();
     $varnombre = $datos_usuario['nombre_completo'];
     $varcargo = $datos_usuario['cargo']; 
-    $vartipoeva = Yii::$app->db->createCommand("select tipoevaluacion from tbl_evaluacion_tipoeval where idevaluaciontipo = 1 and anulado = 0")->queryScalar();
-    $nombre_jefe = "NO EXISTE UN JEFE DIRECTO";
     
+    $nombre_jefe = "NO EXISTE UN JEFE DIRECTO";
+
     if(!empty($datos_jefe)) {
         $nombre_jefe =$datos_jefe[0]['nom_jefe']; //Toma el primer jefe que encuentra
     }
@@ -33,7 +35,9 @@ use yii\helpers\ArrayHelper;
     $area_operacion = $datos_usuario['area_operacion'];
     $ciudad = $datos_usuario['ciudad'];
     $sociedad = $datos_usuario['sociedad'];
-  
+
+    $contador = 0; // Inicializar el contador para preguntas y respuestas
+
     ?>
 
     <style>
@@ -140,7 +144,7 @@ use yii\helpers\ArrayHelper;
                 <div class="col-md-4">
                     <div class="card1 mb">
                         <label><em class="fas fa-list" style="font-size: 20px; color: #2CA5FF;"></em> Tipo evaluación:</label>
-                        <label><?= Yii::t('app', $vartipoeva) ?></label>
+                        <label><?= Yii::t('app', $nombre_evaluacion) ?></label>
                     </div>
                 </div>
             </div>
@@ -177,7 +181,7 @@ use yii\helpers\ArrayHelper;
     <br>
     <!-- FORMULARIO AUTOEVALUACION ----------------------------------------------------------------------------------------->
     <?php $form = ActiveForm::begin([
-        'action' => ['gestorevaluacioncontroller/crearautoevaluacion'], 
+        'action' => ['crearautoevaluacion'], 
         'method' => 'post'
     ]); ?> 
     <div id="capaTres" style="display: inline">
@@ -266,39 +270,49 @@ use yii\helpers\ArrayHelper;
                         <br>  
 
                         <!-- PREGUNTAS Y RESPUESTAS (COMPETENCIAS ORGANIZACIONALES) -------------------------->
-                        <?php foreach ($array_preguntas as $fila): ?>
+                        <?php foreach ($array_preguntas as $fila): 
+                            $id_pregunta = 'id_pregunta_selected_' . $contador;
+                            $id_respuesta = 'id_respuesta_selected_' . $contador;
+                            $id_observacion = 'id_observacion_' . $contador;
+                            $id_acuerdos = 'id_acuerdos_' . $contador;
+                            $id_label_pregunta = 'id_label_' . $contador;
+                        ?>
                         <div class="row"> 
                             <div class="col-md-12">
                                 <div class="card1 mb" style="font-size: 16px;">
-                                        <label style="font-size: 18px; color: #002855; "><em class="fas fa-bookmark" style="font-size: 20px; color: #22D7CF;"></em> <?= Yii::t('app', $fila['nombrepregunta']) ?></label>
+                                        <label  id="<?php echo $id_label_pregunta; ?>" style="font-size: 18px; color: #002855; "><em class="fas fa-bookmark" style="font-size: 20px; color: #22D7CF;"></em> <?= Yii::t('app', $fila['nombrepregunta']) ?></label>
+                                        <?= $form->field($model_rta_form, 'id_pregunta', ['options' => ['class' => 'hidden']])
+                                            ->textInput(['id' => $id_pregunta, 'value' => $fila['id_pregunta']])
+                                            ->label(false);
+                                        ?>
                                         <div class="row">                                    
                                             <div class="col-md-6">
-                                            <br>
+                                                <br>
                                                 <label  style="font-size: 16px;"><?= Yii::t('app', $fila['descripcionpregunta']) ?></label>                                            
                                             </div>
                                             <div class="col-md-6"> 
-                                            <label  style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em><?= Yii::t('app', ' Respuesta: ') ?><span class="color-required"> *</span></label>                                    
-                                            <?=  $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12']])->dropDownList($opcion_respuestas,
-                                                                    [
-                                                                        'id' => 'id_nombre_evaluacion',
-                                                                        'prompt'=>'Seleccionar...',
-                                                                        
-                                                                    ]
-                                                                )->label(''); 
-                                            ?>  
+                                                <label  style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em><?= Yii::t('app', ' Respuesta: ') ?><span class="color-required"> *</span></label>                                    
+                                                <?=  $form->field($model_rta_form, 'id_respuesta', ['labelOptions' => ['class' => 'col-md-12']])->dropDownList($opcion_respuestas,
+                                                                        [
+                                                                            'id' => $id_respuesta,
+                                                                            'prompt'=>'Seleccionar...',
+                                                                            
+                                                                        ]
+                                                                    )->label(''); 
+                                                ?>  
                                             </div>
                                         </div>                                  
                                         <hr>
                                         <div class="row">
                                             <div class="col-md-6">
                                                     <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Observaciones y/o Acuerdos:</label><span class="color-required"> *</span>
-                                                    <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>                                                
+                                                    <?= $form->field($model_rta_form, 'observacion', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 300,  'id'=>$id_observacion]) ?>                                                
                                             </div>
                                         
                                         
                                             <div class="col-md-6">
                                                     <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Acuerdos para el desarrollo:</label><span class="color-required"> *</span>
-                                                    <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>                                                
+                                                    <?= $form->field($model_rta_form, 'acuerdos', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 300,  'id'=>$id_acuerdos]) ?>                                                
                                             </div>
                                         </div>
                                  
@@ -308,7 +322,9 @@ use yii\helpers\ArrayHelper;
                             </div>
                             <br>                       
                         </div>
-                        <?php endforeach; ?>
+                        <?php                       
+                        $contador++; // Incrementar el contador
+                        endforeach; ?>
                     </div>
                 </div>
             </div>
@@ -326,10 +342,12 @@ use yii\helpers\ArrayHelper;
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar y Enviar: </label> 
-                    
-                                <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                  Guardar y Enviar
-                                </div>
+                                <?= Html::button('Guardar y enviar', [
+                                    'class' => 'btn btn-primary',
+                                    'style' => 'display:inline; background-color: #337ab7;',
+                                    'onclick' => 'enviar_formulario()' 
+                                ]) ?>                                      
+                                
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -366,4 +384,120 @@ use yii\helpers\ArrayHelper;
         </div>
     </div>
 <?php ActiveForm::end(); ?>
+
+<script>
+
+    function enviar_formulario() { 
+        var id_user = '<?php echo $id_usuario_logueado; ?>';
+        var id_evalua_nombre = '<?php echo $id_evaluacion_actual; ?>';
+        var id_tipo_evalua = '<?php echo $id_nombre_evalua; ?>';
+
+        var selector_tiempo_laborado = document.getElementById('id_tiempo_laboral');     
+        var tiempo_laborado = selector_tiempo_laborado.value;
+        var contador_pregunta_respuesta = parseInt('<?php echo $contador; ?>');   
+        var datosArray = [];
+
+        //Validacion respuesta
+        if (tiempo_laborado == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Ingrese tiempo_laborado","warning");
+                selector_tiempo_laborado.style.backgroundColor = '#f9dfdf';
+                return; 
+            } else {
+                selector_tiempo_laborado.style.backgroundColor = '#fff';
+            }
+        
+        for (let index = 0; index < contador_pregunta_respuesta; index++) {
+
+            var selector_contenedor_html = document.getElementById('id_label_'+index);
+            var selector_pregunta = document.getElementById('id_pregunta_selected_'+index);      
+            var selector_rta = document.getElementById('id_respuesta_selected_'+index);
+            var selector_observacion = document.getElementById('id_observacion_'+index);
+            var selector_acuerdos = document.getElementById('id_acuerdos_'+index);
+
+            var contenedor_html = selector_contenedor_html.textContent;
+            var pregunta = selector_pregunta.value;      
+            var rta = selector_rta.value;
+            var observacion = selector_observacion.value;
+            var acuerdos = selector_acuerdos.value;
+                
+            //Validacion respuesta
+            if (rta == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Ingrese una respuesta a la competencia: "+contenedor_html,"warning");
+                selector_rta.style.backgroundColor = '#f9dfdf';
+                return; 
+            } else {
+                selector_rta.style.backgroundColor = '#fff';
+            }
+
+            //Validacion Observacion
+            if (observacion == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Ingrese una Observación y/o Acuerdo a la competencia: "+contenedor_html,"warning");
+                selector_observacion.style.backgroundColor = '#f9dfdf';
+                return; 
+            } else {
+                selector_observacion.style.backgroundColor = '#fff';
+            }
+
+            //Validacion Acuerdos
+            if (acuerdos == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Ingrese un Acuerdo de desarrollo para la competencia: "+contenedor_html,"warning");
+                selector_acuerdos.style.backgroundColor = '#f9dfdf';
+                return; 
+            } else {
+                selector_acuerdos.style.backgroundColor = '#fff';
+            }
+
+            var datos = {
+                id_pregunta: pregunta,
+                id_respuesta: rta,
+                observaciones: observacion,
+                acuerdos: acuerdos
+            };
+
+            datosArray.push(datos);    
+            
+        }
+
+        //var jsonData = JSON.stringify(datosArray);
+
+        // Envío de datos por AJAX
+        $.ajax({
+        url: 'crearautoevaluacion',
+        method: 'post',
+        data: {            
+            id_user : id_user,
+            id_evalua_nombre : id_evalua_nombre,
+            id_tipo_evalua : id_tipo_evalua,
+            array_preguntas_rtas : datosArray,
+            _csrf:'<?=\Yii::$app->request->csrfToken?>'
+        },
+        success: function(response) {
+            console.log("response", response);
+            if (response.status === 'error') {
+                swal.fire("",response.data,"error");
+                return;
+            } 
+            // Procesar la respuesta exitosa
+            if (response.status === 'success') {                           
+
+                swal.fire("",response.data,"success");
+                setTimeout(function() {
+                    window.location.href = 'index';
+                }, 1000); // 1000 milisegundos= 1 segundos
+                return;
+            }                
+        },
+        error: function(xhr, status, error) {
+            // Manejar errores en caso de fallo en la petición AJAX
+            console.log(error);
+        }
+        });
+            }
+
+
+</script>
 

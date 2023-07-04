@@ -114,6 +114,10 @@ use yii\helpers\ArrayHelper;
         100% { transform: rotate(360deg); }
         }
 
+        .color-required{
+            color: #db2c23;
+        }
+
     </style>
     <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
     <script src="../../js_extensions/highcharts/highcharts.js"></script>

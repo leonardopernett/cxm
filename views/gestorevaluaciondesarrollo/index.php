@@ -17,27 +17,13 @@ $this->params['breadcrumbs'][] = $this->title;
 $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 . ' {input}{error}{hint}</div>';
 
-$sessiones = Yii::$app->user->identity->id;
-$var_document = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-$var_document = 456;
+
+
 //$var_exist_jefe = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_jefes where identificacion in ('$var_document')")->queryScalar();
 //$var_exist_colaborador = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_colaboradores where identificacion in ('$var_document')")->queryScalar();
 
 
-$existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$var_document')")->queryOne();
-
-$esjefe = $existe_usuario['es_jefe'];
-$esColaborador = $existe_usuario['es_colaborador'];
-
-if($esjefe!=null){
-    $id_usuario = $existe_usuario['id_gestor_evaluacion_usuarios'];    
-}
-
-if($esjefe==null && $esColaborador!=null){
-    $id_usuario = $existe_usuario['id_gestor_evaluacion_usuarios'];    
-}
-
-$varauto = 0; 
+$varidconteo = 2;
 $varnovedadesa =0;
 $varcargo=0; //si realizo evaluacion a personas a cargo
 $varidconteocargo= 2; // si tiene personas a cargo sino no habilitar boton para evaluar
