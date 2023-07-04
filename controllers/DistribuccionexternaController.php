@@ -71,16 +71,16 @@ use Exception;
 
     $varListaGeneral = (new \yii\db\Query())
                               ->select([
-                                'tbl_valoracion_clientenuevo.id_clientenuevo',
+                                'tbl_distribucion_clientenuevo.id_clientenuevo',
                                 'tbl_proceso_cliente_centrocosto.cliente', 
                                 'tbl_hojavida_sociedad.sociedad'
                               ])
-                              ->from(['tbl_valoracion_clientenuevo'])
+                              ->from(['tbl_distribucion_clientenuevo'])
                               ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
-                                'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_valoracion_clientenuevo.id_dp_clientes')
+                                'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_distribucion_clientenuevo.id_dp_clientes')
                               ->join('LEFT OUTER JOIN', 'tbl_hojavida_sociedad',
-                                'tbl_hojavida_sociedad.id_sociedad = tbl_valoracion_clientenuevo.id_sociedad')
-                              ->where(['=','tbl_valoracion_clientenuevo.anulado',0])
+                                'tbl_hojavida_sociedad.id_sociedad = tbl_distribucion_clientenuevo.id_sociedad')
+                              ->where(['=','tbl_distribucion_clientenuevo.anulado',0])
                               ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
                               ->all();  
     
@@ -94,13 +94,47 @@ use Exception;
 
     $model = new Valoracionclientenuevo();
 
+    $form = Yii::$app->request->post();
+    if ($model->load($form)) {
+      $varIdCliente = $model->id_dp_clientes;
+      $varIdSociedad = $model->id_sociedad;
+
+      $varExiste = (new \yii\db\Query())
+                                  ->select(['*'])
+                                  ->from(['tbl_distribucion_clientenuevo'])
+                                  ->where(['=','id_dp_clientes',$varIdCliente])
+                                  ->andwhere(['=','id_sociedad',$varIdSociedad])
+                                  ->andwhere(['=','anulado',0])
+                                  ->count();
+
+      if ($varExiste == 0) {
+        Yii::$app->db->createCommand()->insert('tbl_distribucion_clientenuevo',[
+                  'id_dp_clientes' => $varIdCliente,
+                  'id_sociedad' => $varIdSociedad,
+                  'anulado' => 0,
+                  'usua_id' => Yii::$app->user->identity->id,
+                  'fechacreacion' => date('Y-m-d'),
+        ])->execute();
+
+        $varIdGeneral = (new \yii\db\Query())
+                                  ->select(['id_clientenuevo'])
+                                  ->from(['tbl_distribucion_clientenuevo'])
+                                  ->where(['=','id_dp_clientes',$varIdCliente])
+                                  ->andwhere(['=','id_sociedad',$varIdSociedad])
+                                  ->andwhere(['=','anulado',0])
+                                  ->scalar();
+
+        return $this->redirect(array('index'));
+      }else{
+        return $this->redirect(['index']);
+      }
       
+    }
 
-      return $this->renderAjax('parametrizarclientes',[
-        'model' => $model,
-      ]);
-   }
-
+    return $this->renderAjax('parametrizarclientes',[
+      'model' => $model,
+    ]);
+  }
 
    public function actionSubirclientesnuevos($id_general){
 
@@ -112,15 +146,19 @@ use Exception;
                                   ->scalar();
 
     $varidcliente = $id_general;
+    
+   
 
-  
-
-    $varNombreCliente = (new \yii\db\Query())
+    $codigoCliente =  (new \yii\db\Query())
                                   ->select(['cliente'])
                                   ->from(['tbl_proceso_cliente_centrocosto'])
-                                  ->where(['=','id_dp_clientes',$id_general])
-                                  ->scalar();
+                                  ->join('INNER JOIN', 'tbl_distribucion_clientenuevo',
+                                      'tbl_distribucion_clientenuevo.id_dp_clientes = tbl_proceso_cliente_centrocosto.id_dp_clientes')
+                                  ->where(['=','tbl_distribucion_clientenuevo.id_clientenuevo',$id_general])
+                                  ->one();
 
+          
+          
     $datosTablaGlobal  = (new \yii\db\Query())
                                   ->select(['tbl_evaluados.id','tbl_evaluados.name', 'tbl_evaluados.dsusuario_red', 'tbl_equipos.name AS name_equipo'])
                                   ->from(['tbl_evaluados'])
@@ -128,10 +166,11 @@ use Exception;
                                   'tbl_equipos_evaluados.evaluado_id = tbl_evaluados.id')
                                   ->join('LEFT OUTER JOIN', 'tbl_equipos',
                                   'tbl_equipos.id = tbl_equipos_evaluados.equipo_id')
-                                  ->where(['=','idpcrc',4041])
+                                  ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.arbol_id = tbl_evaluados.idpcrc')   
+                                  ->where(['LIKE', 'tbl_arbols.name', $codigoCliente])
                                   ->all(); 
-
-
+    
     $model = new FormUploadtigo();        
 
     if ($model->load(Yii::$app->request->post())) {
@@ -154,10 +193,9 @@ use Exception;
 
     return $this->render('subirclientesnuevos',[
       'model' => $model,
-      'varidcliente' => $varidcliente,
-      'varNombreCliente' =>$varNombreCliente,
-      'datosTablaGlobal' => $datosTablaGlobal,
       'id_general' => $varidcliente,
+      'datosTablaGlobal' => $datosTablaGlobal,
+      
       
     ]);
   }
@@ -178,12 +216,16 @@ use Exception;
     $sheet = $objPHPExcel->getSheet(0);
     $highestRow = $sheet->getHighestRow();
 
+   
 
     for ($i=12; $i <= $highestRow; $i++) {  
       
      
       $username = $sheet->getCell("A".$i)->getValue();
-             
+      
+      $identificacion = $sheet->getCell("C".$i)->getValue();
+
+      if ($identificacion === null) {
         do{
           $identificacion = rand(10000000,99999999);
           $identificadores = (new \yii\db\Query())
@@ -192,35 +234,47 @@ use Exception;
               ->where(['=', 'identificacion', $identificacion])                               
               ->count();
 
-        }while($identificadores > 0);            
-      
-        $nombre_equipo = $sheet->getCell("C".$i)->getValue();                     
-
-        Yii::$app->db->createCommand()->insert('tbl_evaluados',[
-          'dsusuario_red' => $username,
-          'name' => $sheet->getCell("B".$i)->getValue(),
-          'identificacion' => $identificacion,
-          'email' =>  $username.'@cxm.com.co',
-          'fechacreacion' => date("Y-m-d"),
-          'usua_id' => Yii::$app->user->identity->id, 
-          'idpcrc' => 4041
-        ])->execute();
-          
-
-        $id_equipo = (new \yii\db\Query())
-          ->select(['id'])
-          ->from(['tbl_equipos'])
-          ->where(['=','name',$nombre_equipo])
-          ->all();
-
+        }while($identificadores > 0);  
         
+      }
+
+
+        $nombre_equipo = $sheet->getCell("D".$i)->getValue();                     
+
+        $nombre_pcrc = $sheet->getCell("E".$i)->getValue();
+        
+        $varIdPcrc  = (new \yii\db\Query())
+            ->select(['arbol_id'])
+            ->from(['tbl_arbols'])
+            ->where(['=','name',$nombre_pcrc])
+            ->scalar();
+  
+            
+            Yii::$app->db->createCommand()->insert('tbl_evaluados',[
+              'dsusuario_red' => $username,
+              'name' => $sheet->getCell("B".$i)->getValue(),
+              'identificacion' => $identificacion,
+              'email' =>  $username.'@cxm.com.co',
+              'fechacreacion' => date("Y-m-d"),
+              'usua_id' => Yii::$app->user->identity->id, 
+              'idpcrc' => $varIdPcrc
+              ])->execute();
+              
+              
+              
+              
+              
+        $id_equipo = (new \yii\db\Query())
+            ->select(['id'])
+            ->from(['tbl_equipos'])
+            ->where(['=','name',$nombre_equipo])
+            ->all();
+
         $id_evaluado = (new \yii\db\Query())
           ->select(['id'])
           ->from(['tbl_evaluados'])    
           ->where(['=', 'dsusuario_red', $username])
-          ->all();          
-        
-        
+          ->all();    
 
         Yii::$app->db->createCommand()->insert('tbl_equipos_evaluados',[
             'evaluado_id' => $id_evaluado[0]["id"],
