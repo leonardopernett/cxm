@@ -210,6 +210,10 @@ use GuzzleHttp;
 
           // Datos para obtener el connid - Por ahora se concatena hasta que se tenga un id de la llamada.
           $varConnid = $value['phone'];
+          if ($varConnid == "") {
+            $varConnid = '000000'.$value['time'];
+          }
+          // Si el varconnid esta vacio le llevo un dato para que permita guardarlo.
 
           // Datos para obtener los comentarios.
           $varComentarios = $value['nps_comment'];
