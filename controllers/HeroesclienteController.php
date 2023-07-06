@@ -377,6 +377,7 @@ use Exception;
         }
         
 
+
         if ($id_evaluado == null) {
             $varMensaje = 'Usuario no encontrado, por favor comunicarse con el administrador del sistema de CXM.';
         } else {
@@ -384,6 +385,7 @@ use Exception;
                 $model->nombrepostula = $id_evaluado;
             }
         }
+
 
         $varTipoPostu = ['Embajadores que Konectan' => 'Embajadores que Konectan', 'Gente Buena,Buena Gente' => 'Gente Buena,Buena Gente', 'Eureka' => 'Eureka'];
 
