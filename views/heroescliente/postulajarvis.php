@@ -18,23 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 $template = '<div class="col-md-3">{label}</div><div class="col-md-9">'
         . ' {input}{error}{hint}</div>';
 
-$sesiones= null; 
-$paramsBusqueda = [':varSesion' => $sesiones, ':anulado' => 0];
-
-$varConteoExist = Yii::$app->db->createCommand('
-        SELECT d.iddashservicio FROM tbl_dashboardpermisos d 
-          WHERE d.usuaid = :varSesion 
-            AND anulado = :anulado
-          GROUP BY d.iddashservicio')->bindValues($paramsBusqueda)->queryAll();
-    
-$varlistiddpclientes = array();
-$varservicios = null;
-  if (count($varConteoExist) != 0) {
-        foreach ($varConteoExist as $key => $value) {
-          array_push($varlistiddpclientes, $value['iddashservicio']);
-        }
-        $varservicios = implode(", ", $varlistiddpclientes);
-      }
 ?>
 
 
@@ -129,6 +112,26 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
   </div>
 </header>
 <br><hr><br>
+
+<?php
+if ($varMensaje != null) {
+?>
+<div class="capaMensaje" id="idcapaMensaje" style="display: inline;">
+  <div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
+    <div class="col-md-12">
+      <div class="card1 mb">
+      <label style="font-size: 17px;"><em class="fas fa-info-circle" style="font-size: 25px; color: #C31CB4;"></em> <?= Yii::t('app', $varMensaje) ?></label>
+      </div>
+    </div>
+    </div>
+</div>
+<?php
+}else{
+?>
+
+
+
+
 <div class="capaInfo" id="idCapaInfo" style="display: inline;">
   <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
   <div class="row"><!-- div del subtitilo azul principal que va llevar el nombre del modulo-->
@@ -193,106 +196,122 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
             <br>
               
             <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Cargo de Quién Postula:') ?></label> 
-
-            <?= $form->field($model,'cargopostula',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($varTipoCargo,['prompt'=>'Seleccionar...', 'id' => 'cargopostula'])?>
+            
+            <?php
+              if($varAsesor != null) {
+            ?>
+              <?= $form->field($model, 'cargopostula', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => 'Representante de servicio', 'id' => 'cargopostula'])->label('') ?>
+            <?php
+              }else{
+            ?>
+              <?= $form->field($model,'cargopostula',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($varTipoCargo,['prompt'=>'Seleccionar...', 'id' => 'cargopostula'])?>
+            <?php
+              }
+            ?>
 
             <br>
               
             <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Embajador/ Persona a Postular:') ?></label> 
-            <?=
-                    $form->field($model, 'embajadorpostular', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
-                    ->widget(Select2::classname(), [
-                        //'data' => array_merge(["" => ""], $data),
-                        'language' => 'es',
-                        'options' => ['placeholder' => Yii::t('app', 'Select ...')],
-                        'pluginOptions' => [
-                            'multiple' => true,
-                            'allowClear' => true,
-                            'minimumInputLength' => 4,
-                            'ajax' => [
-                                'url' => \yii\helpers\Url::to(['reportes/evaluadolistmultiple']),
-                                'dataType' => 'json',
-                                'data' => new JsExpression('function(term,page) { return {search:term}; }'),
-                                'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
-                            ],
-                            'initSelection' => new JsExpression('function (element, callback) {
-                                var id=$(element).val();
-                                if (id !== "") {
-                                    $.ajax("' . Url::to(['evaluadolistmultiple']) . '?id=" + id, {
-                                        dataType: "json",
-                                        type: "post"
-                                    }).done(function(data) { callback(data.results);});
-                                }
-                            }')
-                        ]
-                            ]
-            );
+
+            <?php
+              if ($varAsesor != null) {
+            ?>
+              <?= $form->field($model, 'embajadorpostular', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => $modelEvaluado1])->label('') ?>
+              <?= $form->field($model, 'embajadorpostular')->textInput(['class'=>'hidden', 'disabled' => true,'value' => $id_evaluado, 'id'=>'idembajador'])->label('') ?>
+            <?php
+              }else{
+            ?>
+
+              <?=
+                      $form->field($model, 'embajadorpostular', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
+                      ->widget(Select2::classname(), [
+                          //'data' => array_merge(["" => ""], $data),
+                          'language' => 'es',
+                          'options' => ['id'=>'idembajador','placeholder' => Yii::t('app', 'Select ...')],
+                          'pluginOptions' => [
+                              'allowClear' => true,
+                              'minimumInputLength' => 4,
+                              'ajax' => [
+                                  'url' => \yii\helpers\Url::to(['reportes/evaluadolistmultiple']),
+                                  'dataType' => 'json',
+                                  'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                  'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                              ],
+                              'initSelection' => new JsExpression('function (element, callback) {
+                                  var id=$(element).val();
+                                  if (id !== "") {
+                                      $.ajax("' . Url::to(['evaluadolistmultiple']) . '?id=" + id, {
+                                          dataType: "json",
+                                          type: "post"
+                                      }).done(function(data) { callback(data.results);});
+                                  }
+                              }')
+                          ]
+                              ]
+              );
+              ?>
+
+            <?php
+              }
             ?>
 
             <br>
 
                         <label><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> Seleccionar Cliente: </label>
-                            <?php
-                                if (count($varConteoExist) != 0) {                                  
-                            ?>
-                                <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes in ($varservicios)")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
-                                                    [
-                                                        'id' => 'txtidclientes',
-                                                        'prompt'=>'Seleccionar ',
-                                                        'onchange' => '
-                                                            $.get(
-                                                                "' . Url::toRoute('listarpcrcs') . '", 
-                                                                {id: $(this).val()}, 
-                                                                function(res){
-                                                                    $("#requester").html(res);
-                                                                }
-                                                            );
-                                                            
-                                                        ',
 
-                                                    ]
-                                        )->label(''); 
-                                ?>
-                            <?php
-                                } else{
-                            ?>
-                                <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes != 1")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
-                                                    [
-                                                        'id' => 'txtidclientes',
-                                                        'prompt'=>'Seleccionar',
-                                                        'onchange' => '
-                                                            $.get(
-                                                                "' . Url::toRoute('listarpcrcs') . '", 
-                                                                {id: $(this).val()}, 
-                                                                function(res){
-                                                                    $("#requester").html(res);
-                                                                }
-                                                            );
-                                                            
-                                                        ',
+                        <?php
+                          if($varAsesor != null) {
+                        ?>
+                          <?= $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => $varNombreCliente_Asesor])->label('') ?>
+                          <?= $form->field($model, 'pcrc')->textInput(['class'=>'hidden', 'disabled' => true,'value' => $varIdDpCliente_Asesor,'id' => 'txtidclientes'])->label('') ?>                      
+                        <?php
+                          }else{
+                        ?>
+                          <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                          [
+                                              'id' => 'txtidclientes',
+                                              'prompt'=>'Seleccione Cliente...',
+                                              'onchange' => '
+                                                  $.get(
+                                                      "' . Url::toRoute('listarpcrcs') . '", 
+                                                      {id: $(this).val()}, 
+                                                      function(res){
+                                                          $("#requester").html(res);
+                                                      }
+                                                  );
+                                              ',
 
-                                                    ]
-                                        )->label(''); 
-                                ?>
-                            <?php                                    
-                                }                                 
-                            ?>
-
-
+                                          ]
+                                  )->label(''); 
+                          ?>
+                        <?php
+                          }
+                        ?>
               
                 <br>
 
                 <label><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> Seleccionar Programa/Pcrc: </label>
+
+                <?php
+                  if($varAsesor != null) {
+                ?>
+                  <?= $form->field($model, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => $varCentroCosto_Asesor])->label('') ?>
+                  <?= $form->field($model, 'cod_pcrc')->textInput(['class'=>'hidden', 'disabled' => true,'value' => $varidCodPcrc_Asesor, 'id' => 'requester'])->label('') ?>                      
+                <?php
+                  }else{
+                ?>
                             <?= $form->field($model,'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
                                                 [],
                                                 [
                                                     
                                                     'prompt' => 'Seleccionar...',
                                                     'id' => 'requester',
-                                                    'onclick' => 'carga_programa();',
                                                 ]
                                             )->label('');
                             ?>
+                <?php
+                  }
+                ?>
 
             <div id="IdBloque2" style="display:inline;">
               
@@ -306,7 +325,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
           <div class="col-md-6"> 
             <div id="IdBloque3">      
             
-              <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Fecha / Hora de la Interacción:') ?> Ej: 2023-05-26 22:37:06</label>
+              <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Fecha / Hora de la Interacción: Ej: 2023-05-26 22:37:06') ?> </label>
               <?= $form->field($model, 'fechahorapostulacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'fechahorapostulacion', 'placeholder'=>'AA-MM-DD HH:MM:SS','title' => 'Importante AÑO-MES-DIA HORA:MIN:SEG'])->label('') ?>
 
               <br>
@@ -349,6 +368,10 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
   <br><hr><br>
 </div>
 
+<?php
+}
+?>
+
 <script>
   function varValida(){
     var varidSeleccionar = document.getElementById("tipodepostulacion").value;
@@ -380,7 +403,7 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
     var tipodepostulacion = document.getElementById("tipodepostulacion").value;  
     var nombrepostula = document.getElementById("postulacionheroes-nombrepostula").value;
     var cargopostula = document.getElementById("cargopostula").value;
-    var embajador = document.getElementById("s2id_autogen1").value;  
+    var embajador = document.getElementById("idembajador").value;  
     var cliente = document.getElementById("txtidclientes").value;  
     var pcrc = document.getElementById("requester").value;
     var ciudad = document.getElementById("ciudad").value;  
