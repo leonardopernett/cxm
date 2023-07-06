@@ -342,7 +342,7 @@ use Exception;
 
       if ($id_evaluado == '') {
 
-            header("Location: https://qa.grupokonecta.local/qa_managementv2/web/index.php/heroescliente/index.php");
+            header("Location: https://qa.grupokonecta.local/qa_managementv2/web/index.php/heroescliente/index");
             exit();
       } else {
           if (Yii::$app->request->get('page') || Yii::$app->request->get('sort')) {
