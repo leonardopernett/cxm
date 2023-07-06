@@ -121,7 +121,7 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
         <div class="col-md-12">
             <div class="card1 mb">
                 <label style="font-size: 18px; color: #db2c23;"><em class="fa fa-info-circle" style="font-size: 20px; color: #db2c23;"></em> Aviso </label>
-                <label style="font-size: 15px;"> <?= Yii::t('app', 'Tu usuario no se encuentra registrado para realizar la Evaluación de Desarrollo. Si crees que se trata de un error, por favor notificarle al administrador.') ?></label>
+                <label style="font-size: 15px;"> <?= Yii::t('app', 'Tu usuario no se encuentra registrado para realizar la Evaluación de Desarrollo. Si crees que se trata de un error, por favor comunicarse con el administrador.') ?></label>
             </div>
         </div>
     </div>
@@ -141,7 +141,7 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
                                 <div class="panel-body">
                                     <label style="font-size: 20px;"> ¡Te damos la bienvenida!</label>
                                     <br>
-                                    <label style="font-size: 13px;"> Evalúa sólo las personas que lleven mínimo 3 meses trabajando contigo.</label>
+                                    <!-- <label style="font-size: 13px;"> Evalúa sólo las personas que lleven mínimo 3 meses trabajando contigo.</label> -->
                                 </div>
                             </div>
                         </div>
@@ -174,7 +174,9 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
                             </div>
                         </div>                        
                         
-                        <?php if($esjefe==1){ ?>
+                        <?php 
+                       
+                        if($id_usuario && $esjefe==1){ ?>
                             <div class="col-md-3">
                                 <div class="card2 mb">
                                     <label style="font-size: 23px; text-align: center;"> Evaluación a Cargo </label>

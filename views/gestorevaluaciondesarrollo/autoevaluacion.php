@@ -18,23 +18,19 @@ use yii\helpers\ArrayHelper;
 
     $sessiones = Yii::$app->user->identity->id;
     $nombre_evaluacion = $vartipoeva['tipoevaluacion'];
-    $id_nombre_evalua = $vartipoeva['id'];
+    $id_tipo_evalua = $vartipoeva['id'];
 
     $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-    // $varnombre = Yii::$app->db->createCommand("select usua_nombre from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-    $varnombre = $datos_usuario['nombre_completo'];
-    $varcargo = $datos_usuario['cargo']; 
-    
-    $nombre_jefe = "NO EXISTE UN JEFE DIRECTO";
-
-    if(!empty($datos_jefe)) {
-        $nombre_jefe =$datos_jefe[0]['nom_jefe']; //Toma el primer jefe que encuentra
-    }
-   
-    
+    $nombre_completo = $datos_usuario['nombre_completo'];
+    $cargo = $datos_usuario['cargo'];   
     $area_operacion = $datos_usuario['area_operacion'];
     $ciudad = $datos_usuario['ciudad'];
     $sociedad = $datos_usuario['sociedad'];
+    
+    $nombre_jefe = "NO EXISTE UN JEFE DIRECTO";
+    if(!empty($datos_jefe)) {
+        $nombre_jefe = $datos_jefe[0]['nom_jefe']; //Toma el primer jefe que encuentra
+    }
 
     $contador = 0; // Inicializar el contador para preguntas y respuestas
 
@@ -132,13 +128,13 @@ use yii\helpers\ArrayHelper;
                 <div class="col-md-4">
                     <div class="card1 mb">
                         <label><em class="fas fa-user-circle" style="font-size: 20px; color: #2CA5FF;"></em> Usuario:</label>
-                        <label><?= Yii::t('app',  $datos_usuario['nombre_completo']) ?></label>
+                        <label><?= Yii::t('app', $nombre_completo ) ?></label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card1 mb">
                         <label><em class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></em> Cargo:</label>
-                        <label><?= Yii::t('app',  $datos_usuario['cargo']) ?></label>
+                        <label><?= Yii::t('app',  $cargo) ?></label>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -181,6 +177,11 @@ use yii\helpers\ArrayHelper;
     <br>
     <!-- FORMULARIO AUTOEVALUACION ----------------------------------------------------------------------------------------->
     <?php $form = ActiveForm::begin([
+        'id' => 'my-form',
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'inputOptions' => ['autocomplete' => 'off']
+        ],
         'action' => ['crearautoevaluacion'], 
         'method' => 'post'
     ]); ?> 
@@ -194,15 +195,15 @@ use yii\helpers\ArrayHelper;
                         <div class="row">
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Nombre de Jefe Inmediato:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $nombre_jefe])?>
+                                <?= $form->field($model_datos_form, 'nom_jefe', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_jefe', 'readonly' => true, 'value'=> $nombre_jefe])?>
                             </div>
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Área o Campaña:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $area_operacion])?>                                
+                                <?= $form->field($model_datos_form, 'area_operacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_area_operacion', 'readonly' => true, 'value'=> $area_operacion])?>                                
                             </div>
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ciudad:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $ciudad])?>                                
+                                <?= $form->field($model_datos_form, 'ciudad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_ciudad', 'readonly' => true, 'value'=> $ciudad])?>                                
                             </div>
                         </div>
                         <br>
@@ -210,13 +211,13 @@ use yii\helpers\ArrayHelper;
                         <div class="row">
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Razon Social:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $sociedad])?>
+                                <?= $form->field($model_datos_form, 'sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_sociedad', 'readonly' => true, 'value'=> $sociedad])?>
                             </div>
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Tiempo total realizando el cargo administrativo:') ?><span class="color-required"> *</span></label> </label>
-                                <?= $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($lista_tiempo_en_cargo, [
+                                <?= $form->field($model_datos_form, 'tiempo_cargo', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($lista_tiempo_en_cargo, [
                                                                     'id' => 'id_tiempo_laboral',
-                                                                    'prompt'=>'Seleccionar...',                                                                    
+                                                                    'prompt'=>'Seleccionar...'                                                                   
                                                                 ])->label(''); 
                                                                 ?>                                
                             </div>
@@ -305,14 +306,14 @@ use yii\helpers\ArrayHelper;
                                         <hr>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                    <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Observaciones y/o Acuerdos:</label><span class="color-required"> *</span>
-                                                    <?= $form->field($model_rta_form, 'observacion', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 300,  'id'=>$id_observacion]) ?>                                                
+                                                <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Observaciones y/o Acuerdos:</label><span class="color-required"> *</span>
+                                                <?= $form->field($model_rta_form, 'observacion', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 300,  'id'=>$id_observacion]) ?>                                                
                                             </div>
                                         
                                         
                                             <div class="col-md-6">
-                                                    <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Acuerdos para el desarrollo:</label><span class="color-required"> *</span>
-                                                    <?= $form->field($model_rta_form, 'acuerdos', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 300,  'id'=>$id_acuerdos]) ?>                                                
+                                                <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Acuerdos para el desarrollo:</label><span class="color-required"> *</span>
+                                                <?= $form->field($model_rta_form, 'acuerdos', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 300,  'id'=>$id_acuerdos]) ?>                                                
                                             </div>
                                         </div>
                                  
@@ -388,24 +389,32 @@ use yii\helpers\ArrayHelper;
 <script>
 
     function enviar_formulario() { 
+        
+        
         var id_user = '<?php echo $id_usuario_logueado; ?>';
         var id_evalua_nombre = '<?php echo $id_evaluacion_actual; ?>';
-        var id_tipo_evalua = '<?php echo $id_nombre_evalua; ?>';
-
-        var selector_tiempo_laborado = document.getElementById('id_tiempo_laboral');     
+        var id_tipo_evalua = '<?php echo $id_tipo_evalua; ?>';
+        var cargo_txt = '<?php echo $cargo; ?>';        
+        var nom_jefe_txt= '<?php echo $nombre_jefe; ?>';
+        var area_operacion_txt = '<?php echo $area_operacion; ?>';
+        var ciudad_txt = '<?php echo $ciudad; ?>';
+        var sociedad_txt = '<?php echo $sociedad; ?>';
+        var selector_tiempo_laborado = document.getElementById('id_tiempo_laboral');
         var tiempo_laborado = selector_tiempo_laborado.value;
+        var tiempo_laborado_text = selector_tiempo_laborado.options[selector_tiempo_laborado.selectedIndex].text;
+        
         var contador_pregunta_respuesta = parseInt('<?php echo $contador; ?>');   
         var datosArray = [];
-
+        
         //Validacion respuesta
         if (tiempo_laborado == "") {
-                event.preventDefault();
-                swal.fire("!!! Advertencia !!!","Ingrese tiempo_laborado","warning");
-                selector_tiempo_laborado.style.backgroundColor = '#f9dfdf';
-                return; 
-            } else {
-                selector_tiempo_laborado.style.backgroundColor = '#fff';
-            }
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Ingrese tiempo_laborado","warning");
+            selector_tiempo_laborado.style.backgroundColor = '#f9dfdf';
+            return; 
+        } else {
+            selector_tiempo_laborado.style.backgroundColor = '#fff';
+        }
         
         for (let index = 0; index < contador_pregunta_respuesta; index++) {
 
@@ -419,7 +428,7 @@ use yii\helpers\ArrayHelper;
             var pregunta = selector_pregunta.value;      
             var rta = selector_rta.value;
             var observacion = selector_observacion.value;
-            var acuerdos = selector_acuerdos.value;
+            var acuerdos = selector_acuerdos.value;            
                 
             //Validacion respuesta
             if (rta == "") {
@@ -472,6 +481,12 @@ use yii\helpers\ArrayHelper;
             id_user : id_user,
             id_evalua_nombre : id_evalua_nombre,
             id_tipo_evalua : id_tipo_evalua,
+            cargo: cargo_txt,
+            nom_jefe: nom_jefe_txt,
+            area_operacion: area_operacion_txt,
+            ciudad: ciudad_txt,
+            sociedad: sociedad_txt,
+            tiempo_cargo: tiempo_laborado_text,
             array_preguntas_rtas : datosArray,
             _csrf:'<?=\Yii::$app->request->csrfToken?>'
         },
@@ -493,10 +508,11 @@ use yii\helpers\ArrayHelper;
         },
         error: function(xhr, status, error) {
             // Manejar errores en caso de fallo en la petición AJAX
+            swal.fire("", "Fallo peticion AJAX","error");
             console.log(error);
         }
         });
-            }
+    }
 
 
 </script>

@@ -28,26 +28,24 @@ use yii\helpers\ArrayHelper;
     $id_colaborador =  $datos_colaborador['id_user'];
     $nombre_completo = $datos_colaborador['nombre_completo'];
     $cc_colaborador = $datos_colaborador['identificacion'];
-    $cargo_colaborador = $datos_colaborador['cargo'];
-    $area_operacion_colaborador = $datos_colaborador['area_operacion'];
-    $ciudad_colaborador = $datos_colaborador['ciudad'];
-    $sociedad_colaborador = $datos_colaborador['sociedad'];
-    $nombre_jefe_directo = "SIN JEFE ASOCIADO";
+    $cargo = $datos_colaborador['cargo'];
+    $area_operacion = $datos_colaborador['area_operacion'];
+    $ciudad = $datos_colaborador['ciudad'];
+    $sociedad = $datos_colaborador['sociedad'];
+    $nombre_jefe = "SIN JEFE ASOCIADO";
 
     if( !empty($datos_jefe) ) {
-        $nombre_jefe_directo = $datos_jefe[0]['nom_jefe'];
-    }
-    //$nombre_jefe_directo = Yii::$app->db->createCommand("select id_gestor_evaluacion_usuarios as id, nombre_completo from tbl_gestor_evaluacion_usuarios where anulado=0 AND es_jefe = 1 AND identificacion=$cc_colaborador")->queryOne();
+        $nombre_jefe = $datos_jefe[0]['nom_jefe'];
+    }  
    
     
     //$cargo_colaborador = 'Prueba Cargo Usuario 1'; // Buscarlo si es jefe o colaboradore para traerme el cargo
-    $vartipoeva = Yii::$app->db->createCommand("select tipoevaluacion from tbl_evaluacion_tipoeval where idevaluaciontipo = 3 and anulado = 0")->queryScalar();
-
-    $option_nombre_evaluacion = [
-        '1' => 'En Desarrollo',
-        '2' => 'Satisfactorio',
-        '3' => 'Potencial',
-    ];
+   
+    $id_tipo_evaluac = $vartipoeva['id'];
+    $tipo_evaluac = $vartipoeva['tipoevaluacion'];
+    
+    
+    $contador = 0; // Inicializar el contador para preguntas y respuestas
     ?>
 
     <style>
@@ -148,13 +146,13 @@ use yii\helpers\ArrayHelper;
                 <div class="col-md-4">
                     <div class="card1 mb">
                         <label><em class="fas fa-question-circle" style="font-size: 20px; color: #2CA5FF;"></em> Cargo:</label>
-                        <label><?= $cargo_colaborador; ?></label>
+                        <label><?= $cargo; ?></label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card1 mb">
                         <label><em class="fas fa-list" style="font-size: 20px; color: #2CA5FF;"></em> Tipo evaluación:</label>
-                        <label><?=  $vartipoeva; ?></label>
+                        <label><?=  $tipo_evaluac; ?></label>
                     </div>
                 </div>
             </div>
@@ -190,12 +188,12 @@ use yii\helpers\ArrayHelper;
     </div>
     <br>
     <!-- SECCIÓN EVALUACION A CARGO ------------------------------------------------------------>
-    <?php $form = ActiveForm::begin([
+    <?php $form = ActiveForm::begin([            
             'layout' => 'horizontal',
             'fieldConfig' => [
-                'inputOptions' => ['autocomplete' => 'off']
+                'inputOptions' => ['autocomplete' => 'off']            
             ]
-            ]); ?> 
+        ]); ?> 
 
     <!-- SECCIÓN DATOS DEL COLABORADOR ------------------------------------------------------------>
     <div id="capaTres" style="display: inline">         
@@ -207,15 +205,15 @@ use yii\helpers\ArrayHelper;
                         <div class="row">
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Nombre de Jefe Inmediato:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $nombre_jefe_directo ])?>
+                                <?= $form->field($model_datos_form, 'nom_jefe', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_jefe', 'readonly' => true, 'value'=> $nombre_jefe])?>
                             </div>
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Área o Campaña:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $area_operacion_colaborador])?>                                
+                                <?= $form->field($model_datos_form, 'area_operacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_area_operacion', 'readonly' => true, 'value'=> $area_operacion])?>                                
                             </div>
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Ciudad:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $ciudad_colaborador])?>                                
+                                <?= $form->field($model_datos_form, 'ciudad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_ciudad', 'readonly' => true, 'value'=> $ciudad])?>                                
                             </div>
                         </div>
                         <br>
@@ -223,13 +221,13 @@ use yii\helpers\ArrayHelper;
                         <div class="row">
                             <div class="col-md-4">
                                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Razon Social:') ?> </label>
-                                <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_nom_pregunta','placeholder'=>'', 'readonly' => true, 'value'=> $sociedad_colaborador])?>
+                                <?= $form->field($model_datos_form, 'sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true,'id'=>'id_sociedad', 'readonly' => true, 'value'=> $sociedad])?>
                             </div>
                             <div class="col-md-4">
-                            <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Tiempo total realizando el cargo administrativo:') ?><span class="color-required"> *</span></label> </label>
-                                <?= $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($lista_tiempo_en_cargo, [
+                                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Tiempo total realizando el cargo administrativo:') ?><span class="color-required"> *</span></label> </label>
+                                <?= $form->field($model_datos_form, 'tiempo_cargo', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($lista_tiempo_en_cargo, [
                                                                     'id' => 'id_tiempo_laboral',
-                                                                    'prompt'=>'Seleccionar...',                                                                    
+                                                                    'prompt'=>'Seleccionar...'                                                                   
                                                                 ])->label(''); 
                                                                 ?>                                
                             </div>
@@ -281,41 +279,49 @@ use yii\helpers\ArrayHelper;
                         <br>      
                                     
                         <!-- PREGUNTAS Y RESPUESTAS (COMPETENCIAS ORGANIZACIONALES) -------------------------->
-                        <?php foreach ($array_preguntas as $fila): ?>
+                        <?php foreach ($array_preguntas as $fila): 
+                            $id_pregunta = 'id_pregunta_selected_' . $contador;
+                            $id_respuesta = 'id_respuesta_selected_' . $contador;
+                            $id_observacion = 'id_observacion_' . $contador;
+                            $id_acuerdos = 'id_acuerdos_' . $contador;
+                            $id_label_pregunta = 'id_label_' . $contador;
+                        ?>
                             <div class="row"> 
                                 <div class="col-md-12">
                                     <div class="card1 mb" style="font-size: 16px;">
-                                            <label style="font-size: 18px; color: #002855; "><em class="fas fa-bookmark" style="font-size: 20px; color: #22D7CF;"></em> <?= Yii::t('app', $fila['nombrepregunta']) ?></label>
-                                            <div class="row">                                    
-                                                <div class="col-md-6">
-                                                <br>
-                                                    <label  style="font-size: 16px;"><?= Yii::t('app', $fila['descripcionpregunta']) ?></label>                                            
-                                                </div>
-                                                <div class="col-md-6"> 
-                                                <label  style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em><?= Yii::t('app', ' Respuesta: ') ?><span class="color-required"> *</span></label>                                    
-                                                <?=  $form->field($model, 'id_evaluacionnombre', ['labelOptions' => ['class' => 'col-md-12']])->dropDownList($opcion_respuestas,
+                                        <label  id="<?php echo $id_label_pregunta; ?>" style="font-size: 18px; color: #002855; "><em class="fas fa-bookmark" style="font-size: 20px; color: #22D7CF;"></em> <?= Yii::t('app', $fila['nombrepregunta']) ?></label>
+                                        <?= $form->field($model_rta_form, 'id_pregunta', ['options' => ['class' => 'hidden']])
+                                            ->textInput(['id' => $id_pregunta, 'value' => $fila['id_pregunta']])
+                                            ->label(false);
+                                        ?>
+                                        <div class="row">                                    
+                                            <div class="col-md-6">
+                                            <br>
+                                                <label  style="font-size: 16px;"><?= Yii::t('app', $fila['descripcionpregunta']) ?></label>                                            
+                                            </div>
+                                            <div class="col-md-6"> 
+                                            <label  style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em><?= Yii::t('app', ' Respuesta: ') ?><span class="color-required"> *</span></label>                                    
+                                            <?=  $form->field($model_rta_form, 'id_respuesta', ['labelOptions' => ['class' => 'col-md-12']])->dropDownList($opcion_respuestas,
                                                                         [
-                                                                            'id' => 'id_nombre_evaluacion',
+                                                                            'id' => $id_respuesta,
                                                                             'prompt'=>'Seleccionar...',
                                                                             
                                                                         ]
                                                                     )->label(''); 
                                                 ?>  
-                                                </div>
-                                            </div>                                  
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                        <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Observaciones y/o Acuerdos:</label><span class="color-required"> *</span>
-                                                        <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>                                                
-                                                </div>
-                                            
-                                            
-                                                <div class="col-md-6">
-                                                        <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Acuerdos para el desarrollo:</label><span class="color-required"> *</span>
-                                                        <?= $form->field($model, 'nombrepregunta', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 250,  'id'=>'Idcomentarios']) ?>                                                
-                                                </div>
                                             </div>
+                                        </div>                                  
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Observaciones y/o Acuerdos:</label><span class="color-required"> *</span>
+                                                <?= $form->field($model_rta_form, 'observacion', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 300,  'id'=>$id_observacion]) ?>                                                
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label style="font-size: 16px;"><em class="fas fa-comments" style="font-size: 20px; color: #8B70FA;"></em> Acuerdos para el desarrollo:</label><span class="color-required"> *</span>
+                                                <?= $form->field($model_rta_form, 'acuerdos', ['labelOptions' => ['class' => 'col-md-12']])->textArea(['maxlength' => 300,  'id'=>$id_acuerdos]) ?>                                                
+                                            </div>
+                                        </div>
                                     
                                         
                                     </div>
@@ -323,7 +329,9 @@ use yii\helpers\ArrayHelper;
                                 </div>
                                 <br>                       
                             </div>
-                        <?php endforeach; ?>
+                        <?php
+                        $contador++; // Incrementar el contador
+                        endforeach; ?>
                                 
 
                     </div>
@@ -343,10 +351,12 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar y Enviar: </label> 
-                                <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                  Guardar y Enviar
-                                </div>
+                            <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar y Enviar: </label> 
+                                <?= Html::button('Guardar y enviar', [
+                                    'class' => 'btn btn-primary',
+                                    'style' => 'display:inline; background-color: #337ab7;',
+                                    'onclick' => 'enviar_formulario()' 
+                                ]) ?>  
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -384,4 +394,134 @@ use yii\helpers\ArrayHelper;
     </div>
     <?php ActiveForm::end(); ?>
 
+    <script>
+
+    function enviar_formulario() { 
+        var id_user = '<?php echo $id_user; ?>';
+        var id_evalua_nombre = '<?php echo $id_evaluac; ?>';
+        var id_tipo_evalua = '<?php echo $id_tipo_evaluac; ?>';
+        var id_evaluado = '<?php echo $id_colab; ?>';
+        var cargo_txt = '<?php echo $cargo; ?>';        
+        var nom_jefe_txt= '<?php echo $nombre_jefe; ?>';
+        var area_operacion_txt = '<?php echo $area_operacion; ?>';
+        var ciudad_txt = '<?php echo $ciudad; ?>';
+        var sociedad_txt = '<?php echo $sociedad; ?>';
+        var selector_tiempo_laborado = document.getElementById('id_tiempo_laboral');
+        var tiempo_laborado = selector_tiempo_laborado.value;
+        var tiempo_laborado_text = selector_tiempo_laborado.options[selector_tiempo_laborado.selectedIndex].text;
+        
+        var contador_pregunta_respuesta = parseInt('<?php echo $contador; ?>');   
+        var datosArray = [];
+
+        //Validacion respuesta
+        if (tiempo_laborado == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Ingrese tiempo_laborado","warning");
+                selector_tiempo_laborado.style.backgroundColor = '#f9dfdf';
+                return; 
+            } else {
+                selector_tiempo_laborado.style.backgroundColor = '#fff';
+            }
+        
+        for (let index = 0; index < contador_pregunta_respuesta; index++) {
+
+            var selector_contenedor_html = document.getElementById('id_label_'+index);
+            var selector_pregunta = document.getElementById('id_pregunta_selected_'+index);      
+            var selector_rta = document.getElementById('id_respuesta_selected_'+index);
+            var selector_observacion = document.getElementById('id_observacion_'+index);
+            var selector_acuerdos = document.getElementById('id_acuerdos_'+index);
+
+            var contenedor_html = selector_contenedor_html.textContent;
+            var pregunta = selector_pregunta.value;      
+            var rta = selector_rta.value;
+            var observacion = selector_observacion.value;
+            var acuerdos = selector_acuerdos.value;
+                
+            //Validacion respuesta
+            if (rta == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Ingrese una respuesta a la competencia: "+contenedor_html,"warning");
+                selector_rta.style.backgroundColor = '#f9dfdf';
+                return; 
+            } else {
+                selector_rta.style.backgroundColor = '#fff';
+            }
+
+            //Validacion Observacion
+            if (observacion == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Ingrese una Observación y/o Acuerdo a la competencia: "+contenedor_html,"warning");
+                selector_observacion.style.backgroundColor = '#f9dfdf';
+                return; 
+            } else {
+                selector_observacion.style.backgroundColor = '#fff';
+            }
+
+            //Validacion Acuerdos
+            if (acuerdos == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Ingrese un Acuerdo de desarrollo para la competencia: "+contenedor_html,"warning");
+                selector_acuerdos.style.backgroundColor = '#f9dfdf';
+                return; 
+            } else {
+                selector_acuerdos.style.backgroundColor = '#fff';
+            }
+
+            var datos = {
+                id_pregunta: pregunta,
+                id_respuesta: rta,
+                observaciones: observacion,
+                acuerdos: acuerdos
+            };
+
+            datosArray.push(datos);    
+            
+        }
+
+        //var jsonData = JSON.stringify(datosArray);
+
+        // Envío de datos por AJAX
+        $.ajax({
+        url: 'crearevaluacionacargo',
+        method: 'post',
+        data: {            
+            id_evaluador : id_user,
+            id_evaluado: id_evaluado,
+            id_evalua_nombre : id_evalua_nombre,
+            id_tipo_evalua : id_tipo_evalua,
+            cargo: cargo_txt,
+            nom_jefe: nom_jefe_txt,
+            area_operacion: area_operacion_txt,
+            ciudad: ciudad_txt,
+            sociedad: sociedad_txt,
+            tiempo_cargo: tiempo_laborado_text,
+            array_preguntas_rtas : datosArray,
+            _csrf:'<?=\Yii::$app->request->csrfToken?>'
+        },
+        success: function(response) {
+            console.log("response", response);
+            if (response.status === 'error') {
+                swal.fire("",response.data,"error");
+                return;
+            } 
+            // Procesar la respuesta exitosa
+            if (response.status === 'success') {                           
+
+                swal.fire("",response.data,"success");
+                setTimeout(function() {
+                    window.location.href = 'index';
+                }, 1000); // 1000 milisegundos= 1 segundos
+                return;
+            }                
+        },
+        error: function(xhr, status, error) {
+            // Manejar errores en caso de fallo en la petición AJAX
+            swal.fire("", "Fallo peticion AJAX","error");
+            console.log(error);
+        }
+        });
+    }
+
+
+</script>
 

@@ -610,7 +610,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <div class="row">
                                             <div class="col-md-12">                                                
                                                 <div class="card1 mb"> 
-                                                    <label style="font-size: 18px;"><em class="fas fa-download" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Subir Carga Masiva') ?></label>
+                                                    <label style="font-size: 18px;"><em class="fa fa-upload" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Subir Carga Masiva') ?></label>
                                                     
                                                     <?= Html::button('Aceptar', ['value' => url::to(['viewcargamasiva']),
                                                                     'class' => 'btn btn-success', 'id'=>'modalButton',

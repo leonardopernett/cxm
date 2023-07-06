@@ -13,7 +13,6 @@ use Yii;
  * @property int $id_evaluador Usuario que realiza la evaluacion
  * @property int $id_evaluado Usuario al que evaluan
  * @property int|null $id_estado_evaluacion
- * @property int|null $id_info_general_evaluado Datos del evaluado asociados al actual formulario
  * @property float|null $puntaje_final suma de todas las respuestas asociadas al formulario
  * @property float|null $promedio_final promedio final de todas las respuestas asociadas al formulario
  * @property string $fechacreacion
@@ -39,9 +38,9 @@ class GestorEvaluacionFormulario extends \yii\db\ActiveRecord
     {
         return [
             [['id_evaluacionnombre', 'id_tipo_evalua', 'id_evaluador', 'id_evaluado'], 'required'],
-            [['id_evaluacionnombre', 'id_tipo_evalua', 'id_evaluador', 'id_evaluado', 'id_estado_evaluacion', 'id_info_general_evaluado', 'usua_id', 'usua_id_modificacion', 'anulado'], 'integer'],
+            [['id_evaluacionnombre', 'id_tipo_evalua', 'id_evaluador', 'id_evaluado', 'id_estado_evaluacion', 'usua_id', 'anulado'], 'integer'],
             [['puntaje_final', 'promedio_final'], 'number'],
-            [['fechacreacion', 'fechamodificacion'], 'safe'],
+            [['fechacreacion'], 'safe'],
         ];
     }
 
@@ -57,13 +56,10 @@ class GestorEvaluacionFormulario extends \yii\db\ActiveRecord
             'id_evaluador' => Yii::t('app', ''),
             'id_evaluado' => Yii::t('app', ''),
             'id_estado_evaluacion' => Yii::t('app', ''),
-            'id_info_general_evaluado' => Yii::t('app', ''),
             'puntaje_final' => Yii::t('app', ''),
             'promedio_final' => Yii::t('app', ''),
             'fechacreacion' => Yii::t('app', ''),
             'usua_id' => Yii::t('app', ''),
-            'fechamodificacion' => Yii::t('app', ''),
-            'usua_id_modificacion' => Yii::t('app', ''),
             'anulado' => Yii::t('app', ''),
         ];
     }
