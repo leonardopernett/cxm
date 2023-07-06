@@ -326,66 +326,98 @@ use Exception;
 
     public function actionPostulajarvis($evaluado_usuared){
 
-      $model = new PostulacionHeroes();
+        $model = new PostulacionHeroes();
+        $id_evaluado = null;     
+        $modelEvaluado1 =  null;
+        $varMensaje = null;
+        $varAsesor = null;
+        $varIdDpCliente_Asesor = null;
+        $varidCodPcrc_Asesor = null;
+        $varNombreCliente_Asesor = null;
+        $varCentroCosto_Asesor = null;
 
-      $modelEvaluado = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
-      if (!isset($modelEvaluado->id)) {
-        $modelUsuarios = \app\models\Usuarios::findOne(['usua_usuario' => base64_decode($evaluado_usuared)]);
-        }
-        if (isset($modelEvaluado->id)) {
-            $id_evaluado =  $modelEvaluado->id;  
-        }elseif (isset($modelUsuarios->id)) {
-            $id_evaluado =  $modelUsuarios->id;
+        $modelEvaluado = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
+        
+        if ($modelEvaluado == null) {
+            $modelUsuarios = \app\models\Usuarios::findOne(['usua_usuario' => base64_decode($evaluado_usuared)]);
+            if ($modelUsuarios != null) {
+                $id_evaluado = $modelUsuarios->usua_id;
+                $modelEvaluado1 = $modelUsuarios->usua_nombre;
+            }            
         }else{
-            $id_evaluado = '';
+            $id_evaluado = $modelEvaluado->id;
+            $modelEvaluado1 = $modelEvaluado->name;
+            
+            $varListaClientes = (new \yii\db\Query())
+                ->select([
+                    'tbl_proceso_cliente_centrocosto.cliente', 
+                    'tbl_proceso_cliente_centrocosto.id_dp_clientes',
+                    'CONCAT(tbl_proceso_cliente_centrocosto.cod_pcrc," - ",tbl_proceso_cliente_centrocosto.pcrc) AS pcrc',
+                    'tbl_proceso_cliente_centrocosto.cod_pcrc'
+                ])
+                ->from(['tbl_proceso_cliente_centrocosto'])
+                ->join('LEFT OUTER JOIN', 'tbl_distribucion_asesores',
+                    'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_distribucion_asesores.id_dp_clientes
+                        AND tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_distribucion_asesores.cod_pcrc')
+
+                ->where(['=','tbl_distribucion_asesores.cedulaasesor',$modelEvaluado->identificacion])
+                ->andwhere(['=','tbl_distribucion_asesores.anulado',0])
+                ->all();
+            
+            if (count($varListaClientes) != 0) {
+                foreach ($varListaClientes as $value) {
+                    $varNombreCliente_Asesor = $value['cliente'];
+                    $varIdDpCliente_Asesor = $value['id_dp_clientes'];
+                    $varCentroCosto_Asesor = $value['pcrc'];
+                    $varidCodPcrc_Asesor = $value['cod_pcrc'];
+                }
+            }
+
+            $varAsesor = 1;
+        }
+        
+
+
+        if ($id_evaluado == null) {
+            $varMensaje = 'Usuario no encontrado, por favor comunicarse con el administrador del sistema de CXM.';
+        } else {
+            if (Yii::$app->request->get('page') || Yii::$app->request->get('sort')) {
+                $model->nombrepostula = $id_evaluado;
+            }
         }
 
-      if ($id_evaluado == '') {
 
-            header("Location: https://qa.grupokonecta.local/qa_managementv2/web/index.php/heroescliente/index");
-            exit();
-      } else {
-          if (Yii::$app->request->get('page') || Yii::$app->request->get('sort')) {
-            $model->nombrepostula = $id_evaluado;
-          }
-      }
-
-      $modelEvaluado1 = (new \yii\db\Query())
-                        ->select(['name'])
-                        ->from(['tbl_evaluados'])
-                        ->where(['=','tbl_evaluados.id',$id_evaluado])
-                        ->scalar(); 
+        $varTipoPostu = ['Embajadores que Konectan' => 'Embajadores que Konectan', 'Gente Buena,Buena Gente' => 'Gente Buena,Buena Gente', 'Eureka' => 'Eureka'];
 
 
-      $varTipoPostu = ['Embajadores que Konectan' => 'Embajadores que Konectan', 'Gente Buena,Buena Gente' => 'Gente Buena,Buena Gente', 'Eureka' => 'Eureka'];
+        $varTipoCargo = ['Analista de cuenta' => 'Analista de cuenta', 'Coordinador de Operaciones' => 'Coordinador de Operaciones', 'Coordinador de Experiencia' => 'Coordinador de Experiencia','Representante de servicio' => 'Representante de servicio', 'Tutor' => 'Tutor', 'Técnico Valorador' => 'Técnico Valorador', 'Líder de equipo' => 'Líder de equipo'];
 
-      $varTipoCargo = ['Analista de cuenta' => 'Analista de cuenta', 'Coordinador de Operaciones' => 'Coordinador de Operaciones', 'Coordinador de Experiencia' => 'Coordinador de Experiencia','Representante de servicio' => 'Representante de servicio', 'Tutor' => 'Tutor', 'Técnico Valorador' => 'Técnico Valorador', 'Líder de equipo' => 'Líder de equipo'];
 
-      $varCiudad = ['Armenia' => 'Armenia','Bogotá' => 'Bogotá','Cali' => 'Cali','Ibague' => 'Ibague','Manizales' => 'Manizales','Medellín' => 'Medellín','Montería' => 'Montería','Pereira' => 'Pereira'];           
+        $varCiudad = ['Armenia' => 'Armenia','Bogotá' => 'Bogotá','Cali' => 'Cali','Ibague' => 'Ibague','Manizales' => 'Manizales','Medellín' => 'Medellín','Montería' => 'Montería','Pereira' => 'Pereira'];           
 
-      $form = Yii::$app->request->post();
+        $form = Yii::$app->request->post();
         if ($model->load($form)) {
-          Yii::$app->db->createCommand()->insert('tbl_postulacion_heroes',[
-            'tipodepostulacion' => $model->tipodepostulacion,
-            'nombrepostula' => $id_evaluado,
-            'cargopostula' => $model->cargopostula,
-            'embajadorpostular' => $model->embajadorpostular,
-            'ciudad' => $model->ciudad,
-            'fechahorapostulacion' => $model->fechahorapostulacion, 
-            'extensioniteracion' => $model->extensioniteracion,
-            'usuariovivexperiencia' => $model->usuariovivexperiencia,
-            'historiabuenagente' => $model->historiabuenagente,
-            'idea' => $model->idea,
-            'fechacreacion' => date("Y-m-d"),                    
-            'anulado' => 0,
-            'estado' => "Abierto",
-            'valorador' => $model->valorador,
-            'pcrc' => $model->pcrc,
-            'cod_pcrc' => $model->cod_pcrc,
-        ])->execute();
+            Yii::$app->db->createCommand()->insert('tbl_postulacion_heroes',[
+                'tipodepostulacion' => $model->tipodepostulacion,
+                'nombrepostula' => $id_evaluado,
+                'cargopostula' => $model->cargopostula,
+                'embajadorpostular' => $model->embajadorpostular,
+                'ciudad' => $model->ciudad,
+                'fechahorapostulacion' => $model->fechahorapostulacion, 
+                'extensioniteracion' => $model->extensioniteracion,
+                'usuariovivexperiencia' => $model->usuariovivexperiencia,
+                'historiabuenagente' => $model->historiabuenagente,
+                'idea' => $model->idea,
+                'fechacreacion' => date("Y-m-d"),                    
+                'anulado' => 0,
+                'estado' => "Abierto",
+                'valorador' => $model->valorador,
+                'pcrc' => $model->pcrc,
+                'cod_pcrc' => $model->cod_pcrc,
+            ])->execute();
 
-        return $this->redirect(['gracias']);
-      }
+            return $this->redirect(['gracias']);
+        }
 
       return $this->render('postulajarvis',[
         'modelEvaluado' => $id_evaluado,
@@ -395,6 +427,12 @@ use Exception;
         'varTipoCargo' => $varTipoCargo,
         'modelEvaluado1' => $modelEvaluado1,
         'id_evaluado' => $id_evaluado,
+        'varMensaje' => $varMensaje,
+        'varAsesor' => $varAsesor,
+        'varIdDpCliente_Asesor' => $varIdDpCliente_Asesor,
+        'varidCodPcrc_Asesor' => $varidCodPcrc_Asesor,
+        'varNombreCliente_Asesor' => $varNombreCliente_Asesor,
+        'varCentroCosto_Asesor' => $varCentroCosto_Asesor,
     ]);
   
     } 
@@ -756,23 +794,31 @@ use Exception;
 
 
           if ($txtidcliente) {
-            $txtControl = \app\models\SpeechCategorias::find()->distinct()
-              ->select(['tbl_speech_categorias.cod_pcrc'])
-              ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
-                                  'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
-              ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
-              ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
-              ->count();
+            $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
+                    ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
+                    ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                'tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+                    ->join('LEFT OUTER JOIN', 'tbl_speech_categorias',
+                                'tbl_speech_parametrizar.cod_pcrc = tbl_speech_categorias.cod_pcrc')
+                    ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtidcliente])
+                    ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                    ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1]) 
+                    ->andwhere(['=','tbl_speech_categorias.anulado',0])  
+                    ->count(); 
 
             if ($txtControl > 0) {
-              $varListaLideresx = \app\models\SpeechCategorias::find()->distinct()
-                  ->select(['tbl_speech_categorias.cod_pcrc','tbl_speech_categorias.pcrc'])
-                  ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
-                                      'tbl_speech_categorias.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
-                  ->where('tbl_speech_parametrizar.id_dp_clientes = :varCliente',[':varCliente'=>$txtidcliente])
-                  ->andwhere('tbl_speech_parametrizar.anulado = :varAnulado',[':varAnulado'=>$txtanulado])
-                  ->groupby(['tbl_speech_categorias.cod_pcrc'])                  
-                  ->all(); 
+              $varListaLideresx = \app\models\ProcesosClienteCentrocosto::find()
+                                ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
+                                ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                            'tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+                                ->join('LEFT OUTER JOIN', 'tbl_speech_categorias',
+                                            'tbl_speech_parametrizar.cod_pcrc = tbl_speech_categorias.cod_pcrc')
+                                ->where(['tbl_speech_parametrizar.id_dp_clientes' => $txtidcliente])
+                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1]) 
+                                ->andwhere(['=','tbl_speech_categorias.anulado',0])                             
+                                ->orderBy(['tbl_proceso_cliente_centrocosto.cod_pcrc' => SORT_DESC])
+                                ->all();  
 
               echo "<option value='' disabled selected>Seleccionar...</option>";
               foreach ($varListaLideresx as $key => $value) {
