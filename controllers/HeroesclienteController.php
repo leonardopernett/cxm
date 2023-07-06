@@ -795,30 +795,21 @@ use Exception;
 
           if ($txtidcliente) {
             $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
-                    ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
-                    ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
-                                'tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
-                    ->join('LEFT OUTER JOIN', 'tbl_speech_categorias',
-                                'tbl_speech_parametrizar.cod_pcrc = tbl_speech_categorias.cod_pcrc')
-                    ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtidcliente])
-                    ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
-                    ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1]) 
-                    ->andwhere(['=','tbl_speech_categorias.anulado',0])  
-                    ->count(); 
+                        ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()                                
+                        ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtidcliente])
+                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                        ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])                            
+                        ->orderBy(['tbl_proceso_cliente_centrocosto.cod_pcrc' => SORT_DESC])
+                        ->all();   
 
             if ($txtControl > 0) {
               $varListaLideresx = \app\models\ProcesosClienteCentrocosto::find()
-                                ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
-                                ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
-                                            'tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
-                                ->join('LEFT OUTER JOIN', 'tbl_speech_categorias',
-                                            'tbl_speech_parametrizar.cod_pcrc = tbl_speech_categorias.cod_pcrc')
-                                ->where(['tbl_speech_parametrizar.id_dp_clientes' => $txtidcliente])
+                                ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()                                
+                                ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtidcliente])
                                 ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
-                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1]) 
-                                ->andwhere(['=','tbl_speech_categorias.anulado',0])                             
+                                ->andwhere(['=','tbl_proceso_cliente_centrocosto.estado',1])                          
                                 ->orderBy(['tbl_proceso_cliente_centrocosto.cod_pcrc' => SORT_DESC])
-                                ->all();  
+                                ->all();                 
 
               echo "<option value='' disabled selected>Seleccionar...</option>";
               foreach ($varListaLideresx as $key => $value) {
