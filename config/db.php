@@ -2,13 +2,15 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=172.20.1.36;dbname=ci_monitoreov2',
-    'username' => 'ci_monitoreo',
-    'password' => 'monit000r300',
+    'dsn' => 'mysql:host='.MY_SQL_HOST.';dbname='.MY_SQL_DB_NAME.'',
+    'username' => USER_DB,
+    'password' => PASSWORD_DB,
     'charset' => 'utf8',
 
     'on afterOpen' =>function ($event) {
   	$event->sender->createCommand("SET lc_time_names = 'es_CO'")->execute();
 }
 ];
+
+
 
