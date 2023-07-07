@@ -3393,6 +3393,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
             public function actionShowformulariogestionamigo($basesatisfaccion_id, $preview, $fill_values, $view = "index") {
                 $basesatisfaccion_id = base64_decode($basesatisfaccion_id);
                 $modelBase = BaseSatisfaccion::findOne($basesatisfaccion_id);
+                $model = new SpeechParametrizar();
                 //REDIRECT CORRECTO
                 $redct = ($modelBase->tipo_inbox == 'ALEATORIO') ? 'inboxaleatorio' : 'index';
                 //DATOS QUE SERAN ENVIADOS AL FORMULARIO
@@ -3602,6 +3603,7 @@ where tbl_segundo_calificador.id_ejecucion_formulario = tbl_ejecucionformularios
                             'varvalencia' => $varvalencia,
                             'varcontenido' => $varcontenido,
                             'varConnids' => $varConnids,
+                            'model' => $model,
                 ]);
             }
 
