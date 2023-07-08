@@ -23,11 +23,10 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 //$var_exist_colaborador = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_colaboradores where identificacion in ('$var_document')")->queryScalar();
 
 
-$varidconteo = 2;
 $varnovedadesa =0;
 $varcargo=0; //si realizo evaluacion a personas a cargo
 $varidconteocargo= 2; // si tiene personas a cargo sino no habilitar boton para evaluar
-$varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evaluadas
+$varresulcargo = 80; // numero de personas a cargo o porcentaje de personas evaluadas
 
 ?>
 <style>
@@ -231,27 +230,10 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
                                         <?php }else{ ?>
                                             <em class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></em>
                                             <br>  
-                                            <div class="row">
-                                            
+                                            <div class="row">                                            
                                                 <div class="col-md-7"class="text-right">
                                                     <label style="font-size: 15px; text-align: center;"><?php echo 'Evaluaciones: '.$varresulcargo.'%'; ?></label>
                                                 </div>
-                                                <div class="col-md-5">
-                                                    <?= Html::button('[ + ]', ['value' => url::to(['evaluaciondesarrollo/evaluacioncargo']), 'class' => 'btn btn-success', 'id'=>'modalButton2', 'data-toggle' => 'tooltip', 'title' => 'Realizar más evaluaciones', 'style' => 'background-color: #4298b400; border-color: #4298b500 !important; color:#000000;']) 
-                                                    ?> 
-
-                                                    <?php
-                                                        Modal::begin([
-                                                        'header' => '<h4></h4>',
-                                                        'id' => 'modal2',
-                                                        ]);
-
-                                                        echo "<div id='modalContent2'></div>";
-                                                                            
-                                                        Modal::end(); 
-                                                    ?>
-                                                </div>
-                                            
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
@@ -261,22 +243,44 @@ $varresulcargo = 3; // numero de personas a cargo o porcentaje de personas evalu
                     </div>
                     <br>
 
+                    <!-- Mensaje si completo las evaluaciones asociadas a su usuario INICIO-->
                     <?php if ($varauto != 0) {  ?>
-                        <?php if ($varidconteo == 0 ) { ?>
-                            <?php if ($varidconteocargo == 0 || $varresulcargo == 100) { ?>
+                        <?php if ($no_tiene_evaluacion_a_cargo) { ?>                           
                                 <div class="row">
                                     <div class="col-md-12" class="text-center">                            
                                         <div class="panel panel-default">
                                             <div class="panel-body" style="background-color: #dfffdc;">
-                                                <label style="font-size: 20px;"><em class="fas fa-check-circle" style="font-size: 25px; color: #64ea57;"></em> ¡Gracias! Has finalizado todas las evaluaciones pendientes.</label>
+                                                <label style="font-size: 20px;"><em class="fas fa-check-circle" style="font-size: 25px; color: #64ea57;"></em> ¡Gracias! No encontramos un jefe directo; por ende, solo podrás visualizar tu autoevaluación en los resultados.</label>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        <?php } else if($evaluaciones_completadas) { ?>
+                            <div class="row">
+                                    <div class="col-md-12" class="text-center">                            
+                                        <div class="panel panel-default">
+                                            <div class="panel-body" style="background-color: #dfffdc;">
+                                                <label style="font-size: 20px;"><em class="fas fa-check-circle" style="font-size: 25px; color: #64ea57;"></em> ¡Gracias! Tu jefe ya te evalúo, ya puedes ir a conocer tus resultados. </label>
                                                 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <?php } ?>
+                        <?php } else { ?>
+                        <div class="row">
+                                    <div class="col-md-12" class="text-center">                            
+                                        <div class="panel panel-default">
+                                            <div class="panel-body" style="background-color: #dfffdc;">
+                                                <label style="font-size: 20px;"><em class="fas fa-check-circle" style="font-size: 25px; color: #64ea57;"></em> ¡Gracias! Sólo queda pendiente la evaluación de tu jefe para conocer tus resultados.</label>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         <?php } ?>
+                        
                     <?php } ?>
+                     <!-- Mensaje si completo las evaluaciones asociadas a su usuario FIN-->
 
                 </div>
             </div>

@@ -38,8 +38,6 @@ use yii\helpers\ArrayHelper;
         $nombre_jefe = $datos_jefe[0]['nom_jefe'];
     }  
    
-    
-    //$cargo_colaborador = 'Prueba Cargo Usuario 1'; // Buscarlo si es jefe o colaboradore para traerme el cargo
    
     $id_tipo_evaluac = $vartipoeva['id'];
     $tipo_evaluac = $vartipoeva['tipoevaluacion'];

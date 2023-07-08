@@ -11,7 +11,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 
    
-    $this->title = 'Reporteria Evaluación de Desarrollo';
+    $this->title = 'Mi resultado - Evaluación de Desarrollo';
     $this->params['breadcrumbs'][] = $this->title;
 
     $template = '<div class="col-md-12">'
@@ -202,46 +202,6 @@ use yii\helpers\ArrayHelper;
     <br><br>
 
     <div id="capaUno" style="display: inline">
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card1">
-                    <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-search" style="font-size: 17px; color: #FFC72C;"></em> Buscar individual: </label>                    
-                                <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                Buscar
-                                </div>
-                            </div>
-                        </div>   
-                        <div class="col-md-4">
-                            <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-users" style="font-size: 17px; color: #FFC72C;"></em> Ver todo mi equipo: </label>                    
-                                <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                Aceptar
-                                </div>
-                            </div>
-                        </div> 
-                        <div class="col-md-4">
-                            <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-download" style="font-size: 17px; color: #FFC72C;"></em> Descargar </label>                    
-                                <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                Aceptar
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                    <br>
-                </div>
-            </div>                 
-        </div> 
-    </div>
-        
-    <hr>  
-
-    <div id="capaDos" style="display: inline">
         <div class="row">
             <div class="col-md-3">
                 <div class="card1 mb">

@@ -50,7 +50,7 @@ $listdelete = ['Retiro konecta' => 'Retiro konecta', 'No debe realizar evaluacio
                     <?= $form->field($model, "id_evaluacionnombre")->dropDownList($opcion_personas_a_cargo, ['prompt' => 'Seleccionar Una Persona', 'id'=>"id_lista_colaborador_a_cargo", 'style' => 'margin-bottom: 20px;']) ?>
                     
                     <?= Html::submitButton(Yii::t('app', 'Aceptar'),
-                                    ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',                
+                                    ['class' => 'btn btn-success',                
                                     'data-toggle' => 'tooltip',
                                     'title' => 'Evaluar Persona a Cargo',
                                     'onclick' => 'evaluarpersonaacargo();',
