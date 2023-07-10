@@ -114,8 +114,8 @@ use app\models\FormUploadtigo;
         }else{
           
           $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]."+ 1 days"));
-          $varSociedadHoraInicio = '05:00:00';
-          $varSociedadHoraFinal = '05:00:00';
+          $varSociedadHoraInicio = ' 05:00:00';
+          $varSociedadHoraFinal = ' 05:00:00';
         }
 
         $varGeneralLlamada = (new \yii\db\Query())
@@ -142,8 +142,9 @@ use app\models\FormUploadtigo;
                                 ->andwhere(['between','fechallamada',$varFechaInicioTres.$varSociedadHoraInicio,$varFechaFinTres .$varSociedadHoraFinal])
                                 ->andwhere(['=','idcategoria',$varGeneralLlamada])
                                 ->andwhere(['in','extension',$varListaExtensiones])
-                                ->count();        
-
+                                ->count();  
+                                
+        
         if ($varCantidadLlamada != 0) {
 
           return $this->redirect(array('indexvoice','txtidcliente'=>$varIdDpCliente,'txtGeneral'=>$varGeneralLlamada,'txtServicio'=>$varServicios,'txtFechas'=>$model3->fechacreacion,'txtExtensiones'=>$model3->pcrc,'txtTipodash'=>$varTipoDashboard,'txtCantidad'=>$varCantidadLlamada,'txtCodPcrcs'=>$model3->cod_pcrc));
