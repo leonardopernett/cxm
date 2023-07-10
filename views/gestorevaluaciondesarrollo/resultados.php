@@ -31,6 +31,7 @@ use yii\helpers\ArrayHelper;
     $acuerdos_desarrollo = "Phasellus tortor ligula, egestas vitae tellus sed, consectetur efficitur est. Morbi pretium augue urna, eget iaculis dui rhoncus eget. In lorem nisi, sollicitudin ac scelerisque ut, tempor nec leo. Suspendisse semper eleifend ligula, ut ornare elit faucibus id.";
     $puntaje_final = 10;
     $prom_total = 2.5;
+
     ?>
 
     <style>
@@ -99,11 +100,11 @@ use yii\helpers\ArrayHelper;
 
         .dataTables_filter input {
             width: 150px; /* Ajusta el ancho del campo de búsqueda según tus necesidades */
-            font-size: 12px; /* Ajusta el tamaño de fuente del campo de búsqueda según tus necesidades */
+            font-size: 15px; /* Ajusta el tamaño de fuente del campo de búsqueda según tus necesidades */
         }
 
         .size_font_dataTable {
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .pagination {
@@ -120,11 +121,11 @@ use yii\helpers\ArrayHelper;
         body #table_resultados tbody tr td,
         body #table_resultados tbody tr td a,
         body #table_resultados thead tr th a {
-            font-size: 12px !important;
+            font-size: 15px !important;
         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button {
-            font-size: 11px;
+            font-size: 15px;
             padding: 5px 10px !important;        
         }
         
@@ -201,7 +202,38 @@ use yii\helpers\ArrayHelper;
     </header>
     <br><br>
 
-    <div id="capaUno" style="display: inline">
+    <?php 
+    if ($registros_encontrados == 0) {    
+    ?>
+        <div class="CapaCero" style="display: inline;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card1 mb">
+                        <label style="font-size: 18px; color: #db2c23;"><em class="fa fa-info-circle" style="font-size: 20px; color: #db2c23;"></em> Aviso </label>
+                        <label style="font-size: 15px;"> <?= Yii::t('app', 'Tu usuario no se encuentra registrado para visualizar los resultados de la Evaluación de Desarrollo. Si crees que se trata de un error, por favor comunicarse con el administrador.') ?></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    <?php 
+    } else if(empty($personas_a_cargo)) {   
+    ?>
+    <div class="CapaUno" style="display: inline;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card1 mb">
+                        <label style="font-size: 18px; color: #db2c23;"><em class="fa fa-info-circle" style="font-size: 20px; color: #db2c23;"></em> Aviso </label>
+                        <label style="font-size: 15px;"> <?= Yii::t('app', 'Tu usuario no tiene personal a cargo. Si crees que se trata de un error, por favor comunicarse con el administrador.') ?></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    <?php 
+        } else {   
+    ?>
+    <div id="capaDos" style="display: inline">
 
         <div class="row">
             <div class="col-md-12">
@@ -345,93 +377,11 @@ use yii\helpers\ArrayHelper;
                         <div class="card1 mb" style="width:100%"> 
                             <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Competencias') ?> </label>                      
 
-                            <!-- <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Falta por recopilar las dos evaluaciones') ?></label> -->
+                            <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No existe ninguna evaluación de  para mostrar los resultados.') ?></label>
                             
                             <div class="table-responsive table-container" id="container_table">                                
                                 <table id="table_resultados" class="table table-bordered table-hover center">
-                                    <thead style="background-color: #F5F3F3;">
-                                        <tr>
-                                            <th scope="col"><label style="font-size: 15px;"><?= Yii::t('app', ' Nombre') ?></label></th>
-                                            <th scope="col"><label style="font-size: 15px;"><?= Yii::t('app', ' Identificación') ?></label></th>
-                                            <th scope="col"><label style="font-size: 15px;"><?= Yii::t('app', ' Competencia') ?></label></th>
-                                            <th scope="col"><label style="font-size: 15px;"><?= Yii::t('app', ' Descriptivo de la competencia') ?></label></th>
-                                            <th scope="col"><label style="font-size: 15px;"><?= Yii::t('app', ' Calificación cualitativa ') ?></label></th>
-                                            <th scope="col"><label style="font-size: 15px;"><?= Yii::t('app', ' Calificación') ?></label></th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                            <tr>
-                                                <td><label style="font-size: 15px;">Pepito Gutierrez</label></td>
-                                                <td><label style="font-size: 15px;">123456789</label></td>
-                                                <td><label style="font-size: 15px;">Brindamos Soluciones</label></td>
-                                                <td><label style="font-size: 15px;">Obtener información relevante e identificar los elementos críticos de las situaciones, sus implicaciones y detalles relevantes para elegir acciones apropiadas, propones soluciones y hace que las cosas pasen</label></td>
-                                                <td><label style="font-size: 15px;">La competencia esta en un nivel satisfactorio de desarrollo</label></td>
-                                                <td><label style="font-size: 15px;">2.5</label></td>
-                                            </tr>
-                                            <tr>
-                                                <td><label style="font-size: 15px;">Pepito Gutierrez</label></td>
-                                                <td><label style="font-size: 15px;">123456789</label></td>                                                              
-                                                <td><label style="font-size: 15px;">Nos Transformamos</label></td>
-                                                <td><label style="font-size: 15px;">Capacidad de anticiparse y aprovechar las oportunidades de cambio y realizar transformaciones exitosas en la organización.</label></td>
-                                                <td><label style="font-size: 15px;">La competencia esta en un nivel esperado y potencial de desarrollo</label></td>
-                                                <td><label style="font-size: 15px;">3</label></td> 
-                                            </tr>
-                                            <tr>
-                                                <td><label style="font-size: 15px;">Juanita Perez</label></td>
-                                                <td><label style="font-size: 15px;">925638489</label></td> 
-                                                <td><label style="font-size: 15px;">Brindamos Soluciones</label></td>
-                                                <td><label style="font-size: 15px;">Obtener información relevante e identificar los elementos críticos de las situaciones, sus implicaciones y detalles relevantes para elegir acciones apropiadas, propones soluciones y hace que las cosas pasen</label></td>
-                                                <td><label style="font-size: 15px;">La competencia esta en un nivel satisfactorio de desarrollo</label></td>
-                                                <td><label style="font-size: 15px;">2.5</label></td>                                       
-                                            </tr>
-                                            <tr>
-                                                <td><label style="font-size: 15px;">Juanita Perez</label></td>
-                                                <td><label style="font-size: 15px;">925638489</label></td> 
-                                                <td><label style="font-size: 15px;">Nos Transformamos</label></td>
-                                                <td><label style="font-size: 15px;">Capacidad de anticiparse y aprovechar las oportunidades de cambio y realizar transformaciones exitosas en la organización.</label></td>
-                                                <td><label style="font-size: 15px;">La competencia esta en un nivel esperado y potencial de desarrollo</label></td>
-                                                <td><label style="font-size: 15px;">3</label></td>
-                                            </tr>
-
-                                            <tr>
-                                                <td><label style="font-size: 15px;">Pablo Perez</label></td>
-                                                <td><label style="font-size: 15px;">456</label></td> 
-                                                <td><label style="font-size: 15px;">Brindamos Soluciones</label></td>
-                                                <td><label style="font-size: 15px;">Obtener información relevante e identificar los elementos críticos de las situaciones, sus implicaciones y detalles relevantes para elegir acciones apropiadas, propones soluciones y hace que las cosas pasen</label></td>
-                                                <td><label style="font-size: 15px;">La competencia esta en un nivel satisfactorio de desarrollo</label></td>
-                                                <td><label style="font-size: 15px;">2.5</label></td> 
-                                                                                        
-                                            </tr>
-                                            <tr>
-                                                <td><label style="font-size: 15px;">Pablo Perez</label></td>
-                                                <td><label style="font-size: 15px;">456</label></td> 
-                                                <td><label style="font-size: 15px;">Nos Transformamos</label></td>
-                                                <td><label style="font-size: 15px;">Capacidad de anticiparse y aprovechar las oportunidades de cambio y realizar transformaciones exitosas en la organización.</label></td>
-                                                <td><label style="font-size: 15px;">La competencia esta en un nivel esperado y potencial de desarrollo</label></td>
-                                                <td><label style="font-size: 15px;">3</label></td> 
-                                                                                        
-                                            </tr>
-                                            <tr>
-                                                <td><label style="font-size: 15px;">Sara Sofia</label></td>
-                                                <td><label style="font-size: 15px;">123</label></td> 
-                                                <td><label style="font-size: 15px;">Brindamos Soluciones</label></td>
-                                                <td><label style="font-size: 15px;">Obtener información relevante e identificar los elementos críticos de las situaciones, sus implicaciones y detalles relevantes para elegir acciones apropiadas, propones soluciones y hace que las cosas pasen</label></td>
-                                                <td><label style="font-size: 15px;">La competencia esta en un nivel satisfactorio de desarrollo</label></td>
-                                                <td><label style="font-size: 15px;">2.5</label></td> 
-                                                                                        
-                                            </tr>
-                                            <tr>
-                                                <td><label style="font-size: 15px;">Sara Sofia</label></td>
-                                                <td><label style="font-size: 15px;">123</label></td> 
-                                                <td><label style="font-size: 15px;">Nos Transformamos</label></td>
-                                                <td><label style="font-size: 15px;">Capacidad de anticiparse y aprovechar las oportunidades de cambio y realizar transformaciones exitosas en la organización.</label></td>
-                                                <td><label style="font-size: 15px;">La competencia esta en un nivel esperado y potencial de desarrollo</label></td>
-                                                <td><label style="font-size: 15px;">3</label></td> 
-                                                                                        
-                                            </tr>
-                                                                    
-                                    </tbody>
+                                    
                                 </table>    
                             </div>           
                         </div>
@@ -441,18 +391,29 @@ use yii\helpers\ArrayHelper;
         </div>
     </div>
     <br>
+<?php 
+    } 
+?>
 
     <script>
         $(document).ready(function() {
-            init_table_resultados();
+            var data = <?php echo json_encode($data_evaluaciones_completadas); ?>;
+            init_table_resultados(data);
+
+            if(data.length==0){
+                    $( "#container_table_respuestas" ).hide();
+                    $( "#emptyMessageRespuestas" ).show();
+                }  
         });
 
-        function init_table_resultados() {
+        function init_table_resultados(data) {
 
-            $('#table_resultados').DataTable({
+            if(data.length > 0) { 
+                var tabla_por_competencias = $('#table_resultados').DataTable({
             
                 select: true,
                 "autoWidth": true,
+                data:data,
                 select: false,
                 language: {
                     "decimal": "",
@@ -476,12 +437,11 @@ use yii\helpers\ArrayHelper;
                     "order": [[ 0, "desc" ]],
                     autoWidth : false,
                     "table-layout": "fixed",
-                    paging: true, 
-                        
-                },  
+                    paging: true,
+                },
                 columnDefs: [
                     {
-                        targets: 2, // Índice de la columna que quieres cambiar
+                        targets: 7, // Índice de la columna que quieres cambiar
                         render: function(data, type, row, meta) {
                         var valorColumna = parseFloat(data); // Convierte el valor a tipo numérico
 
@@ -499,14 +459,59 @@ use yii\helpers\ArrayHelper;
                         }
                     }
                 ],
-                "lengthMenu": [5, 10, 25, 50],
-                    "pageLength": 5,
+                    columns: [
+                        {   title: "id",
+                            data: 'id_evaluado',
+                            visible : false                   
+                        },
+                        {   title: "Nombre Completo",
+                            data: 'nombre_completo'               
+                        },
+                        {   title: "Documento",
+                            data: 'identificacion'                   
+                        },
+                        {   title: "Competencia",
+                            data: 'competencia',
+                            visible: false                 
+                        },
+                        {   title: "Descriptivo de la Competencia",
+                            data: 'descripcion_competencia',
+                            visible: false
+                        },
+                        {   title: "Calificación cualitativa",
+                            data: 'descripcion_respuesta',
+                            visible: false
+                        },
+                        {   title: "Promedio por Competencia",
+                            data: 'calificacion_competencia',
+                            visible: false
+                        },
+                        {    title: "Promedio Total",
+                            data: 'prom_total_evaluacion',
+                            render: function(data){ return parseFloat(data).toFixed(2); }
+                        },
+                        {   title: "Acción",
+                            defaultContent : "<button class='btn btn-xs btn-info edit_btn_rta' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Ver Detalles'>  <span class='fa fa-search'></span> </button> <button class='btn btn-xs btn-danger delete_btn_rta' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Crear Feedback' > <span class='fa fa-envelope'> </span> </button>",
+                            searchable : false
+
+                        },
+                        {   title: "Ensayis",
+                            data: 'calificacion_competencia',
+                            visible: false                  
+                        }
+                    ],  
                 
                 initComplete : function(){
 
                 }
                 // INITCOMPLETE END
             });
+
+            //Inicializar en la primer página del datatable
+            $("#table_resultados").DataTable().page( 0 ).draw( false );
+
+            }
         }
+
     </script>
     

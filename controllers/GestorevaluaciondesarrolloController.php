@@ -76,7 +76,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $evalua_nombre = "";
         $var_document = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
         
-        $var_document = 456  ;
+        $var_document = 1415;
         $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$var_document')")->queryOne();
         $evaluaciones_completadas = false;
         $no_tiene_evaluacion_a_cargo= false;
@@ -566,8 +566,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         'id_usuario_jefe' => $pk_jefe,
                         'id_usuario_colaborador' => $pk_colaborador,                    
                         'fechacreacion' => date("Y-m-d"),                                        
-                        'usua_id' => Yii::$app->user->identity->id,
-                        'anulado' => 0,
+                        'usua_id' => Yii::$app->user->identity->id
                         ])->execute();
 
                     
@@ -981,44 +980,134 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     public function actionResultadoindividual(){
 
-        $existe_usuario = false;
-        $evaluac_completadas = [];
-
+        //Obtener id y documento del usuario logueado
         $sessiones = Yii::$app->user->identity->id;
-        $document = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-        $usuario_carga_masiva = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios from tbl_gestor_evaluacion_usuarios u where identificacion in ('$document')")->queryOne();
+        $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+        //$documento = 2425;
         
-        if($usuario_carga_masiva['cant_registros']==1){
-            $existe_usuario = true;
-            $id_usuario = $usuario_carga_masiva['id_gestor_evaluacion_usuarios'];
+        //Validar usuario segun datos de la carga masiva
+        $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
+        $registros_encontrados = $existe_usuario['cant_registros'];
+          
+        //variables locales
+        $id_evalua_nombre = "";
+        $evalua_nombre = "";
+        $existe_calificacion_total=false;
+        $promTotalEvaluacion = 0;
+        $sumaTotalEvaluacion = 0;
+        $data_competencias = [];
+
+        //Si existe el usuario
+        if($registros_encontrados==1){
+
+            $esjefe = $existe_usuario['es_jefe']; //1 si cumple, null si no cumple
+            $esColaborador = $existe_usuario['es_colaborador']; //1 si cumple, null si no cumple
+            $id_user = $existe_usuario['id_gestor_evaluacion_usuarios'];
+
             $evaluacion_actual = $this->obtenerEvaluacionActual();
-            $id_evalua_nombre = $evaluacion_actual['id_evalua'];
-
-           
-      
-
-
-
+            if($evaluacion_actual){
+                $id_evalua_nombre = $evaluacion_actual['id_evalua'];
+                $evalua_nombre = $evaluacion_actual['nombreeval'];
+            } 
             
+            $existe_calificacion_total = $this->existe_registros_calificacion_total_por_evaluacion($id_user, $id_evalua_nombre); 
+            $get_calificacion_user = $this->getValorPorCompetenciaUnUsuario($id_user, $id_evalua_nombre);
+         
+            if(!empty($get_calificacion_user) && count($get_calificacion_user)>0){
+                
+                $promTotalEvaluacion =  isset($get_calificacion_user[0]['prom_total_evaluacion']) ? $get_calificacion_user[0]['prom_total_evaluacion'] : null;
+                $sumaTotalEvaluacion = isset($get_calificacion_user[0]['suma_total_evaluacion']) ? $get_calificacion_user[0]['suma_total_evaluacion'] : null;
+
+                $data_competencias = array_map(function ($result) {
+                    unset($result['prom_total_evaluacion']);
+                    unset($result['suma_total_evaluacion']);
+                    return $result;
+                }, $get_calificacion_user);
+
+
+            }
         }
+
+        if($registros_encontrados==0){
+
+        }
+
+         
 
         $model = new GestorEvaluacionPreguntas();
 
     return $this->render('resultadoindividual',[
         'model' => $model,
-        'existe_usuario'=> $existe_usuario
-        
+        'existe_usuario'=> $existe_usuario,
+        'registros_encontrados'=> $registros_encontrados,
+        'existe_calificacion_total' => $existe_calificacion_total,
+        'promTotalEvaluacion'=>$promTotalEvaluacion,
+        'sumaTotalEvaluacion'=>$sumaTotalEvaluacion,
+        'data_competencias'=>$data_competencias
     ]);
                 
     }
     
-    public function actionResultados(){
+    public function actionResultados() {
+
+        //Obtener id y documento del usuario logueado
+        $sessiones = Yii::$app->user->identity->id;
+        $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+        $documento = 456;
+        
+        //Validar usuario segun datos de la carga masiva
+        $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
+        $registros_encontrados = $existe_usuario['cant_registros'];
+        
+        //variables locales
+        $id_evalua_nombre = "";
+        $evalua_nombre = "";
+        $promTotalEvaluacion = 0;
+        $sumaTotalEvaluacion = 0;
+        $data_competencias = [];
+        $personas_a_cargo = [];
+        $numero_personas_a_cargo = 0;
+        $data_evaluaciones_completadas = [];
+
+ 
+         //Si existe el usuario
+        if($registros_encontrados==1){
+ 
+            $esjefe = $existe_usuario['es_jefe']; //1 si cumple, null si no cumple
+            $esColaborador = $existe_usuario['es_colaborador']; //1 si cumple, null si no cumple
+            $id_user = $existe_usuario['id_gestor_evaluacion_usuarios'];
+
+            $evaluacion_actual = $this->obtenerEvaluacionActual();
+            if($evaluacion_actual){
+                $id_evalua_nombre = $evaluacion_actual['id_evalua'];
+                $evalua_nombre = $evaluacion_actual['nombreeval'];
+            } 
+            
+            $personas_a_cargo = $this->obtenerTodasLasPersonasAcargo($id_user);
+            
+            if(!empty($personas_a_cargo)){               
+
+                $numero_personas_a_cargo = count($personas_a_cargo);
+                $idColaboradores = array_map('intval', array_column($personas_a_cargo, 'id_colaborador'));
+
+                $data_evaluaciones_completadas = $this->getValorPorCompetenciaVariosUsuarios($idColaboradores, $id_evalua_nombre);
+       
+            } 
+        }
+ 
+        if($registros_encontrados==0){
+
+        }
+ 
         $model = new GestorEvaluacionPreguntas();
 
-    return $this->render('resultados',[
-        'model' => $model
-        
-    ]);
+        return $this->render('resultados',[
+            'model' => $model,
+            'existe_usuario'=> $existe_usuario,
+            'registros_encontrados'=> $registros_encontrados, 
+            'personas_a_cargo'=> $personas_a_cargo,
+            'data_evaluaciones_completadas'=> $data_evaluaciones_completadas        
+        ]);
                 
     }
 
@@ -1188,6 +1277,29 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     }
 
+    public function obtenerTodasLasPersonasAcargo($id_jefe){
+
+        $query = Yii::$app->db->createCommand('
+            SELECT colaborador.id_gestor_evaluacion_usuarios AS id_colaborador,
+                colaborador.nombre_completo AS nom_colaborador,
+                colaborador.identificacion AS cc_colaborador,
+                colaborador.cargo,
+                colaborador.area_operacion,
+                colaborador.ciudad,
+                colaborador.sociedad,
+                jefe.nombre_completo AS nom_jefe
+            FROM tbl_gestor_evaluacion_jefe_colaborador jefe_x_colaborador
+            INNER JOIN tbl_gestor_evaluacion_usuarios jefe ON jefe_x_colaborador.id_usuario_jefe = jefe.id_gestor_evaluacion_usuarios
+            INNER JOIN tbl_gestor_evaluacion_usuarios colaborador ON jefe_x_colaborador.id_usuario_colaborador = colaborador.id_gestor_evaluacion_usuarios
+            WHERE jefe_x_colaborador.anulado = 0 AND jefe_x_colaborador.id_usuario_jefe = :idJefe
+        ');
+        $query->bindParam(':idJefe', $id_jefe);
+        $result = $query->queryAll();
+
+        return $result;
+
+    }
+
     public function calcularCalificacionTotalPorCompetencia($id_evaluado, $id_evalua_nom, $pk_calificacion_total) {
 
         $query = Yii::$app->db->createCommand('
@@ -1263,12 +1375,82 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'c.id_evaluado'=>$id_user])
             ->scalar(); 
 
-        if($query!==0){
+        if($query==1){
             $response = true;
         }
 
         return $response;
     }
+
+    public function getValorPorCompetenciaUnUsuario($id_evaluado, $id_evalua_nombre){
+
+        $query = Yii::$app->db->createCommand('
+            SELECT 
+                total.id_evaluado, colaborador.nombre_completo, colaborador.identificacion,
+                pregunta.nombrepregunta AS competencia,
+                pregunta.descripcionpregunta AS descripcion_competencia, 
+                com.prom_total_por_pregunta AS calificacion_competencia,      
+                CASE
+                    WHEN com.prom_total_por_pregunta BETWEEN 1 AND 1.5 THEN "La competencia esta en un nivel basico de desarrollo"
+                    WHEN com.prom_total_por_pregunta BETWEEN 1.6 AND 2.5 THEN "La competencia esta en un nivel satisfactorio de desarrollo"
+                    WHEN com.prom_total_por_pregunta BETWEEN 2.6 AND 3 THEN "La competencia esta en un nivel esperado y potencial de desarrollo"
+                    ELSE "Sin descripción"
+                END AS descripcion_respuesta,
+                total.promedio_total_evalua AS prom_total_evaluacion,
+                total.suma_total_evalua AS suma_total_evaluacion
+            FROM tbl_gestor_evaluacion_calificaciontotal total
+            INNER JOIN tbl_gestor_evaluacion_calificaporpregunta com ON total.id_gestor_evaluacion_calificaciontotal = com.id_calificaciontotal
+            INNER JOIN tbl_gestor_evaluacion_preguntas pregunta ON com.id_pregunta = pregunta.id_gestorevaluacionpreguntas
+            LEFT JOIN tbl_gestor_evaluacion_usuarios colaborador ON total.id_evaluado = colaborador.id_gestor_evaluacion_usuarios
+            WHERE total.anulado = 0 AND total.id_evalua_nombre = :id_evalua_nombre AND total.id_evaluado = (:id_evaluado)
+        ');
+
+        $query->bindValue(':id_evaluado', $id_evaluado);
+        $query->bindValue(':id_evalua_nombre', $id_evalua_nombre);
+        $result = $query->queryAll();
+
+        return $result;
+
+    }
+
+
+    public function getValorPorCompetenciaVariosUsuarios($id_evaluados, $id_evalua_nombre){
+
+        // Convertir el array en una cadena de valores separados por comas
+        $id_evaluados_str = implode(',', $id_evaluados);
+
+        // Construir la consulta SQL con los marcadores de posición
+        $sql = "SELECT 
+                total.id_evaluado, colaborador.nombre_completo, colaborador.identificacion,
+                pregunta.nombrepregunta AS competencia,
+                pregunta.descripcionpregunta AS descripcion_competencia, 
+                com.prom_total_por_pregunta AS calificacion_competencia,      
+                CASE
+                WHEN com.prom_total_por_pregunta BETWEEN 1 AND 1.5 THEN 'La competencia esta en un nivel basico de desarrollo'
+                WHEN com.prom_total_por_pregunta BETWEEN 1.6 AND 2.5 THEN 'La competencia esta en un nivel satisfactorio de desarrollo'
+                WHEN com.prom_total_por_pregunta BETWEEN 2.6 AND 3 THEN 'La competencia esta en un nivel esperado y potencial de desarrollo'
+                ELSE 'Sin descripción'
+                END AS descripcion_respuesta,
+                total.promedio_total_evalua AS prom_total_evaluacion,
+                total.suma_total_evalua AS suma_total_evaluacion
+                FROM tbl_gestor_evaluacion_calificaciontotal total
+                INNER JOIN tbl_gestor_evaluacion_calificaporpregunta com
+                    ON total.id_gestor_evaluacion_calificaciontotal = com.id_calificaciontotal
+                INNER JOIN tbl_gestor_evaluacion_preguntas pregunta
+                    ON com.id_pregunta = pregunta.id_gestorevaluacionpreguntas
+                LEFT JOIN tbl_gestor_evaluacion_usuarios colaborador
+                    ON total.id_evaluado = colaborador.id_gestor_evaluacion_usuarios
+                WHERE total.anulado = 0 AND total.id_evalua_nombre = :id_evalua_nombre AND total.id_evaluado IN ($id_evaluados_str)";
+
+        // Ejecutar la consulta
+        $query = Yii::$app->db->createCommand($sql);
+        $query->bindValue(':id_evalua_nombre', $id_evalua_nombre);
+        $result = $query->queryAll();
+
+        return $result;
+    }
+
+
 
 
 }
