@@ -91,29 +91,32 @@ use app\models\FormUploadtigo;
         if ($varVericaFecha != 0) {
           
           $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]));
+
+          // Agregar Procesos de socieadd identificacion - Hora inicial y final
+          $varSociedadHoraInicio = (new \yii\db\Query())
+          ->select([
+            'if(tbl_speech_pcrcsociedades.id_sociedad=5," 00:00:00"," 05:00:00") AS varTiempoInicio'
+          ])
+          ->from(['tbl_speech_pcrcsociedades'])            
+          ->where(['in','cod_pcrc',$varListaCodPcrc])
+          ->andwhere(['=','anulado',0])
+          ->Scalar();
+
+          $varSociedadHoraFinal = (new \yii\db\Query())
+                  ->select([
+                    'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
+                  ])
+                  ->from(['tbl_speech_pcrcsociedades'])            
+                  ->where(['in','cod_pcrc',$varListaCodPcrc])
+                  ->andwhere(['=','anulado',0])
+                  ->Scalar();
+                  
         }else{
           
           $varFechaFinTres = date('Y-m-d',strtotime($varFechaIdeal[2]."+ 1 days"));
+          $varSociedadHoraInicio = '05:00:00';
+          $varSociedadHoraFinal = '05:00:00';
         }
-
-        // Agregar Procesos de socieadd identificacion - Hora inicial y final
-        $varSociedadHoraInicio = (new \yii\db\Query())
-                              ->select([
-                                'if(tbl_speech_pcrcsociedades.id_sociedad=5," 00:00:00"," 05:00:00") AS varTiempoInicio'
-                              ])
-                              ->from(['tbl_speech_pcrcsociedades'])            
-                              ->where(['in','cod_pcrc',$varListaCodPcrc])
-                              ->andwhere(['=','anulado',0])
-                              ->Scalar();
-
-        $varSociedadHoraFinal = (new \yii\db\Query())
-                              ->select([
-                                'if(tbl_speech_pcrcsociedades.id_sociedad=5," 23:59:59"," 05:00:00") AS varTiempoInicio'
-                              ])
-                              ->from(['tbl_speech_pcrcsociedades'])            
-                              ->where(['in','cod_pcrc',$varListaCodPcrc])
-                              ->andwhere(['=','anulado',0])
-                              ->Scalar();
 
         $varGeneralLlamada = (new \yii\db\Query())
                               ->select(['idllamada'])
