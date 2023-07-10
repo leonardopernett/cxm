@@ -22,13 +22,7 @@ use yii\helpers\ArrayHelper;
 
     $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
  
-    $nombre = "Dolly Jiménez";
-    $cargo = "Analista prueba";
-    $nombre_jefe = "Iveht Teresa prueba";
-    $fecha_autoevaluacion = "2023/06/12";
-    $fecha_evaluacion_jefe = "2023/06/15";
-    $observaciones= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut convallis, eros quis luctus pulvinar, nibh sem fermentum urna, ac porta nunc purus sed est. Ut nec odio mauris.";
-    $acuerdos_desarrollo = "Phasellus tortor ligula, egestas vitae tellus sed, consectetur efficitur est. Morbi pretium augue urna, eget iaculis dui rhoncus eget. In lorem nisi, sollicitudin ac scelerisque ut, tempor nec leo. Suspendisse semper eleifend ligula, ut ornare elit faucibus id.";
+    
     $puntaje_final = $sumaTotalEvaluacion;
     $prom_total = $promTotalEvaluacion;
     ?>
@@ -241,7 +235,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Nombre:') ?> </label>
-                            <?= Html::textInput('nombre_usuario',  $nombre, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
+                            <?= Html::textInput('nombre_usuario',  $nombre_completo, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;']) ?>
                             
                         </div>                        
                     </div>
@@ -249,7 +243,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Identificación:') ?> </label>
-                            <?= Html::textInput('documento',  $documento, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
+                            <?= Html::textInput('documento',  $numero_documento, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;']) ?>
                           
                         </div>
                     </div>
@@ -257,7 +251,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Cargo Evaluado:') ?> </label>
-                            <?= Html::textInput('cargo_usuario',  $cargo, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
+                            <?= Html::textInput('cargo_usuario',  $cargo_dataform, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;']) ?>
                                                             
                         </div>                       
                     </div>
@@ -265,7 +259,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Nombre del Jefe:') ?></label> </label>
-                            <?= Html::textInput('nombre_jefe',  $nombre_jefe, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
+                            <?= Html::textInput('nombre_jefe',  $nombre_jefe_dataform, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;']) ?>
                                                          
                         </div>
                     </div>
@@ -273,7 +267,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">                   
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Fecha autoevaluación:') ?> </label>
-                            <?= Html::textInput('fecha_autoevaluacion',  $fecha_autoevaluacion, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
+                            <?= Html::textInput('fecha_autoevaluacion',  $fecha_autoevaluacion, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;']) ?>
                                                          
                         </div>
                     </div>
@@ -281,7 +275,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Fecha evaluación jefe:') ?></label> </label>
-                            <?= Html::textInput('fecha_evaluacion_jefe',  $fecha_evaluacion_jefe, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
+                            <?= Html::textInput('fecha_evaluacion_jefe',  $fecha_evaluacion_jefe, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;']) ?>
                                                         
                         </div>
                     </div>
@@ -293,7 +287,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Puntaje Final:') ?> </label>
-                            <?= Html::textInput('puntaje_final',  $puntaje_final, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
+                            <?= Html::textInput('puntaje_final',  $puntaje_final, ['readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
                             
                         </div>                        
                     </div>
@@ -301,7 +295,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Promedio Total:') ?> </label>
-                            <?= Html::textInput('prom_total',  $prom_total, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
+                            <?= Html::textInput('prom_total',  $prom_total, ['readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
                           
                         </div>
                     </div>

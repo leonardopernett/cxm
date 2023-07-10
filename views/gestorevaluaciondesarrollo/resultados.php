@@ -242,7 +242,7 @@ use yii\helpers\ArrayHelper;
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-search" style="font-size: 17px; color: #FFC72C;"></em> Buscar individual: </label>                    
+                                <label style="font-size: 16px;"><em class="fa fa-search" style="font-size: 17px; color: #FFC72C;"></em> Ir a Acuerdos: </label>                    
                                 <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                 Buscar
                                 </div>
@@ -250,7 +250,7 @@ use yii\helpers\ArrayHelper;
                         </div>   
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-users" style="font-size: 17px; color: #FFC72C;"></em> Ver todo mi equipo: </label>                    
+                                <label style="font-size: 16px;"><em class="fa fa-users" style="font-size: 17px; color: #FFC72C;"></em> Total personas a cargo -- (BTN )Faltan por terminar evaluacion: 0 </label>                    
                                 <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                 Aceptar
                                 </div>
@@ -258,7 +258,7 @@ use yii\helpers\ArrayHelper;
                         </div> 
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-download" style="font-size: 17px; color: #FFC72C;"></em> Descargar </label>                    
+                                <label style="font-size: 16px;"><em class="fa fa-download" style="font-size: 17px; color: #FFC72C;"></em> Descargar reporte general</label>                    
                                 <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
                                 Aceptar
                                 </div>
@@ -375,9 +375,9 @@ use yii\helpers\ArrayHelper;
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card1 mb" style="width:100%"> 
-                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Competencias') ?> </label>                      
+                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Evaluación de Desarrollo') ?> </label>                      
 
-                            <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No existe ninguna evaluación de  para mostrar los resultados.') ?></label>
+                            <!-- <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No se ha completado evaluación para mostrar los resultados.') ?></label> -->
                             
                             <div class="table-responsive table-container" id="container_table">                                
                                 <table id="table_resultados" class="table table-bordered table-hover center">
@@ -397,7 +397,7 @@ use yii\helpers\ArrayHelper;
 
     <script>
         $(document).ready(function() {
-            var data = <?php echo json_encode($data_evaluaciones_completadas); ?>;
+            var data = <?php echo json_encode($data_calificacion_total); ?>;
             init_table_resultados(data);
 
             if(data.length==0){
@@ -439,68 +439,44 @@ use yii\helpers\ArrayHelper;
                     "table-layout": "fixed",
                     paging: true,
                 },
-                columnDefs: [
-                    {
-                        targets: 7, // Índice de la columna que quieres cambiar
-                        render: function(data, type, row, meta) {
-                        var valorColumna = parseFloat(data); // Convierte el valor a tipo numérico
+                columns: [
+                    {   title: "id",
+                        data: 'id_user',
+                        visible : false                   
+                    },
+                    {   title: "Nombre Completo",
+                        data: 'nombre_completo'               
+                    },
+                    {   title: "Documento",
+                        data: 'identificacion'                   
+                    },
+                    {   title: "Promedio Total",
+                        data: 'promedio_total_evalua',
+                        render: function(data){ return parseFloat(data).toFixed(2); }
+                    },
+                    {   title: "Acción",
+                        defaultContent : "<button class='btn btn-xs btn-info ver_detalles_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Ver Detalles'>  <span class='fa fa-search'></span> </button> <button class='btn btn-xs btn-danger crear_feedback_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Crear Feedback' > <span class='fa fa-envelope'> </span> </button>",
+                        searchable : false
 
-                        // Determina el contenido según el intervalo de valores
-                        if (valorColumna >= 1 && valorColumna <= 1.5) {
-                            return 'Desarrollo';
-                        } else if (valorColumna >= 1.6 && valorColumna <= 2.5) {
-                            return 'Satisfactorio';
-                        } else if (valorColumna >= 2.6 && valorColumna <= 3) {
-                            return 'Potencial';
-                        }
-
-                        // Si no se cumple ninguna condición, devuelve el valor original de la columna
-                        return data;
-                        }
                     }
-                ],
-                    columns: [
-                        {   title: "id",
-                            data: 'id_evaluado',
-                            visible : false                   
-                        },
-                        {   title: "Nombre Completo",
-                            data: 'nombre_completo'               
-                        },
-                        {   title: "Documento",
-                            data: 'identificacion'                   
-                        },
-                        {   title: "Competencia",
-                            data: 'competencia',
-                            visible: false                 
-                        },
-                        {   title: "Descriptivo de la Competencia",
-                            data: 'descripcion_competencia',
-                            visible: false
-                        },
-                        {   title: "Calificación cualitativa",
-                            data: 'descripcion_respuesta',
-                            visible: false
-                        },
-                        {   title: "Promedio por Competencia",
-                            data: 'calificacion_competencia',
-                            visible: false
-                        },
-                        {    title: "Promedio Total",
-                            data: 'prom_total_evaluacion',
-                            render: function(data){ return parseFloat(data).toFixed(2); }
-                        },
-                        {   title: "Acción",
-                            defaultContent : "<button class='btn btn-xs btn-info edit_btn_rta' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Ver Detalles'>  <span class='fa fa-search'></span> </button> <button class='btn btn-xs btn-danger delete_btn_rta' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Crear Feedback' > <span class='fa fa-envelope'> </span> </button>",
-                            searchable : false
+                ],  
+                drawCallback: function() {
+                    var api = this.api();
 
-                        },
-                        {   title: "Ensayis",
-                            data: 'calificacion_competencia',
-                            visible: false                  
+                    api.rows().every(function() {
+                        var rowData = this.data();
+                        var promedioTotal = parseFloat(rowData.prom_total_evaluacion);
+                        var botonCrearFeedback = $(this.node()).find('.crear_feedback_btn');
+
+                        if (promedioTotal > 2.9) {
+                            botonCrearFeedback.prop('disabled', true);
+                            botonCrearFeedback.hide();
+                        } else {
+                            botonCrearFeedback.prop('disabled', false);
+                            botonCrearFeedback.show();
                         }
-                    ],  
-                
+                    });
+                },            
                 initComplete : function(){
 
                 }

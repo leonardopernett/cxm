@@ -76,7 +76,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $evalua_nombre = "";
         $var_document = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
         
-        $var_document = 1415;
+        $var_document = 1617;
         $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$var_document')")->queryOne();
         $evaluaciones_completadas = false;
         $no_tiene_evaluacion_a_cargo= false;
@@ -983,19 +983,25 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         //Obtener id y documento del usuario logueado
         $sessiones = Yii::$app->user->identity->id;
         $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-        //$documento = 2425;
+        $documento = 2425;
         
         //Validar usuario segun datos de la carga masiva
         $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
         $registros_encontrados = $existe_usuario['cant_registros'];
           
         //variables locales
-        $id_evalua_nombre = "";
-        $evalua_nombre = "";
+        $id_evalua_nombre = "------";
+        $evalua_nombre = "------";
         $existe_calificacion_total=false;
         $promTotalEvaluacion = 0;
         $sumaTotalEvaluacion = 0;
         $data_competencias = [];
+        $nombre_completo = "------";
+        $numero_documento = "------";
+        $cargo_dataform = "------";
+        $nombre_jefe_dataform = "------";
+        $fecha_autoevaluacion = "------";
+        $fecha_evaluacion_jefe = "------";
 
         //Si existe el usuario
         if($registros_encontrados==1){
@@ -1005,46 +1011,69 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             $id_user = $existe_usuario['id_gestor_evaluacion_usuarios'];
 
             $evaluacion_actual = $this->obtenerEvaluacionActual();
-            if($evaluacion_actual){
+            if($evaluacion_actual) {
                 $id_evalua_nombre = $evaluacion_actual['id_evalua'];
                 $evalua_nombre = $evaluacion_actual['nombreeval'];
             } 
             
             $existe_calificacion_total = $this->existe_registros_calificacion_total_por_evaluacion($id_user, $id_evalua_nombre); 
-            $get_calificacion_user = $this->getValorPorCompetenciaUnUsuario($id_user, $id_evalua_nombre);
-         
-            if(!empty($get_calificacion_user) && count($get_calificacion_user)>0){
+            
+            //Si existen datos del calculo consolidado
+            if($existe_calificacion_total){
                 
-                $promTotalEvaluacion =  isset($get_calificacion_user[0]['prom_total_evaluacion']) ? $get_calificacion_user[0]['prom_total_evaluacion'] : null;
-                $sumaTotalEvaluacion = isset($get_calificacion_user[0]['suma_total_evaluacion']) ? $get_calificacion_user[0]['suma_total_evaluacion'] : null;
+                //obtener data del formulario con sus respectivas fechas
+                $tipo_evaluaciones_del_usuario = $this->obtener_tipo_evaluacion_por_periodo($id_evalua_nombre);
+                $ids_tipo_evalua_del_usuario = array_column($tipo_evaluaciones_del_usuario, 'id_tipoeval');
+                
+                $data_form = $this->obtenerDataTipoEvaluacion($ids_tipo_evalua_del_usuario, $id_user);
+               
+                if(!empty($data_form && count($data_form)>1 )){
+                    $nombre_completo = $data_form[0]['nombre_completo'];
+                    $numero_documento = $data_form[0]['identificacion'];
+                    $cargo_dataform = $data_form[0]['cargo'];
+                    $nombre_jefe_dataform = $data_form[0]['nom_jefe'];
+                    $fecha_autoevaluacion = $data_form[0]['fechacreacion'];
+                    $fecha_evaluacion_jefe = $data_form[1]['fechacreacion'];
+                }
 
-                $data_competencias = array_map(function ($result) {
-                    unset($result['prom_total_evaluacion']);
-                    unset($result['suma_total_evaluacion']);
-                    return $result;
-                }, $get_calificacion_user);
+                if(!empty($data_form && count($data_form)==1 )){
+                    $nombre_completo = $data_form[0]['nombre_completo'];
+                    $numero_documento = $data_form[0]['identificacion'];
+                    $cargo_dataform = $data_form[0]['cargo'];
+                    $nombre_jefe_dataform = $data_form[0]['nom_jefe'];
+                    $fecha_autoevaluacion = $data_form[0]['fechacreacion'];
+                }
 
+                //obtener valor consolidado por competencia
+                $get_calificacion_x_competencia = $this->getValorPorCompetenciaUnUsuario($id_user, $id_evalua_nombre);         
+                if(!empty($get_calificacion_x_competencia) && count($get_calificacion_x_competencia)>0) {
+                    
+                    $promTotalEvaluacion =  isset($get_calificacion_x_competencia[0]['prom_total_evaluacion']) ? $get_calificacion_x_competencia[0]['prom_total_evaluacion'] : null;
+                    $sumaTotalEvaluacion = isset($get_calificacion_x_competencia[0]['suma_total_evaluacion']) ? $get_calificacion_x_competencia[0]['suma_total_evaluacion'] : null;
 
+                    $data_competencias = array_map(function ($result) {
+                        unset($result['prom_total_evaluacion']);
+                        unset($result['suma_total_evaluacion']);
+                        return $result;
+                    }, $get_calificacion_x_competencia);
+                }
             }
         }
 
-        if($registros_encontrados==0){
-
-        }
-
-         
-
-        $model = new GestorEvaluacionPreguntas();
-
-    return $this->render('resultadoindividual',[
-        'model' => $model,
-        'existe_usuario'=> $existe_usuario,
-        'registros_encontrados'=> $registros_encontrados,
-        'existe_calificacion_total' => $existe_calificacion_total,
-        'promTotalEvaluacion'=>$promTotalEvaluacion,
-        'sumaTotalEvaluacion'=>$sumaTotalEvaluacion,
-        'data_competencias'=>$data_competencias
-    ]);
+        return $this->render('resultadoindividual',[
+            'existe_usuario'=> $existe_usuario,
+            'registros_encontrados'=> $registros_encontrados,
+            'existe_calificacion_total' => $existe_calificacion_total,
+            'promTotalEvaluacion'=> $promTotalEvaluacion,
+            'sumaTotalEvaluacion'=> $sumaTotalEvaluacion,
+            'data_competencias'=> $data_competencias,
+            'nombre_completo' => $nombre_completo,
+            'numero_documento'=> $numero_documento,
+            'cargo_dataform' => $cargo_dataform,
+            'nombre_jefe_dataform' => $nombre_jefe_dataform,
+            'fecha_autoevaluacion' => $fecha_autoevaluacion,
+            'fecha_evaluacion_jefe' => $fecha_evaluacion_jefe
+            ]);
                 
     }
     
@@ -1068,6 +1097,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $personas_a_cargo = [];
         $numero_personas_a_cargo = 0;
         $data_evaluaciones_completadas = [];
+        $data_calificacion_total = [];
 
  
          //Si existe el usuario
@@ -1090,23 +1120,19 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 $numero_personas_a_cargo = count($personas_a_cargo);
                 $idColaboradores = array_map('intval', array_column($personas_a_cargo, 'id_colaborador'));
 
+                $data_calificacion_total = $this->obtenerCalificacionTotalporUsuarios($id_evalua_nombre, $idColaboradores);
+                
                 $data_evaluaciones_completadas = $this->getValorPorCompetenciaVariosUsuarios($idColaboradores, $id_evalua_nombre);
        
             } 
         }
- 
-        if($registros_encontrados==0){
-
-        }
- 
-        $model = new GestorEvaluacionPreguntas();
 
         return $this->render('resultados',[
-            'model' => $model,
             'existe_usuario'=> $existe_usuario,
             'registros_encontrados'=> $registros_encontrados, 
             'personas_a_cargo'=> $personas_a_cargo,
-            'data_evaluaciones_completadas'=> $data_evaluaciones_completadas        
+            'data_evaluaciones_completadas'=> $data_evaluaciones_completadas,
+            'data_calificacion_total'=> $data_calificacion_total       
         ]);
                 
     }
@@ -1128,6 +1154,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     }
 
+    //Obtiene el número total de calificaciones para evaluacion 2023
     public function obtenerTotalEvaluacionesParaUnUsuario($id_user){
         $contadorEvaluaciones = 1; //autoevaluacion
 
@@ -1142,12 +1169,79 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         ->scalar();
 
         if($esColaborador==1){            
-            $contadorEvaluaciones++; //tiene asociada una evaluacion del jefe
+            $contadorEvaluaciones++; //tambien tiene asociada una evaluacion del jefe
         }
 
         return $contadorEvaluaciones;
     }
 
+    //FUNCION PARA OBTENER EL ID Y NOMBRE DE LAS EVALUACIONES ASOCIADAS AL PERIODO DE EVALUACION 2023
+    public function obtenerTipoEvaluacionPorUsuario($id_user, $id_evalua_nom){
+
+        $contadorEvaluaciones=1; //autoevaluacion
+
+        $esColaborador = (new \yii\db\Query())
+        ->select([
+            'u.es_colaborador'
+        ])        
+        ->from('tbl_gestor_evaluacion_usuarios u')
+        ->where([
+            'u.id_gestor_evaluacion_usuarios' => $id_user               
+        ])
+        ->scalar();
+
+        if($esColaborador==1){            
+            $contadorEvaluaciones++; //tambien tiene asociada una evaluacion del jefe
+        }
+
+        return $contadorEvaluaciones;
+    }
+
+    //FUNCION QUE RETORNA LOS TIPOS DE EVALUACIONES ASOCIADAS A UN PERIODO DE TIEMPO DEFINIDO EN LA TABLA tbl_evaluacion_nombre
+    public function obtener_tipo_evaluacion_por_periodo($id_evaluacion_nombre){
+        
+        $id_evaluacion_nombres = $id_evaluacion_nombre;
+
+        $query = new \yii\db\Query();
+        $query->select('tipo.idevaluaciontipo AS id_tipoeval, tipo.tipoevaluacion AS nom_tipoeval')
+            ->from('tbl_gestor_evaluacion_nombre_tipoeval evaluacion')
+            ->innerJoin('tbl_evaluacion_tipoeval tipo', 'evaluacion.id_evaluacion_tipoeval = tipo.idevaluaciontipo')
+            ->where(['in', 'evaluacion.id_evaluacion_nombre', $id_evaluacion_nombres]);
+
+        $result = $query->all();
+        
+        return $result;
+
+    }
+
+    //Obtener data del formulario ingresada en las diferentes evaluaciones realizadas del evaluado
+    public function obtenerDataTipoEvaluacion($id_tipo_eval, $id_evaluado){
+
+        $id_user_evaluado = $id_evaluado;
+        $id_tipo_evaluacion = $id_tipo_eval;
+
+        $result = (new \yii\db\Query())
+        ->select([
+            'tipoeval.idevaluaciontipo AS id_tipoeval',
+            'tipoeval.tipoevaluacion AS nombre_tipoeval',
+            'usuario.nombre_completo',
+            'usuario.identificacion',
+            'dataform.cargo',
+            'dataform.nom_jefe',
+            'form.fechacreacion'])
+        ->from('tbl_gestor_evaluacion_formulario form')
+        ->rightJoin('tbl_gestor_evaluacion_datosform dataform', 'form.id_gestor_evaluacion_formulario = dataform.id_gestor_evaluacion_formulario')
+        ->innerJoin('tbl_gestor_evaluacion_usuarios usuario', 'form.id_evaluado = usuario.id_gestor_evaluacion_usuarios')
+        ->innerJoin('tbl_evaluacion_tipoeval tipoeval', 'form.id_tipo_evalua = tipoeval.idevaluaciontipo')
+        ->innerJoin('tbl_evaluacion_nombre nombreval', 'form.id_evaluacionnombre = nombreval.idevaluacionnombre')
+        ->where(['form.anulado' => 0])
+        ->andWhere(['in', 'form.id_tipo_evalua', $id_tipo_evaluacion])
+        ->andWhere(['in', 'form.id_evaluado', $id_user_evaluado])
+        ->all();
+            
+        return $result;
+
+    }
 
     //FUNCION: consulta el valor de las respuestas segun su id_rtas
     //retorna la suma, cantidad de rtas, promedio y actualiza el formulario asociado a pk_evaluacion
@@ -1187,6 +1281,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         }
     }
 
+    //Crea un registro en la tabla tbl_gestor_evaluacion_calificaciontotal
     public function crearCalificacionTotal($id_user, $id_evaluac_nom){
         $pk_calificacion_total = "";
         
@@ -1363,6 +1458,29 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         }
     }
 
+
+    //Retorna informacion de los usuarios con su promedio total de la evaluacion segun su periodo (evaluacion nombre)
+    public function obtenerCalificacionTotalporUsuarios($id_evaluac_nombre, $id_users){
+        $query = new Query();
+        $query->select([
+                'usuario.id_gestor_evaluacion_usuarios AS id_user',
+                'usuario.nombre_completo',
+                'usuario.identificacion',
+                'total.promedio_total_evalua'
+            ])
+            ->from('tbl_gestor_evaluacion_calificaciontotal total')
+            ->innerJoin('tbl_gestor_evaluacion_usuarios usuario', 'total.id_evaluado = usuario.id_gestor_evaluacion_usuarios')
+            ->where([
+                'total.anulado' => 0,
+                'total.id_evalua_nombre' => $id_evaluac_nombre,
+            ])
+            ->andWhere(['IN', 'total.id_evaluado', $id_users]);
+
+        $result = $query->all();
+
+        return $result;
+    }
+
     public function existe_registros_calificacion_total_por_evaluacion($id_user, $id_evalua_nombre){
 
         $response = false;
@@ -1450,7 +1568,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         return $result;
     }
 
-
+    
 
 
 }
