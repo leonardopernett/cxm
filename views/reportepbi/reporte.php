@@ -249,7 +249,7 @@ $varid = $_GET['varid'];
     </div>
   </div>
   <br>
-<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "7952" || $sessiones == "69" || $sessiones == "5658" || $sessiones == "1699") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "7952" || $sessiones == "69" || $sessiones == "5658" || $sessiones == "1699" || $sessiones == "1317") {?>
   
   <br>
   <h3>&nbsp;</h3>
@@ -336,7 +336,7 @@ $varid = $_GET['varid'];
               </div>
           </div>
  <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952" || $sessiones == "69" || $sessiones == "5658" || $sessiones == "1699") {?>
+<?php if ($sessiones == "2953" || $sessiones == "7" || $sessiones == "3205" || $sessiones == "2991" || $sessiones == "3468" || $sessiones == "3229" || $sessiones == "57"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952" || $sessiones == "69" || $sessiones == "5658" || $sessiones == "1699" || $sessiones == "1317") {?>
 
           <div class="col-md-2">
               <div class="card mb">            
@@ -349,7 +349,7 @@ $varid = $_GET['varid'];
               </div>
           </div>
 <?php } ?>
-<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952" || $sessiones == "69" || $sessiones == "5658"  || $sessiones == "1699") {?>
+<?php if ($sessiones == "2953" || $sessiones == "3229" || $sessiones == "3205" || $sessiones == "2991"  || $sessiones == "4457" || $sessiones == "565" || $sessiones == "6639" || $sessiones == "6636" || $sessiones == "1475" || $sessiones == "7952" || $sessiones == "69" || $sessiones == "5658"  || $sessiones == "1699" || $sessiones == "1317") {?>
 
           <div class="col-md-2">
               <div class="card mb">           
