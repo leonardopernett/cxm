@@ -19,7 +19,6 @@ use yii\helpers\ArrayHelper;
 
     $sessiones = Yii::$app->user->identity->id;
 
-
     $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
  
     
@@ -226,11 +225,107 @@ use yii\helpers\ArrayHelper;
     <?php 
         } else {   
     ?>
-    <div id="capaUno" style="display: inline">
+
+    <div id="capaCero" style="display: inline">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                            <label class="font-size-subtitulos"><em class="fa fa-comment" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Crear Feedback') ?></label>        
+                                <?= Html::button('Aceptar', ['value' => url::to(['modalfeedbackcolaborador', 'id_user'=>$id_user]),
+                                                'class' => 'btn btn-primary', 'id'=>'modalButton',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Crear_feedback']) 
+                                ?> 
+
+                                <?php
+                                    Modal::begin([
+                                        'header' => '<h4>Agregar Feedback</h4>',
+                                        'id' => 'modal',
+                                    ]);
+
+                                    echo "<div id='modalContent'></div>";
+                                                                                                                
+                                    Modal::end(); 
+                                ?>
+                            </div>
+                        </div>
+                        <!-- Alertas -->
+                        <?php if (Yii::$app->session->hasFlash('success')): 
+                            $mensaje = Yii::$app->session->getFlash('success');
+                        ?>
+                            <script>
+                                swal.fire("", '<?= $mensaje ?>', "success");
+                            </script>
+                        <?php elseif (Yii::$app->session->hasFlash('error')):
+                            $mensaje = Yii::$app->session->getFlash('error');
+                        ?>
+                            <script>
+                                swal.fire("", '<?= $mensaje ?>', "error");
+                            </script>
+                        <?php endif; ?>
+                        <!-- Alerta Fin-->
+
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label class="font-size-subtitulos"><em class="fa fa-download" style="font-size: 17px; color: #C148D0;"></em> Descargar Reporte</label>
+                                <a id="dlink" style="display:none;"></a>
+                                <button  class="btn btn-info" style="background-color: #4298B4" id="btn"><?= Yii::t('app', ' Aceptar') ?></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <!-- SECCION FEEDBACKS-->
+    <div id="capaUno" style="display: <?= $mostrar_feedbacks ?>">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                <label style="font-size: 20px;"><em class="fa fa-comments" style="font-size: 20px; color: #FFC72C;"></em> Mis Feedbacks: </label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label class="font-size-subtitulos"><em class="fa fa-envelope" style="font-size: 17px; color: #C148D0;"></em> Mi Feedback</label>                                
+                                <?= Html::textarea('comentarios_colaborador', $feedback_colaborador, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000]) ?>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label class="font-size-subtitulos"><em class="fa fa-envelope" style="font-size: 17px; color: #C148D0;"></em> Feedback Jefe</label>
+                                <?= Html::textarea('comentarios_jefe', $feedback_jefe, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000]) ?>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label class="font-size-subtitulos"><em class="fa fa-envelope" style="font-size: 17px; color: #C148D0;"></em> Acuerdo Final de Desarrollo</label>
+                                <?= Html::textarea('comentarios_acuerdo_final', $feedback_acuerdo_final, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000]) ?>
+                            </div>
+                        </div>
+                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div id="capaDos" style="display: inline">
         <div class="row">
             <div class="col-md-3">
                 <div class="card1 mb">
-                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Evaluado') ?> </label>
+                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Datos Evaluación') ?> </label>
                    
                     <div class="row">
                         <div class="col-md-12">
@@ -280,55 +375,28 @@ use yii\helpers\ArrayHelper;
                         </div>
                     </div>
                     <br>
-                </div>               
-                <br>
-                <div class="card1 mb">
-                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Calificación General') ?> </label>
                     <div class="row">
                         <div class="col-md-12">
                             <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Puntaje Final:') ?> </label>
                             <?= Html::textInput('puntaje_final',  $puntaje_final, ['readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                            
-                        </div>                        
+                        </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Promedio Total:') ?> </label>
-                            <?= Html::textInput('prom_total',  $prom_total, ['readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                          
+                        <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Promedio Total:') ?> </label>
+                            <?= Html::textInput('prom_total',  $prom_total, ['readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>                                                        
                         </div>
                     </div>
-                    <br>
-                    
-                </div>
+                </div> 
                 <br>
-                <div class="card1 mb">
-                    <div class="row">
-                        <div class="col-md-12">
-                        <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-envelope" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Feedback') ?> </label>
-                        <?php
-                            $contenido1 = 'Solo se genera feedback a personas con promedio final igual o inferior a <span style="font-style: italic;">2.9</span>';
-                            $opcionesEstilo = ['style' => "font-size: 16px;"];
-                        ?> 
-                        <?= Html::tag('p', Html::decode(Html::encode($contenido1)), $opcionesEstilo); ?>
-                        <div class="card1 mb">
-                                    <label style="font-size: 16px;"><em class="fa fa-comments" style="font-size: 17px; color: #FFC72C;"></em> Crear Feedback: </label>                   
-                                    
-                                    <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                    Aceptar
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card1 mb" style="width:100%"> 
-                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Competencias') ?> </label>                      
+                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Competencias') ?> </label>                      
 
                             <!-- <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Falta por recopilar las dos evaluaciones') ?></label> -->
                             
@@ -342,6 +410,7 @@ use yii\helpers\ArrayHelper;
                 </div>
             </div>
         </div>
+        <br>
     </div>
     <br>
  <?php 
@@ -439,5 +508,41 @@ use yii\helpers\ArrayHelper;
                 $("#table_resultados").DataTable().page( 0 ).draw( false );
             }
         }
+
+        //Descargar datos de una tabla en formato Excel
+        var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,',
+            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+            base64 = function (s) {
+                return window.btoa(unescape(encodeURIComponent(s)))
+            }, format = function (s, c) {
+                return s.replace(/{(\w+)}/g, function (m, p) {
+                    return c[p];
+                })
+            }
+            return function (table, name) {
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = {
+                    worksheet: name || 'Worksheet',
+                    table: table.innerHTML
+                }
+                console.log(uri + base64(format(template, ctx)));
+                document.getElementById("dlink").href = uri + base64(format(template, ctx));
+                document.getElementById("dlink").download = "Reporte Por Competencias";
+                document.getElementById("dlink").target = "_blank";
+                document.getElementById("dlink").click();
+
+            }
+        })();
+        function download(){
+            $(document).find('tfoot').remove();
+            var name = document.getElementById("name");
+            tableToExcel('table_resultados', 'Archivo ', name+'.xls')
+            //setTimeout("window.location.reload()",0.0000001);
+
+        }
+        var btn = document.getElementById("btn");
+        btn.addEventListener("click",download);
+        
     </script>
     

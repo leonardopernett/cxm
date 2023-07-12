@@ -27,6 +27,8 @@ use app\models\GestorEvaluacionRespuestasForm;
 use app\models\GestorEvaluacionDatosForm;
 use app\models\GestorEvaluacionCalificacionTotal;
 use app\models\GestorEvaluacionCalificaPorPregunta;
+use app\models\GestorEvaluacionFeedback;
+use app\models\GestorEvaluacionFeedbackentradas;
 
 
 class GestorevaluaciondesarrolloController extends \yii\web\Controller {
@@ -41,7 +43,8 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         'importardatoscargamasiva', 'detallecargamasiva',
                         'autoevaluacion', 'crearautoevaluacion',
                         'modalevaluacionacargo', 'evaluacionacargo', 'crearevaluacionacargo',
-                        'resultados', 'resultadoindividual'],
+                        'resultados', 'resultadoindividual',
+                        'crearfeedback', 'modalfeedbackcolaborador'],
             'rules' => [
                 [
                 'allow' => true,
@@ -74,10 +77,10 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $estado_evaluacion=0;
         $id_evalua_nombre = "";
         $evalua_nombre = "";
-        $var_document = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+        $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
         
-        $var_document = 1617;
-        $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$var_document')")->queryOne();
+        $documento = 2425;
+        $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
         $evaluaciones_completadas = false;
         $no_tiene_evaluacion_a_cargo= false;
 
@@ -710,7 +713,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 
                 if($crear_calificacion_total!==1){
                     // Respuesta error 
-                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    Yii::$app->response->format = Response::FORMAT_JSON; 
                     return ['status' => 'error', 'data' => 'Error creando la calificacion total de esta evaluacion']; 
                 }
 
@@ -983,9 +986,11 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         //Obtener id y documento del usuario logueado
         $sessiones = Yii::$app->user->identity->id;
         $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-        $documento = 2425;
+        $documento = 2223;
         
         //Validar usuario segun datos de la carga masiva
+        $id_user = null;
+        $mostrar_feedbacks='none';
         $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
         $registros_encontrados = $existe_usuario['cant_registros'];
           
@@ -1002,6 +1007,12 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $nombre_jefe_dataform = "------";
         $fecha_autoevaluacion = "------";
         $fecha_evaluacion_jefe = "------";
+        $id_jefe_form = null;
+         
+        $feedback_colaborador="-----------";
+        $feedback_jefe="-----------";
+        $feedback_acuerdo_final="-----------";
+
 
         //Si existe el usuario
         if($registros_encontrados==1){
@@ -1017,7 +1028,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             } 
             
             $existe_calificacion_total = $this->existe_registros_calificacion_total_por_evaluacion($id_user, $id_evalua_nombre); 
-            
+           
             //Si existen datos del calculo consolidado
             if($existe_calificacion_total){
                 
@@ -1028,28 +1039,41 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                 $data_form = $this->obtenerDataTipoEvaluacion($ids_tipo_evalua_del_usuario, $id_user);
                
                 if(!empty($data_form && count($data_form)>1 )){
-                    $nombre_completo = $data_form[0]['nombre_completo'];
-                    $numero_documento = $data_form[0]['identificacion'];
-                    $cargo_dataform = $data_form[0]['cargo'];
-                    $nombre_jefe_dataform = $data_form[0]['nom_jefe'];
-                    $fecha_autoevaluacion = $data_form[0]['fechacreacion'];
-                    $fecha_evaluacion_jefe = $data_form[1]['fechacreacion'];
-                }
 
+                    foreach ($data_form as $row) {
+                        $nombreTipoeval = $row['nombre_tipoeval'];
+                        $fechaCreacion = $row['fechacreacion'];
+                    
+                        if ($nombreTipoeval === 'A cargo') {
+                            $fecha_evaluacion_jefe = $fechaCreacion;
+                            $id_jefe_form = $row['id_jefe'];
+                        } elseif ($nombreTipoeval === 'Autoevaluacion') {
+                            $fecha_autoevaluacion = $fechaCreacion;
+                            $nombre_completo = $row['nombre_completo'];
+                            $numero_documento = $row['identificacion'];
+                            $cargo_dataform = $row['cargo'];
+                            $nombre_jefe_dataform = $row['nom_jefe'];
+                        }
+                    }
+                    
+                }               
+
+                //Solo tiene la autoevaluacion
                 if(!empty($data_form && count($data_form)==1 )){
                     $nombre_completo = $data_form[0]['nombre_completo'];
                     $numero_documento = $data_form[0]['identificacion'];
                     $cargo_dataform = $data_form[0]['cargo'];
                     $nombre_jefe_dataform = $data_form[0]['nom_jefe'];
                     $fecha_autoevaluacion = $data_form[0]['fechacreacion'];
+                    $id_jefe_form = $data_form[0]['id_jefe'];
                 }
 
                 //obtener valor consolidado por competencia
                 $get_calificacion_x_competencia = $this->getValorPorCompetenciaUnUsuario($id_user, $id_evalua_nombre);         
                 if(!empty($get_calificacion_x_competencia) && count($get_calificacion_x_competencia)>0) {
                     
-                    $promTotalEvaluacion =  isset($get_calificacion_x_competencia[0]['prom_total_evaluacion']) ? $get_calificacion_x_competencia[0]['prom_total_evaluacion'] : null;
-                    $sumaTotalEvaluacion = isset($get_calificacion_x_competencia[0]['suma_total_evaluacion']) ? $get_calificacion_x_competencia[0]['suma_total_evaluacion'] : null;
+                    $promTotalEvaluacion =  isset($get_calificacion_x_competencia[0]['prom_total_evaluacion']) ? $get_calificacion_x_competencia[0]['prom_total_evaluacion'] : 0;
+                    $sumaTotalEvaluacion = isset($get_calificacion_x_competencia[0]['suma_total_evaluacion']) ? $get_calificacion_x_competencia[0]['suma_total_evaluacion'] : 0;
 
                     $data_competencias = array_map(function ($result) {
                         unset($result['prom_total_evaluacion']);
@@ -1058,11 +1082,34 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                     }, $get_calificacion_x_competencia);
                 }
             }
+
+            //Consultar Feedbacks del Colaborador
+            $feedbacks_usuario = $this->obtener_feedbacks_por_usuario($id_evalua_nombre, $id_user);           
+
+            if(!empty($feedbacks_usuario)){
+                $mostrar_feedbacks='inline';
+                foreach ($feedbacks_usuario as $feedback) {                   
+                    if ($feedback['id_remitente'] == $id_user) {
+                        $feedback_colaborador = $feedback['comentario'];
+                       
+                    }
+                    if ($feedback['id_remitente'] == $id_jefe_form) {
+                        $feedback_jefe = $feedback['comentario'];
+
+                        if ($feedback['acuerdo_final'] !== null) {
+                            $feedback_acuerdo_final = $feedback['acuerdo_final'];
+                        }
+                    }                    
+                }
+            }
         }
+        
 
         return $this->render('resultadoindividual',[
             'existe_usuario'=> $existe_usuario,
+            'id_user'=>$id_user,
             'registros_encontrados'=> $registros_encontrados,
+            'feedbacks_usuario'=>$feedbacks_usuario,
             'existe_calificacion_total' => $existe_calificacion_total,
             'promTotalEvaluacion'=> $promTotalEvaluacion,
             'sumaTotalEvaluacion'=> $sumaTotalEvaluacion,
@@ -1072,12 +1119,19 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'cargo_dataform' => $cargo_dataform,
             'nombre_jefe_dataform' => $nombre_jefe_dataform,
             'fecha_autoevaluacion' => $fecha_autoevaluacion,
-            'fecha_evaluacion_jefe' => $fecha_evaluacion_jefe
+            'fecha_evaluacion_jefe' => $fecha_evaluacion_jefe,
+            'mostrar_feedbacks'=> $mostrar_feedbacks,
+            'feedback_colaborador'=>$feedback_colaborador,
+            'feedback_jefe'=>$feedback_jefe,
+            'feedback_acuerdo_final'=>$feedback_acuerdo_final
             ]);
                 
     }
     
     public function actionResultados() {
+
+        
+        $model_feedback_entrada = new GestorEvaluacionFeedbackentradas();
 
         //Obtener id y documento del usuario logueado
         $sessiones = Yii::$app->user->identity->id;
@@ -1095,9 +1149,10 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $sumaTotalEvaluacion = 0;
         $data_competencias = [];
         $personas_a_cargo = [];
-        $numero_personas_a_cargo = 0;
+        $numero_personas_a_cargo = "----";
         $data_evaluaciones_completadas = [];
         $data_calificacion_total = [];
+        $id_user= null;
 
  
          //Si existe el usuario
@@ -1122,21 +1177,195 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
                 $data_calificacion_total = $this->obtenerCalificacionTotalporUsuarios($id_evalua_nombre, $idColaboradores);
                 
-                $data_evaluaciones_completadas = $this->getValorPorCompetenciaVariosUsuarios($idColaboradores, $id_evalua_nombre);
-       
+                $data_competencias = $this->getValorPorCompetenciaVariosUsuarios($idColaboradores, $id_evalua_nombre);
+              
             } 
-        }
+        }        
 
-        return $this->render('resultados',[
+        return $this->render('resultados',[   
+            'id_user'=> $id_user,         
             'existe_usuario'=> $existe_usuario,
             'registros_encontrados'=> $registros_encontrados, 
             'personas_a_cargo'=> $personas_a_cargo,
-            'data_evaluaciones_completadas'=> $data_evaluaciones_completadas,
-            'data_calificacion_total'=> $data_calificacion_total       
+            'data_calificacion_total'=> $data_calificacion_total,
+            'data_competencias'=>json_encode($data_competencias),
+            'model_feedback_entrada'=> $model_feedback_entrada,
+            'numero_personas_a_cargo'=>$numero_personas_a_cargo      
         ]);
                 
     }
 
+    public function actionCrearfeedback() {   
+        $response= [];
+        $model_feedback = new GestorEvaluacionFeedback();        
+
+        $form = Yii::$app->request->post();
+        $id_jefe = $form['id_jefe']; 
+        $id_colaborador = $form['id_colaborador'];
+        $comentarios = $form['comentarios'];
+
+        $obtener_evaluacion_actual = $this->obtenerEvaluacionActual();
+        $id_evaluacion_actual = $obtener_evaluacion_actual['id_evalua'];        
+        
+        $existe_feedback_colaborador = $this->obtener_feedback_usuario($id_evaluacion_actual, $id_colaborador);
+       
+        //existe un id feedback asociado al colaborador
+        if(!empty($existe_feedback_colaborador)){
+            $pk_feedback = $existe_feedback_colaborador['id_feedback'];
+            $pk_calificacion_total = $existe_feedback_colaborador['id_calificacion_total'];
+        }
+
+        if($pk_feedback==null){
+            
+            //crear un registro para el feedback (acuerdo final)
+            $model_feedback->id_calificaciontotal = $pk_calificacion_total;
+            $model_feedback->id_jefe = $id_jefe;
+            $model_feedback->fechacreacion = date("Y-m-d");
+            $model_feedback->usua_id = Yii::$app->user->identity->id;
+        
+            if($model_feedback->validate() && $model_feedback->save() ){
+                $pk_feedback = $model_feedback->id_gestor_evaluacion_feedback; 
+            } else {                
+                $response = [
+                    'status' => 'error',
+                    'data' => 'Ocurrió un error creando un registro para el feedback'
+                ];
+            }
+
+            //Actualizo con ese pk el campo asociado al feedback en la evaluacion total
+            $model_calificacion_total = GestorEvaluacionCalificacionTotal::findOne($pk_calificacion_total);
+            if ($model_calificacion_total !== null) {               
+                $model_calificacion_total->id_feedback = $pk_feedback;
+                $model_calificacion_total->save();                
+            } 
+        }
+
+         //Creo el feedback del usuario (entrada)                   
+         $model_feedback_entrada = new GestorEvaluacionFeedbackentradas();
+         $model_feedback_entrada->id_feedback = $pk_feedback;
+         $model_feedback_entrada->id_remitente = $id_jefe;
+         $model_feedback_entrada->id_destinatario = $id_colaborador;
+         $model_feedback_entrada->comentario = $comentarios;                    
+         $model_feedback_entrada->fechacreacion = date("Y-m-d");
+         $model_feedback_entrada->usua_id = Yii::$app->user->identity->id;
+     
+         if($model_feedback_entrada->validate() && $model_feedback_entrada->save() ){                       
+             //Respuesta exitosa
+             $response = [
+                 'status' => 'success',
+                 'data' => 'Creación exitosa'
+             ];
+
+         } else {
+             $response = [
+                 'status' => 'error',
+                 'data' => 'Error creando comentario para el feedback'
+             ];
+         }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        return $response;
+      
+    }
+
+    public function actionModalfeedbackcolaborador($id_user){
+
+        $model_feedback = new GestorEvaluacionFeedback();
+        $model_entrada_feedback = new GestorEvaluacionFeedbackentradas();
+
+        $response= [];
+        $id_colaborador = $id_user;
+        $obtener_evaluacion_actual = $this->obtenerEvaluacionActual();
+        $id_evaluacion_actual = $obtener_evaluacion_actual['id_evalua'];        
+        
+        //Obtener tipo evaluacion "A cargo" para saber el id del jefe para esta evaluacion
+        $id_evaluacion_a_cargo = $query = (new Query())
+        ->select('tipo.idevaluaciontipo')
+        ->from('tbl_evaluacion_tipoeval tipo')
+        ->where(['tipo.tipoevaluacion' => 'A cargo'
+        ])->scalar();
+        
+        //obtner Id del jefe asocaido para esa evaluacion
+        $id_jefe = (new Query())
+        ->select('form.id_evaluador')
+        ->from('tbl_gestor_evaluacion_formulario form')
+        ->innerJoin('tbl_gestor_evaluacion_datosform datosform', 'form.id_gestor_evaluacion_formulario = datosform.id_gestor_evaluacion_formulario')
+        ->where([
+            'form.id_evaluacionnombre' => $id_evaluacion_actual,
+            'form.id_tipo_evalua' => $id_evaluacion_a_cargo,
+            'form.id_evaluado' => $id_colaborador,
+        ])->scalar();
+
+        
+        $existe_feedback_colaborador = $this->obtener_feedback_usuario($id_evaluacion_actual, $id_colaborador);
+
+         // Si existe un id feedback asociado al colaborador
+        if(!empty($existe_feedback_colaborador)){
+            $pk_feedback = $existe_feedback_colaborador['id_feedback'];
+            $pk_calificacion_total = $existe_feedback_colaborador['id_calificacion_total'];
+        }
+
+        if($pk_feedback==null) {
+            //creo el PK del feedback que se usara para el acuerdo final
+            $model_feedback->id_calificaciontotal = $pk_calificacion_total;
+            $model_feedback->id_jefe = $id_jefe;
+            $model_feedback->fechacreacion = date("Y-m-d");
+            $model_feedback->usua_id = Yii::$app->user->identity->id;
+        
+            if($model_feedback->validate() && $model_feedback->save() ){
+                $pk_feedback = $model_feedback->id_gestor_evaluacion_feedback; 
+            } else {                
+                $response = [
+                    'status' => 'error',
+                    'data' => 'Ocurrió un error creando un registro para el feedback'
+                ];
+            }
+
+            //Actualizo con ese pk_feedback el campo asociado al feedback en la evaluacion total
+            $model_calificacion_total = GestorEvaluacionCalificacionTotal::findOne($pk_calificacion_total);
+            if ($model_calificacion_total !== null) {
+                $model_calificacion_total->id_feedback = $pk_feedback;
+                $model_calificacion_total->save();
+            }
+        }
+
+        //Creo la entrada del feedback
+        if ( $model_entrada_feedback->load(Yii::$app->request->post()) ) {
+            
+            //obtener valor ingresado en el campo comentarios del modal
+            $comentarios_colaborador = $model_entrada_feedback->comentario;
+
+            $model_entrada_feedback->id_feedback = $pk_feedback;
+            $model_entrada_feedback->id_remitente = $id_colaborador;
+            $model_entrada_feedback->id_destinatario = $id_jefe;
+            $model_entrada_feedback->fechacreacion = date("Y-m-d");
+            $model_entrada_feedback->usua_id = Yii::$app->user->identity->id;       
+            
+            if( $model_entrada_feedback->validate() && $model_entrada_feedback->save() ){
+                //Respuesta exitosa
+                $response = [
+                    'status' => 'success',
+                    'data' => 'Creación exitosa'
+                ]; 
+
+                Yii::$app->session->setFlash('success', 'Creación exitosa.');
+
+                return $this->redirect('resultadoindividual', [
+                    'pk_feedback_acuerdo'=>$pk_feedback
+                ]);
+
+            } else { 
+                Yii::$app->session->setFlash('error', 'Error creando feedback.');
+            } 
+            
+        }
+
+        return $this->renderAjax('modalfeedbackcolaborador',[
+            'model_entrada_feedback'=> $model_entrada_feedback
+        ]);        
+
+    }
 
     //FUNCIONES
 
@@ -1219,7 +1448,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
         $id_user_evaluado = $id_evaluado;
         $id_tipo_evaluacion = $id_tipo_eval;
-
+       
         $result = (new \yii\db\Query())
         ->select([
             'tipoeval.idevaluaciontipo AS id_tipoeval',
@@ -1227,8 +1456,10 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'usuario.nombre_completo',
             'usuario.identificacion',
             'dataform.cargo',
+            'IF(tipoeval.tipoevaluacion = "A cargo", form.id_evaluador, null) AS id_jefe',
             'dataform.nom_jefe',
-            'form.fechacreacion'])
+            'form.fechacreacion'
+        ])
         ->from('tbl_gestor_evaluacion_formulario form')
         ->rightJoin('tbl_gestor_evaluacion_datosform dataform', 'form.id_gestor_evaluacion_formulario = dataform.id_gestor_evaluacion_formulario')
         ->innerJoin('tbl_gestor_evaluacion_usuarios usuario', 'form.id_evaluado = usuario.id_gestor_evaluacion_usuarios')
@@ -1568,8 +1799,53 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         return $result;
     }
 
+    // SECCION FEEDBACK --------------------------------------------------------------------------------------- 
     
+    //Obtiene el PK del feedback y el PK de la calificacion total de un usaurio en una periodo de evaluacion 
+    public function obtener_feedback_usuario($id_evalua_nom, $id_user){        
 
+        $result = (new \yii\db\Query())
+        ->select(['total.id_feedback', 'total.id_gestor_evaluacion_calificaciontotal AS id_calificacion_total'])
+        ->from('tbl_gestor_evaluacion_calificaciontotal total')
+        ->where([
+            'total.id_evalua_nombre' => $id_evalua_nom,
+            'total.id_evaluado' => $id_user
+        ])
+        ->one();
+
+        return $result;
+
+    }
+
+    //Obtiene los feedback del colaborador, del jefe y el acuerdo final asociado a un usuario en un periodo de evaluacion
+    public function obtener_feedbacks_por_usuario($id_evalua_nom, $id_usuario){
+        $query = (new \yii\db\Query())
+        ->select([
+            'feedback.id_remitente AS id_remitente',
+            'feedback.id_destinatario AS id_destinatario',
+            'remitente.nombre_completo AS nom_remitente',
+            'destinatario.nombre_completo AS nom_destinatario',
+            'remitente.identificacion AS cc_remitente',
+            'destinatario.identificacion AS cc_destinatario',
+            'feedback.comentario',
+            'acuerdo.id_gestor_evaluacion_feedback AS id_acuerdo_final',
+            'acuerdo.comentario AS acuerdo_final',
+        ])
+        ->from('tbl_gestor_evaluacion_feedbackentradas feedback')
+        ->leftJoin('tbl_gestor_evaluacion_usuarios remitente', 'feedback.id_remitente = remitente.id_gestor_evaluacion_usuarios')
+        ->leftJoin('tbl_gestor_evaluacion_usuarios destinatario', 'feedback.id_destinatario = destinatario.id_gestor_evaluacion_usuarios')
+        ->leftJoin('tbl_gestor_evaluacion_feedback acuerdo', 'acuerdo.id_gestor_evaluacion_feedback = feedback.id_feedback')
+        ->leftJoin('tbl_gestor_evaluacion_calificaciontotal total', 'acuerdo.id_calificaciontotal = total.id_gestor_evaluacion_calificaciontotal')
+        ->where([
+            'total.anulado' => 0,
+            'total.id_evalua_nombre' => $id_evalua_nom,
+        ])
+        ->andWhere(['OR', ['feedback.id_remitente' => $id_usuario], ['feedback.id_destinatario' => $id_usuario]]);
+
+        $result = $query->all();  
+        
+        return $result;
+    }
 
 }
 ?>

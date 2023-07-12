@@ -10,7 +10,7 @@ use kartik\daterange\DateRangePicker;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 
-   
+
     $this->title = 'Resultados Evaluación de Desarrollo';
     $this->params['breadcrumbs'][] = $this->title;
 
@@ -19,18 +19,8 @@ use yii\helpers\ArrayHelper;
 
     $sessiones = Yii::$app->user->identity->id;
 
-
     $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
- 
-    $nombre = "Dolly Jiménez";
-    $cargo = "Analista prueba";
-    $nombre_jefe = "Iveht Teresa prueba";
-    $fecha_autoevaluacion = "2023/06/12";
-    $fecha_evaluacion_jefe = "2023/06/15";
-    $observaciones= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut convallis, eros quis luctus pulvinar, nibh sem fermentum urna, ac porta nunc purus sed est. Ut nec odio mauris.";
-    $acuerdos_desarrollo = "Phasellus tortor ligula, egestas vitae tellus sed, consectetur efficitur est. Morbi pretium augue urna, eget iaculis dui rhoncus eget. In lorem nisi, sollicitudin ac scelerisque ut, tempor nec leo. Suspendisse semper eleifend ligula, ut ornare elit faucibus id.";
-    $puntaje_final = 10;
-    $prom_total = 2.5;
+
 
     ?>
 
@@ -51,10 +41,10 @@ use yii\helpers\ArrayHelper;
                 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                 -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                 -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                border-radius: 5px;    
+                border-radius: 5px;
                 font-family: "Nunito";
-                font-size: 150%;    
-                text-align: left;    
+                font-size: 150%;
+                text-align: left;
         }
 
 
@@ -113,7 +103,7 @@ use yii\helpers\ArrayHelper;
             margin: 20px 0;
             border-radius: 4px;
         }
-        
+
         .column-font-size {
             font-size: 14px;
         }
@@ -124,22 +114,28 @@ use yii\helpers\ArrayHelper;
             font-size: 15px !important;
         }
 
+        body #table_competencias tbody tr td,
+        body #table_competencias tbody tr td a,
+        body #table_competencias thead tr th a {
+            font-size: 15px !important;
+        }
+
         .dataTables_wrapper .dataTables_paginate .paginate_button {
             font-size: 15px;
-            padding: 5px 10px !important;        
+            padding: 5px 10px !important;
         }
-        
+
         .dataTables_wrapper .dataTables_info {
-            padding-top: 0em  !important;        
+            padding-top: 0em  !important;
         }
 
         .dataTables_wrapper .dataTables_paginate {
-            padding-top: 0em  !important; 
+            padding-top: 0em  !important;
         }
 
         .height-text-area {
             width: 570px;
-            height: 80px;        
+            height: 80px;
         }
 
         .table-container {
@@ -148,20 +144,20 @@ use yii\helpers\ArrayHelper;
         }
 
         .font-size-title{
-            font-size: 20px;        
+            font-size: 20px;
         }
 
         .font-size-subtitulos {
             font-size: 18px;
         }
-        
+
         .font-size-texto {
             font-size: 17px;
         }
-        
+
         .color-required{
             color: #db2c23;
-        }   
+        }
 
         .sin-borde {
             border: none;
@@ -175,7 +171,7 @@ use yii\helpers\ArrayHelper;
     <script src="../../js_extensions/chart.min.js"></script>
     <script src="../../js_extensions/highcharts/exporting.js"></script>
 
-    
+
 
     <!-- Datatable -->
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
@@ -195,15 +191,15 @@ use yii\helpers\ArrayHelper;
     <div class="container h-100">
         <div class="row h-100 align-items-center">
         <div class="col-12 text-center">
-            
+
         </div>
         </div>
     </div>
     </header>
     <br><br>
 
-    <?php 
-    if ($registros_encontrados == 0) {    
+    <?php
+    if ($registros_encontrados == 0) {
     ?>
         <div class="CapaCero" style="display: inline;">
             <div class="row">
@@ -216,8 +212,8 @@ use yii\helpers\ArrayHelper;
             </div>
         </div>
         <hr>
-    <?php 
-    } else if(empty($personas_a_cargo)) {   
+    <?php
+    } else if(empty($personas_a_cargo)) {
     ?>
     <div class="CapaUno" style="display: inline;">
             <div class="row">
@@ -230,160 +226,109 @@ use yii\helpers\ArrayHelper;
             </div>
         </div>
         <hr>
-    <?php 
-        } else {   
+    <?php
+        } else {
     ?>
-    <div id="capaDos" style="display: inline">
+    <div id="capaUno" style="display: inline">
+    
+    
 
         <div class="row">
             <div class="col-md-12">
                 <div class="card1">
                     <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
-                    <div class="row">
+                    <div class="row">  
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-search" style="font-size: 17px; color: #FFC72C;"></em> Ir a Acuerdos: </label>                    
-                                <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                Buscar
-                                </div>
+                                <label style="font-size: 16px;"><em class="fa fa-download" style="font-size: 17px; color: #FFC72C;"></em> Ver Reporte por Competencias</label>
+                                <?= Html::button('Aceptar', [
+                                    'class' => 'btn btn-primary',
+                                    'style' => 'display:inline; background-color: #337ab7;',
+                                    'onclick' => 'init_table_competencias((' . $data_competencias . '))' 
+                                ]) ?> 
                             </div>
                         </div>   
+                                           
                         <div class="col-md-4">
                             <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-users" style="font-size: 17px; color: #FFC72C;"></em> Total personas a cargo -- (BTN )Faltan por terminar evaluacion: 0 </label>                    
-                                <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                Aceptar
-                                </div>
+                                <label style="font-size: 16px;"><em class="fa fa-download" style="font-size: 17px; color: #FFC72C;"></em> Descargar Reporte General</label>
+                                <a id="dlink" style="display:none;"></a>
+                                <button  class="btn btn-info" style="background-color: #4298B4" id="btn"><?= Yii::t('app', ' Aceptar') ?></button>
                             </div>
-                        </div> 
-                        <div class="col-md-4">
-                            <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fa fa-download" style="font-size: 17px; color: #FFC72C;"></em> Descargar reporte general</label>                    
-                                <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                Aceptar
-                                </div>
-                            </div>
-                        </div> 
+                        </div>
                     </div>
                     <br>
                 </div>
-            </div>                 
-        </div> 
+            </div>
+        </div>
     </div>
-        
-    <hr>  
+
+    <hr>
 
     <div id="capaDos" style="display: inline">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card1 mb">
-                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Evaluado') ?> </label>
-                   
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Nombre:') ?> </label>
-                            <?= Html::textInput('nombre_usuario',  $nombre, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                            
-                        </div>                        
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Identificación:') ?> </label>
-                            <?= Html::textInput('documento',  $documento, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                          
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Cargo Evaluado:') ?> </label>
-                            <?= Html::textInput('cargo_usuario',  $cargo, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                                                            
-                        </div>                       
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Nombre del Jefe:') ?></label> </label>
-                            <?= Html::textInput('nombre_jefe',  $nombre_jefe, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                                                         
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">                   
-                        <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Fecha autoevaluación:') ?> </label>
-                            <?= Html::textInput('fecha_autoevaluacion',  $fecha_autoevaluacion, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                                                         
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Fecha evaluación jefe:') ?></label> </label>
-                            <?= Html::textInput('fecha_evaluacion_jefe',  $fecha_evaluacion_jefe, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                                                        
-                        </div>
-                    </div>
-                    <br>
-                </div>               
-                <br>
-                <div class="card1 mb">
-                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Calificación General') ?> </label>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Puntaje Final:') ?> </label>
-                            <?= Html::textInput('puntaje_final',  $puntaje_final, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                            
-                        </div>                        
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="font-size-subtitulos"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> <?= Yii::t('app', ' Promedio Total:') ?> </label>
-                            <?= Html::textInput('prom_total',  $prom_total, ['class' => 'form-control', 'readonly' => true, 'class' => 'font-size-texto sin-borde']) ?>
-                          
-                        </div>
-                    </div>
-                    <br>
-                    
-                </div>
-                <br>
-                <div class="card1 mb">
-                    <div class="row">
-                        <div class="col-md-12">
-                        <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-envelope" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Feedback') ?> </label>
-                        <?php
-                            $contenido1 = 'Solo se genera feedback a personas con promedio final igual o inferior a <span style="font-style: italic;">2.9</span>';
-                            $opcionesEstilo = ['style' => "font-size: 16px;"];
-                        ?> 
-                        <?= Html::tag('p', Html::decode(Html::encode($contenido1)), $opcionesEstilo); ?>
-                        <div class="card1 mb">
-                                    <label style="font-size: 16px;"><em class="fa fa-comments" style="font-size: 17px; color: #FFC72C;"></em> Crear Feedback: </label>                   
-                                    
-                                    <div onclick="" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                    Aceptar
-                                    </div>
+        <div class="row">           
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card1 mb" style="width:100%">
+                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Evaluación de Desarrollo') ?> </label>
+
+                            <!-- <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No se ha completado evaluación para mostrar los resultados.') ?></label> -->
+
+                            <div class="table-responsive table-container" id="container_table">
+                                <table id="table_resultados" class="table table-bordered table-hover center">
+
+                                </table>
                             </div>
                         </div>
+                        <!-- Modal Editar Respuesta -->
+                        <?php
+
+                          $form = ActiveForm::begin([
+                              'id' => 'form_crear_feedback',
+                          ]);
+
+                            Modal::begin([
+                                'id' => 'modalCrearFeedback',
+                                'header' => '<h4>Crear Feedback</h4>',
+                                'footer' => Html::button('Enviar', ['class' => 'btn btn-success btn-block', 'style'=>'margin-top: 1.5%; padding:0.5%', 'onClick' => 'crearFeedbackEvaluacion();']),
+                            ]);
+
+
+                            echo '<div class="row" id="modal_crear_feedback">';
+                            echo '<div class="col-md-12" style="margin-top: 20px">';
+                            echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar Comentarios: </label>';
+                            echo $form->field($model_feedback_entrada, "comentario", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'comentarios_feedback']);
+                            echo '</div>';
+                            echo '</div>';
+
+
+                            Modal::end();
+                            ActiveForm::end();
+
+
+                        ?>
+                        <!-- Modal Editar Respuesta Fin -->
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <br>
 
-            <div class="col-md-9">
+    <div id="capaTres" style="display: inline">
+        <div class="row">
+            <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card1 mb" style="width:100%"> 
-                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Evaluación de Desarrollo') ?> </label>                      
+                        <div class="card1 mb" style="width:100%">
+                            <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Reporte Evaluación por Competencias') ?> </label>
+                            <div class="table-responsive table-container" id="container_table_competencias">
+                                <table id="table_competencias" class="table table-bordered table-hover center">
 
-                            <!-- <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'No se ha completado evaluación para mostrar los resultados.') ?></label> -->
-                            
-                            <div class="table-responsive table-container" id="container_table">                                
-                                <table id="table_resultados" class="table table-bordered table-hover center">
-                                    
-                                </table>    
-                            </div>           
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -391,26 +336,26 @@ use yii\helpers\ArrayHelper;
         </div>
     </div>
     <br>
-<?php 
-    } 
+<?php
+    }
 ?>
 
     <script>
         $(document).ready(function() {
-            var data = <?php echo json_encode($data_calificacion_total); ?>;
+            var data = <?php echo json_encode($data_calificacion_total); ?>;            
             init_table_resultados(data);
 
             if(data.length==0){
                     $( "#container_table_respuestas" ).hide();
                     $( "#emptyMessageRespuestas" ).show();
-                }  
+                }
         });
 
         function init_table_resultados(data) {
 
-            if(data.length > 0) { 
-                var tabla_por_competencias = $('#table_resultados').DataTable({
-            
+            if(data.length > 0) {
+                var table_resultados = $('#table_resultados').DataTable({
+
                 select: true,
                 "autoWidth": true,
                 data:data,
@@ -438,47 +383,100 @@ use yii\helpers\ArrayHelper;
                     autoWidth : false,
                     "table-layout": "fixed",
                     paging: true,
-                },
+                },                          
+                "lengthMenu": [5, 10, 25, 50],
+                "pageLength": 5,
+                columnDefs: [
+                    {
+                        targets: 3, // Índice de la columna que quieres cambiar
+                        render: function(data, type, row, meta) {
+                        var valorColumna = parseFloat(data); // Convierte el valor a tipo numérico
+
+                        // Determina el contenido según el intervalo de valores
+                        if (valorColumna >= 1 && valorColumna <= 1.5) {
+                            return 'Desarrollo';
+                        } else if (valorColumna >= 1.6 && valorColumna <= 2.5) {
+                            return 'Satisfactorio';
+                        } else if (valorColumna >= 2.6 && valorColumna <= 3) {
+                            return 'Potencial';
+                        }
+
+                        // Si no se cumple ninguna condición, devuelve el valor original de la columna
+                        return data;
+                        }
+                    }
+                ],
                 columns: [
                     {   title: "id",
                         data: 'id_user',
-                        visible : false                   
+                        visible : false
                     },
                     {   title: "Nombre Completo",
-                        data: 'nombre_completo'               
+                        data: 'nombre_completo'
                     },
                     {   title: "Documento",
-                        data: 'identificacion'                   
+                        data: 'identificacion'
+                    },
+                    {   title: "Calificación Cualitativa",
+                        data: 'promedio_total_evalua'
                     },
                     {   title: "Promedio Total",
                         data: 'promedio_total_evalua',
                         render: function(data){ return parseFloat(data).toFixed(2); }
                     },
                     {   title: "Acción",
-                        defaultContent : "<button class='btn btn-xs btn-info ver_detalles_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Ver Detalles'>  <span class='fa fa-search'></span> </button> <button class='btn btn-xs btn-danger crear_feedback_btn' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Crear Feedback' > <span class='fa fa-envelope'> </span> </button>",
-                        searchable : false
+                        defaultContent : "<button id='crear_feedback_btn' class='btn btn-xs btn-danger' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Crear Feedback'><span class='fa fa-envelope'></span></button>",
+                        searchable : false,
+                        width: '8%'
 
                     }
-                ],  
+                ],
+                rowCallback: function(row, data, index) {
+                    var counter = index; // Calcula el contador único
+
+                    // Concatena el contador único al ID del botón
+                    var btnId = "crear_feedback_btn_" + counter;
+                    
+                    // Agrega el atributo 'id' al botón
+                    $('button#crear_feedback_btn', row).attr('id', btnId);
+                },
                 drawCallback: function() {
                     var api = this.api();
 
                     api.rows().every(function() {
                         var rowData = this.data();
-                        var promedioTotal = parseFloat(rowData.prom_total_evaluacion);
-                        var botonCrearFeedback = $(this.node()).find('.crear_feedback_btn');
+                        var promedioTotal = parseFloat(rowData.promedio_total_evalua);
 
-                        if (promedioTotal > 2.9) {
-                            botonCrearFeedback.prop('disabled', true);
-                            botonCrearFeedback.hide();
-                        } else {
-                            botonCrearFeedback.prop('disabled', false);
-                            botonCrearFeedback.show();
-                        }
+                        $(this.node()).find('[id^="crear_feedback_btn_"]').each(function() {
+                            var botonCrearFeedback = $(this);
+
+                            if (promedioTotal > 2.9) {
+                                botonCrearFeedback.prop('disabled', true);
+                                botonCrearFeedback.hide();
+                            } else {
+                                botonCrearFeedback.prop('disabled', false);
+                                botonCrearFeedback.show();
+                            }
+                        });
                     });
-                },            
-                initComplete : function(){
+                },
+                initComplete : function() {
+                    // Click Boton Crear Feedback
+                    $('#table_resultados tbody').on('click', '[id^="crear_feedback_btn_"]', function() {
+                        event.preventDefault();
+                        var fila = $(this).closest('tr');
+                        var datos = table_resultados.row(fila).data();
+                        console.log("datos fila: ", datos);
 
+                        // Obtener el índice de la fila seleccionada
+                        var filaIndex = table_resultados.row(fila).index();
+
+                        $('#modal_crear_feedback').data('id_colaborador', datos.id_user);
+                        $('#modal_crear_feedback').data('fila', filaIndex); // Almacenar el índice de la fila
+
+                        $('#modalCrearFeedback').modal('show');
+                    });
+                    // Click Boton Crear Feedback Fin
                 }
                 // INITCOMPLETE END
             });
@@ -489,5 +487,170 @@ use yii\helpers\ArrayHelper;
             }
         }
 
+
+        //REPORTE POR COMPETENCIAS
+        function init_table_competencias(data) {
+
+            if(data.length > 0) {
+                var table_competencias = $('#table_competencias').DataTable({
+
+                select: true,
+                "autoWidth": true,
+                data:data,
+                select: false,
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay datos disponibles en la Tabla",
+                    "lengthMenu": "<span class='size_font_dataTable'> Cantidad de Datos a Mostrar _MENU_ </span>",
+                    "zeroRecords": "No se encontraron datos ",
+                    "info": "<span style='font-size: 14px;'> Mostrando _START_ a _END_ de _TOTAL_ registros </span>",
+                    "infoEmpty": "<span style='font-size: 14px;'> Mostrando 0 de 0 registros </span>",
+                    "infoFiltered": "(Filtrado un _MAX_ total)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "search": "<span style='font-size: 14px;'>Buscar:</span>",
+                    "loadingRecords": "Cargando...",
+                    "processing":     "Procesando...",
+                    "paginate": {
+                    "first":      "<span class='size_font_dataTable'> Primero </span>",
+                    "last":       "<span class='size_font_dataTable'> Ultimo </span>",
+                    "next":       "<span class='size_font_dataTable'> Siguiente </span>",
+                    "previous":   "<span class='size_font_dataTable'> Anterior </span>"
+                    },
+                    "order": [[ 0, "desc" ]],
+                    autoWidth : false,
+                    "table-layout": "fixed",
+                    paging: true
+                },                          
+                "lengthMenu": [5, 10, 25, 50],
+                "pageLength": 5,
+                columns: [
+                    {   title: "id",
+                        data: 'id_evaluado',
+                        visible : false
+                    },
+                    {   title: "Nombre Completo",
+                        data: 'nombre_completo'
+                    },
+                    {   title: "Documento",
+                        data: 'identificacion'
+                    },
+                    {   title: "Competencia",
+                        data: 'competencia'
+                    },
+                    {   title: "Descriptivo de la competencia",
+                        data: 'descripcion_competencia'
+                    },
+                    {   title: "Calificación cualitativa ",
+                        data: 'descripcion_respuesta'
+                    },
+                    {   title: "Calificación",
+                        data: 'calificacion_competencia'
+                    }                    
+                ],
+                initComplete : function() {
+                  
+                }
+                // INITCOMPLETE END
+            });
+
+            //Inicializar en la primer página del datatable
+            $("#table_competencias").DataTable().page( 0 ).draw( false );
+
+            }
+        }
+
+        function crearFeedbackEvaluacion(){
+            var id_jefe = '<?= $id_user; ?>'
+            var filaIndex = $('#modal_crear_feedback').data('fila');            
+            var btnId = 'crear_feedback_btn_' + filaIndex; // Construir el ID único del botón  
+            var id_colaborador = $('#modal_crear_feedback').data("id_colaborador");
+            var comentarios_feedback_selector = document.getElementById("comentarios_feedback");
+            var comentarios_feedback_txt = comentarios_feedback_selector.value;
+
+            //Validacion vacío
+            if (comentarios_feedback_txt == "") {
+                swal.fire("!!! Advertencia !!!","Campo Comentarios esta vacío","warning");
+                return;
+            }
+            
+            //ajax
+            $.ajax({
+                method: "post",
+                url: "crearfeedback",
+                data: {
+                    id_jefe: id_jefe,
+                    id_colaborador: id_colaborador,
+                    comentarios: comentarios_feedback_txt,
+                    _csrf:'<?=\Yii::$app->request->csrfToken?>'
+                },
+                success: function(response) {
+
+                    console.log("response a js : ", response);
+
+                    if(response.status=="error"){
+                        swal.fire("!!! Error !!!",response.data,"error");
+                        return;
+                    }
+
+                    if(response.status=="success"){
+
+                        comentarios_feedback_selector.value = '';
+                        $('#modalCrearFeedback').modal('hide');
+                       
+
+                        swal.fire("",response.data,"success");                        
+
+                        console.log("btnId: ", btnId);
+                       // Deshabilitar el botón del DataTable
+                        $('#table_resultados tbody button#' + btnId).prop('disabled', true);
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Manejar el error
+                    console.log("Error al cargar los datos ", errorThrown);
+                }
+            });
+            //ajax fin
+        }
+
+
+        //Funcion para descargar archivo en excel
+        var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,',
+            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+            base64 = function (s) {
+                return window.btoa(unescape(encodeURIComponent(s)))
+            }, format = function (s, c) {
+                return s.replace(/{(\w+)}/g, function (m, p) {
+                    return c[p];
+                })
+            }
+            return function (table, name) {
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = {
+                    worksheet: name || 'Worksheet',
+                    table: table.innerHTML
+                }
+                console.log(uri + base64(format(template, ctx)));
+                document.getElementById("dlink").href = uri + base64(format(template, ctx));
+                document.getElementById("dlink").download = "Reporte General";
+                document.getElementById("dlink").target = "_blank";
+                document.getElementById("dlink").click();
+
+            }
+        })();
+        function download(){
+            $(document).find('tfoot').remove();
+            var name = document.getElementById("name");
+            tableToExcel('table_resultados', 'Archivo ', name+'.xls')
+            //setTimeout("window.location.reload()",0.0000001);
+
+        }
+        var btn = document.getElementById("btn");
+        btn.addEventListener("click",download);
+
+        
+
     </script>
-    

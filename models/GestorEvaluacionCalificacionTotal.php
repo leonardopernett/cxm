@@ -10,6 +10,7 @@ use Yii;
  * @property int $id_gestor_evaluacion_calificaciontotal
  * @property int $id_evalua_nombre periodo al cual esta asignada esta calificacion
  * @property int $id_evaluado colaborador que fue evaluado
+ * @property int|null $id_feedback
  * @property float|null $suma_total_evalua suma acumulada de los puntajes finales de cada tipo de evaluacion realizada al colaborador
  * @property float|null $promedio_total_evalua suma acumulada de los promedios de cada tipo de evaluacion realizada al colaborador
  * @property int|null $cant_evaluaciones
@@ -34,7 +35,7 @@ class GestorEvaluacionCalificacionTotal extends \yii\db\ActiveRecord
     {
         return [
             [['id_evalua_nombre', 'id_evaluado'], 'required'],
-            [['id_evalua_nombre', 'id_evaluado', 'usua_id', 'anulado','cant_evaluaciones'], 'integer'],
+            [['id_evalua_nombre', 'id_evaluado', 'id_feedback', 'usua_id', 'anulado','cant_evaluaciones'], 'integer'],
             [['suma_total_evalua', 'promedio_total_evalua'], 'number'],
             [['fechacreacion'], 'safe'],
         ];
@@ -49,6 +50,7 @@ class GestorEvaluacionCalificacionTotal extends \yii\db\ActiveRecord
             'id_gestor_evaluacion_calificaciontotal' => Yii::t('app', ''),
             'id_evalua_nombre' => Yii::t('app', ''),
             'id_evaluado' => Yii::t('app', ''),
+            'id_feedback' => Yii::t('app', ''),
             'suma_total_evalua' => Yii::t('app', ''),
             'promedio_total_evalua' => Yii::t('app', ''),
             'cant_evaluaciones' => Yii::t('app', ''),            
