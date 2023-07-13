@@ -1875,7 +1875,7 @@ class FormulariosController extends Controller {
                 //USUARIO GENERICO
                 $usua_id = 0;
                 //DECODIFICTO EL FORMULARIO ID
-                $tmp_id_decode = base64_decode($form_id);
+                $tmp_id_decode = base64_decode($form_id);                
 
                 if (!empty($tmp_id_decode) && is_numeric($tmp_id_decode)) {
                     $tmp_id = \app\models\Ejecucionformularios::llevarATmp($tmp_id_decode, $usua_id);

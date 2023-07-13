@@ -147,9 +147,9 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
                         $modelBase = app\models\BaseSatisfaccion::findOne($ejecucion->basesatisfaccion_id);
                     }  
                     
-                    if (!isset($ejecucion->basesatisfaccion_id)) {
+                    if (!isset($ejecucion->basesatisfaccion_id)) {                        
                             return app\models\Ejecucionfeedbacks::hasFormulario($model->id) ? Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['formularios/showformulariodiligenciadoamigo'
-                                                , 'form_id' => base64_encode($model->id)]), [
+                                                , 'form_id' => base64_encode($ejecucion->id)]), [
                                         'title' => Yii::t('yii', 'ver formulario'),
                                         'target' => "_blank"
                                     ]) : false;                      
