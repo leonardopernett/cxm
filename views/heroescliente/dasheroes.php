@@ -214,45 +214,43 @@ $varConteo = (new \yii\db\Query())
                             <?php
                                 if (count($varConteoExist) != 0) {                                  
                             ?>
-                                <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes in ($varservicios)")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
-                                                    [
-                                                        'id' => 'txtidclientes',
-                                                        'prompt'=>'Seleccionar ',
-                                                        'onchange' => '
-                                                            $.get(
-                                                                "' . Url::toRoute('listarpcrcs') . '", 
-                                                                {id: $(this).val()}, 
-                                                                function(res){
-                                                                    $("#requester").html(res);
-                                                                }
-                                                            );
-                                                            
-                                                        ',
+                               <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                          [
+                                              'id' => 'txtidclientes',
+                                              'prompt'=>'Seleccione Cliente...',
+                                              'onchange' => '
+                                                  $.get(
+                                                      "' . Url::toRoute('listarpcrcs') . '", 
+                                                      {id: $(this).val()}, 
+                                                      function(res){
+                                                          $("#requester").html(res);
+                                                      }
+                                                  );
+                                              ',
 
-                                                    ]
-                                        )->label(''); 
-                                ?>
+                                          ]
+                                  )->label(''); 
+                          ?>
                             <?php
                                 } else{
                             ?>
-                                <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\SpeechServicios::find()->distinct()->where("anulado = 0")->andwhere("id_dp_clientes != 1")->orderBy(['nameArbol'=> SORT_ASC])->all(), 'id_dp_clientes', 'nameArbol'),
-                                                    [
-                                                        'id' => 'txtidclientes',
-                                                        'prompt'=>'Seleccionar',
-                                                        'onchange' => '
-                                                            $.get(
-                                                                "' . Url::toRoute('listarpcrcs') . '", 
-                                                                {id: $(this).val()}, 
-                                                                function(res){
-                                                                    $("#requester").html(res);
-                                                                }
-                                                            );
-                                                            
-                                                        ',
+                              <?=  $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                          [
+                                              'id' => 'txtidclientes',
+                                              'prompt'=>'Seleccione Cliente...',
+                                              'onchange' => '
+                                                  $.get(
+                                                      "' . Url::toRoute('listarpcrcs') . '", 
+                                                      {id: $(this).val()}, 
+                                                      function(res){
+                                                          $("#requester").html(res);
+                                                      }
+                                                  );
+                                              ',
 
-                                                    ]
-                                        )->label(''); 
-                                ?>
+                                          ]
+                                  )->label(''); 
+                          ?>
                             <?php                                    
                                 }                                 
                             ?>
@@ -268,11 +266,9 @@ $varConteo = (new \yii\db\Query())
                                                     
                                                     'prompt' => 'Seleccionar...',
                                                     'id' => 'requester',
-                                                    'multiple' => true,
-                                                    'onclick' => 'carga_programa();',
                                                 ]
                                             )->label('');
-                            ?> 
+                            ?>
                 <br><br>
 
 
