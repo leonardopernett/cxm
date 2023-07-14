@@ -397,6 +397,7 @@ use Exception;
 
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
+
             Yii::$app->db->createCommand()->insert('tbl_postulacion_heroes',[
                 'tipodepostulacion' => $model->tipodepostulacion,
                 'nombrepostula' => $id_evaluado,

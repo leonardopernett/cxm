@@ -23,6 +23,9 @@ use Yii;
  * @property string $idea
  * @property string $estado
  * @property string $valorador
+ * @property string $rol
+ * @property string $pcrc
+ * @property string $cod_pcrc
  */
 class PostulacionHeroes extends \yii\db\ActiveRecord
 {
@@ -40,11 +43,11 @@ class PostulacionHeroes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['tipodepostulacion', 'nombrepostula', 'cargopostula', 'embajadorpostular', 'ciudad', 'extensioniteracion', 'usuariovivexperiencia', 'historiabuenagente', 'idea', 'estado', 'valorador'], 'string'],
             [['fechahorapostulacion', 'fechacreacion'], 'safe'],
             [['anulado', 'usua_id'], 'integer'],
-            [['tipodepostulacion'], 'string', 'max' => 100],
-            [['nombrepostula'], 'string', 'max' => 200],
-            [['cargopostula', 'embajadorpostular', 'ciudad', 'extensioniteracion', 'usuariovivexperiencia', 'historiabuenagente', 'idea', 'estado', 'valorador', 'rol', 'pcrc','cod_pcrc'], 'string', 'max' => 500]
+            [['rol'], 'string', 'max' => 50],
+            [['pcrc', 'cod_pcrc'], 'string', 'max' => 500]
         ];
     }
 
@@ -69,10 +72,10 @@ class PostulacionHeroes extends \yii\db\ActiveRecord
             'fechacreacion' => Yii::t('app', ''),
             'idea' => Yii::t('app', ''),
             'estado' => Yii::t('app', ''),
-            'valorador'  => Yii::t('app', ''),
-            'rol'  => Yii::t('app', ''),
-            'pcrc'  => Yii::t('app', ''),
-            'cod_pcrc'  => Yii::t('app', ''),
+            'valorador' => Yii::t('app', ''),
+            'rol' => Yii::t('app', ''),
+            'pcrc' => Yii::t('app', ''),
+            'cod_pcrc' => Yii::t('app', ''),
         ];
     }
 }
