@@ -339,7 +339,7 @@ $varConteo = (new \yii\db\Query())
                     </thead>
                     <tbody><!--Tbody de la tabla -->
                     <?php foreach ($varData as $value) : ?>
-                    
+                            
                             <tr><!--Filas de la tabla -->
                             <td class="text-center"><label style="font-size: 12px;"><?php echo $value['fechacreacion']; ?></label></td>
                             <td class="text-center"><label style="font-size: 12px;"><?php echo $value['nombrepostula'];?></label></td>

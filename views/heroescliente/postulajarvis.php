@@ -14,6 +14,7 @@ use yii\db\Query;
 $this->title = 'Heroes por Cliente';//nombre del titulo de mi modulo
 $this->params['breadcrumbs'][] = $this->title;
 
+$sessiones = Yii::$app->user->identity->id;
 
 $template = '<div class="col-md-3">{label}</div><div class="col-md-9">'
         . ' {input}{error}{hint}</div>';
@@ -113,6 +114,11 @@ foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
 </header>
 <br><hr><br>
 
+
+<?php
+if ($sessiones == 1) {
+?>
+
 <?php
 if ($varMensaje != null) {
 ?>
@@ -191,7 +197,7 @@ if ($varMensaje != null) {
               
             <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Nombre de Quién Postula:') ?></label> 
             
-            <?= $form->field($model, 'nombrepostula', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => $modelEvaluado1])->label('') ?>
+            <?= $form->field($model, 'nombrepostula', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['readonly' => 'readonly','value' => $modelEvaluado1])->label('') ?>
 
             <br>
               
@@ -200,7 +206,7 @@ if ($varMensaje != null) {
             <?php
               if($varAsesor != null) {
             ?>
-              <?= $form->field($model, 'cargopostula', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => 'Representante de servicio', 'id' => 'cargopostula'])->label('') ?>
+              <?= $form->field($model, 'cargopostula', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['readonly' => 'readonly','value' => 'Representante de servicio', 'id' => 'cargopostula'])->label('') ?>
             <?php
               }else{
             ?>
@@ -216,8 +222,8 @@ if ($varMensaje != null) {
             <?php
               if ($varAsesor != null) {
             ?>
-              <?= $form->field($model, 'embajadorpostular', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => $modelEvaluado1])->label('') ?>
-              <?= $form->field($model, 'embajadorpostular')->textInput(['class'=>'hidden', 'disabled' => true,'value' => $id_evaluado, 'id'=>'idembajador'])->label('') ?>
+              <?= $form->field($model, 'embajadorpostular', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['readonly' => 'readonly','value' => $modelEvaluado1])->label('') ?>
+              <?= $form->field($model, 'embajadorpostular')->textInput(['class'=>'hidden', 'value' => $id_evaluado, 'id'=>'idembajador'])->label('') ?>
             <?php
               }else{
             ?>
@@ -262,8 +268,8 @@ if ($varMensaje != null) {
                         <?php
                           if($varAsesor != null) {
                         ?>
-                          <?= $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => $varNombreCliente_Asesor])->label('') ?>
-                          <?= $form->field($model, 'pcrc')->textInput(['class'=>'hidden', 'disabled' => true,'value' => $varIdDpCliente_Asesor,'id' => 'txtidclientes'])->label('') ?>                      
+                          <?= $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['readonly' => 'readonly','value' => $varNombreCliente_Asesor])->label('') ?>
+                          <?= $form->field($model, 'pcrc')->textInput(['class'=>'hidden', 'readonly' => 'readonly','value' => $varIdDpCliente_Asesor,'id' => 'txtidclientes'])->label('') ?>                      
                         <?php
                           }else{
                         ?>
@@ -295,8 +301,8 @@ if ($varMensaje != null) {
                 <?php
                   if($varAsesor != null) {
                 ?>
-                  <?= $form->field($model, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['disabled' => true,'value' => $varCentroCosto_Asesor])->label('') ?>
-                  <?= $form->field($model, 'cod_pcrc')->textInput(['class'=>'hidden', 'disabled' => true,'value' => $varidCodPcrc_Asesor, 'id' => 'requester'])->label('') ?>                      
+                  <?= $form->field($model, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['readonly' => 'readonly','value' => $varCentroCosto_Asesor])->label('') ?>
+                  <?= $form->field($model, 'cod_pcrc')->textInput(['class'=>'hidden', 'readonly' => 'readonly','value' => $varidCodPcrc_Asesor, 'id' => 'requester'])->label('') ?>                      
                 <?php
                   }else{
                 ?>
@@ -327,7 +333,8 @@ if ($varMensaje != null) {
             
               <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Fecha / Hora de la Interacción: Ej: 2023-05-26 22:37:06') ?> </label>
               <?= $form->field($model, 'fechahorapostulacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'fechahorapostulacion', 'placeholder'=>'AA-MM-DD HH:MM:SS','title' => 'Importante AÑO-MES-DIA HORA:MIN:SEG'])->label('') ?>
-
+             
+        
               <br>
 
                 
@@ -368,6 +375,23 @@ if ($varMensaje != null) {
   <br><hr><br>
 </div>
 
+<?php
+}
+?>
+
+<?php
+}else{
+?>
+<!-- Capa Mensaje -->
+<div class="capaMensaje" id="capaIdMensaje">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-exclamation-triangle" style="font-size: 30px; color: #C148D0;"></em><?= Yii::t('app', ' Actualmente el proceso de postulación de héroes por el cliente esta en mantenimiento. Les recomendamos que por el momento generen la postulación desde la página de Konectados para que no pierdas tu postulación.') ?></label>
+      </div>      
+    </div>
+  </div>
+</div>
 <?php
 }
 ?>
