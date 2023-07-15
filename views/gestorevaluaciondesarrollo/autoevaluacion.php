@@ -28,7 +28,10 @@ use yii\helpers\ArrayHelper;
     $sociedad = $datos_usuario['sociedad'];
     
     $nombre_jefe = "NO EXISTE UN JEFE DIRECTO";
+    $id_jefe="";
+    
     if(!empty($datos_jefe)) {
+        $id_jefe=  $datos_jefe[0]['id_jefe'];
         $nombre_jefe = $datos_jefe[0]['nom_jefe']; //Toma el primer jefe que encuentra
     }
 
@@ -364,12 +367,12 @@ use yii\helpers\ArrayHelper;
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label style="font-size: 16px;"><em class="fas fa-eye" style="font-size: 17px; color: #FFC72C;"></em> Crear Novedad: </label> 
-                                <?= Html::button('Crear Novedad', ['value' => url::to(['evaluaciondesarrollo/novedadauto']), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Crear Novedad', 'style' => 'background-color: #4298b4']) 
+                                <?= Html::button('Crear Novedad', ['value' => url::to(['gestorevaluaciondesarrollo/modalnovedadauto', 'id_evalua'=>$id_evaluacion_actual, 'id_colab'=>$id_usuario_logueado, 'id_jefe'=>$id_jefe]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Crear Novedad', 'style' => 'background-color: #4298b4']) 
                                 ?> 
 
                                 <?php
                                     Modal::begin([
-                                      'header' => '<h4></h4>',
+                                      'header' => '<h4>Campos requeridos: <span class="color-required">(*)</span></h4>',
                                       'id' => 'modal1',
                                     ]);
 
@@ -378,6 +381,22 @@ use yii\helpers\ArrayHelper;
                                     Modal::end(); 
                                 ?>
                             </div>
+                            <!-- Alertas -->
+                            <?php if (Yii::$app->session->hasFlash('success')): 
+                                $mensaje = Yii::$app->session->getFlash('success');
+                            ?>
+                                <script>
+                                    swal.fire("", '<?= $mensaje ?>', "success");
+                                </script>
+                            <?php elseif (Yii::$app->session->hasFlash('error')):
+                                $mensaje = Yii::$app->session->getFlash('error');
+                            ?>
+                                <script>
+                                    swal.fire("", '<?= $mensaje ?>', "error");
+                                </script>
+                            <?php endif; ?>
+                            <!-- Alerta Fin-->
+                            <!-- Alerta para carga masiva-->
                         </div>
                     </div>
                 </div>
@@ -388,9 +407,7 @@ use yii\helpers\ArrayHelper;
 
 <script>
 
-    function enviar_formulario() { 
-        
-        
+    function enviar_formulario() {         
         var id_user = '<?php echo $id_usuario_logueado; ?>';
         var id_evalua_nombre = '<?php echo $id_evaluacion_actual; ?>';
         var id_tipo_evalua = '<?php echo $id_tipo_evalua; ?>';

@@ -22,8 +22,6 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
 //$var_exist_jefe = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_jefes where identificacion in ('$var_document')")->queryScalar();
 //$var_exist_colaborador = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_colaboradores where identificacion in ('$var_document')")->queryScalar();
 
-
-$varnovedadesa =0;
 $varcargo=0; //si realizo evaluacion a personas a cargo
 $varidconteocargo= 2; // si tiene personas a cargo sino no habilitar boton para evaluar
 $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas evaluadas
@@ -150,11 +148,11 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                         <div class="col-md-3">
                             <div class="card2 mb">
                                 <label style="font-size: 23px; text-align: center;"> Autoevaluación </label>
-                                <?php if ($varauto == 0) { ?>
-                                    <?php if ($varnovedadesa == 1) { ?>
+                                <?php if ($estado_autoevaluacion == 0) { ?>
+                                    <?php if ($novedades_autoevaluacion == "En espera") { ?>
                                         <em class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></em>
                                         <br>
-                                        <label style="font-size: 15px; text-align: center;"> Novedad en espera de ser aprobado </label>
+                                        <label style="font-size: 15px; text-align: center;"> Novedad en espera de ser aprobada </label>
                                     <?php }else{?>
                                         <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                         <br>
@@ -243,9 +241,9 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                     </div>
                     <br>
 
-                    <!-- Mensaje si completo las evaluaciones asociadas a su usuario INICIO-->
-                    <?php if ($varauto != 0) {  ?>
-                        <?php if ($no_tiene_evaluacion_a_cargo) { ?>                           
+                    <!-- Mensajes si completo las evaluaciones asociadas a su usuario-->
+                    <?php if ($estado_autoevaluacion != 0) {  ?>
+                        <?php if ($no_tiene_jefe_directo) { ?>                           
                                 <div class="row">
                                     <div class="col-md-12" class="text-center">                            
                                         <div class="panel panel-default">
@@ -255,7 +253,7 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                                         </div>
                                     </div>
                                 </div>
-                        <?php } else if($evaluaciones_completadas) { ?>
+                        <?php } else if($completo_todas_las_evaluaciones_asociadas) { ?>
                             <div class="row">
                                     <div class="col-md-12" class="text-center">                            
                                         <div class="panel panel-default">
@@ -289,5 +287,14 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
 <?php 
     } 
 ?>
+<?php if (Yii::$app->session->hasFlash('success_novedad')): ?>
+  <script>
+    swal.fire("", '<?= Yii::$app->session->getFlash('success_novedad') ?>', "success");
+  </script>
+<?php elseif (Yii::$app->session->hasFlash('error_novedad')): ?>
+  <script>
+    swal.fire("", '<?= Yii::$app->session->getFlash('error_novedad') ?>', "error");
+  </script>
+<?php endif; ?>
 
 
