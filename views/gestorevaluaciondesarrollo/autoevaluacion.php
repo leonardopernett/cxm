@@ -20,8 +20,9 @@ use yii\helpers\ArrayHelper;
     $nombre_evaluacion = $vartipoeva['tipoevaluacion'];
     $id_tipo_evalua = $vartipoeva['id'];
 
-    $vardocument = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
+    
     $nombre_completo = $datos_usuario['nombre_completo'];
+    $cc_colaborador = $datos_usuario['identificacion'];
     $cargo = $datos_usuario['cargo'];   
     $area_operacion = $datos_usuario['area_operacion'];
     $ciudad = $datos_usuario['ciudad'];

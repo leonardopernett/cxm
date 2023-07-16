@@ -125,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 15px; color: #FFC72C;"></em> Personal a Cargo </label>
-                    <?= Html::a('Verificar',  ['eliminarnovedades'], ['class' => 'btn btn-success',
+                    <?= Html::a('Verificar',  ['novedadpersonalacargo'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
                                         'data-toggle' => 'tooltip',
                                         'title' => 'Verificar']) 

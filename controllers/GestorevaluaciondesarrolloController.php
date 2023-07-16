@@ -31,6 +31,7 @@ use app\models\GestorEvaluacionFeedback;
 use app\models\GestorEvaluacionFeedbackentradas;
 use app\models\GestorEvaluacionNovedadGeneral;
 use app\models\GestorEvaluacionNovedadJefeincorrecto;
+use app\models\GestorEvaluacionNovedadJefecolaborador;
 
 
 
@@ -48,7 +49,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         'modalevaluacionacargo', 'evaluacionacargo', 'crearevaluacionacargo',
                         'resultados', 'resultadoindividual',
                         'crearfeedback', 'modalfeedbackcolaborador', 'modalnovedadauto',
-                        'novedadjefeincorrecto', 'actualizarjefecorrecto'
+                        'novedadjefeincorrecto', 'actualizarjefecorrecto', 'modalnovedadacargo', 'novedadpersonalacargo'
                     ],
             'rules' => [
                 [
@@ -84,7 +85,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $evalua_nombre = "";
         $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
         
-        $documento = 456;
+        $documento = 1819;
         $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
         $completo_todas_las_evaluaciones_asociadas = false;
         $no_tiene_jefe_directo= false;
@@ -781,21 +782,12 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
     public function actionModalevaluacionacargo($id_jefe,$id_evalua) {
        
         $model = new GestorEvaluacionPreguntas();
+     
+        $array_personas_a_cargo = $this->obtenerTodasLasPersonasAcargo($id_jefe);
         
-        $params_busqueda = [':id_jefe' => $id_jefe];
-        $array_personas_a_cargo =  Yii::$app->db->createCommand('
-        SELECT u.id_gestor_evaluacion_usuarios AS id_colaborador, 
-            u.nombre_completo, u.identificacion, form.id_estado_evaluacion
-        FROM tbl_gestor_evaluacion_jefe_colaborador relacion  
-        INNER JOIN tbl_gestor_evaluacion_usuarios u
-        ON relacion.id_usuario_colaborador = u.id_gestor_evaluacion_usuarios 
-        LEFT JOIN tbl_gestor_evaluacion_formulario form
-        ON relacion.id_usuario_colaborador = form.id_evaluado && relacion.id_usuario_jefe = form.id_evaluador
-        WHERE relacion.anulado=0 AND form.id_estado_evaluacion IS NULL AND relacion.id_usuario_jefe IN (:id_jefe)')->bindValues($params_busqueda)->queryAll(); 
-
         $opcion_personas_a_cargo = ArrayHelper::map($array_personas_a_cargo,
         'id_colaborador',
-        'nombre_completo');   
+        'nom_colaborador');   
 
   
         $form = Yii::$app->request->post();
@@ -1295,7 +1287,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $id_evaluacion_actual = $obtener_evaluacion_actual['id_evalua'];        
         
         //Obtener tipo evaluacion "A cargo" para saber el id del jefe para esta evaluacion
-        $id_evaluacion_a_cargo = $query = (new Query())
+        $id_evaluacion_a_cargo = (new Query())
         ->select('tipo.idevaluaciontipo')
         ->from('tbl_evaluacion_tipoeval tipo')
         ->where(['tipo.tipoevaluacion' => 'A cargo'
@@ -1389,7 +1381,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         return $this->render('novedades');
     }
 
-    // Vista para solucionar lo relacionado a un jefe incorrecto
+    // Vista novedades jefe incorrecto
     public function actionNovedadjefeincorrecto(){
 
         //Periodo actual que realizan la evaluacion
@@ -1399,53 +1391,228 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         //Traer datos existentes
         $data_jefe_incorrecto = $this->obtener_data_jefe_incorrecto($id_evalua_nombre);       
         
-
         return $this->render('novedadjefeincorrecto', [
             'data_jefe_incorrecto'=> $data_jefe_incorrecto,
             'id_evalua_nombre'=> $id_evalua_nombre
         ]);
     } 
 
+    public function actionNovedadpersonalacargo(){
+
+        //Periodo actual que realizan la evaluacion
+        $evaluacion_actual = $this->obtenerEvaluacionActual();        
+        $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+                
+        //Traer datos existentes
+        $data_datatable = $this->obtener_data_personal_a_cargo($id_evalua_nombre);       
+        
+
+        return $this->render('novedadpersonalacargo', [
+            'data_datatable'=> $data_datatable,
+            'id_evalua_nombre'=> $id_evalua_nombre
+        ]);
+    } 
+
+
     public function actionModalnovedadauto(){
         $model_jefe_incorrecto = new GestorEvaluacionNovedadJefeincorrecto();
-        
-        $response= [];
-        
+                
         //Parametros recibidos por la vista autoevaluación
         $id_evalua_nom= Yii::$app->request->get('id_evalua');
         $id_colaborador_solicitante = Yii::$app->request->get('id_colab');        
         $id_jefe_actual = Yii::$app->request->get('id_jefe');
-       
+
+        if($id_jefe_actual){
+            $cc_jefe_actual = Yii::$app->db->createCommand("select identificacion FROM tbl_gestor_evaluacion_usuarios WHERE id_gestor_evaluacion_usuarios in ('$id_jefe_actual')")->queryScalar();
+        }
+               
+        //validacion de parametros
+        if(empty($id_evalua_nom) || empty($id_colaborador_solicitante) ){
+            Yii::$app->session->setFlash('error_novedad', 'Error en envio de parámetros para procesar la solicitud, reportar error.');
+            return $this->redirect(['index']);            
+        }
+
+         //Variables locales
+        $cc_colaborador_solicitante = Yii::$app->db->createCommand("select identificacion FROM tbl_gestor_evaluacion_usuarios WHERE id_gestor_evaluacion_usuarios in ('$id_colaborador_solicitante')")->queryScalar();
+     
+        if($id_jefe_actual==""){
+            $id_jefe_actual=null; 
+            $cc_jefe_actual=null;              
+        }
+        
+        //Puede Crear la novedad
         $opcion_seleccionada = Yii::$app->request->post('seleccion');
 
         $sql = 'SELECT tiponovedad.id_gestor_evaluacion_estadonovedades AS id_estado_novedad FROM tbl_gestor_evaluacion_estadonovedades tiponovedad WHERE tiponovedad.nombre="En espera"';
         $id_estado_en_espera = Yii::$app->db->createCommand($sql)->queryScalar();
-      
+    
         if ( $model_jefe_incorrecto->load(Yii::$app->request->post()) ) {
-         
+        
             if ($opcion_seleccionada=="jefe_incorrecto"){
+
+                $validar_novedades_a_cargo = $this->contar_registros_novedad_personal_a_cargo($id_colaborador_solicitante, $cc_colaborador_solicitante);
+       
+                //Ya existe una novedad "En espera" asociada a este usuario por cambio de jefe
+                if ($validar_novedades_a_cargo==1) {
+                    Yii::$app->session->setFlash('error_novedad', 'Ya existe una novedad "en espera" por cambio de Jefe');
+                    return $this->redirect(['index']);
+                }
+
                 $model_jefe_incorrecto->id_evaluacion_nombre = $id_evalua_nom;
                 $model_jefe_incorrecto->id_estado_novedad = $id_estado_en_espera;
-                $model_jefe_incorrecto->id_solicitante = $id_colaborador_solicitante;
+                $model_jefe_incorrecto->id_solicitante = $id_colaborador_solicitante;               
+                $model_jefe_incorrecto->cc_colaborador = $cc_colaborador_solicitante;
                 $model_jefe_incorrecto->id_jefe_actual = $id_jefe_actual;
+                $model_jefe_incorrecto->cc_jefe_actual = $cc_jefe_actual;
                 $model_jefe_incorrecto->fechacreacion = date("Y-m-d");
-                $model_jefe_incorrecto->usua_id=Yii::$app->user->identity->id; 
+                $model_jefe_incorrecto->usua_id=Yii::$app->user->identity->id;
                 
                 if ($model_jefe_incorrecto->save()) {
-                    Yii::$app->session->setFlash('success_novedad', 'Creación exitosa de la novedad');
+                    Yii::$app->session->setFlash('success_novedad', 'Creación exitosa para: jefe incorrecto');
                     return $this->redirect(['index']);
                 } else {
-                    Yii::$app->session->setFlashError('error_novedad', 'Ocurrió un error al guardar la novedad');
+                    Yii::$app->session->setFlash('error_novedad', 'Ocurrió un error al guardar: jefe incorrecto');
+                    return $this->redirect(['index']);
                 }
             }            
         }
+               
 
         return $this->renderAjax('modalnovedadauto',[
             'model_jefe_incorrecto'=>$model_jefe_incorrecto
         ]);        
     }
 
-    public function actionActualizarjefecorrecto(){
+    public function actionModalnovedadacargo(){
+        $model = new GestorEvaluacionNovedadJefecolaborador();
+        
+        //Parametros recibidos por el boton crear novedad de evaluacion a cargo
+        $id_evalua_nom= Yii::$app->request->get('id_evalua');
+        $id_jefe_solicitante = Yii::$app->request->get('id_jefe');
+        $id_colaborador_actual = Yii::$app->request->get('id_colab');        
+    
+        //validacion de parametros
+        if(empty($id_evalua_nom) || empty($id_jefe_solicitante) || empty($id_colaborador_actual) ){
+            Yii::$app->session->setFlash('error_novedad', 'Problemas en envio de parámetros para procesar la solicitud, reportar error.');
+            return $this->redirect(['index']);            
+        }
+
+        //Variables locales
+        $cc_colaborador_actual = Yii::$app->db->createCommand("select identificacion FROM tbl_gestor_evaluacion_usuarios WHERE id_gestor_evaluacion_usuarios in ('$id_colaborador_actual')")->queryScalar();
+
+        $opcion_seleccionada = Yii::$app->request->post('seleccion');
+
+        $sql = 'SELECT tiponovedad.id_gestor_evaluacion_estadonovedades AS id_estado_novedad FROM tbl_gestor_evaluacion_estadonovedades tiponovedad WHERE tiponovedad.nombre="En espera"';
+        $id_estado_en_espera = Yii::$app->db->createCommand($sql)->queryScalar();
+              
+        if ( $model->load(Yii::$app->request->post()) ) {
+
+            $model->id_evaluacion_nombre = $id_evalua_nom;
+            $model->id_estado_novedad = $id_estado_en_espera;
+            $model->id_jefe_solicitante = $id_jefe_solicitante;            
+            $model->fechacreacion = date("Y-m-d");
+            $model->usua_id=Yii::$app->user->identity->id;
+         
+            if ($opcion_seleccionada=="falta_persona"){
+                $cc_nuevo_colaborador = $model->cc_colaborador_nuevo;
+                $validar_novedad_jefe_incorrecto = $this->contar_registros_novedad_jefe_incorrecto(1, $cc_nuevo_colaborador);
+                $validar_tiponov_falta_personal = $this->contar_registros_novedad_personal_a_cargo(1, $cc_nuevo_colaborador);
+            
+                //Ya existe una novedad "En espera" asociada a este usuario por cambio de jefe
+                if ($validar_novedad_jefe_incorrecto==1 || $validar_tiponov_falta_personal==1 ) {
+                    Yii::$app->session->setFlash('error_novedad', 'Ya existe una novedad "en espera" relacionada con cambio de jefe de este colaborador.');
+                    return $this->redirect(['index']);
+                }
+
+                $id_falta_persona_a_cargo = Yii::$app->db->createCommand('
+                SELECT tiponovedad.id_gestor_evaluacion_tiponovedad_jefecolaborador AS id_tiponovedad
+                FROM tbl_gestor_evaluacion_tiponovedadjefecolaborador tiponovedad
+                WHERE tiponovedad.nombre_tipo_novedad="Falta persona a mi cargo" AND tiponovedad.anulado=0
+                ')->queryScalar();
+
+                $model->id_tipo_novedad = $id_falta_persona_a_cargo; 
+                $model->id_colaborador_actual = null;  
+                $model->cc_colaborador_actual = null;             
+                
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success_novedad', 'Creación exitosa para: falta persona a mi cargo. Documento: '. $cc_nuevo_colaborador);
+                    return $this->redirect(['index']);
+                } else {
+                    Yii::$app->session->setFlash('error_novedad', 'Ocurrió un error al guardar: falta persona a mi cargo');
+                }
+            }   
+
+            if ($opcion_seleccionada=="no_esta_a_mi_cargo"){
+
+                $validar_novedad_jefe_incorrecto = $this->contar_registros_novedad_jefe_incorrecto($id_colaborador_actual, $cc_colaborador_actual);
+                $validar_tiponov_falta_personal = $this->contar_registros_novedad_personal_a_cargo($id_colaborador_actual, $cc_colaborador_actual);
+            
+                //Ya existe una novedad "En espera" asociada a este usuario por cambio de jefe
+                if ($validar_novedad_jefe_incorrecto==1 || $validar_tiponov_falta_personal==1 ) {
+                    Yii::$app->session->setFlash('error_novedad', 'Ya existe una novedad "en espera" relacionada con cambio de jefe de este colaborador.');
+                    return $this->redirect(['index']);
+                }
+                
+                $id_no_esta_a_cargo = Yii::$app->db->createCommand('
+                SELECT tiponovedad.id_gestor_evaluacion_tiponovedad_jefecolaborador AS id_tiponovedad
+                FROM tbl_gestor_evaluacion_tiponovedadjefecolaborador tiponovedad
+                WHERE tiponovedad.nombre_tipo_novedad="Persona no está a mi cargo" AND tiponovedad.anulado=0
+                ')->queryScalar();
+
+                $model->id_tipo_novedad = $id_no_esta_a_cargo; 
+                $model->id_colaborador_actual = $id_colaborador_actual; 
+                $model->cc_colaborador_actual = $cc_colaborador_actual;
+                $model->cc_colaborador_nuevo = null;                              
+
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success_novedad', 'Creación exitosa para: persona no está a mi cargo');
+                    return $this->redirect(['index']);
+                } else {
+                    Yii::$app->session->setFlash('error_novedad', 'Ocurrió un error al guardar: persona no está a mi cargo');
+                }
+
+            }
+
+            if ($opcion_seleccionada=="persona_retirada"){
+                
+                $validar_novedad_jefe_incorrecto = $this->contar_registros_novedad_jefe_incorrecto($id_colaborador_actual, $cc_colaborador_actual);
+                $validar_tiponov_falta_personal = $this->contar_registros_novedad_personal_a_cargo($id_colaborador_actual, $cc_colaborador_actual);
+            
+                //Ya existe una novedad "En espera" asociada a este usuario por cambio de jefe
+                if ($validar_novedad_jefe_incorrecto==1 || $validar_tiponov_falta_personal==1 ) {
+                    Yii::$app->session->setFlash('error_novedad', 'Ya existe una novedad "en espera" relacionada con cambio de jefe de este colaborador.');
+                    return $this->redirect(['index']);
+                }                
+
+                $id_persona_retirada = Yii::$app->db->createCommand('
+                SELECT tiponovedad.id_gestor_evaluacion_tiponovedad_jefecolaborador AS id_tiponovedad
+                FROM tbl_gestor_evaluacion_tiponovedadjefecolaborador tiponovedad
+                WHERE tiponovedad.nombre_tipo_novedad="Persona retirada" AND tiponovedad.anulado=0
+                ')->queryScalar();
+
+                $model->id_tipo_novedad = $id_persona_retirada;
+                $model->id_colaborador_actual = $id_colaborador_actual;
+                $model->cc_colaborador_actual = $cc_colaborador_actual;
+                $model->cc_colaborador_nuevo=null;
+
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success_novedad', 'Creación exitosa para: persona retirada');
+                    return $this->redirect(['index']);
+                } else {
+                    Yii::$app->session->setFlash('error_novedad', 'Ocurrió un error al guardar: persona retirada');
+                }
+
+            }
+
+        }
+
+        return $this->renderAjax('modalnovedadacargo',[
+            'model'=>$model
+        ]);        
+    }
+
+
+    public function actionActualizarjefecorrecto() {
         
         $parametros = Yii::$app->request->post();
         $id_novedad = $parametros['id_novedad'];
@@ -1455,96 +1622,256 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $response=[];
         $id_evaluacion_nombre="";
         $cc_colaborador="";
-        $cc_jefe_correcto="";        
+        $cc_jefe_correcto=""; 
+        
+        if($aprobacion==0){
 
-        $data_novedad = $this->obtener_data_jefe_incorrecto_por_id($id_novedad);
-        if(!empty($data_novedad)){
-            $id_evaluacion_nombre = $data_novedad['id_evaluacion_nombre'];
-            $id_colaborador_solicitante = $data_novedad['id_solicitante'];
-            $id_jefe_actual = $data_novedad['id_jefe_actual'];
-            $cc_colaborador = $data_novedad['cc_colaborador']; 
-            $cc_jefe_correcto = $data_novedad['cc_jefe_correcto'];
+            //Actualizar estado de la novedad a -> No aprobado
+            $actualizar_estado_novedad = $this->actualizar_novedad_no_aprobada('tbl_gestor_evaluacion_novedad_jefeincorrecto', $id_novedad);
+            
+            if($actualizar_estado_novedad==1){
+                
+                $evaluacion_actual = $this->obtenerEvaluacionActual();
+                $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+                $data_actualizada_jefe_correcto = $this->obtener_data_jefe_incorrecto($id_evalua_nombre);
+                
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Actualización exitosa, estado no aprobado',
+                    'data' => $data_actualizada_jefe_correcto,
+                ]; 
+
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Ocurrió un error al actualizar el nuevo estado de la solicitud',
+                ];
+            }
         }
 
-        //Validacion de datos
-        if (empty($data_novedad['id_evaluacion_nombre']) || 
-            empty($data_novedad['id_solicitante']) ||
-            empty($data_novedad['id_jefe_actual']) ||
-            empty($data_novedad['cc_jefe_correcto'])) {
-           
-            $response = [
-                'status' => 'error',
-                'message' => 'No se encontraron datos para la solicitud con ID: ' . $id_novedad,
-            ];
 
-            Yii::$app->response->format = Response::FORMAT_JSON;
+        if($aprobacion==1){
 
-            return $response;
-        } 
-  
-        $id_jefe_correcto = $this->obtener_id_usuario($cc_jefe_correcto) ?: false;
-        $pk_jefe_actual_colaborador = $this->obtener_id_jefe_x_colaborador($id_colaborador_solicitante, $id_jefe_actual) ?: false;
-              
-        // Si existe el usuario en mi base de datos
-        if($id_jefe_correcto){
+            $data_novedad = $this->obtener_data_jefe_incorrecto_por_id($id_novedad);
+            if(!empty($data_novedad)){
+                $id_evaluacion_nombre = $data_novedad['id_evaluacion_nombre'];
+                $id_colaborador_solicitante = $data_novedad['id_solicitante'];
+                $id_jefe_actual = $data_novedad['id_jefe_actual'];
+                $cc_colaborador = $data_novedad['cc_colaborador']; 
+                $cc_jefe_correcto = $data_novedad['cc_jefe_correcto'];
+            }
 
-            $rol_jefe_actual = $this->obtener_roles_usuario_por_id($id_jefe_actual);
-            $rol_jefe_correcto = $this->obtener_roles_usuario_por_id($id_jefe_correcto);
-
-            if( !empty($rol_jefe_actual) && !empty($rol_jefe_correcto) ) {
-                $esjefe_actual = $rol_jefe_actual['es_jefe'];                
-                $esjefe_correcto = $rol_jefe_correcto['es_jefe'];
+            //Validacion de datos
+            if ( empty($id_evaluacion_nombre) || empty($id_colaborador_solicitante) || empty($cc_jefe_correcto) ) {
+            
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Parámetros faltantes para la solicitud. Reportar error.',
+                ];
             } 
+    
+            $id_jefe_correcto = $this->obtener_id_usuario($cc_jefe_correcto) ?: false;           
+                
+            // Si existe el usuario en mi base de datos
+            if($id_jefe_correcto){
 
-            //Si existe un pk asociado a la relacion del colaborador con el jefe actual 
-            if($pk_jefe_actual_colaborador){
+                $rol_jefe_actual = $this->obtener_roles_usuario_por_id($id_jefe_actual);
+                $rol_jefe_correcto = $this->obtener_roles_usuario_por_id($id_jefe_correcto);
 
-                //Actualizar el nuevo jefe con el pk ya existente
-                $actualizar_id_nuevo_jefe = $this->actualizar_jefe_correcto($pk_jefe_actual_colaborador, $id_jefe_correcto);
-           
-                //Actualizacion exitosa
-                if($actualizar_id_nuevo_jefe==1){
+                if( !empty($rol_jefe_actual) && !empty($rol_jefe_correcto) ) {
+                    $esjefe_actual = $rol_jefe_actual['es_jefe'];                
+                    $esjefe_correcto = $rol_jefe_correcto['es_jefe'];
+                } 
 
-                    // Actualizar roles del que desvinculamos y del nuevo jefe
-                    $this->actualizar_rol_jefe($esjefe_actual, $id_jefe_actual);
-                    $this->actualizar_rol_jefe($esjefe_correcto, $id_jefe_correcto);
+                $pk_jefe_actual_colaborador = $this->obtener_id_jefe_x_colaborador($id_colaborador_solicitante, $id_jefe_actual) ?: false;
 
-                    //Actualizar estado de la novedad a -> Aprobado
-                    $actualizar_estado_novedad = $this->actualizar_novedad_aprobada('tbl_gestor_evaluacion_novedad_jefeincorrecto', $id_novedad);
-                    
-                    if ($actualizar_estado_novedad === 1) { 
+                //Si existe un pk asociado a la relacion del colaborador con el jefe actual 
+                if($pk_jefe_actual_colaborador){
+
+                    //Actualizar el nuevo jefe con el pk ya existente
+                    $actualizar_id_nuevo_jefe = $this->actualizar_jefe_correcto($pk_jefe_actual_colaborador, $id_jefe_correcto);
+            
+                    //Actualizacion exitosa
+                    if($actualizar_id_nuevo_jefe==1){
+
+                        // Actualizar roles del que desvinculamos y del nuevo jefe
+                        $this->actualizar_rol_jefe($esjefe_actual, $id_jefe_actual);
+                        $this->actualizar_rol_jefe($esjefe_correcto, $id_jefe_correcto);
+
+                        //Actualizar estado de la novedad a -> Aprobado
+                        $actualizar_estado_novedad = $this->actualizar_novedad_aprobada('tbl_gestor_evaluacion_novedad_jefeincorrecto', $id_novedad);
+                        
+                        if ($actualizar_estado_novedad === 1) {
+
+                            $data_actualizada_jefe_correcto = $this->obtener_data_jefe_incorrecto($id_evaluacion_nombre);
+
+                                $response = [
+                                    'status' => 'success',
+                                    'message' => 'Actualizacion exitosa para el Jefe con documento: ' . $cc_jefe_correcto,
+                                    'data' => $data_actualizada_jefe_correcto,
+
+                                ];  
+                        } else {            
                             $response = [
-                                'status' => 'success',
-                                'message' => 'Actualizacion exitosa para el Jefe con documento: ' . $cc_jefe_correcto,
-                            ];  
+                                'status' => 'error',
+                                'message' => 'Ocurrió un error al actualizar el nuevo estado de la novedad',
+                            ];
+                        }  
+
                     } else {            
                         $response = [
                             'status' => 'error',
-                            'message' => 'Ocurrió un error al actualizar el nuevo estado de la novedad',
+                            'message' => 'Ocurrió un error al actualizar el nuevo jefe',
                         ];
-                    }  
+                    }                
+                }
 
-                } else {            
-                    $response = [
-                        'status' => 'error',
-                        'message' => 'Ocurrió un error al actualizar el nuevo jefe',
-                    ];
-                }                
+            } else {
+
+                //Actualizar estado de la novedad a -> Error
+                $response = [
+                    'status' => 'error',
+                    'message' => 'El usuario no existe, por favor ingresar la actualización del nuevo jefe por carga masiva',
+                ];
             }
-
-        } else {
-
-            //Actualizar estado de la novedad a -> Error
-
-            $response = [
-                'status' => 'error',
-                'message' => 'El usuario no existe, por favor ingresar la actualización del nuevo jefe por carga masiva',
-            ];
         }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         return $response;
+        
     }
+
+    public function actionGestionarpersonalacargo() {
+
+        $parametros = Yii::$app->request->post();
+        $id_novedad = $parametros['id_novedad'];
+        $aprobacion = $parametros['estado_aprobacion'];
+
+        //variables locales 
+        $response=[];
+        $id_evaluacion_nombre="";
+        
+        if($aprobacion==0){
+
+        }
+
+        if($aprobacion==1){
+
+            $data_novedad = $this->obtener_data_personal_a_cargo_por_pk($id_novedad);
+            
+            if(!empty($data_novedad)){
+                $nombre_tipo_novedad = $data_novedad['nombre_tipo_novedad'];
+                $id_jefe_solicitante = $data_novedad['id_jefe_solicitante'];
+                $id_colaborador_actual = $data_novedad['id_colaborador_actual'];
+                $cc_colaborador_nuevo = $data_novedad['cc_colaborador_nuevo'];
+            }
+
+            //Validacion de datos
+            if ( empty($nombre_tipo_novedad) || empty($id_jefe_solicitante) || empty($id_colaborador_actual) ) {
+            
+                $response = [
+                    'status' => 'error',
+                    'message' => 'No se encontraron datos para la solicitud con ID: ' . $id_novedad,
+                ];
+
+                Yii::$app->response->format = Response::FORMAT_JSON;
+
+                return $response;
+            } 
+
+            if($nombre_tipo_novedad=="Persona no está a mi cargo") {
+                $pk_jefe_colaborador = $this->obtener_id_jefe_x_colaborador($id_colaborador_actual, $id_jefe_solicitante);
+
+                var_dump($pk_jefe_colaborador);
+                die();
+                if($pk_jefe_colaborador){
+
+                    $remover_jefe_colaborador = $this->eliminar_logicamente_jefe_x_colaborador($pk_jefe_colaborador);
+                
+                    if($remover_jefe_colaborador==1){
+                        $this->actualizar_rol_jefe(1, $id_jefe_solicitante);
+
+                        //Actualizar estado de la novedad a -> Aprobado
+                        $actualizar_estado_novedad = $this->actualizar_novedad_aprobada('tbl_gestor_evaluacion_novedad_jefecolaborador', $id_novedad);
+                        
+                        if ($actualizar_estado_novedad === 1) { 
+                            $response = [
+                                'status' => 'success',
+                                'message' => 'Se eliminó correctamente el usuario a cargo'
+                            ];  
+                            
+                            Yii::$app->session->setFlash('success_a_cargo', 'Creación exitosa de la novedad');
+                            return $this->redirect('novedadpersonalacargo');
+                        } else { 
+
+                            $response = [
+                                'status' => 'error',
+                                'message' => 'Ocurrió un error al eliminar vinculación',
+                            ];
+                            Yii::$app->session->setFlash('error_a_cargo', 'Ocurrió un error al guardar la novedad');
+                            return $this->redirect('novedadpersonalacargo');
+
+                        } 
+
+                    }
+
+                }
+
+                //Si no existe un pk asocaido, quizas ya la gestionar desde novedadjefeincorrecto
+                
+                if(!$pk_jefe_colaborador) {
+
+                    //Actualizar estado de la novedad a -> Aprobado
+                    $actualizar_estado_novedad = $this->actualizar_novedad_aprobada('tbl_gestor_evaluacion_novedad_jefecolaborador', $id_novedad);
+                    
+                    if ($actualizar_estado_novedad === 1) { 
+                        $response = [
+                            'status' => 'success',
+                            'message' => 'Se eliminó correctamente el usuario a cargo'
+                        ];  
+                        
+                        Yii::$app->session->setFlash('success_a_cargo', 'No encontramos una asociación de las dos personas, ya fue gestionada, validar información.');
+                        return $this->redirect('novedadpersonalacargo');
+                    } else { 
+
+                        $response = [
+                            'status' => 'error',
+                            'message' => 'Ocurrió un error al eliminar vinculación',
+                        ];
+                        Yii::$app->session->setFlash('error_a_cargo', 'Ocurrió un error al cambiar de estado la novedad');
+                        return $this->redirect('novedadpersonalacargo');
+
+                    } 
+
+                }
+                
+
+
+                
+
+            }
+
+            if($nombre_tipo_novedad=="Falta persona a mi cargo"){
+                
+            }
+
+            if($nombre_tipo_novedad=="Persona retirada"){
+                
+            }
+
+            
+            
+            
+
+                        
+        }
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+            return $response;
+
+    }
+
+
 
     //FUNCIONES
 
@@ -1623,6 +1950,19 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         return $result;        
     }
 
+    //Funcion que retorna el id de la relacion de jefe_colaborador si existe, sino retorna false
+    public function obtener_relacion_jefe_x_colaborador($id_usuario_colaborador, $id_usuario_jefe_actual){
+        $result = Yii::$app->db->createCommand('
+        SELECT relacion.id_gestor_evaluacion_jefe_colaborador AS id_relacion
+        FROM tbl_gestor_evaluacion_jefe_colaborador relacion
+        WHERE relacion.id_usuario_colaborador = :id_colaborador AND relacion.id_usuario_jefe = :id_jefe
+        ')
+        ->bindValue(':id_colaborador', $id_usuario_colaborador)
+        ->bindValue(':id_jefe', $id_usuario_jefe_actual)
+        ->queryScalar();
+        return $result;        
+    }
+
     public function actualizar_jefe_correcto($pk_jefe_colaborador, $id_jefe_correcto) {
 
         // Ejecutar la actualización
@@ -1663,7 +2003,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         }     
     }
 
-    //Actualiza como estado aprobado con id=2
+    //Actualiza como estado aprobado 
     public function actualizar_novedad_aprobada($nombre_tabla_novedad, $pk_tabla){
 
         $fechaGestionado = date("Y-m-d");
@@ -1687,23 +2027,51 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         
     }
 
-    //Actualiza como estado aprobado con id=2
-    public function actualizar_novedad_error($nombre_tabla_novedad, $pk_tabla){
+    public function actualizar_novedad_no_aprobada($nombre_tabla_novedad, $pk_tabla){
 
         $fechaGestionado = date("Y-m-d");
         $gestionadopor = Yii::$app->user->identity->id;
+
+        $id_no_aprobado = Yii::$app->db->createCommand('select estado_novedad.id_gestor_evaluacion_estadonovedades AS id_estado_novedad FROM tbl_gestor_evaluacion_estadonovedades estado_novedad
+        WHERE estado_novedad.nombre ="No aprobado" AND estado_novedad.anulado=0')->queryScalar();
         
         $command = Yii::$app->db->createCommand()
             ->update($nombre_tabla_novedad, [
-            'id_estado_novedad' => 2,
-            'aprobado' => 1,
+            'id_estado_novedad' => $id_no_aprobado,
+            'aprobado' => 0,
             'fecha_gestionado' => $fechaGestionado,
             'gestionadopor' => $gestionadopor
             ], 'id = :id', [':id' => $pk_tabla]);
         
         $filasAfectadas = $command->execute();
         
-        if ($filasAfectadas === 1) {
+        if ($filasAfectadas > 0) {
+            return 1; // Actualización exitosa
+        } else {
+            return 0; // Error al actualizar
+        }
+        
+    }
+
+    public function actualizar_novedad_error($nombre_tabla_novedad, $pk_tabla){
+
+        $fechaGestionado = date("Y-m-d");
+        $gestionadopor = Yii::$app->user->identity->id;
+
+        $id_error = Yii::$app->db->createCommand('select estado_novedad.id_gestor_evaluacion_estadonovedades AS id_estado_novedad FROM tbl_gestor_evaluacion_estadonovedades estado_novedad
+        WHERE estado_novedad.nombre ="Error" AND estado_novedad.anulado=0')->queryScalar();
+        
+        $command = Yii::$app->db->createCommand()
+            ->update($nombre_tabla_novedad, [
+            'id_estado_novedad' => $id_error,
+            'aprobado' => null,
+            'fecha_gestionado' => $fechaGestionado,
+            'gestionadopor' => $gestionadopor
+            ], 'id = :id', [':id' => $pk_tabla]);
+        
+        $filasAfectadas = $command->execute();
+        
+        if ($filasAfectadas > 0) {
             return 1; // Actualización exitosa
         } else {
             return 0; // Error al actualizar
@@ -2229,9 +2597,11 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
     public function obtener_data_jefe_incorrecto($id_evaluacion_nombre){
         $sql = "SELECT
         tabla.id AS id_novedad,
+        tabla.fechacreacion,
         nom_eval.nombreeval AS nombre_evaluacion,
         usuario.nombre_completo AS solicitante,
         tabla.cc_colaborador,
+        tabla.cc_jefe_actual,
         tabla.cc_jefe_correcto,
         tabla.comentarios_solicitud,
         estado.nombre AS estado,
@@ -2239,9 +2609,9 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         tabla.comentarios_no_aprobado
         FROM
         tbl_gestor_evaluacion_novedad_jefeincorrecto tabla
-        INNER JOIN tbl_gestor_evaluacion_usuarios usuario ON tabla.cc_colaborador = usuario.identificacion
-        INNER JOIN tbl_evaluacion_nombre nom_eval ON tabla.id_evaluacion_nombre = nom_eval.idevaluacionnombre
-        INNER JOIN tbl_gestor_evaluacion_estadonovedades estado ON tabla.id_estado_novedad = estado.id_gestor_evaluacion_estadonovedades
+        LEFT JOIN tbl_gestor_evaluacion_usuarios usuario ON tabla.cc_colaborador = usuario.identificacion
+        LEFT JOIN tbl_evaluacion_nombre nom_eval ON tabla.id_evaluacion_nombre = nom_eval.idevaluacionnombre
+        LEFT JOIN tbl_gestor_evaluacion_estadonovedades estado ON tabla.id_estado_novedad = estado.id_gestor_evaluacion_estadonovedades
         WHERE
         tabla.id_evaluacion_nombre = :id_evaluacion_nombre";
 
@@ -2263,6 +2633,102 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         ->queryOne();
 
         return $result;
+    }
+
+    public function obtener_data_personal_a_cargo($id_evaluacion_nombre){
+    
+        $command = Yii::$app->db->createCommand('
+        SELECT
+            tabla.id AS id_novedad,
+            tabla.fechacreacion,
+            nom_eval.nombreeval AS nombre_evaluacion,
+            tipo_novedad.nombre_tipo_novedad,
+            usuario.nombre_completo AS solicitante,
+            colaborador_actual.nombre_completo AS colaborador_actual,
+            tabla.cc_colaborador_nuevo,
+            tabla.comentarios_solicitud,
+            estado.nombre AS estado,
+            tabla.aprobado,
+            tabla.comentarios_no_aprobado
+        FROM
+            tbl_gestor_evaluacion_novedad_jefecolaborador tabla
+            LEFT JOIN tbl_gestor_evaluacion_usuarios usuario ON tabla.id_jefe_solicitante = usuario.id_gestor_evaluacion_usuarios
+            LEFT JOIN tbl_gestor_evaluacion_usuarios colaborador_actual ON tabla.id_colaborador_actual = colaborador_actual.id_gestor_evaluacion_usuarios
+            LEFT JOIN tbl_gestor_evaluacion_tiponovedadjefecolaborador tipo_novedad ON tabla.id_tipo_novedad = tipo_novedad.id_gestor_evaluacion_tiponovedad_jefecolaborador
+            LEFT JOIN tbl_evaluacion_nombre nom_eval ON tabla.id_evaluacion_nombre = nom_eval.idevaluacionnombre
+            LEFT JOIN tbl_gestor_evaluacion_estadonovedades estado ON tabla.id_estado_novedad = estado.id_gestor_evaluacion_estadonovedades
+        WHERE
+            tabla.id_evaluacion_nombre = :evaluacion_nombre AND tabla.anulado = 0
+        ');
+        $command->bindValue(':evaluacion_nombre', $id_evaluacion_nombre);
+
+        $result = $command->queryAll();
+
+        return $result;
+    }
+
+    public function obtener_data_personal_a_cargo_por_pk($id_novedad){
+        
+        $result = Yii::$app->db->createCommand("
+        SELECT tipo_novedad.nombre_tipo_novedad, novedad.id_jefe_solicitante,
+        novedad.id_colaborador_actual, novedad.cc_colaborador_nuevo
+        FROM tbl_gestor_evaluacion_novedad_jefecolaborador novedad
+        INNER JOIN tbl_gestor_evaluacion_tiponovedadjefecolaborador tipo_novedad
+        ON novedad.id_tipo_novedad = tipo_novedad.id_gestor_evaluacion_tiponovedad_jefecolaborador
+        WHERE novedad.id= :idNovedad AND novedad.anulado = 0
+        ")
+        ->bindValue(':idNovedad', $id_novedad)
+        ->queryOne();
+
+        return $result;
+    }
+
+    public function eliminar_logicamente_jefe_x_colaborador($pk_a_eliminar) {
+        
+        $filas_afectadas = Yii::$app->db->createCommand()->update('tbl_gestor_evaluacion_jefe_colaborador',[
+            'anulado' => 1,
+        ],'id_gestor_evaluacion_jefe_colaborador ='.$pk_a_eliminar.'')->execute();
+
+        if ($filas_afectadas === 1) {
+            return 1; // Actualización exitosa
+        } else {
+            return 0; // Ocurrió un error en la actualizacion
+        }
+
+    }
+
+    public function contar_registros_novedad_jefe_incorrecto($id_usuario, $cc_usuario){
+
+        $cantidad_registros = Yii::$app->db->createCommand("
+            SELECT COUNT(novedad.id) AS cantidad_registros
+            FROM tbl_gestor_evaluacion_novedad_jefeincorrecto novedad
+            INNER JOIN tbl_gestor_evaluacion_estadonovedades estado
+            ON novedad.id_estado_novedad = estado.id_gestor_evaluacion_estadonovedades
+            WHERE estado.nombre = 'En espera'
+            AND (novedad.id_solicitante = :id_solicitante OR novedad.cc_colaborador = :cc_colaborador)
+        ")
+        ->bindValue(':id_solicitante', $id_usuario)
+        ->bindValue(':cc_colaborador', $cc_usuario)
+        ->queryScalar();
+
+        return $cantidad_registros;
+    }
+
+    public function contar_registros_novedad_personal_a_cargo($id_usuario, $cc_usuario){
+
+        $cantidad_registros = Yii::$app->db->createCommand("
+            SELECT COUNT(novedad.id) AS cantidad_registros
+            FROM tbl_gestor_evaluacion_novedad_jefecolaborador novedad
+            INNER JOIN tbl_gestor_evaluacion_estadonovedades estado
+            ON novedad.id_estado_novedad = estado.id_gestor_evaluacion_estadonovedades
+            WHERE estado.nombre = 'En espera'
+            AND (novedad.id_colaborador_actual = :id_colaborador_actual OR novedad.cc_colaborador_nuevo = :cc_colaborador_nuevo)
+        ")
+        ->bindValue(':id_colaborador_actual', $id_usuario)
+        ->bindValue(':cc_colaborador_nuevo', $cc_usuario)
+        ->queryScalar();
+
+        return $cantidad_registros;
     }
 
 }

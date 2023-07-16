@@ -370,7 +370,7 @@ use yii\helpers\ArrayHelper;
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label style="font-size: 16px;"><em class="fas fa-eye" style="font-size: 17px; color: #FFC72C;"></em> Crear Novedad: </label> 
-                                <?= Html::button('Crear Novedad', ['value' => url::to(['evaluaciondesarrollo/novedadauto']), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Crear Novedad', 'style' => 'background-color: #4298b4']) 
+                                <?= Html::button('Crear Novedad', ['value' => url::to(['gestorevaluaciondesarrollo/modalnovedadacargo', 'id_evalua'=>$id_evaluac, 'id_colab'=>$id_colab, 'id_jefe'=>$id_user]), 'class' => 'btn btn-success', 'id'=>'modalButton1', 'data-toggle' => 'tooltip', 'title' => 'Crear Novedad', 'style' => 'background-color: #4298b4']) 
                                 ?> 
 
                                 <?php

@@ -101,9 +101,9 @@
             font-size: 15px;
         }
 
-        body #table_jefe_incorrecto tbody tr td,
-        body #table_jefe_incorrecto tbody tr td a,
-        body #table_jefe_incorrecto thead tr th a {
+        body #table_personal_a_cargo tbody tr td,
+        body #table_personal_a_cargo tbody tr td a,
+        body #table_personal_a_cargo thead tr th a {
             font-size: 15px !important;
         }
 
@@ -165,17 +165,17 @@
         </header>
     <br><br>
 
-    <!-- TABLA NOVEDADES JEFE INCORRECTO-->
+    <!-- TABLA NOVEDADES RELACINADAS CON PERSONAL A CARGO-->
     <div class="CapaUno" style="display: inline;">
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb" style="width:100%"> 
-                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Novedades Jefe Incorrecto') ?> </label>                      
+                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Novedades Personal a Cargo') ?> </label>                      
 
                     <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Sin novedades a gestionar') ?></label>
                     
                     <div class="table-responsive table-container" id="container_table">                                
-                        <table id="table_jefe_incorrecto" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">
+                        <table id="table_personal_a_cargo" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">
                             
                         </table>    
                     </div>           
@@ -184,7 +184,7 @@
         </div>
     </div>
     <hr>
-    <!-- TABLA NOVEDADES JEFE INCORRECTO FIN-->
+    <!-- TABLA NOVEDADES RELACINADAS CON PERSONAL A CARGO FIN-->
 
     <!-- SECCION ACCIONES-->
     <div id="capaDos" style="display: inline">
@@ -209,23 +209,24 @@
     <hr>
     <!-- SECCION ACCIONES FIN-->
 
-    <!-- ALERTAS YII  -->
-    <?php if (Yii::$app->session->hasFlash('success_jefe_incorrecto')): ?>
+    <!-- ALERTAS -->
+    <?php if (Yii::$app->session->hasFlash('success_a_cargo')): ?>
     <script>
-        swal.fire("", '<?= Yii::$app->session->getFlash('success_jefe_incorrecto') ?>', "success");
+        swal.fire("", '<?= Yii::$app->session->getFlash('success_a_cargo') ?>', "success");
     </script>
-    <?php elseif (Yii::$app->session->hasFlash('error_jefe_incorrecto')): ?>
+    <?php elseif (Yii::$app->session->hasFlash('error_a_cargo')): ?>
     <script>
-        swal.fire("", '<?= Yii::$app->session->getFlash('error_jefe_incorrecto') ?>', "error");
+        swal.fire("", '<?= Yii::$app->session->getFlash('error_a_cargo') ?>', "error");
     </script>
     <?php endif; ?>
-    <!-- ALERTAS YII FIN  -->
+     <!-- ALERTAS FIN-->
 
     <script>
         $(document).ready(function() {
 
-            var data = <?php echo json_encode($data_jefe_incorrecto); ?>;
-            init_table_jefe_incorrecto(data);
+            var data = <?php echo json_encode($data_datatable); ?>;
+            init_table_personal_a_cargo(data);
+            console.log("size: ", data.length );
             if(data.length==0){
                     $( "#container_table").hide();
                     $( "#emptyMessage" ).show();
@@ -238,11 +239,11 @@
 
 
         //Novedades por jefe incorrecto
-        function init_table_jefe_incorrecto(data) {
+        function init_table_personal_a_cargo(data) {
             console.log("data datable:", data );
 
             if(data.length > 0) {
-                var table_jefe_incorrecto = $('#table_jefe_incorrecto').DataTable({
+                var table_personal_a_cargo = $('#table_personal_a_cargo').DataTable({
                 select: true,
                 "autoWidth": true,
                 data:data,
@@ -278,24 +279,24 @@
                         data: 'id_novedad',
                         width: '2%'
                     },
-                    {   title: "Fecha Solicitud",
+                    {   title: "Fecha solicitud",
                         data: 'fechacreacion'
-                    },
-                    {   title: "Motivo",
-                        defaultContent: 'Jefe Incorrecto'
                     },
                     {   title: "Nombre Evaluación",
                         data: 'nombre_evaluacion',
                         visible: false
                     },
+                    {   title: "Motivo",
+                        data: 'nombre_tipo_novedad'
+                    },
                     {   title: "Solicitante",
                         data: 'solicitante'
                     },
-                    {   title: "Documento Jefe Actual",
-                        data: 'cc_jefe_actual'
-                    },
-                    {   title: "Documento Jefe Correcto",
-                        data: 'cc_jefe_correcto'
+                    {   title: "Colaborador actual",
+                        data: 'colaborador_actual'
+                    },                    
+                    {   title: "Colaborador nuevo",
+                        data: 'cc_colaborador_nuevo'
                     },
                     {   title: "Comentarios Solicitud",
                         data: 'comentarios_solicitud'
@@ -326,7 +327,7 @@
                 ],
                 initComplete : function() {
                      // Capturar el evento click en los botones "Aprobar" y "No aprobar"
-                    $('#table_jefe_incorrecto').on('click', 'button[data-id]', function() {
+                    $('#table_personal_a_cargo').on('click', 'button[data-id]', function() {
                         var idNovedad = $(this).data('id');
                         var estado = $(this).data('estado');
 
@@ -337,7 +338,7 @@
             });
 
             //Inicializar en la primer página del datatable
-            $("#table_jefe_incorrecto").DataTable().page( 0 ).draw( false );
+            $("#table_personal_a_cargo").DataTable().page( 0 ).draw( false );
 
             }
         }
@@ -346,7 +347,7 @@
         function actualizarEstado(idNovedad, estadoAprobacion) {
           
             $.ajax({
-                url: "actualizarjefecorrecto",
+                url: "gestionarpersonalacargo",
                 method: "POST",
                 data: {
                     id_novedad: idNovedad,
@@ -364,20 +365,15 @@
 
                     if (response.status === 'success') {
 
-                        var data = response.data;
-
-                        swal.fire("",response.message,"success");                   
-
-                        // Limpiar datatable 
-                        $( "#container_table" ).empty();
-                        $( "#container_table" ).classList= "table-container";
-                        var new_table = document.createElement("table");
-                        new_table.setAttribute("id","table_jefe_incorrecto");                 
-                        new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
-                        document.getElementById("container_table").appendChild(new_table);
-                        
-                        init_table_jefe_incorrecto(data);
-                        // location.reload();                    
+                    // Limpiar datatable 
+                    $( "#container_table" ).empty();
+                    $( "#container_table" ).classList= "table-container";
+                    var new_table = document.createElement("table");
+                    new_table.setAttribute("id","table_personal_a_cargo");                 
+                    new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
+                    document.getElementById("container_table").appendChild(new_table);
+                    
+                    location.reload();
 
                     } 
                 },
