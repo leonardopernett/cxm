@@ -13,13 +13,24 @@ use yii\bootstrap\Modal;
 use app\models\Dashboardcategorias;
 use app\models\Dashboardservicios;
 
-$this->title = 'Héroes por el Cliente - Registrar Postulación desde Jarvis';
+$this->title = 'Héroes por el Cliente - Registrar Postulación';
 $this->params['breadcrumbs'][] = $this->title;
 
   $template = '<div class="col-md-12">'
   . ' {input}{error}{hint}</div>';
 
-  $sessiones = $varUsuario;
+  $sessiones = Yii::$app->user->identity->id;
+
+  $rol =  new Query;
+  $rol    ->select(['tbl_roles.role_id'])
+          ->from('tbl_roles')
+          ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                	'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+          ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                  'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
+          ->where(['=','tbl_usuarios.usua_id',$sessiones]);                      
+  $command = $rol->createCommand();
+  $roles = $command->queryScalar();
 
 ?>
 <style>
@@ -205,25 +216,116 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= $form->field($model, 'id_postulador', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_postulador', 'class'=>'hidden', 'readonly'=>'readonly', 'value'=>$sessiones])?>
 
                         <label style="font-size: 15px;"><span class="texto" style="color: #FC4343"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Cargo de Quién Postula: ') ?></label>
-                        <?= $form->field($model, 'id_cargospostulacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_cargospostulacion', 'readonly'=>'readonly', 'value'=>$varNombreCargo])?>
-                        <?= $form->field($model, 'id_cargospostulacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_cargospostulacion', 'class'=>'hidden', 'readonly'=>'readonly', 'value'=>$varIdCargo])?>
+                        <?=  $form->field($model, 'id_cargospostulacion', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\HeroesCargospostulacion::find()->where(['=','anulado',0])->orderBy(['cargospostulacion'=> SORT_ASC])->all(), 'id_cargospostulacion', 'cargospostulacion'),
+                                        [
+                                            'id' => 'id_cargospostulacion',
+                                            'prompt'=>'Seleccionar Cargo Quién Postula...',
+                                        ]
+                                )->label(''); 
+                        ?>
 
 
                         <label style="font-size: 15px;"><span class="texto" style="color: #FC4343"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Embajador/Persona a Postular: ') ?></label>
-                        <?= $form->field($model, 'id_postulante', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_postulante', 'readonly'=>'readonly', 'value'=>$varNombrePotulador])?>
-                        <?= $form->field($model, 'id_postulante', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_postulante', 'class'=>'hidden', 'readonly'=>'readonly', 'value'=>$sessiones])?>
+                        <?= 
+                            Html::radioList('anulado', 1, 
+                            ['Administrativo','Asesor'], 
+                            ['separator'=>'&nbsp;&nbsp;&nbsp;&nbsp;','name'=>'contact','id'=>'varidInteracciones','onclick'=>'varCambios();']) 
+                        ?>
+
+                        <div class="capaEmbajadorAsesor" id="capaIdEmbajadorAsesor" style="display: inline;">
+                            <?=
+                                    $form->field($model, 'procesos', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
+                                    ->widget(Select2::classname(), [
+                                        //'data' => array_merge(["" => ""], $data),
+                                        'language' => 'es',
+                                        'options' => ['id'=>'varIdAsesor','placeholder' => Yii::t('app', 'Seleccionar Usuario Asesor...')],
+                                        'pluginOptions' => [
+                                            'allowClear' => true,
+                                            'minimumInputLength' => 4,
+                                            'ajax' => [
+                                                'url' => \yii\helpers\Url::to(['reportes/evaluadolist']),
+                                                'dataType' => 'json',
+                                                'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                                'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                                            ],
+                                            'initSelection' => new JsExpression('function (element, callback) {
+                                                var id=$(element).val();
+                                                if (id !== "") {
+                                                    $.ajax("' . Url::to(['reportes/evaluadolist']) . '?id=" + id, {
+                                                        dataType: "json",
+                                                        type: "post"
+                                                    }).done(function(data) { callback(data.results[0]);});
+                                                }
+                                            }')
+                                        ]
+                                            ]
+                                );
+                            ?> 
+                        </div>
+
+                        <div class="capaEmbajadorAdmin" id="capaIdEmbajadorAdmin" style="display: none;">
+                            <?=
+                                $form->field($model, 'usua_id', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label(Yii::t('app',''))
+                                ->widget(Select2::classname(), [
+                                    'language' => 'es',
+                                    'options' => ['id'=>'varIdAdmin', 'placeholder' => Yii::t('app', 'Seleccionar Usuario Administristrativo...')],
+                                    'pluginOptions' => [
+                                        'allowClear' => true,
+                                        'minimumInputLength' => 4,
+                                        'ajax' => [
+                                            'url' => \yii\helpers\Url::to(['reportes/usuariolist']),
+                                            'dataType' => 'json',
+                                            'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                            'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                                        ],
+                                        'initSelection' => new JsExpression('function (element, callback) {
+                                                    var id=$(element).val();
+                                                    if (id !== "") {
+                                                        $.ajax("' . Url::to(['reportes/usuariolist']) . '?id=" + id, {
+                                                            dataType: "json",
+                                                            type: "post"
+                                                        }).done(function(data) { callback(data.results[0]);});
+                                                    }
+                                                }')
+                                    ]
+                                        ] 
+                                );
+                            ?>
+                        </div>
+
+                        <?= $form->field($model, 'id_postulante', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_postulante', 'readonly'=>'readonly', 'class'=>'hidden'])?>
+                        <?= $form->field($model, 'tipo_postulante', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'idtipo_postulante', 'readonly'=>'readonly', 'class'=>'hidden'])?>
 
 
                         <label style="font-size: 15px;"><span class="texto" style="color: #FC4343"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Cliente: ') ?></label>
-                        <?= $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_dp_clientes', 'readonly'=>'readonly', 'value'=>$varNombreCliente_Asesor])?>
-                        <?= $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'id_dp_clientes', 'class'=>'hidden', 'readonly'=>'readonly', 'value'=>$varIdDpCliente_Asesor])?>                        
+                        <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->select(['tbl_proceso_cliente_centrocosto.id_dp_clientes','CONCAT(tbl_proceso_cliente_centrocosto.cliente," - ",tbl_proceso_cliente_centrocosto.id_dp_clientes) AS cliente'])->where(['=','estado',1])->andwhere(['=','anulado',0])->groupBy(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                        [
+                                            'id' => 'id_dp_clientes',
+                                            'prompt'=>'Seleccionar Cliente...',
+                                            'onchange' => '
+                                                $.get(
+                                                    "' . Url::toRoute('listarcentrocostos') . '", 
+                                                    {id: $(this).val()}, 
+                                                    function(res){
+                                                        $("#requester").html(res);
+                                                    }
+                                                );
+                                            ',
+                                        ]
+                                )->label(''); 
+                        ?>
 
 
                         <label style="font-size: 15px;"><span class="texto" style="color: #FC4343"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Centro de Costos: ') ?></label>
-                        <?= $form->field($model, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'requester', 'readonly'=>'readonly', 'value'=>$varCentroCosto_Asesor])?>
-                        <?= $form->field($model, 'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'requester', 'class'=>'hidden', 'readonly'=>'readonly', 'value'=>$varidCodPcrc_Asesor])?>
-
-
+                        <?= $form->field($model,'cod_pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
+                                                [],
+                                                [
+                                                    
+                                                    'prompt' => 'Seleccionar...',
+                                                    'id' => 'requester',
+                                                ]
+                                            )->label('');
+                        ?> 
                     </div>
 
                     <div class="col-md-6">
@@ -288,6 +390,16 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
+        <div class="col-md-6">
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-arrow-left" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Cancelar & Regresar:') ?></label> 
+                <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                                'style' => 'background-color: #707372',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Regresar']) 
+                ?>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -297,6 +409,33 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $form->end() ?>
 
 <script type="text/javascript">
+    function varCambios(){
+        var radios = document.getElementsByName('anulado');
+        var varcapaIdEmbajadorAsesor = document.getElementById("capaIdEmbajadorAsesor");
+        var varcapaIdEmbajadorAdmin = document.getElementById("capaIdEmbajadorAdmin");
+        var vartipo = 0;
+
+
+        for (var radio of radios) {
+            if (radio.checked) {
+                var varchekeo = radio.value;
+                if (varchekeo == 0) {
+                    varcapaIdEmbajadorAsesor.style.display = 'none';
+                    varcapaIdEmbajadorAdmin.style.display = 'inline';      
+                    vartipo = 1;
+                }else{
+                    varcapaIdEmbajadorAsesor.style.display = 'inline';
+                    varcapaIdEmbajadorAdmin.style.display = 'none';
+                    vartipo = 2;  
+                }
+            }
+        }
+
+        
+        document.getElementById("idtipo_postulante").value = vartipo;
+        
+    };
+
     function varCambiarTipo(){
         var varid_tipopostulacion = document.getElementById('id_tipopostulacion').value;
 
@@ -341,18 +480,31 @@ $this->params['breadcrumbs'][] = $this->title;
     };
 
     function varVerificar(){
-        var var_id_postulante = document.getElementById("id_postulante").value;
+        var var_IdAsesor = document.getElementById("varIdAsesor").value;
+        var var_IdAdmin = document.getElementById("varIdAdmin").value;
 
-        if (var_id_postulante == "") {            
-            event.preventDefault();
-            swal.fire("!!! Advertencia !!!","Debe de seleccionar un embajador a postular.","warning");
-            return;            
+        if (var_IdAsesor != "") {
+            document.getElementById("id_postulante").value = var_IdAsesor;
+        }else{
+            if (var_IdAdmin != "") {
+                document.getElementById("id_postulante").value = var_IdAdmin;
+            }else{
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de seleccionar un embajador a postular.","warning");
+                return;
+            }
         }
 
         var varmeeting_time = document.getElementById("meeting_time").value;
 
         if (varmeeting_time != "") {
             document.getElementById("idfecha_interaccion").value = varmeeting_time;
+        }
+
+        var varidtipo_postulante = document.getElementById("idtipo_postulante").value;
+
+        if (varidtipo_postulante == 0) {
+            document.getElementById("idtipo_postulante").value = 2;
         }
 
 

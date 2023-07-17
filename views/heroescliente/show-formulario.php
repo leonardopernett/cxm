@@ -28,6 +28,8 @@ $varFuncionaPcrc = (new \yii\db\Query())
                                     ->where(['=','arbol_id',$varPcrc])
                                     ->andwhere(['=','funciona',2])
                                     ->count();
+
+$evaluado_id = $data->evaluado;
 ?>
 
 
@@ -92,7 +94,7 @@ $contadorSecciones = 0;
     ?>
 
     <?php if ($data->preview != true) : ?>        
-        <?= Html::beginForm(Url::to(['formularios/guardaryenviarformulario']), "post", ["class" => "form-horizontal", "id" => "guardarFormulario"]); ?>
+        <?= Html::beginForm(Url::to(['heroescliente/guardaryenviarformulario']), "post", ["class" => "form-horizontal", "id" => "guardarFormulario"]); ?>
     <?php else: ?>
         <div class="form-horizontal">
         <?php endif; ?>
@@ -1456,6 +1458,8 @@ $contadorSecciones = 0;
                 ?>  
                 <?= Html::a(Yii::t('app', 'Calcular subi'), "javascript:void(0)", ['class' => 'btn  btn-primary soloCalcular'])
                 ?> 
+                <?= Html::a(Yii::t('app', 'Postular'), ['formularios/interaccionmanual_ds','evaluado_id'=>$evaluado_id], ['target' => '_blank','class' => 'btn  btn-primary'])
+                ?> 
                 <?php 
                     $escalado = Yii::$app->request->get("escalado");
                     if (isset($escalado)): ?>
@@ -1647,7 +1651,7 @@ function cargarlista(){
             var varPartT = document.getElementById("speechparametrizar-id_dp_clientes"); 
             varPartT.disabled=false;
             var guardarFormulario = $("#guardarFormulario");
-            guardarFormulario.attr('action', '<?php echo Url::to(['formularios/guardaryenviarformulario']); ?>');
+            guardarFormulario.attr('action', '<?php echo Url::to(['heroescliente/guardaryenviarformulario']); ?>');
             var valid = validarFormulario();
             if (valid) {
                 guardarFormulario.submit();
