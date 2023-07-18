@@ -146,6 +146,16 @@ if ($roles == '270') {
             <br>
 
             <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Editar Postulación') ?></label>
+                <?= Html::a('Editar',  ['editarpostulacion'], ['class' => 'btn btn-success',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Editar Postulación']) 
+                ?>
+            </div>
+
+            <br>
+
+            <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Parametrizar Datos') ?></label>
                 <?= Html::a('Parametrizar',  ['parametrizarpostulacion'], ['class' => 'btn btn-danger',
                                                 'data-toggle' => 'tooltip',
@@ -187,11 +197,11 @@ if ($roles == '270') {
             <div class="card1 mb">
 
                 <div class="row">
-                    <div class="col-md-2" align="text-center">
+                    <div class="col-md-2">
                         <label style="font-size: 15px;"><em class="fas fa-hand-stop" style="font-size: 50px; color: #C148D0;"></em></label>
                     </div>
 
-                    <div class="col-md-10" align="left">
+                    <div class="col-md-10">
                         <label style="font-size: 15px;"><?= Yii::t('app', ' Ok, actualmente tu rol no te permite ingresar al módulo parametrizador de Héroes por el cliente. Por favor contactate con el administrador de la herramienta si necesitas ingresar a verificar el proceso del módulo.') ?></label>
                     </div>
                 </div>          
