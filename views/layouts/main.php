@@ -684,7 +684,7 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isAdminProcesos(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesos Héroes por el cliente'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesos Héroes'),
                                                     'url' => ['/heroescliente/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminProcesos(),
                                                 ],
