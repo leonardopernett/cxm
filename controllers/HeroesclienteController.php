@@ -352,22 +352,15 @@ use Exception;
                             ->all(); 
 
 
-        $arrayvarPostulantes = array();
-        foreach ($varDataResultado as $value) {
-          array_push($arrayvarPostulantes, $value['id_postulante']);
-        }
-        $listavariablesarray = implode(", ", $arrayvarPostulantes);
-        $varDataPostulantes = explode(",", str_replace(array("#", "'", ";", " "), '', $listavariablesarray));
-
         $varCantidadValores = (new \yii\db\Query())
                             ->select([
-                              'tbl_ejecucionformularios.id'
+                              'tbl_heroes_valoracionpostulacion.id_valoracionpostulacion'
                             ])
-                            ->from(['tbl_ejecucionformularios'])
-                            ->where(['in','tbl_ejecucionformularios.evaluado_id',$varDataPostulantes ])
-                            ->andwhere(['=','tbl_ejecucionformularios.dimension_id',12])
-                            ->andwhere(['=','tbl_ejecucionformularios.arbol_id',2119])
-                            ->andwhere(['between','tbl_ejecucionformularios.created',$varFechaInicio_BD,$varFechaFin_BD])
+                            ->from(['tbl_heroes_valoracionpostulacion'])
+                            ->join('LEFT OUTER JOIN', 'tbl_heroes_generalpostulacion',
+                                  'tbl_heroes_valoracionpostulacion.id_generalpostulacion = tbl_heroes_generalpostulacion.id_generalpostulacion')
+                            ->where(['=','tbl_heroes_generalpostulacion.anulado',0 ])
+                            ->groupby(['tbl_heroes_valoracionpostulacion.id_valoracionpostulacion'])
                             ->count(); 
 
       }
