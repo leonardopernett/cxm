@@ -32,6 +32,7 @@ use app\models\GestorEvaluacionFeedbackentradas;
 use app\models\GestorEvaluacionNovedadGeneral;
 use app\models\GestorEvaluacionNovedadJefeincorrecto;
 use app\models\GestorEvaluacionNovedadJefecolaborador;
+use app\models\GestorEvaluacionNovedadEliminareval;
 
 
 
@@ -48,8 +49,8 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         'autoevaluacion', 'crearautoevaluacion',
                         'modalevaluacionacargo', 'evaluacionacargo', 'crearevaluacionacargo',
                         'resultados', 'resultadoindividual',
-                        'crearfeedback', 'modalfeedbackcolaborador', 'modalnovedadauto',
-                        'novedadjefeincorrecto', 'actualizarjefecorrecto', 'modalnovedadacargo', 'novedadpersonalacargo'
+                        'crearfeedback', 'feedbackfinal', 'crearfeedbackfinal', 'modalfeedbackcolaborador', 'modalnovedadauto',
+                        'novedadjefeincorrecto', 'novedadpersonalacargo', 'novedadeliminarevaluacion' ,'actualizarjefecorrecto', 'modalnovedadacargo'
                     ],
             'rules' => [
                 [
@@ -79,29 +80,36 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
     }    
     
     public function actionIndex(){
+
+        $model = new GestorEvaluacionNovedadEliminareval();
         $sessiones = Yii::$app->user->identity->id;
         $estado_autoevaluacion=0;
         $id_evalua_nombre = "";
         $evalua_nombre = "";
+        $nom_solicitante="Sin datos";
         $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
         
-        $documento = 1819;
-        $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
+        $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.nombre_completo, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
         $completo_todas_las_evaluaciones_asociadas = false;
         $no_tiene_jefe_directo= false;
         $novedades_autoevaluacion=0;
-
-        $evaluacion_actual = $this->obtenerEvaluacionActual();
+        $array_personas_a_cargo = [];
+        $opcion_personas_a_cargo=[];
+        
+        //Id de los tipos de evaluación
         $id_autoevaluacion = $this->obtener_id_autoevaluacion();
         $id_evaluacion_a_cargo = $this->obtener_id_evaluacion_a_cargo();
-       
-
+        
+        //Información periodo de evaluación actual
+        $evaluacion_actual = $this->obtenerEvaluacionActual();
         if($evaluacion_actual){
             $id_evalua_nombre = $evaluacion_actual['id_evalua'];
             $evalua_nombre = $evaluacion_actual['nombreeval'];
         }   
         
         if($existe_usuario['cant_registros']=='1'){
+            
+            $nom_solicitante = $existe_usuario['nombre_completo'];            
             
             $esjefe = $existe_usuario['es_jefe'];
             $esColaborador = $existe_usuario['es_colaborador'];
@@ -112,8 +120,12 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
             if($esjefe==null && $esColaborador!=null){
                 $id_usuario = $existe_usuario['id_gestor_evaluacion_usuarios'];    
-            }   
-
+            } 
+            
+            //Si es Jefe tiene personas a cargo
+            $array_personas_a_cargo = $this->obtenerTodasLasPersonasAcargo($id_usuario);
+            $opcion_personas_a_cargo = ArrayHelper::map($array_personas_a_cargo, 'id_colaborador', 'nom_colaborador'); 
+            
             //Si completo todas las evaluaciones asociadas a un periodo de tiempo
             $completo_todas_las_evaluaciones_asociadas = $this->verificarEstadoEvaluaciones($id_usuario, $id_evalua_nombre);
             //Si tiene solo una evaluacion (solo es colaborador) retorna 1 si teine mas es un JEFE 
@@ -155,14 +167,18 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
        
 
       return $this->render('index', [
+          'model'=> $model,
           'id_evaluacion_actual' => $evaluacion_actual['id_evalua'],
           'estado_autoevaluacion' => $estado_autoevaluacion,
           'novedades_autoevaluacion'=>$novedades_autoevaluacion,
           'existe_usuario' => $existe_usuario,
           'id_usuario' => $id_usuario,
+          'nom_solicitante'=> $nom_solicitante,
+          'documento'=> $documento,
           'esjefe' => $esjefe,
           'completo_todas_las_evaluaciones_asociadas' => $completo_todas_las_evaluaciones_asociadas,
-          'no_tiene_jefe_directo' => $no_tiene_jefe_directo
+          'no_tiene_jefe_directo' => $no_tiene_jefe_directo,
+          'opcion_personas_a_cargo'=> $opcion_personas_a_cargo
       ]);
     }
 
@@ -209,11 +225,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $model->usua_id = Yii::$app->user->identity->id;
         
         
-        if ($model->save()) {            
-            // $nuevaData = $model->attributes;
-            // unset($nuevaData['fechacreacion']);
-            // unset($nuevaData['usua_id']);
-            // unset($nuevaData['anulado']);            
+        if ($model->save()) {
 
             $response = [
                 'status' => 'success',
@@ -783,11 +795,11 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
        
         $model = new GestorEvaluacionPreguntas();
      
-        $array_personas_a_cargo = $this->obtenerTodasLasPersonasAcargo($id_jefe);
+        $array_personas_a_cargo = $this->obtenerPersonasAcargoSinEvaluar($id_jefe);
         
         $opcion_personas_a_cargo = ArrayHelper::map($array_personas_a_cargo,
         'id_colaborador',
-        'nom_colaborador');   
+        'nombre_completo');   
 
   
         $form = Yii::$app->request->post();
@@ -993,7 +1005,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         //Obtener id y documento del usuario logueado
         $sessiones = Yii::$app->user->identity->id;
         $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-        //$documento = 2223;
+        //$documento = 789;
         
         //Validar usuario segun datos de la carga masiva
         $id_user = null;
@@ -1143,7 +1155,7 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         //Obtener id y documento del usuario logueado
         $sessiones = Yii::$app->user->identity->id;
         $documento = Yii::$app->db->createCommand("select usua_identificacion from tbl_usuarios where usua_id = $sessiones")->queryScalar();
-        $documento = 456;
+        //$documento = 456;
         
         //Validar usuario segun datos de la carga masiva
         $existe_usuario = Yii::$app->db->createCommand("select count(u.identificacion) AS cant_registros, u.id_gestor_evaluacion_usuarios, u.es_jefe, u.es_colaborador from tbl_gestor_evaluacion_usuarios u where identificacion in ('$documento')")->queryOne();
@@ -1374,11 +1386,93 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     }
 
+    public function actionFeedbackfinal($id_jefe){
+        $model = new GestorEvaluacionFeedback();
+
+        //Parametros recibidos por el click del boton 
+        $id_jefe= Yii::$app->request->get('id_jefe');
+        
+        //Periodo actual que realizan la evaluacion
+        $evaluacion_actual = $this->obtenerEvaluacionActual();        
+        $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+      
+        //Traer datos existentes
+        $data_feedbacks = $this->obtener_data_feedbacks_por_jefe($id_jefe, $id_evalua_nombre);       
+        
+        return $this->render('feedbackfinal', [
+            'model'=> $model,
+            'data_feedbacks'=> $data_feedbacks,
+            'id_jefe'=>$id_jefe
+        ]);
+
+    }
+
+    public function actionCrearfeedbackfinal(){
+
+        $form = Yii::$app->request->post();
+
+        $id_jefe = $form['id_jefe'];
+        $id_acuerdo = $form['id_acuerdo'];
+        $comentarios = $form['comentarios'];
+
+        //falta validar datos
+
+        $actualizar_datos = Yii::$app->db->createCommand()->update('tbl_gestor_evaluacion_feedback',[
+            'comentario' => $comentarios,
+        ],'id_gestor_evaluacion_feedback ='.$id_acuerdo.'')->execute();
+       
+        if($actualizar_datos>0){
+            
+        //Periodo actual que realizan la evaluacion
+        $evaluacion_actual = $this->obtenerEvaluacionActual();        
+        $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+      
+        //Traer datos existentes
+        $data_feedbacks = $this->obtener_data_feedbacks_por_jefe($id_jefe, $id_evalua_nombre);
+
+            $response = [
+                'status' => 'success',
+                'message' => 'Acuerdo final creado exitosamente',
+                'data' => $data_feedbacks,
+            ];
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'Ocurrió un error al gaurdar el acuerdo final',
+            ];
+        }
+
+         
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return $response; 
+
+    }
+
+
+
     // SECCION PARA NOVEDADES
 
     //Menú de las Novedades
     public function actionNovedades(){
-        return $this->render('novedades');
+
+        $sessiones = Yii::$app->user->identity->id;
+
+        $rol =  new Query;
+        $rol    ->select(['tbl_roles.role_id'])
+                ->from('tbl_roles')
+                ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
+                        'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
+                ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                        'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
+                ->where(['=','tbl_usuarios.usua_id',$sessiones]);                      
+        $command = $rol->createCommand();
+        $roles = $command->queryScalar();
+
+
+        return $this->render('novedades',[
+            'roles'=>$roles
+        ] );
     }
 
     // Vista novedades jefe incorrecto
@@ -1412,6 +1506,21 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'id_evalua_nombre'=> $id_evalua_nombre
         ]);
     } 
+
+    public function actionNovedadeliminarevaluacion(){
+
+        //Periodo actual que realizan la evaluacion
+        $evaluacion_actual = $this->obtenerEvaluacionActual();        
+        $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+                
+        //Traer datos existentes
+        $data_datatable = $this->obtener_data_eliminarevaluacion($id_evalua_nombre);       
+       
+        return $this->render('novedadeliminarevaluacion', [
+            'id_evalua_nombre'=> $id_evalua_nombre,
+            'data_datatable'=> $data_datatable
+        ]);
+    }
 
 
     public function actionModalnovedadauto(){
@@ -1610,6 +1719,81 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             'model'=>$model
         ]);        
     }
+    
+    public function actionCrearnovedadgeneral(){
+        
+        //Parámetros recibidos desde el ajax
+        $tipo_novedad = Yii::$app->request->post("tipo_novedad");
+        $id_tipo_evaluacion = Yii::$app->request->post("id_nom_evaluacion");
+        $id_solicitante = Yii::$app->request->post("id_solicitante");
+        $cc_solicitante = Yii::$app->request->post("cc_solicitante");
+        $id_evaluado = Yii::$app->request->post("id_evaluado");
+        $comentarios_solicitud = Yii::$app->request->post("comentarios_solicitud");
+      
+        //Periodo actual que realizan la evaluacion
+        $evaluacion_actual = $this->obtenerEvaluacionActual();        
+        $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+
+        //Traerme el id estado novedades: "En espera"
+        $sql = 'SELECT tiponovedad.id_gestor_evaluacion_estadonovedades AS id_estado_novedad FROM tbl_gestor_evaluacion_estadonovedades tiponovedad WHERE tiponovedad.nombre="En espera"';
+        $id_estado_en_espera = Yii::$app->db->createCommand($sql)->queryScalar();
+
+        if($tipo_novedad=="eliminacion_evaluacion" && $id_tipo_evaluacion==1 ) {
+                $crear_registro = Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_novedad_eliminareval',[
+                    'id_evaluacion_nombre' => $id_evalua_nombre,   
+                    'id_estado_novedad' => $id_estado_en_espera,
+                    'id_tipo_evaluacion' => $id_tipo_evaluacion,
+                    'id_solicitante' => $id_solicitante,
+                    'cc_solicitante' => $cc_solicitante,
+                    'comentarios_solicitud' => $comentarios_solicitud,
+                    'fechacreacion' => date('Y-m-d'),
+                    'usua_id' => Yii::$app->user->identity->id,                                  
+                ])->execute();
+               
+                if($crear_registro>0){
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    header('Content-Type: application/json');
+                    die(json_encode(['status' => 'success', 'data' => 'La novedad "eliminar autoevaluación" se creó exitosamente.']));                    
+                } else {
+                    Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    header('Content-Type: application/json');
+                    die(json_encode(['status' => 'error', 'data' => 'Hubo un error al crear la novedad: eliminar autoevaluación'])); 
+                }
+        }
+
+        if($tipo_novedad=="eliminacion_evaluacion" && $id_tipo_evaluacion==3 ) { 
+            $cc_evaluado= $this->obtener_cc_usuario_carga_masiva($id_evaluado);
+          
+            $crear_registro = Yii::$app->db->createCommand()->insert('tbl_gestor_evaluacion_novedad_eliminareval',[
+                'id_evaluacion_nombre' => $id_evalua_nombre,   
+                'id_estado_novedad' => $id_estado_en_espera,
+                'id_tipo_evaluacion' => $id_tipo_evaluacion,
+                'id_solicitante' => $id_solicitante,
+                'cc_solicitante' => $cc_solicitante,
+                'id_evaluado'=>$id_evaluado,
+                'cc_evaluado'=>$cc_evaluado,
+                'comentarios_solicitud' => $comentarios_solicitud,
+                'fechacreacion' => date('Y-m-d'),
+                'usua_id' => Yii::$app->user->identity->id,                                  
+            ])->execute();   
+            
+            if($crear_registro>0){
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                header('Content-Type: application/json');
+                die(json_encode(['status' => 'success', 'data' => 'La novedad "eliminar evaluación a cargo" se creó exitosamente.']));                    
+            } else {
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                header('Content-Type: application/json');
+                die(json_encode(['status' => 'error', 'data' => 'Hubo un error al crear la novedad: eliminar evaluación a cargo'])); 
+            }
+
+        }
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    header('Content-Type: application/json');
+                    die(json_encode(['status' => 'error', 'data' => 'Hubo un error no ingresó a ninguna condición, revisar parámetros'])); 
+        
+    }
 
 
     public function actionActualizarjefecorrecto() {
@@ -1741,6 +1925,46 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         
     }
 
+    public function actionEliminarevaluacionusuario() {
+
+        $parametros = Yii::$app->request->post();
+        $id_novedad = $parametros['id_novedad'];
+        $aprobacion = $parametros['estado_aprobacion'];
+
+        //variables locales 
+        $response=[];
+        $id_evaluacion_nombre="";
+        $cc_colaborador="";
+        $cc_jefe_correcto=""; 
+        
+        if($aprobacion==0){
+
+            //Actualizar estado de la novedad a -> No aprobado
+            $actualizar_estado_novedad = $this->actualizar_novedad_no_aprobada('tbl_gestor_evaluacion_novedad_eliminareval', $id_novedad);
+            
+            if($actualizar_estado_novedad==1){
+                
+                $evaluacion_actual = $this->obtenerEvaluacionActual();
+                $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+                $data_actualizada = $this->obtener_data_eliminarevaluacion($id_evalua_nombre);
+                
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Actualización exitosa, estado no aprobado',
+                    'data' => $data_actualizada,
+                ]; 
+
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Ocurrió un error al actualizar el nuevo estado de la solicitud',
+                ];
+            }
+        }
+
+
+    }
+
     public function actionGestionarpersonalacargo() {
 
         $parametros = Yii::$app->request->post();
@@ -1752,6 +1976,28 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         $id_evaluacion_nombre="";
         
         if($aprobacion==0){
+
+            //Actualizar estado de la novedad a -> No aprobado
+            $actualizar_estado_novedad = $this->actualizar_novedad_no_aprobada('tbl_gestor_evaluacion_novedad_jefecolaborador', $id_novedad);
+            
+            if($actualizar_estado_novedad==1){
+                
+                $evaluacion_actual = $this->obtenerEvaluacionActual();
+                $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+                $data_actualizada = $this->obtener_data_personal_a_cargo($id_evalua_nombre);
+                
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Actualización exitosa, estado no aprobado',
+                    'data' => $data_actualizada,
+                ]; 
+
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Ocurrió un error al actualizar el nuevo estado de la solicitud',
+                ];
+            }
 
         }
 
@@ -1782,8 +2028,6 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             if($nombre_tipo_novedad=="Persona no está a mi cargo") {
                 $pk_jefe_colaborador = $this->obtener_id_jefe_x_colaborador($id_colaborador_actual, $id_jefe_solicitante);
 
-                var_dump($pk_jefe_colaborador);
-                die();
                 if($pk_jefe_colaborador){
 
                     $remover_jefe_colaborador = $this->eliminar_logicamente_jefe_x_colaborador($pk_jefe_colaborador);
@@ -1795,9 +2039,15 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
                         $actualizar_estado_novedad = $this->actualizar_novedad_aprobada('tbl_gestor_evaluacion_novedad_jefecolaborador', $id_novedad);
                         
                         if ($actualizar_estado_novedad === 1) { 
+
+                            $evaluacion_actual = $this->obtenerEvaluacionActual();
+                            $id_evalua_nombre = (count($evaluacion_actual)>0) ? $evaluacion_actual['id_evalua']: "";
+                            $data_actualizada = $this->obtener_data_personal_a_cargo($id_evalua_nombre);
+
                             $response = [
                                 'status' => 'success',
-                                'message' => 'Se eliminó correctamente el usuario a cargo'
+                                'message' => 'Se eliminó correctamente el usuario a cargo',
+                                'data'=>$data_actualizada
                             ];  
                             
                             Yii::$app->session->setFlash('success_a_cargo', 'Creación exitosa de la novedad');
@@ -1858,11 +2108,6 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
             if($nombre_tipo_novedad=="Persona retirada"){
                 
             }
-
-            
-            
-            
-
                         
         }
         
@@ -1921,6 +2166,17 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         return $result;
 
     }
+
+    //Con id de usuario desde carga masiva
+    public function obtener_cc_usuario_carga_masiva($id_usuario){
+        $cc_usuario = Yii::$app->db->createCommand("
+        select identificacion FROM tbl_gestor_evaluacion_usuarios 
+        WHERE id_gestor_evaluacion_usuarios in ('$id_usuario')
+        ")->queryScalar();
+
+        return $cc_usuario;
+
+    } 
 
     // Funcion que retorna cantidad de registros, id_usuario,
     // si es jefe y si es colaborador segun la cedula ingresada
@@ -2324,6 +2580,25 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
 
     }
 
+    public function obtenerPersonasAcargoSinEvaluar($id_jefe){
+
+        $query = "SELECT u.id_gestor_evaluacion_usuarios AS id_colaborador, 
+        u.nombre_completo, u.identificacion, form.id_estado_evaluacion
+        FROM tbl_gestor_evaluacion_jefe_colaborador relacion
+        INNER JOIN tbl_gestor_evaluacion_usuarios u
+        ON relacion.id_usuario_colaborador = u.id_gestor_evaluacion_usuarios 
+        LEFT JOIN tbl_gestor_evaluacion_formulario form
+        ON relacion.id_usuario_colaborador = form.id_evaluado && relacion.id_usuario_jefe = form.id_evaluador
+        WHERE relacion.anulado=0 AND form.id_estado_evaluacion IS NULL AND relacion.id_usuario_jefe = :id_usuario_jefe";
+
+        $result = Yii::$app->db->createCommand($query)
+        ->bindValue(':id_usuario_jefe', $id_jefe)
+        ->queryAll();
+
+        return $result;
+
+    }
+
     public function calcularCalificacionTotalPorCompetencia($id_evaluado, $id_evalua_nom, $pk_calificacion_total) {
 
         $query = Yii::$app->db->createCommand('
@@ -2681,6 +2956,65 @@ class GestorevaluaciondesarrolloController extends \yii\web\Controller {
         ->queryOne();
 
         return $result;
+    }
+
+    public function obtener_data_eliminarevaluacion($id_evaluacion_nombre){
+    
+        $command = Yii::$app->db->createCommand('
+        SELECT
+        tabla.id_gestor_evaluacion_novedad_eliminareval AS id_novedad,
+        tabla.fechacreacion,
+        nom_eval.nombreeval AS nombre_evaluacion,
+        usuario.nombre_completo AS solicitante,
+        tabla.cc_solicitante,
+        tipoeval.tipoevaluacion,
+        tabla.cc_evaluado,
+        tabla.comentarios_solicitud,
+        estado.nombre AS estado,
+        tabla.aprobado,
+        tabla.comentarios_no_aprobado
+        FROM
+        tbl_gestor_evaluacion_novedad_eliminareval tabla
+        LEFT JOIN tbl_evaluacion_tipoeval tipoeval ON tabla.id_tipo_evaluacion = tipoeval.idevaluaciontipo
+        LEFT JOIN tbl_gestor_evaluacion_usuarios usuario ON tabla.id_solicitante = usuario.id_gestor_evaluacion_usuarios                       
+        LEFT JOIN tbl_evaluacion_nombre nom_eval ON tabla.id_evaluacion_nombre = nom_eval.idevaluacionnombre
+        LEFT JOIN tbl_gestor_evaluacion_estadonovedades estado ON tabla.id_estado_novedad = estado.id_gestor_evaluacion_estadonovedades
+        WHERE
+        tabla.id_evaluacion_nombre = :evaluacion_nombre AND tabla.anulado = 0
+        ');
+        $command->bindValue(':evaluacion_nombre', $id_evaluacion_nombre);
+
+        $result = $command->queryAll();
+
+        return $result;
+    }
+
+    public function obtener_data_feedbacks_por_jefe($id_jefe, $id_evaluacion_nombre) {
+        
+        $query = (new Query())
+        ->select([
+            'acuerdo.id_gestor_evaluacion_feedback AS id_acuerdo',
+            'colab.nombre_completo',
+            'colab.identificacion',
+            'cal_total.promedio_total_evalua AS nota_final',
+            'f_colab.comentario AS feedback_colaborador',
+            'f_jefe.comentario AS feedback_jefe',
+            'acuerdo.comentario AS acuerdo_final'
+        ])
+        ->from('tbl_gestor_evaluacion_calificaciontotal cal_total')
+        ->innerJoin('tbl_gestor_evaluacion_feedback acuerdo', 'cal_total.id_feedback = acuerdo.id_gestor_evaluacion_feedback')
+        ->innerJoin('tbl_gestor_evaluacion_feedbackentradas f_colab', 'acuerdo.id_gestor_evaluacion_feedback = f_colab.id_feedback')
+        ->innerJoin('tbl_gestor_evaluacion_feedbackentradas f_jefe', 'acuerdo.id_gestor_evaluacion_feedback = f_jefe.id_feedback')
+        ->innerJoin('tbl_gestor_evaluacion_usuarios colab', 'colab.id_gestor_evaluacion_usuarios = f_colab.id_remitente')
+        ->where(['f_colab.id_destinatario' => $id_jefe])
+        ->andWhere(['f_jefe.id_remitente' => $id_jefe])
+        ->andWhere(['cal_total.id_evalua_nombre' => $id_evaluacion_nombre])
+        ->groupBy('f_colab.id_feedback');
+
+        $results = $query->all();
+
+        return $results;
+        
     }
 
     public function eliminar_logicamente_jefe_x_colaborador($pk_a_eliminar) {

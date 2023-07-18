@@ -32,8 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
   $command = $rol->createCommand();
   $roles = $command->queryScalar();
 
-  $query2 = Yii::$app->get('dbjarvis2')->createCommand("select * from dp_posicion where estado = 1")->queryAll();
-  
   $option_nombre_evaluacion = ArrayHelper::map(\app\models\EvaluacionNombre::find()
   ->select(['nombreeval', 'idevaluacionnombre'])
   ->where("anulado = 0")
@@ -374,7 +372,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <br>
 <br>
-
+<?php 
+    if ($roles==270 || $roles==300) {    
+?>
 <!-- Capa principal -->
 <div id="capaIdPrincipal" class="capaPrincipal" style="display: inline;">
 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
@@ -672,6 +672,24 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end(); ?>
     </div>
 </div>
+<hr>
+<?php 
+} else {   
+?>
+<div class="CapaUno" style="display: inline;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <label style="font-size: 18px; color: #db2c23;"><em class="fa fa-info-circle" style="font-size: 20px; color: #db2c23;"></em> Aviso </label>
+                <label style="font-size: 15px;"> <?= Yii::t('app', 'Tu usuario no tiene permisos para parametrizar la Evaluación de Desarrollo. Si crees que se trata de un error, por favor comunicarse con el administrador.') ?></label>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<?php 
+    } 
+?>
 
 
 <script type="text/javascript">
@@ -1326,8 +1344,5 @@ $this->params['breadcrumbs'][] = $this->title;
 
     }
     //FUNCION ELIMINAR RESPUESTA FIN
-
-
-
 
 </script>

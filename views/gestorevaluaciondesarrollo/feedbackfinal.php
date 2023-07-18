@@ -9,10 +9,10 @@
     use kartik\daterange\DateRangePicker;
     use yii\bootstrap\Modal;
 
-    $this->title = 'Gestion de novedades - Evaluacion de Desarrollo';
+    $this->title = 'Feedbacks Equipo - Evaluacion de Desarrollo';
     $this->params['breadcrumbs'][] = $this->title;
 
-        $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
+        $template = '<div class="col-md-12">'
         . ' {input}{error}{hint}</div>';
 
 ?>
@@ -101,9 +101,9 @@
             font-size: 15px;
         }
 
-        body #table_jefe_incorrecto tbody tr td,
-        body #table_jefe_incorrecto tbody tr td a,
-        body #table_jefe_incorrecto thead tr th a {
+        body #table_feedback tbody tr td,
+        body #table_feedback tbody tr td a,
+        body #table_feedback thead tr th a {
             font-size: 15px !important;
         }
 
@@ -165,67 +165,64 @@
         </header>
     <br><br>
 
-    <!-- TABLA NOVEDADES JEFE INCORRECTO-->
+    <!-- TABLA FEEDBACK-->
     <div class="CapaUno" style="display: inline;">
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb" style="width:100%"> 
-                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Novedades Jefe Incorrecto') ?> </label>                      
+                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Feedback Equipo') ?> </label>                      
 
                     <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Sin novedades a gestionar') ?></label>
                     
                     <div class="table-responsive table-container" id="container_table">                                
-                        <table id="table_jefe_incorrecto" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">
+                        <table id="table_feedback" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">
                             
                         </table>    
                     </div>           
                 </div>
+                <!-- Modal Ingresar Comentarios Feedback -->
+                <?php
+                $form = ActiveForm::begin([
+                    'id' => 'form_crear_feedback_final',
+                ]);
+
+                Modal::begin([
+                    'id' => 'modalCrearFeedbackFinal',
+                    'header' => '<h4>Crear Feedback</h4>',
+                    'footer' => Html::button('Enviar feedback', ['class' => 'btn btn-success btn-block', 'style'=>'margin-top: 1.5%; padding:0.5%', 'onClick' => 'crearAcuerdoFinal();']),
+                ]);
+
+
+                echo '<div class="row" id="modal_crear_feedback_final">';
+                echo '<div class="col-md-12" style="margin-top: 20px">';
+                echo '<label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 18px; color: #827DF9;"></em> Ingresar Comentarios: </label>';
+                echo $form->field($model, "comentario", ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'comentarios_feedback']);
+                echo '</div>';
+                echo '</div>';
+
+
+                Modal::end();
+                ActiveForm::end();
+
+
+                ?>
+                <!-- Modal Ingresar Comentarios Feedback -->
+
             </div>
         </div>
     </div>
     <hr>
-    <!-- TABLA NOVEDADES JEFE INCORRECTO FIN-->
-
-    <!-- SECCION ACCIONES-->
-    <div id="capaDos" style="display: inline">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card1 mb">
-                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
-                        <div class="col-md-4">
-                            <div class="card1 mb">
-                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
-                                <?= Html::a('Regresar',  ['gestorevaluaciondesarrollo/novedades'], ['class' => 'btn btn-success',
-                                                'style' => 'background-color: #707372',
-                                                'data-toggle' => 'tooltip',
-                                                'title' => 'Regresar']) 
-                                ?>                            
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <!-- SECCION ACCIONES FIN-->
-
-    <!-- ALERTAS YII  -->
-    <?php if (Yii::$app->session->hasFlash('success_jefe_incorrecto')): ?>
-    <script>
-        swal.fire("", '<?= Yii::$app->session->getFlash('success_jefe_incorrecto') ?>', "success");
-    </script>
-    <?php elseif (Yii::$app->session->hasFlash('error_jefe_incorrecto')): ?>
-    <script>
-        swal.fire("", '<?= Yii::$app->session->getFlash('error_jefe_incorrecto') ?>', "error");
-    </script>
-    <?php endif; ?>
-    <!-- ALERTAS YII FIN  -->
+    <!-- TABLA FEEDBACK FIN-->
 
     <script>
         $(document).ready(function() {
 
-            var data = <?php echo json_encode($data_jefe_incorrecto); ?>;
-            init_table_jefe_incorrecto(data);
+            var data = <?php echo json_encode($data_feedbacks); ?>;
+            console.log("data", data);
+            console.log("tipo", typeof(data) );
+
+            init_table_feedback(data);
+
             if(data.length==0){
                     $( "#container_table").hide();
                     $( "#emptyMessage" ).show();
@@ -238,11 +235,10 @@
 
 
         //Novedades por jefe incorrecto
-        function init_table_jefe_incorrecto(data) {
-            console.log("data datable:", data );
+        function init_table_feedback(data) {
 
             if(data.length > 0) {
-                var table_jefe_incorrecto = $('#table_jefe_incorrecto').DataTable({
+                var table_feedback = $('#table_feedback').DataTable({
                 select: true,
                 "autoWidth": true,
                 data:data,
@@ -273,120 +269,127 @@
                 },                          
                 "lengthMenu": [5, 10, 25, 50],
                 "pageLength": 5,
+                columnDefs: [
+                    { targets: '_all', className: 'column-font-size' }
+                ],
                 columns: [
                     {   title: "Id",
-                        data: 'id_novedad',
-                        width: '2%'
-                    },
-                    {   title: "Fecha Solicitud",
-                        data: 'fechacreacion'
-                    },
-                    {   title: "Motivo",
-                        defaultContent: 'Jefe Incorrecto'
-                    },
-                    {   title: "Nombre Evaluación",
-                        data: 'nombre_evaluacion',
+                        data: 'id_acuerdo',
                         visible: false
                     },
-                    {   title: "Solicitante",
-                        data: 'solicitante'
+                    {   title: "Nombre Completo",
+                        data: 'nombre_completo'
                     },
-                    {   title: "Documento Jefe Actual",
-                        data: 'cc_jefe_correcto'
+                    {   title: "Identificación",
+                        data: 'identificacion'
                     },
-                    {   title: "Documento Jefe Correcto",
-                        data: 'cc_jefe_correcto'
+                    {   title: "Promedio Total",
+                        data: 'nota_final',
+                        render: function(data){ return parseFloat(data).toFixed(2); }
                     },
-                    {   title: "Comentarios Solicitud",
-                        data: 'comentarios_solicitud'
+                    {   title: "Feedback Colaborador",
+                        data: 'feedback_colaborador'
                     },
-                    {   title: "Estado",
-                        data: 'estado'
+                    {   title: "Feedback Jefe",
+                        data: 'feedback_jefe'
                     },
-                    {   title: "Aprobar",
-                        data: 'aprobado',
+                    {   title: "Acuerdo Final Desarrollo",
+                        data: 'acuerdo_final'
+                    },
+                    {   title: "Acción",
+                        data: 'acuerdo_final',
                         render: function(data, type, row) { 
-                            if (data == 1 || data == 0 ) {
+                            if (data !== null) {
                                 return "-----"; 
                             } else {
-                                return '<button id="aprobado_btn" class="btn btn-primary" onclick="actualizarEstado(' + row.id_novedad + ',1)">Si</button>'; // Mostrar el botón si el valor es 1
-                            }       
-                        },
-                    },
-                    {   title: "No aprobar",
-                        data: 'aprobado',
-                        render: function(data, type, row) { 
-                            if (data == 1 || data == 0) {
-                                return "-----";  
-                            } else {
-                                return '<button class="btn btn-danger" onclick="actualizarEstado(' + row.id_novedad + ',0)">No</button>'; // Mostrar el botón si el valor es 1
-                            }       
-                        },
-                    }                    
+                            return '<button class="btn btn-xs btn-info acuerdo_final_btn" data-toggle="tooltip" data-container="body" data-trigger="hover" title="Editar">Crear</button>';     
+                            }
+                        },  
+                    }                   
                 ],
                 initComplete : function() {
-                     // Capturar el evento click en los botones "Aprobar" y "No aprobar"
-                    $('#table_jefe_incorrecto').on('click', 'button[data-id]', function() {
-                        var idNovedad = $(this).data('id');
-                        var estado = $(this).data('estado');
 
-                        actualizarEstado(idNovedad, estado);
+                    // Capturar el evento click en los botones "Aprobar" y "No aprobar"
+                    $('#table_feedback tbody').on('click', '.acuerdo_final_btn', function() {
+                        event.preventDefault();  
+                        var idAcuerdo = $(this).data('id');             
+                        var fila = $(this).closest('tr'); // Obtener la fila correspondiente al click                
+                        var datos = table_feedback.row(fila).data(); // Obtener los datos de la fila 
+                      
+                        $('#modal_crear_feedback_final').data('idAcuerdo', datos.id_acuerdo); 
+
+                        $('#modalCrearFeedbackFinal').modal('show');
                     });
                 }
-                // INITCOMPLETE END
-            });
+                    
+                });
 
-            //Inicializar en la primer página del datatable
-            $("#table_jefe_incorrecto").DataTable().page( 0 ).draw( false );
+                //Inicializar en la primer página del datatable
+                $("#table_feedback").DataTable().page( 0 ).draw( false );
 
             }
         }
 
-        // Función para actualizar el estado
-        function actualizarEstado(idNovedad, estadoAprobacion) {
-          
+        function crearAcuerdoFinal(){
+            var id_jefe = '<?= $id_jefe; ?>';
+            var idAcuerdo = $('#modal_crear_feedback_final').data('idAcuerdo'); 
+            var comentarios_feedback_selector = document.getElementById("comentarios_feedback");
+            var comentarios_feedback_txt = comentarios_feedback_selector.value;
+            
+            //Validacion vacío
+            if (comentarios_feedback_txt == "") {
+                swal.fire("!!! Advertencia !!!","Campo Comentarios esta vacío","warning");
+                return;
+            }
+            
+            //ajax
             $.ajax({
-                url: "actualizarjefecorrecto",
-                method: "POST",
+                method: "post",
+                url: "crearfeedbackfinal",
                 data: {
-                    id_novedad: idNovedad,
-                    estado_aprobacion: estadoAprobacion,
+                    id_jefe: id_jefe,
+                    id_acuerdo: idAcuerdo,
+                    comentarios: comentarios_feedback_txt,
                     _csrf:'<?=\Yii::$app->request->csrfToken?>'
                 },
                 success: function(response) {
 
-                    if (response.status === 'error') {
-                    //estado de la solicitud debe quedar en error
+                    console.log("response a js : ", response);
 
-                        swal.fire("",response.message,"error");
+                    if(response.status=="error"){
+                        swal.fire("!!! Error !!!",response.message,"error");
                         return;
-                    } 
+                    }
 
-                    if (response.status === 'success') {
-
+                    if(response.status=="success"){
+                        
                         var data = response.data;
-
-                        swal.fire("",response.message,"success");                   
+                        comentarios_feedback_selector.value = '';
+                        $('#modalCrearFeedbackFinal').modal('hide');
+                        swal.fire("",response.message,"success"); 
 
                         // Limpiar datatable 
                         $( "#container_table" ).empty();
                         $( "#container_table" ).classList= "table-container";
                         var new_table = document.createElement("table");
-                        new_table.setAttribute("id","table_jefe_incorrecto");                 
+                        new_table.setAttribute("id","table_feedback");                 
                         new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
                         document.getElementById("container_table").appendChild(new_table);
                         
-                        init_table_jefe_incorrecto(data);
-                        // location.reload();                    
+                        //mostrar data actualizada
+                        init_table_feedback(data);
+                        return;
+                       
+                    }
 
-                    } 
                 },
-                error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Manejar el error
+                    console.log("Error en petición", errorThrown);
                 }
             });
+            //ajax fin
         }
-        
 
     </script>
 

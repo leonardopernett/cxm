@@ -100,18 +100,12 @@ $this->params['breadcrumbs'][] = $this->title;
 </header>
 <br><br>
 
+<?php 
+    if ($roles==270 || $roles==300) {    
+?>
+
 <div class="CapaUno" style="display: inline;">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fa fa-trash" style="font-size: 15px; color: #FF6522;"></em> Eliminar Evaluación </label>
-                    <?= Html::a('Eliminar',  ['eliminarusuarios'], ['class' => 'btn btn-success',
-                                        'style' => 'background-color: #337ab7',
-                                        'data-toggle' => 'tooltip',
-                                        'title' => 'Eliminar']) 
-                    ?>
-            </div>
-        </div>
+    <div class="row">        
         <div class="col-md-3">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 15px; color: #ffd43b;"></em> Jefe Incorrecto </label>
@@ -131,7 +125,35 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'title' => 'Verificar']) 
                     ?>
             </div>
-        </div>        
+        </div> 
+        <div class="col-md-3">
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fa fa-trash" style="font-size: 15px; color: #FF6522;"></em> Eliminar Evaluación </label>
+                    <?= Html::a('Eliminar',  ['novedadeliminarevaluacion'], ['class' => 'btn btn-success',
+                                        'style' => 'background-color: #337ab7',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Eliminar']) 
+                    ?>
+            </div>
+        </div>       
     </div>
 </div>
+<hr>
+<?php 
+} else {   
+?>
+<div class="CapaUno" style="display: inline;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <label style="font-size: 18px; color: #db2c23;"><em class="fa fa-info-circle" style="font-size: 20px; color: #db2c23;"></em> Aviso </label>
+                <label style="font-size: 15px;"> <?= Yii::t('app', 'Tu usuario no tiene permisos para gestionar novedades en Evaluación de Desarrollo. Si crees que se trata de un error, por favor comunicarse con el administrador.') ?></label>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<?php 
+    } 
+?>
 

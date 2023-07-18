@@ -230,14 +230,21 @@ use yii\helpers\ArrayHelper;
         } else {
     ?>
     <div id="capaUno" style="display: inline">
-    
-    
-
         <div class="row">
             <div class="col-md-12">
                 <div class="card1">
                     <label style="font-size: 20px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
                     <div class="row">  
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label style="font-size: 16px;"><em class="fa fa-download" style="font-size: 17px; color: #FFC72C;"></em> Ver Feedbacks</label>
+                                <?= Html::a('Aceptar', ['feedbackfinal', 'id_jefe'=> $id_user], [
+                                    'class' => 'btn btn-primary',
+                                    'style' => 'display:inline; background-color: #337ab7;',
+                                    'title' => 'ver_feedback_final'                                    
+                                ]) ?> 
+                            </div>
+                        </div> 
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label style="font-size: 16px;"><em class="fa fa-download" style="font-size: 17px; color: #FFC72C;"></em> Ver Reporte por Competencias</label>
@@ -282,7 +289,7 @@ use yii\helpers\ArrayHelper;
                                 </table>
                             </div>
                         </div>
-                        <!-- Modal Editar Respuesta -->
+                        <!-- Modal Ingresar Comentarios Feedback -->
                         <?php
 
                           $form = ActiveForm::begin([
@@ -309,7 +316,7 @@ use yii\helpers\ArrayHelper;
 
 
                         ?>
-                        <!-- Modal Editar Respuesta Fin -->
+                        <!-- Modal Ingresar Comentarios Feedback -->
                     </div>
                 </div>
             </div>
@@ -466,7 +473,6 @@ use yii\helpers\ArrayHelper;
                         event.preventDefault();
                         var fila = $(this).closest('tr');
                         var datos = table_resultados.row(fila).data();
-                        console.log("datos fila: ", datos);
 
                         // Obtener el índice de la fila seleccionada
                         var filaIndex = table_resultados.row(fila).index();
@@ -601,7 +607,6 @@ use yii\helpers\ArrayHelper;
 
                         swal.fire("",response.data,"success");                        
 
-                        console.log("btnId: ", btnId);
                        // Deshabilitar el botón del DataTable
                         $('#table_resultados tbody button#' + btnId).prop('disabled', true);
                     }

@@ -9,7 +9,7 @@
     use kartik\daterange\DateRangePicker;
     use yii\bootstrap\Modal;
 
-    $this->title = 'Gestion de novedades - Evaluacion de Desarrollo';
+    $this->title = 'Gestion de novedades - Evaluación de Desarrollo';
     $this->params['breadcrumbs'][] = $this->title;
 
         $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
@@ -101,9 +101,9 @@
             font-size: 15px;
         }
 
-        body #table_jefe_incorrecto tbody tr td,
-        body #table_jefe_incorrecto tbody tr td a,
-        body #table_jefe_incorrecto thead tr th a {
+        body #table_eliminar_evaluacion tbody tr td,
+        body #table_eliminar_evaluacion tbody tr td a,
+        body #table_eliminar_evaluacion thead tr th a {
             font-size: 15px !important;
         }
 
@@ -165,17 +165,17 @@
         </header>
     <br><br>
 
-    <!-- TABLA NOVEDADES JEFE INCORRECTO-->
+    <!-- TABLA NOVEDADES ELIMINAR EVALUACION-->
     <div class="CapaUno" style="display: inline;">
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb" style="width:100%"> 
-                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Novedades Jefe Incorrecto') ?> </label>                      
+                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Novedades Eliminar evaluaciones') ?> </label>                      
 
                     <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Sin novedades a gestionar') ?></label>
                     
                     <div class="table-responsive table-container" id="container_table">                                
-                        <table id="table_jefe_incorrecto" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">
+                        <table id="table_eliminar_evaluacion" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">
                             
                         </table>    
                     </div>           
@@ -184,7 +184,7 @@
         </div>
     </div>
     <hr>
-    <!-- TABLA NOVEDADES JEFE INCORRECTO FIN-->
+    <!-- TABLA NOVEDADES ELIMINAR EVALUACION FIN-->
 
     <!-- SECCION ACCIONES-->
     <div id="capaDos" style="display: inline">
@@ -224,8 +224,8 @@
     <script>
         $(document).ready(function() {
 
-            var data = <?php echo json_encode($data_jefe_incorrecto); ?>;
-            init_table_jefe_incorrecto(data);
+            var data = <?php echo json_encode($data_datatable); ?>;
+            init_table_eliminar_evaluacion(data);
             if(data.length==0){
                     $( "#container_table").hide();
                     $( "#emptyMessage" ).show();
@@ -238,11 +238,11 @@
 
 
         //Novedades por jefe incorrecto
-        function init_table_jefe_incorrecto(data) {
+        function init_table_eliminar_evaluacion(data) {
             console.log("data datable:", data );
 
             if(data.length > 0) {
-                var table_jefe_incorrecto = $('#table_jefe_incorrecto').DataTable({
+                var table_eliminar_evaluacion = $('#table_eliminar_evaluacion').DataTable({
                 select: true,
                 "autoWidth": true,
                 data:data,
@@ -282,7 +282,7 @@
                         data: 'fechacreacion'
                     },
                     {   title: "Motivo",
-                        defaultContent: 'Jefe Incorrecto'
+                        defaultContent: 'Eliminar evaluación'
                     },
                     {   title: "Nombre Evaluación",
                         data: 'nombre_evaluacion',
@@ -291,11 +291,14 @@
                     {   title: "Solicitante",
                         data: 'solicitante'
                     },
-                    {   title: "Documento Jefe Actual",
-                        data: 'cc_jefe_correcto'
+                    {   title: "Documento Solicitante",
+                        data: 'cc_solicitante'
                     },
-                    {   title: "Documento Jefe Correcto",
-                        data: 'cc_jefe_correcto'
+                    {   title: "Tipo de Evaluación",
+                        data: 'tipoevaluacion'
+                    },
+                    {   title: "Documento Evaluado",
+                        data: 'cc_evaluado'
                     },
                     {   title: "Comentarios Solicitud",
                         data: 'comentarios_solicitud'
@@ -326,7 +329,7 @@
                 ],
                 initComplete : function() {
                      // Capturar el evento click en los botones "Aprobar" y "No aprobar"
-                    $('#table_jefe_incorrecto').on('click', 'button[data-id]', function() {
+                    $('#table_eliminar_evaluacion').on('click', 'button[data-id]', function() {
                         var idNovedad = $(this).data('id');
                         var estado = $(this).data('estado');
 
@@ -337,7 +340,7 @@
             });
 
             //Inicializar en la primer página del datatable
-            $("#table_jefe_incorrecto").DataTable().page( 0 ).draw( false );
+            $("#table_eliminar_evaluacion").DataTable().page( 0 ).draw( false );
 
             }
         }
@@ -372,12 +375,11 @@
                         $( "#container_table" ).empty();
                         $( "#container_table" ).classList= "table-container";
                         var new_table = document.createElement("table");
-                        new_table.setAttribute("id","table_jefe_incorrecto");                 
+                        new_table.setAttribute("id","table_eliminar_evaluacion");                 
                         new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
                         document.getElementById("container_table").appendChild(new_table);
                         
-                        init_table_jefe_incorrecto(data);
-                        // location.reload();                    
+                        init_table_eliminar_evaluacion(data);           
 
                     } 
                 },
