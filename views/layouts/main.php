@@ -477,11 +477,11 @@ AppAsset::register($this);
                                                     'url' => ['/reportes/valorados'],
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
-                                                // [
-                                                //     'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Heroes por Cliente&nbsp;'),
-                                                //     'url' => ['heroescliente/dasheroes'],
-                                                //     'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
-                                                // ],  
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Héroes por Cliente&nbsp;'),
+                                                    'url' => ['heroescliente/reportepostulacion'],
+                                                    'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isControlProcesoCX(),
+                                                ],  
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Satisfacci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/reportes/historicosatisfaccion'],
@@ -683,6 +683,12 @@ AppAsset::register($this);
                                                     'url' => ['/procesostracksale/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminProcesos(),
                                                 ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesos Héroes por el cliente'),
+                                                    'url' => ['/heroescliente/index'],
+                                                    'visible' => Yii::$app->user->identity->isAdminProcesos(),
+                                                ],
+
                                         '</div>',
 
                                     '</div>',
