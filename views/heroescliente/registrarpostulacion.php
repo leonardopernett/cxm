@@ -445,12 +445,26 @@ $this->params['breadcrumbs'][] = $this->title;
         var varcapaIdHistoria = document.getElementById("capaIdHistoria");
         var varcapaIdIdea = document.getElementById("capaIdIdea");
 
+        var varmeeting_time = document.getElementById("meeting_time").value;
+        var varidfecha_interaccion = document.getElementById("idfecha_interaccion").value;
+        var varidext_interaccion = document.getElementById("idext_interaccion").value;
+        var varidusuario_interaccion = document.getElementById("idusuario_interaccion").value;
+        var varidhistoria_interaccion = document.getElementById("idhistoria_interaccion").value;
+        var varididea_postulacion = document.getElementById("ididea_postulacion").value;
+
         if (varid_tipopostulacion == "") {
             varcapaIdFechaInteraccion.style.display = 'none';
             varcapaIdExtension.style.display = 'none';
             varcapaIdUsuarioViveExp.style.display = 'none';
             varcapaIdHistoria.style.display = 'none';
             varcapaIdIdea.style.display = 'none';
+
+            document.getElementById("meeting_time").value = "";
+            document.getElementById("idfecha_interaccion").value = "";
+            document.getElementById("idext_interaccion").value = "";
+            document.getElementById("idusuario_interaccion").value = "";
+            document.getElementById("idhistoria_interaccion").value = "";
+            document.getElementById("ididea_postulacion").value = "";
         }
 
         if (varid_tipopostulacion == "1") {
@@ -458,7 +472,13 @@ $this->params['breadcrumbs'][] = $this->title;
             varcapaIdExtension.style.display = 'none';
             varcapaIdUsuarioViveExp.style.display = 'none';
             varcapaIdHistoria.style.display = 'none';
-            varcapaIdIdea.style.display = 'inline';
+            varcapaIdIdea.style.display = 'inline';            
+
+            document.getElementById("meeting_time").value = "";
+            document.getElementById("idfecha_interaccion").value = "";
+            document.getElementById("idext_interaccion").value = "";
+            document.getElementById("idusuario_interaccion").value = "";
+            document.getElementById("idhistoria_interaccion").value = "";
         }
 
         if (varid_tipopostulacion == "2") {
@@ -467,6 +487,9 @@ $this->params['breadcrumbs'][] = $this->title;
             varcapaIdUsuarioViveExp.style.display = 'inline';
             varcapaIdHistoria.style.display = 'none';
             varcapaIdIdea.style.display = 'none';
+
+            document.getElementById("idhistoria_interaccion").value = "";
+            document.getElementById("ididea_postulacion").value = "";
         }
 
         if (varid_tipopostulacion == "3") {
@@ -475,6 +498,13 @@ $this->params['breadcrumbs'][] = $this->title;
             varcapaIdUsuarioViveExp.style.display = 'none';
             varcapaIdHistoria.style.display = 'inline';
             varcapaIdIdea.style.display = 'none';
+
+            document.getElementById("meeting_time").value = "";
+            document.getElementById("idfecha_interaccion").value = "";
+            document.getElementById("idext_interaccion").value = "";
+            document.getElementById("idusuario_interaccion").value = "";
+            document.getElementById("ididea_postulacion").value = "";
+
         }
 
     };
@@ -544,6 +574,56 @@ $this->params['breadcrumbs'][] = $this->title;
             event.preventDefault();
             swal.fire("!!! Advertencia !!!","Debe de seleccionar una ciudad.","warning");
             return;
+        }
+
+        var varmeeting_time = document.getElementById("meeting_time").value;
+        var varidfecha_interaccion = document.getElementById("idfecha_interaccion").value;
+        var varidext_interaccion = document.getElementById("idext_interaccion").value;
+        var varidusuario_interaccion = document.getElementById("idusuario_interaccion").value;
+        var varidhistoria_interaccion = document.getElementById("idhistoria_interaccion").value;
+        var varididea_postulacion = document.getElementById("ididea_postulacion").value;
+
+        
+        if (varid_tipopostulacion == "1") {
+
+            if (varididea_postulacion == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresar una idea.","warning");
+                return;
+            }
+            
+        }
+
+        if (varid_tipopostulacion == "2") {
+
+            if (varmeeting_time == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresar la fecha de la interacción.","warning");
+                return;
+            }else{
+                if (varidext_interaccion == "") {
+                    event.preventDefault();
+                    swal.fire("!!! Advertencia !!!","Debe de ingresar la extensión.","warning");
+                    return;
+                }else{
+                    if (varidusuario_interaccion == "") {
+                        event.preventDefault();
+                        swal.fire("!!! Advertencia !!!","Debe de ingresar un usuario del que vive la experiencia.","warning");
+                        return;
+                    }
+                }
+            }           
+
+            
+        }
+
+        if (varid_tipopostulacion == "3") {
+
+            if (varidhistoria_interaccion == "") {
+                event.preventDefault();
+                swal.fire("!!! Advertencia !!!","Debe de ingresar una Historia.","warning");
+                return;
+            }
         }
 
     };
