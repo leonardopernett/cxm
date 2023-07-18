@@ -183,7 +183,7 @@ $roles = $command->queryScalar();
                 
               ?>
                 <tr>
-                  <td><label style="font-size: 12px;"><?php echo  $value['cliente']; ?></label></td>
+                  <td><label style="font-size: 12px;"><?php echo  $value['name']; ?></label></td>
                   <td style="min width:5px"class="text-center">
                     <?= 
                       Html::a('<em class="fas fa-upload" style="font-size: 15px; color: #337ab7;"></em>',  ['subirclientesnuevos','id_general'=> $value['id_clientenuevo']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Subir Archivo de Valoraciones']) 
