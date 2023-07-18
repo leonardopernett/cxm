@@ -72,16 +72,16 @@ use Exception;
     $varListaGeneral = (new \yii\db\Query())
                               ->select([
                                 'tbl_distribucion_clientenuevo.id_clientenuevo',
-                                'tbl_proceso_cliente_centrocosto.cliente', 
+                                'tbl_arbols.name', 
                                 'tbl_hojavida_sociedad.sociedad'
                               ])
                               ->from(['tbl_distribucion_clientenuevo'])
-                              ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
-                                'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_distribucion_clientenuevo.id_dp_clientes')
+                              ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                'tbl_arbols.id = tbl_distribucion_clientenuevo.id_dp_clientes')
                               ->join('LEFT OUTER JOIN', 'tbl_hojavida_sociedad',
                                 'tbl_hojavida_sociedad.id_sociedad = tbl_distribucion_clientenuevo.id_sociedad')
                               ->where(['=','tbl_distribucion_clientenuevo.anulado',0])
-                              ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                              ->groupby(['tbl_arbols.id'])
                               ->all();  
     
     return $this->render('index',[
@@ -138,17 +138,6 @@ use Exception;
 
    public function actionSubirclientesnuevos($id_general){
 
-    $varidcliente = (new \yii\db\Query())
-                                  ->select(['id_dp_clientes'])
-                                  ->from(['tbl_proceso_cliente_centrocosto'])
-                                  ->where(['=','cod_pcrc',$id_general])
-                                  ->andwhere(['=','anulado',0])
-                                  ->scalar();
-
-    $varidcliente = $id_general;
-    
-   
-
     $codigoCliente =  (new \yii\db\Query())
                                   ->select(['cliente'])
                                   ->from(['tbl_proceso_cliente_centrocosto'])
@@ -186,14 +175,14 @@ use Exception;
           $file->saveAs('categorias/' . $name . '.' . $file->extension);
           $this->Importararchivo($name,$id_general);
 
-          return $this->redirect(array('subirclientesnuevos','id_general'=>$varidcliente));
+          return $this->redirect(array('subirclientesnuevos','id_general'=>$id_general));
         }
       }
     }
 
     return $this->render('subirclientesnuevos',[
       'model' => $model,
-      'id_general' => $varidcliente,
+      'id_general' => $id_general,
       'datosTablaGlobal' => $datosTablaGlobal,
       
       
