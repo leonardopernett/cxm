@@ -530,6 +530,208 @@ use Exception;
         'varNameJarvis' => $varNameJarvis,
       ]);
     }
+    
+
+    public function actionEditarpostulacion(){
+      $model = new HeroesGeneralpostulacion();
+      $varDataResultado_editar = array();
+
+      $form = Yii::$app->request->post();
+      if ($model->load($form)) {
+        $varFecha_BD = explode(" ", $model->fechacreacion);
+
+        $varFechaInicio_BD = $varFecha_BD[0];
+        $varFechaFin_BD = date('Y-m-d',strtotime($varFecha_BD[2]));
+    
+
+        $varDataResultado_editar = (new \yii\db\Query())
+                            ->select([
+                              'tbl_heroes_generalpostulacion.id_generalpostulacion', 
+                              'tbl_heroes_generalpostulacion.fechacreacion',
+                              'tbl_heroes_tipopostulacion.tipopostulacion',
+                              'tbl_heroes_cargospostulacion.cargospostulacion', 
+                              'tbl_heroes_generalpostulacion.id_postulador',
+                              'tbl_heroes_generalpostulacion.id_postulante',
+                              'tbl_proceso_cliente_centrocosto.cliente', 
+                              'CONCAT(tbl_proceso_cliente_centrocosto.cod_pcrc," - ",tbl_proceso_cliente_centrocosto.pcrc) AS pcrc',
+                              'if(tbl_heroes_generalpostulacion.estado=1,"Abierto","Cerrado") AS estado',
+                              'tbl_heroes_generalpostulacion.procesos'
+                            ])
+                            ->from(['tbl_heroes_generalpostulacion'])
+                            ->join('LEFT OUTER JOIN', 'tbl_heroes_tipopostulacion',
+                                  'tbl_heroes_tipopostulacion.id_tipopostulacion = tbl_heroes_generalpostulacion.id_tipopostulacion')
+                            ->join('LEFT OUTER JOIN', 'tbl_heroes_cargospostulacion',
+                                  'tbl_heroes_cargospostulacion.id_cargospostulacion = tbl_heroes_generalpostulacion.id_cargospostulacion')
+                            ->join('LEFT OUTER JOIN', 'tbl_heroes_ciudadpostulacion',
+                                  'tbl_heroes_ciudadpostulacion.id_ciudadpostulacion = tbl_heroes_generalpostulacion.id_ciudadpostulacion')
+                            ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
+                                  'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_heroes_generalpostulacion.id_dp_clientes
+                                      AND  tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_heroes_generalpostulacion.cod_pcrc')
+                            ->where(['=','tbl_heroes_generalpostulacion.anulado',0])
+                            ->andwhere(['between','tbl_heroes_generalpostulacion.fechacreacion',$varFechaInicio_BD,$varFechaFin_BD])
+                            ->all(); 
+      }
+
+      return $this->render('editarpostulacion',[
+        'model' => $model,
+        'varDataResultado_editar' => $varDataResultado_editar,
+      ]);
+    }
+
+    public function actionCambiarpostulacion($id_postulacion){
+      $model = new HeroesGeneralpostulacion();
+
+
+      $varDataLista_Editar = (new \yii\db\Query())
+                            ->select([
+                              'tbl_heroes_generalpostulacion.id_tipopostulacion',
+                              'tbl_heroes_tipopostulacion.tipopostulacion',
+                              'tbl_heroes_generalpostulacion.id_postulador',
+                              'tbl_heroes_cargospostulacion.cargospostulacion',
+                              'tbl_heroes_generalpostulacion.id_postulante',
+                              'tbl_proceso_cliente_centrocosto.cliente',
+                              'tbl_proceso_cliente_centrocosto.cod_pcrc',
+                              'tbl_heroes_ciudadpostulacion.ciudadpostulacion',
+                              'tbl_heroes_generalpostulacion.fecha_interaccion',
+                              'tbl_heroes_generalpostulacion.ext_interaccion',
+                              'tbl_heroes_generalpostulacion.usuario_interaccion',
+                              'tbl_heroes_generalpostulacion.historia_interaccion',
+                              'tbl_heroes_generalpostulacion.idea_postulacion',
+                              'tbl_heroes_generalpostulacion.estado',
+                              'tbl_heroes_generalpostulacion.procesos',
+                              'tbl_heroes_generalpostulacion.tipo_postulante'
+                            ])
+                            ->from(['tbl_heroes_generalpostulacion'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_heroes_tipopostulacion',
+                                  'tbl_heroes_tipopostulacion.id_tipopostulacion = tbl_heroes_generalpostulacion.id_tipopostulacion')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_heroes_cargospostulacion',
+                                  'tbl_heroes_cargospostulacion.id_cargospostulacion = tbl_heroes_generalpostulacion.id_cargospostulacion')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_heroes_ciudadpostulacion',
+                                  'tbl_heroes_ciudadpostulacion.id_ciudadpostulacion = tbl_heroes_generalpostulacion.id_ciudadpostulacion')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
+                                  'tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_heroes_generalpostulacion.id_dp_clientes
+                                    AND tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_heroes_generalpostulacion.cod_pcrc')
+
+                            ->where(['=','tbl_heroes_generalpostulacion.anulado',0])
+                            ->andwhere(['=','tbl_heroes_generalpostulacion.id_generalpostulacion',$id_postulacion])
+                            ->groupby(['tbl_heroes_generalpostulacion.cod_pcrc'])
+                            ->all(); 
+
+      $varid_tipopostulacion_Editar = null;
+      $vartipopostulacion_Editar = null;
+      $varNombrePotulador_Editar = null;
+      $varcargospostulacion_Editar = null;
+      $varNombrePostulado_Editar = null;
+      $varcliente_Editar = null;
+      $varcod_pcrc_Editar = null;
+      $varciudadpostulacion_Editar = null;
+      $varfecha_interaccion_Editar = null;
+      $varext_interaccion_Editar = null;
+      $varext_interaccion_Editar = null;
+      $varusuario_interaccion_Editar = null;
+      $varhistoria_interaccion_Editar = null;
+      $varidea_postulacion_Editar = null;
+      $varestado_Editar = null;
+      $varprocesos_Editar = null;
+      foreach ($varDataLista_Editar as $value) {
+        $varid_tipopostulacion_Editar = $value['id_tipopostulacion'];
+        $vartipopostulacion_Editar = $value['tipopostulacion'];
+
+        $varprocesos_Editar = $value['procesos'];
+        if ($varprocesos_Editar == 2) {
+          $varNombrePotulador_Editar = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_evaluados.name'
+                                    ])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','tbl_evaluados.id',$value['id_postulador'] ])
+                                    ->scalar();
+
+          $varNombrePostulado_Editar = $varNombrePotulador_Editar;
+
+        }else{
+          $varNombrePotulador_Editar = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_usuarios.usua_nombre'
+                                    ])
+                                    ->from(['tbl_usuarios'])
+                                    ->where(['=','tbl_usuarios.usua_id',$value['id_postulador'] ])
+                                    ->scalar();
+          
+
+          if ($value['tipo_postulante'] == 1) {
+            $varNombrePostulado_Editar = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_usuarios.usua_nombre'
+                                    ])
+                                    ->from(['tbl_usuarios'])
+                                    ->where(['=','tbl_usuarios.usua_id',$value['id_postulante'] ])
+                                    ->scalar();
+          }else{
+            $varNombrePostulado_Editar = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_evaluados.name'
+                                    ])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','tbl_evaluados.id',$value['id_postulante'] ])
+                                    ->scalar();
+          }
+
+
+        }
+
+
+        $varcargospostulacion_Editar = $value['cargospostulacion'];
+        $varcliente_Editar = $value['cliente'];
+        $varcod_pcrc_Editar = $value['cod_pcrc'];
+        $varciudadpostulacion_Editar = $value['ciudadpostulacion'];
+        $varfecha_interaccion_Editar = $value['fecha_interaccion'];
+        $varext_interaccion_Editar = $value['ext_interaccion'];
+        $varusuario_interaccion_Editar = $value['usuario_interaccion'];
+        $varhistoria_interaccion_Editar = $value['historia_interaccion'];
+        $varidea_postulacion_Editar = $value['idea_postulacion'];
+        $varestado_Editar = $value['estado'];
+        
+      }
+
+      $form = Yii::$app->request->post();
+      if ($model->load($form)) {
+
+        Yii::$app->db->createCommand()->update('tbl_heroes_generalpostulacion',[
+                    'fecha_interaccion' => $model->fecha_interaccion,    
+                    'ext_interaccion' => $model->ext_interaccion,
+                    'usuario_interaccion' => $model->usuario_interaccion,
+                    'historia_interaccion' => $model->historia_interaccion,
+                    'idea_postulacion' => $model->idea_postulacion,                              
+                ],'id_generalpostulacion ='.$id_postulacion.'')->execute();
+
+        return $this->redirect(['index']);
+      }
+
+      return $this->render('cambiarpostulacion',[        
+        'model' => $model,
+        'varid_tipopostulacion_Editar' => $varid_tipopostulacion_Editar,
+        'vartipopostulacion_Editar' => $vartipopostulacion_Editar,
+        'varNombrePotulador_Editar' => $varNombrePotulador_Editar,
+        'varcargospostulacion_Editar' => $varcargospostulacion_Editar,
+        'varNombrePostulado_Editar' => $varNombrePostulado_Editar,
+        'varcliente_Editar' => $varcliente_Editar,
+        'varcod_pcrc_Editar' => $varcod_pcrc_Editar,
+        'varciudadpostulacion_Editar' => $varciudadpostulacion_Editar,
+        'varfecha_interaccion_Editar' => $varfecha_interaccion_Editar,
+        'varext_interaccion_Editar' => $varext_interaccion_Editar,
+        'varext_interaccion_Editar' => $varext_interaccion_Editar,
+        'varusuario_interaccion_Editar' => $varusuario_interaccion_Editar,
+        'varhistoria_interaccion_Editar' => $varhistoria_interaccion_Editar,
+        'varidea_postulacion_Editar' => $varidea_postulacion_Editar,
+        'varestado_Editar' => $varestado_Editar,
+        'varprocesos_Editar' => $varprocesos_Editar,
+      ]);
+    }
 
     public function actionVerpostulacion($embajadorpostular,$id_postulacion,$id_procesos){
       $model = new HeroesGeneralpostulacion();
