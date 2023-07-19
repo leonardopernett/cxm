@@ -248,20 +248,20 @@ AppAsset::register($this);
                                         
                                         '<div class="col-md-12">',
                                             '<li class="dropdown-headercx2">&nbsp;Escucha</li>',
-                                                '<li class="dropdown-headercx ico1">&nbsp;Evaluaci&oacute;n de Desarrollo&nbsp;&nbsp;</li>',
+                                                '<li class="dropdown-headercx ico1">&nbsp;Evaluaci&oacute;n de Desarrollo&nbsp;&nbsp;</li>',                                                
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Realizar Evaluaciones&nbsp;&nbsp;'),
-                                                    'url' => ['/evaluaciondesarrollo/index'],
+                                                    'url' => ['/gestorevaluaciondesarrollo/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Realizar Feedbacks&nbsp;&nbsp;'),
-                                                    'url' => ['/evaluaciondesarrollo/evaluacionfeedback','model'=>"",'documento'=>0],
+                                                    'url' => ['/gestorevaluaciondesarrollo/resultados','model'=>"",'documento'=>0],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Mis Resultados&nbsp;&nbsp;'),
-                                                    'url' => ['/evaluaciondesarrollo/resultadoevaluacion','model'=>""],
+                                                    'url' => ['/gestorevaluaciondesarrollo/resultadoindividual','model'=>""],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isVerevaluacion()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 '<br>',
@@ -295,8 +295,13 @@ AppAsset::register($this);
                                             '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Administrador</li>',
                                                 [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Realizar Parametrización&nbsp;&nbsp;'),
+                                                    'url' => ['/gestorevaluaciondesarrollo/parametrizador'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando(),
+                                                ],
+                                                [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Novedades Evaluaci&oacute;n Desarrollo&nbsp;&nbsp;'),
-                                                    'url' => ['/evaluaciondesarrollo/gestionnovedades'],
+                                                    'url' => ['/gestorevaluaciondesarrollo/novedades'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],
                                             '<br>',                                           
