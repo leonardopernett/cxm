@@ -91,6 +91,7 @@ use GuzzleHttp;
       }
       $varArraySale = implode(",", $varArrayTrack);
 
+      $varUrl = 'https://api.tracksale.co/v2/report/answer?start='.$varFechaInicioEspecial_BD.'&end='.$varFechaFinEspecial_BD.'&codes='.$varArraySale.'&tags=true';
 
       ob_start();
 
@@ -99,7 +100,7 @@ use GuzzleHttp;
       curl_setopt_array($curl, array(
         CURLOPT_SSL_VERIFYPEER=> false,
         CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_URL => 'https://api.tracksale.co/v2/report/answer?start='.$varFechaInicioEspecial_BD.'&end='.$varFechaFinEspecial_BD.'&codes='.$varArraySale.'&tags=true',
+        CURLOPT_URL => $varUrl,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -119,6 +120,10 @@ use GuzzleHttp;
 
       $varListaDatos = json_decode($response,true); 
 
+      var_dump($varUrl);
+      var_dump($varListaDatos);
+      die(json_encode("Aqui vamos"));
+
       if (count($varListaDatos) != 0) {
 
         foreach ($varListaDatos as $value) {
@@ -133,6 +138,7 @@ use GuzzleHttp;
           }
 
           $varNombreCliente = $value['name'];
+
 
           // Datos del Asesor
           $varCantidades = count($value['tags']) - 1;
@@ -209,11 +215,10 @@ use GuzzleHttp;
           $varPregunta_Uno = $value['nps_answer'];
 
           // Datos para obtener el connid - Por ahora se concatena hasta que se tenga un id de la llamada.
-          $varConnid = $value['phone'];
+          $varConnid = $value['tags'][0]['value'];
           if ($varConnid == "") {
             $varConnid = '000000'.$value['time'];
           }
-          // Si el varconnid esta vacio le llevo un dato para que permita guardarlo.
 
           // Datos para obtener los comentarios.
           $varComentarios = $value['nps_comment'];
@@ -251,7 +256,7 @@ use GuzzleHttp;
                                       'tbl_base_satisfaccion.id'
                                   ])
                                   ->from(['tbl_base_satisfaccion'])
-                                  ->where(['=','tbl_base_satisfaccion.ani','TrackSale'])
+                                  ->where(['like','tbl_base_satisfaccion.ani','TrackSale - '])
                                   ->andwhere(['=','tbl_base_satisfaccion.connid',$varConnid])
                                   ->count();
 
@@ -346,7 +351,8 @@ use GuzzleHttp;
                         'fechacreacion' => date('Y-m-d'),
               ])->execute();
             }
-          }     
+          }         
+
           
         }       
 
@@ -436,6 +442,7 @@ use GuzzleHttp;
 
           $varNombreCliente = $value['name'];
 
+          
           // Datos del Asesor
           $varCantidades = count($value['tags']) - 1;
           $varAsesorRed =  $value['tags'][$varCantidades]['value'];
@@ -452,6 +459,7 @@ use GuzzleHttp;
                 WHERE 
                   du.usuario = :varAsesor ')->bindValues($paramsBuscaAsesor)->queryScalar();
           }
+
 
           // Datos fecha Satu
           $varTimes = $value['time'];
@@ -511,11 +519,10 @@ use GuzzleHttp;
           $varPregunta_Uno = $value['nps_answer'];
 
           // Datos para obtener el connid - Por ahora se concatena hasta que se tenga un id de la llamada.
-          $varConnid = $value['phone'];
+          $varConnid = $value['tags'][0]['value'];
           if ($varConnid == "") {
             $varConnid = '000000'.$value['time'];
           }
-          // Si el varconnid esta vacio le llevo un dato para que permita guardarlo.
 
           // Datos para obtener los comentarios.
           $varComentarios = $value['nps_comment'];
@@ -553,7 +560,7 @@ use GuzzleHttp;
                                       'tbl_base_satisfaccion.id'
                                   ])
                                   ->from(['tbl_base_satisfaccion'])
-                                  ->where(['=','tbl_base_satisfaccion.ani','TrackSale'])
+                                  ->where(['like','tbl_base_satisfaccion.ani','TrackSale - '])
                                   ->andwhere(['=','tbl_base_satisfaccion.connid',$varConnid])
                                   ->count();
 
