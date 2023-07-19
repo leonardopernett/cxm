@@ -5398,10 +5398,11 @@ public function actionCantidadentto(){
       $vardocumento = null;
 
       $txtvarcodpcrc = Yii::$app->db->createCommand('
-        SELECT CONCAT(sc.cod_pcrc," - ",sc.nombre) AS nombre FROM tbl_speech_categorias sc
-          WHERE 
-            sc.cod_pcrc IN (:varPcrcs)
-          GROUP BY sc.cod_pcrc')->bindValues($paramBuscarPcrc)->queryScalar();
+      SELECT CONCAT(tbl_proceso_cliente_centrocosto.cod_pcrc," - ",tbl_proceso_cliente_centrocosto.pcrc) FROM tbl_proceso_cliente_centrocosto
+      WHERE 
+        tbl_proceso_cliente_centrocosto.cod_pcrc = :varPcrcs
+      GROUP BY tbl_proceso_cliente_centrocosto.cod_pcrc')->bindValues($paramBuscarPcrc)->queryScalar();
+      
 
       $txtLoginId = $varloginid;
       $paramsBuscarLogin = [':varLoginID'=>$varloginid];
