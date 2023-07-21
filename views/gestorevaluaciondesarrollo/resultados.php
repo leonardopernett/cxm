@@ -355,7 +355,7 @@ use yii\helpers\ArrayHelper;
             if(data.length==0){
                     $( "#container_table_respuestas" ).hide();
                     $( "#emptyMessageRespuestas" ).show();
-                }
+            }
         });
 
         function init_table_resultados(data) {
@@ -431,9 +431,15 @@ use yii\helpers\ArrayHelper;
                         data: 'promedio_total_evalua',
                         render: function(data){ return parseFloat(data).toFixed(2); }
                     },
-                    {   title: "Acción",
-                        defaultContent : "<button id='crear_feedback_btn' class='btn btn-xs btn-danger' data-toggle='tooltip' data-container='body' data-trigger='hover' title='Crear Feedback'><span class='fa fa-envelope'></span></button>",
-                        searchable : false,
+                    {   title: "Crear Feedback",
+                        data: 'id_destinatario',
+                        render: function(data, type, row) { 
+                            if (data !== null) {
+                                return "-----";  
+                            } else {
+                                return '<button id="crear_feedback_btn" class="btn btn-xs btn-danger" data-toggle="tooltip" data-container="body" data-trigger="hover" title="Crear Feedback"><span class="fa fa-envelope"></span></button>';
+                            }       
+                        },
                         width: '8%'
 
                     }
@@ -591,24 +597,28 @@ use yii\helpers\ArrayHelper;
                     _csrf:'<?=\Yii::$app->request->csrfToken?>'
                 },
                 success: function(response) {
-
-                    console.log("response a js : ", response);
-
                     if(response.status=="error"){
-                        swal.fire("!!! Error !!!",response.data,"error");
+                        swal.fire("!!! Error !!!",response.message,"error");
                         return;
                     }
 
                     if(response.status=="success"){
+                        var data = response.data;
 
                         comentarios_feedback_selector.value = '';
                         $('#modalCrearFeedback').modal('hide');
-                       
 
-                        swal.fire("",response.data,"success");                        
+                        swal.fire("",response.message,"success");                        
 
-                       // Deshabilitar el botón del DataTable
-                        $('#table_resultados tbody button#' + btnId).prop('disabled', true);
+                       // Limpiar datatable 
+                       $( "#container_table" ).empty();
+                        $( "#container_table" ).classList= "table-container";
+                        var new_table = document.createElement("table");
+                        new_table.setAttribute("id","table_resultados");                 
+                        new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
+                        document.getElementById("container_table").appendChild(new_table);
+                        
+                        init_table_resultados(data);
                     }
 
                 },

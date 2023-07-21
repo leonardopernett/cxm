@@ -9,7 +9,7 @@
     use kartik\daterange\DateRangePicker;
     use yii\bootstrap\Modal;
 
-    $this->title = 'Gestion de novedades - Evaluacion de Desarrollo';
+    $this->title = 'Gestion de novedades - Problemas generales';
     $this->params['breadcrumbs'][] = $this->title;
 
         $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
@@ -101,9 +101,9 @@
             font-size: 15px;
         }
 
-        body #table_personal_a_cargo tbody tr td,
-        body #table_personal_a_cargo tbody tr td a,
-        body #table_personal_a_cargo thead tr th a {
+        body #table_otros_inconvenientes tbody tr td,
+        body #table_otros_inconvenientes tbody tr td a,
+        body #table_otros_inconvenientes thead tr th a {
             font-size: 15px !important;
         }
 
@@ -165,17 +165,17 @@
         </header>
     <br><br>
 
-    <!-- TABLA NOVEDADES RELACINADAS CON PERSONAL A CARGO-->
+    <!-- TABLA NOVEDADES OTROS INCONVENIENTES-->
     <div class="CapaUno" style="display: inline;">
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb" style="width:100%"> 
-                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Novedades Personal a Cargo') ?> </label>                      
+                    <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-list-alt" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Novedades Problemas Generales') ?> </label>                      
 
                     <label id="emptyMessage" style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 18px; color: #827DF9; margin-top:1.5%;"></em> <?= Yii::t('app', 'Sin novedades a gestionar') ?></label>
                     
                     <div class="table-responsive table-container" id="container_table">                                
-                        <table id="table_personal_a_cargo" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">
+                        <table id="table_otros_inconvenientes" class="table table-hover table-striped table-bordered table-condensed dataTable no-footer">
                             
                         </table>    
                     </div>           
@@ -184,7 +184,7 @@
         </div>
     </div>
     <hr>
-    <!-- TABLA NOVEDADES RELACINADAS CON PERSONAL A CARGO FIN-->
+    <!-- TABLA NOVEDADES OTROS INCONVENIENTES FIN-->
 
     <!-- SECCION ACCIONES-->
     <div id="capaDos" style="display: inline">
@@ -209,24 +209,11 @@
     <hr>
     <!-- SECCION ACCIONES FIN-->
 
-    <!-- ALERTAS -->
-    <?php if (Yii::$app->session->hasFlash('success_a_cargo')): ?>
-    <script>
-        swal.fire("", '<?= Yii::$app->session->getFlash('success_a_cargo') ?>', "success");
-    </script>
-    <?php elseif (Yii::$app->session->hasFlash('error_a_cargo')): ?>
-    <script>
-        swal.fire("", '<?= Yii::$app->session->getFlash('error_a_cargo') ?>', "error");
-    </script>
-    <?php endif; ?>
-     <!-- ALERTAS FIN-->
-
     <script>
         $(document).ready(function() {
 
             var data = <?php echo json_encode($data_datatable); ?>;
-            init_table_personal_a_cargo(data);
-
+            init_table_otros_inconvenientes(data);
             if(data.length==0){
                     $( "#container_table").hide();
                     $( "#emptyMessage" ).show();
@@ -239,11 +226,11 @@
 
 
         //Novedades por jefe incorrecto
-        function init_table_personal_a_cargo(data) {
+        function init_table_otros_inconvenientes(data) {
             console.log("data datable:", data );
 
             if(data.length > 0) {
-                var table_personal_a_cargo = $('#table_personal_a_cargo').DataTable({
+                var table_otros_inconvenientes = $('#table_otros_inconvenientes').DataTable({
                 select: true,
                 "autoWidth": true,
                 data:data,
@@ -270,32 +257,29 @@
                     autoWidth : true,
                     "table-layout": "fixed",
                     paging: true
-                },                          
+                }, 
                 "lengthMenu": [10, 20, 40, 50],
-                "order": [[1, "desc"]], // Ordenar por la columna "Fecha solicitud" en orden descendente (más reciente primero)
+                "order": [[1, "desc"]],           
                 columns: [
                     {   title: "Id",
                         data: 'id_novedad',
                         width: '2%'
                     },
-                    {   title: "Fecha solicitud",
+                    {   title: "Fecha Solicitud",
                         data: 'fechacreacion'
+                    },
+                    {   title: "Motivo",
+                        defaultContent: 'Otros inconvenientes'
                     },
                     {   title: "Nombre Evaluación",
                         data: 'nombre_evaluacion',
                         visible: false
                     },
-                    {   title: "Motivo",
-                        data: 'nombre_tipo_novedad'
-                    },
                     {   title: "Solicitante",
                         data: 'solicitante'
                     },
-                    {   title: "Colaborador actual",
-                        data: 'colaborador_actual'
-                    },                    
-                    {   title: "Colaborador nuevo",
-                        data: 'cc_colaborador_nuevo'
+                    {   title: "Documento Solicitante",
+                        data: 'cc_solicitante'
                     },
                     {   title: "Comentarios Solicitud",
                         data: 'comentarios_solicitud'
@@ -326,7 +310,7 @@
                 ],
                 initComplete : function() {
                      // Capturar el evento click en los botones "Aprobar" y "No aprobar"
-                    $('#table_personal_a_cargo').on('click', 'button[data-id]', function() {
+                    $('#table_otros_inconvenientes').on('click', 'button[data-id]', function() {
                         var idNovedad = $(this).data('id');
                         var estado = $(this).data('estado');
 
@@ -337,7 +321,7 @@
             });
 
             //Inicializar en la primer página del datatable
-            $("#table_personal_a_cargo").DataTable().page( 0 ).draw( false );
+            $("#table_otros_inconvenientes").DataTable().page( 0 ).draw( false );
 
             }
         }
@@ -346,7 +330,7 @@
         function actualizarEstado(idNovedad, estadoAprobacion) {
           
             $.ajax({
-                url: "gestionarpersonalacargo",
+                url: "actualizarotrosinconvenientes",
                 method: "POST",
                 data: {
                     id_novedad: idNovedad,
@@ -361,20 +345,21 @@
                     } 
 
                     if (response.status === 'success') {
-                    var data = response.data;
 
-                    swal.fire("",response.message,"success");                   
+                        var data = response.data;
+                        swal.fire("",response.message,"success");                   
 
-                    // Limpiar datatable 
-                    $( "#container_table" ).empty();
-                    $( "#container_table" ).classList= "table-container";
-                    var new_table = document.createElement("table");
-                    new_table.setAttribute("id","table_personal_a_cargo");                 
-                    new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
-                    document.getElementById("container_table").appendChild(new_table);
-                    
-                    init_table_personal_a_cargo(data);
-                    return;
+                        // Limpiar datatable 
+                        $( "#container_table" ).empty();
+                        $( "#container_table" ).classList= "table-container";
+                        var new_table = document.createElement("table");
+                        new_table.setAttribute("id","table_otros_inconvenientes");                 
+                        new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
+                        document.getElementById("container_table").appendChild(new_table);
+                        
+                        init_table_otros_inconvenientes(data);  
+                        
+                        return;
 
                     } 
                 },

@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "tbl_gestor_evaluacion_novedad_eliminareval".
  *
- * @property int $id_gestor_evaluacion_novedad_eliminareval
+ * @property int $id
  * @property int $id_evaluacion_nombre
  * @property int $id_estado_novedad
  * @property int $id_tipo_evaluacion
@@ -40,8 +40,8 @@ class GestorEvaluacionNovedadEliminareval extends \yii\db\ActiveRecord
     public function rules()
     {
        return [
-      [['id_evaluacion_nombre', 'id_estado_novedad', 'id_tipo_evaluacion', 'cc_solicitante', 'id_solicitante'], 'required'],
-      [['id_evaluacion_nombre', 'id_estado_novedad', 'id_tipo_evaluacion', 'aprobado', 'gestionadopor', 'usua_id', 'anulado', 'id_evaluado'], 'integer'],
+      [['id_evaluacion_nombre', 'id_estado_novedad', 'id_tipo_evaluacion', 'cc_solicitante', 'id_solicitante', 'id'], 'required'],
+      [['id_evaluacion_nombre', 'id_estado_novedad', 'id_tipo_evaluacion', 'aprobado', 'gestionadopor', 'usua_id', 'anulado', 'id_evaluado', 'id'], 'integer'],
       [['fecha_gestionado', 'fechacreacion'], 'safe'],
       [['cc_solicitante', 'cc_evaluado'], 'string', 'max' => 20],
       [['comentarios_solicitud', 'comentarios_no_aprobado'], 'string', 'max' => 300],
@@ -54,7 +54,7 @@ class GestorEvaluacionNovedadEliminareval extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
        return [
-      'id_gestor_evaluacion_novedad_eliminareval' => Yii::t('app', ''),
+      'id' => Yii::t('app', ''),
       'id_evaluacion_nombre' => Yii::t('app', ''),
       'id_estado_novedad' => Yii::t('app', ''),
       'id_tipo_evaluacion' => Yii::t('app', ''),

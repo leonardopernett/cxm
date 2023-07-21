@@ -375,7 +375,7 @@ use yii\helpers\ArrayHelper;
 
                                 <?php
                                     Modal::begin([
-                                      'header' => '<h4></h4>',
+                                      'header' => '<h4>Campos requeridos: <span class="color-required">(*)</span></h4>',
                                       'id' => 'modal1',
                                     ]);
 

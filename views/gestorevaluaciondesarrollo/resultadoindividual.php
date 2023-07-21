@@ -197,7 +197,7 @@ use yii\helpers\ArrayHelper;
     <?php 
     if ($registros_encontrados == 0) {    
     ?>
-        <div class="CapaUno" style="display: inline;">
+        <div class="CapaCero" style="display: inline;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
@@ -211,7 +211,7 @@ use yii\helpers\ArrayHelper;
     <?php 
     } else if(!$existe_calificacion_total) {   
     ?>
-    <div class="CapaDos" style="display: inline;">
+    <div class="CapaUno" style="display: inline;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card1 mb">
@@ -226,7 +226,7 @@ use yii\helpers\ArrayHelper;
         } else {   
     ?>
 
-    <div id="capaCero" style="display: inline">
+    <div id="capaDos" style="display: inline">
         <div class="row">
             <div class="col-md-12">
                 <div class="card1 mb">
@@ -235,8 +235,9 @@ use yii\helpers\ArrayHelper;
                         <div class="col-md-4">
                             <div class="card1 mb">
                             <label class="font-size-subtitulos"><em class="fa fa-comment" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Crear Feedback') ?></label>        
+                            <?php if (!$deshabilitar_crear_feedback) { ?>
                                 <?= Html::button('Aceptar', ['value' => url::to(['modalfeedbackcolaborador', 'id_user'=>$id_user]),
-                                                'class' => 'btn btn-primary', 'id'=>'modalButton',
+                                                'class' => 'btn btn-info', 'id'=>'modalButton',
                                                 'data-toggle' => 'tooltip',
                                                 'title' => 'Crear_feedback']) 
                                 ?> 
@@ -251,6 +252,15 @@ use yii\helpers\ArrayHelper;
                                                                                                                 
                                     Modal::end(); 
                                 ?>
+                            <?php }else{ ?>
+                                <?= Html::button('Completado', ['value' => url::to(['resultadoindividual']),
+                                                'class' => 'btn btn-info', 'id'=>'modalButton',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Crear_feedback',
+                                                'disabled' => true,
+                                                ]) 
+                                ?> 
+                            <?php } ?>
                             </div>
                         </div>
                         <!-- Alertas -->
@@ -286,8 +296,8 @@ use yii\helpers\ArrayHelper;
     <hr>
 
     <!-- SECCION FEEDBACKS-->
-    <div id="capaUno" style="display: <?= $mostrar_feedbacks ?>">
-        <div class="row">
+    <div id="capaTres" style="display: <?= $mostrar_feedbacks ?>">
+        <div class="row" style="margin-left:0px; margin-right:0px;">
             <div class="col-md-12">
                 <div class="card1 mb">
                 <label style="font-size: 20px;"><em class="fa fa-comments" style="font-size: 20px; color: #FFC72C;"></em> Mis Feedbacks: </label>
@@ -295,21 +305,21 @@ use yii\helpers\ArrayHelper;
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label class="font-size-subtitulos"><em class="fa fa-envelope" style="font-size: 17px; color: #C148D0;"></em> Mi Feedback</label>                                
-                                <?= Html::textarea('comentarios_colaborador', $feedback_colaborador, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000]) ?>
+                                <?= Html::textarea('comentarios_colaborador', $feedback_colaborador, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000, 'rows' => 5,]) ?>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label class="font-size-subtitulos"><em class="fa fa-envelope" style="font-size: 17px; color: #C148D0;"></em> Feedback Jefe</label>
-                                <?= Html::textarea('comentarios_jefe', $feedback_jefe, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000]) ?>
+                                <?= Html::textarea('comentarios_jefe', $feedback_jefe, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000, 'rows' => 5,]) ?>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="card1 mb">
                                 <label class="font-size-subtitulos"><em class="fa fa-envelope" style="font-size: 17px; color: #C148D0;"></em> Acuerdo Final de Desarrollo</label>
-                                <?= Html::textarea('comentarios_acuerdo_final', $feedback_acuerdo_final, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000]) ?>
+                                <?= Html::textarea('comentarios_acuerdo_final', $feedback_acuerdo_final, ['readonly' => true, 'class' => 'font-size-texto sin-borde', 'style' => 'width: 100%;', 'maxlength' => 1000, 'rows' => 5,]) ?>
                             </div>
                         </div>
                         
@@ -321,8 +331,8 @@ use yii\helpers\ArrayHelper;
 
     <br>
 
-    <div id="capaDos" style="display: inline">
-        <div class="row">
+    <div id="capaCuatro" style="display: inline">
+        <div class="row" style="margin-left:0px; margin-right:0px;">
             <div class="col-md-3">
                 <div class="card1 mb">
                     <label style="font-size: 20px; margin-bottom:10px;"><em class="fa fa-user" style="font-size: 25px; color: #ffc034;"></em> <?= Yii::t('app', 'Datos Evaluación') ?> </label>

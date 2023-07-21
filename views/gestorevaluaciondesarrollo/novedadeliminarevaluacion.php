@@ -9,7 +9,7 @@
     use kartik\daterange\DateRangePicker;
     use yii\bootstrap\Modal;
 
-    $this->title = 'Gestion de novedades - Evaluación de Desarrollo';
+    $this->title = 'Gestion de novedades - Eliminar evaluación de desarrollo';
     $this->params['breadcrumbs'][] = $this->title;
 
         $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
@@ -209,18 +209,6 @@
     <hr>
     <!-- SECCION ACCIONES FIN-->
 
-    <!-- ALERTAS YII  -->
-    <?php if (Yii::$app->session->hasFlash('success_jefe_incorrecto')): ?>
-    <script>
-        swal.fire("", '<?= Yii::$app->session->getFlash('success_jefe_incorrecto') ?>', "success");
-    </script>
-    <?php elseif (Yii::$app->session->hasFlash('error_jefe_incorrecto')): ?>
-    <script>
-        swal.fire("", '<?= Yii::$app->session->getFlash('error_jefe_incorrecto') ?>', "error");
-    </script>
-    <?php endif; ?>
-    <!-- ALERTAS YII FIN  -->
-
     <script>
         $(document).ready(function() {
 
@@ -270,9 +258,9 @@
                     autoWidth : true,
                     "table-layout": "fixed",
                     paging: true
-                },                          
-                "lengthMenu": [5, 10, 25, 50],
-                "pageLength": 5,
+                },
+                "lengthMenu": [10, 20, 40, 50],
+                "order": [[1, "desc"]],
                 columns: [
                     {   title: "Id",
                         data: 'id_novedad',
@@ -349,7 +337,7 @@
         function actualizarEstado(idNovedad, estadoAprobacion) {
           
             $.ajax({
-                url: "actualizarjefecorrecto",
+                url: "eliminarevaluacionusuario",
                 method: "POST",
                 data: {
                     id_novedad: idNovedad,
@@ -379,7 +367,9 @@
                         new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
                         document.getElementById("container_table").appendChild(new_table);
                         
-                        init_table_eliminar_evaluacion(data);           
+                        init_table_eliminar_evaluacion(data);  
+                        
+                        return;
 
                     } 
                 },
