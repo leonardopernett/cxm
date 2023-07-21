@@ -41,10 +41,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                             "id"=>"tipo_novedad_a_cargo",
                             "class" => "form-control",
-                            'prompt' => 'Seleccione novedad...']); 
+                            'prompt' => 'Seleccione novedad...',
+                            'onChange'=>'habilitar_nuevo_usuario(this.value)'                            
+                        ]); 
                 ?>
-                <label style="font-size: 16px;"><em class="fas fa-edit" style="font-size: 20px; color: #FFC72C;"></em> Documento Usuario Nuevo <span class="color-required">(Solo si es usuario faltante)*</span></label>
-                <?= $form->field($model, 'cc_colaborador_nuevo', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['onkeypress'=>'return valida(event);', 'id'=>'cc_usuario_nuevo', 'placeholder'=>'Ingrese solo números']) ?>
+                <div id="campo_cc_nueva" style="display: none;">
+                    <label style="font-size: 16px;"><em class="fas fa-edit" style="font-size: 20px; color: #FFC72C;"></em> Documento Usuario Nuevo <span class="color-required">*</span></label>
+                    <?= $form->field($model, 'cc_colaborador_nuevo', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['onkeypress'=>'return valida(event);', 'id'=>'cc_usuario_nuevo', 'placeholder'=>'Ingrese solo números']) ?>
+                </div>
 
                 <label style="font-size: 16px;"><em class="fas fa-edit" style="font-size: 20px; color: #FFC72C; margin-top:10px"></em> Comentarios</label>
                 <?= $form->field($model, 'comentarios_solicitud', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => true, 'placeholder'=>'Opcional', 'id'=>'comentarios']) ?>
@@ -66,7 +70,19 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 <?php ActiveForm::end(); ?>
 </div>
-<script type="text/javascript">
+<script type="text/javascript"> 
+
+    function habilitar_nuevo_usuario(valorSeleccionado){
+
+        var campo_documento_nuevo = document.getElementById("campo_cc_nueva");
+
+        if(valorSeleccionado=="falta_persona"){ //mostrar campo cc_usuario_nuevo
+            campo_documento_nuevo.style.display = "inline"
+        } else { //ocultar campo cc_usuario_nuevo
+            campo_documento_nuevo.style.display = "none"
+        }
+
+    }
 
 	function validarvalor(){
 		var tipo_novedad = document.getElementById("tipo_novedad_a_cargo").value;

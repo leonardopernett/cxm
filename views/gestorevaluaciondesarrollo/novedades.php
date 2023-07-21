@@ -105,7 +105,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="CapaUno" style="display: inline;">
-    <div class="row">        
+    <div class="row"> 
+        <div class="col-md-3">
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fa fa-trash" style="font-size: 15px; color: #FF6522;"></em> Eliminar Evaluación </label>
+                    <?= Html::a('Eliminar',  ['novedadeliminarevaluacion'], ['class' => 'btn btn-success',
+                                        'style' => 'background-color: #337ab7',
+                                        'data-toggle' => 'tooltip',
+                                        'title' => 'Eliminar']) 
+                    ?>
+            </div>
+        </div>         
         <div class="col-md-3">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-pencil-alt" style="font-size: 15px; color: #ffd43b;"></em> Jefe Incorrecto </label>
@@ -128,11 +138,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </div> 
         <div class="col-md-3">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fa fa-trash" style="font-size: 15px; color: #FF6522;"></em> Eliminar Evaluación </label>
-                    <?= Html::a('Eliminar',  ['novedadeliminarevaluacion'], ['class' => 'btn btn-success',
+                <label style="font-size: 15px;"><em class="fa fa-cog" style="font-size: 15px; color: #FF6522;"></em> Problemas Generales</label>
+                    <?= Html::a('Aceptar',  ['novedadotrosinconvenientes'], ['class' => 'btn btn-success',
                                         'style' => 'background-color: #337ab7',
-                                        'data-toggle' => 'tooltip',
-                                        'title' => 'Eliminar']) 
+                                        'data-toggle' => 'tooltip']) 
                     ?>
             </div>
         </div>       

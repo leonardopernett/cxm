@@ -10,8 +10,9 @@ use Yii;
  * @property int $id
  * @property int $id_evaluacion_nombre
  * @property int $id_estado_novedad
- * @property int $id_tipo_evaluacion
+ * @property int id_solicitante
  * @property string $cc_solicitante
+ * @property int|null $id_tipo_evaluacion
  * @property string|null $comentarios_solicitud
  * @property int|null $aprobado 1: Aprobado para realizar cambio, 0: No aprobado
  * @property string|null $comentarios_no_aprobado
@@ -37,8 +38,8 @@ class GestorEvaluacionNovedadGeneral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_evaluacion_nombre', 'id_estado_novedad', 'id_tipo_evaluacion', 'cc_solicitante'], 'required'],
-            [['id_evaluacion_nombre', 'id_estado_novedad', 'id_tipo_evaluacion', 'aprobado', 'gestionadopor', 'usua_id', 'anulado'], 'integer'],
+            [['id_evaluacion_nombre', 'id_estado_novedad', 'id_solicitante','cc_solicitante'], 'required'],
+            [['id_evaluacion_nombre', 'id_estado_novedad', 'id_tipo_evaluacion', 'id_solicitante', 'aprobado', 'gestionadopor', 'usua_id', 'anulado'], 'integer'],
             [['fecha_gestionado', 'fechacreacion'], 'safe'],
             [['cc_solicitante'], 'string', 'max' => 20],
             [['comentarios_solicitud', 'comentarios_no_aprobado'], 'string', 'max' => 300],
@@ -55,6 +56,7 @@ class GestorEvaluacionNovedadGeneral extends \yii\db\ActiveRecord
             'id_evaluacion_nombre' => Yii::t('app', ''),
             'id_estado_novedad' => Yii::t('app', ''),
             'id_tipo_evaluacion' => Yii::t('app', ''),
+            'id_solicitante' => Yii::t('app', ''),
             'cc_solicitante' => Yii::t('app', ''),
             'comentarios_solicitud' => Yii::t('app', ''),
             'aprobado' => Yii::t('app', ''),

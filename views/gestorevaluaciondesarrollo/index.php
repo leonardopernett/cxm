@@ -28,16 +28,9 @@ $listData = ArrayHelper::map($varidlist, 'idevaluaciontipo', 'tipoevaluacion');
 $varTipos = ['Eliminar evaluación' => 'Eliminar evaluación'];
 
 $options_tipo_novedad = [        
-    'eliminacion_evaluacion' => 'Eliminación Evaluación'
+    'eliminacion_evaluacion' => 'Eliminación Evaluación',
+    'otra_novedad' => 'Otra novedad'
 ];
-
-
-//$var_exist_jefe = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_jefes where identificacion in ('$var_document')")->queryScalar();
-//$var_exist_colaborador = Yii::$app->db->createCommand("select count(identificacion) from tbl_gestor_evaluacion_colaboradores where identificacion in ('$var_document')")->queryScalar();
-
-$varcargo=0; //si realizo evaluacion a personas a cargo
-$varidconteocargo= 2; // si tiene personas a cargo sino no habilitar boton para evaluar
-$varresulcargo = 80; // numero de personas a cargo o porcentaje de personas evaluadas
 
 ?>
 <style>
@@ -169,7 +162,7 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                                     <?php }else{?>
                                         <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                         <br>
-                                        <?= Html::a('Realizar evaluación',  ['autoevaluacion', 'id_user' => $id_usuario, 'id_evalua'=> $id_evaluacion_actual], ['class' => 'btn btn-success',
+                                        <?= Html::a('Realizar evaluación',  ['autoevaluacion', 'id_user' => $id_usuario, 'id_evalua'=> $id_evaluacion_actual], ['class' => 'btn btn-info',
                                                     'style' => 'background-color: #337ab7',
                                                     'data-toggle' => 'tooltip',
                                                     'id'=> 'btn_autoevaluacion',
@@ -190,11 +183,10 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                         <div class="col-md-3">
                             <div class="card2 mb">
                                 <label style="font-size: 23px; text-align: center;"> Evaluación a Cargo </label>
-                                <?php if ($varcargo == 0) { ?>
-                                    <?php if ($varidconteocargo >= 1) { ?>
+                                <?php if ($varcargo > 0) { ?>
                                         <em class="fas fa-book" style="font-size: 45px; color: #f7b9b9; align-self: center;"></em>
                                         <br> 
-                                        <?= Html::button('Realizar evaluación', ['value' => url::to(['modalevaluacionacargo', 'id_jefe' => $id_usuario, 'id_evalua'=> $id_evaluacion_actual]), 'class' => 'btn btn-success', 'id'=>'modalButton', 'data-toggle' => 'tooltip', 'title' => 'Evaluación a Cargo', 'style' => 'background-color: #337ab7']) 
+                                        <?= Html::button('Realizar evaluación', ['value' => url::to(['modalevaluacionacargo', 'id_jefe' => $id_usuario, 'id_evalua'=> $id_evaluacion_actual]), 'class' => 'btn btn-info', 'id'=>'modalButton', 'data-toggle' => 'tooltip', 'title' => 'Evaluación a Cargo', 'style' => 'background-color: #337ab7']) 
                                             ?> 
 
                                             <?php
@@ -207,46 +199,10 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                                                                             
                                                 Modal::end(); 
                                             ?>
-                                    <?php }else{ ?>
-                                        <em class="fas fa-book" style="font-size: 45px; color: #C1C1C1; align-self: center;"></em>
-                                        <br>
-                                        <label style="font-size: 15px; text-align: center;"> Sin personas a cargo </label>
-                                    <?php } ?>
                                 <?php }else{ ?>
-                                    <?php if ($varresulcargo == 100) { ?>  
-                                        <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
-                                        <br>                                                                              
-                                            
-                                        <div class="row">    
-                                            <div class="col-md-5" class="text-right">        
-                                                <label style="font-size: 15px; text-align: center;"> Completado </label>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <?= Html::button('[ + ]', ['value' => url::to(['evaluaciondesarrollo/evaluacioncargo']), 'class' => 'btn btn-success', 'id'=>'modalButton3', 'data-toggle' => 'tooltip', 'title' => 'Realizar más evaluaciones', 'style' => 'background-color: #4298b400; border-color: #4298b500 !important; color:#000000;']) 
-                                                ?> 
-
-                                                <?php
-                                                    Modal::begin([
-                                                    'header' => '<h4></h4>',
-                                                    'id' => 'modal3',
-                                                    ]);
-
-                                                    echo "<div id='modalContent3'></div>";
-                                                                        
-                                                    Modal::end(); 
-                                                ?>
-                                            </div>
-                                        </div>
-
-                                    <?php }else{ ?>
-                                        <em class="fas fa-book" style="font-size: 45px; color: #FFAE58; align-self: center;"></em>
-                                        <br>  
-                                        <div class="row">                                            
-                                            <div class="col-md-7"class="text-right">
-                                                <label style="font-size: 15px; text-align: center;"><?php echo 'Evaluaciones: '.$varresulcargo.'%'; ?></label>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
+                                    <em class="fas fa-book" style="font-size: 45px; color: #5DED6C; align-self: center;"></em>
+                                    <br>
+                                    <label style="font-size: 15px; text-align: center;"> Completado </label>
                                 <?php } ?>
                             </div>
                         </div>  
@@ -298,13 +254,13 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
         </div>
     </div> 
     <br>
-<div class="CapaTres" style="display: inline;">
+    <div class="CapaTres" id="capa_novedad_general" style="display: inline;">
         <?php $form = ActiveForm::begin([
             'action' => 'crearnovedadgeneral',
             'layout' => 'horizontal',
             'fieldConfig' => [
                 'inputOptions' => ['autocomplete' => 'off']
-              ]
+            ]
             ]); ?> 
         <div class="row">
             <div class="col-md-12">
@@ -312,7 +268,7 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                     <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-6">
-                                <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #3339fb;"></em> Novedad general</label>
+                                <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 20px; color: #FFC72C;"></em> Novedad general</label>
                             </div>
                             <div class="col-md-6" class="text-right">
                                 <div onclick="opennovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbn1" >
@@ -340,7 +296,8 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                                             [
                                             "id"=>"tipo_novedad",
                                             "class" => "form-control",
-                                            'prompt' => 'Seleccione novedad...']); 
+                                            'prompt' => 'Seleccione novedad...',
+                                            'onChange'=>'habilitar_tipo_evaluacion(this.value)']); 
                                 ?>
                             </div>                            
                         </div>
@@ -349,11 +306,11 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                         <div class="row"> 
                             <div class="col-md-4" style="display: inline;">
                                 <label style="font-size: 15px;"> Ingresar comentario</label>
-                                <?= $form->field($model, 'comentarios_solicitud')->textInput(['maxlength' => true, 'placeholder'=>'Agregar la justificación de la novedad', 'id'=>'comentarios_solicitante']) ?>
+                                <?= $form->field($model, 'comentarios_solicitud')->textArea(['maxlength' => true, 'placeholder'=>'Agregar la justificación de la novedad', 'id'=>'comentarios_solicitante']) ?>
                             </div>
-                            <div class="col-md-4" style="display: inline;">
+                            <div class="col-md-4" id="capatipoEvaluacion" style="display: inline;">
                                 <label style="font-size: 15px;"> Selecciona tipo evaluación</label>
-                                 <?=  $form->field($model, 'id_tipo_evaluacion')->dropDownList($opcion_tipo_evaluacion, [
+                                <?=  $form->field($model, 'id_tipo_evaluacion')->dropDownList($opcion_tipo_evaluacion, [
                                                 'id' => 'idTipoEval',
                                                 'prompt'=>'Seleccione el tipo de evaluación...',
                                                 'onChange'=>'habilitarPersonal(this.value)'                                                
@@ -376,14 +333,12 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
                                 <div class="card1 mb">
                                     <label style="font-size: 16px;"><em class="fas fa-save" style="font-size: 17px; color: #FFC72C;"></em> Guardar novedad: </label> 
                                     <div onclick="savegeneral();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
-                                      Guardar
-                                    </div>                                    
-                                    <!-- <div onclick="savegeneral();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" > -->
-                                      
-                                    </div>
+                                        Guardar
+                                    </div>  
                                 </div>
                             </div>                            
-                        </div>                      
+                        </div> 
+
                     </div>
                 </div>
             </div>
@@ -391,9 +346,9 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
         <?php ActiveForm::end(); ?>
     </div>
     <hr>
-<?php 
-    } 
-?>
+    <?php 
+        } 
+    ?>
 
 <?php if (Yii::$app->session->hasFlash('success_novedad')): ?>
   <script>
@@ -427,6 +382,20 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
         varidnovedad.style.display = 'none';
     };
 
+    function habilitar_tipo_evaluacion(valorSeleccionado){
+        
+        var varcapaTipoEval = document.getElementById("capatipoEvaluacion");
+        var varcapaP = document.getElementById("capaP"); //capa Personal
+
+        if (valorSeleccionado == "otra_novedad") {
+            varcapaTipoEval.style.display = "none"; 
+             varcapaP.style.display = "none";
+        } else {
+            varcapaTipoEval.style.display = "inline"; 
+        }
+
+    }
+
     function habilitarPersonal(valorSeleccionado){
          // Obtener el div para mostrar u ocultar
         var varcapaP = document.getElementById("capaP");
@@ -445,7 +414,8 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
         var id_solicitante = '<?= $id_usuario ?>';
         var cc_solicitante = '<?= $documento ?>';
         
-        var tipo_novedad = document.getElementById("tipo_novedad").value; //eliminar evaluacio
+        var selector_tipo_novedad = document.getElementById("tipo_novedad");
+        var tipo_novedad = selector_tipo_novedad.value; //eliminar evaluacio 
         var id_evaluado = document.getElementById("id_usuario_evaluado").value;
         
         var selector_comentarios_solicitud = document.getElementById("comentarios_solicitante");
@@ -466,7 +436,7 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
             return;
         }
 
-        if (txt_id_tipo_evaluacion == "") {
+        if (tipo_novedad == "eliminacion_evaluacion" && txt_id_tipo_evaluacion == "") {
             event.preventDefault();
             swal.fire("!!! Advertencia !!!","Ingrese tipo de evaluación","warning");
             return;
@@ -477,7 +447,6 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
             swal.fire("!!! Advertencia !!!","Escoger una persona de la lista","warning");
             return;
         }
-        
         
         $.ajax({
             method: "post",
@@ -493,12 +462,16 @@ $varresulcargo = 80; // numero de personas a cargo o porcentaje de personas eval
             },
             success : function(response){
 
-                if(response.status=="error"){
+                if(response.status==="error"){
+                    selector_comentarios_solicitud.value = "";
+                    selector_tipo_novedad.value ="";
                     swal.fire("!!! Error !!!",response.data,"error");
                     return;
                 }
 
-                if(response.status=="success"){
+                if(response.status==="success"){
+                    selector_tipo_novedad.value="";
+                    selector_comentarios_solicitud.value = "";
                     swal.fire("",response.data,"success");    
                     return; 
                 }

@@ -213,6 +213,28 @@
     </div>
     <hr>
     <!-- TABLA FEEDBACK FIN-->
+    <!-- SECCION ACCIONES-->
+    <div id="capaDos" style="display: inline">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    <label style="font-size: 17px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em> Acciones: </label>
+                        <div class="col-md-4">
+                            <div class="card1 mb">
+                                <label style="font-size: 16px;"><em class="fas fa-minus-circle" style="font-size: 17px; color: #FFC72C;"></em> Cancelar y regresar: </label> 
+                                <?= Html::a('Regresar',  ['gestorevaluaciondesarrollo/resultados'], ['class' => 'btn btn-success',
+                                                'style' => 'background-color: #707372',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Regresar']) 
+                                ?>                            
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- SECCION ACCIONES FIN-->
 
     <script>
         $(document).ready(function() {

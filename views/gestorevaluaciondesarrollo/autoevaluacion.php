@@ -424,6 +424,14 @@ use yii\helpers\ArrayHelper;
         var contador_pregunta_respuesta = parseInt('<?php echo $contador; ?>');   
         var datosArray = [];
         
+        //Validacion jefe
+        if (nom_jefe_txt == "NO EXISTE UN JEFE DIRECTO") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","No tienes asociado un jefe a tu evaluación. Por favor crear novedad: Jefe incorrecto. ¡Gracias!","warning");
+            selector_tiempo_laborado.style.backgroundColor = '#f9dfdf';
+            return; 
+        }
+        
         //Validacion respuesta
         if (tiempo_laborado == "") {
             event.preventDefault();
@@ -446,7 +454,13 @@ use yii\helpers\ArrayHelper;
             var pregunta = selector_pregunta.value;      
             var rta = selector_rta.value;
             var observacion = selector_observacion.value;
-            var acuerdos = selector_acuerdos.value;            
+            var acuerdos = selector_acuerdos.value; 
+            //Por defecto son blancos
+            selector_rta.style.backgroundColor = '#fff';
+            selector_observacion.style.backgroundColor = '#fff';
+            selector_acuerdos.style.backgroundColor = '#fff';
+            
+
                 
             //Validacion respuesta
             if (rta == "") {

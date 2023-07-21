@@ -265,14 +265,13 @@
                     "last":       "<span class='size_font_dataTable'> Ultimo </span>",
                     "next":       "<span class='size_font_dataTable'> Siguiente </span>",
                     "previous":   "<span class='size_font_dataTable'> Anterior </span>"
-                    },
-                    "order": [[ 0, "desc" ]],
+                    },                    
                     autoWidth : true,
                     "table-layout": "fixed",
                     paging: true
                 },                          
-                "lengthMenu": [5, 10, 25, 50],
-                "pageLength": 5,
+                "lengthMenu": [10, 20, 30, 50],
+                "order": [[ 1, "desc" ]],
                 columns: [
                     {   title: "Id",
                         data: 'id_novedad',
@@ -376,8 +375,7 @@
                         new_table.classList = "table table-hover table-striped table-bordered table-condensed dataTable no-footer";
                         document.getElementById("container_table").appendChild(new_table);
                         
-                        init_table_jefe_incorrecto(data);
-                        // location.reload();                    
+                        init_table_jefe_incorrecto(data);            
 
                     } 
                 },
