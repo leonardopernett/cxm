@@ -156,6 +156,16 @@ if ($roles == '270') {
             <br>
 
             <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-upload" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Carga Masiva Postulación') ?></label>
+                <?= Html::a('Subir Archivo',  ['masivapostulacion'], ['class' => 'btn btn-success',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Carga Masiva Postulación']) 
+                ?>
+            </div>
+
+            <br>
+
+            <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Parametrizar Datos') ?></label>
                 <?= Html::a('Parametrizar',  ['parametrizarpostulacion'], ['class' => 'btn btn-danger',
                                                 'data-toggle' => 'tooltip',

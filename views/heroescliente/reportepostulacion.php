@@ -390,11 +390,19 @@ if ($varDataResultado != null) {
                         }
 
                         $varCompruebaValoracion = (new \yii\db\Query())
-                                                    ->select(['*'])
-                                                    ->from(['tbl_heroes_valoracionpostulacion'])
-                                                    ->where(['=','tbl_heroes_valoracionpostulacion.id_generalpostulacion',$value['id_generalpostulacion']])
+                                                    ->select([
+                                                    'tbl_heroes_valoracionpostulacion.id_valoracionpostulacion'
+                                                    ])
+                                                    ->from(['tbl_ejecucionformularios'])
+                                                    ->join('LEFT OUTER JOIN', 'tbl_heroes_valoracionpostulacion',
+                                                        'tbl_ejecucionformularios.id = tbl_heroes_valoracionpostulacion.id_valoracion')
+                                                    ->join('LEFT OUTER JOIN', 'tbl_heroes_generalpostulacion',
+                                                        'tbl_heroes_valoracionpostulacion.id_generalpostulacion = tbl_heroes_generalpostulacion.id_generalpostulacion')
+                                                    ->where(['=','tbl_heroes_generalpostulacion.anulado',0 ])
                                                     ->andwhere(['=','tbl_heroes_valoracionpostulacion.anulado',0])
-                                                    ->count();
+                                                    ->where(['=','tbl_heroes_valoracionpostulacion.id_generalpostulacion',$value['id_generalpostulacion']])
+                                                    ->groupby(['tbl_heroes_valoracionpostulacion.id_valoracionpostulacion'])
+                                                    ->count(); 
 
 
                         $varNombreValorador = (new \yii\db\Query())
