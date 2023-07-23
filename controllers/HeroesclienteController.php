@@ -23,6 +23,8 @@ use app\models\HeroesCargospostulacion;
 use app\models\HeroesGeneralpostulacion;
 use app\models\SpeechParametrizar;
 use app\models\Formularios;
+use app\models\FormUploadtigo;
+use PHPExcel_Shared_Date;
 use Exception;
 
   class HeroesclienteController extends Controller {
@@ -31,7 +33,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index','parametrizarpostulacion','registrarpostulacion', 'reportepostulacion','valorapostulacion','verpostulacion'],
+              'only' => ['index','parametrizarpostulacion','registrarpostulacion', 'reportepostulacion','valorapostulacion','verpostulacion','masivapostulacion'],
               'rules' => [
                 [
                   'allow' => true,
@@ -356,10 +358,13 @@ use Exception;
                             ->select([
                               'tbl_heroes_valoracionpostulacion.id_valoracionpostulacion'
                             ])
-                            ->from(['tbl_heroes_valoracionpostulacion'])
+                            ->from(['tbl_ejecucionformularios'])
+                            ->join('LEFT OUTER JOIN', 'tbl_heroes_valoracionpostulacion',
+                                  'tbl_ejecucionformularios.id = tbl_heroes_valoracionpostulacion.id_valoracion')
                             ->join('LEFT OUTER JOIN', 'tbl_heroes_generalpostulacion',
                                   'tbl_heroes_valoracionpostulacion.id_generalpostulacion = tbl_heroes_generalpostulacion.id_generalpostulacion')
                             ->where(['=','tbl_heroes_generalpostulacion.anulado',0 ])
+                            ->andwhere(['=','tbl_heroes_valoracionpostulacion.anulado',0])
                             ->groupby(['tbl_heroes_valoracionpostulacion.id_valoracionpostulacion'])
                             ->count(); 
 
@@ -893,6 +898,233 @@ use Exception;
         'varestado' => $varestado,
         'varprocesos' => $varprocesos,
       ]);
+    }
+
+    public function actionMasivapostulacion(){
+      $model = new FormUploadtigo();
+
+      $varUltimaFecha = (new \yii\db\Query())
+                        ->select([
+                          'MAX(tbl_heroes_generalpostulacion.fechacreacion)'
+                        ])
+                        ->from(['tbl_heroes_generalpostulacion'])
+                        ->where(['=','tbl_heroes_generalpostulacion.anulado',0])
+                        ->andwhere(['=','tbl_heroes_generalpostulacion.excel',1])
+                        ->scalar();
+
+      $varcantidadMasivo = (new \yii\db\Query())
+                        ->select([
+                          'tbl_heroes_generalpostulacion.id_generalpostulacion'
+                        ])
+                        ->from(['tbl_heroes_generalpostulacion'])
+                        ->where(['=','tbl_heroes_generalpostulacion.anulado',0])
+                        ->andwhere(['=','tbl_heroes_generalpostulacion.excel',1])
+                        ->count();
+
+      $varListaExcel =  (new \yii\db\Query())
+                        ->select([
+                          'if(tbl_heroes_generalpostulacion.excel=2,"Normal","Excel") AS varIngreso',
+                          'COUNT(tbl_heroes_generalpostulacion.excel) AS varCantidades'
+                        ])
+                        ->from(['tbl_heroes_generalpostulacion'])
+                        ->where(['=','tbl_heroes_generalpostulacion.anulado',0])
+                        ->groupby(['tbl_heroes_generalpostulacion.excel'])
+                        ->all();
+
+      if ($model->load(Yii::$app->request->post())) {
+                
+        $model->file = UploadedFile::getInstances($model, 'file');
+
+        if ($model->file && $model->validate()) {
+                    
+          foreach ($model->file as $file) {
+            $fecha = date('Y-m-d-h-i-s');
+            $user = Yii::$app->user->identity->username;
+            $name = $fecha . '-' . $user;
+            $file->saveAs('categorias/' . $name . '.' . $file->extension);
+            $this->Importarheroes($name);
+
+            return $this->redirect(['masivapostulacion']);
+          }
+        }
+      }
+
+      return $this->render('masivapostulacion',[
+        'model' => $model,
+        'varUltimaFecha' => $varUltimaFecha,
+        'varcantidadMasivo' => $varcantidadMasivo,
+        'varListaExcel' => $varListaExcel,
+      ]);
+    }
+
+    public function Importarheroes($name){
+      $inputFile = 'categorias/' . $name . '.xlsx';
+
+      try {
+
+        $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
+        $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+        $objPHPExcel = $objReader->load($inputFile);
+
+      } catch (Exception $e) {
+        die('Error');
+      }
+
+      $sheet = $objPHPExcel->getSheet(0);
+      $highestRow = $sheet->getHighestRow();
+      
+      for ($row = 3; $row <= $highestRow; $row++) { 
+        
+        $varTipoPostulacion_excel = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_heroes_tipopostulacion.id_tipopostulacion'
+                                    ])
+                                    ->from(['tbl_heroes_tipopostulacion'])
+                                    ->where(['=','tbl_heroes_tipopostulacion.anulado',0])
+                                    ->andwhere(['=','tbl_heroes_tipopostulacion.tipopostulacion',$sheet->getCell("A".$row)->getValue()])
+                                    ->scalar();
+
+        $varIdTipoPostulante_excel = null;
+        $varIdPostulador_excel = null;
+        $varIdPostulante_excel = null;
+        $varTipoPostulante_excel = $sheet->getCell("C".$row)->getValue();
+        if ($varTipoPostulante_excel == "Si" || $varTipoPostulante_excel == "si" || $varTipoPostulante_excel == "SI") {
+          $varIdTipoPostulante_excel = 2;
+
+          $varIdCargoPostula_excel = 4;
+
+          $varIdPostulador_excel = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_evaluados.id'
+                                    ])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','tbl_evaluados.identificacion',$sheet->getCell("B".$row)->getValue()])
+                                    ->scalar();
+
+          $varIdPostulante_excel = $varIdPostulador_excel;
+        }else{
+          $varIdTipoPostulante_excel = 1;
+
+          $varIdCargoPostula_excel = 9;
+
+          $varIdPostulador_excel = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_usuarios.usua_id'
+                                    ])
+                                    ->from(['tbl_usuarios'])
+                                    ->where(['=','tbl_usuarios.usua_identificacion',$sheet->getCell("B".$row)->getValue()])
+                                    ->scalar();
+
+          $varIdPostulante_excel = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_evaluados.id'
+                                    ])
+                                    ->from(['tbl_evaluados'])
+                                    ->where(['=','tbl_evaluados.identificacion',$sheet->getCell("D".$row)->getValue()])
+                                    ->scalar();
+
+          if ($varIdPostulante_excel == null) {
+
+            $varIdPostulante_excel = (new \yii\db\Query())
+                                    ->select([
+                                      'tbl_usuarios.usua_id'
+                                    ])
+                                    ->from(['tbl_usuarios'])
+                                    ->where(['=','tbl_usuarios.usua_identificacion',$sheet->getCell("D".$row)->getValue()])
+                                    ->scalar();
+          }
+
+        }
+
+        $varTxtCliente_excel = $sheet->getCell("E".$row)->getValue();
+        $varIdCliente_excel = null;
+        if (is_numeric($varTxtCliente_excel)) {
+          $varIdCliente_excel = (new \yii\db\Query())
+                            ->select([
+                              'tbl_proceso_cliente_centrocosto.id_dp_clientes'
+                            ])
+                            ->from(['tbl_proceso_cliente_centrocosto'])
+                            ->where(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                            ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                            ->andwhere(['=','tbl_proceso_cliente_centrocosto.id_dp_clientes',$varTxtCliente_excel])
+                            ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                            ->scalar();
+        }else{
+          $varIdCliente_excel = (new \yii\db\Query())
+                            ->select([
+                              'tbl_proceso_cliente_centrocosto.id_dp_clientes'
+                            ])
+                            ->from(['tbl_proceso_cliente_centrocosto'])
+                            ->where(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                            ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                            ->andwhere(['=','tbl_proceso_cliente_centrocosto.cliente',$varTxtCliente_excel])
+                            ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                            ->scalar();
+        }
+
+        $varCod_pcrcr_excel = (new \yii\db\Query())
+                            ->select([
+                              'tbl_proceso_cliente_centrocosto.cod_pcrc'
+                            ])
+                            ->from(['tbl_proceso_cliente_centrocosto'])
+                            ->where(['=','tbl_proceso_cliente_centrocosto.estado',1])
+                            ->andwhere(['=','tbl_proceso_cliente_centrocosto.anulado',0])
+                            ->andwhere(['=','tbl_proceso_cliente_centrocosto.cod_pcrc',$sheet->getCell("F".$row)->getValue()])
+                            ->groupby(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
+                            ->scalar();
+
+        $varIdCiudad_excel = (new \yii\db\Query())
+                            ->select([
+                              'tbl_heroes_ciudadpostulacion.id_ciudadpostulacion'
+                            ])
+                            ->from(['tbl_heroes_ciudadpostulacion'])
+                            ->where(['=','tbl_heroes_ciudadpostulacion.anulado',0])
+                            ->andwhere(['like','tbl_heroes_ciudadpostulacion.ciudadpostulacion',$sheet->getCell("G".$row)->getValue()])
+                            ->scalar();
+
+        $varTxtFechas_excel = null;
+        $varTxtExtension_excel = null;
+        $varTxtUsuario_excel = null;
+        $varTxtIdea_excel = null;
+        $varTxtHistoria_excel = null;
+        if ($varTipoPostulacion_excel == 1) {
+          $varTxtIdea_excel = $sheet->getCell("K".$row)->getValue();
+        }else{
+          if ($varTipoPostulacion_excel == 2) {
+            $varDateChange_excel = $sheet->getCell("H".$row)->getValue();
+            $varTxtFechas_excel = PHPExcel_Shared_Date::ExcelToPHPObject($varDateChange_excel)->format('Y-m-d H:i:s');
+
+            $varTxtExtension_excel = $sheet->getCell("I".$row)->getValue();
+            $varTxtUsuario_excel = $sheet->getCell("J".$row)->getValue();
+          }else{
+            $varTxtHistoria_excel= $sheet->getCell("L".$row)->getValue();
+          }
+        }
+
+        Yii::$app->db->createCommand()->insert('tbl_heroes_generalpostulacion',[
+          'id_tipopostulacion' => $varTipoPostulacion_excel,
+          'id_postulador' => $varIdPostulador_excel, 
+          'id_cargospostulacion' => $varIdCargoPostula_excel,
+          'id_postulante' => $varIdPostulante_excel,
+          'id_dp_clientes' => $varIdCliente_excel,
+          'cod_pcrc' => $varCod_pcrcr_excel,
+          'id_ciudadpostulacion' => $varIdCiudad_excel,
+          'fecha_interaccion' => $varTxtFechas_excel,
+          'ext_interaccion' => $varTxtExtension_excel,
+          'usuario_interaccion' => $varTxtUsuario_excel,
+          'historia_interaccion' => $varTxtHistoria_excel,
+          'idea_postulacion' => $varTxtIdea_excel,  
+          'estado' => 1,
+          'procesos' => $varIdTipoPostulante_excel,
+          'excel' => 1,
+          'tipo_postulante' => $varIdTipoPostulante_excel,
+          'anulado' => 0,
+          'usua_id' =>  Yii::$app->user->identity->id,   
+          'fechacreacion' => date('Y-m-d'),                
+        ])->execute();
+        
+          
+      }
     }
 
     public function actionValorapostulacion($embajadorpostular,$id_postulacion){
