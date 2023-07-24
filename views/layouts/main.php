@@ -209,7 +209,12 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isCuadroMando(),
                                                 ],                                                
                                                 '<br>',
-                                            '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',    
+                                            '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Directorio Cad&nbsp;&nbsp;'),
+                                                    'url' => ['/directoriocad/index'],
+                                                    'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
+                                                ],    
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Gestor del Cliente&nbsp;&nbsp;'),
                                                     'url' => ['/hojavida/index'],
