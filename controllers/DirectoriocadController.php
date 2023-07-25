@@ -75,37 +75,41 @@ use Exception;
 
       $varListaGeneral = (new \yii\db\Query())                                                                    
                               ->select(['tbl_vicepresidente_cad.nombre AS vicepresidente','tbl_proceso_cliente_centrocosto.director_programa',
-                              'tbl_proceso_cliente_centrocosto.gerente_cuenta','tbl_directorio_cad.sociedad','tbl_ciudad_cad.nombre AS ciudad', 
+                              'tbl_proceso_cliente_centrocosto.gerente_cuenta','tbl_sociedad_cad.nombre AS sociedad','tbl_ciudad_cad.nombre AS ciudad', 
                               'tbl_sector_cad.nombre AS sector','tbl_proceso_cliente_centrocosto.cliente',
                               'tbl_tipo_cad.nombre AS tipo','tbl_tipocanal_cad.nombre AS tipo_canal','tbl_directorio_cad.otro_canal',
-                              'tbl_proveedores_cad.name AS proveedores','tbl_directorio_cad.nom_plataforma','tbl_etapa_cad.nombre AS etapa','tbl_directorio_cad.id_directorcad'])
+                              'tbl_proveedores_cad.name AS proveedores','tbl_directorio_cad.nom_plataforma','tbl_etapa_cad.nombre AS etapa','tbl_directorio_cad.id_directorcad',
+                              '(SELECT DISTINCT(tbl_proceso_cliente_centrocosto.cliente)FROM tbl_proceso_cliente_centrocosto 
+                              WHERE tbl_proceso_cliente_centrocosto.estado = 1 AND tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_directorio_cad.cliente) AS cliente'
+                              ])
                               ->from(['tbl_directorio_cad'])  
-                              ->join('LEFT OUTER JOIN', 'tbl_vicepresidente_cad',
+                              ->join('INNER JOIN','tbl_vicepresidente_cad',
                               'tbl_vicepresidente_cad.id_vicepresidentecad = tbl_directorio_cad.vicepresidente')
-                              ->join('LEFT OUTER JOIN', 'tbl_ciudad_cad',
+                              ->join('INNER JOIN','tbl_ciudad_cad',
                               'tbl_ciudad_cad.id_ciudad_cad  = tbl_directorio_cad.ciudad')
-                              ->join('LEFT OUTER JOIN', 'tbl_proceso_cliente_centrocosto',
+                              ->join('INNER JOIN','tbl_proceso_cliente_centrocosto',
                               'tbl_proceso_cliente_centrocosto.documento_director = tbl_directorio_cad.directorprog and 
-                              tbl_proceso_cliente_centrocosto.documento_gerente = tbl_directorio_cad.gerente and
-                              tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_directorio_cad.cliente 
+                              tbl_proceso_cliente_centrocosto.documento_gerente = tbl_directorio_cad.gerente
                               ')  
-                              ->join('LEFT OUTER JOIN', 'tbl_sector_cad',
+                              ->join('INNER JOIN','tbl_sector_cad',
                               'tbl_sector_cad.id_sectorcad = tbl_directorio_cad.sector')    
-                              ->join('LEFT OUTER JOIN', 'tbl_tipo_cad',
+                              ->join('INNER JOIN','tbl_tipo_cad',
                               'tbl_tipo_cad.id_tipocad = tbl_directorio_cad.tipo') 
-                              ->join('LEFT OUTER JOIN', 'tbl_tipocanal_cad',
+                              ->join('INNER JOIN','tbl_tipocanal_cad',
                               'tbl_tipocanal_cad.id_tipocanalcad = tbl_directorio_cad.tipo_canal') 
-                              ->join('LEFT OUTER JOIN', 'tbl_proveedores_cad',
+                              ->join('INNER JOIN','tbl_proveedores_cad',
                               'tbl_proveedores_cad.id_proveedorescad = tbl_directorio_cad.proveedores')
-                              ->join('LEFT OUTER JOIN', 'tbl_etapa_cad',
+                              ->join('INNER JOIN','tbl_etapa_cad',
                               'tbl_etapa_cad.id_etapacad = tbl_directorio_cad.etapa') 
-                              ->where(['=','tbl_directorio_cad.anulado',0])
-                              ->groupBy(['tbl_proceso_cliente_centrocosto.documento_director'])
+                              ->join('INNER JOIN','tbl_sociedad_cad',
+                              'tbl_sociedad_cad.id_sociedadcad = tbl_directorio_cad.sociedad')
+                              ->groupBy(['tbl_directorio_cad.id_directorcad'])
                               ->all();
 
+
+                            
       $form = Yii::$app->request->post();
       if ($model->load($form) ) { 
-        
         
         Yii::$app->db->createCommand()->insert('tbl_directorio_cad',[
                                   'vicepresidente' => $model->vicepresidente,
@@ -122,7 +126,7 @@ use Exception;
                                   'usua_id' => Yii::$app->user->identity->id,
                                   'proveedores' => $model->proveedores,
                                   'nom_plataforma' => $model->nom_plataforma,
-                                  'directorprog' => $model->directorprog,
+                                  'directorprog' => $model->directorprog
                                   ])->execute();
 
         $varDatos = (new \yii\db\Query())
@@ -143,6 +147,7 @@ use Exception;
                             ->andwhere(['=','anulado',0])
                             ->scalar();
         
+          
         foreach ($model->etapa as $key => $value) {
 
           Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
@@ -242,14 +247,20 @@ use Exception;
           $varSector = (new \yii\db\Query())
               ->select(['tbl_sector_cad.id_sectorcad'])
               ->from(['tbl_sector_cad'])
-              ->where(['LIKE','tbl_sector_cad.nombre','%' . $sheet->getCell("F".$i)->getValue() . '%',false])
-              ->scalar();
-
+              ->where(['LIKE','tbl_sector_cad.nombre','%' . $sheet->getCell("F".$i)->getValue() .'%',false])
+              ->scalar();    
+        
           $varCliente = (new \yii\db\Query())
               ->select(['tbl_proceso_cliente_centrocosto.id_dp_clientes'])
               ->from(['tbl_proceso_cliente_centrocosto'])
               ->where(['LIKE','tbl_proceso_cliente_centrocosto.cliente','%' . $sheet->getCell("G".$i)->getValue() . '%',false])
               ->groupBY(['tbl_proceso_cliente_centrocosto.cliente'])
+              ->scalar();
+
+          $varSociedad = (new \yii\db\Query())
+              ->select(['tbl_sociedad_cad.id_sociedadcad'])
+              ->from(['tbl_sociedad_cad'])
+              ->where(['LIKE','tbl_sociedad_cad.nombre','%' . $sheet->getCell("D".$i)->getValue() . '%',false])
               ->scalar();
 
           $varTipo = (new \yii\db\Query())
@@ -280,7 +291,7 @@ use Exception;
               'vicepresidente' => $varVicepresidente,
               'directorprog' => $varDirector,
               'gerente'=>$varGerente,
-              'sociedad'=> $sheet->getCell("D".$i)->getValue(),
+              'sociedad'=> $varSociedad,
               'ciudad'=> $varCiudad,
               'sector' => $varSector,
               'cliente' => $varCliente,
@@ -300,26 +311,29 @@ use Exception;
     public function actionEditarusu($id_directorcad){
         
         $model = DirectorioCad::findOne($id_directorcad);
-        
-        if($model->load(Yii::$app->request->post())){
-          Yii::$app->db->createCommand()->update('tbl_directorio_cad',[
-            'vicepresidente' => $model->vicepresidente,
-            'gerente' => $model->gerente,
-            'sociedad' => $model->sociedad,
-            'ciudad' => $model->ciudad,
-            'sector' => $model->sector,
-            'cliente' => $model->cliente, 
-            'tipo' => $model->tipo,
-            'tipo_canal' => $model->tipo_canal,
-            'otro_canal' => $model->otro_canal,
-            'fechacreacion' => date("Y-m-d"),                    
-            'anulado' => 0,
-            'usua_id' => Yii::$app->user->identity->id,
-            'proveedores' => $model->proveedores,
-            'nom_plataforma' => $model->nom_plataforma,
-            'directorprog' => $model->directorprog,
-          ])->execute(); 
-        }
+
+        $form = Yii::$app->request->post();
+        if ($model->load($form) ) { 
+          
+
+          Yii::$app->db->createCommand()->insert('tbl_directorio_cad',[
+                                    'vicepresidente' => $model->vicepresidente,
+                                    'gerente' => $model->gerente,
+                                    'sociedad' => $model->sociedad,
+                                    'ciudad' => $model->ciudad,
+                                    'sector' => $model->sector,
+                                    'cliente' => $model->cliente, 
+                                    'tipo' => $model->tipo,
+                                    'tipo_canal' => $model->tipo_canal,
+                                    'otro_canal' => $model->otro_canal,
+                                    'fechacreacion' => date("Y-m-d"),                    
+                                    'anulado' => 0,
+                                    'usua_id' => Yii::$app->user->identity->id,
+                                    'proveedores' => $model->proveedores,
+                                    'nom_plataforma' => $model->nom_plataforma,
+                                    'directorprog' => $model->directorprog,
+                                    ])->execute();
+                                  }
         
         return $this->render('editarusu',[
             'model' => $model
