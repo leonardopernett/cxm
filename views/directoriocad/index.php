@@ -13,10 +13,10 @@ use yii\bootstrap\Modal;
 use app\models\Dashboardcategorias;
 use app\models\Dashboardservicios;
 
-$this->title = 'Directorio Cad';
+$this->title = 'Directorio CAD';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->title = 'Directorio Cad';
+$this->title = 'Directorio CAD';
 
   $template = '<div class="col-md-12">'
   . ' {input}{error}{hint}</div>';
@@ -116,20 +116,10 @@ $this->title = 'Directorio Cad';
 
   $listData8 = ArrayHelper::map($varVicetwo, 'id_vicepresidentecad', 'nombre');
 
-  $varCantidadDirector = (new \yii\db\Query())
-              ->select(['directorprog'])
-              ->from(['tbl_directorio_cad'])
-              ->count(); 
-
-  $varCantidadProveedores = (new \yii\db\Query())
-              ->select(['proveedores'])
-              ->from(['tbl_directorio_cad'])
-              ->count(); 
-
   $varCantidades = (new \yii\db\Query())
               ->select(['COUNT(a.tipo )AS cantidad', 'a.tipo'])
               ->from(['tbl_clientesparametrizados_cad'])
-              ->join('LEFT OUTER JOIN', 'tbl_directorio_cad a',
+              ->join('LEFT OUTER JOIN','tbl_directorio_cad a',
               'a.cliente = tbl_clientesparametrizados_cad.cliente')
               ->groupBy(['a.tipo'])
               ->all(); 
@@ -150,7 +140,29 @@ $this->title = 'Directorio Cad';
     if ($value['tipo'] == '2') {
       $varCanal = ($value['cantidad']*100) / $varConteo;
     }
-  }     
+  }    
+  
+
+  $varCantidadDirector = (new \yii\db\Query())
+              ->select(['(SELECT DISTINCT(tbl_proceso_cliente_centrocosto.director_programa) FROM tbl_proceso_cliente_centrocosto
+                          WHERE 
+                          tbl_proceso_cliente_centrocosto.documento_director = tbl_directorio_cad.directorprog
+                          ) AS NombreDirector','tbl_directorio_cad.directorprog','COUNT(tbl_directorio_cad.cliente) AS cantidades'])
+              ->from(['tbl_directorio_cad'])
+              ->groupBy(['tbl_directorio_cad.directorprog'])
+              ->all(); 
+              
+  $varCantidadProveedores = (new \yii\db\Query())
+              ->select(['COUNT(tbl_directorio_cad.directorprog)AS cantidad','tbl_proveedores_cad.name AS name'])
+              ->from(['tbl_clientesparametrizados_cad'])
+              ->join('INNER JOIN','tbl_directorio_cad',
+                  'tbl_directorio_cad.cliente = tbl_clientesparametrizados_cad.cliente')
+              ->join('INNER JOIN','tbl_proveedores_cad',
+                  'tbl_proveedores_cad.id_proveedorescad = tbl_directorio_cad.proveedores')
+              ->groupBy(['tbl_directorio_cad.proveedores'])
+              ->all();
+
+
 
 ?>
 <style>
@@ -532,7 +544,7 @@ $this->title = 'Directorio Cad';
 
                                   <br><hr><br>
 
-                                  <div class="row">
+                                  <div class=row style="display:none;">
                                     <div class="col-md-6">
                                       <div class="card1 mb">
                                         <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #827DF9;"></em><?= Yii::t('app', ' Modulo Parametrizador') ?></label>
@@ -558,7 +570,7 @@ $this->title = 'Directorio Cad';
 
 
              <!-- Proceso de agregar usuarios  -->
-            <div id="Usuarios" class="w3-container city" style="display:inline;">
+            <div id="Usuarios" class="w3-container city" style="display:none;">
 
                 <br>
                 <div class="row">
@@ -732,7 +744,7 @@ $this->title = 'Directorio Cad';
             </div>
 
             <!-- Proceso ver y editar usuarios  -->
-            <div id="Ver" class="w3-container city" style="display:inline;">
+            <div id="Ver" class="w3-container city" style="display:none;">
 
                 <br>
                 <div class="row">
@@ -767,6 +779,18 @@ $this->title = 'Directorio Cad';
                                   <?php
                                     foreach ($varListaGeneral as $key => $value) {
                                     
+
+                                    $varEtapas = (new \yii\db\Query())
+                                                  ->select(['tbl_etapa_cad.nombre'])
+                                                  ->from(['tbl_etapamultiple_cad'])
+                                                  ->join('INNER JOIN','tbl_etapa_cad',
+                                                    'tbl_etapa_cad.id_etapacad = tbl_etapamultiple_cad.id_etapacad')
+                                                  ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                                                  ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',411])
+                                                  ->limit(1)
+                                                  ->scalar(); 
+
+
                                   ?>
                                     <tr>
                                       <td><label style="font-size: 12px;"><?php echo  $value['vicepresidente']; ?></label></td>
@@ -791,15 +815,7 @@ $this->title = 'Directorio Cad';
                                         <td><label style="font-size: 12px;">N/A</label></td>
                                       <?php  } ?>
                                       
-
-                                      <td class="text-center">
-
-                                      
-
-                                      </td>
-
-
-
+                                      <td><label style="font-size: 12px;"><?= Yii::t('app', $varEtapas) ?></label></td>
                                       <td class="text-center">
 
                                         <?= 
@@ -916,14 +932,14 @@ function openCity(evt, cityName) {
             }
         },
 
-        series: [              
-          
+        series:  [              
+            <?php   foreach ($varCantidadDirector as $key => $value) {?>
                 {
-                    name: "<?php echo 'Cantidad de Director';?>",
-                    data: [<?php echo $varCantidadDirector;?> ]                         
+                    name: "<?php echo $value['NombreDirector'];?>",
+                    data: [<?php echo $value['cantidades'];?> ]                         
                 },
-            
-        ],                
+            <?php   }   ?> 
+        ],              
     });
 
     $('#containerproveedor').highcharts({
@@ -952,10 +968,12 @@ function openCity(evt, cityName) {
         },
 
         series: [              
-                {
-                    name: "<?php echo 'Cantidad de Proveedores';?>",
-                    data: [<?php echo $varCantidadProveedores;?> ]                         
-                },
+              <?php   foreach ($varCantidadProveedores as $key => $value) {?>
+                    {
+                        name: "<?php echo $value['name'];?>",
+                        data: [<?php echo $value['cantidad'];?> ]                         
+                    },
+                <?php   }   ?> 
         ],                
     });
 
