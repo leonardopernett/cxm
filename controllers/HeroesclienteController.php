@@ -698,7 +698,7 @@ use Exception;
 
       $form = Yii::$app->request->post();
       if ($model->load($form)) {
-
+        
         Yii::$app->db->createCommand()->update('tbl_heroes_generalpostulacion',[
                     'fecha_interaccion' => $model->fecha_interaccion,    
                     'ext_interaccion' => $model->ext_interaccion,
