@@ -398,30 +398,32 @@ use Exception;
                 'directorprog' => $variddirector,
               ],'id_directorcad ='.$id_directorcad.'')->execute();
              
+              if ($model->etapa) {
+                foreach ($model->etapa as $key => $value) {
               
-              foreach ($model->etapa as $key => $value) {
-              
-                $varExiste = (new \yii\db\Query())
-                          ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
-                          ->from(['tbl_etapamultiple_cad'])
-                          ->where(['=','tbl_etapamultiple_cad.anulado',0])
-                          ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$id_directorcad])
-                          ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$value])
-                          ->count(); 
-
-              
-                     
-                if ($varExiste == 0) {
-                    Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
-                      'id_directorcad' => $id_directorcad,
-                      'id_etapacad' => $value,
-                      'fechacreacion' => date("Y-m-d"),                    
-                      'anulado' => 0,
-                      'usua_id' => Yii::$app->user->identity->id,
-                    ])->execute();
-                  }   
- 
+                  $varExiste = (new \yii\db\Query())
+                            ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
+                            ->from(['tbl_etapamultiple_cad'])
+                            ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                            ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$id_directorcad])
+                            ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$value])
+                            ->count(); 
+  
+                
+                       
+                  if ($varExiste == 0) {
+                      Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
+                        'id_directorcad' => $id_directorcad,
+                        'id_etapacad' => $value,
+                        'fechacreacion' => date("Y-m-d"),                    
+                        'anulado' => 0,
+                        'usua_id' => Yii::$app->user->identity->id,
+                      ])->execute();
+                    }   
+   
+                }
               }
+              
      
               return $this->redirect('index');
 
