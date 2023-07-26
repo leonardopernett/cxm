@@ -366,17 +366,19 @@ $this->title = 'Directorio Cad  - Editar';
                                                     ?>
                                               </tbody>
                                             </table>
+
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Ingrese la Sociedad:') ?></label> 
+                                            <?= $form->field($model, 'sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listData9,['prompt'=>'Seleccionar...', 'id' => 'sociedad'])?>
+                                
+                                            
                                        
                                         </div>
 
                                         <div class="col-md-6">
 
-                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Ingrese la Sociedad:') ?></label> 
-                                            <?= $form->field($model, 'sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listData9,['prompt'=>'Seleccionar...', 'id' => 'sociedad'])?>
-                                
                                             <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Ciudad:') ?></label> 
                                             <?= $form->field($model,'ciudad',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData7,['prompt'=>'Seleccionar...', 'id' => 'ciudad'])?>
-                                
+
                                             <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Sector:') ?></label> 
                                             <?= $form->field($model,'sector',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData2,['prompt'=>'Seleccionar...', 'id' => 'sector'])?>
             
@@ -402,6 +404,41 @@ $this->title = 'Directorio Cad  - Editar';
                                             <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Etapa:') ?></label> 
                                             <?= $form->field($model,'etapa',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData6,['prompt'=>'Seleccionar...', 'id' => 'etapa','multiple' => true])?>
 
+                                            <table id="tblDataEtapa" class="table table-striped table-bordered tblResDetFreed">
+                                              <caption>...</caption>
+                                              <thead>
+                                                <tr>
+                                                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Etapas') ?></label></th>
+                                                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Accion') ?></label></th>
+
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+
+                                              <?php
+                                                      $varDataEtapa = (new \yii\db\Query())
+                                                                      ->select(['tbl_etapa_cad.id_etapacad','tbl_etapa_cad.nombre AS Etapas','tbl_etapamultiple_cad.id_etapacad'])
+                                                                      ->from(['tbl_etapamultiple_cad'])
+                                                                      ->join('INNER JOIN','tbl_etapa_cad',
+                                                                      'tbl_etapa_cad.id_etapacad = tbl_etapamultiple_cad.id_etapacad ')
+                                                                      ->where(['=','tbl_etapamultiple_cad.id_directorcad',$id_directorcad])
+                                                                      ->andwhere(['=','tbl_etapamultiple_cad.anulado',0])
+                                                                      ->all();
+
+                                                      foreach ($varDataEtapa as $key => $value) {
+                                                                  ?>
+                                                           
+                                                  <tr>
+                                                    <td><label style="font-size: 12px;"><?php echo  $value['Etapas']; ?></label></td>
+                                                    <td class="text-center">
+                                                      <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['deletetapa','id_etapacad'=> $value['id_etapacad'], 'id_directorcad' =>$id_directorcad], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                                                    </td>
+                                                  </tr>
+                                                  <?php
+                                                      }
+                                                    ?>
+                                              </tbody>
+                                            </table>
 
                                     
                                 </div>  
@@ -435,7 +472,7 @@ $this->title = 'Directorio Cad  - Editar';
             <?= Html::submitButton(Yii::t('app', 'Guardar y Enviar'),
                                                           ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                                               'data-toggle' => 'tooltip',
-                                                              'onclick' => 'varVerificar();',
+                                                              'onclick' => 'varEnviar();',
                                                               'title' => 'Registro General']) 
                                                             //  die(json_encode($model));
             ?>
@@ -469,4 +506,10 @@ $this->title = 'Directorio Cad  - Editar';
       varBloque2.style.display='none';
     }
   }
+
+  function varEnviar(){
+  window.alert("Editado Correctamente");
+  }
+
+    
 </script>

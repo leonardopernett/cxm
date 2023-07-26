@@ -439,6 +439,7 @@ $this->title = 'Directorio CAD';
 <script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
 <script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
 <script src="../../js_extensions/datatables/buttons.print.min.js"></script>
+<script src="sweetalert2.all.min.js"></script>
 <script src="../../js_extensions/mijs.js"> </script>
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 
@@ -847,7 +848,7 @@ $this->title = 'Directorio CAD';
 
 <script>
 
-function openCity(evt, cityName) {
+  function openCity(evt, cityName) {
     var i, x, tablinks;
     x = document.getElementsByClassName("city");
     for (i = 0; i < x.length; i++) {
@@ -1037,7 +1038,11 @@ function openCity(evt, cityName) {
             return;
     }
 
-}
+    window.alert("Guardado Correctamente");
+    
+  }
+
+  
   
 </script>
             
