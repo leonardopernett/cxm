@@ -303,20 +303,20 @@ use Exception;
                 ])->execute(); 
 
                 $varDatos = (new \yii\db\Query())
-                ->select(['id_directorcad'])
-                ->from(['tbl_directorio_cad'])
-                ->where(['=','vicepresidente',$varVicepresidente])
-                ->andwhere(['=','gerente',$varGerente])
-                ->andwhere(['=','sociedad',$varSociedad])
-                ->andwhere(['=','ciudad',$varCiudad])
-                ->andwhere(['=','tipo',$varTipo])
-                ->andwhere(['=','tipo_canal',$varTipoCanal])
-                ->andwhere(['=','usua_id',Yii::$app->user->identity->id])
-                ->andwhere(['=','proveedores',$varProveedores])
-                ->andwhere(['=','directorprog',$varDirector])
-                ->andwhere(['=','sector',$varSector])
-                ->andwhere(['=','anulado',0])
-                ->scalar();
+                        ->select(['id_directorcad'])
+                        ->from(['tbl_directorio_cad'])
+                        ->where(['=','vicepresidente',$varVicepresidente])
+                        ->andwhere(['=','gerente',$varGerente])
+                        ->andwhere(['=','sociedad',$varSociedad])
+                        ->andwhere(['=','ciudad',$varCiudad])
+                        ->andwhere(['=','tipo',$varTipo])
+                        ->andwhere(['=','tipo_canal',$varTipoCanal])
+                        ->andwhere(['=','usua_id',Yii::$app->user->identity->id])
+                        ->andwhere(['=','proveedores',$varProveedores])
+                        ->andwhere(['=','directorprog',$varDirector])
+                        ->andwhere(['=','sector',$varSector])
+                        ->andwhere(['=','anulado',0])
+                        ->scalar();
 
                
 
@@ -326,9 +326,7 @@ use Exception;
                           'fechacreacion' => date("Y-m-d"),                    
                           'anulado' => 0,
                           'usua_id' => Yii::$app->user->identity->id,
-                        ])->execute();
-                    
-                              
+                        ])->execute();               
           }     
   }
 
@@ -371,6 +369,18 @@ use Exception;
                   ->scalar();
             }
 
+            $varidetapa = null;          
+            if ($model->etapa != '') {
+                $varidetapa = (new \yii\db\Query())
+                  ->select(['tbl_etapamultiple_cad.id_etapacad'])
+                  ->from(['tbl_etapamultiple_cad'])
+                  ->where(['=','tbl_etapamultiple_cad.id_directorcad',$id_directorcad])
+                  ->scalar();
+            }
+
+           
+
+
               Yii::$app->db->createCommand()->update('tbl_directorio_cad',[
                 'vicepresidente' => $model->vicepresidente,
                 'gerente' => $varidgerente,
@@ -387,7 +397,32 @@ use Exception;
                 'nom_plataforma' => $model->nom_plataforma,
                 'directorprog' => $variddirector,
               ],'id_directorcad ='.$id_directorcad.'')->execute();
+             
+              
+              foreach ($model->etapa as $key => $value) {
+              
+                $varExiste = (new \yii\db\Query())
+                          ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
+                          ->from(['tbl_etapamultiple_cad'])
+                          ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                          ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$id_directorcad])
+                          ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$value])
+                          ->count(); 
 
+              
+                     
+                if ($varExiste == 0) {
+                    Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
+                      'id_directorcad' => $id_directorcad,
+                      'id_etapacad' => $value,
+                      'fechacreacion' => date("Y-m-d"),                    
+                      'anulado' => 0,
+                      'usua_id' => Yii::$app->user->identity->id,
+                    ])->execute();
+                  }   
+ 
+              }
+     
               return $this->redirect('index');
 
           }else{
@@ -402,39 +437,25 @@ use Exception;
         ]);  
     }
 
-    public function actionDeletedirector($id_directorcad,$directorprog){
+     public function actionDeletetapa($id_directorcad,$id_etapacad){
       $varparametros = [
-        ':varid'=> $directorprog,
+        ':varid'=> $id_etapacad,
         ':vardirectorio'=> $id_directorcad
     ];
     Yii::$app->db->createCommand('
-          UPDATE tbl_directorio_cad SET directorprog = NULL
+          UPDATE tbl_etapamultiple_cad SET id_etapacad = NULL
             WHERE 
 
-            directorprog = :varid AND id_directorcad = :vardirectorio')
+            id_etapacad = :varid AND id_directorcad = :vardirectorio')
         ->bindValues($varparametros)
         ->execute();
 
     return $this->redirect(array('editarusu','id_directorcad'=>$id_directorcad));
     }
 
-    public function actionDeletegerente($id_directorcad,$gerente){
-      $varparametros = [
-        ':varid'=> $gerente,
-        ':vardirectorio'=> $id_directorcad
-    ];
-    Yii::$app->db->createCommand('
-          UPDATE tbl_directorio_cad SET gerente = NULL
-            WHERE 
+    
 
-            gerente = :varid AND id_directorcad = :vardirectorio')
-        ->bindValues($varparametros)
-        ->execute();
-
-    return $this->redirect(array('editarusu','id_directorcad'=>$id_directorcad));
-    }
-
-
+   
     public function actionListarpcrcindex(){
         $txtId = Yii::$app->request->get('id');
   
