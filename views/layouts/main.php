@@ -384,6 +384,11 @@ AppAsset::register($this);
                                                     'url' => ['/dashboardspeechdos/index'],
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerexterno(),
                                                 ],
+                                                [
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Valoración de Héroes por Cliente&nbsp;'),
+                                                    'url' => ['heroescliente/reportepostulacion'],
+                                                    'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isControlProcesoCX(),
+                                                ],  
                                             '<li class="divider"></li>',
                                             '<li class="dropdown-headercx2">&nbsp;Proteger y Mejorar</li>',
                                                 '<li class="dropdown-headercx ico1">&nbsp;Alertas&nbsp;&nbsp;</li>',
@@ -487,11 +492,6 @@ AppAsset::register($this);
                                                     'url' => ['/reportes/valorados'],
                                                     'visible' => Yii::$app->user->identity->isReportes()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast(),
                                                 ],
-                                                [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Héroes por Cliente&nbsp;'),
-                                                    'url' => ['heroescliente/reportepostulacion'],
-                                                    'visible' => Yii::$app->user->identity->isverAlertas() || Yii::$app->user->identity->isVerexterno()|| Yii::$app->user->identity->isVerdirectivo() || Yii::$app->user->identity->isVerusuatlmast() || Yii::$app->user->identity->isControlProcesoCX(),
-                                                ],  
                                                 [
                                                     'label' => Yii::t('app', '&nbsp;&nbsp;Hist&oacute;rico de Satisfacci&oacute;n&nbsp;&nbsp;'),
                                                     'url' => ['/reportes/historicosatisfaccion'],
