@@ -14,10 +14,10 @@ use yii\bootstrap\Modal;
 use app\models\Dashboardcategorias;
 use app\models\Dashboardservicios;
 
-$this->title = 'Directorio Cad';
+$this->title = 'Directorio Cad  - Editar';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->title = 'Directorio Cad';
+$this->title = 'Directorio Cad  - Editar';
 
   $template = '<div class="col-md-12">'
   . ' {input}{error}{hint}</div>';
@@ -59,29 +59,62 @@ $this->title = 'Directorio Cad';
   $varArrayConteoCliente = array();
   $varSectortwo = Yii::$app->db->createCommand("select * from tbl_sector_cad")->queryAll();
 
+  $varSectortwo = (new \yii\db\Query())
+                ->select(['id_sectorcad','nombre'])
+                ->from(['tbl_sector_cad'])
+                ->all(); 
+  
   $listData2 = ArrayHelper::map($varSectortwo, 'id_sectorcad', 'nombre');
 
-  $varProveedorestwo = Yii::$app->db->createCommand("select * from tbl_proveedores_cad")->queryAll();
+  $varProveedorestwo = (new \yii\db\Query())
+            ->select(['id_proveedorescad','name'])
+            ->from(['tbl_proveedores_cad'])
+            ->all(); 
 
   $listData3 = ArrayHelper::map($varProveedorestwo, 'id_proveedorescad', 'name');
 
-  $varTipotwo = Yii::$app->db->createCommand("select * from tbl_tipo_cad")->queryAll();
+
+  $varTipotwo = (new \yii\db\Query())
+            ->select(['id_tipocad','nombre'])
+            ->from(['tbl_tipo_cad'])
+            ->all(); 
 
   $listData4 = ArrayHelper::map($varTipotwo, 'id_tipocad', 'nombre');
 
-  $varTipoCanaltwo = Yii::$app->db->createCommand("select * from tbl_tipocanal_cad")->queryAll();
+
+  $varTipoCanaltwo = (new \yii\db\Query())
+            ->select(['id_tipocanalcad','nombre'])
+            ->from(['tbl_tipocanal_cad'])
+            ->all(); 
 
   $listData5 = ArrayHelper::map($varTipoCanaltwo, 'id_tipocanalcad', 'nombre');
 
-  $varEtapatwo = Yii::$app->db->createCommand("select * from tbl_etapa_cad")->queryAll();
+  
+  $varEtapatwo = (new \yii\db\Query())
+            ->select(['id_etapacad','nombre'])
+            ->from(['tbl_etapa_cad'])
+            ->all(); 
 
   $listData6 = ArrayHelper::map($varEtapatwo, 'id_etapacad', 'nombre');
 
-  $varCiudadtwo = Yii::$app->db->createCommand("select * from tbl_ciudad_cad")->queryAll();
+  $varSociedadtwo = (new \yii\db\Query())
+            ->select(['id_sociedadcad','nombre'])
+            ->from(['tbl_sociedad_cad'])
+            ->all(); 
+
+  $listData9 = ArrayHelper::map($varSociedadtwo, 'id_sociedadcad', 'nombre');
+
+  $varCiudadtwo = (new \yii\db\Query())
+            ->select(['id_ciudad_cad','nombre'])
+            ->from(['tbl_ciudad_cad'])
+            ->all(); 
 
   $listData7 = ArrayHelper::map($varCiudadtwo, 'id_ciudad_cad', 'nombre');
 
-  $varVicetwo = Yii::$app->db->createCommand("select * from tbl_vicepresidente_cad")->queryAll();
+  $varVicetwo = (new \yii\db\Query())
+            ->select(['id_vicepresidentecad','nombre'])
+            ->from(['tbl_vicepresidente_cad'])
+            ->all();
 
   $listData8 = ArrayHelper::map($varVicetwo, 'id_vicepresidentecad', 'nombre');
 
@@ -197,8 +230,8 @@ $this->title = 'Directorio Cad';
                                     
                                 <div class="col-md-6">
 
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Cliente:') ?></label> 
-                                    <?=  $form->field($model, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                                <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Cliente:') ?></label> 
+                                            <?=  $form->field($model, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                                             [
                                                               'id' => 'idinfocliente',
                                                               'prompt'=>'Seleccionar Servicio...',
@@ -221,19 +254,19 @@ $this->title = 'Directorio Cad';
                                                               ',
                                                             ]
                                               )->label(''); 
-                                            ?>                                
-                                        
+                                            ?> 
             
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Vicepresidente:') ?></label> 
-                                    <?= $form->field($model,'vicepresidente',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData8,['prompt'=>'Seleccionar...', 'id' => 'vicepresidente'])?>
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Vicepresidente:') ?></label> 
+                                            <?= $form->field($model,'vicepresidente',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData8,['prompt'=>'Seleccionar...', 'id' => 'vicepresidente'])?>
                                 
-                                                                 
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Director del Programa :') ?></label> 
-                                    <?= $form->field($model,'directorprog', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
+                                                                          
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Director del Programa:') ?></label> 
+                                            <?= $form->field($model,'directorprog', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
                                                 [],
                                                 [
                                                     'prompt' => 'Seleccionar Director...',
                                                     'id' => 'requester2',
+                                                    'multiple' => false,
                                                     'onclick' => '
                                                         
                                                         $.get(
@@ -248,12 +281,46 @@ $this->title = 'Directorio Cad';
                                                   )->label('');
                                               ?> 
 
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Gerente:') ?></label> 
-                                    <?= $form->field($model,'gerente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
+                                            <table id="tblDataDirector" class="table table-striped table-bordered tblResDetFreed">
+                                              <caption>...</caption>
+                                              <thead>
+                                                <tr>
+                                                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Director Programa') ?></label></th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+
+                                              <?php
+                                                      $varDataDirector = (new \yii\db\Query())
+                                                                      ->select(['cc.director_programa AS NombreDirector','dc.directorprog'])
+                                                                      ->from(['tbl_directorio_cad dc'])
+                                                                      ->join('INNER JOIN','tbl_proceso_cliente_centrocosto cc',
+                                                                      'dc.directorprog = cc.documento_director')
+                                                                      ->where(['=','dc.id_directorcad',$id_directorcad])
+                                                                      ->groupBy(['cc.documento_director'])
+                                                                      ->all();
+
+                                                      foreach ($varDataDirector as $key => $value) {
+                                                                  ?>
+                                                           
+                                                  <tr>
+                                                    <td><label style="font-size: 12px;"><?php echo  $value['NombreDirector']; ?></label></td>
+                                                                                                      
+                                                    </tr>
+                                                  <?php
+                                                      }
+                                                    ?>
+                                              </tbody>
+                                            </table>
+                                              
+                                              
+                                              <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Gerente:') ?></label> 
+                                            <?= $form->field($model,'gerente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
                                                 [],
                                                 [
                                                   'prompt' => 'Seleccionar Gerente...',
                                                   'id' => 'requester3',
+                                                  'multiple' => false,
                                                   'onclick' => '
                                                       
                                                       $.get(
@@ -267,42 +334,74 @@ $this->title = 'Directorio Cad';
                                                 ]
                                                   )->label('');
                                               ?>
-                                              
-                                    
 
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Ingrese la Sociedad:') ?></label> 
-                                    <?= $form->field($model, 'sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'sociedad', 'placeholder'=>'Seleccionar Sociedad...'])->label('') ?>
-                                
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Ciudad:') ?></label> 
-                                    <?= $form->field($model,'ciudad',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData7,['prompt'=>'Seleccionar...', 'id' => 'ciudad'])?>
-                                
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Sector:') ?></label> 
-                                    <?= $form->field($model,'sector',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData2,['prompt'=>'Seleccionar...', 'id' => 'sector'])?>
-                                
-                                   
+                                            <table id="tblDataGerente" class="table table-striped table-bordered tblResDetFreed">
+                                              <caption>...</caption>
+                                              <thead>
+                                                <tr>
+                                                  <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gerente') ?></label></th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
 
-                                </div>
+                                              <?php
+                                                      $varDataGerente = (new \yii\db\Query())
+                                                                      ->select(['cc.gerente_cuenta AS NombreGerente','dc.gerente'])
+                                                                      ->from(['tbl_directorio_cad dc'])
+                                                                      ->join('INNER JOIN','tbl_proceso_cliente_centrocosto cc',
+                                                                      'dc.gerente = cc.documento_gerente')
+                                                                      ->where(['=','dc.id_directorcad',$id_directorcad])
+                                                                      ->groupBy(['cc.documento_gerente'])
+                                                                      ->all();
 
-                                <div class="col-md-6">
+                                                      foreach ($varDataGerente as $key => $value) {
+                                                                  ?>
+                                                           
+                                                  <tr>
+                                                    <td><label style="font-size: 12px;"><?php echo  $value['NombreGerente']; ?></label></td>
+                                                    
+                                                  </tr>
+                                                  <?php
+                                                      }
+                                                    ?>
+                                              </tbody>
+                                            </table>
+                                       
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Ingrese la Sociedad:') ?></label> 
+                                            <?= $form->field($model, 'sociedad', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($listData9,['prompt'=>'Seleccionar...', 'id' => 'sociedad'])?>
+                                
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Ciudad:') ?></label> 
+                                            <?= $form->field($model,'ciudad',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData7,['prompt'=>'Seleccionar...', 'id' => 'ciudad'])?>
+                                
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Sector:') ?></label> 
+                                            <?= $form->field($model,'sector',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData2,['prompt'=>'Seleccionar...', 'id' => 'sector'])?>
             
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Tipo:') ?></label> 
-                                    <?= $form->field($model,'tipo',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData4,['prompt'=>'Seleccionar...', 'id' => 'tipo'])?>
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Tipo:') ?></label> 
+                                            <?= $form->field($model,'tipo',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData4,['prompt'=>'Seleccionar...', 'id' => 'tipo'])?>
                                 
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Tipo de Canal:') ?></label> 
-                                    <?= $form->field($model,'tipo_canal',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData5,['prompt'=>'Seleccionar...', 'id' => 'tipo_canal'])?>
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Seleccionar Tipo de Canal:') ?></label> 
+                                            <?= $form->field($model,'tipo_canal',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData5,['prompt'=>'Seleccionar...',"onchange" => 'varValidaOtros();','id' => 'tipo_canal'])?>
                                 
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Otro Canal:') ?></label> 
-                                    <?= $form->field($model, 'otro_canal', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'otro_canal', 'placeholder'=>'Otro Canal...'])->label('') ?>
+                                            <div id="IdBloque2" style="display:none;">
+                                              <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Otro Canal:') ?></label> 
+                                              <?= $form->field($model, 'otro_canal', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'otro_canal','placeholder'=>'Otro Canal...'])->label('') ?>
+                                            </div>
+                                            
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Proveedores:') ?></label> 
+                                            <?= $form->field($model,'proveedores',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData3,['prompt'=>'Seleccionar...',"onchange" => 'varValida();', 'id' => 'proveedores'])?>
                                 
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Proveedores:') ?></label> 
-                                    <?= $form->field($model,'proveedores',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData3,['prompt'=>'Seleccionar...',"onchange" => 'varValida();', 'id' => 'proveedores'])?>
-                                
-                                    <div id="IdBloque" style="display:none;">
-                                        <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Nombre de la Plataforma:') ?></label> 
-                                        <?= $form->field($model, 'nom_plataforma', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'nom_plataforma', 'placeholder'=>'Nombre de la Plataforma...'])->label('') ?>
-                                    </div>
-                                    <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Etapa:') ?></label> 
-                                    <?= $form->field($model,'etapa',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData6,['prompt'=>'Seleccionar...', 'id' => 'etapa','multiple' => true])?>
+                                            <div id="IdBloque" style="display:none;">
+                                              <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Nombre de la Plataforma:') ?></label> 
+                                              <?= $form->field($model, 'nom_plataforma', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 500, 'id' => 'nom_plataforma', 'placeholder'=>'Nombre de la Plataforma...'])->label('') ?>
+                                            </div>
+
+                                            <label style="font-size: 15px;"><em class="fas fa-arrow-right" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Etapa:') ?></label> 
+                                            <?= $form->field($model,'etapa',['labelOptions' => ['class'=>'col-md-12'],'template' => $template])->dropDownList($listData6,['prompt'=>'Seleccionar...', 'id' => 'etapa','multiple' => true])?>
+
 
                                     
                                 </div>  
@@ -358,5 +457,16 @@ $this->title = 'Directorio Cad';
     }
 
    
+  }
+
+  function varValidaOtros(){
+    var varidSeleccionarOtro = document.getElementById("tipo_canal").value;
+    var varBloque2 =  document.getElementById("IdBloque2");
+
+    if (varidSeleccionarOtro == "29") {
+      varBloque2.style.display='inline';
+    }else{
+      varBloque2.style.display='none';
+    }
   }
 </script>

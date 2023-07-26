@@ -211,7 +211,7 @@ AppAsset::register($this);
                                                 '<br>',
                                             '<li class="dropdown-headercx2">&nbsp;Procesos&nbsp;</li>',
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Directorio Cad&nbsp;&nbsp;'),
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Directorio CAD&nbsp;&nbsp;'),
                                                     'url' => ['/directoriocad/index'],
                                                     'visible' => Yii::$app->user->identity->isCuadroMando() || Yii::$app->user->identity->isAdminSistema() || Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerdirectivo(),
                                                 ],    

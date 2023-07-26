@@ -759,8 +759,8 @@ $this->title = 'Directorio CAD';
                                   <thead>
                                     <tr>
                                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Vicepresidente') ?></label></th>
-                                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gerente') ?></label></th>
                                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Director Programa') ?></label></th>
+                                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Gerente') ?></label></th>
                                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sociedad') ?></label></th>
                                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Ciudad') ?></label></th>
                                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Sector') ?></label></th>
@@ -786,12 +786,12 @@ $this->title = 'Directorio CAD';
                                                   ->join('INNER JOIN','tbl_etapa_cad',
                                                     'tbl_etapa_cad.id_etapacad = tbl_etapamultiple_cad.id_etapacad')
                                                   ->where(['=','tbl_etapamultiple_cad.anulado',0])
-                                                  ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',411])
+                                                  ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$value['id_directorcad']])
                                                   ->limit(1)
                                                   ->scalar(); 
-
-
+                                        
                                   ?>
+                                  
                                     <tr>
                                       <td><label style="font-size: 12px;"><?php echo  $value['vicepresidente']; ?></label></td>
                                       <td><label style="font-size: 12px;"><?php echo  $value['director_programa']; ?></label></td>
