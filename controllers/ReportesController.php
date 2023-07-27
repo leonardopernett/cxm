@@ -1051,7 +1051,7 @@ class ReportesController extends \yii\web\Controller {
                         'comentarios' => $varComentarios,
                         'fechacreacion' => date('Y-m-d'),
                         'anulado' => 0,
-                        'usua_id' => Yii::$app->user->identity->id,                                       
+                        'usua_id' => 1,                                       
                     ])->execute();      
 
                 }
