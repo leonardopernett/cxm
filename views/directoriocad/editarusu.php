@@ -472,7 +472,6 @@ $this->title = 'Directorio Cad  - Editar';
             <?= Html::submitButton(Yii::t('app', 'Guardar y Enviar'),
                                                           ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                                                               'data-toggle' => 'tooltip',
-                                                              'onclick' => 'varEnviar();',
                                                               'title' => 'Registro General']) 
                                                             //  die(json_encode($model));
             ?>
@@ -507,9 +506,7 @@ $this->title = 'Directorio Cad  - Editar';
     }
   }
 
-  function varEnviar(){
-  window.alert("Editado Correctamente");
-  }
+  
 
     
 </script>

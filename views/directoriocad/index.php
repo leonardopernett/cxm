@@ -978,7 +978,10 @@ $this->title = 'Directorio CAD';
         ],                
     });
 
-    
+    <?php  if(base64_decode(Yii::$app->request->get("varAlerta"))=== "1"){ ?>       
+      swal.fire("Información","Accion ejecutada Correctamente","success"); 
+    <?php }   ?> 
+
     function varVerificar() {
 
     var cliente = document.getElementById("idinfocliente").value;  
@@ -990,7 +993,7 @@ $this->title = 'Directorio CAD';
     var tipo_canal = document.getElementById("tipo_canal").value;  
     var proveedores = document.getElementById("proveedores").value;
     var etapa = document.getElementById("etapa").value;  
-
+   
 
     if (cliente == "") {
       event.preventDefault();
@@ -1038,7 +1041,8 @@ $this->title = 'Directorio CAD';
             return;
     }
 
-    window.alert("Guardado Correctamente");
+
+    
     
   }
 
