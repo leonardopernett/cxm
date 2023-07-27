@@ -73,6 +73,8 @@ use Exception;
       $model = new DirectorioCad();
       $modelo = new EtapamultipleCad();
 
+      $varAlerta = 0;
+
       $varListaGeneral = (new \yii\db\Query())                                                                    
                               ->select(['tbl_directorio_cad.id_directorcad','tbl_vicepresidente_cad.nombre AS vicepresidente','tbl_proceso_cliente_centrocosto.director_programa',
                               'tbl_proceso_cliente_centrocosto.gerente_cuenta','tbl_sociedad_cad.nombre AS sociedad','tbl_ciudad_cad.nombre AS ciudad', 
@@ -154,19 +156,24 @@ use Exception;
                    ])->execute();
               }
       
-          return $this->redirect(['index']);
-        }
+            $varAlerta = 1;
+
+            return $this->redirect(['index','varAlerta' => base64_encode($varAlerta)]);        
+          }
                
         return $this->render('index',[
             'model' => $model,
             'varListaGeneral' => $varListaGeneral,
-            
+            'varAlerta' => $varAlerta,            
         ]);
 
     }
 
     public function actionSubircarga(){
 
+
+        $varAlerta = 0;
+        
         $model = new FormUploadtigo();        
 
       if ($model->load(Yii::$app->request->post())) {
@@ -182,7 +189,9 @@ use Exception;
                 $file->saveAs('categorias/' . $name . '.' . $file->extension);
                 $this->Importardirectorio($name);
 
-                return $this->redirect(array('index'));
+                $varAlerta = 1;    
+              
+                return $this->redirect(['index','varAlerta' => base64_encode($varAlerta)]);
             }
         }
       }
@@ -196,6 +205,7 @@ use Exception;
 
     public function Importardirectorio($name){
 
+     
       $inputFile = 'categorias/' . $name . '.xlsx';
 
       try {
@@ -326,8 +336,14 @@ use Exception;
                           'fechacreacion' => date("Y-m-d"),                    
                           'anulado' => 0,
                           'usua_id' => Yii::$app->user->identity->id,
-                        ])->execute();               
+                        ])->execute();   
+
+                  
+
           }     
+
+          
+
   }
 
     public function actionEditarusu($id_directorcad){
@@ -335,6 +351,8 @@ use Exception;
         $model = DirectorioCad::findOne($id_directorcad);
 
         $id_directorcad = $id_directorcad;
+        $varAlerta = 0;
+
 
         $form = Yii::$app->request->post();
         if ($model->load($form) ) { 
@@ -378,9 +396,6 @@ use Exception;
                   ->scalar();
             }
 
-           
-
-
               Yii::$app->db->createCommand()->update('tbl_directorio_cad',[
                 'vicepresidente' => $model->vicepresidente,
                 'gerente' => $varidgerente,
@@ -422,13 +437,13 @@ use Exception;
                     }   
    
                 }
-              }
-              
-     
-              return $this->redirect('index');
+              }            
+              $varAlerta = 1;
 
+            return $this->redirect(['index','varAlerta' => base64_encode($varAlerta)]);         
           }else{
-            return $this->redirect('index');
+
+            return $this->redirect(['index','varAlerta' => base64_encode($varAlerta)]);    
           }          
           
         }
