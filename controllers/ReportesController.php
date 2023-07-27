@@ -21,7 +21,7 @@ class ReportesController extends \yii\web\Controller {
                 },
                         'rules' => [
                             [
-                                'actions' => ['feedbackexpressamigo', 'historicoformulariosamigo', 'historicoencuestasamigo', 'alertasamigo'],
+                                'actions' => ['feedbackexpressamigo', 'historicoformulariosamigo', 'historicoencuestasamigo', 'alertasamigo','viewfeedback','confirmacionfeedback'],
                                 'allow' => true,
                             ],
                             [
@@ -33,7 +33,7 @@ class ReportesController extends \yii\web\Controller {
                                     'usuariolist', 'valorados', 'variables',
                                     'updatefeedbackcm', 'declinaciones', 'satisfaccion',
                                     'controlsatisfaccion', 'historicosatisfaccion', 'dimensionlist', 'evaluadolistmultiple',
-                                    'getarboles', 'rollistmultiple', 'reportesegundocalificador'],
+                                    'getarboles', 'rollistmultiple', 'reportesegundocalificador','viewfeedback','confirmacionfeedback'],
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function() {
@@ -877,7 +877,7 @@ class ReportesController extends \yii\web\Controller {
              * 
              * @return string
              */
-            public function actionFeedbackexpressamigo($evaluado_usuared) {
+            public function actionFeedbackexpressamigo_old($evaluado_usuared) {
                 $model = new \app\models\Ejecucionfeedbacks();
                 $modelEvaluado = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
                 $id_evaluado = (isset($modelEvaluado->id)) ? $modelEvaluado->id : '';
@@ -912,6 +912,152 @@ class ReportesController extends \yii\web\Controller {
                             'model' => $model,
                             'dataProvider' => $dataProvider,
                             'showGrid' => $showGrid]);
+            }
+
+            /**
+             * Se genera cambio al nuevo proceso de feedback para los asesores
+             * 
+             * @return string
+             */
+            public function actionFeedbackexpressamigo($evaluado_usuared) {
+                $model = new \app\models\Ejecucionfeedbacks();
+                $varListAsesor = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
+                $varMensaje = 0;
+                $varDataList = null;
+                $varNameJarvis = null;
+
+                if ($varListAsesor) {
+                    $varIdAsesor = $varListAsesor->id;
+                    $varDocumentos = [':varDocumentoName'=>$varListAsesor->identificacion];
+
+                    $varNameJarvis = Yii::$app->dbjarvis->createCommand('
+                        SELECT dp_datos_generales.primer_nombre FROM dp_datos_generales
+                        WHERE 
+                          dp_datos_generales.documento = :varDocumentoName
+                        GROUP BY dp_datos_generales.documento ')->bindValues($varDocumentos)->queryScalar();
+
+
+                    $form = Yii::$app->request->post();
+                    if ($model->load($form)) {
+                        $varFecha_BD = explode(" ", $model->created);
+
+                        $varFechaInicio_BD = $varFecha_BD[0].' 00:00:00';
+                        $varFechaFin_BD = date('Y-m-d',strtotime($varFecha_BD[2])).' 23:59:59';
+
+
+                        $varDataList = (new \yii\db\Query())
+                                        ->select([
+                                            'tbl_ejecucionfeedbacks.id',
+                                            'tbl_ejecucionfeedbacks.created',
+                                            'if(tbl_ejecucionfeedbacks.snaviso_revisado=0,"No","Si") AS Gestionado',
+                                            'tbl_usuarios.usua_nombre AS Valorador',
+                                            '(SELECT tbl_usuarios.usua_nombre FROM tbl_usuarios WHERE tbl_usuarios.usua_id = tbl_ejecucionformularios.usua_id_lider) AS Lider',
+                                            'tbl_evaluados.name AS Asesor',
+                                            'tbl_arbols.name AS Formulario',
+                                            'tbl_ejecucionformularios.id  AS Formid',
+                                            'tbl_ejecucionformularios.basesatisfaccion_id'
+                                        ])
+                                        ->from(['tbl_ejecucionfeedbacks'])
+                                        ->join('LEFT OUTER JOIN', 'tbl_ejecucionformularios',
+                                              'tbl_ejecucionformularios.id = tbl_ejecucionfeedbacks.ejecucionformulario_id')
+                                        ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                              'tbl_evaluados.id = tbl_ejecucionformularios.evaluado_id')
+                                        ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                              'tbl_usuarios.usua_id = tbl_ejecucionformularios.usua_id')
+                                        ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                              'tbl_arbols.id = tbl_ejecucionformularios.arbol_id')
+                                        ->where(['between','tbl_ejecucionfeedbacks.created',$varFechaInicio_BD,$varFechaFin_BD])
+                                        ->andwhere(['=','tbl_ejecucionformularios.evaluado_id',$varIdAsesor])
+                                        ->all(); 
+                    }
+
+
+
+                }else{
+                    $varListAdministrativo = \app\models\Usuarios::findOne(['usua_usuario' => base64_decode($evaluado_usuared)]);
+
+                    if ($varListAdministrativo) {
+                        $varDocumentosAdmin = [':varDocumentoNameAdmin'=>$varListAdministrativo->usua_identificacion];
+
+                        $varNameJarvis = Yii::$app->dbjarvis->createCommand('
+                        SELECT dp_datos_generales.primer_nombre FROM dp_datos_generales
+                        WHERE 
+                          dp_datos_generales.documento = :varDocumentoNameAdmin
+                        GROUP BY dp_datos_generales.documento ')->bindValues($varDocumentosAdmin)->queryScalar();
+
+                        $varMensaje = 2;
+                    }else{
+                        $varMensaje = 1;
+                    }
+                }
+
+
+                return $this->render('feedback-amigo', [
+                    'model' => $model,
+                    'varMensaje' => $varMensaje,
+                    'varNameJarvis' => $varNameJarvis,
+                    'varDataList' => $varDataList,
+                    'evaluado_usuared' => $evaluado_usuared,
+                ]);
+            }
+
+            public function actionViewfeedback($idfeedback){
+
+                $varViewsFeedbacks = (new \yii\db\Query())
+                                        ->select([
+                                            'tbl_ejecucionfeedbacks.feaccion_correctiva', 
+                                            'tbl_categoriafeedbacks.name as namecategoria', 
+                                            'tbl_tipofeedbacks.name as nametipo', 
+                                            'tbl_ejecucionfeedbacks.dscausa_raiz',
+                                            'tbl_ejecucionfeedbacks.dscompromiso',
+                                            'tbl_ejecucionfeedbacks.dscomentario',
+                                            'tbl_ejecucionfeedbacks.dsaccion_correctiva'
+                                        ])
+                                        ->from(['tbl_ejecucionfeedbacks'])
+                                        ->join('LEFT OUTER JOIN', 'tbl_tipofeedbacks',
+                                              'tbl_tipofeedbacks.id = tbl_ejecucionfeedbacks.tipofeedback_id')
+                                        ->join('LEFT OUTER JOIN', 'tbl_categoriafeedbacks',
+                                              'tbl_categoriafeedbacks.id = tbl_tipofeedbacks.categoriafeedback_id')
+                                        ->where(['=','tbl_ejecucionfeedbacks.id',$idfeedback])
+                                        ->all(); 
+
+                return $this->renderAjax('viewfeedback',[
+                    'varViewsFeedbacks' => $varViewsFeedbacks,
+                ]);
+            }
+
+            public function actionConfirmacionfeedback($id_feedacks,$idConfirma,$evaluado_usuared){
+                
+                $varVerificar = (new \yii\db\Query())
+                                ->select([
+                                    'tbl_ejecucion_compromisofeedback.id_compromisofeedback'
+                                ])
+                                ->from(['tbl_ejecucion_compromisofeedback'])
+                                ->where(['=','tbl_ejecucion_compromisofeedback.id_feeback',$id_feedacks])
+                                ->count(); 
+
+                if ($varVerificar == "0") {
+
+                    $varComentarios = null;
+                    if ($idConfirma == "1") {
+                        $varComentarios = "No Confirma";
+                    }else{
+                        $varComentarios = "Si Confirma";
+                    }
+
+                    Yii::$app->db->createCommand()->insert('tbl_ejecucion_compromisofeedback',[
+                        'id_feeback' => $id_feedacks,
+                        'confirmacion' => $idConfirma,
+                        'comentarios' => $varComentarios,
+                        'fechacreacion' => date('Y-m-d'),
+                        'anulado' => 0,
+                        'usua_id' => Yii::$app->user->identity->id,                                       
+                    ])->execute();      
+
+                }
+
+                return $this->redirect(array('feedbackexpressamigo','evaluado_usuared'=>$evaluado_usuared));
+                
             }
 
             public function actionHistoricoformulariosamigo($evaluado_usuared) {
