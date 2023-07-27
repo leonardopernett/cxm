@@ -974,7 +974,21 @@ class ReportesController extends \yii\web\Controller {
 
 
                 }else{
-                    $varMensaje = 1;
+                    $varListAdministrativo = \app\models\Usuarios::findOne(['usua_usuario' => base64_decode($evaluado_usuared)]);
+
+                    if ($varListAdministrativo) {
+                        $varDocumentosAdmin = [':varDocumentoNameAdmin'=>$varListAdministrativo->usua_identificacion];
+
+                        $varNameJarvis = Yii::$app->dbjarvis->createCommand('
+                        SELECT dp_datos_generales.primer_nombre FROM dp_datos_generales
+                        WHERE 
+                          dp_datos_generales.documento = :varDocumentoNameAdmin
+                        GROUP BY dp_datos_generales.documento ')->bindValues($varDocumentosAdmin)->queryScalar();
+
+                        $varMensaje = 2;
+                    }else{
+                        $varMensaje = 1;
+                    }
                 }
 
 

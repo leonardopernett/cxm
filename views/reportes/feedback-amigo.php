@@ -165,11 +165,11 @@ if ($varMensaje != 1) {
             <div class="card1 mb">
                 
                 <div class="row">
-                    <div class="col-md-2" align="text-center">
+                    <div class="col-md-2 text-center">
                         <label style="font-size: 15px;"><em class="fas fa-thumbs-up" style="font-size: 40px; color: #C148D0;"></em></label>
                     </div>
 
-                    <div class="col-md-10" align="left">
+                    <div class="col-md-10 left">
                         <label style="font-size: 15px;"><?= Yii::t('app', ' ¡ Hola '.$varNameJarvis.' ! Te comentamos que puedes consultar tus procesos de feedback que te han ingresado. Selecciona un rango de fecha y dale clic en el botón buscar, allí el sistema te mostrará tus feedbacks.') ?></label>
                     </div>
                 </div> 
@@ -180,11 +180,11 @@ if ($varMensaje != 1) {
                 if ($varDataList != null) {
                 ?>
                 <div class="row">
-                    <div class="col-md-2" align="text-center">
+                    <div class="col-md-2 text-center">
                         <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 40px; color: #C148D0;"></em></label>
                     </div>
 
-                    <div class="col-md-10" align="left">
+                    <div class="col-md-10 left">
                         <label style="font-size: 15px;"><?= Yii::t('app', ' Actualmente y de acuerdo a la búsqueda que realizaste, tienes un total de '.count($varDataList).' feedbacks.') ?></label>
                     </div>
                 </div> 
@@ -369,13 +369,26 @@ if ($varDataList != null) {
             <div class="card1 mb">
 
                 <div class="row">
-                    <div class="col-md-2" align="text-center">
+                    <div class="col-md-2 text-center">
                         <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 50px; color: #C148D0;"></em></label>
                     </div>
 
-                    <div class="col-md-10" align="left">
-                        <label style="font-size: 15px;"><?= Yii::t('app', ' Importante: el usuario que esta tratando de ingresar no existe en nuestra base de datos de CXM. Por favor generar la validación con el administrador de la herramienta.') ?></label>
-                    </div>
+                    <?php
+                    if ($varMensaje == 2) {
+                        
+                    ?>
+                        <div class="col-md-10 left">
+                            <label style="font-size: 15px;"><?= Yii::t('app', ' ¡ Hola '.$varNameJarvis.' ! Te comentamos que puedes el actual módulo esta diseñado para que los asesores vean sus correspondiente feedbacks. Tú rol en CXM es administrativo por lo tanto no puedes ver los feedbacks.') ?></label>
+                        </div>
+                    <?php
+                    }else{
+                    ?>
+                        <div class="col-md-10 left">
+                            <label style="font-size: 15px;"><?= Yii::t('app', ' Importante: el usuario que esta tratando de ingresar no existe en nuestra base de datos de CXM. Por favor generar la validación con el administrador de la herramienta.') ?></label>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>          
 
             </div>        
