@@ -181,6 +181,39 @@ class Ejecucionfeedbacks extends \yii\db\ActiveRecord {
     }
 
     /**
+     * Metodo que permite obtener una respuesta sobre el asesor de confirmar el feedback
+     * 
+     * @param int $opcion Opciones de gestionado
+     * 
+     * @return string
+     * @author Andersson Moreno <anmorenoa@konecta-group.com>
+     * @copyright 2023 - Konecta
+     * @license http://www.opensource.org/licenses/bsd-license.php  BSD License
+     * @version Release: $Id$
+     */
+    public function getConfirma($opcion) {
+        if (!is_null($opcion)) {
+
+            $varList =  (new \yii\db\Query())
+                        ->select([
+                            'tbl_ejecucion_compromisofeedback.comentarios'
+                        ])
+                        ->from(['tbl_ejecucion_compromisofeedback'])
+                        ->where(['=','tbl_ejecucion_compromisofeedback.id_feeback',$opcion])
+                        ->scalar(); 
+            
+            if ($varList != "" || $varList != null) {
+                return $varList;
+            }else{
+                $varList = '--';
+                return $varList;
+            }
+            
+        }
+        return '';
+    }
+
+    /**
      * Metodo que permite la busqueda en el reporte de 
      * feebacks
      *      

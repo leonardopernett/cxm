@@ -510,6 +510,12 @@ $template = '<div class="col-md-4">{label}</div><div class="col-md-8">'
                 'attribute' => 'arbol_id',
                 'value' => 'arbol_id'
             ],
+            [
+                'attribute' => 'Asesor Confirma Feedback',
+                'value' => function($data) {
+                    return $data->getConfirma($data->id);
+                }
+            ],
             'basessatisfaccion_id',            
                 ];
 
