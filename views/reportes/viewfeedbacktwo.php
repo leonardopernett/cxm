@@ -19,18 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
   $template = '<div class="col-md-12">'
   . ' {input}{error}{hint}</div>';
 
-  $sessiones = Yii::$app->user->identity->id;
-
-  $rol =  new Query;
-  $rol    ->select(['tbl_roles.role_id'])
-          ->from('tbl_roles')
-          ->join('LEFT OUTER JOIN', 'rel_usuarios_roles',
-                    'tbl_roles.role_id = rel_usuarios_roles.rel_role_id')
-          ->join('LEFT OUTER JOIN', 'tbl_usuarios',
-                  'rel_usuarios_roles.rel_usua_id = tbl_usuarios.usua_id')
-          ->where(['=','tbl_usuarios.usua_id',$sessiones]);                      
-  $command = $rol->createCommand();
-  $roles = $command->queryScalar();
 
 ?>
 <style>
