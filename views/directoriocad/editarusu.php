@@ -482,7 +482,12 @@ $this->title = 'Directorio Cad  - Editar';
 
 <script>
 
-    function varValida(){
+  <?php  if(base64_decode(Yii::$app->request->get("varAlerta_No"))=== "1"){ ?>       
+      swal.fire("Aviso","No cumple con los criterios establecidos","warning"); 
+  <?php }   ?> 
+
+  
+  function varValida(){
     var varidSeleccionar = document.getElementById("proveedores").value;
     var varBloque =  document.getElementById("IdBloque");
 
@@ -491,9 +496,9 @@ $this->title = 'Directorio Cad  - Editar';
     }else{
       varBloque.style.display='none';
     }
-
-   
+    
   }
+  
 
   function varValidaOtros(){
     var varidSeleccionarOtro = document.getElementById("tipo_canal").value;
@@ -506,7 +511,10 @@ $this->title = 'Directorio Cad  - Editar';
     }
   }
 
-  
+  addEventListener("DOMContentLoaded",(event)  => {
+    varValida();
+  })
+
 
     
 </script>
