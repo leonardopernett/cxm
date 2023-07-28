@@ -117,11 +117,9 @@ $this->title = 'Directorio CAD';
   $listData8 = ArrayHelper::map($varVicetwo, 'id_vicepresidentecad', 'nombre');
 
   $varCantidades = (new \yii\db\Query())
-              ->select(['COUNT(a.tipo )AS cantidad', 'a.tipo'])
-              ->from(['tbl_clientesparametrizados_cad'])
-              ->join('LEFT OUTER JOIN','tbl_directorio_cad a',
-              'a.cliente = tbl_clientesparametrizados_cad.cliente')
-              ->groupBy(['a.tipo'])
+              ->select(['count(tipo) as cantidad','tipo'])
+              ->from(['tbl_directorio_cad'])
+              ->groupBy(['tipo'])
               ->all(); 
 
   $varConteo = (new \yii\db\Query())
@@ -147,18 +145,17 @@ $this->title = 'Directorio CAD';
               ->select(['(SELECT DISTINCT(tbl_proceso_cliente_centrocosto.director_programa) FROM tbl_proceso_cliente_centrocosto
                           WHERE 
                           tbl_proceso_cliente_centrocosto.documento_director = tbl_directorio_cad.directorprog
-                          ) AS NombreDirector','tbl_directorio_cad.directorprog','COUNT(tbl_directorio_cad.cliente) AS cantidades'])
+                          ) AS NombreDirector','tbl_directorio_cad.directorprog','COUNT(tbl_directorio_cad.cliente) AS cantidadesD'])
               ->from(['tbl_directorio_cad'])
               ->groupBy(['tbl_directorio_cad.directorprog'])
               ->all(); 
               
   $varCantidadProveedores = (new \yii\db\Query())
-              ->select(['COUNT(tbl_directorio_cad.directorprog)AS cantidad','tbl_proveedores_cad.name AS name'])
-              ->from(['tbl_clientesparametrizados_cad'])
-              ->join('INNER JOIN','tbl_directorio_cad',
-                  'tbl_directorio_cad.cliente = tbl_clientesparametrizados_cad.cliente')
-              ->join('INNER JOIN','tbl_proveedores_cad',
-                  'tbl_proveedores_cad.id_proveedorescad = tbl_directorio_cad.proveedores')
+              ->select(['(SELECT DISTINCT(tbl_proveedores_cad.name) FROM tbl_proveedores_cad
+                          WHERE
+                          tbl_proveedores_cad.id_proveedorescad = tbl_directorio_cad.proveedores
+                          ) AS Proveedores','tbl_directorio_cad.proveedores','COUNT(tbl_directorio_cad.proveedores) AS cantidadesP'])
+              ->from(['tbl_directorio_cad'])
               ->groupBy(['tbl_directorio_cad.proveedores'])
               ->all();
 
@@ -897,6 +894,8 @@ $this->title = 'Directorio CAD';
     }
   }
 
+  
+
     function varValidaOtros(){
     var varidSeleccionarOtro = document.getElementById("tipo_canal").value;
     var varBloque2 =  document.getElementById("IdBloque2");
@@ -937,13 +936,13 @@ $this->title = 'Directorio CAD';
             <?php   foreach ($varCantidadDirector as $key => $value) {?>
                 {
                     name: "<?php echo $value['NombreDirector'];?>",
-                    data: [<?php echo $value['cantidades'];?> ]                         
+                    data: [<?php echo $value['cantidadesD'];?> ]                         
                 },
             <?php   }   ?> 
         ],              
-    });
+  });
 
-    $('#containerproveedor').highcharts({
+  $('#containerproveedor').highcharts({
         chart: {                
             type: 'column'
         },
@@ -971,15 +970,19 @@ $this->title = 'Directorio CAD';
         series: [              
               <?php   foreach ($varCantidadProveedores as $key => $value) {?>
                     {
-                        name: "<?php echo $value['name'];?>",
-                        data: [<?php echo $value['cantidad'];?> ]                         
+                        name: "<?php echo $value['Proveedores'];?>",
+                        data: [<?php echo $value['cantidadesP'];?> ]                         
                     },
                 <?php   }   ?> 
         ],                
-    });
+  });
 
-    <?php  if(base64_decode(Yii::$app->request->get("varAlerta"))=== "1"){ ?>       
+    <?php  if(base64_decode(Yii::$app->request->get("varAlerta")) === "1"){ ?>       
       swal.fire("Información","Accion ejecutada Correctamente","success"); 
+    <?php }
+    
+    if(base64_decode(Yii::$app->request->get("varAlerta")) === "2"){?>
+      swal.fire("Aviso","No cumple con los criterios establecidos","warning");
     <?php }   ?> 
 
     function varVerificar() {
