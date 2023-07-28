@@ -515,6 +515,8 @@ $this->title = 'Directorio Cad  - Editar';
     varValida();
   })
 
-
+  <?php if(base64_decode(Yii::$app->request->get("varAlerta")) === "2"){?>
+      swal.fire("Aviso","No cumple con los criterios establecidos","warning");
+    <?php }   ?>
     
 </script>

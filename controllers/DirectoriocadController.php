@@ -443,7 +443,7 @@ use Exception;
             return $this->redirect(['index','varAlerta' => base64_encode($varAlerta)]);         
           }else{
             $varAlerta = 2;
-            return $this->redirect(['index','varAlerta' => base64_encode($varAlerta)]);    
+            return $this->redirect(['editarusu','varAlerta' => base64_encode($varAlerta),'id_directorcad' => $id_directorcad]);    
           }          
           
         }
