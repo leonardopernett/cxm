@@ -1040,9 +1040,9 @@ class ReportesController extends \yii\web\Controller {
 
                     $varComentarios = null;
                     if ($idConfirma == "1") {
-                        $varComentarios = "No Confirma";
+                        $varComentarios = "No Certifica";
                     }else{
-                        $varComentarios = "Si Confirma";
+                        $varComentarios = "Si Certifica";
                     }
 
                     Yii::$app->db->createCommand()->insert('tbl_ejecucion_compromisofeedback',[
