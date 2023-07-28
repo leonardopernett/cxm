@@ -516,7 +516,7 @@ $this->title = 'Directorio Cad  - Editar';
   })
 
   <?php if(base64_decode(Yii::$app->request->get("varAlerta")) === "2"){?>
-      swal.fire("Aviso","No cumple con los criterios establecidos","warning");
+      swal.fire("Aviso","No cumple con los criterios establecidos, No tiene permitido modificar el Cliente","warning");
     <?php }   ?>
     
 </script>
