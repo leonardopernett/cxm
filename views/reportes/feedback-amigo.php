@@ -221,7 +221,7 @@ if ($varDataList != null) {
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Asesor') ?></label></th>
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Formulario') ?></label></th>
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Feedback') ?></label></th>
-                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Confirma que conoce los compromisos adquiridos en este feedback?') ?></label></th>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', '¿Certifica que este feedback fue gestionado por ti, en compañia de alguno de estos roles técnico/tutor/lider?') ?></label></th>
                           <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                         </tr>
                     </thead>
@@ -272,9 +272,9 @@ if ($varDataList != null) {
                                     if ($varValida == 0) {
                                         
                                 ?>
-                                    <?= Html::a('<em class="fas fa-thumbs-down" style="font-size: 15px; color: #FC4343;"></em>',  ['confirmacionfeedback','id_feedacks'=>$value['id'],'idConfirma'=> 1,'evaluado_usuared'=>$evaluado_usuared], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'No Confirma']) ?>
+                                    <?= Html::a('<em class="fas fa-thumbs-down" style="font-size: 15px; color: #FC4343;"></em>',  ['confirmacionfeedback','id_feedacks'=>$value['id'],'idConfirma'=> 1,'evaluado_usuared'=>$evaluado_usuared], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'No Certifica']) ?>
 
-                                    <?= Html::a('<em class="fas fa-thumbs-up" style="font-size: 15px; color: #2cdc5a;"></em>',  ['confirmacionfeedback','id_feedacks'=>$value['id'],'idConfirma'=> 2,'evaluado_usuared'=>$evaluado_usuared], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Confirmar']) ?>
+                                    <?= Html::a('<em class="fas fa-thumbs-up" style="font-size: 15px; color: #2cdc5a;"></em>',  ['confirmacionfeedback','id_feedacks'=>$value['id'],'idConfirma'=> 2,'evaluado_usuared'=>$evaluado_usuared], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Si Certifica']) ?>
 
                                 <?php
                                     }else{
