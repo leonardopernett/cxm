@@ -198,6 +198,12 @@ use Exception;
       $form = Yii::$app->request->post();
       if ($model->load($form)) {
         $varArbol = $model->arbol_id;
+        $varCliente = (new \yii\db\Query())
+                        ->select(['tbl_arbols.arbol_id'])
+                        ->from(['tbl_arbols'])
+                        ->where(['=','tbl_arbols.id',$varArbol])
+                        ->groupby(['tbl_arbols.arbol_id'])
+                        ->scalar();
         $varFechaGeneral = explode(" ", $model->fechacreacion);
         $varFechaInicio = $varFechaGeneral[0].'T00:00:00';
         $varFechaFinal = $varFechaGeneral[2].'T23:59:59';
@@ -257,52 +263,59 @@ use Exception;
           
           if ($varPaginadoTotal != 0) {
 
-            for ($i=0; $i < $varPaginadoTotal; $i++) { 
-              $varStart = $i.'0'.$i;
-              $varLimit = ($i + 1).'00';
+            if ($varPaginadoTotal > 1) {
+              for ($i=0; $i < $varPaginadoTotal; $i++) { 
+                $varStart = $i.'0'.$i;
+                $varLimit = ($i + 1).'00';
 
-                  ob_start();
-                  $curlEncuestas = curl_init();
+                    ob_start();
+                    $curlEncuestas = curl_init();
 
-                  curl_setopt_array($curlEncuestas, array(
-                    CURLOPT_SSL_VERIFYPEER=> false,
-                    CURLOPT_SSL_VERIFYHOST => false,
-                    CURLOPT_URL => 'https://app.feebak.com/v1/dataexport/interactions?organisationId=39',
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS =>'{
-                      "FromDate": "'.$varFechaInicio.'",
-                      "ToDate": "'.$varFechaFinal.'",
-                      "Start": '.$varStart.',
-                      "Limit": '.$varLimit.',
-                      "Completed": true,
-                      "Queueidentifiers": ["'.$varListadoColas.'"]
-                    }',
-                    CURLOPT_HTTPHEADER => array(
-                      'Content-Type: application/json',
-                      'Authorization: Basic VVU0UkpQbUt1SFhVTnRramFPU0ZFdnY6SEhmb2Q2bXFOMjdYZUhwWjIyWTh1aEVE'
-                    ),
-                  ));
+                    curl_setopt_array($curlEncuestas, array(
+                      CURLOPT_SSL_VERIFYPEER=> false,
+                      CURLOPT_SSL_VERIFYHOST => false,
+                      CURLOPT_URL => 'https://app.feebak.com/v1/dataexport/interactions?organisationId=39',
+                      CURLOPT_RETURNTRANSFER => true,
+                      CURLOPT_ENCODING => '',
+                      CURLOPT_MAXREDIRS => 10,
+                      CURLOPT_TIMEOUT => 0,
+                      CURLOPT_FOLLOWLOCATION => true,
+                      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                      CURLOPT_CUSTOMREQUEST => 'POST',
+                      CURLOPT_POSTFIELDS =>'{
+                        "FromDate": "'.$varFechaInicio.'",
+                        "ToDate": "'.$varFechaFinal.'",
+                        "Start": '.$varStart.',
+                        "Limit": '.$varLimit.',
+                        "Completed": true,
+                        "Queueidentifiers": ["'.$varListadoColas.'"]
+                      }',
+                      CURLOPT_HTTPHEADER => array(
+                        'Content-Type: application/json',
+                        'Authorization: Basic VVU0UkpQbUt1SFhVTnRramFPU0ZFdnY6SEhmb2Q2bXFOMjdYZUhwWjIyWTh1aEVE'
+                      ),
+                    ));
 
-                  $responseEncuestas = curl_exec($curlEncuestas);
+                    $responseEncuestas = curl_exec($curlEncuestas);
 
-                  curl_close($curlEncuestas);
-                  ob_clean();
-                  $varListaEncuestas = json_decode($responseEncuestas,true);
-                  
-               
-              
-                 if(is_array($varListaEncuestas['Data']) || is_object($varListaEncuestas['Data']) ){
-                   foreach ($varListaEncuestas['Data'] as $value) {
-                     array_push($varArrayEncuestas, array("AgentNames"=>$value['AgentName'],"AddDates"=>$value['AddedDate'],"QueueNames"=>$value['QueueName'],"ConversationIDs"=>$value['ConversationID'],"Answer1s"=>$value['Answers'][0]['Answer'],"Answer2s"=>$value['Answers'][1]['Answer'],"Answer3s"=>$value['Answers'][2]['Answer']));
+                    curl_close($curlEncuestas);
+                    ob_clean();
+                    $varListaEncuestas = json_decode($responseEncuestas,true);
+
+                    if(is_array($varListaEncuestas['Data']) || is_object($varListaEncuestas['Data']) ){
+                     foreach ($varListaEncuestas['Data'] as $value) {
+                       array_push($varArrayEncuestas, array("AgentNames"=>$value['AgentName'],"AddDates"=>$value['AddedDate'],"QueueNames"=>$value['QueueName'],"ConversationIDs"=>$value['ConversationID'],"Answer1s"=>$value['Answers'][0]['Answer'],"Answer2s"=>$value['Answers'][1]['Answer'],"Answer3s"=>$value['Answers'][2]['Answer']));
+                     }
                    }
-                 }
+              }
+            }else{
+              if(is_array($varTotalPaginado['Data']) || is_object($varTotalPaginado['Data']) ){
+                foreach ($varTotalPaginado['Data'] as $value) {
+                  array_push($varArrayEncuestas, array("AgentNames"=>$value['AgentName'],"AddDates"=>$value['AddedDate'],"QueueNames"=>$value['QueueName'],"ConversationIDs"=>$value['ConversationID'],"Answer1s"=>$value['Answers'][0]['Answer'],"Answer2s"=>$value['Answers'][1]['Answer'],"Answer3s"=>$value['Answers'][2]['Answer']));
+                }
+              }
             }
+            
             
             $varPreguntas = (new \yii\db\Query())
                         ->select(['tbl_preguntas.enunciado_pre'])
@@ -310,6 +323,7 @@ use Exception;
                         ->join('LEFT OUTER JOIN', 'tbl_parametrizacion_encuesta',
                                   'tbl_preguntas.id_parametrizacion = tbl_parametrizacion_encuesta.id')
                         ->where(['=','tbl_parametrizacion_encuesta.programa',$varArbol])
+                        ->andwhere(['=','tbl_parametrizacion_encuesta.cliente',$varCliente])
                         ->andwhere(['!=','tbl_preguntas.categoria',8])
                         ->all();
 
