@@ -221,7 +221,7 @@ $this->params['breadcrumbs'][] = $this->title;
       <br>
 
       <div class="card1 mb">
-        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Descarga Proceso') ?></label>
+        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Descarga Proceso') ?></label>
         <a id="dlink" style="display:none;"></a>
         <button  class="btn btn-info" style="background-color: #4298B4" id="btn"><?= Yii::t('app', ' Descargar') ?></button>
       </div>
@@ -254,7 +254,7 @@ $this->params['breadcrumbs'][] = $this->title;
           ?>
             <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #C148D0;"></em> <?= Yii::t('app', ' Listado de Encuestas') ?></label>
             <table id="tblDataEncuestas" class="table table-striped table-bordered tblResDetFreed">
-              <caption><?= Yii::t('app', 'Resultados '.$varNombreArbol) ?></caption>
+              <caption><?= Yii::t('app', ' Resultados de '.$varNombreArbol.'...') ?></caption>
               <thead>
                 <tr>
                   <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 12px;"><?= Yii::t('app', 'Connid') ?></label></th>
@@ -272,46 +272,47 @@ $this->params['breadcrumbs'][] = $this->title;
               </thead>
               <tbody>
                 <?php
-                  $varConteo = 0;
-                  foreach ($varArrayEncuestas as $key => $value) {
-                    $varNombreAgente = $value['AgentNames'];
+                $varConteo = 0;
+                foreach ($varArrayEncuestas as $value) {
+                  $varNombreAgente = $value['AgentNames'];
 
-                    // Se genera procesos para el detalle de Año, Mes, Dia y Hora
-                    $varAnnioGNS = date("Y",strtotime($value['AddDates']));
-                    $varMesGNS = date("m",strtotime($value['AddDates']));
-                    $vardiaGNS = substr($value['AddDates'], 8, -14);
+                  // Se genera procesos para el detalle de Año, Mes, Dia y Hora
+                  $varAnnioGNS = date("Y",strtotime($value['AddDates']));
+                  $varMesGNS = date("m",strtotime($value['AddDates']));
+                  $vardiaGNS = substr($value['AddDates'], 8, -14);
 
-                    $varReplaceHour = str_replace("T", " ", $value['AddDates']);
-                    $varHoraGNS = substr($varReplaceHour, 11, -11).date("is",strtotime($varReplaceHour));
+                  $varReplaceHour = str_replace("T", " ", $value['AddDates']);
+                  $varHoraGNS = substr($varReplaceHour, 11, -11).date("is",strtotime($varReplaceHour));
 
-                    $varTiempoInteraccion = $varAnnioGNS."-".$varMesGNS."-".$vardiaGNS." ".substr($varReplaceHour, 11, -11).date(":i:s",strtotime($varReplaceHour));
+                  $varTiempoInteraccion = $varAnnioGNS."-".$varMesGNS."-".$vardiaGNS." ".substr($varReplaceHour, 11, -11).date(":i:s",strtotime($varReplaceHour));
 
-                    $varNombreCola = $value['QueueNames'];
+                  $varNombreCola = $value['QueueNames'];
 
-                    $varConnid = $value['ConversationIDs'];
+                  $varConnid = $value['ConversationIDs'];
 
-                    // Se genera proceso para repartir las preguntas  
-                    $varPreguntas_Uno = $value['Answer1s'];
-                    $varPreguntas_Dos = $value['Answer2s'];
-                    $varPreguntas_Tres = $value['Answer3s'];
                 ?>
                   <tr>
                     <td><label style="font-size: 11px;"><?php echo  " ".$varConnid; ?></label></td>
                     <td><label style="font-size: 11px;"><?php echo  " ".$varNombreAgente; ?></label></td>
                     <td><label style="font-size: 11px;"><?php echo  " ".$varTiempoInteraccion; ?></label></td>
                     <td><label style="font-size: 11px;"><?php echo  " ".$varNombreCola; ?></label></td>
-                    <td><label style="font-size: 11px;"><?php echo  " ".$varPreguntas_Uno; ?></label></td>
-                    <td><label style="font-size: 11px;"><?php echo  " ".$varPreguntas_Dos; ?></label></td>
-                    <td><label style="font-size: 11px;"><?php echo  " ".$varPreguntas_Tres; ?></label></td>
+                    <?php
+                    for ($i=0; $i < count($varPreguntas); $i++) { 
+                      $varSumatoria = $i + 1;
+                    ?>
+                    <td><label style="font-size: 11px;"><?php echo  " ".$value['Answer'.$varSumatoria.'s']; ?></label></td>
+                    <?php
+                    }
+                    ?>
                   </tr>
                 <?php
-                  }
                 }
                 ?>
               </tbody>
             </table>
 
         <?php
+            }
           }
         ?>
       </div>
@@ -322,9 +323,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <hr>
 
+
 <?php ActiveForm::end(); ?>
 
 <script type="text/javascript">
+    $(document).ready( function () {
+        $('#tblDataEncuestas').DataTable({
+          responsive: true,
+          fixedColumns: true,
+          select: true,
+          "language": {
+            "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
+            "zeroRecords": "No se encontraron datos ",
+            "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+            "infoEmpty": "No hay datos aun",
+            "infoFiltered": "(Filtrado un _MAX_ total)",
+            "search": "Buscar:",
+            "paginate": {
+              "first":      "Primero",
+              "last":       "Ultimo",
+              "next":       "Siguiente",
+              "previous":   "Anterior"
+            }
+          } 
+        });
+    });
+
+
     var tableToExcel = (function () {
         var uri = 'data:application/vnd.ms-excel;base64,',
             template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
@@ -359,41 +384,20 @@ $this->params['breadcrumbs'][] = $this->title;
     var btn = document.getElementById("btn");
     btn.addEventListener("click",download);
 
-  $(document).ready( function () {
-        $('#tblDataEncuestas').DataTable({
-          responsive: true,
-          fixedColumns: true,
-          select: true,
-          "language": {
-            "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
-            "zeroRecords": "No se encontraron datos ",
-            "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
-            "infoEmpty": "No hay datos aun",
-            "infoFiltered": "(Filtrado un _MAX_ total)",
-            "search": "Buscar:",
-            "paginate": {
-              "first":      "Primero",
-              "last":       "Ultimo",
-              "next":       "Siguiente",
-              "previous":   "Anterior"
-            }
-          } 
-        });
-  });
 
-  function varVerficar(){
-    var varidvarArbol = document.getElementById("idvarArbol").value;
-    var varfecha = document.getElementById("genesysformularios-fechacreacion").value;
+    function varVerficar(){
+      var varidvarArbol = document.getElementById("idvarArbol").value;
+      var varfecha = document.getElementById("genesysformularios-fechacreacion").value;
 
-    if (varidvarArbol == "") {
-      event.preventDefault();
-      swal.fire("!!! Advertencia !!!","Debe de seleccionar el Programa/Pcrc","warning");
-      return;
+      if (varidvarArbol == "") {
+        event.preventDefault();
+        swal.fire("!!! Advertencia !!!","Debe de seleccionar el Programa/Pcrc","warning");
+        return;
+      }
+      if (varfecha == "") {
+        event.preventDefault();
+        swal.fire("!!! Advertencia !!!","Debe de seleccionar un rango de fecha","warning");
+        return;
+      }
     }
-    if (varfecha == "") {
-      event.preventDefault();
-      swal.fire("!!! Advertencia !!!","Debe de seleccionar un rango de fecha","warning");
-      return;
-    }
-  }
 </script>
