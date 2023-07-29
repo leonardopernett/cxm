@@ -224,7 +224,7 @@ use Exception;
           $varListadoColas = implode('", "', $varArrayColas);
 
           // Primera accion se obtiene la cantidad de datos a utilizar
-          ob_start();
+          // Se comenta esta parte que permite generar la accion de inicializar el proceso ob_start();
           $curlPaginado = curl_init();
 
           curl_setopt_array($curlPaginado, array(
@@ -268,7 +268,7 @@ use Exception;
                 $varStart = $i.'0'.$i;
                 $varLimit = ($i + 1).'00';
 
-                    ob_start();
+                    // Se comenta esta parte que permite generar la accion de inicializar el proceso ob_start();
                     $curlEncuestas = curl_init();
 
                     curl_setopt_array($curlEncuestas, array(

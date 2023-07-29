@@ -69,7 +69,7 @@ use GuzzleHttp;
 
     public function actionApignsencuestas(){
       
-      ob_start();
+    //   ob_start();
 
       $curl = curl_init();
 
@@ -105,7 +105,7 @@ use GuzzleHttp;
 
       $varListaDatos = json_decode($response,true); 
 
-      var_dump($varListaDatos);
+      var_dump($response);
       die(json_encode("Aqui vamos"));
     }
 
