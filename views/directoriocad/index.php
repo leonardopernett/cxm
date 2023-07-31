@@ -117,26 +117,43 @@ $this->title = 'Directorio CAD';
   $listData8 = ArrayHelper::map($varVicetwo, 'id_vicepresidentecad', 'nombre');
 
   $varCantidades = (new \yii\db\Query())
-              ->select(['count(tipo) as cantidad','tipo'])
+              ->select(['COUNT(tipo) as cantidad','tipo'])
               ->from(['tbl_directorio_cad'])
               ->groupBy(['tipo'])
               ->all(); 
 
-  $varConteo = (new \yii\db\Query())
+  $canClientes = (new \yii\db\Query())
               ->select(['*'])
               ->from(['tbl_directorio_cad'])
-              ->count();  
-  
+              ->count();
+
+  $varTotalCAD = (new \yii\db\Query())
+              ->select(['count(distinct(cliente))'])
+              ->from(['tbl_directorio_cad'])
+              ->scalar();
+              
+  $canRedes  = (new \yii\db\Query())
+              ->select(['tipo'])
+              ->from(['tbl_directorio_cad'])
+              ->where(['=','tipo',1])
+              ->count();
+
+  $canCanales = (new \yii\db\Query())
+              ->select(['tipo'])
+              ->from(['tbl_directorio_cad'])
+              ->where(['=','tipo',2])
+              ->count();
+
   $varCanal = 0;
   $varRedes = 0;
 
   foreach ($varCantidades as $key => $value) {
     
     if ($value['tipo'] == '1') {
-      $varRedes = ($value['cantidad']*100) / $varConteo;
+      $varRedes = ($canRedes / $canClientes) * 100;
     }
     if ($value['tipo'] == '2') {
-      $varCanal = ($value['cantidad']*100) / $varConteo;
+      $varCanal = ($canCanales / $canClientes) * 100;
     }
   }    
   
@@ -500,7 +517,7 @@ $this->title = 'Directorio CAD';
                                       <div class="card1 mb">
 
                                         <label style="font-size: 15px;"><em class="fas fa-hashtag" style="font-size: 22px; color: #827DF9;"></em><?= Yii::t('app', ' Total CAD') ?></label>
-                                        <label style="font-size: 30px;" class="text-center"><?= Yii::t('app', $varConteo) ?></label>
+                                        <label style="font-size: 30px;" class="text-center"><?= Yii::t('app', $varTotalCAD) ?></label>
 
                                       </div>
                                     </div>

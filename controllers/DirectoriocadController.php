@@ -110,6 +110,7 @@ use Exception;
       if ($model->load($form) ) { 
         
         Yii::$app->db->createCommand()->insert('tbl_directorio_cad',[
+
                                   'vicepresidente' => $model->vicepresidente,
                                   'gerente' => $model->gerente,
                                   'sociedad' => $model->sociedad,
@@ -126,7 +127,7 @@ use Exception;
                                   'nom_plataforma' => $model->nom_plataforma,
                                   'directorprog' => $model->directorprog
                                   ])->execute();
-
+                                                         
           $varDatos = (new \yii\db\Query())
                             ->select(['id_directorcad'])
                             ->from(['tbl_directorio_cad'])
@@ -288,11 +289,7 @@ use Exception;
               ->where(['LIKE','tbl_proveedores_cad.name','%' . trim($sheet->getCell("K".$i)->getValue()) . '%',false])
               ->scalar();
 
-          $varEtapa = (new \yii\db\Query())
-              ->select(['tbl_etapa_cad.id_etapacad'])
-              ->from(['tbl_etapa_cad'])
-              ->where(['LIKE','tbl_etapa_cad.nombre','%' . trim($sheet->getCell("M".$i)->getValue()) . '%',false])
-              ->scalar();
+         
 
             Yii::$app->db->createCommand()->insert('tbl_directorio_cad',[
               'vicepresidente' => $varVicepresidente,
@@ -312,7 +309,7 @@ use Exception;
               'anulado'=> 0,
                 ])->execute(); 
 
-                $varDatos = (new \yii\db\Query())
+              $varDatos = (new \yii\db\Query())
                         ->select(['id_directorcad'])
                         ->from(['tbl_directorio_cad'])
                         ->where(['=','vicepresidente',$varVicepresidente])
@@ -328,21 +325,174 @@ use Exception;
                         ->andwhere(['=','anulado',0])
                         ->scalar();
 
+              $varEtapa1 = (new \yii\db\Query())
+                        ->select(['tbl_etapa_cad.id_etapacad'])
+                        ->from(['tbl_etapa_cad'])
+                        ->where(['LIKE','tbl_etapa_cad.nombre','%' . trim($sheet->getCell("M".$i)->getValue()) . '%',false])
+                        ->groupBy(['tbl_etapa_cad.id_etapacad'])
+                        ->scalar();
+          
+              $varEtapa2 = (new \yii\db\Query())
+                        ->select(['tbl_etapa_cad.id_etapacad'])
+                        ->from(['tbl_etapa_cad'])
+                        ->where(['LIKE','tbl_etapa_cad.nombre','%' . trim($sheet->getCell("N".$i)->getValue()) . '%',false])
+                        ->groupBy(['tbl_etapa_cad.id_etapacad'])
+                        ->scalar();
+          
+              $varEtapa3 = (new \yii\db\Query())
+                        ->select(['tbl_etapa_cad.id_etapacad'])
+                        ->from(['tbl_etapa_cad'])
+                        ->where(['LIKE','tbl_etapa_cad.nombre','%' . trim($sheet->getCell("O".$i)->getValue()) . '%',false])
+                        ->groupBy(['tbl_etapa_cad.id_etapacad'])
+                        ->scalar();
+          
+              $varEtapa4 = (new \yii\db\Query())
+                        ->select(['tbl_etapa_cad.id_etapacad'])
+                        ->from(['tbl_etapa_cad'])
+                        ->where(['LIKE','tbl_etapa_cad.nombre','%' . trim($sheet->getCell("P".$i)->getValue()) . '%',false])
+                        ->groupBy(['tbl_etapa_cad.id_etapacad'])
+                        ->scalar();
+          
+              $varEtapa5 = (new \yii\db\Query())
+                        ->select(['tbl_etapa_cad.id_etapacad'])
+                        ->from(['tbl_etapa_cad'])
+                        ->where(['LIKE','tbl_etapa_cad.nombre','%' . trim($sheet->getCell("Q".$i)->getValue()) . '%',false])
+                        ->groupBy(['tbl_etapa_cad.id_etapacad'])
+                        ->scalar();
+
+              $varEtapa6 = (new \yii\db\Query())
+                        ->select(['tbl_etapa_cad.id_etapacad'])
+                        ->from(['tbl_etapa_cad'])
+                        ->where(['LIKE','tbl_etapa_cad.nombre','%' . trim($sheet->getCell("R".$i)->getValue()) . '%',false])
+                        ->groupBy(['tbl_etapa_cad.id_etapacad'])
+                        ->scalar();
+
+              $varExiste1 = (new \yii\db\Query())
+                        ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
+                        ->from(['tbl_etapamultiple_cad'])
+                        ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$varDatos])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$varEtapa1])
+                        ->count();
+               
+              if ($varExiste1 == 0) {
+                if (trim($sheet->getCell("M".$i)->getValue()) != "") {
+                  Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
+                    'id_directorcad' => $varDatos,
+                    'id_etapacad' => $varEtapa1,
+                    'fechacreacion' => date("Y-m-d"),                    
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                  ])->execute();
+
+                }
+              }
+
+              $varExiste2 = (new \yii\db\Query())
+                        ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
+                        ->from(['tbl_etapamultiple_cad'])
+                        ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$varDatos])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$varEtapa2])
+                        ->count();
+
+              if ($varExiste2 == 0) {
+                if (trim($sheet->getCell("N".$i)->getValue()) != "") {
+                  Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
+                    'id_directorcad' => $varDatos,
+                    'id_etapacad' => $varEtapa2,
+                    'fechacreacion' => date("Y-m-d"),                    
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                  ])->execute();
+                }
+              }
+
+              $varExiste3 = (new \yii\db\Query())
+                        ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
+                        ->from(['tbl_etapamultiple_cad'])
+                        ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$varDatos])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$varEtapa3])
+                        ->count();
+
+              if ($varExiste3 == 0) {
+                if (trim($sheet->getCell("O".$i)->getValue())!= "") {
+                  Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
+                    'id_directorcad' => $varDatos,
+                    'id_etapacad' => $varEtapa3,
+                    'fechacreacion' => date("Y-m-d"),                    
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                  ])->execute();
+                }
+              }
+
+              $varExiste4 = (new \yii\db\Query())
+                        ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
+                        ->from(['tbl_etapamultiple_cad'])
+                        ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$varDatos])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$varEtapa4])
+                        ->count();
+
+              if ($varExiste4 == 0) {
+                if (trim($sheet->getCell("P".$i)->getValue()) != "") {
+                  Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
+                    'id_directorcad' => $varDatos,
+                    'id_etapacad' => $varEtapa4,
+                    'fechacreacion' => date("Y-m-d"),                    
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                  ])->execute();
+                }
+              } 
+
+              $varExiste5 = (new \yii\db\Query())
+                        ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
+                        ->from(['tbl_etapamultiple_cad'])
+                        ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$varDatos])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$varEtapa5])
+                        ->count();
+
+              if ($varExiste5 == 0) {
+                if (trim($sheet->getCell("Q".$i)->getValue()) != "") {
+                  Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
+                    'id_directorcad' => $varDatos,
+                    'id_etapacad' => $varEtapa5,
+                    'fechacreacion' => date("Y-m-d"),                    
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                  ])->execute();
+                }
+              }  
+
+              $varExiste6 = (new \yii\db\Query())
+                        ->select(['tbl_etapamultiple_cad.id_etapamultiplecad'])
+                        ->from(['tbl_etapamultiple_cad'])
+                        ->where(['=','tbl_etapamultiple_cad.anulado',0])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_directorcad',$varDatos])
+                        ->andwhere(['=','tbl_etapamultiple_cad.id_etapacad',$varEtapa6])
+                        ->count();
+
+              if ($varExiste6 == 0) {
+                if (trim($sheet->getCell("R".$i)->getValue()) != "") {
+                  Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
+                    'id_directorcad' => $varDatos,
+                    'id_etapacad' => $varEtapa6,
+                    'fechacreacion' => date("Y-m-d"),                    
+                    'anulado' => 0,
+                    'usua_id' => Yii::$app->user->identity->id,
+                  ])->execute();
+                }
+              }
+               
                
 
-                  Yii::$app->db->createCommand()->insert('tbl_etapamultiple_cad',[
-                          'id_directorcad' => $varDatos,
-                          'id_etapacad' => $varEtapa,
-                          'fechacreacion' => date("Y-m-d"),                    
-                          'anulado' => 0,
-                          'usua_id' => Yii::$app->user->identity->id,
-                        ])->execute();   
-
-                  
+                 
 
           }     
-
-          
 
   }
 
@@ -471,8 +621,6 @@ use Exception;
     }
 
     
-
-   
     public function actionListarpcrcindex(){
         $txtId = Yii::$app->request->get('id');
   
