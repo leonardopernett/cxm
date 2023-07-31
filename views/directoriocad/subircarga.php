@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="card1 mb">
                             <label><em class="fas fa-download" style="font-size: 20px; color: #C31CB4;"></em><?= Yii::t('app', '  Descargar Plantilla') ?></label>
                             <br><br>
-                            <a style=" background-color: #337ab7" class="btn btn-success" rel="stylesheet" type="text/css" href="..\..\downloadfiles\PlantillaDirectorioCAD_CargaMasiva.xlsx" title="Descagar Plantilla" target="_blank"> Descargar Plantilla</a>  
+                            <a style=" background-color: #337ab7" class="btn btn-success" rel="stylesheet" type="text/css" href="..\..\downloadfiles\PlantillaDirectorioCADA_CargaMasiva.xlsx" title="Descagar Plantilla" target="_blank"> Descargar Plantilla</a>  
                         </div>
                     </div>
 
