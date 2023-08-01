@@ -76,23 +76,29 @@ use Exception;
       $varAlerta = 0;
 
       $varListaGeneral = (new \yii\db\Query())                                                                    
-                              ->select(['tbl_directorio_cad.id_directorcad','tbl_vicepresidente_cad.nombre AS vicepresidente','tbl_proceso_cliente_centrocosto.director_programa',
-                              'tbl_proceso_cliente_centrocosto.gerente_cuenta','tbl_sociedad_cad.nombre AS sociedad','tbl_ciudad_cad.nombre AS ciudad', 
-                              'tbl_sector_cad.nombre AS sector','tbl_proceso_cliente_centrocosto.cliente',
+                              ->select(['tbl_directorio_cad.id_directorcad',
+                              'tbl_vicepresidente_cad.nombre AS vicepresidente',
+                              'pd.director_programa',
+                              'pg.gerente_cuenta',
+                              'tbl_sociedad_cad.nombre AS sociedad',
+                              'tbl_ciudad_cad.nombre AS ciudad',
+                              'tbl_sector_cad.nombre AS sector',
+                              'pg.cliente',
                               'tbl_tipo_cad.nombre AS tipo','tbl_tipocanal_cad.nombre AS tipo_canal','tbl_directorio_cad.otro_canal',
                               'tbl_proveedores_cad.name AS proveedores','tbl_directorio_cad.nom_plataforma','tbl_directorio_cad.id_directorcad',
-                              '(SELECT DISTINCT(tbl_proceso_cliente_centrocosto.cliente)FROM tbl_proceso_cliente_centrocosto 
-                              WHERE tbl_proceso_cliente_centrocosto.estado = 1 AND tbl_proceso_cliente_centrocosto.id_dp_clientes = tbl_directorio_cad.cliente) AS cliente'
+                              'pg.cliente'
                               ])
                               ->from(['tbl_directorio_cad'])  
                               ->join('INNER JOIN','tbl_vicepresidente_cad',
                               'tbl_vicepresidente_cad.id_vicepresidentecad = tbl_directorio_cad.vicepresidente')
                               ->join('INNER JOIN','tbl_ciudad_cad',
                               'tbl_ciudad_cad.id_ciudad_cad  = tbl_directorio_cad.ciudad')
-                              ->join('INNER JOIN','tbl_proceso_cliente_centrocosto',
-                              'tbl_proceso_cliente_centrocosto.documento_director = tbl_directorio_cad.directorprog and 
-                              tbl_proceso_cliente_centrocosto.documento_gerente = tbl_directorio_cad.gerente
-                              ')  
+                              ->join('INNER JOIN','tbl_proceso_cliente_centrocosto pd',
+                              'pd.documento_director = tbl_directorio_cad.directorprog
+                              AND pd.estado = 1') 
+                              ->join('INNER JOIN','tbl_proceso_cliente_centrocosto pg',
+                              'pg.documento_gerente = tbl_directorio_cad.gerente
+                              AND pg.estado = 1') 
                               ->join('INNER JOIN','tbl_sector_cad',
                               'tbl_sector_cad.id_sectorcad = tbl_directorio_cad.sector')    
                               ->join('INNER JOIN','tbl_tipo_cad',
