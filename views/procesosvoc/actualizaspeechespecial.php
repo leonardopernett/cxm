@@ -165,13 +165,12 @@ $this->registerJs(
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <table class="center">
-                <caption><?= Yii::t('app', '.') ?></caption>
+                <table align="center">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center"><div class="loader"></div></th>
-                            <th scope="col" ><?= Yii::t('app', '') ?></th>
-                            <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Actualizando llamadas de speech, por favor espere...') ?></h4></th>
+                            <th class="text-center"><div class="loader"></div></th>
+                            <th><?= Yii::t('app', '') ?></th>
+                            <th class="text-justify"><h4><?= Yii::t('app', 'Actualizando llamadas de speech, por favor espere...') ?></h4></th>
                         </tr>            
                     </thead>
                 </table>
