@@ -18,6 +18,7 @@ use yii\base\Exception;
  * @property string $email
  * @property integer $usua_id
  * @property string $fechacreacion
+ * @property int|null $es_operativo
  *
  * @property TblEjecucionformularios[] $tblEjecucionformularios
  * @property TblEquiposEvaluados[] $tblEquiposEvaluados
@@ -42,9 +43,10 @@ class Evaluados extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
+            [['usua_activo'], 'string'],
             [['identificacion', 'name', 'dsusuario_red'], 'required'],
             [['email'], 'email'],
-            [['usua_id'], 'integer'],
+            [['usua_id', 'es_operativo'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['evaluado_id'], 'required', 'on' => 'monitoreo'],
             [['name', 'email'], 'string', 'max' => 150],
@@ -77,6 +79,8 @@ class Evaluados extends \yii\db\ActiveRecord {
             'evaluado_id' => Yii::t('app', 'Evaluado ID'),
             'usua_id' => Yii::t('app', ''),
             'fechacreacion' => Yii::t('app', ''),
+            'es_operativo' => Yii::t('app', ''),
+            'usua_activo' => Yii::t('app', 'Usua Activo'),
         ];
     }
 
@@ -189,7 +193,9 @@ class Evaluados extends \yii\db\ActiveRecord {
                 unset($model['evaluado_id']);
                 unset($model['nmumbral_verde']);
                 unset($model['nmumbral_amarillo']);
-                unset($model['usua_id']);                
+                unset($model['usua_id']);
+                unset($model['es_operativo']);     
+                unset($model['usua_activo']);           
                 foreach ($model as $value) {
                     $objPHPexcel->getActiveSheet()->setCellValue($column . '' . $row, $value);
                     $column++;
