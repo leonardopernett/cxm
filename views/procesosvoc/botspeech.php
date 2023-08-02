@@ -34,6 +34,7 @@ $this->title = 'Procesos Voc - Speech a CXM';
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
+    $var = ['1' => 'SPEECH - [05:00:00/05:00:00]', '2' => 'WIA/SAE - [00:00:00/23:59:59]'];
 
 ?>
 <style>
@@ -88,7 +89,7 @@ $this->title = 'Procesos Voc - Speech a CXM';
             -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;    
-            font-family: "Nunito",sans-serif;
+            font-family: "Nunito";
             font-size: 150%;    
             text-align: left;    
     }
@@ -216,11 +217,17 @@ $this->title = 'Procesos Voc - Speech a CXM';
                   );',
               ]
             )->label('') ?> 
-        </div>
+       
 
         <br>
 
-        <div class="card1 mb">
+        
+          <label><em class="fas fa-check" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Seleccionar Sociedad') ?></label>
+          <?= $form->field($model, 'idcategoria', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList($var, ['prompt' => 'Seleccionar...', 'id'=>'idsociedad']) ?>
+        
+
+        <br>
+
           <label><em class="fas fa-check" style="font-size: 20px; color: #827DF9;"></em> <?= Yii::t('app', 'Seleccionar Pcrc') ?></label>
           <?= $form->field($model,'extension', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(
               [],              

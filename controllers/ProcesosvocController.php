@@ -26,7 +26,6 @@ use app\models\FormUploadtigo;
 use app\models\Dashboardspeechcalls;
 use app\models\IdealServicios;
 use app\models\SpeechParametrizar;
-use \yii\base\Exception;
 
 
   class ProcesosvocController extends \yii\web\Controller {
@@ -373,14 +372,20 @@ use \yii\base\Exception;
       if($model->load($form)){
         $txtServicioSpeech = $model->servicio;
         $txtPcrcInfo = $model->extension;
-        var_dump($txtPcrcInfo);
+        $txtSociedad = $model->idcategoria;
 
         if ($txtPcrcInfo != null) {
 
         }else{
-          $varFechaInicioSpeech = $txtFechaInicio.' 05:00:00';
-          $varFechaFinSpeech = date('Y-m-d',strtotime($txtFechaFin."+ 1 days")).' 05:00:00';
 
+          if ($txtSociedad == '1') {
+            $varFechaInicioSpeech = $txtFechaInicio.' 05:00:00';
+            $varFechaFinSpeech = date('Y-m-d',strtotime($txtFechaFin."+ 1 days")).' 05:00:00';
+          }else{
+            $varFechaInicioSpeech = $txtFechaInicio.' 00:00:00';
+            $varFechaFinSpeech = $txtFechaFin.' 23:59:59';
+          }
+          
           $paramsEliminar = [':Anuado'=>0, ':Servicio_CXM'=>$txtServicioSpeech,':Fecha_Inicio'=>$varFechaInicioSpeech,':Fecha_Fin'=>$varFechaFinSpeech];          
 
           Yii::$app->db->createCommand('
@@ -1179,7 +1184,6 @@ use \yii\base\Exception;
       $varFechaInicioChat = null;
       $varFechaFinChat = null;
       $varConnidChat = null;
-      $varCategoriaGeneralChat = null;
 
       $varListaItemsChat = explode("; ", $varConcatenarChat);
       for ($i=0; $i < count($varListaItemsChat); $i++) { 
@@ -1378,7 +1382,7 @@ use \yii\base\Exception;
         if ($varBaseRealChat == "7339") {
           
           $varListaChat = Yii::$app->get('dbSpeechA1')->createCommand("
-            SELECT DISTINCT (b.callId), CASE WHEN a.categoryid = 7339 THEN $varCategoriaGeneralChat ELSE a.categoryid END AS CAtegoriaID, a.name AS Nombre_Categoria, d.fieldValue as extension, d1.fieldValue AS login_id, DATEADD(s,c.originalTime,'19700101') AS Fecha_Llamada, dd.fieldValue AS COLUMN1, e.name AS Servicio, DATEADD(s,c.originalTime,'19700101') AS Fechareal, c.externalTextId AS idredbox, 'NA' AS idgrabadora
+            SELECT DISTINCT (b.callId), CASE WHEN a.categoryid = 7339 THEN $varCategoriaGeneral ELSE a.categoryid END AS CAtegoriaID, a.name AS Nombre_Categoria, d.fieldValue as extension, d1.fieldValue AS login_id, DATEADD(s,c.originalTime,'19700101') AS Fecha_Llamada, dd.fieldValue AS COLUMN1, e.name AS Servicio, DATEADD(s,c.originalTime,'19700101') AS Fechareal, c.externalTextId AS idredbox, 'NA' AS idgrabadora
 
               FROM 
               [speechminer_8_5_512_A1].[dbo].[categoryInfoTbl] a,
@@ -1478,7 +1482,7 @@ use \yii\base\Exception;
                                                            'fechacreacion' => date('Y-m-d'),
                                                            'anulado' => 0,
                                                            'usua_id' => Yii::$app->user->identity->id,
-                                                           'arbol_id' => $varIdClienteChat,
+                                                           'arbol_id' => $varIdClienteLlamada,
                                                         ])->execute();
             }
 
@@ -2009,6 +2013,64 @@ use \yii\base\Exception;
                         ->andwhere("tbl_procesos_volumendirector.estado = 1") 
                         ->andwhere("tbl_speech_categorias.anulado = 0")                             
                         ->orderBy(['tbl_procesos_volumendirector.cod_pcrc' => SORT_DESC])
+                        ->all();            
+                    
+          $valor = 0;
+                    
+          foreach ($varListaPcrc as $key => $value) {
+            $valor = $valor + 1; 
+            $nombre = "lista_";
+            $clase = "listach";
+            $nombre = $nombre.$valor;
+            $varNombres = (new \yii\db\Query())
+                                ->select(['programacategoria'])
+                                ->from(['tbl_speech_categorias'])            
+                                ->where(['=','cod_pcrc',$value->cod_pcrc])
+                                ->andwhere(['=','anulado',0])
+                                ->groupby(['programacategoria'])
+                                ->scalar();
+            
+            echo "<input type='checkbox' id= '".$nombre."' value='".$value->cod_pcrc."' class='".$clase."'>";
+            echo "<label  style='font-size: 12px;' for = '".$value->cod_pcrc."'>&nbsp;&nbsp; ".$value->cod_pcrc." - ".$value->pcrc." -- ".$varNombres . "</label> <br>";
+          }
+        }else{
+          echo "<option>-</option>";
+        }
+      }else{
+        echo "<option>No hay datos</option>";
+      }
+
+    }
+
+    public function actionListarpcrcespecialcomdata(){            
+      $txtAnulado = 0; 
+      $txtId = Yii::$app->request->post('id');                       
+
+      if ($txtId) {
+        $txtControl = \app\models\ProcesosClienteCentrocosto::find()->distinct()
+                      ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
+                      ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                  'tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+                      ->join('LEFT OUTER JOIN', 'tbl_speech_categorias',
+                                  'tbl_speech_parametrizar.cod_pcrc = tbl_speech_categorias.cod_pcrc')
+                      ->where(['tbl_proceso_cliente_centrocosto.id_dp_clientes' => $txtId])
+                      ->andwhere("tbl_proceso_cliente_centrocosto.anulado = 0")
+                      ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1") 
+                      ->andwhere("tbl_speech_categorias.anulado = 0")  
+                      ->count();            
+
+        if ($txtControl > 0) {
+          $varListaPcrc = \app\models\ProcesosClienteCentrocosto::find()
+                        ->select(['tbl_proceso_cliente_centrocosto.cod_pcrc','tbl_proceso_cliente_centrocosto.pcrc'])->distinct()
+                        ->join('LEFT OUTER JOIN', 'tbl_speech_parametrizar',
+                                  'tbl_proceso_cliente_centrocosto.cod_pcrc = tbl_speech_parametrizar.cod_pcrc')
+                        ->join('LEFT OUTER JOIN', 'tbl_speech_categorias',
+                                  'tbl_speech_parametrizar.cod_pcrc = tbl_speech_categorias.cod_pcrc')
+                        ->where(['tbl_speech_parametrizar.id_dp_clientes' => $txtId])
+                        ->andwhere("tbl_proceso_cliente_centrocosto.anulado = 0")
+                        ->andwhere("tbl_proceso_cliente_centrocosto.estado = 1") 
+                        ->andwhere("tbl_speech_categorias.anulado = 0")                             
+                        ->orderBy(['tbl_proceso_cliente_centrocosto.cod_pcrc' => SORT_DESC])
                         ->all();            
                     
           $valor = 0;
@@ -5591,7 +5653,7 @@ use \yii\base\Exception;
                                 ->andwhere(['=','anulado',0])
                                 ->andwhere(['=','usabilidad',1])
                                 ->andwhere(['!=','usuared',''])
-                                ->andwhere(['=','tipoparametro',$varParametroTipoL])
+                                ->andwhere(['=','tipoparametro',$varTipoParametroA])
                                 ->groupby(['usuared'])
                                 ->all();
               }else{
@@ -5869,6 +5931,23 @@ use \yii\base\Exception;
 
         $curl = curl_init();
 
+        // curl_setopt_array($curl, array(
+        //   CURLOPT_SSL_VERIFYPEER=> false,
+        //   CURLOPT_SSL_VERIFYHOST => false,
+        //   CURLOPT_URL => 'https://wia-web-api-gw-5j8fyx1b.uc.gateway.dev/conectionDateCXM?key=AIzaSyClC9KoixrqyM3CcO24a29OI3u4e3Vzv4c',
+        //   CURLOPT_RETURNTRANSFER => true,
+        //   CURLOPT_ENCODING => '',
+        //   CURLOPT_MAXREDIRS => 10,
+        //   CURLOPT_TIMEOUT => 0,
+        //   CURLOPT_FOLLOWLOCATION => true,
+        //   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //   CURLOPT_CUSTOMREQUEST => 'POST',
+        //   CURLOPT_POSTFIELDS => 'proyectID='.$varIdProyecto_BD.'&datasetId='.$varDataSetId_BD.'&tableId='.$varTableId_BD.'&limit='.$varLimitId_BD.'&offset='.$varOffsetId_BD.'&fecha_inicial='.$varFechaInicioLlamadaEspecial_BD.'&fecha_final='.$varFechaFinLlamadaEspecial_BD.'',
+        //   CURLOPT_HTTPHEADER => array(
+        //     'Content-Type: application/x-www-form-urlencoded'
+        //   ),
+        // ));
+
         curl_setopt_array($curl, array(
           CURLOPT_SSL_VERIFYPEER=> false,
           CURLOPT_SSL_VERIFYHOST => false,
@@ -5880,9 +5959,17 @@ use \yii\base\Exception;
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => 'proyectID='.$varIdProyecto_BD.'&datasetId='.$varDataSetId_BD.'&tableId='.$varTableId_BD.'&limit='.$varLimitId_BD.'&offset='.$varOffsetId_BD.'&fecha_inicial='.$varFechaInicioLlamadaEspecial_BD.'&fecha_final='.$varFechaFinLlamadaEspecial_BD.'',
+          CURLOPT_POSTFIELDS => '{
+            "proyectID":"'.$varIdProyecto_BD.'",
+            "datasetId":"'.$varDataSetId_BD.'",
+            "tableId":"'.$varTableId_BD.'",
+            "limit":"'.$varLimitId_BD.'",
+            "offset":"'.$varOffsetId_BD.'",
+            "fecha_inicial":"'.$varFechaInicioLlamadaEspecial_BD.'",
+            "fecha_final":"'.$varFechaFinLlamadaEspecial_BD.'"
+          }',
           CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/x-www-form-urlencoded'
+            'Content-Type: application/json'
           ),
         ));
 
@@ -5895,11 +5982,10 @@ use \yii\base\Exception;
         $objet_json = json_decode($response,true);
 
 
-
         foreach ($objet_json as $key => $value) {
-           $varCambiaFechas = str_replace("Z", "", str_replace("T", " ", strval($value['fechallamada']['value'])));
+           $varCambiaFechas = substr(str_replace("Z", "", str_replace("T", " ", strval($value['fechallamada']))),0,19);
 
-          $varFechas = date('Y-m-d h:i:s:000',strtotime($varCambiaFechas));
+          $varFechas = date('Y-m-d H:i:s',strtotime($varCambiaFechas));
 
           if (is_numeric($value['idredbox'])) {
             $varIdRedBox = $value['idredbox'];
@@ -5917,6 +6003,7 @@ use \yii\base\Exception;
                                 ->scalar();
           if ($varGrabadora == "") {
             $varGrabadora = $value['idgrabadora'];
+            // $varGrabadora = $value['idredbox'];
           }
 
           
@@ -6049,8 +6136,10 @@ use \yii\base\Exception;
         }
 
         
-      }    
+      }      
     }
+
+
 
   }
 

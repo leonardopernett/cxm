@@ -83,13 +83,13 @@ $this->registerJs(
                     <div class="col-md-6">
                         <label style="font-size: 15px;"><?= Yii::t('app', 'Seleccionar Servicio') ?></label>
 
-                        <?=  $form->field($model, 'tipoparametro', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosVolumendirector::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                        <?=  $form->field($model, 'tipoparametro', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                         [
                                             'id' => 'idClientesEsp',
                                             'prompt'=>'Seleccione Cliente Speech...',
                                             'onchange' => '
                                                 $.post(
-                                                    "' . Url::toRoute('procesosvoc/listarpcrcespecial') . '", 
+                                                    "' . Url::toRoute('procesosvoc/listarpcrcespecialcomdata') . '", 
                                                     {id: $(this).val()}, 
                                                     function(res){
                                                         $("#requester").html(res);
@@ -144,13 +144,12 @@ $this->registerJs(
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                <table class="center">
-                <caption><?= Yii::t('app', '.') ?></caption>
+                <table align="center">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center"><div class="loader"></div></th>
-                            <th scope="col" ><?= Yii::t('app', '') ?></th>
-                            <th scope="col" class="text-justify"><h4><?= Yii::t('app', 'Actualizando llamadas de WIA & SAE, por favor espere...') ?></h4></th>
+                            <th class="text-center"><div class="loader"></div></th>
+                            <th><?= Yii::t('app', '') ?></th>
+                            <th class="text-justify"><h4><?= Yii::t('app', 'Actualizando llamadas de WIA & SAE, por favor espere...') ?></h4></th>
                         </tr>            
                     </thead>
                 </table>
