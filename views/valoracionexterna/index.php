@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
   .masthead {
     height: 25vh;
     min-height: 100px;
-    background-image: url('../../images/ADMINISTRADOR-GENERAL.png');
+    background-image: url('../../images/valoracionExt.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -126,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-6">
             <div class="card1 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Acciones & Gráficas') ?></label>
+                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Acciones') ?></label>
             </div>
         </div>
     </div>
@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <br>
 
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-6">
 
         <?php
           if ($roles == '270') {
@@ -143,7 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
           <div class="card1 mb">
             <label style="font-size: 15px;"><em class="fas fa-save" style="font-size: 20px; color: #337ab7;"></em><?= Yii::t('app', ' Crear Procesos Parametrizador') ?></label>
-            <?= Html::button('Aceptar', ['value' => url::to(['agregarservicio']), 'class' => 'btn btn-success', 'id'=>'modalButton',
+            <?= Html::button('Aceptar', ['value' => url::to(['agregarservicio']), 'class' => 'btn btn-success', 'id'=>'modalButton1',
                                   'data-toggle' => 'tooltip',
                                   'title' => 'Crear Procesos Parametrizador']) 
             ?> 
@@ -151,11 +151,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php
               Modal::begin([
                 'header' => '<h4>Selección de Filtros</h4>',
-                'id' => 'modal',
+                'id' => 'modal1',
                 'size' => 'modal-lg',
               ]);
 
-              echo "<div id='modalContent'></div>";
+              echo "<div id='modalContent1'></div>";
                                                                                                     
               Modal::end(); 
             ?>
@@ -171,8 +171,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
         
       </div>
+    </div>
+    <hr><br>
 
-      <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card1 mb" style="background: #6b97b1; ">
+                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Gráficas') ?></label>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="col-md-12">
         <div class="card1 mb">
           <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #337ab7;"></em> <?= Yii::t('app', 'Listado de Clientes con Valoración Externa') ?></label>
 
@@ -191,13 +203,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 
               ?>
                 <tr>
-                  <td><label style="font-size: 12px;"><?php echo  $value['cliente']; ?></label></td>
+                  <td><label style="font-size: 12px;"><?php echo  $value['name']; ?></label></td>
                   <td><label style="font-size: 12px;"><?php echo  $value['sociedad']; ?></label></td>
                   <td class="text-center">
 
-                    <?= 
-                      Html::a('<em class="fas fa-upload" style="font-size: 12px; color: #B833FF;"></em>',  ['agregarvaloraciones','id_general'=> $value['id_clientenuevo']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Subir Archivo de Valoraciones']) 
-                    ?>
+                  <?= 
+                       Html::a(Yii::t('app', '<em class="fas fa-upload" style="font-size: 20px; color: #337ab7;"></em>'),
+                                                            'javascript:void(0)',
+                                                            [
+                                                                'title' => Yii::t('app', 'Seleccionar Pcrc'),
+                                                                'onclick' => "                       
+                                                                    $.ajax({
+                                                                        type     :'get',
+                                                                        cache    : false,
+                                                                        url  : '" . Url::to(['agregarpcrc','id_dp_clientes' => $value['id_dp_clientes']]) . "',
+                                                                        success  : function(response) {
+                                                                            $('#ajax_result').html(response);
+                                                                        }
+                                                                    });
+                                                                return false;",
+
+                                                              ]);
+                  ?>                            
+                    
 
                   </td>
                 </tr>
@@ -214,6 +242,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <hr>
 
+
+<?php
+    echo Html::tag('div', '', ['id' => 'ajax_result']);
+?>
 <script type="text/javascript">
   $(document).ready( function () {
         $('#tblDataValoracionE').DataTable({

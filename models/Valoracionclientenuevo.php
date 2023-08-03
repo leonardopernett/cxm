@@ -30,7 +30,7 @@ class Valoracionclientenuevo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_dp_clientes', 'id_sociedad', 'anulado', 'usua_id'], 'integer'],
+            [['id_dp_clientes', 'id_sociedad', 'anulado', 'usua_id','cod_pcrc'], 'integer'],
             [['fechacreacion'], 'safe']
         ];
     }
@@ -47,6 +47,8 @@ class Valoracionclientenuevo extends \yii\db\ActiveRecord
             'anulado' => Yii::t('app', ''),
             'usua_id' => Yii::t('app', ''),
             'fechacreacion' => Yii::t('app', ''),
+            'cod_pcrc' => Yii::t('app', ''),
+
         ];
     }
 }
