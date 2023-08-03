@@ -75,8 +75,8 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
         ->scalar();
 
         $limite = 1000; // Número de registros por página
-        $total_paginas = ceil($total_registros/$limite); 
-
+        $total_paginas = ceil($total_registros/$limite);
+        
         for ($paginaActual = 1; $paginaActual <= $total_paginas; $paginaActual++) {
 
             // Calcular el offset
@@ -98,7 +98,6 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
             if (is_array($usuarios_asesores) && isset($usuarios_asesores[0]) ) {
 
                 foreach ($usuarios_asesores as $info_usuario) {
-                    //var_dump($info_usuario);
                     $id_usuario = $info_usuario['id'];
                     $usuario_red_cxm = $info_usuario['usuario_red'];
                     $cc_usuario = $info_usuario['documento'];
@@ -289,7 +288,11 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
     //Funcion que actualiza masivamente la columna es_operativo = 0 y les coloca no usar al nombre y cinco ceros antes del documento 
     public function deshabilitar_usuarios($usuarios_no_operativos) {
        
-        if( !empty($usuarios_no_operativos) ){
+        if( !empty($usuarios_no_operativos) ) {
+
+            //todos los usuarios que deben tener es_operativo=0
+            $usuariosCoincidentes = array_column($usuarios_no_operativos, 'id');
+            $cadena_usuariosCoincidentes =  "'" . implode("','", $usuariosCoincidentes) . "'";
 
             //Variaciones del "no usar" encontradas
             $combinacionesBuscar = array('(no usar)', '(No usar)', '(NO USAR)', 'NO USAR.');
@@ -309,28 +312,26 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
                 }
             }
 
-            //Si aún tenemos usuarios que les falta el NO USAR se lo agregamos
-            if(!empty($usuarios_no_operativos)) {
-                
-                $idsCoincidentes = array_column($usuarios_no_operativos, 'id');
-                $cadena_idsCoincidentes =  "'" . implode("','", $idsCoincidentes) . "'";
+            $idsCoincidentes = array_column($usuarios_no_operativos, 'id');
+            $cadena_idsCoincidentes =  "'" . implode("','", $idsCoincidentes) . "'";  
 
+            //Si aún tenemos usuarios que les falta el NO USAR se lo agregamos
+            if(!empty($idsCoincidentes)) {
+
+                // Actualizar con el "no usar"                
                 $comando = Yii::$app->db->createCommand('
                 UPDATE tbl_evaluados
-                SET name = CONCAT("(no usar) ", name),
-                dsusuario_red = CONCAT(dsusuario_red, " (no usar)"),
-                identificacion = IF(identificacion LIKE "000%", identificacion, CONCAT("00000", identificacion)),
-                es_operativo = 0
-                WHERE id IN (' . $cadena_idsCoincidentes . ')');
-                $filas_afectadas = $comando->execute();
-
-                if ($filas_afectadas > 0) {
-                    return 1; // Actualización exitosa
-                } else {
-                    return 0; // Ocurrió un error en la actualizacion
-                }            
+                SET name = CONCAT("(no usar)", name),
+                dsusuario_red = CONCAT(dsusuario_red, "(no usar)")              
+                WHERE id IN (' . $cadena_idsCoincidentes . ')')->execute();            
             }
-        
+
+                // Actualizar la columna 'es_operativo' a '0' y agregarle 5 ceros adelante del documento
+                $update_no_operativo = Yii::$app->db->createCommand('
+                UPDATE tbl_evaluados
+                SET es_operativo = 0,
+                identificacion = IF(identificacion LIKE "000%", identificacion, CONCAT("00000", identificacion))                            
+                WHERE id IN (' . $cadena_usuariosCoincidentes . ')')->execute();        
         }
      
     }

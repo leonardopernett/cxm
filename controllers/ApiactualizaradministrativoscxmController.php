@@ -284,44 +284,49 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
 
     public function deshabilitar_usuarios($usuarios_no_administrativos) {
 
-        //Registros que no necesitan agregar el NO USAR porque ya lo tienen
-        $combinacionesBuscar = array('(no usar)', '(No usar)', '(NO USAR)', 'NO USAR.');
+        if( !empty($usuarios_no_administrativos) ) {
 
-        // Eliminar elementos del array $usuarios_no_administrativos que ya contienen el "no usar"
-        foreach ($usuarios_no_administrativos as $clave => $resultado) {
+            $usuariosCoincidentes = array_column($usuarios_no_administrativos, 'id');
+            $cadena_usuariosCoincidentes =  "'" . implode("','", $usuariosCoincidentes) . "'";
 
-            $nombreCompleto = $resultado['nombre_completo']; 
-            $usua_red_cxm = $resultado['usuario_red'];
-            
-            foreach ($combinacionesBuscar as $combinacion) {                
+            //Registros que no necesitan agregar el NO USAR porque ya lo tienen
+            $combinacionesBuscar = array('(no usar)', '(No usar)', '(NO USAR)', 'NO USAR.');
 
-                if (stripos($nombreCompleto, $combinacion) !== false && stripos($usua_red_cxm, $combinacion)!== false) {        
-                  unset($usuarios_no_administrativos[$clave]);
-                  break; // Salir del bucle interno una vez que se encuentra una combinación
+            // Eliminar elementos del array $usuarios_no_administrativos que ya contienen el "no usar"
+            foreach ($usuarios_no_administrativos as $clave => $resultado) {
+
+                $nombreCompleto = $resultado['nombre_completo']; 
+                $usua_red_cxm = $resultado['usuario_red'];
+                
+                foreach ($combinacionesBuscar as $combinacion) {                
+
+                    if (stripos($nombreCompleto, $combinacion) !== false && stripos($usua_red_cxm, $combinacion)!== false) {        
+                    unset($usuarios_no_administrativos[$clave]);
+                    break; // Salir del bucle interno una vez que se encuentra una combinación
+                    }
                 }
             }
-        }
 
-        //Si aún tenemos usuarios que les falta el NO USAR 
-        if(!empty($usuarios_no_administrativos)) {
-            
             $idsCoincidentes = array_column($usuarios_no_administrativos, 'id');
-            $cadena_idsCoincidentes =  "'" . implode("','", $idsCoincidentes) . "'";
+            $cadena_idsCoincidentes =  "'" . implode("','", $idsCoincidentes) . "'";  
 
-            $comando = Yii::$app->db->createCommand('
-            UPDATE tbl_usuarios
-            SET usua_nombre = CONCAT("(no usar) ", usua_nombre),
-            usua_usuario = CONCAT(usua_usuario, " (no usar)"),
-            usua_identificacion = IF(usua_identificacion LIKE "000%", usua_identificacion, CONCAT("00000", usua_identificacion)),
-            es_administrativo = 0
-            WHERE usua_id IN (' . $cadena_idsCoincidentes . ')');
-            $filas_afectadas = $comando->execute();
+            //Si aún tenemos usuarios que les falta el NO USAR 
+            if(!empty($idsCoincidentes)) {
 
-            if ($filas_afectadas > 0) {
-                return 1; // Actualización exitosa
-            } else {
-                return 0; // Ocurrió un error en la actualizacion
+                $comando = Yii::$app->db->createCommand('
+                UPDATE tbl_usuarios
+                SET usua_nombre = CONCAT("(no usar)", usua_nombre),
+                usua_usuario = CONCAT(usua_usuario, "(no usar)")
+                WHERE usua_id IN (' . $cadena_idsCoincidentes . ')')->execute();
             }
+
+                // Actualizar la columna 'es_administrativo' a '0' y agregarle 5 ceros adelante del documento
+                $comando = Yii::$app->db->createCommand('
+                UPDATE tbl_usuarios
+                SET 
+                es_administrativo = 0,
+                usua_identificacion = IF(usua_identificacion LIKE "000%", usua_identificacion, CONCAT("00000", usua_identificacion))
+                WHERE usua_id IN (' . $cadena_idsCoincidentes . ')')->execute();
 
         }
         
