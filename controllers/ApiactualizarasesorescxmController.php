@@ -64,9 +64,8 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
       $this->enableCsrfValidation = false;
     }
 
+    //Funcion que deshabilita o habilita segun el tipo de cargo a todos los asesores activos de la tabla tbl_evaluados 
     public function actionApivalidaractivosjarvis() {
-
-        $tiempoInicio = microtime(true);
 
         // Cantidad total de registros 
         $total_registros = (new Query())
@@ -82,7 +81,6 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
 
             // Calcular el offset
             $offset = ($paginaActual - 1) * $limite;
-            //$offset = 0;
 
             // Traer los registros segun limit y offset
             $usuarios_asesores = (new Query()) 
@@ -92,7 +90,7 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
             ->limit($limite)
             ->offset($offset)
             ->all();
-            
+
             $array_deshabilitar_usuarios= [];
             $array_habilitar_usuarios= [];
             
@@ -108,7 +106,7 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
                     $nombre_completo_usua_jarvis = "";
                     $documento_usua_jarvis = "";
 
-                    $usuario_no_operativo = ["id" => $id_usuario, "nombre_completo" => $info_usuario['nombre_completo']];
+                    $usuario_no_operativo = ["id" => $id_usuario, "nombre_completo" => $info_usuario['nombre_completo'], "usuario_red" => $info_usuario['usuario_red']];
                     $usuario_operativo = ["id" => $id_usuario, "es_operativo" => $es_operativo, "nombre_completo_jarvis" => $nombre_completo_usua_jarvis, "documento_jarvis" => $documento_usua_jarvis];
 
                     $paramsBuscaDocumento = [':documento'=>$cc_usuario];
@@ -135,7 +133,7 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
                     $cantidad_registros_encontrados = count($activos_jarvis);  
                     
                     if($cantidad_registros_encontrados==0){
-
+                        //No encontró registros en Jarvis: deshabilitar
                         $array_deshabilitar_usuarios[] = $usuario_no_operativo;
                         continue;         
                     }
@@ -144,11 +142,13 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
 
                         $usuario_red_jarvis = $activos_jarvis[0]['usuario_red'];
 
+                        //Si encuentra un usuario de red en Jarvis, compara con el de CXM si son diferentes deshabilitamos el usuario
                         if( $usuario_red_jarvis!==null && ($usuario_red_cxm !== $usuario_red_jarvis) ) {                        
                             $array_deshabilitar_usuarios[] = $usuario_no_operativo;
                             continue;
                         }
 
+                        //Si son los mismos usuarios de red o si no pudo compararlos, continua...
                         $tipocargo_encargo = $activos_jarvis[0]['tipocargo_encargo'];
                         $tipocargo_principal = $activos_jarvis[0]['tipocargo_principal'];
                         $cargos_encargo = $activos_jarvis[0]['cargos_encargo'];
@@ -180,13 +180,14 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
                             $cargos_encargo = $usuario['cargos_encargo'];
                             $nombre_completo_usua_jarvis = $usuario['nombre_completo'];
                             $documento_usua_jarvis = $usuario['documento'];
-                            
-                            //var_dump("usuario con dos registros y lo encontre en jarvis", $id_usuario); 
+                            $usuario_red_jarvis = $usuario['usuario_red'];
                         }
                     }             
 
 
                     //VALIDACION PARA HABILITAR USUARIOS TIPO DE CARGO = OPERATIVO ----------------------------------------------
+                    //Se habilita con es_operativo = 1
+
                     if ($tipocargo_encargo ==null && $tipocargo_principal =="Operativo") {
 
                         if($es_operativo=='1'){
@@ -255,6 +256,7 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
                             //habilitar el usuario quitandole el "no usar"
                             $actualizar_encargo = Yii::$app->db->createCommand()->update('tbl_evaluados', [
                                 'name' => $nombre_completo_usua_jarvis,
+                                'dsusuario_red'=> $usuario_red_jarvis,
                                 'identificacion' => $documento_usua_jarvis,
                                 'es_operativo'=> 1,
                                 ],'usua_id ='.$id_usuario.'')->execute();
@@ -296,10 +298,11 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
             foreach ($usuarios_no_operativos as $clave => $resultado) {
                 
                 $nombreCompleto = $resultado['nombre_completo'];
+                $usua_red_cxm = $resultado['usuario_red'];
                 
                 foreach ($combinacionesBuscar as $combinacion) {
 
-                    if (stripos($nombreCompleto, $combinacion) !== false) {
+                    if (stripos($nombreCompleto, $combinacion) !== false && stripos($usua_red_cxm, $combinacion)!== false ) {
                         unset($usuarios_no_operativos[$clave]); //Removemos el registro encontrado
                         break; // Salir del bucle interno una vez que se encuentra una combinación
                     }
@@ -315,7 +318,8 @@ class ApiactualizarasesorescxmController extends \yii\web\Controller {
                 $comando = Yii::$app->db->createCommand('
                 UPDATE tbl_evaluados
                 SET name = CONCAT("(no usar) ", name),
-                identificacion = CONCAT("00000", identificacion),
+                dsusuario_red = CONCAT(dsusuario_red, " (no usar)"),
+                identificacion = IF(identificacion LIKE "000%", identificacion, CONCAT("00000", identificacion)),
                 es_operativo = 0
                 WHERE id IN (' . $cadena_idsCoincidentes . ')');
                 $filas_afectadas = $comando->execute();
