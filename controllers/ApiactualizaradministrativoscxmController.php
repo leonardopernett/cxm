@@ -41,7 +41,7 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
             
             'rules' => [
               [
-                'actions' => ['apibuscarusuariosactivosjarvis', 'apiremovernousarenadministrativo'],
+                'actions' => ['apibuscarusuariosactivosjarvis'],
                 'allow' => true,
                 'roles' => ['@'],
                 'matchCallback' => function() {
@@ -49,7 +49,7 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
                         },
               ],
               [
-                'actions' => ['apibuscarusuariosactivosjarvis', 'apiremovernousarenadministrativo'],
+                'actions' => ['apibuscarusuariosactivosjarvis'],
                 'allow' => true,
 
               ],
@@ -75,7 +75,7 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
 
         $limite = 1000; // Número de registros por página
         $total_paginas = ceil($total_registros/$limite);
-        
+
         for ($paginaActual = 1; $paginaActual <= $total_paginas; $paginaActual++) {
 
             // Calcular el offset
@@ -92,10 +92,8 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
             ->offset($offset)
             ->all();
 
-            
             $array_deshabilitar_usuarios= [];
             $array_habilitar_usuarios= [];
-
 
             foreach ($usuarios_administrativos as $info_usuario) {
                 $id_usuario = $info_usuario['id'];
@@ -105,7 +103,7 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
                 $nombre_completo_usua_jarvis = "";
                 $documento_usua_jarvis = "";
 
-                $usuario_no_admin = ["id" => $id_usuario, "nombre_completo" => $info_usuario['nombre_completo']];
+                $usuario_no_admin = ["id" => $id_usuario, "nombre_completo" => $info_usuario['nombre_completo'], "usuario_red" => $info_usuario['usuario_red']];
                 $usuario_admin = ["id" => $id_usuario, "es_administrativo" => $es_administrativo, "nombre_completo_jarvis" => $nombre_completo_usua_jarvis, "documento_jarvis" => $documento_usua_jarvis];
 
                 $paramsBuscaDocumento = [':documento'=>$cc_usuario];
@@ -141,6 +139,7 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
 
                     $usuario_red_jarvis = $activos_jarvis[0]['usuario_red'];
 
+                    //Si encuentra un usuario de red en Jarvis, compara con el de CXM si son diferentes deshabilitamos el usuario
                     if( $usuario_red_jarvis!==null && ($usuario_red_cxm !== $usuario_red_jarvis) ) {
                         $array_deshabilitar_usuarios[] = $usuario_no_admin;
                         continue;
@@ -182,7 +181,10 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
                     }
                 }                
 
-                //Validacion para saber si es administrativo
+                //VALIDACION PARA HABILITAR USUARIOS TIPO DE CARGO = ADMINISTRATIVO ----------------------------------------------
+                //Se habilita con es_administrativo = 1
+                //Se deshabilita con es_administrativo = 0 y "no usar" en el nombre, usaurio_red y 5 ceros adelante del documento
+
                 if ($tipocargo_encargo ==null && $tipocargo_principal =="Administrativo") {
 
                     if($es_administrativo=='1'){
@@ -245,6 +247,7 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
                         //habilitar el usuario quitandole el "no usar"
                         $actualizar_encargo = Yii::$app->db->createCommand()->update('tbl_usuarios', [
                             'usua_nombre' => $nombre_completo_usua_jarvis,
+                            'usua_usuario' => $usuario_red_jarvis,
                             'usua_identificacion' => $documento_usua_jarvis,
                             'es_administrativo'=> 1,
                             'cargos_encargo' => $cargos_encargo,
@@ -272,7 +275,7 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
             }
 
             $this->deshabilitar_usuarios($array_deshabilitar_usuarios);
-            $this->habilitar_usuarios($array_habilitar_usuarios);        
+            $this->habilitar_usuarios($array_habilitar_usuarios);     
         }
 
         die(json_encode(array("status"=>"1","data"=>"Actualizacion exitosa para todos los lotes de registros")));
@@ -281,42 +284,49 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
 
     public function deshabilitar_usuarios($usuarios_no_administrativos) {
 
-        //Registros que no necesitan agregar el NO USAR porque ya lo tienen
-        $combinacionesBuscar = array('(no usar)', '(No usar)', '(NO USAR)', 'NO USAR.');
+        if( !empty($usuarios_no_administrativos) ) {
 
-        // Eliminar elementos del array $usuarios_no_administrativos que ya contienen el "no usar"
-        foreach ($usuarios_no_administrativos as $clave => $resultado) {
+            $usuariosCoincidentes = array_column($usuarios_no_administrativos, 'id');
+            $cadena_usuariosCoincidentes =  "'" . implode("','", $usuariosCoincidentes) . "'";
 
-            $nombreCompleto = $resultado['nombre_completo']; 
-            
-            foreach ($combinacionesBuscar as $combinacion) {                
+            //Registros que no necesitan agregar el NO USAR porque ya lo tienen
+            $combinacionesBuscar = array('(no usar)', '(No usar)', '(NO USAR)', 'NO USAR.');
 
-                if (stripos($nombreCompleto, $combinacion) !== false) {        
-                  unset($usuarios_no_administrativos[$clave]);
-                  break; // Salir del bucle interno una vez que se encuentra una combinación
+            // Eliminar elementos del array $usuarios_no_administrativos que ya contienen el "no usar"
+            foreach ($usuarios_no_administrativos as $clave => $resultado) {
+
+                $nombreCompleto = $resultado['nombre_completo']; 
+                $usua_red_cxm = $resultado['usuario_red'];
+                
+                foreach ($combinacionesBuscar as $combinacion) {                
+
+                    if (stripos($nombreCompleto, $combinacion) !== false && stripos($usua_red_cxm, $combinacion)!== false) {        
+                    unset($usuarios_no_administrativos[$clave]);
+                    break; // Salir del bucle interno una vez que se encuentra una combinación
+                    }
                 }
             }
-        }
 
-        //Si aún tenemos usuarios que les falta el NO USAR 
-        if(!empty($usuarios_no_administrativos)) {
-            
             $idsCoincidentes = array_column($usuarios_no_administrativos, 'id');
-            $cadena_idsCoincidentes =  "'" . implode("','", $idsCoincidentes) . "'";
+            $cadena_idsCoincidentes =  "'" . implode("','", $idsCoincidentes) . "'";  
 
-            $comando = Yii::$app->db->createCommand('
-            UPDATE tbl_usuarios
-            SET usua_nombre = CONCAT("(no usar) ", usua_nombre),
-            usua_identificacion = CONCAT("00000", usua_identificacion),
-            es_administrativo = 0
-            WHERE usua_id IN (' . $cadena_idsCoincidentes . ')');
-            $filas_afectadas = $comando->execute();
+            //Si aún tenemos usuarios que les falta el NO USAR 
+            if(!empty($idsCoincidentes)) {
 
-            if ($filas_afectadas > 0) {
-                return 1; // Actualización exitosa
-            } else {
-                return 0; // Ocurrió un error en la actualizacion
+                $comando = Yii::$app->db->createCommand('
+                UPDATE tbl_usuarios
+                SET usua_nombre = CONCAT("(no usar)", usua_nombre),
+                usua_usuario = CONCAT(usua_usuario, "(no usar)")
+                WHERE usua_id IN (' . $cadena_idsCoincidentes . ')')->execute();
             }
+
+                // Actualizar la columna 'es_administrativo' a '0' y agregarle 5 ceros adelante del documento
+                $comando = Yii::$app->db->createCommand('
+                UPDATE tbl_usuarios
+                SET 
+                es_administrativo = 0,
+                usua_identificacion = IF(usua_identificacion LIKE "000%", usua_identificacion, CONCAT("00000", usua_identificacion))
+                WHERE usua_id IN (' . $cadena_idsCoincidentes . ')')->execute();
 
         }
         
