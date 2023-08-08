@@ -231,7 +231,7 @@ use Exception;
         $varComentarios_correo = null;
         $varListData_correos = null;
 
-        $varHtml = unll;
+        $varHtml = null;
 
         $varLisDataCorreos = (new \yii\db\Query())
                         ->select(['*'])
