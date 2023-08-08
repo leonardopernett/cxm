@@ -260,8 +260,6 @@ use Exception;
         }
 
         $target_path = "alertas/" . $varArchivo_correo;
-        $message = Yii::$app->mailer->compose();
-        $varimagen = Url::to("@web/cx.png");
 
         $varHtml = 
                 "
@@ -269,7 +267,7 @@ use Exception;
                         <thead>
                             <tr>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 13px; margin: 30px;'>
-                                    <img src='<?= $message->embed($varimagen); ?>' alt='Card image cap' style='height: 110px;'>
+                                <label style='font-size: 20px; margin: 50px;'>CXM</label>
                                 </th>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 18px; margin: 50px;'>Informe de Alertas CX-Management</label></th>
                             </tr>
