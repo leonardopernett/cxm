@@ -211,7 +211,7 @@ use Exception;
 
             $this->enviarcorreos($varIdAlertas);
 
-            return $this->redirect(['registraalerta']);
+            return $this->redirect(array('registraalerta','id_procesos'=>$id_procesos));
         }
 
         return $this->render('registraalerta',[
@@ -267,7 +267,7 @@ use Exception;
                         <thead>
                             <tr>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 13px; margin: 30px;'>
-                                    <img src='/qa_pruebas/web/images/cx.png' alt='Card image cap' style='height: 110px;'>
+                                    <img src='/qa.grupokonecta.local/web/images/cx.png' alt='Card image cap' style='height: 110px;'>
                                 </th>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 18px; margin: 50px;'>Informe de Alertas CX-Management</label></th>
                             </tr>
@@ -303,7 +303,7 @@ use Exception;
                             </tr>
                             <tr>
                                 <td class='text-center' align='text-center' colspan='2' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 12px;  margin: 30px;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='http://localhost:8080/qa_pruebas/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'></a></label>
+                                    <label style='font-size: 12px;  margin: 30px;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'></a></label>
                                 </td>
                             </tr>
                         </tbody>
