@@ -321,12 +321,12 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
             }
 
                 // Actualizar la columna 'es_administrativo' a '0' y agregarle 5 ceros adelante del documento
-                $comando = Yii::$app->db->createCommand('
+                $update_no_administrativo = Yii::$app->db->createCommand('
                 UPDATE tbl_usuarios
-                SET 
+                SET
                 es_administrativo = 0,
                 usua_identificacion = IF(usua_identificacion LIKE "000%", usua_identificacion, CONCAT("00000", usua_identificacion))
-                WHERE usua_id IN (' . $cadena_idsCoincidentes . ')')->execute();
+                WHERE usua_id IN (' . $cadena_usuariosCoincidentes . ')')->execute();
 
         }
         
@@ -334,18 +334,18 @@ class ApiactualizaradministrativoscxmController extends \yii\web\Controller {
 
     public function habilitar_usuarios($usuarios_administrativos) {
        
-        //Tomo los ids de los usuarios
-        $ids_para_habilitar = array_column($usuarios_administrativos, 'id');
-        $cadena_ids_para_habilitar =  "'" . implode("','", $ids_para_habilitar) . "'";  
+        if(!empty($usuarios_administrativos)){
+            //Tomo los ids de los usuarios
+            $ids_para_habilitar = array_column($usuarios_administrativos, 'id');
+            $cadena_ids_para_habilitar =  "'" . implode("','", $ids_para_habilitar) . "'";  
 
-        // Actualizar masivamente la columna 'esAdmin' = 1
-        $comando = Yii::$app->db->createCommand('
-        UPDATE tbl_usuarios
-        SET es_administrativo = 1
-        WHERE usua_id IN (' . $cadena_ids_para_habilitar . ')');
+            // Actualizar masivamente la columna 'esAdmin' = 1
+            $comando = Yii::$app->db->createCommand('
+            UPDATE tbl_usuarios
+            SET es_administrativo = 1
+            WHERE usua_id IN (' . $cadena_ids_para_habilitar . ')')->execute();
 
-        $filas_afectadas = $comando->execute();
-
+        }
     }
 
 }
