@@ -6,6 +6,20 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
 
+/**
+ * This is the model class for table "tbl_alertascx".
+ *
+ * @property integer $id
+ * @property string $fecha
+ * @property integer $pcrc
+ * @property string $valorador
+ * @property string $tipo_alerta
+ * @property string $archivo_adjunto
+ * @property string $remitentes
+ * @property string $asunto
+ * @property string $comentario
+ */
+
 class Alertas extends \yii\db\ActiveRecord
 {
 
