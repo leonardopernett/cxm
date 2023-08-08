@@ -156,7 +156,7 @@ use Exception;
                 if ($modelArchivo->file && $modelArchivo->validate()) {
                   foreach ($modelArchivo->file as $file) {
                     $user = Yii::$app->user->identity->username;
-                    $ruta = 'alertas/'.date("YmdHis") . $user . str_replace(' ', '', $modelArchivo->file->baseName. ".".$modelArchivo->file->extension);
+                    $ruta = date("YmdHis") . $user . str_replace(' ', '', $modelArchivo->file->baseName. ".".$modelArchivo->file->extension);
 
                     $modelArchivo->file->saveAs( $ruta ); 
                   }
