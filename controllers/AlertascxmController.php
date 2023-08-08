@@ -157,8 +157,10 @@ use Exception;
                   foreach ($modelArchivo->file as $file) {
                     $user = Yii::$app->user->identity->username;
                     $ruta = date("YmdHis") . $user . str_replace(' ', '', $modelArchivo->file->baseName. ".".$modelArchivo->file->extension);
+                    
+                    $rutaServidor = 'images/alertas/'.$ruta;
 
-                    $modelArchivo->file->saveAs( $ruta ); 
+                    $modelArchivo->file->saveAs( $rutaServidor ); 
                   }
                 } 
             }
