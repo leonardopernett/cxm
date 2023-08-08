@@ -165,7 +165,7 @@ if($sessiones == "6832" || $sessiones == "3205" || $sessiones == "3468" || $sess
                 <div class="row">
                     <div class="col-md-6">
                     <label for="txtPcrc" style="font-size: 14px;">Cliente</label>
-                        <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => [], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                        <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => [], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->distinct()->select(['id_dp_clientes','CONCAT(cliente," - ",id_dp_clientes) as cliente'])->where("anulado = 0")->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                                                         [
                                                             'prompt'=>'Seleccione Cliente...',
                                                             'onchange' => '

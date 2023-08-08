@@ -21,11 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
     $sessiones = Yii::$app->user->identity->id;
     $valor = null;
 
-    
-   /* $data2 = Yii::$app->get('dbexperience')->createCommand("select usuarios.id, usuarios.nombre 
-                                                        FROM usuarios
-                                                        INNER JOIN cargos ON usuarios.cargo = cargos.id
-                                                        ORDER BY usuarios.nombre")->queryAll();*/
     $data2 = (new \yii\db\Query())
         ->select(['usua_id', 'usua_nombre'])
         ->from(['tbl_usuarios'])
@@ -35,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
     $listData2 = ArrayHelper::map($data2, 'usua_id', 'usua_nombre');
     
                                                             
-    //$data = Yii::$app->db->createCommand("SELECT u.idusuarioevalua, u.clientearea FROM tbl_usuarios_evalua u WHERE u.clientearea IS NOT NULL AND u.idusuarioevalua NOT IN(2202) group BY u.clientearea order BY u.clientearea")->queryAll();
     $data = (new \yii\db\Query())
       ->select(['tbl_proceso_cliente_centrocosto.idvolumendirector', 'tbl_proceso_cliente_centrocosto.cliente'])
       ->from(['tbl_proceso_cliente_centrocosto'])
