@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $listData2 = ArrayHelper::map($data2, 'usua_id', 'nombre');  
 
     $data = (new \yii\db\Query())
-      ->select(['tbl_proceso_cliente_centrocosto.idvolumendirector', 'tbl_proceso_cliente_centrocosto.cliente'])
+      ->select(['tbl_proceso_cliente_centrocosto.idvolumendirector', 'CONCAT(tbl_proceso_cliente_centrocosto.cliente," - ",tbl_proceso_cliente_centrocosto.id_dp_clientes) as cliente'])
       ->from(['tbl_proceso_cliente_centrocosto'])
       ->groupBy('tbl_proceso_cliente_centrocosto.cliente')
       ->orderBY ('tbl_proceso_cliente_centrocosto.cliente')

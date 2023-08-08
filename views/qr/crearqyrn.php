@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <div class="col-md-6">
                         <label style="font-size: 15px;"><em class="fas fa-list" style="font-size: 20px; color: #C148D0;"></em><?= Yii::t('app', ' Seleccionar Cliente') ?></label>
-                        <?=  $form->field($modelcaso, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->where(['=','estado',1])->andwhere(['=','anulado',0])->groupby(['cliente'])->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
+                        <?=  $form->field($modelcaso, 'cliente', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\ProcesosClienteCentrocosto::find()->select(['id_dp_clientes','CONCAT(cliente," - ",id_dp_clientes) as cliente'])->where(['=','estado',1])->andwhere(['=','anulado',0])->groupby(['cliente'])->orderBy(['cliente'=> SORT_ASC])->all(), 'id_dp_clientes', 'cliente'),
                             [
                                 'prompt'=>'Seleccionar...',
                                 'id'=>'idvarCliente',
