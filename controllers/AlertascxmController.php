@@ -153,10 +153,9 @@ use Exception;
             
             if ($modelArchivo->load($form)) {
                 $modelArchivo->file = UploadedFile::getInstance($modelArchivo, 'file');
-                if ($modelArchivo->file && $model->validate()) {
+                if ($modelArchivo->file && $modelArchivo->validate()) {
                   foreach ($modelArchivo->file as $file) {
                     $user = Yii::$app->user->identity->username;
-                    date("YmdHis") . $user . str_replace(' ', '', $modelArchivo->file->baseName);
                     $ruta = 'alertas/'.date("YmdHis") . $user . str_replace(' ', '', $modelArchivo->file->baseName. ".".$modelArchivo->file->extension);
 
                     $modelArchivo->file->saveAs( $ruta ); 
