@@ -268,4 +268,10 @@ $this->params['breadcrumbs'][] = $this->title;
           } 
         });
     });
+
+
+    <?php  if(base64_decode(Yii::$app->request->get("varAlerta")) === "1"){ ?>       
+      swal.fire("Información","Accion ejecutada Correctamente","success"); 
+    <?php } ?>
+    
 </script>

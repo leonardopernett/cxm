@@ -30,6 +30,10 @@ use GuzzleHttp;
 use app\models\Tmpejecucionformularios;
 use app\models\Calificaciondetalles;
 use Exception;
+use app\models\Formularios;
+use app\models\FormulariosSearch;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+
 
   class ValoracionexternaController extends Controller {
 
@@ -37,7 +41,7 @@ use Exception;
         return[
           'access' => [
               'class' => AccessControl::classname(),
-              'only' => ['index'],
+              'only' => ['index','columnIndexFromString'],
               'rules' => [
                 [
                   'allow' => true,
@@ -48,7 +52,7 @@ use Exception;
                 ],
               ]
             ],
-          'verbs' => [          
+          'verbs' => [
             'class' => VerbFilter::className(),
             'actions' => [
               'delete' => ['get'],
@@ -59,7 +63,7 @@ use Exception;
             'class' => \yii\filters\Cors::class,
         ],
         ];
-    } 
+    }
 
     public function actions() {
       return [
@@ -68,35 +72,36 @@ use Exception;
           ]
       ];
     }
-   
-    public function actionIndex(){  
 
+    public function actionIndex(){
+      
       $varListaGeneral = (new \yii\db\Query())
-                                ->select([
-                                  'tbl_valoracion_clientenuevo.id_clientenuevo',
-                                  'tbl_arbols.name', 
-                                  'tbl_hojavida_sociedad.sociedad',
-                                  'tbl_valoracion_clientenuevo.id_dp_clientes'
-                                ])
-                                ->from(['tbl_valoracion_clientenuevo'])
-                                ->join('LEFT OUTER JOIN', 'tbl_arbols',
-                                  'tbl_arbols.id = tbl_valoracion_clientenuevo.id_dp_clientes')
-                                ->join('LEFT OUTER JOIN', 'tbl_hojavida_sociedad',
-                                  'tbl_hojavida_sociedad.id_sociedad = tbl_valoracion_clientenuevo.id_sociedad')
-                                ->where(['=','tbl_valoracion_clientenuevo.anulado',0])
-                                ->groupby(['tbl_arbols.id'])
-                                ->all();  
-
-    
-
-      return $this->render('index',[
-        'varListaGeneral' => $varListaGeneral,
-      ]);
-    }
-
-
-    public function actionAgregarpcrc($id_dp_clientes){
-
+      ->select([
+        'tbl_valoracion_clientenuevo.id_clientenuevo',
+        'tbl_arbols.name',
+        'tbl_hojavida_sociedad.sociedad',
+        'tbl_valoracion_clientenuevo.id_dp_clientes'
+        ])
+        ->from(['tbl_valoracion_clientenuevo'])
+        ->join('LEFT OUTER JOIN', 'tbl_arbols',
+        'tbl_arbols.id = tbl_valoracion_clientenuevo.id_dp_clientes')
+        ->join('LEFT OUTER JOIN', 'tbl_hojavida_sociedad',
+        'tbl_hojavida_sociedad.id_sociedad = tbl_valoracion_clientenuevo.id_sociedad')
+        ->where(['=','tbl_valoracion_clientenuevo.anulado',0])
+        ->groupby(['tbl_arbols.id'])
+        ->all();
+        
+        
+        
+        return $this->render('index',[
+          'varListaGeneral' => $varListaGeneral,
+        ]);
+      }
+      
+      
+      public function actionAgregarpcrc($id_dp_clientes){
+        
+      $varAlerta = 0;
       $model = new Valoracionclientenuevo();
 
       $varData = (new \yii\db\Query())
@@ -108,8 +113,8 @@ use Exception;
                   ->all();
 
       $form = Yii::$app->request->post();
-        if ($model->load($form) ) { 
-        
+        if ($model->load($form) ) {
+
           $cod_pcrc= $model->cod_pcrc;
           Yii::$app->db->createCommand()->insert('tbl_valoracion_clientenuevo',[
                       'id_dp_clientes' => $id_dp_clientes,
@@ -118,7 +123,10 @@ use Exception;
                       'usua_id' => Yii::$app->user->identity->id,
                       'fechacreacion' => date('Y-m-d'),
           ])->execute();
-        return $this->redirect('index');
+
+          $varAlerta = 1;
+
+          return $this->redirect(['index','varAlerta' => base64_encode($varAlerta),'id_dp_clientes' => $id_dp_clientes]);
         }
 
       return $this->renderAjax('agregarpcrc',[
@@ -129,7 +137,9 @@ use Exception;
     }
 
    public function actionSubircarga($cod_pcrc,$id_dp_clientes){
+
     $model = new FormUploadtigo();
+    $varAlerta = 0;
 
 
     $varPreguntas = (new \yii\db\Query())
@@ -150,8 +160,8 @@ use Exception;
                         ->from(['tbl_arbols'])
                         ->where(['=','tbl_arbols.id',$cod_pcrc])
                         ->scalar();
-            
-              
+
+
             if ($model->load(Yii::$app->request->post()))
             {
                 $model->file = UploadedFile::getInstances($model, 'file');
@@ -164,24 +174,37 @@ use Exception;
                         $file->saveAs('categorias/' . $name . '.' . $file->extension);
                         $this->Importexcelvaloracion($name,$id_dp_clientes,$cod_pcrc);
 
-                       
 
-                        // return $this->redirect('viewusuariosencuestas');
+
+                        $varAlerta = 1;
+
+                        return $this->redirect(['subircarga','id_dp_clientes' => $id_dp_clientes,'cod_pcrc' => $cod_pcrc,'varAlerta' => base64_encode($varAlerta)]);
                     }
                 }
            }
-      
+
 
       return $this->render('subircarga',[
         'model' => $model,
         'varPreguntas' => $varPreguntas,
         'varNombreArbol' => $varNombreArbol,
       ]);
-    
+
 
    }
 
-   public function Importexcelvaloracion($name,$id_dp_clientes,$cod_pcrc){
+  private function columnIndexFromString($columnString)
+  {
+    $length = strlen($columnString);
+    $index = 0;
+    for ($i = 0; $i < $length; $i++) {
+        $char = strtoupper($columnString[$i]);
+        $index = $index * 26 + (ord($char) - 64);
+    }
+    return $index;
+  }
+
+    public function Importexcelvaloracion($name,$id_dp_clientes,$cod_pcrc){
       ini_set("max_execution_time", "900");
       ini_set("memory_limit", "1024M");
       ini_set( 'post_max_size', '1024M' );
@@ -189,7 +212,7 @@ use Exception;
       ignore_user_abort(true);
       set_time_limit(900);
 
-      $inputFile = 'categorias/' . $name . '.xlsx';      
+      $inputFile = 'categorias/' . $name . '.xlsx';
 
       try {
           $inputFileType = \PHPExcel_IOFactory::identify($inputFile);
@@ -201,11 +224,14 @@ use Exception;
 
       $sheet = $objPHPExcel->getSheet(0);
       $highestRow = $sheet->getHighestRow();
+      $highestColumn = $sheet->getHighestColumn();
 
+      $lastColumnIndex = $this->columnIndexFromString($highestColumn);
 
-      for ($i=3; $i <= $highestRow; $i++) { 
+      $arraySesions = [];
+      $arrayRespuestas = [];
 
-
+      for ($i=3; $i <= $highestRow; $i++) {
 
         $varAsesor = (new \yii\db\Query())
                         ->select(['tbl_evaluados.id'])
@@ -225,22 +251,31 @@ use Exception;
                         ->where(['LIKE','tbl_dimensions.name','%' . trim($sheet->getCell("C".$i)->getValue()) . '%',false])
                         ->scalar();
 
-        $varFuente  = (new \yii\db\Query())
-                        ->select(['tbl_etapa_cad.id_etapacad'])
-                        ->from(['tbl_etapa_cad'])
-                        ->where(['LIKE','tbl_etapa_cad.nombre','%' . trim($sheet->getCell("D".$i)->getValue()) . '%',false])
-                        ->groupBy(['tbl_etapa_cad.id_etapacad'])
-                        ->scalar();
+        $varFuente = trim($sheet->getCell("D".$i)->getValue());
+        $varScore = trim($sheet->getCell("E".$i)->getValue());
+        $varComentarios = trim($sheet->getCell("F".$i)->getValue());
 
-        $varForm  = $cod_pcrc;// formulario 
+        $varForm  = (new \yii\db\Query())
+                                ->select([
+                                      'tbl_arbols.formulario_id'
+                                ])
+                                ->from(['tbl_arbols'])
+                                ->where(['=','tbl_arbols.id',$cod_pcrc])
+                                ->scalar();// formulario
 
 
         $varCreatedCxm = date('Y-m-d H:i:s');
 
-        $varComentarios = trim($sheet->getCell("F".$i)->getValue());
-        $varScore = trim($sheet->getCell("E".$i)->getValue());
+
+
         $varFechaMesActual = date('Y-m-01');
 
+        $arrCheckPits = null;
+        $arrFormulario = [];
+        $arrayCountBloques = [];
+        $arrayBloques = [];
+        $arrCount = [];
+        
 
         $varArbolRutaCxm = (new \yii\db\Query())
                           ->select([
@@ -249,253 +284,304 @@ use Exception;
                           ->from(['tbl_arbols'])
                           ->where(['=','tbl_arbols.id',$id_dp_clientes])
                           ->scalar();
+        //var_dump($varArbolRutaCxm);
 
+        //Buscamos la session del formulario actual
         $varSesionCxm = (new \yii\db\Query())
                           ->select([
-                                  'tbl_seccions.id','tbl_seccions.name as Nombreseccion'
-                                ])
+                                  'tbl_seccions.id'])
                           ->from(['tbl_seccions'])
-                          ->where(['=','tbl_seccions.id',$varForm])
-                          ->scalar();
+                          ->where(['=','tbl_seccions.formulario_id',$varForm])
+                          ->all();
 
-        $varBloquesCxm = (new \yii\db\Query())
-                          ->select([
-                            'tbl_bloques.id','tbl_bloques.name as NombreBloque'
-                          ])
+        // if (!empty($varSesionCxm)) {
+        //   array_push($arraySesions,$varSesionCxm);
+        // }
+         
+        // Recorremos todas las sesiones 
+        foreach($varSesionCxm as $valorSesion) {
+
+          
+          //Buscamos el bloque asociado a esa session
+          $varBloquesCxm = (new \yii\db\Query())
+                          ->select(['tbl_bloques.id'])
                           ->from(['tbl_bloques'])
-                          ->where(['=','tbl_bloques.id',$varSesionCxm])
-                          ->scalar();
+                          ->where(['=','tbl_bloques.seccion_id',$valorSesion['id']])
+                          ->column();
 
-        $varBloqueDetalleCxm = (new \yii\db\Query())
-                          ->select([
-                            'tbl_bloquedetalles.calificacion_id'
-                          ])
+
+          foreach ($varBloquesCxm as $bloques) {
+            //var_dump("valor dentro de varBloquesCxm", $bloques);
+
+            //bloque detalle asociado al bloque
+            $varBloqueDetalleCxm = (new \yii\db\Query())
+                          ->select(['tbl_bloquedetalles.id','tbl_bloquedetalles.calificacion_id'])
                           ->from(['tbl_bloquedetalles'])
-                          ->where(['=','tbl_bloquedetalles.bloque_id',$varBloquesCxm])
-                          ->scalar();
-
-        $varCalificacionDetalleCxm = (new \yii\db\Query())
-                          ->select([
-                            'tbl_calificaciondetalles.id'
-                          ])
-                          ->from(['tbl_calificaciondetalles'])
-                          ->where(['=','tbl_calificaciondetalles.calificacion_id',$varBloqueDetalleCxm])
-                          ->scalar();
-
-        $varCalificacionDetalleNameCxm = (new \yii\db\Query())
-                          ->select([
+                          ->where(['=','tbl_bloquedetalles.bloque_id',$bloques])
+                          ->all();
+                               
+            //Recorremos todas las preguntas asociada a un bloque
+            foreach ($varBloqueDetalleCxm as $value) {
+             //var_dump("varBloqueDetalleCxm: ", $value);
+              //recorremos las respuestas asociadas a ese detalle del bloque
+              for ($j=6; $j <= $lastColumnIndex; $j++) { 
+              //var_dump("columna excel: ", $j);
+              $rta = trim($sheet->getCellByColumnAndRow($j,$i)->getValue());
+              //var_dump("valor de esa columna: ", $rta);
+              //trae la rta 
+              $varCalificacionDetalleNameCxm = (new \yii\db\Query())
+                            ->select([
                             'tbl_calificaciondetalles.name'
-                          ])
-                          ->from(['tbl_calificaciondetalles'])
-                          ->where(['=','tbl_calificaciondetalles.calificacion_id',$varBloqueDetalleCxm])
-                          ->andwhere(['=','tbl_calificaciondetalles.name',$varScore])
-                          ->scalar();
-                                                    
+                            ])
+                            ->from(['tbl_calificaciondetalles'])
+                            ->join('INNER JOIN','tbl_bloquedetalles',
+                            'tbl_bloquedetalles.calificacion_id = tbl_calificaciondetalles.calificacion_id')
+                            ->where(['=','tbl_bloquedetalles.bloque_id',$bloques])
+                            ->andwhere(['=','tbl_calificaciondetalles.calificacion_id',$value['calificacion_id']])
+                            ->andwhere(['LIKE','tbl_calificaciondetalles.name','%' . $rta . '%',false])
+                            ->scalar();
+              //var_dump("varCalificacionDetalleNameCxm: ", $varCalificacionDetalleNameCxm);
+
+              //trae id_rta 
+              
+              $varCalificacionDetalleCxm = (new \yii\db\Query())
+                            ->select([
+                            'tbl_calificaciondetalles.id','tbl_calificaciondetalles.calificacion_id'
+                            ])
+                            ->from(['tbl_calificaciondetalles'])
+                            ->where(['=','tbl_calificaciondetalles.calificacion_id',$value['calificacion_id']])                            
+                            ->andwhere(['LIKE','tbl_calificaciondetalles.name','%' . trim($sheet->getCellByColumnAndRow($j,$i)->getValue()) . '%',false])
+                            ->all(); 
+                            
+                            
+                //var_dump("varCalificacionId: ", $varCalificacionId);
+                if (!empty($varCalificacionDetalleCxm)) {
+                  if(!in_array($j, $arrCount)){                    
+                    array_push($arrCount, $j);
+                    array_push($arrayRespuestas,$varCalificacionDetalleCxm); //
+                    break;
+                  }
+                  
+                  
+                }            
+
+              }  
+            }
+          }
+        }
+
+        
+
         $varSubirCalculoCxm = (new \yii\db\Query())
-                          ->select([
-                                  'tbl_formularios.subi_calculo'
-                          ])
-                          ->from(['tbl_formularios'])
-                          ->where(['=','tbl_formularios.id',$varForm])
-                          ->scalar();
+                            ->select([
+                                    'tbl_formularios.subi_calculo'
+                            ])
+                            ->from(['tbl_formularios'])
+                            ->where(['=','tbl_formularios.id',$varForm])
+                            ->scalar();
 
         $varCondicionalForm = [
-                                "usua_id" => $varValorador,
-                                "arbol_id" => $id_dp_clientes,
-                                "evaluado_id" => $varAsesor,
-                                "dimension_id" => $varDimension,
-                                "basesatisfaccion_id" => null,
-                                ];
-       
+                                  "usua_id" => $varValorador,
+                                  "arbol_id" => $id_dp_clientes,
+                                  "evaluado_id" => $varAsesor,
+                                  "dimension_id" => $varDimension,
+                                  "basesatisfaccion_id" => null,
+                                  ];
+                                  
         if ($varAsesor > 0) {
-        
+
           if ($varAsesor != "") {
-                                    
-                                    // CONSULTO SI YA EXISTE LA EVALUACION
-            $varCondicionalForm = [
-                                      "usua_id" => $varValorador,
-                                      "arbol_id" => $id_dp_clientes,
-                                      "evaluado_id" => $varAsesor,
-                                      "dimension_id" => $varDimension,
-                                      "basesatisfaccion_id" => null,
-                                      "dscomentario" => $varCreatedCxm,
-                                    ];
-                        
-                                    $idForm = \app\models\Ejecucionformularios::findOne($varCondicionalForm);
-                        
-              if (empty($idForm)) {
-                                      
-                                      $varCondicional = [
+
+                                      // CONSULTO SI YA EXISTE LA EVALUACION
+              $varCondicionalForm = [
                                         "usua_id" => $varValorador,
                                         "arbol_id" => $id_dp_clientes,
                                         "evaluado_id" => $varAsesor,
                                         "dimension_id" => $varDimension,
                                         "basesatisfaccion_id" => null,
-                                        "sneditable" => 1,
+                                        "dscomentario" => $varCreatedCxm,
                                       ];
-                        
-                                      $idTmpForm = \app\models\Tmpejecucionformularios::findOne($varCondicional);
-                        
-                if (empty($idTmpForm)) {
-                  $tmpeje = new \app\models\Tmpejecucionformularios();
-                  $tmpeje->dimension_id = $varDimension;
-                  $tmpeje->arbol_id = $id_dp_clientes;
-                  $tmpeje->usua_id = $varValoradorIdCxm;
-                  $tmpeje->evaluado_id = $varAsesor;
-                  $tmpeje->formulario_id = $varForm;
-                  $tmpeje->created = $varCreatedCxm;
-                  $tmpeje->sneditable = 1;
-                  date_default_timezone_set('America/Bogota');
-                  $tmpeje->hora_inicial = date("Y-m-d H:i:s");
-                        
-                  $tmpeje->tipo_interaccion = 1;
-                  $tmpeje->save();
-                  $tmp_id = $tmpeje->id;        
-                        
-                  $varIDTmpBloquedetallesCalificacionCxm = (new \yii\db\Query())
-                                        ->select([
-                                          'tbl_tmpejecucionbloquedetalles.id'
-                                        ])
-                                        ->from(['tbl_tmpejecucionbloquedetalles'])
-                                        ->where(['=','tbl_tmpejecucionbloquedetalles.tmpejecucionformulario_id',$tmp_id])
-                                        ->scalar();
-                        
-                  $arrCalificaciones = array();
-                  $arrCalificaciones = [$varCalificacionDetalleCxm];
-                        
-                  //$arrFormulario["equipo_id"] = $varEquipoId;
-                  //$arrFormulario["usua_id_lider"] = $varLiderIdCxm;
-                  $arrFormulario["dimension_id"] = $varDimension;
-                  $arrFormulario["dsruta_arbol"] = $varArbolRutaCxm;
-                  $arrFormulario["dscomentario"] = $varComentarios;
-                  $arrFormulario["dsfuente_encuesta"] = $varFuente;
-                  $arrFormulario["transacion_id"] = 1;
-                  $arrFormulario["sn_mostrarcalculo"] = 1;
-                        
-                                        //  CONSULTA DEL FORMULARIO PARA VERIFICAR EL SUBIRCALCULO
-                  $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
-                  if (isset($varSubirCalculoCxm) && $varSubirCalculoCxm != '') {
-                    $data->subi_calculo .= $varSubirCalculoCxm;
-                    $data->save();
+
+              $idForm = \app\models\Ejecucionformularios::findOne($varCondicionalForm);
+            
+            if (empty($idForm)) {
+                                        $varCondicional = [
+                                          "usua_id" => $varValorador,
+                                          "arbol_id" => $id_dp_clientes,
+                                          "evaluado_id" => $varAsesor,
+                                          "dimension_id" => $varDimension,
+                                          "basesatisfaccion_id" => null,
+                                          "sneditable" => 1,
+                                        ];
+
+            
+                                        
+              $idTmpForm = \app\models\Tmpejecucionformularios::findOne($varCondicional);
+              $arrayBloquedetallesCalificacionCxm = [];                          
+              if (empty($idTmpForm)) {
+                $tmpeje = new \app\models\Tmpejecucionformularios();
+                $tmpeje->dimension_id = $varDimension;
+                $tmpeje->arbol_id = $id_dp_clientes;
+                $tmpeje->usua_id = $varValorador;
+                $tmpeje->evaluado_id = $varAsesor;
+                $tmpeje->formulario_id = $varForm;
+                $tmpeje->created = $varCreatedCxm;
+                $tmpeje->sneditable = 1;
+                date_default_timezone_set('America/Bogota');
+                $tmpeje->hora_inicial = date("Y-m-d H:i:s");
+
+                $tmpeje->tipo_interaccion = 1;
+                $tmpeje->save();
+                $tmp_id = $tmpeje->id;
+
+                $varIDTmpBloquedetallesCalificacionCxm = (new \yii\db\Query())
+                                      ->select([
+                                        'tbl_tmpejecucionbloquedetalles.id'
+                                      ])
+                                      ->from(['tbl_tmpejecucionbloquedetalles'])
+                                      ->where(['=','tbl_tmpejecucionbloquedetalles.tmpejecucionformulario_id',$tmp_id])
+                                      ->scalar();
+
+              
+                // $arrCalificaciones = array();
+                // $arrCalificaciones = [$varCalificacionDetalleCxm];                     
+                //$arrFormulario["equipo_id"] = $varEquipoId;
+                //$arrFormulario["usua_id_lider"] = $varLiderIdCxm;
+                $arrFormulario["dimension_id"] = $varDimension;
+                $arrFormulario["dsruta_arbol"] = $varArbolRutaCxm;
+                $arrFormulario["dscomentario"] = $varComentarios;
+                $arrFormulario["dsfuente_encuesta"] = $varFuente;
+                $arrFormulario["transacion_id"] = 1;
+                $arrFormulario["sn_mostrarcalculo"] = 1;
+                
+                                      //  CONSULTA DEL FORMULARIO PARA VERIFICAR EL SUBIRCALCULO
+                $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
+                if (isset($varSubirCalculoCxm) && $varSubirCalculoCxm != '') {
+                  $data->subi_calculo .= $varSubirCalculoCxm;
+                  $data->save();
+                }
+                                      
+                // SE PROCEDE A ACTUALIZAR LA TEMPORAL
+                $model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
+                $model->usua_id_actual = $varValorador;
+                $model->save();
+
+                
+                \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
+                \app\models\Tmpejecucionsecciones::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
+                \app\models\Tmpejecucionbloques::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
+
+                    // SE GUARDAN LAS CALIFICACIONES
+                  // var_dump($varCalificacionId);
+                  // die(json_encode(" "));
+
+                foreach ($arrayRespuestas as $form_detalle_id => $calif_detalle_id) {
+                  $arrDetalleForm = [];
+                  $arrDetallePreg = [];
+                  //se valida que existan check de pits seleccionaddos y se valida
+                  //que exista el del bloquedetalle actual para actualizarlo
+                  if (count($arrCheckPits) > 0) {
+                      if (isset($arrCheckPits[$form_detalle_id])) {
+                          $arrDetalleForm["c_pits"] = $arrCheckPits[$form_detalle_id];
+                          
+                      }
                   }
-                        
-                  // SE PROCEDE A ACTUALIZAR LA TEMPORAL
-                  $model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
-                  $model->usua_id_actual = $varValorador;               
-                  $model->save();
-                                        
-                        
-                                        
-                  \app\models\Tmpejecucionformularios::updateAll($arrFormulario, ["id" => $tmp_id]);
-                  \app\models\Tmpejecucionsecciones::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
-                  \app\models\Tmpejecucionbloques::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
-                        
-                  // SE GUARDAN LAS CALIFICACIONES
-                  foreach ($arrCalificaciones as $calif_detalle_id) {
-                    $arrDetalleForm = [];
-                        
-                                          //se valida que existan check de pits seleccionaddos y se valida
-                                          //que exista el del bloquedetalle actual para actualizarlo
-                    if (count($arrCheckPits) > 0) {
-                      if (isset($arrCheckPits[$varIDTmpBloquedetallesCalificacionCxm])) {
-                        $arrDetalleForm["c_pits"] = $arrCheckPits[$varIDTmpBloquedetallesCalificacionCxm];
-                        
-                    }
-                                          
-                    if (empty($calif_detalle_id)) {
+                  if (empty($calif_detalle_id)) {
                       $arrDetalleForm["calificaciondetalle_id"] = -1;
-                    } else {
-                      $arrDetalleForm["calificaciondetalle_id"] = $calif_detalle_id;
-                    }
-                        
-                                          
-                    \app\models\Tmpejecucionbloquedetalles::updateAll($arrDetalleForm, ["id" => $varIDTmpBloquedetallesCalificacionCxm]);
-                    $calificacion = \app\models\Tmpejecucionbloquedetalles::findOne(["id" => $varIDTmpBloquedetallesCalificacionCxm]);
-                                          
-                        
-                    // Cuento las preguntas en las cuales esta seleccionado el NA
-                    //lleno $arrayBloques para tener marcados en que bloques no se selecciono el check
-                                          
-                    if (!in_array($varBloquesCxm, $arrayBloques) && (strtoupper($varCalificacionDetalleNameCxm) == 'NA')) {
+          
+                  }else{
+                      $arrDetalleForm["calificaciondetalle_id"] = $calif_detalle_id[0]['id'];
+                      $arrDetallePreg['calificacion_id'] = $calif_detalle_id[0]['calificacion_id'];
+                      $arrDetallePreg['tmpejecucionformulario_id'] =  $tmp_id;
+                  }
+                
+
+                  // var_dump($arrDetallePreg);
+                  // die();
+                 
+                  
+                   
+                  \app\models\Tmpejecucionbloquedetalles::updateAll($arrDetalleForm, ["and",$arrDetallePreg]);
+                  $calificacion = \app\models\Tmpejecucionbloquedetalles::findOne(["id" => $form_detalle_id]);
+                  //$calificacionDetalle = \app\models\Calificaciondetalles::findOne(['id' => $calificacion->calificaciondetalle_id]);
+                  // var_dump($calificacion);
+                  // die();
+                  //Cuento las preguntas en las cuales esta seleccionado el NA
+                  //lleno $arrayBloques para tener marcados en que bloques no se selecciono el check
+                  if (!in_array($varBloquesCxm, $arrayBloques) && (strtoupper($varCalificacionDetalleNameCxm) == 'NA')) {
                                             
-                      $arrayBloques[] = $varBloquesCxm;
-                                            
-                      //inicio $arrayCountBloques
-                      $arrayCountBloques[$count] = [($varBloquesCxm) => 1];
-                      $count++;
-                                            
-                    } else {
+                    $arrayBloques[] = $varBloquesCxm;
                                           
+                    //inicio $arrayCountBloques
+                    $arrayCountBloques[$count] = [($varBloquesCxm) => 1];
+                    $count++;
+                                          
+                  } else {
                       //actualizo $arrayCountBloques sumandole 1 cada q encuentra un NA de ese bloque
-                      if (count($arrayCountBloques) != 0) {
-                        if ((array_key_exists($calificacion->bloque_id, $arrayCountBloques[count($arrayCountBloques) - 1])) && (strtoupper($varCalificacionDetalleNameCxm) == 'NA')) {
-                                                
-                          $arrayCountBloques[count($arrayCountBloques) - 1][$varBloquesCxm] = ($arrayCountBloques[count($arrayCountBloques) - 1][$varBloquesCxm] + 1);
-                                              
-                        }
+                    if (count($arrayCountBloques) != 0) {
+                      if ((array_key_exists($varBloquesCxm, $arrayCountBloques[count($arrayCountBloques) - 1])) && (strtoupper($varCalificacionDetalleNameCxm->name) == 'NA')) {
+
+                        $arrayCountBloques[count($arrayCountBloques) - 1][$varBloquesCxm] = ($arrayCountBloques[count($arrayCountBloques) - 1][$varBloquesCxm] + 1);
                       }
-                      }
-                  }
-                                        
-                                        //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
-                  foreach ($arrayCountBloques as $dato) {
-                                          
-                    $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")->from("tbl_tmpejecucionbloquedetalles")->where(['tmpejecucionformulario_id' => $tmp_id, 'bloque_id' => key($dato)])->asArray()->all();
-                                          
-                    if ($dato[key($dato)] == $totalPreguntasBloque["0"]["preguntas"]) {
-                                          
-                      \app\models\Tmpejecucionbloques::updateAll(['snna' => 1], ['tmpejecucionformulario_id' => $tmp_id, 'bloque_id' => key($dato)]);
-                                            
                     }
                   }
-                        
-                                        //actualizo las secciones, la cuales tienen todos sus bloques con la opcion snna en 1
-                  $secciones = \app\models\Tmpejecucionsecciones::findAll(['tmpejecucionformulario_id' => $tmp_id]);
-                  foreach ($secciones as $seccion) {
-                    $bloquessnna = \app\models\Tmpejecucionformularios::find()
-                                    ->select("s.seccion_id AS id,COUNT(b.id) AS conteo")
-                                    ->from("tbl_tmpejecucionformularios f")
-                                    ->join("LEFT JOIN", "tbl_tmpejecucionsecciones s", "s.tmpejecucionformulario_id = f.id")
+                }
+
+                //var_dump($arrDetalleForm);
+
+        //var_dump("arrayRespuestas: ", $arrayRespuestas);
+
+        
+                  //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
+                foreach ($arrayCountBloques as $dato) {
+                  $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
+                                    ->from("tbl_tmpejecucionbloquedetalles")
+                                    ->where(['tmpejecucionformulario_id' => $tmp_id, 'bloque_id' => key($dato)])->asArray()->all();
+                  if ($dato[key($dato)] == $totalPreguntasBloque["0"]["preguntas"]) {
+                    \app\models\Tmpejecucionbloques::updateAll(['snna' => 1], ['tmpejecucionformulario_id' => $tmp_id, 'bloque_id' => key($dato)]);
+                  }
+                }
+
+                  //actualizo las secciones, la cuales tienen todos sus bloques con la opcion snna en 1
+                $secciones = \app\models\Tmpejecucionsecciones::findAll(['tmpejecucionformulario_id' => $tmp_id]);
+                foreach ($secciones as $seccion) {
+                  $bloquessnna = \app\models\Tmpejecucionformularios::find()->select("s.seccion_id AS id,COUNT(b.id) AS conteo")
+                                    ->from("tbl_tmpejecucionformularios f")->join("LEFT JOIN", "tbl_tmpejecucionsecciones s", "s.tmpejecucionformulario_id = f.id")
                                     ->join("LEFT JOIN", "tbl_tmpejecucionbloques b", "b.tmpejecucionseccion_id=s.id")
                                     ->where(['b.snna' => 1, 's.seccion_id' => ($seccion->seccion_id), 'f.id' => $tmp_id])
-                                    ->groupBy("s.id")->asArray()
-                                    ->all();
-                        
-                    $totalBloques = \app\models\Tmpejecucionformularios::find()
-                                    ->select("s.seccion_id AS id,COUNT(b.id) AS conteo")
-                                    ->from("tbl_tmpejecucionformularios f")
-                                    ->join("LEFT JOIN", "tbl_tmpejecucionsecciones s", "s.tmpejecucionformulario_id = f.id")
+                                    ->groupBy("s.id")->asArray()->all();
+                  $totalBloques = \app\models\Tmpejecucionformularios::find()->select("s.seccion_id AS id,COUNT(b.id) AS conteo")
+                                    ->from("tbl_tmpejecucionformularios f")->join("LEFT JOIN", "tbl_tmpejecucionsecciones s", "s.tmpejecucionformulario_id = f.id")
                                     ->join("LEFT JOIN", "tbl_tmpejecucionbloques b", "b.tmpejecucionseccion_id=s.id")
                                     ->where(['s.seccion_id' => ($seccion->seccion_id), 'f.id' => $tmp_id])
-                                    ->groupBy("s.id")->asArray()
-                                    ->all();
-                        
-                    if (count($bloquessnna) > 0) {
-                      if ($bloquessnna[0]['conteo'] == $totalBloques[0]['conteo']) {
-                                            
-                        \app\models\Tmpejecucionsecciones::updateAll(['snna' => 1], ['tmpejecucionformulario_id' => $tmp_id, 'seccion_id' => ($seccion->seccion_id)]);
-                                              
-                      }
+                                    ->groupBy("s.id")->asArray()->all();
+                  if (count($bloquessnna) > 0) {
+                    if ($bloquessnna[0]['conteo'] == $totalBloques[0]['conteo']) {
+                      \app\models\Tmpejecucionsecciones::updateAll(['snna' => 1], ['tmpejecucionformulario_id' => $tmp_id, 'seccion_id' => ($seccion->seccion_id)]);
+                    
                     }
                   }
-                        
-                                        /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
-                  $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
+                }
 
-                  
+                
+                                     /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
+                $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
+
+                
+              }
             }
-          }
-        } 
+          } 
+        }
       }
+
     }
-  }
-}
-   
-    
+    //die();
   
 
-public function actionAgregarservicio(){
-  $model = new Valoracionclientenuevo();
+  public function actionAgregarservicio(){
+
+    $model = new Valoracionclientenuevo();
+    $varAlerta = 0;
 
       $form = Yii::$app->request->post();
       if ($model->load($form)) {
@@ -526,12 +612,15 @@ public function actionAgregarservicio(){
                                     ->andwhere(['=','id_sociedad',$varIdSociedad])
                                     ->andwhere(['=','anulado',0])
                                     ->scalar();
-
-          return $this->redirect('index');
+          $varAlerta = 1;
+          return $this->redirect(['index','varAlerta' => base64_encode($varAlerta)]);
         }else{
+
+         
           return $this->redirect(['index']);
+
         }
-        
+
       }
 
       return $this->renderAjax('agregarservicio',[
