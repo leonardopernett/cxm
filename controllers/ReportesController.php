@@ -921,14 +921,27 @@ class ReportesController extends \yii\web\Controller {
              */
             public function actionFeedbackexpressamigo($evaluado_usuared) {
                 $model = new \app\models\Ejecucionfeedbacks();
-                $varListAsesor = \app\models\Evaluados::findOne(['dsusuario_red' => base64_decode($evaluado_usuared)]);
+                $varListAsesor = (new \yii\db\Query())
+                            ->select(['*'])
+                            ->from(['tbl_evaluados'])
+                            ->where(['=','tbl_evaluados.dsusuario_red',base64_decode($evaluado_usuared)])
+                            ->all();
+
+                $varid = null;
+                $varidentificacion = null;
+                foreach ($varListAsesor as $value) {
+                    $varid = $value['id'];
+                    $varidentificacion = $value['identificacion'];
+                }
+
+                
                 $varMensaje = 0;
                 $varDataList = null;
                 $varNameJarvis = null;
 
                 if ($varListAsesor) {
-                    $varIdAsesor = $varListAsesor->id;
-                    $varDocumentos = [':varDocumentoName'=>$varListAsesor->identificacion];
+                    $varIdAsesor = $varid;
+                    $varDocumentos = [':varDocumentoName'=>$varidentificacion];
 
                     $varNameJarvis = Yii::$app->dbjarvis->createCommand('
                         SELECT dp_datos_generales.primer_nombre FROM dp_datos_generales
@@ -969,6 +982,31 @@ class ReportesController extends \yii\web\Controller {
                                         ->where(['between','tbl_ejecucionfeedbacks.created',$varFechaInicio_BD,$varFechaFin_BD])
                                         ->andwhere(['=','tbl_ejecucionformularios.evaluado_id',$varIdAsesor])
                                         ->all(); 
+
+                        if ($varDataList == null) {
+                            $varDataList = (new \yii\db\Query())
+                                                        ->select([
+                                                            'tbl_ejecucionfeedbacks.id',
+                                                            'tbl_ejecucionfeedbacks.created',
+                                                            'if(tbl_ejecucionfeedbacks.snaviso_revisado=0,"No","Si") AS Gestionado',
+                                                            'tbl_usuarios.usua_nombre AS Lider',
+                                                            'tbl_evaluados.name AS Asesor',
+                                                            'tbl_ejecucionfeedbacks.cod_pcrc AS Formulario',
+                                                            'tbl_ejecucionfeedbacks.basessatisfaccion_id',
+                                                            'tbl_ejecucionfeedbacks.ejecucionformulario_id AS Formid',
+                                                            'u.usua_nombre AS VALORACIONESalorador'
+                                                        ])
+                                                        ->from(['tbl_ejecucionfeedbacks'])
+                                                        ->join('LEFT OUTER JOIN', 'tbl_evaluados',
+                                                              'tbl_evaluados.id = tbl_ejecucionfeedbacks.evaluado_id')
+                                                        ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                                              'tbl_usuarios.usua_id = tbl_ejecucionfeedbacks.usua_id_lider')
+                                                        ->join('LEFT OUTER JOIN', 'tbl_usuarios u',
+                                                              'u.usua_id = tbl_ejecucionfeedbacks.usua_id')
+                                                        ->where(['between','tbl_ejecucionfeedbacks.created',$varFechaInicio_BD,$varFechaFin_BD])
+                                                        ->andwhere(['=','tbl_ejecucionfeedbacks.evaluado_id',$varIdAsesor])
+                                                        ->all(); 
+                        }
                     }
 
 
