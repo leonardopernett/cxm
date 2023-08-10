@@ -994,7 +994,7 @@ class ReportesController extends \yii\web\Controller {
                                                             'tbl_ejecucionfeedbacks.cod_pcrc AS Formulario',
                                                             'tbl_ejecucionfeedbacks.basessatisfaccion_id',
                                                             'tbl_ejecucionfeedbacks.ejecucionformulario_id AS Formid',
-                                                            'u.usua_nombre AS VALORACIONESalorador'
+                                                            'u.usua_nombre AS Valorador'
                                                         ])
                                                         ->from(['tbl_ejecucionfeedbacks'])
                                                         ->join('LEFT OUTER JOIN', 'tbl_evaluados',
