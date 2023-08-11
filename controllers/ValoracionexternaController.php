@@ -241,13 +241,13 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
         $varAsesor = (new \yii\db\Query())
                         ->select(['tbl_evaluados.id'])
                         ->from(['tbl_evaluados'])
-                        ->where(['=','tbl_evaluados.identificacion','%' . trim($sheet->getCell("A".$i)->getValue()) . '%',false])
+                        ->where(['=','tbl_evaluados.identificacion',trim($sheet->getCell("A".$i)->getValue())])
                         ->scalar();
 
         $varValorador = (new \yii\db\Query())
                         ->select(['tbl_usuarios.usua_id'])
                         ->from(['tbl_usuarios'])
-                        ->where(['=','tbl_usuarios.usua_identificacion','%' . trim($sheet->getCell("B".$i)->getValue()) . '%',false])
+                        ->where(['=','tbl_usuarios.usua_identificacion',trim($sheet->getCell("B".$i)->getValue())])
                         ->scalar();
 
         $nombreExcel = trim($sheet->getCell("C".$i)->getValue()); // Nombre del archivo Excel
