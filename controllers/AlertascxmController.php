@@ -308,7 +308,7 @@ use Exception;
                                     <label style='font-size: 15px; margin: 50px; color: #1d2d4f;'>Información:</label>
                                 </th>
                                 <th class='text-center' align='text-center' scope='col'>              
-                                    <label style='font-size: 15px;  margin: 30px; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='http://localhost:8080/qa_pruebas/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a></label>
+                                    <label style='font-size: 15px;  margin: 30px; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a></label>
 
                                     <hr>
 
@@ -940,7 +940,7 @@ use Exception;
                                     <label style='font-size: 15px; margin: 50px; color: #1d2d4f;'>Información:</label>
                                 </th>
                                 <th class='text-center' align='text-center' scope='col'>              
-                                    <label style='font-size: 15px;  margin: 30px; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='http://localhost:8080/qa_pruebas/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a></label>
+                                    <label style='font-size: 15px;  margin: 30px; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a></label>
 
                                     <hr>
 
