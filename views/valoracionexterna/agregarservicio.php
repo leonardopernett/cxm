@@ -37,26 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
 <!-- Capa Proceso Informacion General -->
-
-<script src="../../js_extensions/jquery-2.1.3.min.js"></script>
-<script src="../../js_extensions/highcharts/highcharts.js"></script>
-<script src="../../js_extensions/highcharts/exporting.js"></script>
-
-<script src="../../js_extensions/chart.min.js"></script>
-
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
-
-<script src="../../js_extensions/datatables/jquery.dataTables.min.js"></script>
-<script src="../../js_extensions/datatables/dataTables.buttons.min.js"></script>
-<script src="../../js_extensions/cloudflare/jszip.min.js"></script>
-<script src="../../js_extensions/cloudflare/pdfmake.min.js"></script>
-<script src="../../js_extensions/cloudflare/vfs_fonts.js"></script>
-<script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
-<script src="../../js_extensions/datatables/buttons.print.min.js"></script>
-<script src="../../js_extensions/mijs.js"> </script>
-<link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
-
 <div id="capaIdGeneral" class="capaGeneral" style="display: inline;">
     
     <div class="row">
@@ -66,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-6">
                         <label style="font-size: 15px;"><em class="fas fa-check" style="font-size: 20px; color: #337ab7;"></em><?= Yii::t('app', ' Seleccionar Cliente') ?></label>
-                        <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->where(['=','activo',0])->andwhere(['IN','arbol_id',[2,98,4216,4008]])->andwhere(['NOT LIKE','name','no usar'])->orderBy(['name'=> SORT_ASC])->all(), 'id', 'name'),
+                        <?=  $form->field($model, 'id_dp_clientes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Arboles::find()->select(['id','CONCAT(name," - ",id) as name'])->where(['=','activo',0])->andwhere(['IN','arbol_id',[2,98,4216,4008]])->andwhere(['NOT LIKE','name','no usar'])->orderBy(['name'=> SORT_ASC])->all(), 'id', 'name'),
                                                         [
                                                             'id' => 'idProcesos',
                                                             'prompt'=>'Seleccionar...',
@@ -132,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script type="text/javascript">
     function varVerificar(){
         var varid_sociedad = document.getElementById("id_sociedad").value;
-        var varidinfocliente = document.getElementById("idProcesos").value;
+        var varidinfocliente = document.getElementById("idinfocliente").value;
 
         if (varidinfocliente == "") {
             event.preventDefault();
@@ -145,11 +125,4 @@ $this->params['breadcrumbs'][] = $this->title;
             return;
         }
     }
-
-    
-    <?php  
-    if(base64_decode(Yii::$app->request->get("varAlerta")) === "1"){ ?>       
-      swal.fire("Información","Accion ejecutada Correctamente","success"); 
-    <?php } ?>
-    
 </script>

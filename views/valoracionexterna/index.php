@@ -129,6 +129,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Acciones') ?></label>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="card1 mb" style="background: #6b97b1; ">
+                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Listado de Clientes') ?></label>
+            </div>
+        </div>
     </div>
 
     <br>
@@ -171,20 +177,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         
       </div>
-    </div>
-    <hr><br>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card1 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Gráficas') ?></label>
-            </div>
-        </div>
-    </div>
-    <br>
-
-    <div class="row">
-      <div class="col-md-12">
+     
+      <div class="col-md-6">
         <div class="card1 mb">
           <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #337ab7;"></em> <?= Yii::t('app', 'Listado de Clientes con Valoración Externa') ?></label>
 
@@ -235,7 +229,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </tbody>
           </table>
         </div>
-      </div>
+      
     </div>
 
 </div>

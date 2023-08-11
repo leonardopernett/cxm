@@ -241,13 +241,13 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
         $varAsesor = (new \yii\db\Query())
                         ->select(['tbl_evaluados.id'])
                         ->from(['tbl_evaluados'])
-                        ->where(['LIKE','tbl_evaluados.identificacion','%' . trim($sheet->getCell("A".$i)->getValue()) . '%',false])
+                        ->where(['=','tbl_evaluados.identificacion','%' . trim($sheet->getCell("A".$i)->getValue()) . '%',false])
                         ->scalar();
 
         $varValorador = (new \yii\db\Query())
                         ->select(['tbl_usuarios.usua_id'])
                         ->from(['tbl_usuarios'])
-                        ->where(['LIKE','tbl_usuarios.usua_identificacion','%' . trim($sheet->getCell("B".$i)->getValue()) . '%',false])
+                        ->where(['=','tbl_usuarios.usua_identificacion','%' . trim($sheet->getCell("B".$i)->getValue()) . '%',false])
                         ->scalar();
 
         $nombreExcel = trim($sheet->getCell("C".$i)->getValue()); // Nombre del archivo Excel
@@ -399,7 +399,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
         $varCondicionalForm = [
                                   "usua_id" => $varValorador,
-                                  "arbol_id" => $id_dp_clientes,
+                                  "arbol_id" => $cod_pcrc,
                                   "evaluado_id" => $varAsesor,
                                   "dimension_id" => $varDimension,
                                   "basesatisfaccion_id" => null,
@@ -412,7 +412,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                                       // CONSULTO SI YA EXISTE LA EVALUACION
               $varCondicionalForm = [
                                         "usua_id" => $varValorador,
-                                        "arbol_id" => $id_dp_clientes,
+                                        "arbol_id" => $cod_pcrc,
                                         "evaluado_id" => $varAsesor,
                                         "dimension_id" => $varDimension,
                                         "basesatisfaccion_id" => null,
@@ -424,7 +424,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
             if (empty($idForm)) {
                                         $varCondicional = [
                                           "usua_id" => $varValorador,
-                                          "arbol_id" => $id_dp_clientes,
+                                          "arbol_id" => $cod_pcrc,
                                           "evaluado_id" => $varAsesor,
                                           "dimension_id" => $varDimension,
                                           "basesatisfaccion_id" => null,
@@ -438,7 +438,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
               if (empty($idTmpForm)) {
                 $tmpeje = new \app\models\Tmpejecucionformularios();
                 $tmpeje->dimension_id = $varDimension;
-                $tmpeje->arbol_id = $id_dp_clientes;
+                $tmpeje->arbol_id = $cod_pcrc;
                 $tmpeje->usua_id = $varValorador;
                 $tmpeje->evaluado_id = $varAsesor;
                 $tmpeje->formulario_id = $varForm;
