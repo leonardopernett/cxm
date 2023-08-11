@@ -190,7 +190,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 <div class="row">
                     <div class="col-md-6">
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Tipo de Alerta: ') ?></label>
+                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Tipo de Alerta ') ?></label>
                         <?=  $form->field($model, 'tipo_alerta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\AlertasTipoalerta::find()->where(['=','anulado',0])->orderBy(['tipoalerta'=> SORT_ASC])->all(), 'tipoalerta', 'tipoalerta'),
                                         [
                                             'id' => 'varIdPostulacion',
@@ -199,15 +199,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 )->label(''); 
                         ?>
 
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Asunto de la Alerta: ') ?></label>
+                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Asunto de la Alerta ') ?></label>
                         <?= $form->field($model, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'varIdAsuntos','placeholder'=>'Ingresar Asunto de la Alerta'])?>                                              
 
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Comentarios: ') ?></label>
+                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Comentarios ') ?></label>
                         <?= $form->field($model, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios','rows'=>4,'placeholder'=>'Ingresar Comentarios'])?>
                     </div>
 
                     <div class="col-md-6">
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Programa/Pcrc: ') ?></label>
+                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Programa/Pcrc ') ?></label>
                         <?=
                             $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
                                 ->widget(Select2::classname(), [
@@ -228,7 +228,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ?>
                         
 
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Correos Destinatarios: ') ?></label>
+                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Correos Destinatarios ') ?></label>
 
                         <?= 
                             Html::radioList('anulado', 1, 
@@ -270,8 +270,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-4">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Guardar Alerta:') ?></label> 
-                <?= Html::submitButton("Subir", ["class" => "btn btn-primary", "onclick" => "varGenerar();"]) ?>
+                <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Guardar & Enviar Alerta:') ?></label> 
+                <?= Html::submitButton("Enviar", ["class" => "btn btn-primary", "onclick" => "varGenerar();"]) ?>
             </div>    
         </div>
 

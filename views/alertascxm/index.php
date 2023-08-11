@@ -139,6 +139,16 @@ if ($roles == '270') {
             <br>
 
             <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Buscar Alertas Eliminadas') ?></label>
+                <?= Html::a('Buscar',  ['reportealertaeliminadas'], ['class' => 'btn btn-success',
+                                                'data-toggle' => 'tooltip',
+                                                'title' => 'Buscar Alertas Eliminadas']) 
+                ?>
+            </div>
+
+            <br>
+
+            <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Parametrizar Datos') ?></label>
                 <?= Html::a('Parametrizar',  ['parametrizaralertas'], ['class' => 'btn btn-danger',
                                                 'data-toggle' => 'tooltip',

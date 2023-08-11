@@ -148,7 +148,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-6">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Parametrizar Tipo de Postulación') ?></label>
+                <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Parametrizar Tipo de Alertas') ?></label>
                 <?= $form->field($modelTipo, 'tipoalerta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['maxlength' => 150, 'id'=>'idtipoalerta', 'placeholder'=>'Ingresar Tipo de Alerta'])?>
 
                 <div onclick="generartipo();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
@@ -156,29 +156,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <br>
                 <table id="tbltipoAlerta" class="table table-striped table-bordered tblResDetFreed">
-                  <caption><?= Yii::t('app', ' Resultados...') ?></caption>
-                  <thead>
-                    <tr>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id') ?></label></th>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Alerta') ?></label></th>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                    <caption><?= Yii::t('app', ' Resultados...') ?></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Alerta') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     <?php
                       foreach ($varDataListTipo as $key => $value) {                    
                     ?>
-                      <tr>
-                        <td><label style="font-size: 12px;"><?php echo  $value['id_tipoalerta']; ?></label></td>
-                        <td><label style="font-size: 12px;"><?php echo  $value['tipoalerta']; ?></label></td>
-                        <td class="text-center">
+                        <tr>
+                            <td><label style="font-size: 12px;"><?php echo  $value['id_tipoalerta']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['tipoalerta']; ?></label></td>
+                            <td class="text-center">
                           <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminartipo','id'=> $value['id_tipoalerta']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
-                        </td>
-                      </tr>
+                            </td>
+                        </tr>
                     <?php
                       }
                     ?>
-                  </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -204,25 +204,97 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <br>
                 <table id="tbltipoEncuesta" class="table table-striped table-bordered tblResDetFreed">
+                    <caption><?= Yii::t('app', ' Resultados...') ?></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Encuesta') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Peso Encuesta') ?></label></th>
+                            <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                      foreach ($varDataListEncuesta as $key => $value) {                    
+                    ?>
+                        <tr>
+                            <td><label style="font-size: 12px;"><?php echo  $value['id_tipoencuestas']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['tipoencuestas']; ?></label></td>
+                            <td><label style="font-size: 12px;"><?php echo  $value['peso']; ?></label></td>
+                            <td class="text-center">
+                                <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarencuesta','id'=> $value['id_tipoencuestas']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                            </td>
+                        </tr>
+                    <?php
+                      }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card1 mb">
+                <label style="font-size: 15px;"><em class="fas fa-cogs" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Parametrizar Permisos Alertas') ?></label>
+                <?=
+                    $form->field($modelPermisos, 'id_usuario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->label(Yii::t('app',''))
+                            ->widget(Select2::classname(), [
+                                'language' => 'es',
+                                'options' => ['id'=>'varIdUsuario','placeholder' => Yii::t('app', 'Seleccionar Usuario...')],
+                                'pluginOptions' => [
+                                    'allowClear' => true,
+                                    'minimumInputLength' => 4,
+                                    'ajax' => [
+                                        'url' => \yii\helpers\Url::to(['reportes/usuariolist']),
+                                        'dataType' => 'json',
+                                        'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                        'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                                    ],
+                                    'initSelection' => new JsExpression('function (element, callback) {
+                                                var id=$(element).val();
+                                                if (id !== "") {
+                                                    $.ajax("' . Url::to(['reportes/usuariolist']) . '?id=" + id, {
+                                                        dataType: "json",
+                                                        type: "post"
+                                                    }).done(function(data) { callback(data.results[0]);});
+                                                }
+                                            }')
+                                ]
+                                    ] 
+                            );
+                ?>
+
+                <div onclick="generarpermiso();" class="btn btn-primary"  style="display:inline; background-color: #337ab7;" method='post' id="botones2" >
+                  <?= Yii::t('app', ' Guardar') ?>
+                </div>
+                <br>
+                <table id="tbltipoPermiso" class="table table-striped table-bordered tblResDetFreed">
                   <caption><?= Yii::t('app', ' Resultados...') ?></caption>
                   <thead>
                     <tr>
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Id') ?></label></th>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Tipo Encuesta') ?></label></th>
-                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Peso Encuesta') ?></label></th>
+                      <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Usuario Con Perimso') ?></label></th>
                       <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 13px;"><?= Yii::t('app', 'Acciones') ?></label></th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
-                      foreach ($varDataListEncuesta as $key => $value) {                    
+                      foreach ($varDataListPermisos as $key => $value) {    
+                        $varNombreUsuario = (new \yii\db\Query())
+                                            ->select(['tbl_usuarios.usua_nombre'])
+                                            ->from(['tbl_usuarios'])
+                                            ->where(['=','tbl_usuarios.usua_id',$value['id_usuario']])
+                                            ->scalar();                
                     ?>
                       <tr>
-                        <td><label style="font-size: 12px;"><?php echo  $value['id_tipoencuestas']; ?></label></td>
-                        <td><label style="font-size: 12px;"><?php echo  $value['tipoencuestas']; ?></label></td>
-                        <td><label style="font-size: 12px;"><?php echo  $value['peso']; ?></label></td>
+                        <td><label style="font-size: 12px;"><?php echo  $value['id_permisoseliminar']; ?></label></td>
+                        <td><label style="font-size: 12px;"><?php echo  $varNombreUsuario; ?></label></td>
                         <td class="text-center">
-                          <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarencuesta','id'=> $value['id_tipoencuestas']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
+                          <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminarpermiso','id'=> $value['id_permisoseliminar']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;", 'title' => 'Eliminar']) ?>
                         </td>
                       </tr>
                     <?php
@@ -231,7 +303,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   </tbody>
                 </table>
             </div>
-        </div>
+      </div>
     </div>
 
 </div>
@@ -305,6 +377,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 });
             }
+        }
+    };
+
+    function generarpermiso(){
+        var varIdUsuario = document.getElementById("varIdUsuario").value;
+
+        if (varIdUsuario == "") {
+            event.preventDefault();
+            swal.fire("!!! Advertencia !!!","Debe de seleccionar a un usuario","warning");
+            return;
+        }else{
+            $.ajax({
+                method: "get",
+                url: "ingresarpermisos",
+                data: {
+                    txtvarIdUsuario : varIdUsuario,
+                },
+                success : function(response){
+                    numRta =   JSON.parse(response);          
+                    location.reload();
+                }
+            });
         }
     };
 </script>
