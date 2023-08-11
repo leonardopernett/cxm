@@ -977,17 +977,18 @@ use Exception;
                     </table>                    
                 ";
 
+            $target_path_enviados = "alertas/" . $varArchivo_enviados;
             $varListData_enviados = explode(", ", $model->remitentes);        
 
             if (count($varListData_enviados) >= 2) {
-                for ($i=0; $i < count($varListData_correos); $i++) { 
+                for ($i=0; $i < count($varListData_enviados); $i++) { 
                     $varCorreo_enviados = $varListData_enviados[$i];
 
                     Yii::$app->mailer->compose()
                             ->setTo($varCorreo_enviados)
                             ->setFrom(Yii::$app->params['email_satu_from'])
                             ->setSubject('Alertas CXM - '.$varAsunto_enviados)
-                            ->attach($target_path)
+                            ->attach($target_path_enviados)
                             ->setHtmlBody($varHtml_enviados)
                             ->send();
                 }
@@ -996,7 +997,7 @@ use Exception;
                             ->setTo($varListData_enviados)
                             ->setFrom(Yii::$app->params['email_satu_from'])
                             ->setSubject('Alertas CXM - '.$varAsunto_enviados)
-                            ->attach($target_path)
+                            ->attach($target_path_enviados)
                             ->setHtmlBody($varHtml_enviados)
                             ->send();
             } 
