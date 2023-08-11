@@ -193,6 +193,11 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
    }
 
+
+  private function calcularDistanciaEdicion($str1, $str2) {
+    return levenshtein($str1, $str2);
+  }
+
   private function columnIndexFromString($columnString)
   {
     $length = strlen($columnString);
@@ -231,25 +236,37 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
       $arraySesions = [];
       $arrayRespuestas = [];
 
-      for ($i=3; $i <= $highestRow; $i++) {
+      for ($i=2; $i <= $highestRow; $i++) {
 
         $varAsesor = (new \yii\db\Query())
                         ->select(['tbl_evaluados.id'])
                         ->from(['tbl_evaluados'])
-                        ->where(['LIKE','tbl_evaluados.name','%' . trim($sheet->getCell("A".$i)->getValue()) . '%',false])
+                        ->where(['LIKE','tbl_evaluados.identificacion','%' . trim($sheet->getCell("A".$i)->getValue()) . '%',false])
                         ->scalar();
 
         $varValorador = (new \yii\db\Query())
                         ->select(['tbl_usuarios.usua_id'])
                         ->from(['tbl_usuarios'])
-                        ->where(['LIKE','tbl_usuarios.usua_nombre','%' . trim($sheet->getCell("B".$i)->getValue()) . '%',false])
+                        ->where(['LIKE','tbl_usuarios.usua_identificacion','%' . trim($sheet->getCell("B".$i)->getValue()) . '%',false])
                         ->scalar();
 
-        $varDimension = (new \yii\db\Query())
-                        ->select(['tbl_dimensions.id'])
-                        ->from(['tbl_dimensions'])
-                        ->where(['LIKE','tbl_dimensions.name','%' . trim($sheet->getCell("C".$i)->getValue()) . '%',false])
-                        ->scalar();
+        $nombreExcel = trim($sheet->getCell("C".$i)->getValue()); // Nombre del archivo Excel
+        $dimensionesBD = (new \yii\db\Query())
+                      ->select(['tbl_dimensions.id', 'tbl_dimensions.name'])
+                      ->from(['tbl_dimensions'])
+                      ->all();
+
+                      $minDistance = PHP_INT_MAX;
+                      $varDimension = null;
+
+                      foreach ($dimensionesBD as $dimensionBD) {
+                        $distancia = $this->calcularDistanciaEdicion($nombreExcel, $dimensionBD['name']);
+
+                        if ($distancia < $minDistance) {
+                          $minDistance = $distancia;
+                          $varDimension = $dimensionBD['id'];
+                        }
+                      }
 
         $varFuente = trim($sheet->getCell("D".$i)->getValue());
         $varScore = trim($sheet->getCell("E".$i)->getValue());
@@ -262,6 +279,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                                 ->from(['tbl_arbols'])
                                 ->where(['=','tbl_arbols.id',$cod_pcrc])
                                 ->scalar();// formulario
+
 
 
         $varCreatedCxm = date('Y-m-d H:i:s');
@@ -370,7 +388,6 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
           }
         }
 
-        
 
         $varSubirCalculoCxm = (new \yii\db\Query())
                             ->select([
@@ -442,6 +459,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                                       ->where(['=','tbl_tmpejecucionbloquedetalles.tmpejecucionformulario_id',$tmp_id])
                                       ->scalar();
 
+                
               
                 // $arrCalificaciones = array();
                 // $arrCalificaciones = [$varCalificacionDetalleCxm];                     
