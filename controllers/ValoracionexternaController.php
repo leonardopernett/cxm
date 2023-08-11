@@ -300,11 +300,9 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                                 'tbl_arbols.dsname_full'
                           ])
                           ->from(['tbl_arbols'])
-                          ->where(['=','tbl_arbols.id',$id_dp_clientes])
+                          ->where(['=','tbl_arbols.id',$cod_pcrc])
                           ->scalar();
-        //var_dump($varArbolRutaCxm);
-
-        //Buscamos la session del formulario actual
+        
         $varSesionCxm = (new \yii\db\Query())
                           ->select([
                                   'tbl_seccions.id'])
@@ -312,15 +310,8 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                           ->where(['=','tbl_seccions.formulario_id',$varForm])
                           ->all();
 
-        // if (!empty($varSesionCxm)) {
-        //   array_push($arraySesions,$varSesionCxm);
-        // }
-         
-        // Recorremos todas las sesiones 
         foreach($varSesionCxm as $valorSesion) {
 
-          
-          //Buscamos el bloque asociado a esa session
           $varBloquesCxm = (new \yii\db\Query())
                           ->select(['tbl_bloques.id'])
                           ->from(['tbl_bloques'])
@@ -329,24 +320,19 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 
           foreach ($varBloquesCxm as $bloques) {
-            //var_dump("valor dentro de varBloquesCxm", $bloques);
-
-            //bloque detalle asociado al bloque
+            
             $varBloqueDetalleCxm = (new \yii\db\Query())
                           ->select(['tbl_bloquedetalles.id','tbl_bloquedetalles.calificacion_id'])
                           ->from(['tbl_bloquedetalles'])
                           ->where(['=','tbl_bloquedetalles.bloque_id',$bloques])
                           ->all();
                                
-            //Recorremos todas las preguntas asociada a un bloque
             foreach ($varBloqueDetalleCxm as $value) {
-             //var_dump("varBloqueDetalleCxm: ", $value);
-              //recorremos las respuestas asociadas a ese detalle del bloque
+             
               for ($j=6; $j <= $lastColumnIndex; $j++) { 
-              //var_dump("columna excel: ", $j);
+              
               $rta = trim($sheet->getCellByColumnAndRow($j,$i)->getValue());
-              //var_dump("valor de esa columna: ", $rta);
-              //trae la rta 
+            
               $varCalificacionDetalleNameCxm = (new \yii\db\Query())
                             ->select([
                             'tbl_calificaciondetalles.name'
@@ -358,10 +344,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                             ->andwhere(['=','tbl_calificaciondetalles.calificacion_id',$value['calificacion_id']])
                             ->andwhere(['LIKE','tbl_calificaciondetalles.name','%' . $rta . '%',false])
                             ->scalar();
-              //var_dump("varCalificacionDetalleNameCxm: ", $varCalificacionDetalleNameCxm);
-
-              //trae id_rta 
-              
+            
               $varCalificacionDetalleCxm = (new \yii\db\Query())
                             ->select([
                             'tbl_calificaciondetalles.id','tbl_calificaciondetalles.calificacion_id'
@@ -371,8 +354,6 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                             ->andwhere(['LIKE','tbl_calificaciondetalles.name','%' . trim($sheet->getCellByColumnAndRow($j,$i)->getValue()) . '%',false])
                             ->all(); 
                             
-                            
-                //var_dump("varCalificacionId: ", $varCalificacionId);
                 if (!empty($varCalificacionDetalleCxm)) {
                   if(!in_array($j, $arrCount)){                    
                     array_push($arrCount, $j);
@@ -409,7 +390,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
           if ($varAsesor != "") {
 
-                                      // CONSULTO SI YA EXISTE LA EVALUACION
+                                      
               $varCondicionalForm = [
                                         "usua_id" => $varValorador,
                                         "arbol_id" => $cod_pcrc,
@@ -459,12 +440,6 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                                       ->where(['=','tbl_tmpejecucionbloquedetalles.tmpejecucionformulario_id',$tmp_id])
                                       ->scalar();
 
-                
-              
-                // $arrCalificaciones = array();
-                // $arrCalificaciones = [$varCalificacionDetalleCxm];                     
-                //$arrFormulario["equipo_id"] = $varEquipoId;
-                //$arrFormulario["usua_id_lider"] = $varLiderIdCxm;
                 $arrFormulario["dimension_id"] = $varDimension;
                 $arrFormulario["dsruta_arbol"] = $varArbolRutaCxm;
                 $arrFormulario["dscomentario"] = $varComentarios;
@@ -472,14 +447,14 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                 $arrFormulario["transacion_id"] = 1;
                 $arrFormulario["sn_mostrarcalculo"] = 1;
                 
-                                      //  CONSULTA DEL FORMULARIO PARA VERIFICAR EL SUBIRCALCULO
+                                     
                 $data = \app\models\Tmpejecucionformularios::findOne($tmp_id);
                 if (isset($varSubirCalculoCxm) && $varSubirCalculoCxm != '') {
                   $data->subi_calculo .= $varSubirCalculoCxm;
                   $data->save();
                 }
                                       
-                // SE PROCEDE A ACTUALIZAR LA TEMPORAL
+               
                 $model = \app\models\Tmpejecucionformularios::find()->where(["id" => $tmp_id])->one();
                 $model->usua_id_actual = $varValorador;
                 $model->save();
@@ -489,15 +464,10 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                 \app\models\Tmpejecucionsecciones::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
                 \app\models\Tmpejecucionbloques::updateAll(['snna' => 0], ['tmpejecucionformulario_id' => $tmp_id]);
 
-                    // SE GUARDAN LAS CALIFICACIONES
-                  // var_dump($varCalificacionId);
-                  // die(json_encode(" "));
-
                 foreach ($arrayRespuestas as $form_detalle_id => $calif_detalle_id) {
                   $arrDetalleForm = [];
                   $arrDetallePreg = [];
-                  //se valida que existan check de pits seleccionaddos y se valida
-                  //que exista el del bloquedetalle actual para actualizarlo
+                  
                   if (count($arrCheckPits) > 0) {
                       if (isset($arrCheckPits[$form_detalle_id])) {
                           $arrDetalleForm["c_pits"] = $arrCheckPits[$form_detalle_id];
@@ -512,30 +482,19 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                       $arrDetallePreg['calificacion_id'] = $calif_detalle_id[0]['calificacion_id'];
                       $arrDetallePreg['tmpejecucionformulario_id'] =  $tmp_id;
                   }
-                
-
-                  // var_dump($arrDetallePreg);
-                  // die();
-                 
-                  
-                   
+               
                   \app\models\Tmpejecucionbloquedetalles::updateAll($arrDetalleForm, ["and",$arrDetallePreg]);
                   $calificacion = \app\models\Tmpejecucionbloquedetalles::findOne(["id" => $form_detalle_id]);
-                  //$calificacionDetalle = \app\models\Calificaciondetalles::findOne(['id' => $calificacion->calificaciondetalle_id]);
-                  // var_dump($calificacion);
-                  // die();
-                  //Cuento las preguntas en las cuales esta seleccionado el NA
-                  //lleno $arrayBloques para tener marcados en que bloques no se selecciono el check
+                 
                   if (!in_array($varBloquesCxm, $arrayBloques) && (strtoupper($varCalificacionDetalleNameCxm) == 'NA')) {
                                             
                     $arrayBloques[] = $varBloquesCxm;
-                                          
-                    //inicio $arrayCountBloques
+                  
                     $arrayCountBloques[$count] = [($varBloquesCxm) => 1];
                     $count++;
                                           
                   } else {
-                      //actualizo $arrayCountBloques sumandole 1 cada q encuentra un NA de ese bloque
+                      
                     if (count($arrayCountBloques) != 0) {
                       if ((array_key_exists($varBloquesCxm, $arrayCountBloques[count($arrayCountBloques) - 1])) && (strtoupper($varCalificacionDetalleNameCxm->name) == 'NA')) {
 
@@ -545,12 +504,6 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                   }
                 }
 
-                //var_dump($arrDetalleForm);
-
-        //var_dump("arrayRespuestas: ", $arrayRespuestas);
-
-        
-                  //Actualizo los bloques en los cuales el total de sus preguntas esten seleccionadas en NA
                 foreach ($arrayCountBloques as $dato) {
                   $totalPreguntasBloque = \app\models\Tmpejecucionbloquedetalles::find()->select("COUNT(id) as preguntas")
                                     ->from("tbl_tmpejecucionbloquedetalles")
@@ -560,7 +513,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                   }
                 }
 
-                  //actualizo las secciones, la cuales tienen todos sus bloques con la opcion snna en 1
+                 
                 $secciones = \app\models\Tmpejecucionsecciones::findAll(['tmpejecucionformulario_id' => $tmp_id]);
                 foreach ($secciones as $seccion) {
                   $bloquessnna = \app\models\Tmpejecucionformularios::find()->select("s.seccion_id AS id,COUNT(b.id) AS conteo")
@@ -582,7 +535,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                 }
 
                 
-                                     /* GUARDAR EL TMP FOMULARIO A LAS EJECUCIONES */
+                         
                 $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
 
                 
@@ -593,7 +546,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
       }
 
     }
-    //die();
+
   
 
   public function actionAgregarservicio(){
