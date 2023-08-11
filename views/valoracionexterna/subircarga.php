@@ -105,6 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script src="../../js_extensions/datatables/buttons.html5.min.js"></script>
 <script src="../../js_extensions/datatables/buttons.print.min.js"></script>
 <script src="../../js_extensions/mijs.js"> </script>
+
 <link rel="stylesheet" href="../../css/font-awesome/css/font-awesome.css"  >
 
 
@@ -127,112 +128,99 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- Capa Principal -->
 <div id="capaIdPrincipal" class="capaPrincipal" style="display: inline;">
     
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card1 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Ficha Tecnica   '.$varNombreArbol) ?></label>
-            </div>
+  <div class="row">
+    <div class="col-md-4">
+        <div class="card1 mb" style="background: #6b97b1; ">
+            <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Ficha Tecnica   '.$varNombreArbol) ?></label>
         </div>
     </div>
-    <hr><br>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #C31CB4;"></em><?= Yii::t('app', ' Descargar Plantilla') ?></label>
-                <a id="dlink" style="display:none;"></a><br>
-                <button  class="btn btn-info" style="background-color: #4298B4" id="btn"><?= Yii::t('app', ' Descargar') ?></button>
-             </div>
-        </div>
+  </div>
+  <hr><br>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-download" style="font-size: 20px; color: #C31CB4;"></em><?= Yii::t('app', ' Descargar Plantilla') ?></label>
+        <a id="dlink" style="display:none;"></a><br>
+        <button  class="btn btn-info" style="background-color: #4298B4" id="btn"><?= Yii::t('app', ' Descargar') ?></button>
+      </div>
+    </div>
 
-        <div class="col-md-4">
-            <div class="card1 mb">
-                <label><em class="fas fa-upload" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', '  Seleccionar archivo') ?></label>
-                    <?= $form->field($model, "file[]",['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(['id'=>'idinput','multiple' => false])->label('') ?>
-                       
-                    <?= Html::submitButton("Subir", ["class" => "btn btn-primary"]) ?>
-            </div>
+    <div class="col-md-4">
+      <div class="card1 mb">
+        <label><em class="fas fa-upload" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', '  Seleccionar archivo') ?></label>
+          <?= $form->field($model, "file[]",['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(['id'=>'idinput','multiple' => false])->label('') ?>
+                
+          <?= Html::submitButton("Subir", ["class" => "btn btn-primary"]) ?>
+      </div>
+    </div>
+  
+    <div class="col-md-4">
+      <div class="card1 mb">
+        <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Cancelar y Regresar') ?></label><br>
+          <?= Html::a('Cancelar y Regresar',  ['index'], ['class' => 'btn btn-success',
+                                              'style' => 'background-color: #707372',
+                                              'data-toggle' => 'tooltip',
+                                              'title' => 'Regresar']) 
+          ?>
         </div>
+      </div>
+    </div>
+  <br><hr>
+
+  <table id="tablaDescarga" hidden="hidden" class="table table-striped table-bordered tblResDetFreed">
+    <caption><?= Yii::t('app',$varNombreArbol) ?></caption>
+    <thead>
+      <tr>
+        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cédula Asesor') ?></label></th>
+        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cédula Valorador') ?></label></th>
+        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Dimensión') ?></label></th>
+        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Fuente') ?></label></th>
+        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Score') ?></label></th>
+        <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Comentarios') ?></label></th>
     
-        <div class="col-md-4">
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-minus-circle" style="font-size: 20px; color: #C31CB4;"></em> <?= Yii::t('app', 'Cancelar y Regresar') ?></label><br>
-                <?= Html::a('Cancelar y Regresar',  ['index'], ['class' => 'btn btn-success',
-                                                'style' => 'background-color: #707372',
-                                                'data-toggle' => 'tooltip',
-                                                'title' => 'Regresar']) 
-                ?>
-            </div>
-        </div>
-    </div>
-<br><hr>
 
-    <table id="tablaDescarga" hidden="hidden" class="table table-striped table-bordered tblResDetFreed">
-            <caption><?= Yii::t('app',$varNombreArbol) ?></caption>
-            <thead>
-              <tr>
-                <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Asesor') ?></label></th>
-                <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Valorador') ?></label></th>
-                <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Dimensión') ?></label></th>
-                <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Fuente') ?></label></th>
-                <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Score') ?></label></th>
-                <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Campo Comentarios') ?></label></th>
-            
+            <?php
+            foreach ($varPreguntas as $value) {                      
+          ?>
+            <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', $value['nameP']) ?></label></th>
+          <?php
+            }
+          ?>
 
-                    <?php
-                    foreach ($varPreguntas as $value) {                      
-                  ?>
-                    <th scope="col" style="background-color: #b0cdd6;"><label style="font-size: 15px;"><?= Yii::t('app', $value['nameP']) ?></label></th>
-                  <?php
-                    }
-                  ?>
-
-                </tr>
-            </thead>
-            <tbody>
-              
-              
-            </tbody>
-          </table>
+        </tr>
+    </thead>
+    <tbody>
+      
+      
+    </tbody>
+  </table>
 
 </div>
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
 <script type="text/javascript">
 
-var tableToExcel = (function () {
-        var uri = 'data:application/vnd.ms-excel;base64,',
-            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
-            base64 = function (s) {
-                return window.btoa(unescape(encodeURIComponent(s)))
-            }, format = function (s, c) {
-                return s.replace(/{(\w+)}/g, function (m, p) {
-                    return c[p];
-                })
-            }
-        return function (table, name) {
-            if (!table.nodeType) table = document.getElementById(table)
-            var ctx = {
-                worksheet: name || 'Worksheet',
-                table: table.innerHTML
-            }
-            console.log(uri + base64(format(template, ctx)));
-            document.getElementById("dlink").href = uri + base64(format(template, ctx));
-            document.getElementById("dlink").download = "Plantilla Valoracion - Masiva";
-            document.getElementById("dlink").traget = "_blank";
-            document.getElementById("dlink").click();
+function download() {
+  $(document).find('tfoot').remove();
 
-        }
-    })();
-    function download(){
-        $(document).find('tfoot').remove();
-        var name = document.getElementById("name");
-        tableToExcel('tablaDescarga', 'Plantilla Valoracion Masiva - CXM', name+'.xlxs')
-        //setTimeout("window.location.reload()",0.0000001);
+  var table = document.getElementById('tablaDescarga');
 
-    }
-    var btn = document.getElementById("btn");
-    btn.addEventListener("click",download);
+  var wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+  XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
+
+  var dataUri = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
+
+  var link = document.createElement("a");
+  link.href = dataUri;
+  link.download = "Plantilla_Valoracion_Masiva.xlsx";
+  link.target = "_blank";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+var btn = document.getElementById("btn");
+btn.addEventListener("click", download);
 
     <?php  
     if(base64_decode(Yii::$app->request->get("varAlerta")) === "1"){ ?>       
