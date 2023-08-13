@@ -86,6 +86,42 @@ $this->params['breadcrumbs'][] = $this->title;
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   }
 
+  .lds-ring {
+      display: inline-block;
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      margin: 10px;
+      border: 10px solid #3498db;
+      border-radius: 70%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: #3498db transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
 </style>
 <!-- Data extensiones -->
 <script src="../../js_extensions/jquery-2.1.3.min.js"></script>
@@ -119,204 +155,228 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <br>
 <br>
-<?php $form = ActiveForm::begin(["method" => "post","enableClientValidation" => true,'options' => ['enctype' => 'multipart/form-data'],'fieldConfig' => ['inputOptions' => ['autocomplete' => 'off']]]) ?>
+<!-- Capa General que contiene todas las capas -->
+<div class="capaGeneral" id="capaIdGeneral" style="display: inline;">
 
-<!-- Capa Informativa -->
-<div class="capaInformativa" id="capaIdInformativa" style="display: inline;">
-    
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card1 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Notas Informativas') ?></label>
+    <?php $form = ActiveForm::begin(["method" => "post","enableClientValidation" => true,'options' => ['enctype' => 'multipart/form-data'],'fieldConfig' => ['inputOptions' => ['autocomplete' => 'off']]]) ?>
+
+    <!-- Capa Informativa -->
+    <div class="capaInformativa" id="capaIdInformativa" style="display: inline;">
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card1 mb" style="background: #6b97b1; ">
+                    <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Notas Informativas') ?></label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <br>
+        <br>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card2 mb">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card2 mb">
 
-                <div class="row">
-                    <div class="col-md-2" align="text-center">
-                        <label style="font-size: 15px;"><em class="fas fa-envelope" style="font-size: 50px; color: #FFC72C;"></em></label>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-2" align="text-center">
+                            <label style="font-size: 15px;"><em class="fas fa-envelope" style="font-size: 50px; color: #FFC72C;"></em></label>
+                        </div>
 
-                    <div class="col-md-10" align="left">
-                        <label style="font-size: 15px;"><?= Yii::t('app', ' ¡Qué bueno que estés aquí! Te comentamos que el módulo actual permite el envio de alertas a varios correos al tiempo y adjuntar un archivo para evidencias.') ?></label>
-                    </div>
-                </div>          
+                        <div class="col-md-10" align="left">
+                            <label style="font-size: 15px;"><?= Yii::t('app', ' ¡Qué bueno que estés aquí! Te comentamos que el módulo actual permite el envio de alertas a varios correos al tiempo y adjuntar un archivo para evidencias.') ?></label>
+                        </div>
+                    </div>          
 
-            </div>        
-        </div>
+                </div>        
+            </div>
 
-        <div class="col-md-6">
-            <div class="card2 mb">
+            <div class="col-md-6">
+                <div class="card2 mb">
 
-                <div class="row">
-                    <div class="col-md-2" align="text-center">
-                        <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 50px; color: #FFC72C;"></em></label>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-2" align="text-center">
+                            <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 50px; color: #FFC72C;"></em></label>
+                        </div>
 
-                    <div class="col-md-10" align="left">
-                        <label style="font-size: 15px;"><?= Yii::t('app', ' Es importante recordar...') ?></label>  <label style="font-size: 15px; color: #981F40"> <?= Yii::t('app', ' Si se envia una alerta a varios correos, estos deben estar separados por una coma (,).') ?></label>
-                    </div>
-                </div>   
+                        <div class="col-md-10" align="left">
+                            <label style="font-size: 15px;"><?= Yii::t('app', ' Es importante recordar...') ?></label>  <label style="font-size: 15px; color: #981F40"> <?= Yii::t('app', ' Si se envia una alerta a varios correos, estos deben estar separados por una coma (,).') ?></label>
+                        </div>
+                    </div>   
+                </div>
             </div>
         </div>
+
     </div>
 
+    <hr>
+
+    <!-- Capa Procesar -->
+    <div class="capaProcesos" id="capaIdProcesos" style="display: inline;">
+      
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card1 mb" style="background: #6b97b1; ">
+                    <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Acciones & Procesos') ?></label>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card1 mb">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Tipo de Alerta ') ?></label>
+                            <?=  $form->field($model, 'tipo_alerta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\AlertasTipoalerta::find()->where(['=','anulado',0])->orderBy(['tipoalerta'=> SORT_ASC])->all(), 'tipoalerta', 'tipoalerta'),
+                                            [
+                                                'id' => 'varIdPostulacion',
+                                                'prompt'=>'Seleccionar Tipo Alerta...'
+                                            ]
+                                    )->label(''); 
+                            ?>
+
+                            <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Asunto de la Alerta ') ?></label>
+                            <?= $form->field($model, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'varIdAsuntos','placeholder'=>'Ingresar Asunto de la Alerta'])?>                                              
+
+                            <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Comentarios ') ?></label>
+                            <?= $form->field($model, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios','rows'=>4,'placeholder'=>'Ingresar Comentarios'])?>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Programa/Pcrc ') ?></label>
+                            <?=
+                                $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
+                                    ->widget(Select2::classname(), [
+                                        'language' => 'es',
+                                        'options' => ['id'=>'varIdPcrc','placeholder' => Yii::t('app', 'Select ...')],
+                                        'pluginOptions' => [
+                                            'allowClear' => false,
+                                            'minimumInputLength' => 3,
+                                            'ajax' => [
+                                                'url' => \yii\helpers\Url::to(['formularios/getarbolesbyroles']),
+                                                'dataType' => 'json',
+                                                'data' => new JsExpression('function(term,page) { return {search:term}; }'),
+                                                'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
+                                            ],
+                                        ]
+                                            ]
+                                )->label('');
+                            ?>
+                            
+
+                            <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Correos Destinatarios ') ?></label>
+
+                            <?= 
+                                Html::radioList('anulado', 1, 
+                                ['Grupal','Normal'], 
+                                ['separator'=>'&nbsp;&nbsp;&nbsp;&nbsp;','name'=>'contact','id'=>'varidInteracciones','onclick'=>'varCambios();']) 
+                            ?>
+
+                            <div class="capaEmbajadorAsesor" id="capaIdEmbajadorAsesor" style="display: inline;">
+                                <?= $form->field($model, 'remitentes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id' => 'varIdNormal','placeholder'=>'Ingresar Correos Destinatarios'])?>
+                            </div>
+                            <div class="capaEmbajadorAdmin" id="capaIdEmbajadorAdmin" style="display: none;">
+
+                                <?=  $form->field($model, 'archivo_adjunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Correogrupal::find()->orderBy(['nombre'=> SORT_ASC])->groupby(['nombre'])->all(), 'idcg', 'nombre'),
+                                            [
+                                                'id' => 'varIdGrupal',
+                                                'prompt'=>'Seleccionar Correo Grupal...'
+                                            ]
+                                    )->label(''); 
+                                ?>
+                            </div>
+                            
+
+                            <label style="font-size: 15px;"> <?= Yii::t('app', ' ___________________ ') ?></label>
+                            <?= $form->field($modelArchivo, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(["class"=>"input-file" ,'id'=>'idfile'])->label('') ?>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- Capa Botonera -->
+    <div class="capaBtn" id="capaIdBtn" style="display: inline;">
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Guardar & Enviar Alerta:') ?></label> 
+                    <?= Html::submitButton("Enviar", ["class" => "btn btn-primary", "onclick" => "varGenerar();"]) ?>
+                </div>    
+            </div>
+
+            <div class="col-md-4">
+                <div class="card1 mb">
+                    <label style="font-size: 15px;"><em class="fas fa-envelope" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Crear Correo Grupal:') ?></label>                 
+                    <?= Html::a('Crear Grupos',  ['correogrupal'], ['class' => 'btn btn-success',
+                                                        'data-toggle' => 'tooltip',
+                                                        'title' => 'Correo Grupal']) 
+                    ?>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card1 mb">
+                    <?php
+                        if ($id_procesos == "0") {
+                    ?>
+                        <label style="font-size: 15px;"><em class="fas fa-arrow-left" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Nuevo Registro:') ?></label> 
+                        <?= Html::a('Nuevo',  ['registraalerta'], ['class' => 'btn btn-success',
+                                                        'style' => 'background-color: #707372',
+                                                        'data-toggle' => 'tooltip',
+                                                        'title' => 'Nuevo Registro']) 
+                        ?>
+                    <?php
+                        }else{
+                    ?>
+                        <label style="font-size: 15px;"><em class="fas fa-arrow-left" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Cancelar & Regresar:') ?></label> 
+                        <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
+                                                        'style' => 'background-color: #707372',
+                                                        'data-toggle' => 'tooltip',
+                                                        'title' => 'Regresar']) 
+                        ?>
+                    <?php
+                        }
+                    ?>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <?php $form->end() ?>
 </div>
 
-<hr>
-
-<!-- Capa Procesar -->
-<div class="capaProcesos" id="capaIdProcesos" style="display: inline;">
-  
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card1 mb" style="background: #6b97b1; ">
-                <label style="font-size: 20px; color: #FFFFFF;"> <?= Yii::t('app', 'Acciones & Procesos') ?></label>
-            </div>
-        </div>
-    </div>
-
-    <br>
-
+<!-- Capa Mensajes de Espera -->
+<div class="capaLoader" id="capaIdLoader" style="display: none;">
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb">
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Tipo de Alerta ') ?></label>
-                        <?=  $form->field($model, 'tipo_alerta', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\AlertasTipoalerta::find()->where(['=','anulado',0])->orderBy(['tipoalerta'=> SORT_ASC])->all(), 'tipoalerta', 'tipoalerta'),
-                                        [
-                                            'id' => 'varIdPostulacion',
-                                            'prompt'=>'Seleccionar Tipo Alerta...'
-                                        ]
-                                )->label(''); 
-                        ?>
-
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Asunto de la Alerta ') ?></label>
-                        <?= $form->field($model, 'asunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id'=>'varIdAsuntos','placeholder'=>'Ingresar Asunto de la Alerta'])?>                                              
-
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Comentarios ') ?></label>
-                        <?= $form->field($model, 'comentario', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textArea(['id'=>'varIdComentarios','rows'=>4,'placeholder'=>'Ingresar Comentarios'])?>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Seleccionar Programa/Pcrc ') ?></label>
-                        <?=
-                            $form->field($model, 'pcrc', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])
-                                ->widget(Select2::classname(), [
-                                    'language' => 'es',
-                                    'options' => ['id'=>'varIdPcrc','placeholder' => Yii::t('app', 'Select ...')],
-                                    'pluginOptions' => [
-                                        'allowClear' => false,
-                                        'minimumInputLength' => 3,
-                                        'ajax' => [
-                                            'url' => \yii\helpers\Url::to(['formularios/getarbolesbyroles']),
-                                            'dataType' => 'json',
-                                            'data' => new JsExpression('function(term,page) { return {search:term}; }'),
-                                            'results' => new JsExpression('function(data,page) { return {results:data.results}; }'),
-                                        ],
-                                    ]
-                                        ]
-                            )->label('');
-                        ?>
-                        
-
-                        <label style="font-size: 15px;"><span class="texto" style="color: #FFC72C"><?= Yii::t('app', '*') ?></span> <?= Yii::t('app', ' Ingresar Correos Destinatarios ') ?></label>
-
-                        <?= 
-                            Html::radioList('anulado', 1, 
-                            ['Grupal','Normal'], 
-                            ['separator'=>'&nbsp;&nbsp;&nbsp;&nbsp;','name'=>'contact','id'=>'varidInteracciones','onclick'=>'varCambios();']) 
-                        ?>
-
-                        <div class="capaEmbajadorAsesor" id="capaIdEmbajadorAsesor" style="display: inline;">
-                            <?= $form->field($model, 'remitentes', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->textInput(['id' => 'varIdNormal','placeholder'=>'Ingresar Correos Destinatarios'])?>
-                        </div>
-                        <div class="capaEmbajadorAdmin" id="capaIdEmbajadorAdmin" style="display: none;">
-
-                            <?=  $form->field($model, 'archivo_adjunto', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->dropDownList(ArrayHelper::map(\app\models\Correogrupal::find()->orderBy(['nombre'=> SORT_ASC])->groupby(['nombre'])->all(), 'idcg', 'nombre'),
-                                        [
-                                            'id' => 'varIdGrupal',
-                                            'prompt'=>'Seleccionar Correo Grupal...'
-                                        ]
-                                )->label(''); 
-                            ?>
-                        </div>
-                        
-
-                        <label style="font-size: 15px;"> <?= Yii::t('app', ' ___________________ ') ?></label>
-                        <?= $form->field($modelArchivo, 'file', ['labelOptions' => ['class' => 'col-md-12'], 'template' => $template])->fileInput(["class"=>"input-file" ,'id'=>'idfile'])->label('') ?>
-                    </div>
-                </div>
-
+                <table align="center">
+                    <thead>
+                        <tr>
+                            <th class="text-center"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></th>
+                            <th><?= Yii::t('app', '') ?></th>
+                            <th class="text-justify"><h4><?= Yii::t('app', 'Actualmente CXM esta procesando la informacion del envío al correo o los correos correspondientes en la alerta...') ?></h4></th>
+                        </tr>            
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
-
+    <hr>
 </div>
-
-<hr>
-
-<!-- Capa Botonera -->
-<div class="capaBtn" id="capaIdBtn" style="display: inline;">
-    
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-edit" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Guardar & Enviar Alerta:') ?></label> 
-                <?= Html::submitButton("Enviar", ["class" => "btn btn-primary", "onclick" => "varGenerar();"]) ?>
-            </div>    
-        </div>
-
-        <div class="col-md-4">
-            <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-envelope" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Crear Correo Grupal:') ?></label>                 
-                <?= Html::a('Crear Grupos',  ['correogrupal'], ['class' => 'btn btn-success',
-                                                    'data-toggle' => 'tooltip',
-                                                    'title' => 'Correo Grupal']) 
-                ?>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card1 mb">
-                <?php
-                    if ($id_procesos == "0") {
-                ?>
-                    <label style="font-size: 15px;"><em class="fas fa-arrow-left" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Nuevo Registro:') ?></label> 
-                    <?= Html::a('Nuevo',  ['registraalerta'], ['class' => 'btn btn-success',
-                                                    'style' => 'background-color: #707372',
-                                                    'data-toggle' => 'tooltip',
-                                                    'title' => 'Nuevo Registro']) 
-                    ?>
-                <?php
-                    }else{
-                ?>
-                    <label style="font-size: 15px;"><em class="fas fa-arrow-left" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Cancelar & Regresar:') ?></label> 
-                    <?= Html::a('Regresar',  ['index'], ['class' => 'btn btn-success',
-                                                    'style' => 'background-color: #707372',
-                                                    'data-toggle' => 'tooltip',
-                                                    'title' => 'Regresar']) 
-                    ?>
-                <?php
-                    }
-                ?>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<hr>
-
-<?php $form->end() ?>
 
 <script type="text/javascript">
     function varCambios(){
@@ -385,6 +445,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 return;
             }
         }
+
+        var varcapaIdGeneral = document.getElementById("capaIdGeneral");
+        var varcapaIdLoader = document.getElementById("capaIdLoader");
+
+        varcapaIdGeneral.style.display = 'none';
+        varcapaIdLoader.style.display = 'inline';
 
 
     };

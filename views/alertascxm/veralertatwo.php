@@ -32,21 +32,23 @@ $this->params['breadcrumbs'][] = $this->title;
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
-    $varPeso = (new \yii\db\Query())
-                ->select(['tbl_alertas_tipoencuestas.peso'])
+    $varPeso =  (new \yii\db\Query())
+                ->select(['ROUND(AVG(tbl_alertas_tipoencuestas.peso)) AS peso'])
                 ->from(['tbl_alertas_tipoencuestas'])
-                ->where(['=','tbl_alertas_tipoencuestas.id_tipoencuestas',$varid_tipoencuestas_ver])
-                ->andwhere(['=','tbl_alertas_tipoencuestas.anulado',0])
+                ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                        'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
+                ->where(['=','tbl_alertas_encuestasalertas.id_alerta',$idalerta])
+                ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
                 ->scalar(); 
 
     $varEncuestas = null;
     $varTipoEncuesta = null;
-    if ($varPeso == "5") {
+    if ($varPeso == "1") {
         $varEncuestas = "<img src='../../images/insatisfecho.png' alt='insatisfecho'> style='height: 50px; width: 50px;'";
         $varTipoEncuesta = "Insatisfecho";
     }
                                 
-    if ($varPeso == "4") {
+    if ($varPeso == "2") {
         $varEncuestas = "<img src='../../images/medioinsatisfecho.png' alt='medioinsatisfecho' style='height: 50px; width: 50px;'>";
         $varTipoEncuesta = "Medio Insatisfecho";
     }
@@ -56,15 +58,25 @@ $this->params['breadcrumbs'][] = $this->title;
         $varTipoEncuesta = "Neutro";
     }
                             
-    if ($varPeso == "2") {
+    if ($varPeso == "4") {
         $varEncuestas = "<img src='../../images/mediosatisfecho.png' alt='mediosatisfecho' style='height: 50px; width: 50px;'>";
         $varTipoEncuesta = "Medio Satisfecho";
     }
                             
-    if ($varPeso == "1") {
+    if ($varPeso == "5") {
         $varEncuestas = "<img src='../../images/satisfecho.png' alt='satisafecho' style='height: 50px; width: 50px;'>";
         $varTipoEncuesta = "Satisfecho";
     }
+
+    $varListaComentarios = (new \yii\db\Query())
+                            ->select(['tbl_alertas_tipoencuestas.tipoencuestas','tbl_alertas_encuestasalertas.comentarios'])
+                            ->from(['tbl_alertas_tipoencuestas'])
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                    'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
+                            ->where(['=','tbl_alertas_encuestasalertas.id_alerta',$idalerta])
+                            ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
+                            ->all(); 
+
 
 ?>
 <style>
@@ -170,7 +182,17 @@ if ($varDataListEncuesta != null) {
                     </div>
 
                     <div class="col-md-10" align="left">
-                        <label style="font-size: 15px;"><label style="font-size: 15px; color: #981F40"> <?= Yii::t('app', ' Comentario: ') ?></label><?php echo ' '.$varcomentariosencuestas_ver; ?></label>
+
+                        <?php
+                            foreach ($varListaComentarios as $value) {
+                            
+                        ?>
+
+                            <label style="font-size: 15px;"><label style="font-size: 15px;"> <?= Yii::t('app', '* Encuesta: '.$value['tipoencuestas'].' - Comentario: '.$value['comentarios']) ?>
+
+                        <?php
+                            }
+                        ?>
                     </div>
                 </div> 
             </div>

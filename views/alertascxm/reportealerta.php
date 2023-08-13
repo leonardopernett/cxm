@@ -346,12 +346,83 @@ if ($varDataResultado != null) {
         <div class="col-md-6">
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Resumen Proceso') ?></label>
+                <div class="col-md-12" align="right">
+                    <div onclick="opennovedadp();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbnp1" ><?= Yii::t('app', '[ Abrir + ]') ?>                                
+                    </div> 
+                    <div onclick="closenovedadp();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idtbnp2" ><?= Yii::t('app', '[ Cerrar - ]') ?>                                
+                    </div> 
+                </div>
+                <div class="capaExt" id="capa00p" style="display: none;">
+                    <table id="tblListadoProcesos" class="table table-striped table-bordered tblResDetFreed">
+                        <caption><?= Yii::t('app', ' Resultados de Procesos...') ?></caption>
+                        <thead>
+                            <tr>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente') ?></label></th>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Programa/Pcrc') ?></label></th>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cantidad de Alertas') ?></label></th>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cantidad de Encuestas') ?></label></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($varDataProceso as $value) {                            
+                                
+                            ?>
+                            <tr>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varCliente']; ?></label></td>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varProgramaPcrc']; ?></label></td>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varConteoPcrc']; ?></label></td>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varConteoEncuestas']; ?></label></td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="card1 mb">
-                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Resumen Técnico') ?></label>
+                <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Resumen Técnico') ?></label>                
+                <div class="col-md-12" align="right">
+                    <div onclick="opennovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: inline" method='post' id="idtbnt1" ><?= Yii::t('app', '[ Abrir + ]') ?>                                
+                    </div> 
+                    <div onclick="closenovedad();" class="btn btn-primary"  style="background-color: #4298b400; border-color: #4298b500 !important; color:#000000; display: none" method='post' id="idtbnt2" ><?= Yii::t('app', '[ Cerrar - ]') ?>                                
+                    </div> 
+                </div>
+
+                <div class="capaExt" id="capa00t" style="display: none;">
+                    <table id="tblListadoTecnicos" class="table table-striped table-bordered tblResDetFreed">
+                        <caption><?= Yii::t('app', ' Resultados de Técnicos...') ?></caption>
+                        <thead>
+                            <tr>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Responsable Valorador') ?></label></th>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cliente') ?></label></th>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Programa/Pcrc') ?></label></th>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cantidad de Alertas') ?></label></th>
+                              <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Cantidad de Encuestas') ?></label></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($varDataTecnico as $value) {                            
+                                
+                            ?>
+                            <tr>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varValorador_tecnico']; ?></label></td>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varCliente_tecnico']; ?></label></td>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varProgramaPcrc_tecnico']; ?></label></td>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varConteoPcrc_tecnico']; ?></label></td>
+                                <td><label style="font-size: 11px;"><?php echo  $value['varConteoEncuestas_tecnico']; ?></label></td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -382,8 +453,10 @@ if ($varDataResultado != null) {
                             $varIdAlertas = $value['id'];
                             
                             $varPeso = (new \yii\db\Query())
-                                        ->select(['tbl_alertas_encuestasalertas.id_tipoencuestas'])
-                                        ->from(['tbl_alertas_encuestasalertas'])
+                                        ->select(['ROUND(AVG(tbl_alertas_tipoencuestas.peso)) AS peso'])
+                                        ->from(['tbl_alertas_tipoencuestas'])
+                                        ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                                'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
                                         ->where(['=','tbl_alertas_encuestasalertas.id_alerta',$varIdAlertas])
                                         ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
                                         ->scalar(); 
@@ -414,11 +487,11 @@ if ($varDataResultado != null) {
                             
                         ?>
                         <tr>
-                            <td><label style="font-size: 12px;"><?php echo  $varIdAlertas; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['fecha']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['name']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['usua_nombre']; ?></label></td>
-                            <td><label style="font-size: 12px;"><?php echo  $value['tipo_alerta']; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $varIdAlertas; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $value['fecha']; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $value['name']; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $value['usua_nombre']; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $value['tipo_alerta']; ?></label></td>
                             <td class="text-center">
                                 <?php echo $varEncuestas; ?>
                             </td>
@@ -455,9 +528,9 @@ if ($varDataResultado != null) {
                                    
                                 ?>
 
-                                <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminaralerta','id'=> $value['id']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Eliminar']) ?>
+                                <?= Html::a('<em class="fas fa-times" style="font-size: 15px; color: #FC4343;"></em>',  ['eliminaralerta','id'=> $value['id']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Eliminar', 'target' => "_blank"]) ?>
 
-                                <?= Html::a('<em class="fas fa-paper-plane" style="font-size: 15px; "></em>',  ['enviaralertados','id_enviados'=> $value['id']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Enviar Alerta Emergente']) ?>
+                                <?= Html::a('<em class="fas fa-paper-plane" style="font-size: 15px; "></em>',  ['enviaralertados','id_enviados'=> $value['id']], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'style' => " background-color: #337ab700;  border-color: #4298b500 !important; color:#000000;", 'title' => 'Enviar Alerta Emergente', 'target' => "_blank"]) ?>
 
                                 <?php
                                 }
@@ -488,6 +561,82 @@ if ($varDataResultado != null) {
 }
 ?>
 
+<!-- Capa Descargar Tabla -->
+<div class="capaTablas" id="capaIdTablas" style="display: none;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card1 mb">
+                <table id="tblListadoAlertasInvisible" class="table table-striped table-bordered tblResDetFreed">
+                    <caption><?= Yii::t('app', ' Resultados de Alertas...') ?></caption>
+                    <thead>
+                        <tr>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Id') ?></label></th>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Fecha Alerta') ?></label></th>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Programa/Pcrc') ?></label></th>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Valorador') ?></label></th>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Tipo de Alerta') ?></label></th>
+                          <th scope="col" style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Encuesta') ?></label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($varDataResultado as $value) {
+                            $varIdAlertas = $value['id'];
+                            
+                            $varPeso = (new \yii\db\Query())
+                                        ->select(['ROUND(AVG(tbl_alertas_tipoencuestas.peso)) AS peso'])
+                                        ->from(['tbl_alertas_tipoencuestas'])
+                                        ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                                'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
+                                        ->where(['=','tbl_alertas_encuestasalertas.id_alerta',$varIdAlertas])
+                                        ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
+                                        ->scalar(); 
+
+                            if ($varPeso == "1") {
+                                $varEncuestas = "Insatisfecho";
+                            }
+                                
+                            if ($varPeso == "2") {
+                                $varEncuestas = "Insatisfecho";
+                            }
+                            
+                            if ($varPeso == "3") {
+                                $varEncuestas = "Neutro";
+                            }
+                            
+                            if ($varPeso == "4") {
+                                $varEncuestas = "Medio Satisfecho";
+                            }
+                            
+                            if ($varPeso == "5") {
+                                $varEncuestas = "Satisfecho";
+                            }
+                                            
+                            if ($varPeso == "") {
+                                $varEncuestas = '--';
+                            }
+                            
+                        ?>
+                        <tr>
+                            <td><label style="font-size: 11px;"><?php echo  $varIdAlertas; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $value['fecha']; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $value['name']; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $value['usua_nombre']; ?></label></td>
+                            <td><label style="font-size: 11px;"><?php echo  $value['tipo_alerta']; ?></label></td>
+                            <td class="text-center">
+                                <?php echo $varEncuestas; ?>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php $form->end() ?>
 
@@ -512,7 +661,89 @@ if ($varDataResultado != null) {
             }
           } 
         });
+
+        $('#tblListadoProcesos').DataTable({
+          responsive: true,
+          fixedColumns: true,
+          select: true,
+          "language": {
+            "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
+            "zeroRecords": "No se encontraron datos ",
+            "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+            "infoEmpty": "No hay datos aun",
+            "infoFiltered": "(Filtrado un _MAX_ total)",
+            "search": "Buscar:",
+            "paginate": {
+              "first":      "Primero",
+              "last":       "Ultimo",
+              "next":       "Siguiente",
+              "previous":   "Anterior"
+            }
+          } 
+        });
+
+        $('#tblListadoTecnicos').DataTable({
+          responsive: true,
+          fixedColumns: true,
+          select: true,
+          "language": {
+            "lengthMenu": "Cantidad de Datos a Mostrar _MENU_",
+            "zeroRecords": "No se encontraron datos ",
+            "info": "Mostrando p&aacute;gina _PAGE_ a _PAGES_ de _MAX_ registros",
+            "infoEmpty": "No hay datos aun",
+            "infoFiltered": "(Filtrado un _MAX_ total)",
+            "search": "Buscar:",
+            "paginate": {
+              "first":      "Primero",
+              "last":       "Ultimo",
+              "next":       "Siguiente",
+              "previous":   "Anterior"
+            }
+          } 
+        });
     });
+
+    function opennovedad(){
+        var varidtbnt1 = document.getElementById("idtbnt1");
+        var varidtbnt2 = document.getElementById("idtbnt2");
+        var varidnovedadt = document.getElementById("capa00t");
+
+        varidtbnt1.style.display = 'none';
+        varidtbnt2.style.display = 'inline';
+        varidnovedadt.style.display = 'inline';
+
+    };
+
+    function closenovedad(){
+        var varidtbnt1 = document.getElementById("idtbnt1");
+        var varidtbnt2 = document.getElementById("idtbnt2");
+        var varidnovedadt = document.getElementById("capa00t");
+
+        varidtbnt1.style.display = 'inline';
+        varidtbnt2.style.display = 'none';
+        varidnovedadt.style.display = 'none';
+    };
+
+    function opennovedadp(){
+        var varidtbnp1 = document.getElementById("idtbnp1");
+        var varidtbnp2 = document.getElementById("idtbnp2");
+        var varidnovedadp = document.getElementById("capa00p");
+
+        varidtbnp1.style.display = 'none';
+        varidtbnp2.style.display = 'inline';
+        varidnovedadp.style.display = 'inline';
+
+    };
+
+    function closenovedadp(){
+        var varidtbnp1 = document.getElementById("idtbnp1");
+        var varidtbnp2 = document.getElementById("idtbnp2");
+        var varidnovedadp = document.getElementById("capa00p");
+
+        varidtbnp1.style.display = 'inline';
+        varidtbnp2.style.display = 'none';
+        varidnovedadp.style.display = 'none';
+    };
 
     function varVerificar(){
         var varalertasfecha = document.getElementById("alertas-fecha").value;
@@ -638,4 +869,38 @@ if ($varDataResultado != null) {
             ]
         }]
     });
+
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,',
+            template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"/><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+            base64 = function (s) {
+                return window.btoa(unescape(encodeURIComponent(s)))
+            }, format = function (s, c) {
+                return s.replace(/{(\w+)}/g, function (m, p) {
+                    return c[p];
+                })
+            }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = {
+                worksheet: name || 'Worksheet',
+                table: table.innerHTML
+            }
+            console.log(uri + base64(format(template, ctx)));
+            document.getElementById("dlink").href = uri + base64(format(template, ctx));
+            document.getElementById("dlink").download = "Reporte de Alertas";
+            document.getElementById("dlink").target = "_blank";
+            document.getElementById("dlink").click();
+
+        }
+    })();
+    function download(){
+        $(document).find('tfoot').remove();
+        var name = document.getElementById("name");
+        tableToExcel('tblListadoAlertasInvisible', 'Archivo ', name+'.xls')
+        //setTimeout("window.location.reload()",0.0000001);
+
+    }
+    var btn = document.getElementById("btn");
+    btn.addEventListener("click",download);
 </script>
