@@ -277,8 +277,7 @@ if ($varDataListEncuesta != null) {
         <div class="col-md-12">
             <div class="card1 mb"> 
                 <?php
-                $varConteoArchivo_two = strlen($varArchivo_ver);
-                $varConteoUrl_two = substr($varConteoArchivo_two, -3);
+                $varConteoUrl_two = substr($varArchivo_ver, -3);
                 if ($varConteoUrl_two == "png" || $varConteoUrl_two == "jpg" || $varConteoUrl_two == "bmp" || $varConteoUrl_two == "gif") {
                     
                 ?>
