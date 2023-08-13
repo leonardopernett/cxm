@@ -34,7 +34,7 @@ use Exception;
         return[
             'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['index','registraalerta','parametrizaralertas','correogrupal','textcorreo','reportealerta','eliminaralerta','reportealertaeliminadas','restauraralerta','alertaencuesta'],
+                'only' => ['index','registraalerta','parametrizaralertas','correogrupal','textcorreo','reportealerta','eliminaralerta','reportealertaeliminadas','restauraralerta','alertaencuesta','notificacionalertas'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -220,6 +220,7 @@ use Exception;
             
             $varFechas = date('Y-m-d H:i:s');
 
+
             Yii::$app->db->createCommand()->insert('tbl_alertascx',[
                     'fecha' => $varFechas,
                     'pcrc' => $model->pcrc,
@@ -299,16 +300,16 @@ use Exception;
                         <thead>
                             <tr>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 13px; margin: 30px;'>
-                                <label style='font-size: 40px; margin: 50px; color: #1d2d4f;'>CXM</label>
+                                <label style='font-size: 40px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>CXM</label>
                                 </th>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 40px; margin: 50px; color: #1d2d4f;'>Informe de Alertas CX-Management</label></th>
+                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 40px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></th>
                             </tr>
                             <tr>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 15px; margin: 50px; color: #1d2d4f;'>Información:</label>
+                                    <label style='font-size: 15px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Información:</label>
                                 </th>
                                 <th class='text-center' align='text-center' scope='col'>              
-                                    <label style='font-size: 15px;  margin: 30px; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a></label>
+                                    <label style='font-size: 15px;  margin: 30px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='http://localhost:8080/qa_pruebas/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a></label>
 
                                     <hr>
 
@@ -318,27 +319,27 @@ use Exception;
                         <tbody>
                             <tr>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 15px; margin: 50px; color: #1d2d4f;'>Datos Alerta:</label>
+                                    <label style='font-size: 15px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Datos Alerta:</label>
                                 </th>
                                 <td class='text-left' align='text-left'>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Fecha de envio: ".$varFechas_correo." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Fecha de envio: ".$varFechas_correo." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Valorador: ".$varValorador_correo." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Valorador: ".$varValorador_correo." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Tipo de Alerta: ".$varTipoAlerta_correo." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Tipo de Alerta: ".$varTipoAlerta_correo." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Programa/Pcrc: ".$varPcrc_correo." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Programa/Pcrc: ".$varPcrc_correo." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Asunto: ".$varAsuntos_correo." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Asunto: ".$varAsuntos_correo." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Comentarios: ".$varComentarios_correo." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Comentarios: ".$varComentarios_correo." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Archivo Adjunto: ".$varArchivo_correo."</p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Archivo Adjunto: ".$varArchivo_correo."</p></label></label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class='text-center' align='text-center' colspan='2' >
-                                    <label style='font-size: 12px;  margin: 30px; color: #1d2d4f;'>© CX-Management 2023 - Desarrollado por Konecta</a></label>
+                                    <label style='font-size: 12px;  margin: 30px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>© CX-Management 2023 - Desarrollado por Konecta</a></label>
                                 </td>
                             </tr>
                         </tbody>
@@ -418,6 +419,8 @@ use Exception;
         $arrayDataUsers = array();
         $varDataTipos = array();
         $varDataEncuestas = array();
+        $varDataProceso = array();
+        $varDataTecnico = array();
 
 
         $form = Yii::$app->request->post();
@@ -535,6 +538,55 @@ use Exception;
                             ->groupby(['tbl_alertas_encuestasalertas.id_encuestasalertas'])
                             ->all(); 
 
+
+            $varDataProceso = (new \yii\db\Query())
+                            ->select([
+                                'a.id AS varIdPcrc', 'a.name AS varProgramaPcrc', 'aa.name AS varCliente', 
+                                'COUNT(a.id) AS varConteoPcrc', 'COUNT(tbl_alertas_encuestasalertas.id_encuestasalertas) AS varConteoEncuestas'
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols a',
+                                  'a.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols aa',
+                                  'aa.id = a.arbol_id')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                  'tbl_alertas_encuestasalertas.id_alerta = tbl_alertascx.id')
+
+                            ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
+                            ->groupby(['a.id'])
+                            ->all();
+
+            $varDataTecnico = (new \yii\db\Query())
+                            ->select([
+                                'a.id AS varIdPcrc_tecnico', 'a.name AS varProgramaPcrc_tecnico', 'aa.name AS varCliente_tecnico', 
+                                'COUNT(a.id) AS varConteoPcrc_tecnico', 'COUNT(tbl_alertas_encuestasalertas.id_encuestasalertas) AS varConteoEncuestas_tecnico',
+                                'tbl_usuarios.usua_nombre AS varValorador_tecnico'
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols a',
+                                  'a.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols aa',
+                                  'aa.id = a.arbol_id')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                  'tbl_alertas_encuestasalertas.id_alerta = tbl_alertascx.id')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                  'tbl_usuarios.usua_id = tbl_alertascx.valorador')
+
+                            ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
+                            ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
+                            ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
+                            ->groupby(['a.id'])
+                            ->all();
+
         }
 
         return $this->render('reportealerta',[
@@ -542,6 +594,8 @@ use Exception;
             'varDataResultado' => $varDataResultado,
             'varDataTipos' => $varDataTipos,
             'varDataEncuestas' => $varDataEncuestas,
+            'varDataProceso' => $varDataProceso,
+            'varDataTecnico' => $varDataTecnico,
         ]);
     }
 
@@ -607,7 +661,7 @@ use Exception;
                     'comentario' => $value['comentario'],
                     'fechacreacion' => date('Y-m-d'),
                     'anulado' => 0,
-                    'usua_id' => Yii::$app->user->identity->id                                 
+                    'usua_id' => Yii::$app->user->identity->id,
                 ])->execute();
             }
 
@@ -719,6 +773,10 @@ use Exception;
         Yii::$app->db->createCommand()->update('tbl_alertas_copiaalertaseliminar',[
                     'anulado' => 1,                                                
         ],'id_copiaalertaseliminar ='.$idcopiaseliminar.'')->execute();
+
+        Yii::$app->db->createCommand()->update('tbl_alertas_encuestasalertas',[
+                    'anulado' => 0,                                                
+        ],'id_alerta ='.$ideliminaralertas.'')->execute();
 
         return $this->redirect(['index']);
     }
@@ -931,16 +989,16 @@ use Exception;
                         <thead>
                             <tr>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 13px; margin: 30px;'>
-                                <label style='font-size: 40px; margin: 50px; color: #1d2d4f;'>CXM</label>
+                                <label style='font-size: 40px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>CXM</label>
                                 </th>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 40px; margin: 50px; color: #1d2d4f;'>Informe de Alertas CX-Management</label></th>
+                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 40px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></th>
                             </tr>
                             <tr>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 15px; margin: 50px; color: #1d2d4f;'>Información:</label>
+                                    <label style='font-size: 15px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Información:</label>
                                 </th>
                                 <th class='text-center' align='text-center' scope='col'>              
-                                    <label style='font-size: 15px;  margin: 30px; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a></label>
+                                    <label style='font-size: 15px;  margin: 30px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='http://localhost:8080/qa_pruebas/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a></label>
 
                                     <hr>
 
@@ -950,27 +1008,27 @@ use Exception;
                         <tbody>
                             <tr>
                                 <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 15px; margin: 50px; color: #1d2d4f;'>Datos Alerta:</label>
+                                    <label style='font-size: 15px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Datos Alerta:</label>
                                 </th>
                                 <td class='text-left' align='text-left'>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Fecha de envio: ".$varFecha_enviados." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Fecha de envio: ".$varFecha_enviados." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Valorador: ".$varUsuaNombre_enviados." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Valorador: ".$varUsuaNombre_enviados." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Tipo de Alerta: ".$varTipoAlerta_enviados." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Tipo de Alerta: ".$varTipoAlerta_enviados." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Programa/Pcrc: ".$varName_enviados." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Programa/Pcrc: ".$varName_enviados." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Asunto: ".$varAsunto_enviados." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Asunto: ".$varAsunto_enviados." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Comentarios: ".$varComentarios_enviados." </p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Comentarios: ".$varComentarios_enviados." </p></label></label>
                                     <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; color: #1d2d4f;'><p>* Archivo Adjunto: ".$varArchivo_enviados."</p></label></label>
+                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Archivo Adjunto: ".$varArchivo_enviados."</p></label></label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class='text-center' align='text-center' colspan='2' >
-                                    <label style='font-size: 12px;  margin: 30px; color: #1d2d4f;'>© CX-Management 2023 - Desarrollado por Konecta</a></label>
+                                    <label style='font-size: 12px;  margin: 30px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>© CX-Management 2023 - Desarrollado por Konecta</a></label>
                                 </td>
                             </tr>
                         </tbody>
@@ -1017,6 +1075,76 @@ use Exception;
             'varRemitentes_enviados' => $varRemitentes_enviados,
             'varAsunto_enviados' => $varAsunto_enviados,
             'varComentarios_enviados' => $varComentarios_enviados,
+        ]);
+    }
+
+    public function actionNotificacionalertas(){
+        $varUsuarioActual = Yii::$app->user->identity->id;
+        $varCCUsuario = (new \yii\db\Query())
+                            ->select(['tbl_usuarios.usua_identificacion'])
+                            ->from(['tbl_usuarios'])
+                            ->where(['=','tbl_usuarios.usua_id',$varUsuarioActual])
+                            ->scalar(); 
+
+        $varDocumentos_Notas = [':varDocumentoName'=>$varCCUsuario];
+
+        $varNameJarvis_Notas = Yii::$app->dbjarvis->createCommand('
+        SELECT dp_datos_generales.primer_nombre FROM dp_datos_generales
+            WHERE 
+                dp_datos_generales.documento = :varDocumentoName
+            GROUP BY dp_datos_generales.documento ')->bindValues($varDocumentos_Notas)->queryScalar();
+
+        $varCorreoJarvis_Notas = Yii::$app->dbjarvis->createCommand('
+        SELECT dp_usuarios_red.email FROM dp_usuarios_red
+            WHERE 
+                dp_usuarios_red.documento =  :varDocumentoName')->bindValues($varDocumentos_Notas)->queryAll();
+
+        $varArraIdCorreosNotas = array();
+        foreach ($varCorreoJarvis_Notas as $value) {
+            array_push($varArraIdCorreosNotas, $value['email']);
+        }
+        $varListadoCorreos_Notas =  explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ",$varArraIdCorreosNotas)));
+
+        $varDataResultado_Notas = (new \yii\db\Query())
+                            ->select([
+                                'tbl_alertascx.id',
+                                'tbl_alertascx.fecha', 
+                                'tbl_arbols.name',
+                                'tbl_usuarios.usua_id',
+                                'tbl_usuarios.usua_nombre', 
+                                'tbl_alertascx.tipo_alerta'
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_usuarios',
+                                  'tbl_usuarios.usua_id = tbl_alertascx.valorador')
+
+                            ->where(['in','tbl_alertascx.remitentes',$varCorreoJarvis_Notas])
+                            ->andwhere(['>=','tbl_alertascx.fecha',date('Y-m-01').' 00:00:00'])
+                            ->all(); 
+
+        $varArraIdAlertas = array();
+        foreach ($varDataResultado_Notas as $value) {
+            array_push($varArraIdAlertas, $value['id']);
+        }
+        $varListadoIdAlertas =  explode(",", str_replace(array("#", "'", ";", " "), '', implode(", ",$varArraIdAlertas)));
+
+        $varCantidadEncuestas_Notas = (new \yii\db\Query())
+                            ->select(['tbl_alertas_tipoencuestas.id_tipoencuestas'])
+                            ->from(['tbl_alertas_tipoencuestas'])
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                    'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
+                            ->where(['in','tbl_alertas_encuestasalertas.id_alerta',$varListadoIdAlertas])
+                            ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
+                            ->count(); 
+
+        return $this->render('notificacionalertas',[
+            'varNameJarvis_Notas' => $varNameJarvis_Notas,
+            'varDataResultado_Notas' => $varDataResultado_Notas,
+            'varCantidadEncuestas_Notas' => $varCantidadEncuestas_Notas,    
         ]);
     }
 
