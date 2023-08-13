@@ -67,9 +67,76 @@ use Exception;
     }
    
     public function actionIndex(){  
+        $varUsuario_Index = Yii::$app->user->identity->id;
+        $varCCUsuario_Index = (new \yii\db\Query())
+                            ->select(['tbl_usuarios.usua_identificacion'])
+                            ->from(['tbl_usuarios'])
+                            ->where(['=','tbl_usuarios.usua_id',$varUsuario_Index])
+                            ->scalar(); 
+
+        $varDocumentos_Index = [':varDocumentoName'=>$varCCUsuario_Index];
+
+        $varNameJarvis_Index = Yii::$app->dbjarvis->createCommand('
+        SELECT dp_datos_generales.primer_nombre FROM dp_datos_generales
+            WHERE 
+                dp_datos_generales.documento = :varDocumentoName
+            GROUP BY dp_datos_generales.documento ')->bindValues($varDocumentos_Index)->queryScalar();
+
+        $varEncuestasMesActual = (new \yii\db\Query())
+                            ->select([
+                                'tbl_alertas_tipoencuestas.tipoencuestas',
+                                'COUNT(tbl_alertas_encuestasalertas.id_encuestasalertas) AS varCantidadEncuestas'
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
+                                  'tbl_alertas_encuestasalertas.id_alerta = tbl_alertascx.id')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_tipoencuestas',
+                                  'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
+
+                            ->where(['>=','tbl_alertascx.fecha',date('Y-m-01').' 00:00:00'])
+                            ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
+                            ->groupby(['tbl_alertas_encuestasalertas.id_encuestasalertas'])
+                            ->all(); 
+
+
+        $varAlertasMesActual = (new \yii\db\Query())
+                            ->select([
+                                'tbl_alertascx.tipo_alerta',
+                                'COUNT(tbl_alertas_tipoalerta.id_tipoalerta) AS varCantidadTipo'
+                            ])
+                            ->from(['tbl_alertascx'])
+
+                            ->join('LEFT OUTER JOIN', 'tbl_arbols',
+                                  'tbl_arbols.id = tbl_alertascx.pcrc')
+
+                            ->join('LEFT OUTER JOIN', 'tbl_alertas_tipoalerta',
+                                  'tbl_alertas_tipoalerta.tipoalerta = tbl_alertascx.tipo_alerta')
+
+                            ->where(['>=','tbl_alertascx.fecha',date('Y-m-01').' 00:00:00'])
+                            ->groupby(['tbl_alertas_tipoalerta.id_tipoalerta'])
+                            ->all(); 
+
+
+        $varEliminadasMesActual = (new \yii\db\Query())
+                            ->select([
+                                'tbl_alertas_eliminaralertas.id_eliminaralertas'
+                            ])
+                            ->from(['tbl_alertas_eliminaralertas'])
+                            ->where(['=','tbl_alertas_eliminaralertas.anulado',0])
+                            ->count(); 
       
       
-        return $this->render('index');
+        return $this->render('index',[
+            'varEncuestasMesActual' => $varEncuestasMesActual,
+            'varAlertasMesActual' => $varAlertasMesActual,
+            'varEliminadasMesActual' => $varEliminadasMesActual,
+            'varNameJarvis_Index' => $varNameJarvis_Index,
+        ]);
     }
 
     public function actionParametrizaralertas(){
