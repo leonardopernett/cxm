@@ -177,11 +177,11 @@ if ($varDataListEncuesta != null) {
                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Dato de la Encuesta') ?></label>
 
                 <div class="row">
-                    <div class="col-md-2" align="text-center">
+                    <div class="col-md-2 text-center">
                         <label style="font-size: 15px;"><?php echo $varEncuestas; ?><?php echo $varTipoEncuesta; ?></label>
                     </div>
 
-                    <div class="col-md-10" align="left">
+                    <div class="col-md-10 left">
 
                         <?php
                             foreach ($varListaComentarios as $value) {
@@ -276,9 +276,24 @@ if ($varDataListEncuesta != null) {
     <div class="row">
         <div class="col-md-12">
             <div class="card1 mb"> 
-                <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto') ?></label>
-                <br>
-                <img src="<?= Url::to("@web/alertas/".$varArchivo_ver.""); ?>" alt="Card image cap" > 
+                <?php
+                $varConteoArchivo_two = strlen($varArchivo_ver);
+                $varConteoUrl_two = substr($varConteoArchivo_two, -3);
+                if ($varConteoUrl_two == "png" || $varConteoUrl_two == "jpg" || $varConteoUrl_two == "bmp" || $varConteoUrl_two == "gif") {
+                    
+                ?>
+                    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Imagen') ?></label>
+                    <br>
+                    <img src="<?= Url::to("@web/alertas/".$varArchivo_ver.""); ?>" alt="Card image cap" > 
+                <?php
+                }else{
+                ?>
+                    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Documento') ?></label>
+                    <br>
+                    <a style="font-size: 18px;" rel="stylesheet" type="text/css" href="<?= Url::to("@web/alertas/".$varArchivo_ver.""); ?>" target="_blank"><?= Yii::t('app', ' Descargar Archivo') ?></a>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>

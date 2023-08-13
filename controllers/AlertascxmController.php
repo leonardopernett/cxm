@@ -884,6 +884,9 @@ use Exception;
                             ->from(['tbl_alertascx'])
                             ->where(['=','tbl_alertascx.id',$id_alerta])
                             ->scalar(); 
+                            
+        $varConteoArchivo = strlen($varUrlArchivo);
+        $varConteoUrl = substr($varUrlArchivo, -3);
 
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
@@ -910,6 +913,7 @@ use Exception;
             'varConteoEncuestas' => $varConteoEncuestas,
             'varNameJarvis' => $varNameJarvis,
             'varMensajes_encuestas' => $varMensajes_encuestas,
+            'varConteoUrl' => $varConteoUrl,
         ]);
     }
 

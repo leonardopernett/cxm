@@ -130,11 +130,11 @@ if ($varMensajes_encuestas != 0) {
             <div class="card1 mb">
 
                 <div class="row">
-                    <div class="col-md-2" align="text-center">
+                    <div class="col-md-2 text-center">
                         <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 50px; color: #FFC72C;"></em></label>
                     </div>
 
-                    <div class="col-md-10" align="left">
+                    <div class="col-md-10 left">
                         <label style="font-size: 15px;"><?= Yii::t('app', ' En hora buena '.$varNameJarvis.'! Te comentamos que la encuesta ya fue guardada, te invitamos a revisar el histórico de alertas.') ?></label>
                     </div>
                 </div>          
@@ -146,11 +146,11 @@ if ($varMensajes_encuestas != 0) {
             <div class="card1 mb">
 
                 <div class="row">
-                    <div class="col-md-2" align="text-center">
+                    <div class="col-md-2 text-center">
                         <label style="font-size: 15px;"><em class="fas fa-search" style="font-size: 50px; color: #FFC72C;"></em></label>
                     </div>
 
-                    <div class="col-md-10" align="left">
+                    <div class="col-md-10 left">
                         <label style="font-size: 15px;"><em class="fas fa-arrow-left" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Reportes de Alertas') ?></label> 
                         <?= Html::a('Reportes',  ['reportealerta'], ['class' => 'btn btn-success',
                                                             'style' => 'background-color: #707372',
@@ -246,25 +246,40 @@ if ($varMensajes_encuestas != 0) {
 
     	<div class="col-md-3">
     		<div class="card2 mb">
-    			<label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto') ?></label>
-    			<br>
-    			<img src="<?= Url::to("@web/alertas/".$varUrlArchivo.""); ?>" alt="Card image cap" style="height: 250px;">
-    			<br>
-    			<br>
-    			<?= Html::button('Ver imagen', ['value' => url::to(['verimagenalerta','varArchivo'=>$varUrlArchivo]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
-                                'data-toggle' => 'tooltip',
-                                'title' => 'Imagen de la alerta']) 
-                ?> 
-
                 <?php
-                    Modal::begin([
-                        'header' => '<h4>Ver Imagen de Alerta</h4>',
-                        'id' => 'modal1',
-                    ]);
+                if ($varConteoUrl == "png" || $varConteoUrl == "jpg" || $varConteoUrl == "bmp" || $varConteoUrl == "gif") {
+                    
+                ?>
+    			    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Imagen') ?></label>
+                    <br>
+                    <img src="<?= Url::to("@web/alertas/".$varUrlArchivo.""); ?>" alt="Card image cap" style="height: 250px;">
+                    <br>
+                    <br>
+                    <?= Html::button('Ver imagen', ['value' => url::to(['verimagenalerta','varArchivo'=>$varUrlArchivo]), 'class' => 'btn btn-success', 'id'=>'modalButton1',
+                                    'data-toggle' => 'tooltip',
+                                    'title' => 'Imagen de la alerta']) 
+                    ?> 
 
-                    echo "<div id='modalContent1'></div>";
-                                                                                                  
-                    Modal::end(); 
+                    <?php
+                        Modal::begin([
+                            'header' => '<h4>Ver Imagen de Alerta</h4>',
+                            'id' => 'modal1',
+                        ]);
+
+                        echo "<div id='modalContent1'></div>";
+                                                                                                    
+                        Modal::end(); 
+                    ?>
+                <?php
+                }else{
+                ?>
+                    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Documento') ?></label>
+                    <br>
+                    <br>
+                    <br>
+                    <a style="font-size: 18px;" rel="stylesheet" type="text/css" href="<?= Url::to("@web/alertas/".$varUrlArchivo.""); ?>" target="_blank"><?= Yii::t('app', ' Descargar Archivo') ?></a>
+                <?php
+                }
                 ?>
     		</div>
     	</div>
@@ -302,11 +317,11 @@ if ($varMensajes_encuestas != 0) {
             <div class="card1 mb">
 
                 <div class="row">
-                    <div class="col-md-2" align="text-center">
+                    <div class="col-md-2 text-center">
                         <label style="font-size: 15px;"><em class="fas fa-info-circle" style="font-size: 50px; color: #FFC72C;"></em></label>
                     </div>
 
-                    <div class="col-md-10" align="left">
+                    <div class="col-md-10 left">
                         <label style="font-size: 15px;"><?= Yii::t('app', ' ¡Hola '.$varNameJarvis.'! Te comentamos que la encuesta ya ha sido diligencia por ti, te invitamos a revisar el histórico de alertas.') ?></label>
                     </div>
                 </div>          
