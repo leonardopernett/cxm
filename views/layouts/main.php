@@ -660,8 +660,8 @@ AppAsset::register($this);
                                                     'visible' => Yii::$app->user->identity->isControlProcesoCX() || Yii::$app->user->identity->isVerBA()|| Yii::$app->user->identity->isVerdirectivo(),
                                                 ],
                                                 [
-                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesos Alertas 3.0'),
-                                                    'url' => ['/distribuccionexterna/index'],
+                                                    'label' => Yii::t('app', '&nbsp;&nbsp;Procesos Alertas 3'),
+                                                    'url' => ['/alertascxm/index'],
                                                     'visible' => Yii::$app->user->identity->isAdminSistema(),
                                                 ],
                                                 '<br>',                                            
