@@ -481,7 +481,7 @@ use Exception;
 
     public function actionReportealerta(){
         $model = new Alertas();
-        $varDataResultado = null;
+        $varDataResultado = array();
         $arrayDataPcrc = array();
         $arrayDataUsers = array();
         $varDataTipos = array();
