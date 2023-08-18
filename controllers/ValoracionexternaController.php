@@ -353,6 +353,22 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                             ->where(['=','tbl_calificaciondetalles.calificacion_id',$value['calificacion_id']])                            
                             ->andwhere(['LIKE','tbl_calificaciondetalles.name','%' . trim($sheet->getCellByColumnAndRow($j,$i)->getValue()) . '%',false])
                             ->all(); 
+
+              $varIdEquipo = (new \yii\db\Query())
+                            ->select([
+                                    'tbl_equipos_evaluados.equipo_id'
+                            ])
+                            ->from(['tbl_equipos_evaluados'])
+                            ->where(['=','tbl_equipos_evaluados.evaluado_id',$varAsesor])
+                            ->scalar();
+    
+              $varIdLider = (new \yii\db\Query())
+                            ->select([
+                                    'tbl_equipos.usua_id'
+                            ])
+                            ->from(['tbl_equipos'])
+                            ->where(['=','tbl_equipos.id',$varIdEquipo])
+                            ->scalar();
                             
                 if (!empty($varCalificacionDetalleCxm)) {
                   if(!in_array($j, $arrCount)){                    
@@ -440,6 +456,8 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                                       ->where(['=','tbl_tmpejecucionbloquedetalles.tmpejecucionformulario_id',$tmp_id])
                                       ->scalar();
 
+                $arrFormulario["equipo_id"] = $varIdEquipo;
+                $arrFormulario["usua_id_lider"] = $varIdLider;
                 $arrFormulario["dimension_id"] = $varDimension;
                 $arrFormulario["dsruta_arbol"] = $varArbolRutaCxm;
                 $arrFormulario["dscomentario"] = $varComentarios;
@@ -537,6 +555,31 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
                 
                          
                 $validarPasoejecucionform = \app\models\Tmpejecucionformularios::guardarFormulario($tmp_id);
+
+
+                $varIdFormulario = (new \yii\db\Query())
+                        ->select(['id'])
+                        ->from(['tbl_ejecucionformularios'])
+                        ->where(['=','dimension_id',$varDimension])
+                        ->andwhere(['=','arbol_id',$cod_pcrc])
+                        ->andwhere(['=','usua_id',$varValorador])
+                        ->andwhere(['=','evaluado_id',$varAsesor])
+                        ->andwhere(['=','formulario_id',$varForm])
+                        ->andwhere(['=','dscomentario',$varComentarios])
+                        ->andwhere(['=','dsfuente_encuesta',$varFuente])
+                        ->andwhere(['=','dsruta_arbol',$varArbolRutaCxm])
+                        ->andwhere(['=','usua_id_lider',$varIdLider])
+                        ->andwhere(['=','equipo_id',$varIdEquipo])
+                        ->andwhere(['=','hora_inicial',$tmpeje['hora_inicial']])
+                        ->scalar();
+                      
+                if ($varIdFormulario !== false) {
+                  
+                  Yii::$app->db->createCommand()->update('tbl_ejecucionformularios', [
+                    'score' => $varScore,
+                  ], 'id = :id', [':id' => $varIdFormulario])->execute();
+
+                }
 
                 
               }
