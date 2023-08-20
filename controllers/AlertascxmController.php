@@ -362,56 +362,24 @@ use Exception;
         $target_path = "alertas/" . $varArchivo_correo;
 
         $varHtml = 
-                "
-                    <table id='tblListadoGrupales'>
-                        <thead>
-                            <tr>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 13px; margin: 30px;'>
-                                <label style='font-size: 40px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>CXM</label>
-                                </th>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 40px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></th>
-                            </tr>
-                            <tr>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 15px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Información:</label>
-                                </th>
-                                <th class='text-center' align='text-center' scope='col'>              
-                                    <label style='font-size: 15px;  margin: 30px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a></label>
+        "
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Envio de Alertas</title>
+            </head>
+            <body class='text-center'>
+                <h1><label style='font-family: sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></h1>
+                <hr>
+                <h5><label style='font-family: sans-serif;'>Actualmente se tiene una alerta que fue realizada desde CX-Management. Para validar la alerta te recomendamos ingresar al módulo de reporte alertas de CXM y buscarlo para ver resultados.</a></label></h5>
+                <br>
+                <h5><label style='font-family: sans-serif;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$varIdAlertas."'>Ingresar a la encuesta</a></label></h5>
+                <hr>
+                <h7><label style='font-family: sans-serif;'>© CX-Management 2023 - Desarrollado por Konecta</a></label></h>
 
-                                    <hr>
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 15px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Datos Alerta:</label>
-                                </th>
-                                <td class='text-left' align='text-left'>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Fecha de envio: ".$varFechas_correo." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Valorador: ".$varValorador_correo." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Tipo de Alerta: ".$varTipoAlerta_correo." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Programa/Pcrc: ".$varPcrc_correo." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Asunto: ".$varAsuntos_correo." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Comentarios: ".$varComentarios_correo." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Archivo Adjunto: ".$varArchivo_correo."</p></label></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class='text-center' align='text-center' colspan='2' >
-                                    <label style='font-size: 12px;  margin: 30px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>© CX-Management 2023 - Desarrollado por Konecta</a></label>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                ";
+            </body>
+            </html>        
+        ";
 
         $varListData_correos = explode(", ", $varRemitentes_correo);        
 
@@ -532,6 +500,8 @@ use Exception;
                     array_push($arrayDataPcrc, $value['id']);
                 }
                 
+            }else{
+                $arrayDataPcrc = $varDataPcrc;
             }
 
             if ($model->valorador) {
@@ -651,7 +621,7 @@ use Exception;
                             ->where(['between','tbl_alertascx.fecha',$varFechaInicio_BD.' 00:00:00',$varFechaFin_BD.' 23:59:59'])
                             ->andfilterwhere(['in','tbl_alertascx.valorador',$arrayDataUsers])
                             ->andfilterwhere(['in','tbl_alertascx.pcrc',$arrayDataPcrc])
-                            ->groupby(['a.id'])
+                            ->groupby(['tbl_usuarios.usua_id'])
                             ->all();
 
         }
@@ -851,6 +821,7 @@ use Exception;
     public function actionAlertaencuesta($id_alerta){
         $model = new AlertasEncuestasalertas();
         $varMensajes_encuestas = 0;
+        $varConteoUrl = null;
         $varIdUser = Yii::$app->user->identity->id;
         $varidentificacion = (new \yii\db\Query())
                             ->select(['tbl_usuarios.usua_identificacion'])
@@ -884,7 +855,8 @@ use Exception;
                             ->from(['tbl_alertascx'])
                             ->where(['=','tbl_alertascx.id',$id_alerta])
                             ->scalar(); 
-                            
+
+        $varConteoArchivo = strlen($varUrlArchivo);
         $varConteoUrl = substr($varUrlArchivo, -3);
 
         $form = Yii::$app->request->post();
@@ -1054,56 +1026,24 @@ use Exception;
         $form = Yii::$app->request->post();
         if ($model->load($form)) {
             $varHtml_enviados = 
-                "   
-                    <table id='tblListadoGrupales'>
-                        <thead>
-                            <tr>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 13px; margin: 30px;'>
-                                <label style='font-size: 40px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>CXM</label>
-                                </th>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'><label style='font-size: 40px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></th>
-                            </tr>
-                            <tr>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 15px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Información:</label>
-                                </th>
-                                <th class='text-center' align='text-center' scope='col'>              
-                                    <label style='font-size: 15px;  margin: 30px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a></label>
+            "
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Envio de Alertas</title>
+                </head>
+                <body class='text-center'>
+                    <h1><label style='font-family: sans-serif; color: #1d2d4f;'>Informe de Alertas CX-Management</label></h1>
+                    <hr>
+                    <h5><label style='font-family: sans-serif;'>Actualmente se tiene una alerta que fue realizada desde CX-Management. Para validar la alerta te recomendamos ingresar al módulo de reporte alertas de CXM y buscarlo para ver resultados.</a></label></h5>
+                    <br>
+                    <h5><label style='font-family: sans-serif;'>¡Hola equipo! Te comentamos que nos encantaria saber tú opinión, por eso te invitamos a ingresar a CXM y responder la encuesta en el siguiente link <a href='https://qa.grupokonecta.local/qa_managementv2/web/index.php/alertascxm/alertaencuesta?id_alerta=".$id_enviados."'>Ingresar a la encuesta</a></label></h5>
+                    <hr>
+                    <h7><label style='font-family: sans-serif;'>© CX-Management 2023 - Desarrollado por Konecta</a></label></h>
 
-                                    <hr>
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class='text-center' align='text-center' scope='col' style='background-color: #C6C6C6;'>
-                                    <label style='font-size: 15px; margin: 50px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>Datos Alerta:</label>
-                                </th>
-                                <td class='text-left' align='text-left'>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Fecha de envio: ".$varFecha_enviados." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Valorador: ".$varUsuaNombre_enviados." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Tipo de Alerta: ".$varTipoAlerta_enviados." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Programa/Pcrc: ".$varName_enviados." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Asunto: ".$varAsunto_enviados." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Comentarios: ".$varComentarios_enviados." </p></label></label>
-                                    <br>
-                                    <label style='font-size: 15px;'><label style='font-size: 15px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'><p>* Archivo Adjunto: ".$varArchivo_enviados."</p></label></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class='text-center' align='text-center' colspan='2' >
-                                    <label style='font-size: 12px;  margin: 30px; font-family: 'Nunito',sans-serif; color: #1d2d4f;'>© CX-Management 2023 - Desarrollado por Konecta</a></label>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>                    
-                ";
+                </body>
+                </html>   
+            ";
 
             $target_path_enviados = "alertas/" . $varArchivo_enviados;
             $varListData_enviados = explode(", ", $model->remitentes);        

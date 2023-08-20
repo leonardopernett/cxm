@@ -32,44 +32,34 @@ $this->params['breadcrumbs'][] = $this->title;
     $command = $rol->createCommand();
     $roles = $command->queryScalar();
 
-    $varPeso =  (new \yii\db\Query())
-                ->select(['ROUND(AVG(tbl_alertas_tipoencuestas.peso)) AS peso'])
+    $arrayVarPeso = 0;                            
+    $varPeso = (new \yii\db\Query())
+                ->select(['tbl_alertas_tipoencuestas.peso'])
                 ->from(['tbl_alertas_tipoencuestas'])
                 ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
-                        'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
+                    'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
                 ->where(['=','tbl_alertas_encuestasalertas.id_alerta',$idalerta])
                 ->andwhere(['=','tbl_alertas_encuestasalertas.anulado',0])
-                ->scalar(); 
+                ->all(); 
 
-    $varEncuestas = null;
-    $varTipoEncuesta = null;
-    if ($varPeso == "1") {
-        $varEncuestas = "<img src='../../images/insatisfecho.png' alt='insatisfecho'> style='height: 50px; width: 50px;'";
-        $varTipoEncuesta = "Insatisfecho";
+    $varConteosPesos = 0;
+    if (count($varPeso)) {                                                       
+        foreach ($varPeso as $value) {                                    
+            if ($value['peso'] == 4 || $value['peso'] == 5) {
+                $arrayVarPeso = $varConteosPesos = $varConteosPesos + 1;
+            }
+        }
     }
-                                
-    if ($varPeso == "2") {
-        $varEncuestas = "<img src='../../images/medioinsatisfecho.png' alt='medioinsatisfecho' style='height: 50px; width: 50px;'>";
-        $varTipoEncuesta = "Medio Insatisfecho";
+
+    if (count($varPeso)) {
+        $varTipoEncuesta = round(($arrayVarPeso / count($varPeso)) * 100, 2).' %';
+    }else{
+        $varTipoEncuesta = "--";
     }
-                            
-    if ($varPeso == "3") {
-        $varEncuestas = "<img src='../../images/neutro.png' alt='neutro' style='height: 50px; width: 50px;'>";
-        $varTipoEncuesta = "Neutro";
-    }
-                            
-    if ($varPeso == "4") {
-        $varEncuestas = "<img src='../../images/mediosatisfecho.png' alt='mediosatisfecho' style='height: 50px; width: 50px;'>";
-        $varTipoEncuesta = "Medio Satisfecho";
-    }
-                            
-    if ($varPeso == "5") {
-        $varEncuestas = "<img src='../../images/satisfecho.png' alt='satisafecho' style='height: 50px; width: 50px;'>";
-        $varTipoEncuesta = "Satisfecho";
-    }
+
 
     $varListaComentarios = (new \yii\db\Query())
-                            ->select(['tbl_alertas_tipoencuestas.tipoencuestas','tbl_alertas_encuestasalertas.comentarios'])
+                            ->select(['tbl_alertas_tipoencuestas.peso','tbl_alertas_encuestasalertas.comentarios'])
                             ->from(['tbl_alertas_tipoencuestas'])
                             ->join('LEFT OUTER JOIN', 'tbl_alertas_encuestasalertas',
                                     'tbl_alertas_tipoencuestas.id_tipoencuestas = tbl_alertas_encuestasalertas.id_tipoencuestas')
@@ -176,25 +166,34 @@ if ($varDataListEncuesta != null) {
             <div class="card1 mb">
                 <label style="font-size: 15px;"><em class="fas fa-list-alt" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Dato de la Encuesta') ?></label>
 
-                <div class="row">
-                    <div class="col-md-2 text-center">
-                        <label style="font-size: 15px;"><?php echo $varEncuestas; ?><?php echo $varTipoEncuesta; ?></label>
-                    </div>
+                
+                <table id="tblResultadosEncuestas" class="table table-striped table-bordered tblResDetFreed">
+                    <caption><?= Yii::t('app', ' Resultados de Encuestas: '.$varTipoEncuesta) ?></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Peso Encuesta' ) ?></label></th>
+                            <th scope="col"  style="background-color: #C6C6C6;"><label style="font-size: 15px;"><?= Yii::t('app', 'Comentarios' ) ?></label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        foreach ($varListaComentarios as $value) {
+                    ?>
+                        <tr>
+                            <td>
+                                <label style="font-size: 15px;"> <?= Yii::t('app', $value['peso']) ?></label>
+                            </td>
+                            <td>
+                                <label style="font-size: 15px;"> <?= Yii::t('app', $value['comentarios']) ?></label>
+                            </td>
+                        </tr>                                   
 
-                    <div class="col-md-10 left">
-
-                        <?php
-                            foreach ($varListaComentarios as $value) {
-                            
-                        ?>
-
-                            <label style="font-size: 15px;"><label style="font-size: 15px;"> <?= Yii::t('app', '* Encuesta: '.$value['tipoencuestas'].' - Comentario: '.$value['comentarios']) ?>
-
-                        <?php
-                            }
-                        ?>
-                    </div>
-                </div> 
+                    <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+                        
             </div>
         </div>
     </div>
@@ -277,19 +276,20 @@ if ($varDataListEncuesta != null) {
         <div class="col-md-12">
             <div class="card1 mb"> 
                 <?php
-                $varConteoUrl_two = substr($varArchivo_ver, -3);
+                $varConteoArchivo_two = strlen($varArchivo_ver);
+                $varConteoUrl_two = substr($varConteoArchivo_two, -3);
                 if ($varConteoUrl_two == "png" || $varConteoUrl_two == "jpg" || $varConteoUrl_two == "bmp" || $varConteoUrl_two == "gif") {
                     
                 ?>
-                    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Imagen') ?></label>
-                    <br>
-                    <img src="<?= Url::to("@web/alertas/".$varArchivo_ver.""); ?>" alt="Card image cap" > 
+                <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Imagen') ?></label>
+                <br>
+                <img src="<?= Url::to("@web/alertas/".$varArchivo_ver.""); ?>" alt="Card image cap" > 
                 <?php
                 }else{
                 ?>
-                    <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Documento') ?></label>
-                    <br>
-                    <a style="font-size: 18px;" rel="stylesheet" type="text/css" href="<?= Url::to("@web/alertas/".$varArchivo_ver.""); ?>" target="_blank"><?= Yii::t('app', ' Descargar Archivo') ?></a>
+                <label style="font-size: 15px;"><em class="fas fa-paper-plane" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Archivo Adjunto Tipo Documento') ?></label>
+                <br>
+                <a style="font-size: 18px;" rel="stylesheet" type="text/css" href="<?= Url::to("@web/alertas/".$varArchivo_ver.""); ?>" target="_blank"><?= Yii::t('app', ' Descargar Archivo') ?></a>
                 <?php
                 }
                 ?>
