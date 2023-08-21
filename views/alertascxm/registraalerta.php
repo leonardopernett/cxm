@@ -330,7 +330,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         if ($id_procesos == "0") {
                     ?>
                         <label style="font-size: 15px;"><em class="fas fa-arrow-left" style="font-size: 20px; color: #FFC72C;"></em><?= Yii::t('app', ' Nuevo Registro:') ?></label> 
-                        <?= Html::a('Nuevo',  ['registraalerta'], ['class' => 'btn btn-success',
+                        <?= Html::a('Nuevo',  ['registraalerta','id_procesos'=>0], ['class' => 'btn btn-success',
                                                         'style' => 'background-color: #707372',
                                                         'data-toggle' => 'tooltip',
                                                         'title' => 'Nuevo Registro']) 
